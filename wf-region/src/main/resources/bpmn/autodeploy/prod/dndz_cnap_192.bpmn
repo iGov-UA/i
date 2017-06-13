@@ -15,7 +15,7 @@
         <activiti:formProperty id="file1" name="Графічні матеріали із зазначенням бажаного місця розташування тимчасової споруди, виконані замовником у довільній формі на топографо-геодезичній основі М1:500, кресленнями контурів тимчасової споруди з прив'язкою до місцевості." type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>

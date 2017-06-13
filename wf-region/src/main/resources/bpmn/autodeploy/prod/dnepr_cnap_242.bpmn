@@ -75,7 +75,7 @@
         <activiti:formProperty id="markers_flag" name="Флаг по городам" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;nFlag&quot;],&quot;asID_Field_sValue&quot;:[&quot;1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'don_mariupolT'&amp;&amp;[sClient] != 'hmel_hmelT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">

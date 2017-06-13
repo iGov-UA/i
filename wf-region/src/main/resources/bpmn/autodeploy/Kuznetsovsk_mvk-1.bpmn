@@ -388,7 +388,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow53" sourceRef="mailtask6" targetRef="endevent5"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow54" sourceRef="servicetask1" targetRef="mailtask4"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>

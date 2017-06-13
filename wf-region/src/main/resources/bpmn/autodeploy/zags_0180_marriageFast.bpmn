@@ -4,9 +4,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sText16" name=" ; ;labelType=info" type="label" default="Також Ви можете скористатися послугою &lt;a href=&quot;https://igov.org.ua/service/703/general&quot; target=&quot;_blank&quot;&gt;заява про реєстрацію шлюбу за стандартною процедурою (30 днів)&lt;/a&gt;"></activiti:formProperty>
-        
-        
-        
         <activiti:formProperty id="bankIdinn" name="ІПН референта" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
@@ -15,7 +12,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="youthDnipro"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText6" name=" ; ;labelType=info" type="label" default="Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором"></activiti:formProperty>
-       <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгу? ; Якщо Ви маєте пільгу, оплата держ. мита не потрібна" type="enum" required="true">
+        <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгу? ; Якщо Ви маєте пільгу, оплата держ. мита не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Не маю пільгу"></activiti:value>
         </activiti:formProperty>
@@ -119,7 +116,7 @@
         <activiti:formProperty id="sWeddingDay" name="Дата церемонии ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask22"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask23"></sequenceFlow>
     <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string" variable="asEnjoyingDRACS"></activiti:formProperty>
@@ -228,8 +225,8 @@
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -331,8 +328,8 @@
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -446,8 +443,8 @@
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
@@ -457,32 +454,32 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу (шлюб за добу)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start_noBankIDname.html]
-На жаль, Вам відмовлено в наданні послуги.<br>
-Підстава: <br>
-${comment1}<br><br>
-Телефон для довідок: ${sPhoneOrgan} <br>
+На жаль, Вам відмовлено в наданні послуги.&lt;br&gt;
+Підстава: &lt;br&gt;
+${comment1}&lt;br&gt;&lt;br&gt;
+Телефон для довідок: ${sPhoneOrgan} &lt;br&gt;
 [pattern/mail/new_design/_common_content_end.html]                
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
+${sMail_Signature}&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -492,21 +489,21 @@ ${sMail_Signature}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression>"${email}"</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу (шлюб за добу)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
  [pattern/mail/new_design/_common_content_start_noBankIDname.html]
-Дякуємо, Вам що скористались нашим сервісом подання заяви про державну реєстрацію шлюбу!<br /><br />
+Дякуємо, Вам що скористались нашим сервісом подання заяви про державну реєстрацію шлюбу!&lt;br /&gt;&lt;br /&gt;
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
+${sMail_Signature}&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -517,32 +514,32 @@ ${sMail_Signature}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу (шлюб за добу)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
  [pattern/mail/new_design/_common_content_start_noBankIDname.html]
                                     
-Ваше звернення успішно зареєстровано. <br>
-Для уточнення дати, часу та деталей церемонії з Вами зв'яжуться в телефонному режимі.<br>
-Результат перевірки введенних данних будуть спрямовані на цей е-мейл протягом доби. <br>
+Ваше звернення успішно зареєстровано. &lt;br&gt;
+Для уточнення дати, часу та деталей церемонії з Вами зв'яжуться в телефонному режимі.&lt;br&gt;
+Результат перевірки введенних данних будуть спрямовані на цей е-мейл протягом доби. &lt;br&gt;
 [pattern/mail/new_design/_common_content_end.html]  
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
+${sMail_Signature}&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html] 
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -559,68 +556,68 @@ ${sMail_Signature}<br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу (шлюб за добу)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start_noBankIDname.html]
-<br>
-Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
+&lt;br&gt;
+Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.&lt;br&gt; 
 
-<br>
-Тепер Вам треба сплатити державне мито 0,85грн., послуги ДРАЦС 706,00грн. та послуги організатора за реквизитами нижче.<br><br>
+&lt;br&gt;
+Тепер Вам треба сплатити державне мито 0,85грн., послуги ДРАЦС 706,00грн. та послуги організатора за реквизитами нижче.&lt;br&gt;&lt;br&gt;
 
-<b>Реквізити для сплати державного мита:</b><br>
-${sBankDetails2}<br>
-Сума держ. мита: <b> 0.85 грн </b><br>
-<br>
+&lt;b&gt;Реквізити для сплати державного мита:&lt;/b&gt;&lt;br&gt;
+${sBankDetails2}&lt;br&gt;
+Сума держ. мита: &lt;b&gt; 0.85 грн &lt;/b&gt;&lt;br&gt;
+&lt;br&gt;
 
-<b>Реквізити для сплати послуги ДРАЦС:</b><br>
-Отримувач: <b>Головне територіальне управління юстиції у Дніпропетровській області  </b><br>
-Банк отримувача: <b>Державна казначейська служба України м.Київ </b><br>
-МФО: <b>820172</b><br>
-Код ЄДРПОУ: <b>34984907</b><br>
-Розрахунковий рахунок: <b>31258232100157</b><br>
-Вартість послуги: <b> 706 грн </b><br>
-<br>
+&lt;b&gt;Реквізити для сплати послуги ДРАЦС:&lt;/b&gt;&lt;br&gt;
+Отримувач: &lt;b&gt;Головне територіальне управління юстиції у Дніпропетровській області  &lt;/b&gt;&lt;br&gt;
+Банк отримувача: &lt;b&gt;Державна казначейська служба України м.Київ &lt;/b&gt;&lt;br&gt;
+МФО: &lt;b&gt;820172&lt;/b&gt;&lt;br&gt;
+Код ЄДРПОУ: &lt;b&gt;34984907&lt;/b&gt;&lt;br&gt;
+Розрахунковий рахунок: &lt;b&gt;31258232100157&lt;/b&gt;&lt;br&gt;
+Вартість послуги: &lt;b&gt; 706 грн &lt;/b&gt;&lt;br&gt;
+&lt;br&gt;
 
 
-<b>Реквізити для сплати послуги організатора:</b><br>
+&lt;b&gt;Реквізити для сплати послуги організатора:&lt;/b&gt;&lt;br&gt;
 ${sBankDetails1}
-Вартість послуги: <b> ${sSumOrganizer} грн </b><br>
-<br>
+Вартість послуги: &lt;b&gt; ${sSumOrganizer} грн &lt;/b&gt;&lt;br&gt;
+&lt;br&gt;
 
 
-Під час візиту на церемонію обов'язково при собі мати:<br>
-1. Квитанцію про сплату держ.мита.<br>
-2. Квитанцію про сплату вартості обряду (послуги ДРАЦС).<br>
-3. Квитанцію про сплату вартості “Організація та проведення індивідуального обряду державної реєстрації шлюбу” (послуги організатора).<br>
-4. Оригінали паспортів нареченого та нареченої.<br>
-5. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, які набрали законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним).<br>
+Під час візиту на церемонію обов'язково при собі мати:&lt;br&gt;
+1. Квитанцію про сплату держ.мита.&lt;br&gt;
+2. Квитанцію про сплату вартості обряду (послуги ДРАЦС).&lt;br&gt;
+3. Квитанцію про сплату вартості “Організація та проведення індивідуального обряду державної реєстрації шлюбу” (послуги організатора).&lt;br&gt;
+4. Оригінали паспортів нареченого та нареченої.&lt;br&gt;
+5. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, які набрали законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним).&lt;br&gt;
 
-Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим <a href="https://goo.gl/rujywk" target="_blank">посиланням</a>
-<br>
-<br>
-Чекаємо Вас ${sDateWeddingApplication} за адресою: ${sAddress}.<br><br>
-Будь ласка прийдіть за 15 хвилин до церемонії.<br><br>
-Телефон для довідок: ${sPhoneOrgan} <br>                                 
+Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим &lt;a href="https://goo.gl/rujywk" target="_blank"&gt;посиланням&lt;/a&gt;
+&lt;br&gt;
+&lt;br&gt;
+Чекаємо Вас ${sDateWeddingApplication} за адресою: ${sAddress}.&lt;br&gt;&lt;br&gt;
+Будь ласка прийдіть за 15 хвилин до церемонії.&lt;br&gt;&lt;br&gt;
+Телефон для довідок: ${sPhoneOrgan} &lt;br&gt;                                 
 [pattern/mail/new_design/_common_content_end.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature} <br>
+${sMail_Signature} &lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1},${PrintForm_2}]]></activiti:expression>
+          <activiti:expression>${PrintForm_1},${PrintForm_2}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno splatyty za poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno splatyty za poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -636,32 +633,32 @@ ${sMail_Signature} <br>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Державна реєстрація шлюбу (шлюб за добу)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start_noBankIDname.html]
-На жаль, Вам відмовлено в наданні послуги.<br>
-Підстава: <br>
-${comment}<br><br>
-Телефон для довідок: ${sPhoneOrgan} <br>
+На жаль, Вам відмовлено в наданні послуги.&lt;br&gt;
+Підстава: &lt;br&gt;
+${comment}&lt;br&gt;&lt;br&gt;
+Телефон для довідок: ${sPhoneOrgan} &lt;br&gt;
 [pattern/mail/new_design/_common_content_end.html]                
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
+${sMail_Signature}&lt;br&gt;
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -731,28 +728,35 @@ execution.setVariable('sShapka', per2)</script>
           <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення. Шлюб за добу.]]></activiti:expression>
+          <activiti:expression>Нове звернення. Шлюб за добу.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[+380675670302]]></activiti:expression>
+          <activiti:expression>+380675670302</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Shanovnyi kolego! Nadiishlo nove zvernennya [sID_Order] Shlub za doby. Opracuite na https://region.igov.org.ua/.]]></activiti:expression>
+          <activiti:expression>Shanovnyi kolego! Nadiishlo nove zvernennya [sID_Order] Shlub za doby. Opracuite na https://region.igov.org.ua/.</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow88" sourceRef="servicetask22" targetRef="scripttask2"></sequenceFlow>
+    <serviceTask id="servicetask23" name="для черги" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
+    <sequenceFlow id="flow89" sourceRef="servicetask23" targetRef="servicetask22"></sequenceFlow>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask23">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <endEvent id="endevent12" name="End"></endEvent>
+    <sequenceFlow id="flow90" sourceRef="boundaryerror1" targetRef="endevent12"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zags_0180_marriageFast">
     <bpmndi:BPMNPlane bpmnElement="zags_0180_marriageFast" id="BPMNPlane_zags_0180_marriageFast">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="288.0" y="104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="185.0" x="569.0" y="280.0"></omgdc:Bounds>
@@ -802,9 +806,18 @@ execution.setVariable('sShapka', per2)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask22" id="BPMNShape_servicetask22">
         <omgdc:Bounds height="55.0" width="161.0" x="360.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask23" id="BPMNShape_servicetask23">
+        <omgdc:Bounds height="55.0" width="105.0" x="184.0" y="94.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="122.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent12" id="BPMNShape_endevent12">
+        <omgdc:Bounds height="35.0" width="35.0" x="220.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="323.0" y="121.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="85.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="184.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="661.0" y="590.0"></omgdi:waypoint>
@@ -882,6 +895,14 @@ execution.setVariable('sShapka', per2)</script>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
         <omgdi:waypoint x="521.0" y="121.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
+        <omgdi:waypoint x="289.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
+        <omgdi:waypoint x="205.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

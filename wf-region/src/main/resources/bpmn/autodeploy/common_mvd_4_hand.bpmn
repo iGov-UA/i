@@ -177,7 +177,7 @@ ${sNameOrgan}&lt;br/&gt;
     <sequenceFlow id="flow21" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask5" name="Перевірка документів інспектором" activiti:candidateGroups="weapon"></userTask>
     <sequenceFlow id="flow23" sourceRef="usertask5" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask3" name="Підтягування документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
       <errorEventDefinition></errorEventDefinition>

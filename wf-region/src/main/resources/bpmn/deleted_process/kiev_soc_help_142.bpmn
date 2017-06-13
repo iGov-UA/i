@@ -281,7 +281,7 @@ ${comment_2}&lt;br /&gt;
     <sequenceFlow id="flow6" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_2=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow18" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>

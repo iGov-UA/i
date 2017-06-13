@@ -40,7 +40,7 @@
 <!--        <activiti:formProperty id="markers_01_01" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_01_01&quot;:{&quot;aField_ID&quot;:[&quot;Document1&quot;],&quot;saExtension&quot;:&quot;pdf&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf&quot;}}}"></activiti:formProperty> -->
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлу (-ів)" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлу (-ів)" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>

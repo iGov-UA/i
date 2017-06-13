@@ -73,7 +73,7 @@
         <activiti:formProperty id="response" name="текст подяки; ;bVisible=false" type="string" default="&lt;p&gt;Результати будуть спрямовані на Ваш e-mail.&lt;/p&gt;&lt;p&gt;За бажанням ви можете перейти на &lt;a href=&quot;http://dniprorada.gov.ua/zvernennja-gromadjan&quot; target=&quot;_self&quot;&gt;потрал міської ради&lt;/a&gt;.&lt;/p&gt;"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення канцелярію про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
