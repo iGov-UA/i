@@ -17,63 +17,53 @@
         <activiti:formProperty id="file4" name="Довідка про відсутність заборгованності від ТОВ &quot;Полісся Екосфера&quot;" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="invisible"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible" ></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Часи роботи" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="invisible"></activiti:formProperty>
         <activiti:formProperty id="sShapka409" name="Шапка заяви" type="invisible"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист-звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: Надання дозволу на відключення від мереж центрального опалення і постачання гарячої води</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Надання дозволу на відключення від мереж центрального опалення і постачання гарячої води]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Надання дозволу на відключення від мереж централізованого опалення і постачання гарячої води.</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: Надання дозволу на відключення від мереж централізованого опалення і постачання гарячої води.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-
-[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-			Ваше звернення щодо отримання  дозволу на відключення від мереж централізованого опалення і постачання гарячої води успішно зареєстровано.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+			Ваше звернення щодо отримання  дозволу на відключення від мереж централізованого опалення і постачання гарячої води успішно зареєстровано.<br />
 			Спеціалісти повинні дати відповідь у визначений законом термін. 
-&lt;/p&gt;&lt;br&gt;
-&lt;p&gt;Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+</p><br>
+<p>Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
-${sPhoneOrgan}&lt;br&gt;
+${sNameOrgan}<br>
+${sPhoneOrgan}<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -96,7 +86,7 @@ ${sPhoneOrgan}&lt;br&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4}</activiti:expression>
+            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -110,31 +100,31 @@ ${sPhoneOrgan}&lt;br&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання дозволу на відключення від мереж централізованого опалення і постачання гарячої води]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;За даними міської ради Вам НАДАНО дозвіл на відключення від мереж централізованого опалення і постачання гарячої води.&lt;br&gt;
-			&lt;p&gt;Для отримання дозволу Вам необхідно мати при собі оригінали наступних довідок:&lt;br&gt; Довідка про відсутність заборгованності від МКВЖРЕП або ОСББ,&lt;br&gt;
-			Довідка про відсутність заборгованності від МКП "Бердичівводоканал",&lt;br&gt;Довідка про відсутність заборгованності від КП "Бердичівтеплоенерго",&lt;br&gt;
-			Довідка про відсутність заборгованності від ТОВ "Полісся Екосфера"&lt;br&gt;
-&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-Ви можете отримати довідку особисто за адресою:&lt;br&gt;
-${sAddress}&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>За даними міської ради Вам НАДАНО дозвіл на відключення від мереж централізованого опалення і постачання гарячої води.<br>
+			<p>Для отримання дозволу Вам необхідно мати при собі оригінали наступних довідок:<br> Довідка про відсутність заборгованності від МКВЖРЕП або ОСББ,<br>
+			Довідка про відсутність заборгованності від МКП "Бердичівводоканал",<br>Довідка про відсутність заборгованності від КП "Бердичівтеплоенерго",<br>
+			Довідка про відсутність заборгованності від ТОВ "Полісся Екосфера"<br>
+</p>
+<p>${decisionComment}</p>
+Ви можете отримати довідку особисто за адресою:<br>
+${sAddress}<br>
 Часи роботи:
-${sWorkTime}&lt;br&gt;
+${sWorkTime}<br>
 При собі треба мати документ, що посвідчує особу.
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
-${sPhoneOrgan}&lt;br&gt;
+${sNameOrgan}<br>
+${sPhoneOrgan}<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -147,23 +137,23 @@ ${sPhoneOrgan}&lt;br&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Отримання дозволу на відключення від мереж централізованого опалення і постачання гарячої води]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;На жаль, Вам ВІДМОВЛЕНО у наданні дозволу на відключення від мереж централізованого опалення і постачання гарячої води .&lt;br&gt;
-			&lt;p&gt;Причина в наступному:&lt;br&gt; 
-            &lt;p&gt;${decisionComment}&lt;/p&gt;
-			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>На жаль, Вам ВІДМОВЛЕНО у наданні дозволу на відключення від мереж централізованого опалення і постачання гарячої води .<br>
+			<p>Причина в наступному:<br> 
+            <p>${decisionComment}</p>
+			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
-${sPhoneOrgan}&lt;br&gt;
+${sNameOrgan}<br>
+${sPhoneOrgan}<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -174,20 +164,12 @@ ${sPhoneOrgan}&lt;br&gt;
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zh_berdichiv_412">
     <bpmndi:BPMNPlane bpmnElement="zh_berdichiv_412" id="BPMNPlane_zh_berdichiv_412">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="105.0" x="105.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="110.0" y="211.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="107.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="68.0" width="105.0" x="260.0" y="177.0"></omgdc:Bounds>
@@ -213,18 +195,6 @@ ${sPhoneOrgan}&lt;br&gt;
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="875.0" y="260.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="157.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="157.0" y="170.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="125.0" y="241.0"></omgdi:waypoint>
-        <omgdi:waypoint x="124.0" y="280.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="210.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="260.0" y="211.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="365.0" y="211.0"></omgdi:waypoint>
         <omgdi:waypoint x="410.0" y="210.0"></omgdi:waypoint>
@@ -258,6 +228,10 @@ ${sPhoneOrgan}&lt;br&gt;
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="892.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="892.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="157.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
