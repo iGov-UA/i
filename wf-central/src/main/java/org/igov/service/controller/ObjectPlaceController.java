@@ -987,13 +987,25 @@ public class ObjectPlaceController {
                     
                     //Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
                     
-                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("rootId", resultId);        
+                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("nID_Place", resultId);        
                             
                     if (oPlaceTree.isPresent()){
                         PlaceTree oPlaceTreeResult = oPlaceTree.get();
                         Long parentId = oPlaceTreeResult.getParentId();
-                        LOG.info("parentId: " + parentId);
-                        if(parentId != null){
+                        
+                        if(parentId != null && !parentId.equals(resultId)){
+                            Place oParentPlace = placeDao.findByIdExpected(parentId);
+                            if (oParentPlace != null)
+                            {
+                                PlaceType oPlaceTypeParent = placeTypeDao.findByIdExpected(oParentPlace.getId());
+                                PlaceType oPlaceTypeResult = placeTypeDao.findByIdExpected(result.getId());
+                                result.setFullName(oPlaceTypeParent.getName() + " " + oParentPlace.getName() + 
+                                        " " + oPlaceTypeResult.getName() + " " + result.getName());
+                            }
+                        }
+                    }
+                }
+                        /*if(parentId != null){
                             if(parentId != resultId){
                                 LOG.info("PlaceId: " + oPlaceTreeResult.getPlaceId());
                                 Optional<Place> oParentPlace = placeDao.findBy("sID_UA", oPlaceTreeResult.getPlaceId());
@@ -1004,7 +1016,7 @@ public class ObjectPlaceController {
                             }else{LOG.info("placeId is null");}
                         }else{LOG.info("parentId is null");}
                     }else{LOG.info("oPlaceTree is null");}
-                }else{LOG.info("result is null");}
+                }else{LOG.info("result is null");}*/
                 
             } catch (RuntimeException e) {
                 LOG.warn("Error: {}", e.getMessage());
