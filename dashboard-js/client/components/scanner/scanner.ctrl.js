@@ -48,7 +48,6 @@
       };
 
       var downloadFile = function (downloadFiles, save_as) {
-        debugger;
         //если несколько файлов необходимо сохранить как картинки - загружаем их последовательно
         if ((save_as == undefined || save_as == 0) && downloadFiles.length > 1) {
           for (var i = 0; i < downloadFiles.length; i++) {
@@ -74,7 +73,6 @@
       };
 
       function downloadFileFromFakeLink(url) {
-        debugger;
         var link = document.createElement('a');
 
         link.setAttribute('download', null);
@@ -269,7 +267,7 @@
             error: function (xhr, msdfsg) {
               var msg = xhr.responseText;
               if (msg == undefined || msg == "") {
-                msg = "Возникла неизвестная ошибка";
+                msg = "Виникла невідома помилка";
               }
               failFunction(msg);
             },
@@ -353,14 +351,14 @@
 
             if (responce.allowedFormats == undefined || responce.pixelTypes == undefined || (responce.flatbedResolutions == undefined && responce.feederResolutions == undefined)) {
               DisactivateScanParameters();
-              alert("Не удалось получить параметры сканера.");
+              alert("Не вдалося отримати параметри сканера.");
 
             }
           } else {
-            alert("Не найдено ни одного подходящего устройства. Проверьте подключение или попробуйте изменить тип драйвера в конфигурации TWAIN@WEB.");
+            alert("Не знайдено жодного сумісного пристрою. Перевірте підключення чи спробуйте змінити тип драйвера в конфігурації TWAIN@WEB.");
           }
         };
-        sendAjax("GetScannerParameters", doneFunction, sourceIndex, true, function (msg) { alert(msg); }, null, "Загрузка параметров сканера...", true);
+        sendAjax("GetScannerParameters", doneFunction, sourceIndex, true, function (msg) { alert(msg); }, null, "Завантаження параметрів сканера...", true);
       };
 
       $("#scan-form").find("#Form_FileName").on('change', function () {
@@ -388,7 +386,6 @@
       };
 
       $scope.submitScanForm = function () {
-        debugger;
         try {
           DisactivateScanForm();
           var save_as = $('#scan-form #Form_SaveAs').val();
@@ -411,7 +408,6 @@
                 sendAjax("Scan",
                   function (responce) {
                     DownloadFiles.push(new FileForDownload(responce));
-                    debugger;
                     if (save_as == '0' || i == countScans * 1) {
                       downloadFile(DownloadFiles, save_as);
                       DownloadFiles = [];
@@ -434,8 +430,7 @@
             }
           } else {
             if (!$('#scan-form #package-scan').is('.active')) save_as = null;
-            debugger;
-            sendAjax("Scan", function (responce) {downloadFile(parseScanResponse(responce), save_as); }, GetScanFormData(), true, function (msg) { alert(msg); }, ActivateScanForm, "Сканирование...", true);
+            sendAjax("Scan", function (responce) {downloadFile(parseScanResponse(responce), save_as); }, GetScanFormData(), true, function (msg) { alert(msg); }, ActivateScanForm, "Сканування...", true);
           }
         } catch (ex) {
           console && console.log(ex);
@@ -508,7 +503,6 @@
         self.temp = resp.temp;
         self.file = resp.file;
         self.base64 = resp.base64;
-        debugger;
       };
 
 
@@ -518,7 +512,7 @@
           url: "",
           context: document.body,
           success: function (xhr) {
-            alert("Приложение успешно перезапущено");
+            alert("Застосунок успішно перезапущено");
             location.reload();
 
           },
@@ -529,13 +523,13 @@
       };
 
       $("#restartLink").click(function () {
-        $(".overlay-message").text("Перезапуск приложения...");
+        $(".overlay-message").text("Перезапуск застосунку...");
         $(".overlay, .overlay-message").show();
-        sendAjax("Restart", function () { setTimeout(refreshPage, 2000); }, null, true, function () { setTimeout(refreshPage, 2000); }, null, "Перезапуск приложения...", false);
+        sendAjax("Restart", function () { setTimeout(refreshPage, 2000); }, null, true, function () { setTimeout(refreshPage, 2000); }, null, "Перезапуск застосунку...", false);
       });
 
       $("#restartWiaLink").click(function () {
-        sendAjax("RestartWia", function () { alert("Служба WIA успешно перезапущена"); }, null, true, function () { alert("Не удалось перезапустить службу WIA"); }, null, "Перезапуск WIA...", true);
+        sendAjax("RestartWia", function () { alert("Служба WIA успішно перезапущена"); }, null, true, function () { alert("Не вдалося перезапустити службу WIA"); }, null, "Перезапуск WIA...", true);
       });
 
       $(function () {
@@ -554,8 +548,6 @@
         })();
 
       });
-
-
 
     }])
 })();
