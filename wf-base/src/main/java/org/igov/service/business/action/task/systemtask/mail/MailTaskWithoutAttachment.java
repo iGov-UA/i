@@ -1,5 +1,6 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
@@ -19,6 +20,9 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
+    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+    	LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+    	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);
