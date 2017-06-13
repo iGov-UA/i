@@ -28,6 +28,7 @@ import java.util.List;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
 import static org.igov.service.business.object.ObjectPlaceService.swap;
+import org.igov.service.business.object.place.CommonPlaceService;
 import static org.igov.util.Tool.bNullArgsAll;
 
 /**
@@ -62,6 +63,9 @@ public class ObjectPlaceController {
 
     @Autowired
     private CountryDao countryDao;
+    
+    @Autowired
+    private CommonPlaceService oCommonPlaceService;
     
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
@@ -963,80 +967,13 @@ public class ObjectPlaceController {
         @ApiResponses(value = {
             @ApiResponse(code = 403, message = "Record not found")})
         @RequestMapping(value = "/getPlaceByProcess", method = RequestMethod.GET)
-        public @ResponseBody
+        public @ResponseBody 
         Place getPlaceByProcess(
                 @ApiParam(value = "ИД-номер, идентификатор заявки", required = true) @RequestParam(value = "nID_Process", required = true) Long nID_Process,
                 @ApiParam(value = "ИД-номер сервера", required = true) @RequestParam(value = "nID_Server", required = false) Integer nID_Server,
                 HttpServletResponse response) {
-        	Place result = null;
-            try {
-            	HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByProcessID(nID_Process, nID_Server);
-            	LOG.info("Found history event by process ID {}", nID_Process);
-                
-                Optional<Place> place = null;
-                
-                if(oHistoryEvent_Service.getnID_Region() != null){
-                    place = placeDao.findById(oHistoryEvent_Service.getnID_Region());
-                }else{
-                    place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
-                }
-                
-                if (place.isPresent()) {
-                	LOG.info("Found place {} for process by ID_UA {}", place.get().getName(), oHistoryEvent_Service.getsID_UA());
-                	result = place.get();
-                }
-                
-                if (result != null){
-                    Long placeId = Long.parseLong(result.getsID_UA());
-                    Long resultId = result.getId();
-                    
-                    LOG.info("placeId: " + placeId);
-                    LOG.info("resultId: " + resultId);
-                    
-                    //Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
-                    
-                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", resultId);        
-                            
-                    if (oPlaceTree.isPresent()){
-                        LOG.info("oPlaceTree id is {}", oPlaceTree.get().getId());
-                        PlaceTree oPlaceTreeResult = oPlaceTree.get();
-                        Long parentId = oPlaceTreeResult.getParentId();
-                        
-                        
-                        if(parentId != null && !parentId.equals(resultId)){
-                            LOG.info("Place has parent");
-                            Place oParentPlace = placeDao.findByIdExpected(parentId);
-                            if (oParentPlace != null)
-                            {
-                                PlaceType oPlaceTypeParent = placeTypeDao.findByIdExpected(oParentPlace.getPlaceTypeId());
-                                PlaceType oPlaceTypeResult = placeTypeDao.findByIdExpected(result.getPlaceTypeId());
-                                result.setFullName(oPlaceTypeParent.getName() + " " + oParentPlace.getName() + 
-                                        " " + oPlaceTypeResult.getName() + " " + result.getName());
-                                LOG.info("fullName: {}", result.getFullName());
-                            }
-                        }
-                    }
-                }
-                        /*if(parentId != null){
-                            if(parentId != resultId){
-                                LOG.info("PlaceId: " + oPlaceTreeResult.getPlaceId());
-                                Optional<Place> oParentPlace = placeDao.findBy("sID_UA", oPlaceTreeResult.getPlaceId());
-                                if(oParentPlace.isPresent()){
-                                    LOG.info("oParentPlaceID: " + oParentPlace.get().getPlaceTypeId());
-                                    LOG.info("resultPlaceID: " + result.getPlaceTypeId());
-                                }
-                            }else{LOG.info("placeId is null");}
-                        }else{LOG.info("parentId is null");}
-                    }else{LOG.info("oPlaceTree is null");}
-                }else{LOG.info("result is null");}*/
-                
-            } catch (RuntimeException e) {
-                LOG.warn("Error: {}", e.getMessage());
-                LOG.trace("FAIL:",  e);
-                //response.setStatus(HttpStatus.FORBIDDEN.value());
-                //response.setHeader("Reason", e.getMessage());
-            } 
-            return result;
+        	
+            return oCommonPlaceService.getPlaceByProcess(nID_Process, nID_Server);
         }
 
         @ApiOperation(value = "Получение данных из справочника КОАТУУ", notes = "Получаем данные из справочника КОАТУУ. "
