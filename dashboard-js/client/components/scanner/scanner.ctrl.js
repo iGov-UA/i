@@ -34,6 +34,7 @@
           changeMode($(this).attr('id'));
         }
       });
+
       function pad(num, size) {
         var s = num + "";
         while (s.length < size) s = "0" + s;
@@ -43,7 +44,7 @@
       var counterModify = function () {
         var fileCounter = $("#Form_FileCounter").val();
         fileCounter = pad(fileCounter * 1 + 1, fileCounter.length);
-        UpdateGlobalSetting(GetGlobalSettings(), { "FileName": $('#Form_FileName').val(), "CountScans": fileCounter });
+        UpdateGlobalSetting(GetGlobalSettings(), {"FileName": $('#Form_FileName').val(), "CountScans": fileCounter});
         $("#Form_FileCounter").val(fileCounter);
       };
 
@@ -167,7 +168,16 @@
         return localSettings != null ? new ScanSettings(JSON.parse(localSettings)) : new ScanSettings({});
       };
       var SetLocalSettings = function (source, fileName, dpi, scanFeed, pixelType, compressionFormat, format, counter, modeSwitch) {
-        var settings = new ScanSettings({ "source": source, "fileName": fileName, "dpi": dpi, "scanFeed": scanFeed, "pixelType": pixelType, "compressionFormat": compressionFormat, "format": format, "modeSwitch": modeSwitch });
+        var settings = new ScanSettings({
+          "source": source,
+          "fileName": fileName,
+          "dpi": dpi,
+          "scanFeed": scanFeed,
+          "pixelType": pixelType,
+          "compressionFormat": compressionFormat,
+          "format": format,
+          "modeSwitch": modeSwitch
+        });
         localStorage.setItem(localSettingsName, JSON.stringify(settings));
         return settings;
       };
@@ -175,8 +185,8 @@
         settings = new ScanSettings(settings);
 
         var dpiSelect = $('#scan-form #Form_Dpi');
-        var minDpi = dpiSelect.val(dpiSelect.find('option').first().val());;
-        var maxDpi = dpiSelect.val(dpiSelect.find('option').last().val());;
+        var minDpi = dpiSelect.val(dpiSelect.find('option').first().val());
+        var maxDpi = dpiSelect.val(dpiSelect.find('option').last().val());
 
         function isEmpty(str) {
           return (!str || 0 === str.length);
@@ -220,14 +230,31 @@
         canScan = false;
       };
 
+      $scope.oStatusMessage = {
+        sText: '',
+        bShow: false
+      };
+
       function showOverlay(msg) {
+        /*
         $(".overlay-message").text(msg);
         $(".overlay, .overlay-message").show();
+        */
+        $scope.oStatusMessage = {
+          sText: msg,
+          bShow: true
+        };
       }
 
       function hideOverlay() {
+        /*
         $(".overlay-message").text("");
         $(".overlay, .overlay-message").hide();
+        */
+        $scope.oStatusMessage = {
+          sText: '',
+          bShow: false
+        };
       }
 
       var GetScanFormData = function () {
@@ -255,7 +282,7 @@
 
           $.ajax({
             async: async,
-            url: /*window.location.pathname + */sURL+"ajax",
+            url: /*window.location.pathname + */sURL + "ajax",
             crossDomain: true,
             type: 'POST',
             dataType: 'json',
@@ -358,7 +385,9 @@
             Modal.inform.error()("Не знайдено жодного сумісного пристрою. Перевірте підключення чи спробуйте змінити тип драйвера в конфігурації TWAIN@WEB.");
           }
         };
-        sendAjax("GetScannerParameters", doneFunction, sourceIndex, true, function (msg) { Modal.inform.warning()(msg) }, null, "Завантаження параметрів сканера...", true);
+        sendAjax("GetScannerParameters", doneFunction, sourceIndex, true, function (msg) {
+          Modal.inform.warning()(msg)
+        }, null, "Завантаження параметрів сканера...", true);
       };
 
       $("#scan-form").find("#Form_FileName").on('change', function () {
@@ -393,7 +422,9 @@
           SetLocalSettings($(this).find('#Form_Source').val(), $(this).find('#Form_FileName').val(), $(this).find('#Form_DPI').val(), $(this).find('#Form_ScanFeed').val(), $(this).find('#Form_ColorMode').val(), $(this).find('#Form_CompressionFormat').val(), $.trim($(this).find('#Form_Format option:selected').text()),
             $(this).find('#Form_FileCounter').val(),
             {
-              "id": $('#scan-form .mode-switch.active').attr('id'), "countScans": $(this).find('#Form_CountScans').val(), "timeout": $(this).find('#Form_ScanInterval').val(),
+              "id": $('#scan-form .mode-switch.active').attr('id'),
+              "countScans": $(this).find('#Form_CountScans').val(),
+              "timeout": $(this).find('#Form_ScanInterval').val(),
               "saveAs": save_as
             });
 
@@ -414,7 +445,9 @@
                     }
 
                   },
-                  GetScanFormData() + '&isPackage=true', true, function (msg) { Modal.inform.warning()(msg) },
+                  GetScanFormData() + '&isPackage=true', true, function (msg) {
+                    Modal.inform.warning()(msg)
+                  },
                   function () {
                     if (i < countScans) {
                       setTimeout(scan, (timeout * 1000));
@@ -430,7 +463,11 @@
             }
           } else {
             if (!$('#scan-form #package-scan').is('.active')) save_as = null;
-            sendAjax("Scan", function (responce) {downloadFile(parseScanResponse(responce), save_as); }, GetScanFormData(), true, function (msg) { Modal.inform.warning()(msg) }, ActivateScanForm, "Сканування...", true);
+            sendAjax("Scan", function (responce) {
+              downloadFile(parseScanResponse(responce), save_as);
+            }, GetScanFormData(), true, function (msg) {
+              Modal.inform.warning()(msg)
+            }, ActivateScanForm, "Сканування...", true);
           }
         } catch (ex) {
           console && console.log(ex);
@@ -496,7 +533,6 @@
       });
 
 
-
       $("#scan-form").find("#Form_ScanFeed").on('change', scanFeedOnChange);
       var FileForDownload = function (resp) {
         var self = this;
@@ -512,7 +548,8 @@
           url: "",
           context: document.body,
           success: function (xhr) {
-            Modal.inform.success(function () {})("Застосунок успішно перезапущено");
+            Modal.inform.success(function () {
+            })("Застосунок успішно перезапущено");
             location.reload();
 
           },
@@ -523,13 +560,30 @@
       };
 
       $("#restartLink").click(function () {
+        /*
         $(".overlay-message").text("Перезапуск застосунку...");
         $(".overlay, .overlay-message").show();
-        sendAjax("Restart", function () { setTimeout(refreshPage, 2000); }, null, true, function () { setTimeout(refreshPage, 2000); }, null, "Перезапуск застосунку...", false);
+        */
+        $scope.oStatusMessage = {
+          sText: 'Перезапуск застосунку...',
+          bShow: true
+        };
+
+
+        sendAjax("Restart", function () {
+          setTimeout(refreshPage, 2000);
+        }, null, true, function () {
+          setTimeout(refreshPage, 2000);
+        }, null, "Перезапуск застосунку...", false);
       });
 
       $("#restartWiaLink").click(function () {
-        sendAjax("RestartWia", function () { Modal.inform.success(function () {})('Служба WIA успішно перезапущена')  }, null, true, function () { Modal.inform.warning()("Не вдалося перезапустити службу WIA"); }, null, "Перезапуск WIA...", true);
+        sendAjax("RestartWia", function () {
+          Modal.inform.success(function () {
+          })('Служба WIA успішно перезапущена')
+        }, null, true, function () {
+          Modal.inform.warning()("Не вдалося перезапустити службу WIA");
+        }, null, "Перезапуск WIA...", true);
       });
 
       $(function () {
