@@ -995,7 +995,7 @@ public class ObjectPlaceController {
                     
                     //Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", placeId);
                     
-                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("nID_Place", resultId);        
+                    Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("placeId", resultId);        
                             
                     if (oPlaceTree.isPresent()){
                         LOG.info("oPlaceTree id is {}", oPlaceTree.get().getId());
