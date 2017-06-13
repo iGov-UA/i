@@ -718,9 +718,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     }
                     return;
                 } else {
-                    LOG.info("sRequestBody {}", sRequestBody);
-                    LOG.info("sResponseBody {}", sRequestBody);
-                    LOG.info("mRequestParam {}", sRequestBody);
+                    //LOG.info("sRequestBody {}", sRequestBody);
+                    //LOG.info("sResponseBody {}", sRequestBody);
+                    //LOG.info("mRequestParam {}", sRequestBody);
                     saveNewTaskInfo(sRequestBody, sResponseBody, mRequestParam);
                 }
                 //{nID_Service=25, nID_Subject=255289, nID_ServiceData=542, sID_BP=dms_0025_ID2 545_iGov:1:1, sID_UA=1210100000}
@@ -809,13 +809,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             //LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
         }
         Map<String, String> mParam = new HashMap<>();
-        LOG.info("sRequestBody {}", sRequestBody);
+        //LOG.info("sRequestBody {}", sRequestBody);
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
         
-        LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
+       // LOG.info("omRequestBody >>>>>>>>>>>>>> {}", omRequestBody );
         
         JSONArray properties = (JSONArray) omRequestBody.get("properties");
-        LOG.info("properties >>>>>>>>>>>>>> {}", properties );
+      //  LOG.info("properties >>>>>>>>>>>>>> {}", properties );
         
         if(properties == null){
             properties = (JSONArray) omRequestBody.get("aFormProperty");
