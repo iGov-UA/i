@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_AnalitServ_StatOld" name="Для сервера аналитики старые аттачи" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="ScancopyDoc" name="Копія рішення суду" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант" type="enum">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask2" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask1" name="Обработка заявки" activiti:candidateGroups="test_stat">
+      <extensionElements>
+        <activiti:formProperty id="ScancopyDoc2" name="Копія рішення суду" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Enum_test" name="Оберіть варіант ; ;writable=false" type="enum">
+          <activiti:value id="sEnumBirthDay" name="народження"></activiti:value>
+          <activiti:value id="sEnumMarried" name="одруження"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Рішення" type="enum">
+          <activiti:value id="Yes" name="так"></activiti:value>
+          <activiti:value id="No" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/test_analit.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern/print/test_analit.html]; ;bVisible=false" type="string" default="Звернення" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow5" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_AnalitServ_StatOld">
+    <bpmndi:BPMNPlane bpmnElement="_test_AnalitServ_StatOld" id="BPMNPlane__test_AnalitServ_StatOld">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="510.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="65.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="215.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="425.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

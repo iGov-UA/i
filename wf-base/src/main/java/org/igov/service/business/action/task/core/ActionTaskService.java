@@ -2382,7 +2382,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         sql.append("SELECT count(task.*) FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
         sql.append(groupIdsSB.toString());
         sql.append(") ");
-
+        
+        LOG.info("sql query {}", sql);
+        
         return oTaskService.createNativeTaskQuery().sql(sql.toString()).count();
     }
 

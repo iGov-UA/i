@@ -10,6 +10,8 @@ import org.igov.io.mail.Mail;
 import org.igov.util.Tool;
 
 import java.util.Map;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeMultipart;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 
 @Component("EscalationHandler_SendMailAlert")
@@ -25,6 +27,7 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
     @Override
     public void execute(Map<String, Object> mParam, String[] asRecipientMail, String sPatternFile) throws Exception {
         String sBody = null;
+        LOG.info("EscalationHandler_SendMailAlert started");
         try {
             byte[] bytes = getFileData_Pattern(sPatternFile);
             sBody = Tool.sData(bytes);
@@ -82,12 +85,18 @@ public class EscalationHandler_SendMailAlert implements EscalationHandler {
     }
 
     private void sendEmail(String sHead, String sBody, String recipient) throws EmailException {
-
+        
+        LOG.info("sendEmail started...");
+        LOG.info("recipient {}", recipient);
+        LOG.info("sHead {}", sHead);
+        LOG.info("sBody {}", sBody);
+        
         Mail oMail = context.getBean(Mail.class);
         oMail
                 ._To(recipient)
                 ._Head(sHead)
-                ._Body(sBody);
+                ._Body(sBody)
+                ._oMultiparts(new MimeMultipart());
         oMail.send();
     }
 }

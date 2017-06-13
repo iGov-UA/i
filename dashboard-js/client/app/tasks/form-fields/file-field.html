@@ -1,0 +1,13 @@
+<form>
+  <button id="scan-button" ng-if="navigator.userAgent.indexOf('Windows') != -1" ng-click="openScanModal(item)" ng-disabled="isFileProcessUploading.bState" class="btn btn-info">Сканувати</button>
+  <button id="upload-button" type="button" ng-disabled="isFileProcessUploading.bState"
+          ng-class="{'btn-igov':field && field.value, 'btn-link attach-btn':!field, 'btn-default':field && !field.value}"
+          class="btn">
+    <span ng-disabled="isFormPropertyDisabled(item)">{{field && field.value ? "Завантажити iнший файл" : "Завантажити файл"}}</span>
+    <input type="file" style="display:none" ng-disabled="isFormPropertyDisabled(item)">
+  </button>
+  <span ng-if="item.fileName || field.fileName">Файл: <label>{{item.fileName || field.fileName}}</label></span>
+  <br>
+  <span
+    ng-if="field.signInfo">Пiдпис: <label>{{field.signInfo.customer.signatureData.name || field.signInfo.name}}</label></span>
+</form>
