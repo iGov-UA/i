@@ -1008,8 +1008,8 @@ public class ObjectPlaceController {
                             Place oParentPlace = placeDao.findByIdExpected(parentId);
                             if (oParentPlace != null)
                             {
-                                PlaceType oPlaceTypeParent = placeTypeDao.findByIdExpected(oParentPlace.getId());
-                                PlaceType oPlaceTypeResult = placeTypeDao.findByIdExpected(result.getId());
+                                PlaceType oPlaceTypeParent = placeTypeDao.findByIdExpected(oParentPlace.getPlaceTypeId());
+                                PlaceType oPlaceTypeResult = placeTypeDao.findByIdExpected(result.getPlaceTypeId());
                                 result.setFullName(oPlaceTypeParent.getName() + " " + oParentPlace.getName() + 
                                         " " + oPlaceTypeResult.getName() + " " + result.getName());
                                 LOG.info("fullName: {}", result.getFullName());
