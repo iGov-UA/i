@@ -990,10 +990,13 @@ public class ObjectPlaceController {
                     Optional<PlaceTree> oPlaceTree = placeTreeDao.findBy("nID_Place", resultId);        
                             
                     if (oPlaceTree.isPresent()){
+                        LOG.info("oPlaceTree id is {}", oPlaceTree.get().getId());
                         PlaceTree oPlaceTreeResult = oPlaceTree.get();
                         Long parentId = oPlaceTreeResult.getParentId();
                         
+                        
                         if(parentId != null && !parentId.equals(resultId)){
+                            LOG.info("Place has parent");
                             Place oParentPlace = placeDao.findByIdExpected(parentId);
                             if (oParentPlace != null)
                             {
@@ -1001,6 +1004,7 @@ public class ObjectPlaceController {
                                 PlaceType oPlaceTypeResult = placeTypeDao.findByIdExpected(result.getId());
                                 result.setFullName(oPlaceTypeParent.getName() + " " + oParentPlace.getName() + 
                                         " " + oPlaceTypeResult.getName() + " " + result.getName());
+                                LOG.info("fullName: {}", result.getFullName());
                             }
                         }
                     }
