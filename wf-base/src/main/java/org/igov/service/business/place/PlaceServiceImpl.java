@@ -43,7 +43,14 @@ public class PlaceServiceImpl implements PlaceService {
             LOG.info("soResponse={}", soResponse);
             Map mReturn = JsonRestUtils.readObject(soResponse, Map.class);
             LOG.info("mReturn={}" + mReturn);
-            sName = (String) mReturn.get("sName");
+            
+            if(mReturn.get("fullName") != null){
+                return (String) mReturn.get("fullName");
+            }
+            else{
+                sName = (String) mReturn.get("sName");
+            }
+            
             LOG.info("sName={}", sName);
         } catch (Exception ex) {
             LOG.error("", ex);
