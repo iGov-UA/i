@@ -2,10 +2,10 @@
   'use strict';
 
   angular.module('dashboardJsApp')
-    .controller('ScannerModalCtrl', ['$scope', '$modalInstance', 'Modal', function ($scope, $modalInstance, Modal) {
+    .controller('ScannerModalCtrl', ['$scope', '$modalInstance', 'Modal', 'ScannerService', function ($scope, $modalInstance, Modal, ScannerService) {
 
       var GlobalScanSettingsName = "GlobalScanSettings";
-      var sURL = "http://127.0.0.1:9005/TWAIN@Web/";
+      var sURL = ScannerService.getTwainServerUrl();
       var downloadToLocalMachine = false;
 
 
