@@ -116,7 +116,7 @@ public class HttpEntityCover {
             sRequest = mParamObject.toString();
             
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-            osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+            oRestTemplate.put(sURL, oHttpEntity, String.class);
             
             if(nStatus()!=200){
                 new Log(this.getClass(), LOG)

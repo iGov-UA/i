@@ -2,6 +2,11 @@
   <h2>Параметри сканування</h2>
 </div>
 <div class="modal-body">
+  <div class="text-center" ng-show="oStatusMessage.bShow" style="position: fixed; top: 25%; width: 100%; vertical-align: middle; text-align: center; z-index: 5">
+    <img class="text-center"
+         src="assets/images/loading.gif"
+         alt="Loading"/>
+  </div>
   <form method="post" id="scan-form" ng-submit="submitScanForm">
     <fieldset>
       <div class="form-field">
@@ -80,5 +85,5 @@
   </form>
 </div>
 <div class="modal-footer">
-
+  <div ng-show="oStatusMessage.bShow">{{oStatusMessage.sText}}</div>
 </div>

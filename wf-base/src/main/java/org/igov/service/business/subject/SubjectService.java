@@ -446,15 +446,13 @@ public class SubjectService {
      * @param snID_Process_Activiti     ид процесса
      * @param sID_Field                 ид поля
      * @param sSubjectType              тип SubjectGroup
-     * @param sSubjectContactType    тип контакта, который нужно получить
+     * @param sSubjectContactType       тип контакта, который нужно получить
      * @return                          лист контактов заданного типа
      * @throws Exception 
      */
-    public List<SubjectContact> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, String sSubjectContactType) throws Exception {
+    public List<String> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, String sSubjectContactType) throws Exception {
         
-        LOG.info("getSubjectContacts start...");
-        List<SubjectContact> aoSubjectContact = new ArrayList<>();
-        
+        LOG.info("getSubjectContacts start...");        
         //Login = sID_Group_Activiti
         List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
@@ -523,15 +521,21 @@ public class SubjectService {
         	nID_SubjectContactType = 4; 
         }
         
+        List<SubjectContact> aoSubjectContact = new ArrayList<>();
+        List<String> asSubjectContact = new ArrayList<>();
+        
         for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {              
             LOG.info("oSubject.Id={}", oSubjectGroup.getoSubject().getId());
             List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
             LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
             
             aoSubjectContact.addAll(aoSubjectContactToAdd);
-        }
+        }        
+        LOG.info("aoSubjectContact={}", aoSubjectContact);
+
+        aoSubjectContact.forEach(oSubjectContact -> asSubjectContact.add(oSubjectContact.getsValue()));
+        LOG.info("asSubjectContact={}", asSubjectContact);
         
-        LOG.info("aoSubjectContact={}", aoSubjectContact);        
-        return aoSubjectContact;
+        return asSubjectContact;
     }
 }
