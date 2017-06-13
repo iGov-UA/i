@@ -38,7 +38,14 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Ekonomist]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
@@ -269,23 +276,23 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Інформування щодо прийнятого рішення]]></activiti:expression>
+          <activiti:expression>Інформування щодо прийнятого рішення</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Погоджена зміна тарифу на
-${sTarif}]]></activiti:expression>
+          <activiti:expression>Погоджена зміна тарифу на
+${sTarif}</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:string><![CDATA[+380961335385]]></activiti:string>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[зміна розпорядження]]></activiti:expression>
+          <activiti:expression>зміна розпорядження</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${sOrder}]]></activiti:expression>
+          <activiti:expression>${sOrder}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -414,13 +421,13 @@ execution.setVariable('nCountReject', nCountReject)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression>pavlenkojulia2202@gmail.com</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Рішення щодо зміни тарифу]]></activiti:expression>
+          <activiti:expression>Рішення щодо зміни тарифу</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Рішення щодо зміни тарифу не прийнято]]></activiti:expression>
+          <activiti:expression>Рішення щодо зміни тарифу не прийнято</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
