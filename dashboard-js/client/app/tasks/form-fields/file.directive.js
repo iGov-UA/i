@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService, Modal) {
+angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService, Modal, ScannerService) {
   return {
     require: 'ngModel',
     restrict: 'E',
@@ -23,7 +23,7 @@ angular.module('dashboardJsApp').directive('fileField', function($modal, $http, 
 
 
       scope.openScanModal = function (item) {
-        $http.get('http://127.0.0.1:9005/TWAIN@Web/').success(function (data) {
+        $http.get(ScannerService.getTwainServerUrl()).success(function (data) {
           if(data){
             scanDocument();
           }

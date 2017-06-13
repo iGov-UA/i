@@ -44,7 +44,7 @@ public class SubjectCommonController {
     )
     @RequestMapping(value = "/getSubjectContacts", method = RequestMethod.GET)
     @ResponseBody
-    public List<SubjectContact> getSubjectContacts(
+    public List<String> getSubjectContacts(
         @ApiParam(value = "ИД процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
         @ApiParam(value = "ид поля - из которого мы вытянем или тейблу, или селек, или стрингу", required = true) @RequestParam(value = "sID_Field", required = true) String sID_Field,
         @ApiParam(value = "фильтр по типу Subject'a", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType,
