@@ -53,7 +53,8 @@ execution.setVariable('sID_Order', sID_Order)
     <scriptTask id="scripttask2" name="степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_idoc','MJU_Dnipro_Top1_Dep1', 'step_2')</script>          
+
     </scriptTask>
     <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
