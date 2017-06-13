@@ -976,7 +976,7 @@ public class ObjectPlaceController {
                 Optional<Place> place = null;
                 
                 if(oHistoryEvent_Service.getnID_Region() != null){
-                    place = placeDao.findBy("nID_Region", oHistoryEvent_Service.getnID_Region());
+                    place = placeDao.findById(oHistoryEvent_Service.getnID_Region());
                 }else{
                     place = placeDao.findBy("sID_UA", oHistoryEvent_Service.getsID_UA());
                 }
