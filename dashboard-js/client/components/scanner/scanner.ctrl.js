@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('dashboardJsApp')
-    .controller('ScannerModalCtrl', ['$scope', '$modalInstance', function ($scope, $modalInstance) {
+    .controller('ScannerModalCtrl', ['$scope', '$modalInstance', 'Modal', function ($scope, $modalInstance, Modal) {
 
       var GlobalScanSettingsName = "GlobalScanSettings";
       var sURL = "http://127.0.0.1:9005/TWAIN@Web/";
@@ -351,14 +351,14 @@
 
             if (responce.allowedFormats == undefined || responce.pixelTypes == undefined || (responce.flatbedResolutions == undefined && responce.feederResolutions == undefined)) {
               DisactivateScanParameters();
-              alert("Не вдалося отримати параметри сканера.");
+              Modal.inform.warning()("Не вдалося отримати параметри сканера.")
 
             }
           } else {
-            alert("Не знайдено жодного сумісного пристрою. Перевірте підключення чи спробуйте змінити тип драйвера в конфігурації TWAIN@WEB.");
+            Modal.inform.error()("Не знайдено жодного сумісного пристрою. Перевірте підключення чи спробуйте змінити тип драйвера в конфігурації TWAIN@WEB.");
           }
         };
-        sendAjax("GetScannerParameters", doneFunction, sourceIndex, true, function (msg) { alert(msg); }, null, "Завантаження параметрів сканера...", true);
+        sendAjax("GetScannerParameters", doneFunction, sourceIndex, true, function (msg) { Modal.inform.warning()(msg) }, null, "Завантаження параметрів сканера...", true);
       };
 
       $("#scan-form").find("#Form_FileName").on('change', function () {
@@ -414,7 +414,7 @@
                     }
 
                   },
-                  GetScanFormData() + '&isPackage=true', true, function (msg) { alert(msg); },
+                  GetScanFormData() + '&isPackage=true', true, function (msg) { Modal.inform.warning()(msg) },
                   function () {
                     if (i < countScans) {
                       setTimeout(scan, (timeout * 1000));
@@ -430,7 +430,7 @@
             }
           } else {
             if (!$('#scan-form #package-scan').is('.active')) save_as = null;
-            sendAjax("Scan", function (responce) {downloadFile(parseScanResponse(responce), save_as); }, GetScanFormData(), true, function (msg) { alert(msg); }, ActivateScanForm, "Сканування...", true);
+            sendAjax("Scan", function (responce) {downloadFile(parseScanResponse(responce), save_as); }, GetScanFormData(), true, function (msg) { Modal.inform.warning()(msg) }, ActivateScanForm, "Сканування...", true);
           }
         } catch (ex) {
           console && console.log(ex);
@@ -512,7 +512,7 @@
           url: "",
           context: document.body,
           success: function (xhr) {
-            alert("Застосунок успішно перезапущено");
+            Modal.inform.success(function () {})("Застосунок успішно перезапущено");
             location.reload();
 
           },
@@ -529,7 +529,7 @@
       });
 
       $("#restartWiaLink").click(function () {
-        sendAjax("RestartWia", function () { alert("Служба WIA успішно перезапущена"); }, null, true, function () { alert("Не вдалося перезапустити службу WIA"); }, null, "Перезапуск WIA...", true);
+        sendAjax("RestartWia", function () { Modal.inform.success(function () {})('Служба WIA успішно перезапущена')  }, null, true, function () { Modal.inform.warning()("Не вдалося перезапустити службу WIA"); }, null, "Перезапуск WIA...", true);
       });
 
       $(function () {

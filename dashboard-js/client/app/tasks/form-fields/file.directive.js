@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService) {
+angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService, Modal) {
   return {
     require: 'ngModel',
     restrict: 'E',
@@ -23,14 +23,12 @@ angular.module('dashboardJsApp').directive('fileField', function($modal, $http, 
 
 
       scope.openScanModal = function (item) {
-        $http.get('http://127.0.0.1:9005/TWAIN@Web/').success(function (data) {
+        $http.get('http://127.0.0.1:9006/TWAIN@Web/').success(function (data) {
           if(data){
             scanDocument();
-          } else {
-            alert('Для роботи зі сканером необхідно встановити программу TWAIN@Web')
           }
         }).error(function (err) {
-          alert('Для роботи зі сканером необхідно встановити программу TWAIN@Web')
+          Modal.inform.error()('Сталася помилка при намаганні перевірити підключення до служби TWAIN@Web: ' + JSON.toString(err));
         });
 
       };
