@@ -23,7 +23,7 @@ angular.module('dashboardJsApp').directive('fileField', function($modal, $http, 
 
 
       scope.openScanModal = function (item) {
-        $http.get('http://127.0.0.1:9006/TWAIN@Web/').success(function (data) {
+        $http.get('http://127.0.0.1:9005/TWAIN@Web/').success(function (data) {
           if(data){
             scanDocument();
           }
