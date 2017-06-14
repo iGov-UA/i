@@ -317,7 +317,8 @@ module.exports = function (grunt) {
           removeEmptyAttributes: true,
           removeRedundantAttributes: true,
           removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
+          removeStyleLinkTypeAttributes: true,
+          removeComments: true
         },
         usemin: 'app/app.js'
       },
