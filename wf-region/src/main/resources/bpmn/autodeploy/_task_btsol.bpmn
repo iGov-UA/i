@@ -702,7 +702,37 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Комментарий - что необходимо доработать" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLogin_isExecute}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_btsol]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
+          <activiti:field name="sTaskProcessDefinition">
+            <activiti:string><![CDATA[_task_btsol]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sID_Attachment">
+            <activiti:expression><![CDATA[${sTable6}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="processDefinitionId">
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="soData">
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;asZonePersRespons::${asZonePersRespons};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;sAttributeApplication::${sAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;sNumberDep::${sNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sTable6::${sTable6};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
+          <activiti:field name="sID_ProcessSubjectStatus">
+            <activiti:expression><![CDATA[${saStatusTask}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sReport">
+            <activiti:expression><![CDATA[${sReport}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow20" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
