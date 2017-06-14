@@ -284,7 +284,7 @@ ${sNameOrgan}.<br />
     </serviceTask>
     <userTask id="usertask3" name="Попередня перевірка" activiti:candidateGroups="dnepr_mvk_form3_${asDistrict}">
       <extensionElements>
-        <activiti:formProperty id="asRegistr" name="Чи надавали ви вже раніше документи для внесення інформації в реєстр;поначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum">
+        <activiti:formProperty id="asRegistr" name="Чи надавали ви вже раніше документи для внесення інформації в реєстр;поначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -333,16 +333,14 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="nFile_DomovKnig" name="Домова книга; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_JutVlasn" name="Право власності на житло; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Інші зареєстровані особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;chekReestrOsob&quot;],&quot;sValue&quot;:&quot;Інші зареєстровані особи&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="chekReestrOsob" name="Чи зареєстровані по цій адресі інші особи?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
+        <activiti:formProperty id="chekReestrOsob" name="Чи зареєстровані по цій адресі інші особи?" type="enum" writable="false">
+          <activiti:value id="sNo" name="Ні, крім заявника за зазначеною адресою ніхто не зареєстрований"></activiti:value>
+          <activiti:value id="sYesDor" name="Так, зареєстровані інші повнолітні особи (є паспорти)"></activiti:value>
+          <activiti:value id="sYesDit" name="Так, зареєстровані діти (є свідоцтва про народження)"></activiti:value>
+          <activiti:value id="sYesDorDit" name="Так, зареєстровані діти і повнолітні особи (є і паспорти і свідоцтва)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ZarPasports" name="Паспорти зареєстрованих осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="chekDitu" name="Чи є серед зараєстрованих осіб діти до 16ти років?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="nFile_NarSvid" name="Свідоцтва про народження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_V" name="Спосіб отримання документа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_V&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання документа&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
