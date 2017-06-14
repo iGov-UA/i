@@ -35,7 +35,7 @@ angular.module('dashboardJsApp').directive('dateDivider', [function() {
           setTimeout(function () {
             var x = angular.element('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">вiд '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>').slideDown("slow");
             angular.element(elem).before(x);
-          }, 1000)
+          }, 2000)
       }}
     };
   }
