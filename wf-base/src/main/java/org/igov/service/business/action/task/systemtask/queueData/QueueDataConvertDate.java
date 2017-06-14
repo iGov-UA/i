@@ -54,8 +54,8 @@ public class QueueDataConvertDate extends AbstractModelTask implements JavaDeleg
 				
 				LOG.info("(sDateRes={})", sDateRes);
 
-				oExecution.setVariable("sNotification_day", sDate);
-				LOG.info("(date_of_visit={})", sDate);
+				oExecution.setVariable("sNotification_day", sDateRes);
+				LOG.info("(date_of_visit={})", sDateRes);
 			}
 		}
 
