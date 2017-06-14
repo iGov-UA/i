@@ -18,17 +18,22 @@ angular.module('dashboardJsApp').directive('dateDivider', [function() {
         };
 
         var prev = scope.$index - 1,
-            prevMonth = scope.tasks[prev] ? new Date(scope.tasks[prev].createTime).getMonth() + 1 : null,
-            prevDay = scope.tasks[prev] ? new Date(scope.tasks[prev].createTime).getDate() : null;
+            current = scope.$index;
 
-        var current = scope.$index,
-            currentMonth = new Date(scope.tasks[current].createTime).getMonth() + 1,
-            currentDay = new Date(scope.tasks[current].createTime).getDate(),
-            currentYear = new Date(scope.tasks[current].createTime).getFullYear();
+        var p = scope.tasks[prev] ? scope.tasks[prev].createTime.split(/[^0-9]/) : null,
+            corrP = p === null ? null : new Date (p[0],p[1]-1,p[2],p[3],p[4],p[5]),
+            prevMonth = scope.tasks[prev] ? corrP.getMonth() + 1 : null,
+            prevDay = scope.tasks[prev] ? corrP.getDate() : null;
+
+        var c = scope.tasks[current].createTime.split(/[^0-9]/),
+            correctC = new Date (c[0],c[1]-1,c[2],c[3],c[4],c[5]),
+            currentMonth = correctC.getMonth() + 1,
+            currentDay = correctC.getDate(),
+            currentYear = correctC.getFullYear();
 
         if( prevDay !== currentDay ){
           setTimeout(function () {
-            var x = angular.element('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">до '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>').slideDown("slow");
+            var x = angular.element('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">вiд '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>').slideDown("slow");
             angular.element(elem).before(x);
           }, 1000)
       }}
