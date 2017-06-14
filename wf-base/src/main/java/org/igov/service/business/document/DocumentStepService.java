@@ -906,6 +906,7 @@ public class DocumentStepService {
             if (oDocumentStepSubjectRight_From == null) {
                 throw new Exception("Can't find etalonn oDocumentStepSubjectRight_From");
             }
+            
             LOG.info("!!! sKey_GroupPostfix: {} oDocumentStepSubjectRight_From.getsKey_GroupPostfix(): {}",
                     sKey_GroupPostfix, oDocumentStepSubjectRight_From.getsKey_GroupPostfix());
 
@@ -951,6 +952,30 @@ public class DocumentStepService {
                 resultList.add(oDocumentStepSubjectRight_New);
                 LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
                 oDocumentStepDao.saveOrUpdate(oDocumentStep_To);
+            }
+            
+             if(oDocumentStepSubjectRight_From.getsKey_GroupPostfix().startsWith("_default_")){
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep_To.getRights();
+                
+                DocumentStepSubjectRight oDocumentStepSubjectRight_saved = null;
+                
+                for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
+                    if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
+                        oDocumentStepSubjectRight_saved = oDocumentStepSubjectRight;
+                        break;
+                    }
+                }
+                
+                List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition
+                        = oDocumentSubjectRightPermitionDao.findAllBy("nID_DocumentStepSubjectRight", oDocumentStepSubjectRight_From.getId());
+            
+                for(DocumentSubjectRightPermition oDocumentSubjectRightPermition : aDocumentSubjectRightPermition){
+                    DocumentSubjectRightPermition oDocumentSubjectRightPermition_new = new DocumentSubjectRightPermition();
+                    oDocumentSubjectRightPermition_new.setPermitionType(oDocumentSubjectRightPermition.getPermitionType());
+                    oDocumentSubjectRightPermition_new.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight_saved.getId());
+                    oDocumentSubjectRightPermition_new.setsKeyGroup_Postfix(sKey_GroupPostfix_New);
+                
+                }
             }
 
         } catch (Exception oException) {
