@@ -57,17 +57,18 @@
           }
 
         } else {
+          save_as = save_as == undefined ? "" : "saveAs=" + save_as;
+          var query = "?";
+          for (var i = 0; i < downloadFiles.length; i++) {
+            query += 'fileId' + i + '=' + encodeURIComponent(downloadFiles[i].temp) + '&fileName' + i + '=' + encodeURIComponent(downloadFiles[i].file) + "&";
+          }
+          query += save_as;
 
           if (downloadToLocalMachine) {
-            save_as = save_as == undefined ? "" : "saveAs=" + save_as;
-            var query = "?";
-            for (var i = 0; i < downloadFiles.length; i++) {
-              query += 'fileId' + i + '=' + encodeURIComponent(downloadFiles[i].temp) + '&fileName' + i + '=' + encodeURIComponent(downloadFiles[i].file) + "&";
-            }
-            query += save_as;
             downloadFileFromFakeLink(encodeURI('download' + query));
           } else {
-            sendScannedFiles(downloadFiles, save_as);
+            var downloadUrl = sURL + encodeURI('download' + query);
+            sendScannedFiles(downloadFiles, save_as, downloadUrl);
           }
 
           counterModify();
@@ -89,8 +90,8 @@
         $modalInstance.dismiss('cancel');
       }
 
-      function sendScannedFiles(files, save_as) {
-        $modalInstance.close({downloadFiles: files, saveAs: save_as});
+      function sendScannedFiles(files, save_as, url) {
+        $modalInstance.close({downloadFiles: files, saveAs: save_as, downloadUrl: url});
       }
 
       var setSetting = function (setting, defaultSetting) {

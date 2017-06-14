@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService, Modal, ScannerService) {
+angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService, Modal, ScannerService, $base64) {
   return {
     require: 'ngModel',
     restrict: 'E',
@@ -42,15 +42,39 @@ angular.module('dashboardJsApp').directive('fileField', function($modal, $http, 
         });
 
         modalInstance.result.then(function (oScanResult) {
-          var aFiles = [];
-          var base64content = oScanResult.downloadFiles["0"].base64;
+          if(oScanResult.saveAs === 'saveAs=1' && oScanResult.downloadFiles.length > 1){
+            /*
+            $http.get(oScanResult.downloadUrl).success(function (data) {
+              var base64content = $base64.encode(data);
+              uploadFile(base64content, oScanResult.downloadFiles["0"].file, 'application/pdf');
+            })*/
 
-          var oScannedFile = generationService.getFileFromBase64(base64content, oScanResult.downloadFiles["0"].file, 'image/jpeg');
-
-          aFiles.push(oScannedFile);
-          scope.upload(aFiles, attrs.name);
+          } else {
+            var base64content = oScanResult.downloadFiles["0"].base64;
+            var sName = oScanResult.downloadFiles["0"].file;
+            uploadFile(base64content, sName, getImagesMymeType(sName));
+          }
 
         });
+      }
+
+      function getImagesMymeType(sFileName) {
+        var ext = sFileName.split('.').pop().toLowerCase();
+        if(ext === 'jpg'){
+          return 'image/jpeg';
+        } else if (ext === 'bmp'){
+          return 'image/bmp';
+        } else if (ext === 'tiff'){
+          return 'image/tiff'
+        }
+        return undefined;
+      }
+
+      function uploadFile(base64content, fileName, sMimeType) {
+        var aFiles = [];
+        var oScannedFile = generationService.getFileFromBase64(base64content, fileName, sMimeType);
+        aFiles.push(oScannedFile);
+        scope.upload(aFiles, attrs.name);
       }
     },
     templateUrl: 'app/tasks/form-fields/file-field.html',
