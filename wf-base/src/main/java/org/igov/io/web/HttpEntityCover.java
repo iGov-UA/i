@@ -107,11 +107,8 @@ public class HttpEntityCover {
                     String sFileName = osIterator.next();
                     HttpHeaders oHttpHeaders_Part = new HttpHeaders();
                     oHttpHeaders_Part.setContentType(new MediaType("application", "octet-stream", StandardCharsets.UTF_8));
-                    //headers.add("Content-type","application/octet-stream;charset=utf-8");
-                    //partHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                     List<ByteArrayResource> aByteArray_Part = mParamByteArray.get(sFileName);
-                    HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part); //HttpEntity<ByteArrayResource> bytesPart = new HttpEntity<ByteArrayResource>(bars.get(i), partHeaders);
-//                    LOG.info("(sFileName={})", sFileName);
+                    HttpEntity<ByteArrayResource> oByteArray_Part = new HttpEntity<ByteArrayResource>(aByteArray_Part.get(0), oHttpHeaders_Part);
                     mParamObject.add(sFileName, oByteArray_Part);
                 }
             }
@@ -120,15 +117,12 @@ public class HttpEntityCover {
             
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
             osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
-            //return getUniResponse(osResponseEntity.getBody());
-            //Integer nStatus = nReturn();
             
             if(nStatus()!=200){
                 new Log(this.getClass(), LOG)
                         ._Case("Web_PostNo200")
                         ._Head("[_Send]:nStatus!=200")
                         ._Status(Log.LogStatus.ERROR)
-                        //._StatusHTTP(nReturn())
                         ._Param("sURL", sURL)
                         ._Param("sRequest", sRequest)
                         ._Param("nReturn", nStatus())
@@ -138,13 +132,11 @@ public class HttpEntityCover {
             }
             LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
             LOG_BIG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
-            //return osReturn.toString();
         }catch(Exception oException){
             new Log(oException, LOG)
                     ._Case("Web_Post")
                     ._Head("[_Send]:BREAKED!")
                     ._Status(Log.LogStatus.ERROR)
-                    //._StatusHTTP(nStatus)
                     ._Param("sURL", sURL)
                     ._Param("sRequest", sRequest)
                     ._LogTransit()
@@ -152,10 +144,9 @@ public class HttpEntityCover {
                     .save()
                     ;
             LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
-            //oLogBig_Web.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
             LOG_BIG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
             LOG_BIG.debug("BREAKED:", oException);
-            throw oException; //return null;
+            throw oException;
         }
         _Reset();
         return this;

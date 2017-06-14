@@ -28,8 +28,7 @@ public class BytesDataStorage implements IBytesDataStorage {
     private static final Logger LOG = LoggerFactory.getLogger(BytesDataStorage.class);
 
     @Autowired
-    @Qualifier("gridTemplate")
-    private GridFsTemplate oGridFsTemplate;
+    private GridFsTemplate gridTemplate;
 
     @Override
     public String saveData(byte[] aByte) {
@@ -47,7 +46,7 @@ public class BytesDataStorage implements IBytesDataStorage {
     public boolean setData(String sKey, byte[] data) {
         try (InputStream oInputStream = new ByteArrayInputStream(data)) {
             //LOG.info("Start create oGridFSFile");
-            GridFSFile oGridFSFile = oGridFsTemplate.store(oInputStream, sKey);
+            GridFSFile oGridFSFile = gridTemplate.store(oInputStream, sKey);
             //LOG.info("Start save oGridFSFile");
             oGridFSFile.save();
             //LOG.info("End save oGridFSFile File size = {}", oGridFSFile.getLength());
@@ -65,7 +64,7 @@ public class BytesDataStorage implements IBytesDataStorage {
 
     private GridFSDBFile findLatestEdition(String sKey) {
         //LOG.info("sKey = {}", sKey);
-        List<GridFSDBFile> aGridFSDBFile = oGridFsTemplate.find(
+        List<GridFSDBFile> aGridFSDBFile = gridTemplate.find(
                 getKeyQuery(sKey)
                 .with(new Sort(Direction.DESC, "uploadDate"))
                 .limit(1));
@@ -86,7 +85,7 @@ public class BytesDataStorage implements IBytesDataStorage {
 
     @Override
     public boolean remove(String sKey) {
-        oGridFsTemplate.delete(getKeyQuery(sKey));
+        gridTemplate.delete(getKeyQuery(sKey));
         return true;
     }
 

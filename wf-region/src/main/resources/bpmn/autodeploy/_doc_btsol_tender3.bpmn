@@ -10,14 +10,86 @@
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
       <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="sID_Order; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sLongterm" name="Longterm; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sCreateDate" name="CreateDate; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sProckred" name="Prockred; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAttributeApplication" name="Признак заявки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" required="true">
+          <activiti:value id="Enum1" name="в работе"></activiti:value>
+          <activiti:value id="Enum2" name="подписана"></activiti:value>
+          <activiti:value id="Enum3" name="отозвана"></activiti:value>
+          <activiti:value id="Enum4" name="к сведению"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDate_441" name="Дата №441" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" default="${sID_Order}"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_442" name="Вх №442" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_442" name="Дата №442" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberResponseDoc" name="Исход № карточки (ответный документ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" required="true">
+          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
+          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
+          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
+          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
+          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
+          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
+          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotes" name="Примечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFormBargaining" name="Форма торгов" type="enum" default="Enum5">
+          <activiti:value id="Enum1" name="Конкурс"></activiti:value>
+          <activiti:value id="Enum2" name="Предложение"></activiti:value>
+          <activiti:value id="Enum3" name="Анализ цен"></activiti:value>
+          <activiti:value id="Enum4" name="Электронные"></activiti:value>
+          <activiti:value id="Enum5" name="Закрытый тендер"></activiti:value>
+          <activiti:value id="Enum6" name="Он-лайн торги"></activiti:value>
+          <activiti:value id="Enum7" name="Открытые торги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAcceptanceInformation" name="Сведения о приемки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchive" name="Месторасположение сделки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectionDoc" name="Корректировочный документ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPriorityApplication" name="Приоритет заявки" type="enum" required="true">
+          <activiti:value id="Enum1" name="текущая|1"></activiti:value>
+          <activiti:value id="Enum2" name="инвест|2"></activiti:value>
+          <activiti:value id="Enum3" name="сводная|3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="Исполнитель ТК" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlannedDateEZ" name="Планируемая дата выдачи ЭЗ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFactDateEZ" name="Фактическая дата выдачи ЭЗ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotesHead" name="Заметки руководителя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChange" name="Дата изменений" type="string"></activiti:formProperty>
         <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" required="true">
@@ -27,15 +99,6 @@
         <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" required="true">
           <activiti:value id="Enum1" name="заказчика"></activiti:value>
           <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" required="true">
-          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
-          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
-          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
-          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
-          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
-          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
-          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" required="true">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
@@ -51,7 +114,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" required="true">
           <activiti:value id="Enum1" name="Требуется"></activiti:value>
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
@@ -67,7 +129,6 @@
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -85,9 +146,79 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sLongterm" name="Longterm; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sCreateDate" name="CreateDate; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sProckred" name="Prockred; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAttributeApplication" name="Признак заявки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" writable="false">
+          <activiti:value id="Enum1" name="в работе"></activiti:value>
+          <activiti:value id="Enum2" name="подписана"></activiti:value>
+          <activiti:value id="Enum3" name="отозвана"></activiti:value>
+          <activiti:value id="Enum4" name="к сведению"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_442" name="Вх №442" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_442" name="Дата №442" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberResponseDoc" name="Исход № карточки (ответный документ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
+          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
+          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
+          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
+          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
+          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
+          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotes" name="Примечания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asFormBargaining" name="Форма торгов" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Конкурс"></activiti:value>
+          <activiti:value id="Enum2" name="Предложение"></activiti:value>
+          <activiti:value id="Enum3" name="Анализ цен"></activiti:value>
+          <activiti:value id="Enum4" name="Электронные"></activiti:value>
+          <activiti:value id="Enum5" name="Закрытый тендер"></activiti:value>
+          <activiti:value id="Enum6" name="Он-лайн торги"></activiti:value>
+          <activiti:value id="Enum7" name="Открытые торги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAcceptanceInformation" name="Сведения о приемки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArchive" name="Месторасположение сделки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectionDoc" name="Корректировочный документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPriorityApplication" name="Приоритет заявки" type="enum" writable="false">
+          <activiti:value id="Enum1" name="текущая|1"></activiti:value>
+          <activiti:value id="Enum2" name="инвест|2"></activiti:value>
+          <activiti:value id="Enum3" name="сводная|3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="Исполнитель ТК" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlannedDateEZ" name="Планируемая дата выдачи ЭЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFactDateEZ" name="Фактическая дата выдачи ЭЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotesHead" name="Заметки руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateChange" name="Дата изменений" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" writable="false">
@@ -97,15 +228,6 @@
         <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" writable="false">
           <activiti:value id="Enum1" name="заказчика"></activiti:value>
           <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
-          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
-          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
-          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
-          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
-          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
-          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
@@ -120,7 +242,7 @@
           <activiti:value id="Enum5" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
           <activiti:value id="Enum1" name="Требуется"></activiti:value>
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
@@ -130,6 +252,7 @@
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
@@ -149,9 +272,79 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sLongterm" name="Longterm; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sCreateDate" name="CreateDate; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sProckred" name="Prockred; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAttributeApplication" name="Признак заявки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" writable="false">
+          <activiti:value id="Enum1" name="в работе"></activiti:value>
+          <activiti:value id="Enum2" name="подписана"></activiti:value>
+          <activiti:value id="Enum3" name="отозвана"></activiti:value>
+          <activiti:value id="Enum4" name="к сведению"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_442" name="Вх №442" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_442" name="Дата №442" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberResponseDoc" name="Исход № карточки (ответный документ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
+          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
+          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
+          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
+          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
+          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
+          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotes" name="Примечания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asFormBargaining" name="Форма торгов" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Конкурс"></activiti:value>
+          <activiti:value id="Enum2" name="Предложение"></activiti:value>
+          <activiti:value id="Enum3" name="Анализ цен"></activiti:value>
+          <activiti:value id="Enum4" name="Электронные"></activiti:value>
+          <activiti:value id="Enum5" name="Закрытый тендер"></activiti:value>
+          <activiti:value id="Enum6" name="Он-лайн торги"></activiti:value>
+          <activiti:value id="Enum7" name="Открытые торги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAcceptanceInformation" name="Сведения о приемки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArchive" name="Месторасположение сделки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectionDoc" name="Корректировочный документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPriorityApplication" name="Приоритет заявки" type="enum" writable="false">
+          <activiti:value id="Enum1" name="текущая|1"></activiti:value>
+          <activiti:value id="Enum2" name="инвест|2"></activiti:value>
+          <activiti:value id="Enum3" name="сводная|3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="Исполнитель ТК" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlannedDateEZ" name="Планируемая дата выдачи ЭЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFactDateEZ" name="Фактическая дата выдачи ЭЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotesHead" name="Заметки руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateChange" name="Дата изменений" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" writable="false">
@@ -161,15 +354,6 @@
         <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" writable="false">
           <activiti:value id="Enum1" name="заказчика"></activiti:value>
           <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
-          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
-          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
-          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
-          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
-          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
-          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
@@ -184,7 +368,7 @@
           <activiti:value id="Enum5" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
           <activiti:value id="Enum1" name="Требуется"></activiti:value>
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
@@ -193,15 +377,16 @@
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
         </activiti:formProperty>
-       <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -213,20 +398,44 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sLongterm" name="Longterm; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sCreateDate" name="CreateDate; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sProckred" name="Prockred; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAttributeApplication" name="Признак заявки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" writable="false">
+          <activiti:value id="Enum1" name="в работе"></activiti:value>
+          <activiti:value id="Enum2" name="подписана"></activiti:value>
+          <activiti:value id="Enum3" name="отозвана"></activiti:value>
+          <activiti:value id="Enum4" name="к сведению"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" writable="false">
-          <activiti:value id="Enum1" name="заказчика"></activiti:value>
-          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" writable="false">
-          <activiti:value id="Enum1" name="заказчика"></activiti:value>
-          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_442" name="Вх №442" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_442" name="Дата №442" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNumberResponseDoc" name="Исход № карточки (ответный документ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum">
           <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
           <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
           <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
@@ -235,32 +444,70 @@
           <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
           <activiti:value id="Enum7" name="Предоплата"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
+        <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotes" name="Примечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFormBargaining" name="Форма торгов" type="enum">
+          <activiti:value id="Enum1" name="Конкурс"></activiti:value>
+          <activiti:value id="Enum2" name="Предложение"></activiti:value>
+          <activiti:value id="Enum3" name="Анализ цен"></activiti:value>
+          <activiti:value id="Enum4" name="Электронные"></activiti:value>
+          <activiti:value id="Enum5" name="Закрытый тендер"></activiti:value>
+          <activiti:value id="Enum6" name="Он-лайн торги"></activiti:value>
+          <activiti:value id="Enum7" name="Открытые торги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAcceptanceInformation" name="Сведения о приемки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchive" name="Месторасположение сделки" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectionDoc" name="Корректировочный документ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPriorityApplication" name="Приоритет заявки" type="enum">
+          <activiti:value id="Enum1" name="текущая|1"></activiti:value>
+          <activiti:value id="Enum2" name="инвест|2"></activiti:value>
+          <activiti:value id="Enum3" name="сводная|3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="Исполнитель ТК" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlannedDateEZ" name="Планируемая дата выдачи ЭЗ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFactDateEZ" name="Фактическая дата выдачи ЭЗ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotesHead" name="Заметки руководителя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateChange" name="Дата изменений" type="string"></activiti:formProperty>
+        <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date"></activiti:formProperty>
+        <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date"></activiti:formProperty>
+        <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum">
+          <activiti:value id="Enum1" name="заказчика"></activiti:value>
+          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum">
+          <activiti:value id="Enum1" name="заказчика"></activiti:value>
+          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
           <activiti:value id="Enum2" name="Инвестпрограмма"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
+        <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum">
           <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
           <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
           <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
           <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
           <activiti:value id="Enum5" name="Другое"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
+        <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum">
           <activiti:value id="Enum1" name="Требуется"></activiti:value>
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asZonePersRespons" name="Зоны персональной ответственности в рамках заявки; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+        <activiti:formProperty id="asZonePersRespons" name="Зоны персональной ответственности в рамках заявки; ;sID_CheckboxTrue=sEnumYes" type="enum">
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
           <activiti:value id="sEnumCreateTask" name="Сформировать задание"></activiti:value>
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
@@ -292,28 +539,35 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sNameObject::${sNameObject};;oDateBegin::${oDateBegin};;oDateEnd::${oDateEnd};;asSupplyMaterials::${asSupplyMaterials};;asServicemMachines::${asServicemMachines};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sNameObject::${sNameObject};;oDateBegin::${oDateBegin};;oDateEnd::${oDateEnd};;asSupplyMaterials::${asSupplyMaterials};;asServicemMachines::${asServicemMachines};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;sAttributeApplication::${sAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;sNumberDep::${sNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
     <scriptTask id="scripttask1" name="ProcessInstanceId" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var processInstanceId = execution.getProcessInstanceId();
+      <script>var processInstanceId = execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)
+
+var processInstanceIdToLong = parseFloat(processInstanceId)
+var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong)
+execution.setVariable('sID_Order', sID_Order)
 </script>
     </scriptTask>
     <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable3', 'step_3',true,'sLogin_Approver')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable3', 'step_3',true,'sLogin_Approver')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_3', true, 'sLogin_isExecute')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_3')</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="exclusivegateway4" targetRef="scripttask11">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT3 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="scripttask6"></sequenceFlow>
+    <sequenceFlow id="flow57" sourceRef="usertask1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="exclusivegateway3" targetRef="scripttask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
@@ -323,13 +577,20 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
     <scriptTask id="scripttask6" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2', true, 'sLogin_isExecute')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2', true, 'sLogin_isExecute')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
+</script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask7" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4',false,'sLogin_Addressee')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_4',true,'sLogin_Approver')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_4', true, 'sLogin_isExecute')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
 
 //4. получение ИД БП
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
@@ -367,7 +628,7 @@ execution.setVariable('bSubmitedAll3', oCheckSubmitedAll3.bSubmitedAll.toString(
     </scriptTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask7" skipExpression="все утвердили">
+    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll3 == true}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask12" name="All Signes Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -387,7 +648,7 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == false}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="exclusivegateway11">
+    <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow100" name="надо генерить" sourceRef="exclusivegateway11" targetRef="callactivity1">
@@ -407,7 +668,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')
+
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol_view', 'sTable4', 'step_5',false,'sLogin_Addressee')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_5',true,'sLogin_Approver')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_5', true, 'sLogin_isExecute')</script>
     </scriptTask>
     <userTask id="usertask4" name="ознакомление с утвержденным документом">
       <extensionElements>
@@ -416,9 +681,79 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
+        <activiti:formProperty id="sLongterm" name="Longterm; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sCreateDate" name="CreateDate; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sProckred" name="Prockred; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAttributeApplication" name="Признак заявки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" writable="false">
+          <activiti:value id="Enum1" name="в работе"></activiti:value>
+          <activiti:value id="Enum2" name="подписана"></activiti:value>
+          <activiti:value id="Enum3" name="отозвана"></activiti:value>
+          <activiti:value id="Enum4" name="к сведению"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код работ согласно классификатора, в соответствии с лицензионным перечнем строительных работ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameProduct" name="Перечень работ, подлежащих выполнению" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_442" name="Вх №442" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_442" name="Дата №442" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberResponseDoc" name="Исход № карточки (ответный документ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="Валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
+          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
+          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
+          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
+          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
+          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
+          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotes" name="Примечания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asFormBargaining" name="Форма торгов" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Конкурс"></activiti:value>
+          <activiti:value id="Enum2" name="Предложение"></activiti:value>
+          <activiti:value id="Enum3" name="Анализ цен"></activiti:value>
+          <activiti:value id="Enum4" name="Электронные"></activiti:value>
+          <activiti:value id="Enum5" name="Закрытый тендер"></activiti:value>
+          <activiti:value id="Enum6" name="Он-лайн торги"></activiti:value>
+          <activiti:value id="Enum7" name="Открытые торги"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAcceptanceInformation" name="Сведения о приемки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArchive" name="Месторасположение сделки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectionDoc" name="Корректировочный документ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPriorityApplication" name="Приоритет заявки" type="enum" writable="false">
+          <activiti:value id="Enum1" name="текущая|1"></activiti:value>
+          <activiti:value id="Enum2" name="инвест|2"></activiti:value>
+          <activiti:value id="Enum3" name="сводная|3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="Исполнитель ТК" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPlannedDateEZ" name="Планируемая дата выдачи ЭЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFactDateEZ" name="Фактическая дата выдачи ЭЗ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNotesHead" name="Заметки руководителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateChange" name="Дата изменений" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" writable="false">
@@ -428,15 +763,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" writable="false">
           <activiti:value id="Enum1" name="заказчика"></activiti:value>
           <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
-          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
-          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
-          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
-          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
-          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
-          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
@@ -451,7 +777,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="Enum5" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
           <activiti:value id="Enum1" name="Требуется"></activiti:value>
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
@@ -460,10 +786,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT4" name="Делегировано" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT4" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -471,211 +798,241 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </userTask>
     <sequenceFlow id="flow104" sourceRef="scripttask17" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow105" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Transfer_DocumentARM" activiti:delegateExpression="#{Transfer_ARM}">
+      <extensionElements>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::value{[sAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::value{[sNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask2" name=" Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
+      <extensionElements>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::value{[sAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::value{[sNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow106" sourceRef="servicetask1" targetRef="scripttask6"></sequenceFlow>
+    <sequenceFlow id="flow107" sourceRef="servicetask2" targetRef="exclusivegateway11"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender3">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender3" id="BPMNPlane__doc_btsol_tender3">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="109.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="120.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="84.0" width="130.0" x="247.0" y="85.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="247.0" y="96.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="84.0" width="131.0" x="654.0" y="267.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="654.0" y="278.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
-        <omgdc:Bounds height="84.0" width="131.0" x="654.0" y="612.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="131.0" x="654.0" y="623.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="84.0" width="130.0" x="655.0" y="946.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="130.0" x="655.0" y="957.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="216.0" y="755.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="65.0" y="766.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="100.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="110.0" y="111.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="464.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="475.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="callactivity1" id="BPMNShape_callactivity1">
-        <omgdc:Bounds height="55.0" width="105.0" x="181.0" y="1049.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="30.0" y="1060.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
-        <omgdc:Bounds height="56.0" width="105.0" x="667.0" y="99.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="667.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="800.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="811.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="288.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="299.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
-        <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="633.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="644.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="373.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="384.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="699.0" y="380.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="699.0" y="391.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="718.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="729.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="699.0" y="725.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="699.0" y="736.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask12" id="BPMNShape_scripttask12">
-        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="960.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="971.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
-        <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="1056.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="453.0" y="1067.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway11" id="BPMNShape_exclusivegateway11">
-        <omgdc:Bounds height="40.0" width="40.0" x="331.0" y="1056.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="180.0" y="1067.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask16" id="BPMNShape_scripttask16">
-        <omgdc:Bounds height="56.0" width="105.0" x="259.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="259.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask17" id="BPMNShape_scripttask17">
-        <omgdc:Bounds height="55.0" width="105.0" x="181.0" y="950.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="30.0" y="961.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="183.0" y="856.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="32.0" y="867.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="84.0" width="120.0" x="460.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="1060.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="247.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="215.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="247.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="76.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="76.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="110.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="473.0" y="673.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="718.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="684.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="729.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="377.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="667.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="377.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="139.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="473.0" y="328.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="373.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="339.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="384.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="719.0" y="519.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="612.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="530.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="623.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="233.0" y="1049.0"></omgdi:waypoint>
-        <omgdi:waypoint x="233.0" y="1005.0"></omgdi:waypoint>
+        <omgdi:waypoint x="82.0" y="1060.0"></omgdi:waypoint>
+        <omgdi:waypoint x="82.0" y="1016.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
-        <omgdi:waypoint x="719.0" y="155.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="278.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
-        <omgdi:waypoint x="719.0" y="855.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="946.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="866.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="957.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
-        <omgdi:waypoint x="453.0" y="308.0"></omgdi:waypoint>
-        <omgdi:waypoint x="311.0" y="308.0"></omgdi:waypoint>
-        <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
+        <omgdi:waypoint x="453.0" y="319.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="319.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="397.0" y="306.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
-        <omgdi:waypoint x="453.0" y="653.0"></omgdi:waypoint>
-        <omgdi:waypoint x="312.0" y="652.0"></omgdi:waypoint>
-        <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
+        <omgdi:waypoint x="453.0" y="664.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="663.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="28.0" x="377.0" y="634.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="28.0" x="377.0" y="645.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
-        <omgdi:waypoint x="719.0" y="420.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="464.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="431.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="475.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="76.0" x="721.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="76.0" x="721.0" y="437.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
-        <omgdi:waypoint x="526.0" y="400.0"></omgdi:waypoint>
-        <omgdi:waypoint x="699.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="411.0"></omgdi:waypoint>
+        <omgdi:waypoint x="699.0" y="411.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
-        <omgdi:waypoint x="719.0" y="380.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="391.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="362.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
-        <omgdi:waypoint x="526.0" y="745.0"></omgdi:waypoint>
-        <omgdi:waypoint x="699.0" y="745.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="756.0"></omgdi:waypoint>
+        <omgdi:waypoint x="699.0" y="756.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
-        <omgdi:waypoint x="719.0" y="765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="800.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="776.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="811.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="77.0" x="719.0" y="765.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="77.0" x="719.0" y="776.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="473.0" y="1015.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="1056.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="1026.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="1067.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
-        <omgdi:waypoint x="654.0" y="309.0"></omgdi:waypoint>
-        <omgdi:waypoint x="493.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="493.0" y="319.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
-        <omgdi:waypoint x="654.0" y="654.0"></omgdi:waypoint>
-        <omgdi:waypoint x="493.0" y="653.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="665.0"></omgdi:waypoint>
+        <omgdi:waypoint x="493.0" y="664.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow93" id="BPMNEdge_flow93">
-        <omgdi:waypoint x="719.0" y="725.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="696.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="736.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="707.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow94" id="BPMNEdge_flow94">
-        <omgdi:waypoint x="655.0" y="988.0"></omgdi:waypoint>
-        <omgdi:waypoint x="526.0" y="987.0"></omgdi:waypoint>
+        <omgdi:waypoint x="655.0" y="999.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="998.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow97" id="BPMNEdge_flow97">
-        <omgdi:waypoint x="493.0" y="1076.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="1076.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="1030.0"></omgdi:waypoint>
+        <omgdi:waypoint x="493.0" y="1087.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="1087.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="1041.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
-        <omgdi:waypoint x="453.0" y="1076.0"></omgdi:waypoint>
-        <omgdi:waypoint x="371.0" y="1076.0"></omgdi:waypoint>
+        <omgdi:waypoint x="453.0" y="1087.0"></omgdi:waypoint>
+        <omgdi:waypoint x="355.0" y="1087.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="76.0" x="382.0" y="1062.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="76.0" x="382.0" y="1073.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
-        <omgdi:waypoint x="331.0" y="1076.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="1076.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="1087.0"></omgdi:waypoint>
+        <omgdi:waypoint x="135.0" y="1087.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="73.0" x="288.0" y="1083.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="73.0" x="137.0" y="1094.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
-        <omgdi:waypoint x="351.0" y="1056.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="977.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="977.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="1067.0"></omgdi:waypoint>
+        <omgdi:waypoint x="199.0" y="988.0"></omgdi:waypoint>
+        <omgdi:waypoint x="135.0" y="988.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
-        <omgdi:waypoint x="311.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="312.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="311.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="312.0" y="180.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow104" id="BPMNEdge_flow104">
-        <omgdi:waypoint x="233.0" y="950.0"></omgdi:waypoint>
-        <omgdi:waypoint x="235.0" y="911.0"></omgdi:waypoint>
+        <omgdi:waypoint x="82.0" y="961.0"></omgdi:waypoint>
+        <omgdi:waypoint x="84.0" y="922.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow105" id="BPMNEdge_flow105">
-        <omgdi:waypoint x="235.0" y="856.0"></omgdi:waypoint>
-        <omgdi:waypoint x="233.0" y="790.0"></omgdi:waypoint>
+        <omgdi:waypoint x="84.0" y="867.0"></omgdi:waypoint>
+        <omgdi:waypoint x="82.0" y="801.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow106" id="BPMNEdge_flow106">
+        <omgdi:waypoint x="580.0" y="139.0"></omgdi:waypoint>
+        <omgdi:waypoint x="667.0" y="138.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow107" id="BPMNEdge_flow107">
+        <omgdi:waypoint x="250.0" y="1087.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="1087.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

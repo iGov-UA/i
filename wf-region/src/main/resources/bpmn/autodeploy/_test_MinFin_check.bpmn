@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_MinFin_check" name="Проведення перевірки по ІПН" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sIPN" name="Введіть Ваш ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; сюди буде відправлено відповідь" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asCheckType" name="Оберіть тип перевірки" type="enum" required="true">
+          <activiti:value id="sCorrectIPN" name="Перевірка коректності ідентифікаційних даних субсидій і ВПО"></activiti:value>
+          <activiti:value id="sDepozit" name="Перевірка законності видачі субсидій і ВПО по наявності депозиту "></activiti:value>
+        </activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask1" name="Перевірка коректності ідентифікаційних даних субсидій і ВПО" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+		var value = execution.getVariable('sIPN');
+  		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
+  		var IPNcheck = getIPNdata[0].REZ;
+  		var sResult = " ";
+  		if (IPNcheck==0)
+  		{
+  			sResult = "ІПН коректний"
+  		}
+  		if (IPNcheck!=0)
+  		{
+  			sResult = "ІПН некоректний"
+  		}
+  		execution.setVariable('sResult', obj1);	  </script>
+    </scriptTask>
+    <scriptTask id="scripttask2" name="Перевірка законності видачі субсидій і ВПО по наявності депозиту " scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script><![CDATA[
+      	var value = execution.getVariable('sIPN');
+  		var getIPNdata = dictionaryService.processDictionary('MinFin_test', 'IPN', value);
+  		var sumDep = getIPNdata[0].IS_DEP;
+  		var sResult = " ";
+  		if (sumDep<50000)
+  		{
+  			sResult = "Субсидія може бути надана"
+  		}
+  		if (sumDep>=50000)
+  		{
+  			sResult = "Субсидія не може бути надана"
+  		}
+  		execution.setVariable('sResult', sResult);
+  		]]></script>
+    </scriptTask>
+    <sequenceFlow id="flow2" name="${asCheckType=='sCorrectIPN'}" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCheckType=='sCorrectIPN'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow3" name="${asCheckType=='sDepozit'}" sourceRef="exclusivegateway1" targetRef="scripttask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asCheckType=='sDepozit'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask1" name="Відправка відповіді на пошту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Перевірка щодо ІПН]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          	<p>
+          		Щодо перевірки по ІПН була надана відповідь:<br>
+          		${sResult}<br>
+          	</p>
+          	[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow7" name="${email!=NULL}" sourceRef="exclusivegateway2" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email!=null}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" name="${email==NULL}" sourceRef="exclusivegateway2" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${email==null}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask1" name="Ответ" activiti:candidateGroups="MinFin_test">
+      <extensionElements>
+        <activiti:formProperty id="sIPN" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта; сюди буде відправлено відповідь" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asCheckType" name="Оберіть тип перевірки" type="enum" writable="false">
+          <activiti:value id="sCorrectIPN" name="Перевірка коректності ідентифікаційних даних субсидій і ВПО"></activiti:value>
+          <activiti:value id="sDepozit" name="Перевірка законності видачі субсидій і ВПО по наявності депозиту "></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sResult" name="Результат перевірки" type="string" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="exclusivegateway1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_MinFin_check">
+    <bpmndi:BPMNPlane bpmnElement="_test_MinFin_check" id="BPMNPlane__test_MinFin_check">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="155.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="675.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="210.0" y="152.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="640.0" y="26.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="580.0" y="152.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="65.0" width="105.0" x="450.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="230.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="107.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="140.0" y="66.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="230.0" y="192.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="247.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="160.0" y="256.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="600.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="53.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="520.0" y="80.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="600.0" y="192.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="675.0" y="277.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="521.0" y="219.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="745.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="776.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="776.0" y="182.0"></omgdi:waypoint>
+        <omgdi:waypoint x="776.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="555.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="580.0" y="172.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="375.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="501.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="140.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="375.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="55.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="172.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

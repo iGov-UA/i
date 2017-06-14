@@ -243,7 +243,7 @@ public class SubjectGroupTreeService {
                 // детей его детей
                 children = subjToNodeMap.get(groupFiltr);
             }
-            LOG.info("children.size: " + children.size());
+            //LOG.info("children.size: " + children.size());
             Map<Long, List<SubjectGroup>> hierarchyProcessSubject = new HashMap<>();
             // children полный список первого уровня
             if (children != null && !children.isEmpty()) {
@@ -347,22 +347,25 @@ public class SubjectGroupTreeService {
 
         //Получили все SubjectGroup, которые относятся к группе sID_Group_Activiti
         List<SubjectGroup> aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
-        LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroup.size() + ", " + aSubjectGroup.toString());
+        LOG.info("aSubjectGroup consist: size={}, {}", aSubjectGroup.size(), aSubjectGroup.toString());
 
         for (SubjectGroup oSubjectGroup : aSubjectGroup) {
 
             //ID для которого ищем департаменты, которым он подчиняется
-            Long nID = oSubjectGroup.getoSubject().getId();
+            Long nID = oSubjectGroup.getId();
 
             //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
             List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
-            LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroupTree.size() + ", " + aSubjectGroupTree.toString());
+            LOG.info("aSubjectGroupTree size={}, {}",  aSubjectGroupTree.size(), aSubjectGroupTree.toString());
 
             for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {
 
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
-
-                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectTypeToFind)) {
+                LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
+                
+                String sSubjectGroup_ParentType = getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti());
+                
+                if (sSubjectGroup_ParentType.equals(sSubjectTypeToFind)) {
 
                     aSubjectGroupParent.add(oSubjectGroup_Parent);
                 }

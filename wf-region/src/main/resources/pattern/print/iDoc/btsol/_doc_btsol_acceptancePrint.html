@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+	    
+	<style type="text/css">
+		
+		section.PrintFormClaim {
+		    font-size: 12pt;
+		    font-family: "Times New Roman";
+		    width: 18cm;
+		}
+		
+		    section.PrintFormClaim div {
+		        margin-top: 6pt;
+		    }
+		
+		    section.PrintFormClaim u {
+		        padding: 0 10px;
+		    }
+		
+		    /* Подчеркивание с отступами не подходит для  */
+		    section.PrintFormClaim em {
+		        padding: 0 5px;
+		        font-style: normal;
+		        border-bottom: 1px solid black;
+		    }
+		/* Отменяем подчеркивание у ссылки */
+		
+		.whomBlock {
+		    text-align: justify;
+		}
+		
+		.claimBlock {
+		    text-align: center;
+		    margin-top: 6pt;
+		    letter-spacing: 4px;
+		    font-size: 12pt;
+		    font-weight: 600;
+		}
+		
+		.smallText {
+		    font-size: 10pt;
+		    color: #606060;
+		    line-height: 0.6;
+		}
+		
+		section.PrintFormClaim table {
+		    align-self: center;
+		    border-collapse: collapse; /* Отображать двойные линии как одинарные */
+		}
+		
+		section.PrintFormClaim td.bb {
+		    border: 0px solid black;
+		    border-bottom: 1px solid black;
+		}
+		
+		section.PrintFormClaim td.notb {
+		    border: 0px solid black;
+		}
+		
+		section.PrintFormClaim td {
+		    border: 1px solid black;
+		    text-align: justify;
+		}
+		
+		
+		section.PrintFormClaim th {
+		    border: 1px solid black;
+		}
+		
+		.under_multifield { /* Мой кейс, многострочный текст*/
+		    border-bottom: 1px solid black;
+		    text-align: justify;
+		    clear: both;
+		}
+		
+		    .under_multifield > b {
+		        float: left;
+		        padding: 0 10px 0 0;
+		        font-weight: normal;
+		        position: relative;
+		        bottom: -3px;
+		        background-color: white;
+		    }
+		
+		    .under_multifield > u {
+		        padding: 0 10px;
+		        text-decoration: none;
+		        border-bottom: 1px solid black;
+		        position: relative;
+		        bottom: -1px;
+		        line-height: 125%;
+		    }
+		
+		.under_field { /* Блок с подписью */
+		    margin: 0 0 15px 0;
+		    border-bottom: 1px solid black;
+		    position: relative;
+		    display: inline-block;
+		    clear: both;
+		}
+		
+		    .under_field > b { /*если не надо подчеркивать*/
+		        padding: 0 10px 0 0;
+		        font-weight: normal;
+		        background: white;
+		        display: inline-block;
+		        position: relative;
+		        left: 0;
+		        font-style: normal;
+		        bottom: -1px;
+		        background-color: white;
+		    }
+		
+		    /*если надо подчеркнуть*/
+		    .under_field > u {
+		        padding: 0 10px;
+		        text-decoration: none;
+		        background: white;
+		        display: inline-block;
+		        position: relative;
+		        left: 0;
+		    }
+		
+		    /*текст снизу*/
+		    .under_field > span {
+		        position: absolute;
+		        left: 0;
+		        right: 0;
+		        text-align: center;
+		        color: #606060;
+		        bottom: -16px;
+		        font-size: 10pt;
+		    }
+		
+		/* линия отреза */
+		.lineCut {
+		    border-bottom: 2px dashed #000;
+		}
+		
+		    .lineCut > span {
+		        bottom: 10px;
+		        background: white;
+		        float: left;
+		        position: relative;
+		    }
+		
+		/*чек-боксы*/
+		.check_box {
+		    width: 16px;
+		    height: 16px;
+		    font-size: 11px;
+		    border: 1px solid #000;
+		    margin: 0 3px 0 0;
+		    display: inline-block;
+		    text-align: center;
+		}
+		
+		    .check_box span {
+		        visibility: hidden;
+		    }
+		
+		.text_box {
+		    height: 16px;
+		    border: 1px solid #000;
+		    margin-left: 5px;
+		    display: inline-block;
+		    line-height: 23px;
+		}
+		
+		
+		/* номер дела, ярлык */
+		.numBusines {
+		    border: 1px solid #000000;
+		    margin-top: 25px;
+		    float: right;
+		}
+		
+		    .numBusines > div {
+		        height: 20px;
+		        margin-right: 5px;
+		        margin-left: 5px;
+		        border-bottom: 1px solid black;
+		        position: relative;
+		        display: block;
+		    }
+		
+		        .numBusines > div > i {
+		            height: 21px;
+		            left: 0;
+		            padding-right: 5px;
+		            background: white;
+		            display: inline-block;
+		            position: relative;
+		            font-style: normal;
+		        }
+		
+		        .numBusines > div > span {
+		            position: absolute;
+		            left: 0;
+		            right: 0;
+		            text-align: center;
+		            color: #606060;
+		            bottom: -16px;
+		            font-size: 11px;
+		        }
+		
+		.m-b-5 {
+		    margin-bottom: 5px;
+		}
+		
+		.m-b-30 {
+		    margin-bottom: 30px;
+		}
+		
+		.clear {
+		    clear: both;
+		}
+		
+		/* организация колонок */
+		.layout {
+		    overflow: hidden;
+		}
+		
+		    .layout div,
+		    .layout div.l {
+		        float: left;
+		    }
+		
+		        .layout div.r {
+		            float: right;
+		        }
+		
+		
+		/* выравнивание текста */
+		section.PrintFormClaim table.va-c td,
+		section.PrintFormClaim tr.va-c > td,
+		section.PrintFormClaim tr > td.va-c,
+		section.PrintFormClaim .va-c {
+		    vertical-align: middle;
+		}
+		
+		section.PrintFormClaim table.va-b td,
+		section.PrintFormClaim tr.va-b > td,
+		section.PrintFormClaim tr > td.va-b,
+		section.PrintFormClaim .va-b {
+		    vertical-align: bottom;
+		}
+		
+		section.PrintFormClaim table.va-t td,
+		section.PrintFormClaim tr.va-t > td,
+		section.PrintFormClaim tr > td.va-t,
+		section.PrintFormClaim .va-t {
+		    vertical-align: top;
+		}
+		
+		section.PrintFormClaim table.ta-c td,
+		section.PrintFormClaim tr.ta-c > td,
+		section.PrintFormClaim tr > td.ta-c,
+		section.PrintFormClaim .ta-c {
+		    text-align: center;
+		}
+		
+		section.PrintFormClaim table.ta-l td,
+		section.PrintFormClaim tr.ta-l > td,
+		section.PrintFormClaim tr > td.ta-l,
+		section.PrintFormClaim .ta-l {
+		    text-align: left;
+		}
+		
+		section.PrintFormClaim table.ta-r td,
+		section.PrintFormClaim tr.ta-r > td,
+		section.PrintFormClaim tr > td.ta-r,
+		section.PrintFormClaim .ta-r {
+		    text-align: right;
+		}
+		
+		section.PrintFormClaim table.ta-j td,
+		section.PrintFormClaim tr.ta-j > td,
+		section.PrintFormClaim tr > td.ta-j,
+		section.PrintFormClaim .ta-j {
+		    text-align: justify;
+		}
+		
+		section.PrintFormClaim table.ta-j-w td,
+		section.PrintFormClaim tr.ta-j-w > td,
+		section.PrintFormClaim tr > td.ta-j-w,
+		section.PrintFormClaim p, li,
+		section.PrintFormClaim .ta-j-w {
+		    text-align: justify;
+		    -webkit-hyphens: auto;
+		    -moz-hyphens: auto;
+		    -ms-hyphens: auto;
+		    hyphens: auto;
+		    word-wrap: break-word;
+		}
+		
+		
+		/*размер шрифта*/
+		.fs4 { font-size: 4pt; }	
+		.fs5 { font-size: 5pt; }	
+		.fs6 { font-size: 6pt; }	
+		.fs7 { font-size: 7pt; }	
+		.fs8 { font-size: 8pt; }	
+		.fs9 { font-size: 9pt; }	
+		.fs10 { font-size: 10pt; }	
+		.fs11 { font-size: 11pt; }	
+		.fs12 { font-size: 12pt; }	
+		.fs13 { font-size: 13pt; }	
+		.fs14 { font-size: 14pt; }	
+		
+		/* ширина в процентах */            
+		.w1p {width: 1%;}      
+		.w4p {width: 4%;}      
+		.w5p {width: 5%;}      
+		.w8p {width: 8%;}   
+		.w10p { width: 10%;}
+		.w20p { width: 20%;}
+		.w30p { width: 30%;}
+		.w33p { width: 33%;} 
+		.w40p { width: 40%;}
+		.w50p { width: 50%;}   
+		.w60p { width: 60%;}   
+		.w70p { width: 70%;}   
+		.w80p { width: 80%;}   
+		.w90p { width: 90%;}    
+		.w95p { width: 95%;}     
+		.w100p { width: 100%;}
+		
+		/* ширина */
+		.w20 {	width: 20px;}
+		.w50 {	width: 50px;}
+		.w100 {	width: 100px;}
+		.w150 {	width: 150px;}
+		.w200 {	width: 200px;}
+		.w250 {	width: 250px;}
+		.w300 {	width: 300px;}
+		.w350 {	width: 350px;}
+		.w450 {	width: 450px;}
+		.w400 {	width: 400px;}
+		.w500 {	width: 500px;}
+		
+		/* отступ  */
+		.pl-paragraph { text-indent: 1cm;}
+		.pl-paragraph>div,
+		.pl-paragraph>span  
+		{ text-indent: initial;} 
+		
+		.pl-25 { padding-left: 25px;}
+		.pl-50 { padding-left: 50px;}
+		.pl-75 { padding-left: 75px;}
+		.pl-100 { padding-left: 100px;}
+		.pl-150 { padding-left: 150px;}
+		.pl-200 { padding-left: 200px;}
+		.pl-250 { padding-left: 250px;}
+		.pl-300 { padding-left: 300px;}
+		
+		.ml-5{ margin-left: 5cm;}
+		.ml-6{ margin-left: 6cm;}
+		.ml-7{ margin-left: 7cm;}
+		.ml-8{ margin-left: 8cm;}
+		.ml-9{ margin-left: 9cm;}
+		.ml-10{ margin-left: 10cm;}
+		.ml-11{ margin-left: 11cm;}
+		.ml-12{ margin-left: 12cm;}
+		.ml-13{ margin-left: 13cm;}
+		.ml-14{ margin-left: 14cm;}
+		
+		
+		
+		/* междустрочные интервалы */
+		.line0 { line-height: 0; }
+		.line05 { line-height: 0.5;}
+		.line1 { line-height: 1;}
+		.line15 { line-height: 1.5;}
+		.line2 { line-height: 2;}
+		.line25 { line-height: 2.5;}
+		.line3 { line-height: 3;}
+		
+		/*отступы по горизонтали*/
+		.pg-10 { padding: 0 10px;}
+		.pg-15 { padding: 0 15px;}
+		.pg-20 { padding: 0 20px;}
+		.pg-25 { padding: 0 25px;}
+		.pg-50 { padding: 0 50px;}
+		.pg-75 { padding: 0 75px;}
+		.pg-100 { padding: 0 100px;}
+		
+		
+		
+		/* Форматирование текста*/
+		.i{font-style: italic;}
+		.b{font-weight: 600;}
+		.u{text-decoration: underline;}
+		.ub{border-bottom: 1px solid #000;}
+		
+		section.PrintFormClaim table.nbr {
+		    border-collapse: separate;
+		    border-spacing: 0px;
+		}
+		
+		section.PrintFormClaim table.nbr td,
+		section.PrintFormClaim table td.nbr {
+		    border-color: white;
+		}
+		
+		section.PrintFormClaim table.br td,
+		section.PrintFormClaim table tr>td.br {
+		    border-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-t td,
+		section.PrintFormClaim table tr>td.br-t {
+		    border-top-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-r td,
+		section.PrintFormClaim table tr>td.br-r {
+		    border-right-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-b td,
+		section.PrintFormClaim table tr>td.br-b {
+		    border-bottom-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-l td,
+		section.PrintFormClaim table tr>td.br-l {
+		    border-left-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-t-l td,
+		section.PrintFormClaim table tr>td.br-t-l {
+		    border-top-color: #000;
+		    border-left-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-t-r-l td,
+		section.PrintFormClaim table tr>td.br-t-r-l {
+		    border-top-color: #000;
+		    border-right-color: #000;
+		    border-left-color: #000;
+		}
+		
+		section.PrintFormClaim table.br-t-l-b td,
+		section.PrintFormClaim table tr>td.br-t-l-b {
+		    border-top-color: #000;
+		    border-left-color: #000;
+		    border-bottom-color: #000;
+		}
+		
+		
+		/* свойства для печати*/
+		@media print {
+		    @page {
+		        margin: 1cm 1.5cm 1cm 2.5cm;
+		    }
+		
+		    a[href^="http://"]:after, a[href^="ftp://"]:after {
+		        content: " (" attr(href) ")";
+		        color: blue;
+		    }
+		
+		    section {
+		        page-break-after: avoid;
+		    }
+		
+		    h1 {
+		        page-break-after: avoid;
+		    }
+		
+		    p {
+		        page-break-inside: avoid;
+		        orphans: 3;
+		        widows: 2;
+		    }
+		
+		    ul, img {
+		        page-break-inside: avoid;
+		    }
+		}
+	
+	
+	</style>
+
+</head>
+<body>
+    <section class="PrintFormClaim">
+
+
+        <div class="layout ta-j w100p">
+            <div class="w60p l ta-c">
+                <b>Товариство з обмеженою відповідальністю</b>   <br>
+                <b>«Бі Ті Солюшинс»</b><br>
+                Найменування підприємства (установи, організації)
+
+            </div>
+            <div class="w33p r ta-c">
+                <b> Типова форма № П-1</b><br>
+                ЗАТВЕРДЖЕНО<br>
+                наказом Держкомстату України<br>
+                від 5 грудня 2008 р. № 489
+            </div>
+        </div>
+
+        <br />
+
+        <div class="b ta-c fs14">
+            НАКАЗ (РОЗПОРЯДЖЕННЯ) №____ від «____» ____________20____ р.<br />
+            <span class="fs10">про прийняття на роботу</span>
+        </div>
+
+        <div class="w100p">
+            <div class="under_field w100p ta-c">
+                <u>[sHiredPersonLastName] [sHiredPersonFirstName] [sHiredPersonMiddleName]</u>
+                <span>(прізвище, ім’я, по батькові)</span>
+            </div>
+        </div>
+
+        <div class="layout ta-j w100p">
+            <div class="w60p l b ta-l  va-c">
+                Прийняти на роботу з <span id="spansDateStart">[sDateStart]</span>
+            </div>
+
+            <div class="r ta-c">
+                <table class="ta-c w200">
+                    <tr><td>Табельний номер</td></tr>
+                    <tr><td class="b">[sPersonnelNumber]</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="w100p ta-c">
+         <!-- до  [sDateContract]  --> 
+         	до «<em id="emsDateContract_date">&#160;&#160;&#160;&#160;</em>»
+           <em id="emsDateContract_month">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</em>
+           20<em id="emsDateContract_year">&#160;&#160;&#160;&#160;</em> р. 
+        </div>
+        <div class="w100p ta-c smallText">(заповнюється у разі строкового трудового договору (контракту))</div>
+
+
+        <div class="w100p">
+            <div class="under_field w100p ta-c">
+                <u class="b">[sName_Department]</u>
+                <span>назва структурного підрозділу</span>
+            </div>
+        </div>
+
+        <div class="w100p">
+            <div class="under_field w100p ta-c">
+                <u class="b">[sHiredPersonPosition]</u>
+                <span>назва професії (посади), кваліфікація</span>
+            </div>
+        </div>
+
+
+        <div class="layout ta-l w100p">
+            <div class="w50p l">
+
+                <div class="w100p ta-c">
+                    <span class="u b">умови прийняття на роботу</span><br />
+                    <span>(необхідне відмітити позначкою «&#10004;»):</span>
+                </div>
+
+
+                <div class="w100p">
+                    <span class="check_box"><span id="spanbConditions_1">&#10004;</span></span>
+                    на конкурсній основі<br />
+
+                    <span class="check_box"><span id="spanbConditions_2">&#10004;</span></span>
+                    за умовами контракту до <em id="emsDateContract">[sDateContract]</em> у разі необхідності вказати дату (дд.мм.рррр.)<br />
+
+                    <span class="check_box"><span id="spanbConditions_3">&#10004;</span></span>
+                    зі строком випробування <em id="emsProbation">[sProbation]</em> місяців<br />
+
+                    <span class="check_box"><span id="spanbConditions_4">&#10004;</span></span>
+                    на час виконання певної роботи<br />
+
+                    <span class="check_box"><span id="spanbConditions_5">&#10004;</span></span>
+                    на період відсутності основного працівника<br />
+
+                    <span class="check_box"><span id="spanbConditions_6">&#10004;</span></span>
+                    із кадрового резерву<br />
+
+                    <span class="check_box"><span id="spanbConditions_7">&#10004;</span></span>
+                    за результатами успішного стажування<br />
+
+                    <span class="check_box"><span id="spanbConditions_8">&#10004;</span></span>
+                    переведення<br />
+
+                    <span class="check_box"><span id="spanEmpty1">&#10004;</span></span>
+                    _________________________________<br />
+                </div>
+            </div>
+            <div class="w50p r">
+
+                <div class="w100p ta-c">
+                    <span class="b u pg-20">умови роботи:</span><br />
+                    <span>(необхідне відмітити позначкою «&#10004;»):</span>
+                </div>
+
+
+                <div class="w100p">
+
+                    робота:
+                    <span class="check_box"><span id="spanEnumBasic">&#10004;</span></span>
+                    основна
+                    <span class="check_box"><span id="spanEnumSameTime">&#10004;</span></span>
+                    за сумісництвом<br />
+
+                    умови праці (згідно атестації робочого місця ):<br />
+
+
+                    <div class="w100p under_multifield">
+                        <u>[sWorkingConditions]</u>
+                    </div>
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    тривалість робочого дня (тижня) <em>[sWorkingHours]</em> .<br />
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    тривалість робочого дня (тижня) при роботі з неповним робочим часом  1 год. 00 хв.<br />
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    ____________________________________<br />
+
+
+                    <span class="check_box"><span id="spanFirst">&#10004;</span></span>
+                    ____________________________________<br />
+
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <table class="w100p nbr">
+            <colgroup>
+                <col width="32%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="8%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+                <col width="4%" />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td class="ta-r" colspan="4">оклад (тарифна ставка)</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td>&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td colspan="4">коп.</td>
+                </tr>
+                <tr>
+                    <td class="ta-r">надбавка за_______________</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-r-l">&#160;</td>
+                    <td>%</td>
+                    <td class="ta-r" colspan="8">надбавка за ______________</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-r-l">&#160;</td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td class="ta-r">надбавка за_______________</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-l">&#160;</td>
+                    <td class="br-t-r-l">&#160;</td>
+                    <td>%</td>
+                    <td class="ta-r" colspan="8">надбавка за ______________</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td>%</td>
+                </tr>
+                <tr>
+                    <td class="ta-r">доплата</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td colspan="2">грн.</td>
+                    <td class="br-t-l-b">&#160;</td>
+                    <td class="br">&#160;</td>
+                    <td colspan="7">коп.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        <table class="ta-c nbr">
+            <colgroup>
+                <col width="30%" />
+                <col width="5%" />
+                <col width="30%" />
+                <col width="5%" />
+                <col width="30%" />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td class="br-b">Керівник підприємства</td>
+                    <td></td>
+                    <td class="br-b">&#160;</td>
+                    <td></td>
+                    <td class="br-b">С.В. Мельникова</td>
+                </tr>
+                <tr class="fs10">
+                    <td>(установи, організації)</td>
+                    <td></td>
+                    <td>(підпис)</td>
+                    <td></td>
+                    <td>(Прізвище, ім’я, по батькові)</td>
+                </tr>
+                <tr>
+                    <td colspan="5">&#160;</td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="ta-j-w">
+                        З наказом (розпорядженням) ознайомлений
+                    </td>
+                    <td></td>
+                    <td class="br-b">&#160;</td>
+                    <td></td>
+                    <td rowspan="2">_________________</td>
+                    
+                </tr>
+                <tr class="fs10">
+                    <td></td>
+                    <td>(підпис працівника)</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <div style="page-break-after: always"></div>
+    <section class="PrintFormClaim">
+        <br />
+
+        <div class="w100p">З правилами внутрішнього трудового розпорядку підприємства ознайомлений.</div>
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+
+        <div class="w100p">З посадовою інструкцією  ознайомлений  і зобов'язуюсь в повному обсязі виконувати її вимоги.</div>
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+
+        <div class="w100p">З умовами роботи згоден, правами на пільги і компенсацію за роботу в таких умовах відповідно до чинних нормативних актів ознайомлений.</div>
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+        <div class="w100p">Відмітки про проходження інструктажу з техніки безпеки, протипожежному мінімуму та інше.</div>
+
+        <table class="nbr br-b w100p">
+            <tr><td>&#160;</td></tr>
+            <tr><td>&#160;</td></tr>
+            <tr><td>&#160;</td></tr>
+        </table>
+
+
+        <div class="layout ta-j w100p">
+            <div class="w10p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(підпис працівника)</span>
+                </div>
+            </div>
+            <div class="w20p"></div>
+            <div class="w30p">
+                <div class="under_field w100p ta-c">
+                    <u>&#160;</u>
+                    <span>(дата)</span>
+                </div>
+            </div>
+            <div class="w10p"></div>
+        </div>
+
+    </section>
+
+
+    <script>
+	    //галочки
+	
+	    function getMonthText(month) {
+	        var months = ["січня", "лютого", "березня", "квітня", "травня", "червня", "липня", "серпня", "вересня", "жовтня", "листопада", "грудня"];
+	        return months[month];
+	    }
+	
+	    function parseDateiGov(str) {
+	        var date = new Date();
+	        date.setTime(Date.parse(str.replace(/(\d+)\/(\d+)\/(\d+)/, '$2/$1/$3')));
+	        return date;
+	    }
+	
+	
+	    if ("[bConditions_1]" == "yes") {
+	        document.getElementById('spanbConditions_1').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_2]" == "yes") {
+	        document.getElementById('spanbConditions_2').style.visibility = 'visible';
+	
+	        var dateContract = parseDateiGov("[sDateContract]");
+	
+	        document.getElementById('emsDateContract').innerHTML = dateContract.getDate() + "." + (dateContract.getMonth() + 1) + "." + dateContract.getFullYear();            
+	
+	        document.getElementById('emsDateContract_date').innerText = dateContract.getDate();
+	        document.getElementById('emsDateContract_month').innerText = getMonthText(dateContract.getMonth());
+	        document.getElementById('emsDateContract_year').innerText = dateContract.getFullYear() - 2000;
+	    }
+	    if ("[bConditions_3]" == "yes") {
+	        document.getElementById('spanbConditions_3').style.visibility = 'visible';
+	        document.getElementById('emsProbation').innerText = "[sProbation]";
+	    } else {
+	        document.getElementById('emsProbation').innerText = "";
+	    }
+	    if ("[bConditions_4]" == "yes") {
+	        document.getElementById('spanbConditions_4').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_5]" == "yes") {
+	        document.getElementById('spanbConditions_5').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_6]" == "yes") {
+	        document.getElementById('spanbConditions_6').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_7]" == "yes") {
+	        document.getElementById('spanbConditions_7').style.visibility = 'visible';
+	    }
+	    if ("[bConditions_8]" == "yes") {
+	        document.getElementById('spanbConditions_8').style.visibility = 'visible';
+	    }
+	
+	
+	    var asTypeJob = "[asTypeJob]";
+	
+	    if (asTypeJob == "sEnumBasic") {
+	        document.getElementById('spanEnumBasic').style.visibility = 'visible';
+	    } else if (asTypeJob == "sEnumSameTime") {
+	        document.getElementById('spanEnumSameTime').style.visibility = 'visible';
+	    } 
+	    
+	    var dateStart = Date.parse("[sDateStart]");
+	    if (dateStart) {
+	        document.getElementById('spansDateStart').innerText = "«" + dateContract.getDate() + "» " + getMonthText(dateContract.getMonth()) + "  " + dateContract.getFullYear() + " р.";
+	    }     
+    </script>
+</body>
+</html>

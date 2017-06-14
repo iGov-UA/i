@@ -19,7 +19,7 @@
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на увольнение" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Приказ на увольнение" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDismissal" name="ФИО увольняемого" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPersonnelNumber" name="Табельный номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPositionDismissal" name="Должность увольняемого" type="string"></activiti:formProperty>
@@ -45,15 +45,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAssistanceSum" name="Сумма (грн.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="сумма выходного пособия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sAssistanceSum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bAssistance&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sName_DelegateUT2&quot;],&quot;sValue&quot;:&quot;Визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_DelegateUT2" name="Руководитель; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_DelegateUT2" name="sLogin_DelegateUT2 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print_1.html] ; ;bVisible=false" type="string" default="Обходной лист" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -98,7 +97,7 @@
         <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print.html] ; ;bVisible=false" type="string" default="Приказ" writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="sBody_2" name="[pattern/print/iDoc/btsol/_doc_btsol_dismissal_print_1.html] ; ;bVisible=false" type="string" default="Обходной лист" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -116,6 +115,8 @@ execution.setVariable('processInstanceId', processInstanceId)
 var oSwitchStep2 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_2')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
 </script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
@@ -138,7 +139,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_3')</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_3')
+var sKey_GroupPostfix_New = execution.getVariable('sLogin_DelegateUT2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')</script>
     </scriptTask>
     <userTask id="usertask3" name="Ознакомление с приказом">
       <extensionElements>
@@ -183,18 +186,18 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Решение про увольнение]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[<b>Добрый день!</b><br><br>
-Ваше заявление на увольнение - подписано.<br>
-Хорошего дня!<br>
-<p>
-    Обязательно ознакомтесь с приказом по <a href="https://alpha.test.region.igov.org.ua">ссылке</a>
-</p>]]></activiti:expression>
+          <activiti:expression>&lt;b&gt;Добрый день!&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+Ваше заявление на увольнение - подписано.&lt;br&gt;
+Хорошего дня!&lt;br&gt;
+&lt;p&gt;
+    Обязательно ознакомтесь с приказом по &lt;a href="https://alpha.test.region.igov.org.ua"&gt;ссылке&lt;/a&gt;
+&lt;/p&gt;</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -256,7 +259,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="496.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="496.0" y="258.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="582.0" y="297.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="582.0" y="297.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">

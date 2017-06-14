@@ -1,5 +1,6 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
@@ -18,7 +19,10 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-    	LOG.info("MailTaskWithoutAttachment sNotification_day is >>>>> "+ oExecution.getVariable("sNotification_day"));
+        
+    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+    	LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+    	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);
@@ -28,13 +32,13 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             try {
                 oMail = sendToMailFromMongo(oExecution);
             } catch (Exception ex) {
-                LOG.error("MailTaskWithoutAttachment: {}", ex);
+                LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         } else{
             try {
                 oMail = Mail_BaseFromTask(oExecution);
             } catch (Exception ex) {
-                LOG.error("MailTaskWithoutAttachment: {}", ex);
+                LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         }
         

@@ -27,6 +27,17 @@ public class DocumentSubjectRightPermition extends AbstractEntity{
     
     @Transient
     private String sKeyGroup_Postfix;
+    
+    @Transient
+    private String sKey_Step;
+
+    public String getsKey_Step() {
+        return sKey_Step;
+    }
+
+    public void setsKey_Step(String sKey_Step) {
+        this.sKey_Step = sKey_Step;
+    }
 
     public void setsKeyGroup_Postfix(String sKeyGroup_Postfix) {
         this.sKeyGroup_Postfix = sKeyGroup_Postfix;

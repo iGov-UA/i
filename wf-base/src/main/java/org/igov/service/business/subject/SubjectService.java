@@ -7,7 +7,11 @@ package org.igov.service.business.subject;
 
 import com.google.common.base.Optional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.igov.model.subject.Subject;
 import org.igov.model.subject.SubjectAccount;
 import org.igov.model.subject.SubjectAccountDao;
@@ -16,14 +20,20 @@ import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectContactType;
 import org.igov.model.subject.SubjectContactTypeDao;
 import org.igov.model.subject.SubjectDao;
+import org.igov.model.subject.SubjectGroup;
+import org.igov.model.subject.SubjectGroupDao;
+import org.igov.model.subject.SubjectGroupResultTree;
 import org.igov.model.subject.SubjectHuman;
 import org.igov.model.subject.SubjectHumanDao;
 import org.igov.model.subject.SubjectHumanIdType;
 import org.igov.model.subject.SubjectHumanRole;
 import org.igov.model.subject.SubjectHumanRoleDao;
 import org.igov.model.subject.organ.SubjectOrganDao;
+import org.igov.service.business.document.DocumentStepService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,6 +67,18 @@ public class SubjectService {
 
     @Autowired
     private SubjectAccountDao subjectAccountDao;
+    
+    @Autowired
+    private DocumentStepService oDocumentStepService;
+    
+    @Autowired
+    private SubjectGroupTreeService oSubjectGroupTreeService;
+    
+    @Autowired
+    private SubjectGroupDao oSubjectGroupDao;
+    
+    @Autowired
+    private SubjectContactDao oSubjectContactDao;
 
     public Subject getSubjectByLoginAccount(String sLogin) {
         Subject result = null;
@@ -415,5 +437,105 @@ public class SubjectService {
             LOG.error("getLoginSubjectAccountByLoginIgovAccount: ", ex);
         }
         return result;
+    }
+    
+    /**
+     * Получение контактов. По sID_Field и snID_Process_Activiti вытаскивааем все логины, для каждого логина
+     * получаем дерево, для всего дерева ищем контакты.
+     * 
+     * @param snID_Process_Activiti     ид процесса
+     * @param sID_Field                 ид поля
+     * @param sSubjectType              тип SubjectGroup
+     * @param sSubjectContactType       тип контакта, который нужно получить
+     * @return                          лист контактов заданного типа
+     * @throws Exception 
+     */
+    public List<String> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, String sSubjectContactType) throws Exception {
+        
+        LOG.info("getSubjectContacts start...");        
+        //Login = sID_Group_Activiti
+        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
+        LOG.info("getSubjectContacts: asLogin={}", asLogin);
+        
+        Set<SubjectGroup> aoAllSubjectGroup = new HashSet<>();
+        
+        for (String sID_Group_Activiti : asLogin) {
+            
+            if (sSubjectType == null) {
+                sSubjectType = "Human";
+            }            
+            
+            List<SubjectGroup> aSubjectGroupParent = oSubjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
+            
+            //Если нет родителя ищем детей для рутового елемента
+            if(aSubjectGroupParent.isEmpty()) {
+                
+                //находим SubjectGroup рутового элемент
+                SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+                LOG.info("oSubjectGroupRoot={}", oSubjectGroupRoot);
+                String sSubjectGroupRootType = oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti);
+
+                SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
+                        .getCatalogSubjectGroupsTree(sID_Group_Activiti, 1l, null, false, 1l, sSubjectType);
+                LOG.info("oSubjectGroupChildResultTree={}", oSubjectGroupChildResultTree);
+                
+                aoAllSubjectGroup.addAll(oSubjectGroupChildResultTree.getaSubjectGroupTree());
+                
+                if (sSubjectGroupRootType.equals(sSubjectType)) {
+                    aoAllSubjectGroup.add(oSubjectGroupRoot);
+                }
+                
+            } else {
+                //ищем всех детей для родителя
+                for (SubjectGroup oSubjectGroup : aSubjectGroupParent) {
+                    
+                    String sID_Group_ActivitiParent = oSubjectGroup.getsID_Group_Activiti();
+                    LOG.info("sID_Group_ActivitiParent={}", sID_Group_ActivitiParent);
+                                        
+                    SubjectGroupResultTree oSubjectGroupChildResultTree = oSubjectGroupTreeService
+                        .getCatalogSubjectGroupsTree(sID_Group_ActivitiParent, 1l, null, false, 1l, sSubjectType);
+                    LOG.info("oSubjectGroupChildResultTree={}", oSubjectGroupChildResultTree);
+                    
+                    aoAllSubjectGroup.addAll(oSubjectGroupChildResultTree.getaSubjectGroupTree());
+                    
+                    //находим SubjectGroup родителя
+                    SubjectGroup oSubjectGroupParent = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_ActivitiParent);
+                    aoAllSubjectGroup.add(oSubjectGroupParent);
+                }           
+            }            
+        }
+        LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
+        
+        long nID_SubjectContactType = 0;
+        
+        //Определяем nID_SubjectContactType по заданному типу
+        if (sSubjectContactType.equalsIgnoreCase("Phone")) {
+        	nID_SubjectContactType = 0;        	
+        } else if (sSubjectContactType.equalsIgnoreCase("Email")) {
+        	nID_SubjectContactType = 1; 
+        } else if (sSubjectContactType.equalsIgnoreCase("Skype")) {
+        	nID_SubjectContactType = 2; 
+        } else if (sSubjectContactType.equalsIgnoreCase("GitHub")) {
+        	nID_SubjectContactType = 3; 
+        } else if (sSubjectContactType.equalsIgnoreCase("ldap")) {
+        	nID_SubjectContactType = 4; 
+        }
+        
+        List<SubjectContact> aoSubjectContact = new ArrayList<>();
+        List<String> asSubjectContact = new ArrayList<>();
+        
+        for (SubjectGroup oSubjectGroup : aoAllSubjectGroup) {              
+            LOG.info("oSubject.Id={}", oSubjectGroup.getoSubject().getId());
+            List<SubjectContact> aoSubjectContactToAdd = oSubjectContactDao.findContactsBySubjectAndContactType(oSubjectGroup.getoSubject(), nID_SubjectContactType);
+            LOG.info("aoSubjectContactToAdd={}", aoSubjectContactToAdd);
+            
+            aoSubjectContact.addAll(aoSubjectContactToAdd);
+        }        
+        LOG.info("aoSubjectContact={}", aoSubjectContact);
+
+        aoSubjectContact.forEach(oSubjectContact -> asSubjectContact.add(oSubjectContact.getsValue()));
+        LOG.info("asSubjectContact={}", asSubjectContact);
+        
+        return asSubjectContact;
     }
 }
