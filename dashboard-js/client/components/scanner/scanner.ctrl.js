@@ -510,7 +510,7 @@
         var scanFeed = $("#scan-form").find("#Form_ScanFeed");
         if (scanFeed.val() != 0 && scanFeed.is(':visible')) {
           var scanMode = $("#scan-form .mode-switch.active").attr('id');
-          
+
           localStorage.setItem("previousScanMode", scanMode);
           changeMode("package-scan");
           $("#scan-form").find("#conventional-scan").attr('disabled', 'disabled');
@@ -561,11 +561,7 @@
         });
       };
 
-      $("#restartLink").click(function () {
-        /*
-        $(".overlay-message").text("Перезапуск застосунку...");
-        $(".overlay, .overlay-message").show();
-        */
+      $scope.restartApp = function () {
         $scope.oStatusMessage = {
           sText: 'Перезапуск застосунку...',
           bShow: true
@@ -576,16 +572,16 @@
         }, null, true, function () {
           setTimeout(refreshPage, 2000);
         }, null, "Перезапуск застосунку...", false);
-      });
+      };
 
-      $("#restartWiaLink").click(function () {
+      $scope.restartWia = function () {
         sendAjax("RestartWia", function () {
           Modal.inform.success(function () {
           })('Служба WIA успішно перезапущена')
         }, null, true, function () {
           Modal.inform.warning()("Не вдалося перезапустити службу WIA");
         }, null, "Перезапуск WIA...", true);
-      });
+      };
 
       $(function () {
         var trueAjax = (function () {
