@@ -1,217 +1,163 @@
-﻿<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
-<div class="row navbar-fixed-top i-gov-navbar-fillter" ng-if="sSelectedTask!='tickets' && sSelectedTask!='tickets'">
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div>
-      <strong>Фільтр:</strong>
+<style>
+  .toRight {
+    float: right;
+  }
+</style>
 
-      <span ng-if="model.taskDefinition && model.taskDefinition.id != 'all'" class="btn btn-xs btn-default btn-filter-remove">
-        <span class="filter-text">Група: {{model.taskDefinition.name}}</span>
-        <a href="#" ng-click="resetTaskDefinition()" class="glyphicon glyphicon-remove"></a>
-      </span>
+<div ng-include="'components/navbar/navbar.html'" class="navbar-fixed-top"></div>
 
-      <span ng-if="model.userProcess && model.userProcess.sID != 'all'" class="btn btn-xs btn-default btn-filter-remove">
-        <span class="filter-text">БП: {{model.userProcess.sName}}</span>
-        <a href="#" ng-click="resetUserProcess()" class="glyphicon glyphicon-remove"></a>
-      </span>
-
-      <span ng-if="model.strictTaskDefinition && model.strictTaskDefinition.id != 'all'" class="btn btn-xs btn-default btn-filter-remove">
-        <span class="filter-text">Статус: {{model.strictTaskDefinition.name}}</span>
-        <a href="#" ng-click="resetStrictTaskDefinition()" class="glyphicon glyphicon-remove"></a>
-      </span>
-
-      <span ng-if="model.taskDefinition.id == 'all' && model.userProcess.sID == 'all' && model.strictTaskDefinition.id == 'all'">не налаштовано</span>
-    </div>
-    <a ng-click="isFillterFormOpen = !isFillterFormOpen" class="tiggle-filter">Налаштувати фільтр</a>
-
-    <div ng-show="isFillterFormOpen" class="isFillterFormOpen">
-      <form class="form-horizontal">
-        <div class="form-group">
-          <label class="col-sm-4 control-label">Фільтр за групою статусів</label>
-          <div class="col-sm-8">
-            <select class="form-control input-sm"
-                    ng-options="option.name for option in taskDefinitions track by option.id"
-                    ng-model="model.taskDefinition" ng-change="taskDefinitionsFilterChange(option)">
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-4 control-label">Фільтр БП</label>
-          <div class="col-sm-8">
-            <select class="form-control input-sm"
-                    ng-options="option.sName for option in userProcesses track by option.sID"
-                    ng-model="model.userProcess" ng-change="userProcessFilterChange()"></select>
-          </div>
-        </div>
-
-        <div class="form-group" ng-hide="!strictTaskDefinitions.length || model.userProcess.sID == 'all'">
-          <label class="col-sm-4 control-label">Фільтр за статусом</label>
-          <div class="col-sm-8">
-            <select class="form-control input-sm"
-                    ng-options="option.name for option in strictTaskDefinitions track by option.id"
-                    ng-model="model.strictTaskDefinition"
-                    ng-change="strictTaskDefinitionFilterChange(option)"></select>
-          </div>
-        </div>
-
-        <div class="row" ng-repeat="field in fieldFilter track by $index">
-        <div class="form-group col-sm-12">
-          <div class="col-sm-4 control-label">
-            <label ng-show="$index === 0">Фільтр по полях</label>
-          </div>
-          <div class="col-sm-8 filter-field-select" style="padding: 0">
-            <div class="col-sm-4">
-              <ui-select ng-model="field.select"
-                         theme="bootstrap"
-                         on-select="onSelectDataList($item, $index)">
-
-                <ui-select-match placeholder="Оберіть поле зі списку">
-                    <span title="{{$select.selected.sName}}">
-                      {{$select.selected.sName}}
-                    </span>
-                </ui-select-match>
-
-                <ui-select-choices repeat="field in fieldList | filter:$select.search">
-                    <span title="{{field.sName}}">
-                      {{field.sName}}
-                    </span>
-                </ui-select-choices>
-              </ui-select>
-            </div>
-
-            <div class="col-sm-4">
-              <input placeholder="Пошук за значенням" type="text" ng-model="field.string" class="form-control">
-            </div>
-
-            <div class="col-sm-3">
-              <select class="form-control"
-                      ng-model="selectedFieldFilterValue"
-                      ng-options="opt.name for opt in filterFieldsOptions"
-                      ng-change="onSelectEnumFields(selectedFieldFilterValue, $index)"
-                      ng-if="field.select.sID_Type === 'string'">
-                <option value="{{opt.value}}"></option>
-              </select>
-            </div>
-
-            <div class="col-sm-1">
-              <button class="btn btn-default glyphicon glyphicon-remove"
-                      ng-click="removeFieldFilter($index)"
-                      style="color: red;"
-                      ng-if="$index !== 0">
-              </button>
-            </div>
-          </div>
-        </div>
-        </div>
-
-        <div class="text task-filter">
-          <button class="btn btn-info" ng-click="isFillterFormOpen=false;">Прийняти</button>
-          <button class="btn btn-default" ng-click="startFilter()">Фiльтрувати поля</button>
-          <button class="btn btn-default" ng-click="resetTaskFilters();isFillterFormOpen=false;">Скинути фільтри</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<div class="row no-horizontal-margin" ng-style="printModalState.show && {'overflow-y':'hidden'}" ng-init="init()">
-  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 sidebar"  igov-when-scrolled="whenScrolled()" id="tasks-list-holder">
-    <div class="tasks">
-      <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
-        <div class="tickets-date">
-          <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
-             class="tickets-date-mode">{{mode.title}}</a>
-
-          <div style="position: relative">
-            <input datetimepicker
-                   class="form-control date-picker"
-                   type="text"
-                   ng-change="applyTicketsFilter()"
-                   options="{{ticketsFilter.options}}"
-                   datetimepickerOptions="{format: 'YYYY-MM-DD'}"
-                   ng-if="ticketsFilter.dateMode=='date'"
-                   ng-model="ticketsFilter.sDate" />
-          </div>
-        </div>
-
-        <div class="tickets-assign">
-          <input type="checkbox" ng-model="ticketsFilter.bEmployeeUnassigned" id="ticketsFilter_bEmployeeUnassigned" ng-change="applyTicketsFilter()"
-          />
-          <label for="ticketsFilter_bEmployeeUnassigned">Тільки не взяті в обробку</label>
-        </div>
-
-        <div class="clearfix"></div>
+<snap-drawers style="top: 61px; background-color: #E4E4E4;">
+  <snap-drawer>
+    <div class="col-xs-12" style="padding-left: 10px; padding-right: 10px">
+      <div class="btn-group menu-tabs" ng-if="!inUnassigned()">
+        <a ng-class="{'menu-tab-is-selected' : tabMenu === 'documents'}"
+           class="btn btn-link"
+           ng-click="tabMenuChange('documents')">Документи</a>
+        <a ng-class="{'menu-tab-is-selected' : tabMenu === 'tasks'}"
+           class="btn btn-link"
+           ng-click="tabMenuChange('tasks')">Звернення</a>
       </div>
 
-      <div class="sort-select" ng-if="sSelectedTask!='tickets' && sSelectedTask!='tickets'">
-        <div class="task-list-header">
-          <div class="task-list-header-row">
-            <div class="right-aligned task-list-header-cell">
-              <div ng-click="selectedSortOrderChanged()" style="cursor: pointer">
-                <span title="Увімкнено сортування від найдавніших"
-                      ng-if="selectedSortOrder.selected === 'datetime_asc'">
-                  Дата &#9660;
-                </span>
-                <span title="Увімкнено сортування від найновіших"
-                      ng-if="selectedSortOrder.selected === 'datetime_desc'">
-                  Дата &#9650;
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="create-buttons">
+        <button class="btn btn-default"
+                ng-if="tabMenu === 'documents'"
+                ui-sref="tasks.typeof.create({tab:'-doc'})"
+                ng-disabled="usersDocumentsBPs.length === 0">Створити документ</button>
+        <button class="btn btn-default"
+                ng-if="tabMenu === 'tasks'"
+                ui-sref="tasks.typeof.create({tab:'-task'})"
+                ng-disabled="userTasksBPs.length === 0">Створити завдання</button>
       </div>
-      <div class="list-group">
-        <div ng-if="filteredTasks.length>0" id="tasks-list">
 
-          <div ng-if="sSelectedTask=='tickets'">
-            <a class="list-group-item task {{sSelectedTask}}_{{task.id}}"
-               ng-repeat="task in tasks"
-               title="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
-               ng-class="{'active': isTaskSelected(task)}"
-               igov-focus-if="tasksStateModel.taskId == task.id"
-               ui-sref="tasks.typeof.view({id:task.id})">
-              <span class="ticket-date-time">{{task.sDateStart|date:'yyyy-MM-dd HH:mm'}}</span>, №{{task.nID_Instance}}{{lunaService.getLunaValue(task.nID_Instance)}},
-              (Тікет №{{task.nID}})
-              <br/> {{task.sNameBP}}. {{task.sUserTaskName}}.
+      <div style="margin-top: 20px">
+        <ul class="menu-list" ng-if="tabMenu === 'documents'">
+          <li ng-repeat="menu in iGovNavbarHelper.documentsMenus"
+              ng-show="isVisible(menu.type)"
+              ng-class="{'selected-menu-list': isTaskFilterActive(menu.type)}">
+
+            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
+               ng-if="menu.tab !== 'ecp'"
+               ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
+              <span ng-if="menu.showCount" class="label counter">{{menu.count}}</span>
             </a>
-          </div>
 
-          <div ng-if="sSelectedTask!='tickets'">
-            <a class="list-group-item task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}" href=""
-               ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
-               title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
-               ng-class="{'active': isTaskSelected(task)}"
-               igov-focus-if="tasksStateModel.taskId == task.id"
-               ui-sref="tasks.typeof.view({id:task.id})">
-
-              <!-- Task can have multiple statuses, but show only one sorted by priority -->
-              <span class="badge badge-task badge-red" title="Ответ дан от гражданина" ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
-              <span class="badge badge-task badge-yellow" title="Комментарий от гражданина" ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
-              <span class="badge badge-task" title="Вопрос задан от госслужащего" ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
-
-              <span class="ticket-date-time" ng-bind="::getTaskDateTimeTitle(task)"></span>
-              <span class="ticket-title" ng-bind="::getTaskTitle(task)"></span>
+            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
+               ng-if="menu.tab === 'ecp'"
+               ui-sref="tasks.typeof.ecp">{{menu.title}}
             </a>
+          </li>
+        </ul>
+
+        <ul class="menu-list" ng-if="tabMenu === 'tasks'">
+          <li ng-repeat="menu in iGovNavbarHelper.menus"
+              ng-show="isVisible(menu.type)"
+              ng-class="{'selected-menu-list': isTaskFilterActive(menu.type)}">
+
+            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
+               ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
+              <span ng-if="menu.showCount" class="label counter">{{menu.count}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </snap-drawer>
+</snap-drawers>
+
+<snap-content snap-opt-tap-to-close="false" style="top: 61px; background: #E4E4E4;">
+  <div class="main tasks-form" ui-view>
+
+    <div ng-if="spinner" ng-class="{'margin-left-35': isMenuOpened, 'margin-left-48': !isMenuOpened}">
+      <img class="idoc-spinner" src="../../assets/images/idoc-spinner.gif" alt="Завантаження...">
+    </div>
+
+    <div class="form-group col-md-5 search-box-idoc" ng-class="{'toRight': !isMenuOpened}" style="margin-right: 15px; margin-left: 15px;">
+      <search-box></search-box>
+    </div>
+
+    <div ng-class="{'col-xs-9': isMenuOpened, 'col-xs-12 ': !isMenuOpened}"
+         igov-when-scrolled="whenScrolled()"
+         id="tasks-list-holder">
+
+      <div class="tasks">
+        <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
+          <div class="tickets-date">
+            <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
+               class="tickets-date-mode">{{mode.title}}</a>
+
+            <div style="position: relative">
+              <input datetimepicker
+                     class="form-control date-picker"
+                     type="text"
+                     ng-change="applyTicketsFilter()"
+                     options="{{ticketsFilter.options}}"
+                     datetimepickerOptions="{format: 'YYYY-MM-DD'}"
+                     ng-if="ticketsFilter.dateMode=='date'"
+                     ng-model="ticketsFilter.sDate" />
+            </div>
           </div>
 
+          <div class="tickets-assign">
+            <input type="checkbox" ng-model="ticketsFilter.bEmployeeUnassigned" id="ticketsFilter_bEmployeeUnassigned" ng-change="applyTicketsFilter()"
+            />
+            <label for="ticketsFilter_bEmployeeUnassigned">Тільки не взяті в обробку</label>
+          </div>
+
+          <div class="clearfix"></div>
         </div>
 
-        <div class="text-center">
-          <div ng-if="tasksLoading">
-            <h3>Завантаження списку...</h3>
+        <div class="list-group">
+          <div ng-if="filteredTasks.length>0" id="tasks-list" ng-class="{'spinner-is-on': spinner}">
+
+            <div ng-if="sSelectedTask=='tickets'">
+              <a class="list-group-item task {{sSelectedTask}}_{{task.id}}"
+                 ng-repeat="task in tasks"
+                 title="Слот №{{task.nID_FlowSlot}} (Задача №{{task.nID_Task_Activiti}}, Процесс №{{task.nID_Instance}})"
+                 ng-class="{'active': isTaskSelected(task)}"
+                 igov-focus-if="tasksStateModel.taskId == task.id"
+                 ui-sref="tasks.typeof.view({id:task.id})">
+                <span class="ticket-date-time">{{task.sDateStart|date:'yyyy-MM-dd HH:mm'}}</span>, №{{task.nID_Instance}}{{lunaService.getLunaValue(task.nID_Instance)}},
+                (Тікет №{{task.nID}})
+                <br/> {{task.sNameBP}}. {{task.sUserTaskName}}.
+              </a>
+            </div>
+
+            <div ng-if="sSelectedTask!='tickets'">
+              <a class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}" href=""
+                 ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
+                 title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
+                 ng-class="{'active': isTaskSelected(task)}"
+                 igov-focus-if="tasksStateModel.taskId == task.id"
+                 ui-sref="tasks.typeof.view({id:task.id})"
+                 date-divider>
+
+                <!-- Task can have multiple statuses, but show only one sorted by priority -->
+                <span class="badge badge-task badge-red" title="Ответ дан от гражданина" ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
+                <span class="badge badge-task badge-yellow" title="Комментарий от гражданина" ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
+                <span class="badge badge-task" title="Вопрос задан от госслужащего" ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
+
+                <span class="ticket-date-time" style="color:black;font-size:13px" ng-bind="::getProcessName(task)"></span><br>
+                <span class="ticket-title" style="color: dimgrey;font-size: 11px;" ng-bind="::getTaskTitle(task)"></span>
+              </a>
+            </div>
+
           </div>
 
-          <div ng-if="tasksLoading===false && isLoadMoreAvailable()">
-            <button class="btn btn-info" ng-click="loadMoreTasks()">Завантажити ще</button>
-          </div>
+          <div class="text-center">
+            <div ng-if="tasksLoading">
+              <h3>Завантаження списку...</h3>
+            </div>
 
-          <div ng-if="tasksLoading===false && !isLoadMoreAvailable()">
-            <h3>Більше задач не знайдено</h3>
+            <div ng-if="tasksLoading===false && isLoadMoreAvailable()">
+              <button class="btn btn-info" ng-click="loadMoreTasks()">Завантажити ще</button>
+            </div>
+
+            <div ng-if="tasksLoading===false && !isLoadMoreAvailable()">
+              <h3>Більше задач не знайдено</h3>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-7 col-lg-offset-5 col-md-7 col-md-offset-5 col-sm-7 col-sm-offset-5 col-xs-7 col-xs-offset-5 main tasks-form"
-    ui-view>
-  </div>
-</div>
+</snap-content>

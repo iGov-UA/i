@@ -1,20 +1,10 @@
 <div ng-if="['date'].indexOf(item.type) > -1 && showField(item)" class="col-sm-12 form-field">
-            <span class="col-sm-6 task-form-title">
+            <span class="col-sm-6 task-form-title no-padding-left-right">
               <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && item.writable"
                                                       style="color: red">*</span></label>
             </span>
-  <div class="col-sm-6">
+  <div class="col-sm-6 no-padding-left-right">
     <div class="input-group" ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()">
-      <!--todo после тестов удалить с dateTimeRangePicker.directive.js-->
-      <!--<input datetimepicker-->
-             <!--format='DD/MM/YYYY'-->
-             <!--separator='/'-->
-             <!--class="form-control date-picker"-->
-             <!--name="{{item.id}}"-->
-             <!--ng-readonly="isFormPropertyDisabled(item)"-->
-             <!--ng-required="isRequired(item)"-->
-             <!--ng-model="item.value"-->
-             <!--ng-class="{submitted:isRequired(item) && isTaskSubmitted()}"/>-->
       <div class='input-group date' id='datetimepicker1'>
         <input type="text" class="form-control input-sm"
                format='DD/MM/YYYY'

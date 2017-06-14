@@ -134,7 +134,7 @@ exports.index = function (req, res) {
       query.start = query.nStart;
       query.taskInvolvedUser = user.id;
       query.finished = true;
-    } else if (req.query.filterType === 'documents') {
+    } else if (req.query.filterType === 'documents' || req.query.filterType === 'viewed' || req.query.filterType === 'myDrafts') {
       query.sFilterStatus = 'Documents';
       query.sLogin = user.id;
       query.includeProcessVariables = true;

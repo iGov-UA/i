@@ -5,6 +5,8 @@ angular.module('dashboardJsApp').controller('createTask',
 
     var isItemInLS = localStorage.getItem('creating');
 
+    $scope.selectedTask = JSON.parse(localStorage.getItem('selected-task'));
+
     if(isItemInLS) {
       $scope.creatingTask = JSON.parse(localStorage.getItem('creating'));
     }
@@ -100,7 +102,7 @@ angular.module('dashboardJsApp').controller('createTask',
         var unpopulatedFields = $scope.unpopulatedFields();
         if (unpopulatedFields.length > 0) {
           var errorMessage = 'Будь ласка, заповніть поля: ';
-          if (unpopulatedFields.length == 1) {
+          if (unpopulatedFields.length === 1) {
             var nameToAdd = unpopulatedFields[0].name;
             if (nameToAdd.length > 50) {
               nameToAdd = nameToAdd.substr(0, 50) + "...";
@@ -129,7 +131,7 @@ angular.module('dashboardJsApp').controller('createTask',
 
         tasks.submitNewCreatedTask($scope.creatingTask, id)
           .then(function (result) {
-            if(result.status == 500){
+            if(result.status === 500){
               var message = result.data.message;
               var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
               $scope.isInProcess = false;
@@ -138,14 +140,10 @@ angular.module('dashboardJsApp').controller('createTask',
             } else {
               var sMessage = "Форму відправлено.";
               var createdTaskNumber = result.nID_Task;
-              if(iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
+              Modal.inform.success(function (result) {
                 $state.go('tasks.typeof.view', {type:'unassigned', id:createdTaskNumber});
-              } else {
-                Modal.inform.success(function (result) {
-                  $state.go('tasks.typeof.view', {type:'unassigned', id:createdTaskNumber});
-                })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''), $scope.lightweightRefreshAfterSubmit());
-              }
-              $scope.$emit('task-submitted');
+              })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''), $scope.lightweightRefreshAfterSubmit());
+            $scope.$emit('task-submitted');
             }
           })
       }
@@ -240,6 +238,10 @@ angular.module('dashboardJsApp').controller('createTask',
 
     $scope.showField = function () {
       return true
+    };
+
+    $scope.backAndForth = function () {
+      window.history.back()
     };
 
     $scope.$watch(function() {

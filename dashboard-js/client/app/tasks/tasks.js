@@ -34,26 +34,6 @@
           ]
         }
       })
-      .state('tasks.ecp', {
-        url: '/ecp',
-        access: {
-          requiresLogin: true
-        },
-        views: {
-          '@': {
-            templateUrl: 'app/tasks/edsView.html',
-            controller: 'edsViewCtrl'
-          }
-        },
-        resolve: {
-          unsignedDocsList: [
-            'tasks',
-            function (tasks) {
-              return tasks.getUnsignedDocsList();
-            }
-          ]
-        }
-      })
       .state('tasks.typeof', {
         url: '/:type',
         access: {
@@ -64,6 +44,38 @@
             templateUrl: 'app/tasks/tasks.html',
             controller: 'TasksCtrl'
           }
+        }
+      })
+      .state('tasks.typeof.ecp', {
+        url: '/ecp',
+        templateUrl: 'app/tasks/edsView.html',
+        controller: 'edsViewCtrl',
+        access: {
+          requiresLogin: true
+        },
+        resolve: {
+          unsignedDocsList: [
+            'DocumentsService',
+            function (DocumentsService) {
+              return DocumentsService.getUnsignedDocsList();
+            }
+          ]
+        }
+      })
+      .state('tasks.typeof.create', {
+        url: '/create:tab',
+        templateUrl: 'app/tasks/createView.html',
+        controller: 'createView',
+        access: {
+          requiresLogin: true
+        }
+      })
+      .state('tasks.typeof.newtask', {
+        url: '/new/:id',
+        templateUrl: 'app/tasks/createTask.html',
+        controller: 'createTask',
+        access: {
+          requiresLogin: true
         }
       })
       .state('tasks.typeof.view', {
@@ -128,14 +140,14 @@
           ],
           documentRights: [
             'oTask',
-            'tasks',
+            'DocumentsService',
             'taskForm',
-            function (oTask, tasks, taskForm) {
+            function (oTask, DocumentsService, taskForm) {
             var searchResult = taskForm.filter(function (item) {
               return item.id === 'sKey_Step_Document';
             });
             if(searchResult.length !== 0) {
-              return tasks.getDocumentStepRights(oTask.processInstanceId);
+              return DocumentsService.getDocumentStepRights(oTask.processInstanceId);
             } else {
               return false;
             }
@@ -143,34 +155,95 @@
           ],
           documentLogins: [
             'oTask',
-            'tasks',
+            'DocumentsService',
             'documentRights',
-            function (oTask, tasks, documentRights) {
+            function (oTask, DocumentsService, documentRights) {
               if(documentRights) {
-                return tasks.getDocumentStepLogins(oTask.processInstanceId);
+                return DocumentsService.getDocumentStepLogins(oTask.processInstanceId);
               }
             }
           ],
           processSubject: [
             'oTask',
-            'tasks',
+            'DocumentsService',
             'documentRights',
             'taskForm',
-            function (oTask, tasks, documentRights) {
+            function (oTask, DocumentsService, documentRights) {
               // if(documentRights) {
-                return tasks.getProcessSubject(oTask.processInstanceId);
+                return DocumentsService.getProcessSubject(oTask.processInstanceId);
               // }
             }
           ]
         }
       })
-      .state('tasks.typeof.create', {
-        url: '/create/:id',
-        templateUrl: 'app/tasks/createTask.html',
-        controller: 'createTask',
+      .state('tasks.typeof.history', {
+        url: '/:id/history',
+        templateUrl: 'app/tasks/taskFormHistoryNew.html',
+        controller: 'historyCtrl',
         access: {
           requiresLogin: true
+        },
+        resolve: {
+          taskData: [
+            'tasks',
+            '$stateParams',
+            function(tasks, $stateParams) {
+              var params = {
+                nID_Task: $stateParams.id,
+                bIncludeGroups: true,
+                bIncludeStartForm: true,
+                bIncludeAttachments: true,
+                bIncludeProcessVariables: $stateParams.type === 'documents',
+                bIncludeMessages: true
+              };
+              return tasks.getTaskData(params, false)
+            }
+          ]
         }
-      });
+      })
+      .state('tasks.typeof.fulfillment', {
+        url: '/:id/fulfillment',
+        templateUrl: 'app/tasks/fulfillment.html',
+        controller: 'fulfillmentCtrl',
+        access: {
+          requiresLogin: true
+        },
+        resolve: {
+          oTask: [
+            'tasks',
+            '$stateParams',
+            'tasksStateModel',
+            '$q',
+            function (tasks, $stateParams, tasksStateModel, $q) {
+              tasksStateModel.taskId = $stateParams.id;
+              if ($stateParams.type == 'finished'){
+                var defer = $q.defer();
+                tasks.taskFormFromHistory($stateParams.id).then(function(response){
+                  defer.resolve(JSON.parse(response).data[0]);
+                }, defer.reject);
+                return defer.promise;
+              }
+              else {
+                return tasks.getTask($stateParams.id);
+              }
+            }
+          ],
+          taskData: [
+            'tasks',
+            '$stateParams',
+            function(tasks, $stateParams) {
+              var params = {
+                nID_Task: $stateParams.id,
+                bIncludeGroups: true,
+                bIncludeStartForm: true,
+                bIncludeAttachments: true,
+                bIncludeProcessVariables: $stateParams.type === 'documents',
+                bIncludeMessages: true
+              };
+              return tasks.getTaskData(params, false)
+            }
+          ]
+        }
+      })
   }
 })();
