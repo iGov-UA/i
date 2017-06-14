@@ -1,0 +1,187 @@
+<div class="row" ng-controller="NavbarCtrl">
+  <div ng-hide="hideNaviWhenLoginPage()">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="navbar navbar-default navbar-static-top i-gov-navbar">
+
+        <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" class="navbar-header i-gov-navbar-instruments-container">
+          <a href="#" class="i-gov-navbar-instruments"
+             ng-click="iGovNavbarHelper.areInstrumentsVisible = !iGovNavbarHelper.areInstrumentsVisible">
+            <img ng-show="!iGovNavbarHelper.areInstrumentsVisible" src="assets/images/u93.png">
+            <img ng-show="iGovNavbarHelper.areInstrumentsVisible" src="assets/images/u95.png">
+          </a>
+        </div>
+
+        <div ng-if="iGovNavbarHelper.auth.isLoggedIn()" collapse="iGovNavbarHelper.isCollapsed"
+             class="navbar-collapse collapse" id="navbar-main">
+
+          <ul class="nav navbar-nav" ng-show="!iGovNavbarHelper.areInstrumentsVisible" ng-init="iGovNavbarHelper.load()">
+            <li class="navbar-search">
+              <table>
+                <tr>
+                  <td>
+                  <span class="find-field-tooltip">
+                    <input type="text" ng-keyup="searchInputKeyup($event)" ng-model="tasksSearch.value"
+                           ng-class="{'archive-error': tasksSearch.archive && archiveTextValue()}" placeholder="Пошук"
+                           style="height: 22px"/>
+                      <span class="find-field-tooltip-text">Для пошуку введіть номер звернення або текст</span>
+                  </span><br>
+                    <div>
+                      <input type="checkbox" ng-model="tasksSearch.archive"><span class="small"> шукати в архіві</span>
+                    </div>
+                  </td>
+                  <td>
+                  <span class="label label-info"
+                        ng-if="tasksSearch.value && !tasksSearch.loading && tasksSearch.submited"
+                        ng-bind="tasksSearch.count"></span>
+
+                    <span class="label label-info"
+                          ng-if="tasksSearch.value && tasksSearch.loading && tasksSearch.submited">...</span>
+                  </td>
+                </tr>
+              </table>
+            </li>
+
+            <li ng-repeat="menu in iGovNavbarHelper.menus"
+                ng-show="isVisible(menu.type)"
+                ng-class="{active: isTaskFilterActive(menu.type)}">
+
+              <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
+                 ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
+                <span ng-if="menu.showCount" class="label label-info">{{menu.count}}</span>
+              </a>
+            </li>
+          </ul>
+
+          <ul class="nav navbar-nav" ng-if="iGovNavbarHelper.areInstrumentsVisible">
+            <li ng-repeat="menuItem in iGovNavbarHelper.instrumentsMenus"
+                ng-show="isVisibleInstrument(menuItem.state)"
+                ng-class="{'active': isSelectedInstrumentsMenu(menuItem)}">
+              <a ui-sref="{{::menuItem.state}}" ng-bind="::menuItem.title"></a>
+            </li>
+          </ul>
+
+
+          <div class="nav navbar-nav navbar-right right-menu-group">
+
+            <div class="nav navbar-nav document-button"
+                 ng-if="(userTasksBPs.length > 0 || usersDocumentsBPs.length > 0) && showCreateDocButton()">
+
+              <div class="btn-group-vertical" role="group" aria-label="...">
+                <a ng-click="openCloseUsersSelect('doc')"
+                   class="btn btn-md btn-default"
+                   ng-if="usersDocumentsBPs.length > 0 && iGovNavbarHelper.currentTab === 'documents'">Створити документ</a>
+                <a class="btn btn-md btn-default"
+                   ng-click="openCloseUsersSelect('task')"
+                   ng-if="userTasksBPs.length > 0 && iGovNavbarHelper.currentTab === 'selfAssigned'">Створити заявку</a>
+              </div>
+
+              <div class="document-select-block"
+                   ng-show="showOrHideSelect.show && showOrHideSelect.type === 'doc'"
+                   ng-class="{'move-select-block-to-bottom': userTasksBPs.length === 0}">
+                <ui-select style="border: 3px solid white; bottom: 6px; border-radius: 5px;"
+                           ng-model="document.selected"
+                           theme="bootstrap"
+                           on-select="onSelectDocument($item)">
+
+                  <ui-select-match placeholder="Оберіть документ зі списку">
+                    <span title="{{$select.selected.sName_BP}}">
+                      {{$select.selected.sName_BP}}
+                    </span>
+                  </ui-select-match>
+
+                  <ui-select-choices repeat="doc in usersDocumentsBPs | filter:$select.search">
+                    <span title="{{doc.sName_BP}}">
+                      {{doc.sName_BP}}
+                    </span>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+
+              <div class="document-select-block"
+                   ng-show="showOrHideSelect.show && showOrHideSelect.type === 'task'"
+                   ng-class="{'move-select-block-to-bottom': userTasksBPs.length === 0}">
+                <ui-select style="border: 3px solid white; bottom: 6px; border-radius: 5px;"
+                           ng-model="document.selected"
+                           theme="bootstrap"
+                           on-select="onSelectTask($item)">
+
+                  <ui-select-match placeholder="Оберіть документ зі списку">
+                    <span title="{{$select.selected.sName_BP}}">
+                      {{$select.selected.sName_BP}}
+                    </span>
+                  </ui-select-match>
+
+                  <ui-select-choices repeat="doc in userTasksBPs | filter:$select.search">
+                    <span title="{{doc.sName_BP}}">
+                      {{doc.sName_BP}}
+                    </span>
+                  </ui-select-choices>
+                </ui-select>
+              </div>
+            </div>
+
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
+                  {{getCurrentUserName()}} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dashboard-settings-menu" style="overflow: hidden">
+                  <li>
+                    <a href="#" ng-click="goToProfile()">Профіль</a>
+                  </li>
+
+                  <li role="separator" class="divider"></li>
+                  <li style="padding: 1px 20px" ng-click="$event.stopPropagation()">
+                    <div class="checkbox">
+                      <label class="ecp-description-for-checkbox" style="font-size: 1em">
+                        <input type="checkbox" ng-model="checkboxForAutoECP.status">
+                        <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                        Авто пiдпис ЕЦП
+                      </label>
+                    </div>
+                  </li>
+
+                  <li>
+                    <a href="#" ng-click="showSignDialog()">Підписати</a>
+                  </li>
+
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#" ng-click="logout()">Вийти</a></li>
+                </ul>
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="archive-container" ng-if="tasksSearch.archive && switchArchive && archive">
+            <div class="archive-close" ng-click="closeArchive()">X</div>
+            <div class="archive-main-content">
+              <label for="sID">ІД заявки:</label><span id="sID"> {{archive.sID_}}</span><br>
+              <label for="sName">Джерело:</label><span id="sName"> {{archive.oSourceDB.sName}}</span><br>
+              <label for="oDateStart">Дата початку:</label><span id="oDateStart"> {{archive.oDateStart}}</span><br>
+              <label for="oDateFinish">Дата закінчення:</label><span id="oDateFinish"> {{archive.oDateFinish}}</span><br>
+              <table>
+                <tr ng-repeat="attr in archive.aVisibleAttributes">
+                  <td style="width: 50%; text-align: right; padding-right: 5px">
+                    <label for="sFieldValue">{{attr.sName}} </label>
+                  </td>
+                  <td style="width: 50%; text-align: left; padding-left: 5px">
+                    <span id="sFieldValue" ng-repeat="attrValue in attr">{{attrValue.sValue || attrValue.nValue || attrValue.oValue || attrValue.bValue}}</span><br>
+                    <a href="/api/tasks/getFile/{{attr.oAttribute_File.nID}}"
+                       target="_blank"
+                       ng-if="attr.oAttribute_File.sID_Data">
+                      <b>Завантажити</b>
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

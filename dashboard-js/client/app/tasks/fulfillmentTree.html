@@ -1,0 +1,30 @@
+<div ng-class="{'tree-trunk': !hasParent()}">
+  <div data-ng-if="hasChildren()"
+       class="tree-parent"
+       data-ng-class="{'tree-child': hasParent()}">
+
+    <div data-ng-click="toggleExpanded()" class="clickable">
+      <i data-ng-class="{'glyphicon glyphicon-plus': !item.expanded, 'glyphicon glyphicon-minus': item.expanded}"></i>
+      <span ng-repeat="user in item.aUser" ng-if="item.sLogin === user.sLogin">
+                  <span style="font-size: 16px; font-weight: bold">{{user.sFirstName}} {{user.sLastName}} ({{item.oProcessSubjectStatus.sName}} {{item.sDateEdit}})</span>
+                  <p style="margin-left: 18px" ng-bind-html="item.sText"></p>
+              </span>
+    </div>
+
+    <ea-tree-view data-ng-if="item.expanded"
+                  branch-name="{{branchName}}"
+                  dataset-id="datasetId"
+                  callback="callback"
+                  items="item.aProcessSubjectChild">
+    </ea-tree-view>
+
+  </div>
+
+  <div data-ng-if="!hasChildren()"
+       class="tree-child notClickable">
+          <span ng-repeat="user in item.aUser" ng-if="item.sLogin === user.sLogin" style="margin-left: 18px">
+              <span style="font-size: 16px; font-weight: bold">{{user.sFirstName}} {{user.sLastName}} ({{item.oProcessSubjectStatus.sName}} {{item.sDateEdit}})</span>
+              <p style="margin-left: 18px" ng-bind-html="item.sText"></p>
+          </span>
+  </div>
+</div>

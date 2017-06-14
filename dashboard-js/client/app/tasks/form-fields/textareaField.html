@@ -1,4 +1,4 @@
-<div ng-if="item.type == 'textArea' && showField(item)" class="col-sm-12 form-field">
+<div ng-if="item.type == 'textArea' && showField(item)" class="col-sm-12 form-field no-padding-left-right">
   <div class="col-sm-6 task-form-title">
     <label>{{sFieldLabel(item.name)}} <span ng-if="isRequired(item) && !inUnassigned() && item.writable" style="color: red">*</span></label>
   </div>
@@ -9,6 +9,7 @@
               ng-required="isRequired(item)"
               ng-model="item.value"
               style="width:100%;"
+              class="form-control"
               ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
     </textarea>
     <span class="task-form-written-right-sight"

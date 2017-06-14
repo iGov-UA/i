@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dashboardJsApp')
-  .factory('Modal', function($rootScope, $modal) {
+  .factory('Modal', function($rootScope, $modal, $state) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -41,6 +41,7 @@ angular.module('dashboardJsApp')
               classes: 'btn-success',
               text: 'Продовжити роботу з необробленими',
               click: function(e) {
+                $state.go('tasks.typeof', {type:'unassigned'});
                 warningModal.close(e);
               }
             }]

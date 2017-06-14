@@ -71,46 +71,83 @@
 
 </style>
 
-<dl class="col-md-10" ng-repeat="item in taskData.aMessage">
-  <dt ng-if="!(item.sMessage && item.sMessage.match('%tableBody%'))" class="u21" ng-class="{'my': item.oSubjectMessageType.nID == 4 || item.oSubjectMessageType.nID == 8 || item.nID_HistoryEventType == 1}">
-    {{item.oSubjectMessageType.nID == 4 || item.oSubjectMessageType.nID == 8 || item.nID_HistoryEventType == 1 ? 'Гром.' : 'iGov'}}
-  </dt>
+<div class="back-forward-btns" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}">
+  <button class="btn btn-default" ui-sref="tasks.typeof.view({id: taskData.nID_Task})"> &#60;&#60; </button>
+</div>
 
-  <dd ng-if="!(item.sMessage && item.sMessage.match('%tableBody%'))" class="u31">
-    <time class="u33" datetime="{{item.sDate}}">{{item.sDate | fixDate}}</time>
-    <span class="u53"></span>
-    <p>{{item.sHead}}</p>
+<div class="tasks-form-view" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}">
 
-    <p ng-bind-html="item.sMessage || item.sBody" class="hide-table"></p>
-    <div ng-if="item.aSubjectMessageQuestionFields && item.aSubjectMessageQuestionFields.length > 0">
-      <table class="QuestionFields">
-        <tr>
-          <td>Поле</td>
-          <td>Значення</td>
-          <td ng-if="item.oSubjectMessageType.nID == 4">Нове значення</td>
-          <td>Коментар</td>
-        </tr>
-        <tr ng-repeat="field in item.aSubjectMessageQuestionFields">
-          <td>{{field.sName}}</td>
-          <td>{{field.sValue}}</td>
-          <td ng-if="item.oSubjectMessageType.nID == 4">{{field.sValueNew}}</td>
-          <td>{{field.sNotify}}</td>
-        </tr>
-      </table>
-    </div>
-    <div ng-repeat="oFile in item.osData.aFile" style="margin-top: 10px; margin-left: 5px">
-      <b>Прикріплено файл: </b><a href="{{getMessageFileUrl(item, oFile)}}" target="_blank"> {{oFile.sFileName}}</a>
-    </div>
-    <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer" class="form-horizontal">
-      <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">
-        <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
-          <div>{{oField.sName}} <span ng-hide="!oField.sName">:</span></div>
-          <div style="color: #CC0000">{{oField.sNotify}}</div>
-        </label>
-        <div class="col-md-6">
-          <strong ng-bind="oField.sValueNew"></strong>
+  <div class="task-number-date" style="margin-bottom: 10px">
+    <h3 class="display-inline-block">{{'№ ' + taskData.oProcess.nID + lunaService.getLunaValue(taskData.oProcess.nID)}}</h3>
+    <span class="float-right">від {{::creationDateFormatted(taskData.oProcess.sDateCreate)}}</span>
+  </div>
+
+  <div style="position: relative; margin-bottom: 24px;">
+    <span style="font-size: 18px">{{::taskData.oProcess.sName}}</span>
+  </div>
+
+  <div class="btn-group task-form-tabs">
+    <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'appeal', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link"
+       ui-sref="tasks.typeof.view({id: taskData.nID_Task})">
+      <span ng-if="tabMenu === 'tasks'">Завдання</span>
+      <span ng-if="tabMenu === 'documents'">Документ</span>
+    </a>
+
+    <a ng-if="tabMenu === 'documents'"
+       ng-class="{'tab-is-selected' : tabHistoryAppeal === 'fulfillment', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link"
+       ui-sref="tasks.typeof.fulfillment({id: taskData.nID_Task})">Виконання
+    </a>
+
+    <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'history', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link">
+      <span ng-if="tabMenu === 'documents'">Iсторiя документу</span>
+      <span ng-if="tabMenu === 'tasks'">Iсторiя завдання</span>
+    </a>
+  </div>
+
+  <dl class="col-md-10" ng-repeat="item in taskData.aMessage">
+    <dt ng-if="!(item.sMessage && item.sMessage.match('%tableBody%'))" class="u21" ng-class="{'my': item.oSubjectMessageType.nID == 4 || item.oSubjectMessageType.nID == 8 || item.nID_HistoryEventType == 1}">
+      {{item.oSubjectMessageType.nID == 4 || item.oSubjectMessageType.nID == 8 || item.nID_HistoryEventType == 1 ? 'Гром.' : 'iGov'}}
+    </dt>
+
+    <dd ng-if="!(item.sMessage && item.sMessage.match('%tableBody%'))" class="u31">
+      <time class="u33" datetime="{{item.sDate}}">{{item.sDate | fixDate}}</time>
+      <span class="u53"></span>
+      <p>{{item.sHead}}</p>
+
+      <p ng-bind-html="item.sMessage || item.sBody" class="hide-table"></p>
+      <div ng-if="item.aSubjectMessageQuestionFields && item.aSubjectMessageQuestionFields.length > 0">
+        <table class="QuestionFields">
+          <tr>
+            <td>Поле</td>
+            <td>Значення</td>
+            <td ng-if="item.oSubjectMessageType.nID == 4">Нове значення</td>
+            <td>Коментар</td>
+          </tr>
+          <tr ng-repeat="field in item.aSubjectMessageQuestionFields">
+            <td>{{field.sName}}</td>
+            <td>{{field.sValue}}</td>
+            <td ng-if="item.oSubjectMessageType.nID == 4">{{field.sValueNew}}</td>
+            <td>{{field.sNotify}}</td>
+          </tr>
+        </table>
+      </div>
+      <div ng-repeat="oFile in item.osData.aFile" style="margin-top: 10px; margin-left: 5px">
+        <b>Прикріплено файл: </b><a href="{{getMessageFileUrl(item, oFile)}}" target="_blank"> {{oFile.sFileName}}</a>
+      </div>
+      <div ng-if="!bOrderQuestion || $index !== 0 || sServerReturnOnAnswer" class="form-horizontal">
+        <div class="form-group" ng-repeat="oField in oOrderMessage.aData track by oField.sID">
+          <label class="col-md-6 control-label" style="padding-right: 0; padding-top: 0">
+            <div>{{oField.sName}} <span ng-hide="!oField.sName">:</span></div>
+            <div style="color: #CC0000">{{oField.sNotify}}</div>
+          </label>
+          <div class="col-md-6">
+            <strong ng-bind="oField.sValueNew"></strong>
+          </div>
         </div>
       </div>
-    </div>
-  </dd>
-</dl>
+    </dd>
+  </dl>
+</div>

@@ -16,6 +16,7 @@
              ng-readonly="isFormPropertyDisabled(item)"
              ng-required="isRequired(item)"
              ng-model="item.value"
+             class="form-control"
              ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"/>
 
       <!--field for OKPO search start-->
@@ -27,7 +28,7 @@
                ng-required="isRequired(item)"
                ng-class="{submitted: isRequired(item) && isTaskSubmitted()}"
                ng-change="getOrgData(item.value, item.id)"
-               class="okpo-field"
+               class="okpo-field form-control"
                ng-model-options="{debounce:1000}" />
         <span class="small-loading-okpo okpo-spinner"
               ng-if="orgIsLoading.status && orgIsLoading.field === item.id"></span>

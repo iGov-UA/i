@@ -14,9 +14,13 @@
       'link': '/tasks'
     }];
 
+    $scope.navBarIsCollapsed = true;
+    $scope.openCloseMenu = function () {
+      $scope.navBarIsCollapsed = !$scope.navBarIsCollapsed;
+    };
+
     envConfigService.loadConfig(function (config) {
       iGovNavbarHelper.isTest = config.bTest;
-      $rootScope.config = config;
     });
 
     $scope.isAdmin = Auth.isAdmin;

@@ -877,6 +877,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             //TODO: need remove in future
             String snID_Region = mParamRequest.get("nID_Region");
             if (snID_Region != null) {
+                LOG.info("nID_Region in saveNewTaskInfo is {}", snID_Region);
                 mParam.put("nID_Region", snID_Region);
             }
 

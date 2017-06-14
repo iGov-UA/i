@@ -8,14 +8,17 @@
   tasksCtrl.$inject = [
     '$scope', 'tasks', 'processes', 'Modal', 'identityUser', '$localStorage', '$filter', 'lunaService',
     'taskFilterService', 'defaultSearchHandlerService', '$rootScope',
-    '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel', 'Auth'
+    '$stateParams', '$q', '$timeout', '$state', 'tasksStateModel', 'stateModel', 'Auth', 'iGovNavbarHelper', 'snapRemote'
   ];
   function tasksCtrl($scope, tasks, processes, Modal, identityUser, $localStorage, $filter, lunaService,
                      taskFilterService, defaultSearchHandlerService, $rootScope,
-                     $stateParams, $q, $timeout, $state, tasksStateModel, stateModel, Auth) {
+                     $stateParams, $q, $timeout, $state, tasksStateModel, stateModel, Auth, iGovNavbarHelper, snapRemote) {
 
     $scope.tasks = null;
     $scope.sSelectedTask = $stateParams.type;
+    $scope.iGovNavbarHelper = iGovNavbarHelper;
+    iGovNavbarHelper.loadTaskCounters();
+    iGovNavbarHelper.loadTaskCounters('documents');
 
     $scope.printModalState = {show: false}; // wrapping in object required for 2-way binding
     $scope.taskDefinitions = taskFilterService.getTaskDefinitions();
@@ -162,7 +165,7 @@
     };
 
     var filterLoadedTasks = function () {
-      $scope.filteredTasks = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
+      $scope.filteredTasks = $rootScope.tasksList = taskFilterService.getFilteredTasks($scope.tasks, $scope.model);
 
       $timeout(function () {
         // trigger scroll event to load more tasks
@@ -383,8 +386,7 @@
     };
 
     $scope.getTaskTitle = function (task) {
-      return '№' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId)
-        + ' ' + $scope.getProcessName(task) + ' | ' + task.name;
+      return '(' + task.processInstanceId + lunaService.getLunaValue(task.processInstanceId) + ') ' + task.name;
     };
 
     $scope.getTaskDateTimeTitle = function (task) {
@@ -443,8 +445,8 @@
     var initDefaultTaskSelection = function () {
       if ($scope.selectedTask)
         $scope.selectTask($scope.selectedTask);
-      else if ($scope.filteredTasks && $scope.filteredTasks[0])
-        $scope.selectTask($scope.filteredTasks[0]);
+      // else if ($scope.filteredTasks && $scope.filteredTasks[0])
+      //   $scope.selectTask($scope.filteredTasks[0]);
     };
 
     var defaultErrorHandler = function (response, msgMapping) {
@@ -509,6 +511,80 @@
       $scope.fieldFilter.splice(index, 1);
       saveItemToLocalStorage('fieldFilter', $scope.fieldFilter);
     };
+
+    function toggleMenu(status) {
+      if(typeof status === 'boolean') {
+        if(status) {
+          $scope.isMenuOpened = true;
+          snapRemote.open('left');
+        } else {
+          $scope.isMenuOpened = false;
+          snapRemote.close();
+        }
+        localStorage.setItem('menu-status', JSON.stringify(status));
+      }
+    }
+
+    var menuStatus = localStorage.getItem('menu-status');
+    if(menuStatus) {
+      var status = JSON.parse(menuStatus);
+      toggleMenu(status);
+    } else {
+      $scope.isMenuOpened = false;
+      snapRemote.close();
+    }
+
+    $rootScope.toggleMenu = function () {
+      $scope.isMenuOpened = !$scope.isMenuOpened;
+      localStorage.setItem('menu-status', JSON.stringify($scope.isMenuOpened));
+    };
+
+    (function selectedTab() {
+      var tab = localStorage.getItem('currentTab');
+      if(tab) $scope.tabMenu = tab;
+      else $scope.tabMenu = 'tasks';
+    })();
+
+    $scope.tabMenuChange = function (param) {
+      $scope.tabMenu = param;
+      localStorage.setItem('currentTab', param);
+    };
+
+    $scope.isVisible = function(menuType){
+      if(menuType === 'all'){
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit');
+      }
+      if(menuType === 'finished'){
+        return Auth.isLoggedIn() && Auth.hasOneOfRoles('manager', 'admin', 'kermit', 'supervisor');
+      }
+      return Auth.isLoggedIn();
+    };
+
+    $scope.currentTab = function () {
+      for(var i=0; i<iGovNavbarHelper.menus.length; i++) {
+        if(iGovNavbarHelper.menus[i].tab === $stateParams.type) {
+          return iGovNavbarHelper.menus[i].title;
+        }
+      }
+
+      for(var o=0; o<iGovNavbarHelper.documentsMenus.length; o++) {
+        if(iGovNavbarHelper.documentsMenus[o].tab === $stateParams.type) {
+          return iGovNavbarHelper.documentsMenus[o].title;
+        }
+      }
+    };
+    snapRemote.getSnapper().then(function(snapper) {
+      snapper.on('animated', function() {
+        if(snapper.state().state === 'closed'){
+          $scope.isMenuOpened = false;
+          $scope.$apply();
+        } else if (snapper.state().state === 'left'){
+          $scope.isMenuOpened = true;
+          $scope.$apply();
+        }
+      });
+    });
+
 
     function getFilterFieldsList() {
       var user = Auth.getCurrentUser().id;

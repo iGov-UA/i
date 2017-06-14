@@ -5,28 +5,32 @@
 
       <span class="checkout-block-description">
         <span ng-if="!userCards">
-          Список карт для оплати пустий. Ви можете <a href="{{registerLink}}" target="_blank">додати Вашу карту</a>
-          або <a ng-click="authorizeCheckout()">оновити список</a>, якщо карта була додана раніше.
-        </span>
-        <span ng-if="userCards">
-          <a ng-click="authorizeCheckout()">Оновіть список</a>, якщо якщо відсутня карта, що була додана раніше.
+          Крок 1. Додайте картку у гаманець Masterpass за <a href="{{registerLink}}" target="_blank">цим посиланням</a>. <br>
+          Крок 2. <a ng-click="authorizeCheckout()">Натисніть тут</a>, щоб оновити список карток.
         </span>
       </span>
 
       <div class="list-group card-list-block" ng-if="userCards && !userCards.error">
-        <a class="list-group-item list-group-item-action checkout-list-card"
-           ng-repeat="card in userCards"
-           ng-click="selectCard($index, card.card_alias)"
-           ng-class="{'checkout-selected-card': isSelectedCard($index), 'card-list-disabled': checkoutConfirm.status === 'confirm' || checkoutSpinner}">
-          <span>{{card.card_alias}}</span><br>
-          <span>{{card.mask}}</span>
-          <button class="btn btn-link checkout-remove-card" ng-click="removeCardFromWallet(card.card_alias)">
-            <span class="glyphicon glyphicon-remove"></span>
-          </button>
-        </a>
+        <ul>
+          <li ng-repeat="card in userCards">
+            <label class="list-group-item list-group-item-action checkout-list-card"
+                   ng-click="selectCard(card.mask, card.card_alias)"
+                   ng-class="{'checkout-selected-card': isSelectedCard(card.mask), 'card-list-disabled': checkoutConfirm.status === 'confirm' || checkoutSpinner}">
+              <span>{{card.card_alias}}  </span>  <span>{{card.mask}}</span>
+              <input type="radio" ng-model="$parent.mask" name="name" value="{{card.mask}}" ng-init="$index==0?($parent.mask=card.mask):''">
+              <button type="button" class="btn btn-link checkout-remove-card" ng-click="removeCardFromWallet(card.card_alias)">
+                <span class="glyphicon glyphicon-remove"></span>
+              </button>
+            </label>
+          </li>
+        </ul>
       </div>
       <h4 ng-if="userCards && !userCards.error" class="checkout-add-card">
-        <a ng-click="addNewCardToWallet()">+ Додати карту</a>
+        <span>
+          Якщо Ви бажаєте використати іншу картку: <br>
+          Крок 1. Додайте картку у гаманець Masterpass за <a ng-click="addNewCardToWallet()">цим посиланням.</a> <br>
+          Крок 2. <a ng-click="authorizeCheckout()">Натисніть тут</a>, щоб оновити список карток. <br>
+        </span>
       </h4>
     </div>
 
@@ -36,6 +40,7 @@
         <h3 ng-bind="::getPrice() + ' грн'"></h3>
         <div class="checkout-btn-block">
           <button class="btn btn-xl btn-default checkout-confirm"
+                  type="button"
                   ng-click="createPayment()"
                   ng-disabled="!selectedCard.alias">Сплатити</button>
         </div>
