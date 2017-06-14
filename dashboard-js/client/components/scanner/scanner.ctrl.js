@@ -510,7 +510,7 @@
         var scanFeed = $("#scan-form").find("#Form_ScanFeed");
         if (scanFeed.val() != 0 && scanFeed.is(':visible')) {
           var scanMode = $("#scan-form .mode-switch.active").attr('id');
-          debugger;
+          
           localStorage.setItem("previousScanMode", scanMode);
           changeMode("package-scan");
           $("#scan-form").find("#conventional-scan").attr('disabled', 'disabled');
@@ -520,7 +520,6 @@
         } else {
           $("#scan-form").find("#conventional-scan").removeAttr('disabled');
           var previousScanMode = localStorage.getItem("previousScanMode");
-          debugger;
           changeMode(previousScanMode);
 
           replaceSelectFromHidden(selectDpi, selectDpiHidden, 'feederResolutions', 'flatbedResolutions');
@@ -571,7 +570,6 @@
           sText: 'Перезапуск застосунку...',
           bShow: true
         };
-
 
         sendAjax("Restart", function () {
           setTimeout(refreshPage, 2000);
