@@ -37,6 +37,49 @@
     </boundaryEvent>
     <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('visitDay')
+var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
+var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
+var tickCode=src.substr(src.indexOf('"ticket_code":"')+15,src.indexOf('"',src.indexOf('"ticket_code":"')+15)-(src.indexOf('"ticket_code":"')+15));
+execution.setVariable('sNotification_day', date_of_visit)
+execution.setVariable('sTicketNumber', tickNum)
+execution.setVariable('sTicketCode', tickCode)
+var src=date_of_visit
+var year=src.substr(0,4)
+var month=src.substr(5,2)
+var day=src.substr(8,2)
+var hour=src.substr(11,2)
+var minutes=src.substr(14,2)
+var seconds='00'
+var delta=1
+var day1=day
+var month1=month
+if (day!='01')
+    {
+        day1=+day-delta
+    }
+else
+    {
+        if ((month!='01')&amp;&amp;(month!='03'))
+          {
+              month1=+month-1
+              day1=30
+          }
+        else
+          {
+            if (month=='03')
+            {
+              month1='02'
+              day1='28'
+            }            
+          }
+     }
+var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
+execution.setVariable('sEndDay', timerEnd)</script>
+    </scriptTask>
+    <sequenceFlow id="flow28" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -187,9 +230,6 @@ execution.setVariable('sEndDay', timerEnd)</script>
       </extensionElements>
     </endEvent>
     <sequenceFlow id="flow43" sourceRef="scripttask2" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Формирование даты" activiti:delegateExpression="#{queueDataConvertDate}"></serviceTask>
-    <sequenceFlow id="flow44" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow45" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0177_zagranChild_DMS">
     <bpmndi:BPMNPlane bpmnElement="dms_0177_zagranChild_DMS" id="BPMNPlane_dms_0177_zagranChild_DMS">
@@ -204,6 +244,9 @@ execution.setVariable('sEndDay', timerEnd)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="115.0" y="34.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="65.0" width="105.0" x="331.0" y="75.0"></omgdc:Bounds>
@@ -220,9 +263,6 @@ execution.setVariable('sEndDay', timerEnd)</script>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="800.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="51.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="80.0" y="107.0"></omgdi:waypoint>
@@ -230,6 +270,14 @@ execution.setVariable('sEndDay', timerEnd)</script>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="156.0" y="94.0"></omgdi:waypoint>
         <omgdi:waypoint x="132.0" y="69.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="185.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="315.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="331.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="436.0" y="107.0"></omgdi:waypoint>
@@ -244,14 +292,6 @@ execution.setVariable('sEndDay', timerEnd)</script>
         <omgdi:waypoint x="680.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="150.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="185.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="305.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="331.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

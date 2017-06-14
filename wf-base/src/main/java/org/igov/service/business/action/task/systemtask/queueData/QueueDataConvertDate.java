@@ -1,6 +1,8 @@
 package org.igov.service.business.action.task.systemtask.queueData;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,8 +25,6 @@ public class QueueDataConvertDate extends AbstractModelTask implements JavaDeleg
     static final transient Logger LOG = LoggerFactory
             .getLogger(QueueDataConvertDate.class);
     
-    SimpleDateFormat format = new SimpleDateFormat("dd MMMM, HH:mm", Locale.US);
-
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         StartFormData oStartformData = oExecution.getEngineServices()
@@ -50,13 +50,28 @@ public class QueueDataConvertDate extends AbstractModelTask implements JavaDeleg
 				String sDate = (String) m.get(QueueDataFormType.sDate);
 				LOG.info("(sDate queueDataConvertDate={})", sDate);
 				
+				String sDateRes = formateDate(sDate);
 				
+				LOG.info("(sDateRes={})", sDateRes);
 
 				oExecution.setVariable("sNotification_day", sDate);
 				LOG.info("(date_of_visit={})", sDate);
 			}
 		}
 
+	}
+	
+	public static String formateDate(String dateString) {
+	    Date date;
+	    String formattedDate = "";
+	    try {
+	        date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault()).parse(dateString);
+	        formattedDate = new SimpleDateFormat("dd MMMM, HH:mm:ss", new Locale("uk","UA")).format(date);
+	    } catch (ParseException e) {
+	        e.printStackTrace();
+	    }
+
+	    return formattedDate;
 	}
 
 }
