@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="justice_0196_TabooReg" name="Заборона вчинення реєстраційних дій щодо власного об`єкта нерухомого майна" isExecutable="true">
-    <documentation>AGVersion: 2017.06.10
+    <documentation>
+		AGVersion: 2017.06.14
 		+ файлы по новой схеме
 		+ цветные метки
 		+ линии разделительные
@@ -11,7 +12,8 @@
 		+ письмо чиновнику
 		+ письмо заявителю
 		- смс в письмах
-		+ ссылка на ЭЦП в лейбле вставлена в текст</documentation>
+		+ ссылка на ЭЦП в лейбле вставлена в текст
+	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="markerAddressFactual" name="для правки bankIdAddressFactual; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_IdAddressFactual&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddressFactual&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdAddressFactual&quot;},&quot;sCondition&quot;:&quot;[sOverload] !='.' || [sOverload]!='null'&quot;}}}"></activiti:formProperty>
@@ -282,12 +284,12 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>".
-<br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;".
+&lt;br /&gt;
 Оскільки на підставі Ваших ПІБ формується заява для отримання послуги, вони повинні бути виключно українською мовою та відповідати дійсності. 
-<br />
+&lt;br /&gt;
 Для їх зміни на коректні - зверніться до установи (або його відділення) яка отримувала Ваші дані. 
-<br />
+&lt;br /&gt;
 Зараз Вам відмовлено на цій підставі.
 Просимо після виправлення ситуації подавати нове звернення.
 
@@ -428,7 +430,7 @@ ${sComment}
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.<br /><br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про державну реєстрацію заборони вчинення реєстраційних дій щодо власного об`єкта нерухомого майна.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія картки прийому заяви (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
