@@ -1968,7 +1968,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
                 long totalNumber = 0;
 
-                Object taskQuery = oActionTaskService.createQuery(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+                Object taskQuery = oActionTaskService.createQueryNew(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
                         sFilterStatus, groupsIds, soaFilterField);
                 // LOG.info("taskQuery: ", taskQuery );
 

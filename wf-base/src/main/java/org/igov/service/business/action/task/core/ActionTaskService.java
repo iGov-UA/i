@@ -101,6 +101,9 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
     private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpeneUnassigneUnprocessedDocument";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -2599,6 +2602,106 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
             } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+            }
+            LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                ((TaskQuery) taskQuery).orderByTaskCreateTime();
+            } else {
+                ((TaskQuery) taskQuery).orderByTaskId();
+            }
+
+            if (!StringUtils.isEmpty(soaFilterField)) {
+                JSONArray oJSONArray = new JSONArray(soaFilterField);
+                Map<String, String> mFilterField = new HashMap<>();
+                for (int i = 0; i < oJSONArray.length(); i++) {
+                    JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                    if (oJSON.has("sID") && oJSON.has("sValue")) {
+                        mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        ((TaskQuery) taskQuery)
+                                .processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                    }
+                }
+                LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
+            }
+            ((TaskQuery) taskQuery).asc();
+        }
+
+        return taskQuery;
+    }
+    
+    public Object createQueryNew(String sLogin,
+            boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
+            List<String> groupsIds, String soaFilterField) {
+
+        if (!StringUtils.isEmpty(soaFilterField)) {
+        }
+        Object taskQuery;
+        if (THE_STATUS_OF_TASK_IS_CLOSED.equalsIgnoreCase(sFilterStatus)) {
+            taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
+            } else {
+                ((TaskInfoQuery) taskQuery).orderByTaskId();
+            }
+
+            if (!StringUtils.isEmpty(soaFilterField)) {
+                JSONArray oJSONArray = new JSONArray(soaFilterField);
+                Map<String, String> mFilterField = new HashMap<>();
+                for (int i = 0; i < oJSONArray.length(); i++) {
+                    JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                    if (oJSON.has("sID") && oJSON.has("sValue")) {
+                        mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        ((TaskInfoQuery) taskQuery).processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+//                                    
+                    } else {
+                        LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                    }
+                }
+                LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
+            }
+            ((TaskInfoQuery) taskQuery).asc();
+        } else if (bIncludeAlienAssignedTasks) {
+            StringBuilder groupIdsSB = new StringBuilder();
+            for (int i = 0; i < groupsIds.size(); i++) {
+                groupIdsSB.append("'");
+                groupIdsSB.append(groupsIds.get(i));
+                groupIdsSB.append("'");
+                if (i < groupsIds.size() - 1) {
+                    groupIdsSB.append(",");
+                }
+            }
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+            sql.append(groupIdsSB.toString());
+            sql.append(") ");
+
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                sql.append(" order by task.CREATE_TIME_ asc");
+            } else {
+                sql.append(" order by task.ID_ asc");
+            }
+            LOG.info("Query to execute {}", sql.toString());
+            taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
+        } else {
+            taskQuery = oTaskService.createTaskQuery();
+            long startTime = System.currentTimeMillis();
+            if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED.equalsIgnoreCase(sFilterStatus)) {
+                ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+            } else if (THE_STATUS_OF_TASK_IS_OPENED.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
+                LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT.equals(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT.equals(sFilterStatus)) {
+                
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT.equals(sFilterStatus)) {
+            
             }
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
