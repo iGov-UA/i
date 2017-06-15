@@ -2635,8 +2635,6 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
             List<String> groupsIds, String soaFilterField) {
 
-        if (!StringUtils.isEmpty(soaFilterField)) {
-        }
         Object taskQuery;
         if (THE_STATUS_OF_TASK_IS_CLOSED.equalsIgnoreCase(sFilterStatus)) {
             taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
