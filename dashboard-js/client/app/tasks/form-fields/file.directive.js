@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dashboardJsApp').directive('fileField', function() {
+angular.module('dashboardJsApp').directive('fileField', function($modal, $http, generationService, Modal, ScannerService, $base64) {
   return {
     require: 'ngModel',
     restrict: 'E',
@@ -15,20 +15,69 @@ angular.module('dashboardJsApp').directive('fileField', function() {
       fileField.bind('click', function(e) {
         e.stopPropagation();
       });
-      element.bind('click', function(e) {
+      element.find('#upload-button').bind('click', function(e) {
         e.preventDefault();
         fileField[0].click();
       });
+
+
+
+      scope.openScanModal = function (item) {
+        $http.get(ScannerService.getTwainServerUrl()).success(function (data) {
+          if(data){
+            scanDocument();
+          }
+        }).error(function (err) {
+          Modal.inform.error()('Сталася помилка при намаганні перевірити підключення до служби TWAIN@Web: ' + JSON.toString(err));
+        });
+
+      };
+
+      function scanDocument() {
+        var modalInstance = $modal.open({
+          animation: true,
+          templateUrl: 'components/scanner/scan-modal.html',
+          controller: 'ScannerModalCtrl',
+          resolve: {}
+        });
+
+        modalInstance.result.then(function (oScanResult) {
+          if(oScanResult.saveAs === 'saveAs=1' && oScanResult.downloadFiles.length > 1){
+            /*
+            $http.get(oScanResult.downloadUrl).success(function (data) {
+              var base64content = $base64.encode(data);
+              uploadFile(base64content, oScanResult.downloadFiles["0"].file, 'application/pdf');
+            })*/
+
+          } else {
+            var base64content = oScanResult.downloadFiles["0"].base64;
+            var sName = oScanResult.downloadFiles["0"].file;
+            uploadFile(base64content, sName, getImagesMymeType(sName));
+          }
+
+        });
+      }
+
+      function getImagesMymeType(sFileName) {
+        var ext = sFileName.split('.').pop().toLowerCase();
+        if(ext === 'jpg'){
+          return 'image/jpeg';
+        } else if (ext === 'bmp'){
+          return 'image/bmp';
+        } else if (ext === 'tiff'){
+          return 'image/tiff'
+        }
+        return undefined;
+      }
+
+      function uploadFile(base64content, fileName, sMimeType) {
+        var aFiles = [];
+        var oScannedFile = generationService.getFileFromBase64(base64content, fileName, sMimeType);
+        aFiles.push(oScannedFile);
+        scope.upload(aFiles, attrs.name);
+      }
     },
-    template: '<form>' +
-                '<button type="button" ng-disabled="isFileProcessUploading.bState" ng-class="{\'btn-igov\':field && field.value, \'btn-link attach-btn\':!field, \'btn-default\':field && !field.value}" class="btn">' +
-                  '<span ng-disabled="isFormPropertyDisabled(item)">{{field && field.value ? "Завантажити iнший файл" : "Завантажити файл"}}</span>' +
-                  '<input type="file" style="display:none" ng-disabled="isFormPropertyDisabled(item)">' +
-                '</button>' +
-                '<span ng-if="item.fileName || field.fileName">Файл: <label>{{item.fileName || field.fileName}}</label></span>' +
-                '<br>' +
-                '<span ng-if="field.signInfo">Пiдпис: <label>{{field.signInfo.customer.signatureData.name || field.signInfo.name}}</label></span>' +
-              '</form>',
+    templateUrl: 'app/tasks/form-fields/file-field.html',
     replace: true,
     transclude: true
   };

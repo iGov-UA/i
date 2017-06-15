@@ -6,12 +6,13 @@
                 <div class="col-sm-6" style="margin-bottom: 15px">
                   <div ng-if="(!isFormPropertyDisabled(item) && isDocumentWritable(item)) && isDocumentNotSigned()">
                     <select name="{{item.id}}"
-                            style="width:100%; height:25px;;"
+                            style="width:100%;"
                             ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
                             ng-required="isRequired(item)"
                             ng-model="item.value"
                             ng-change="updateAssigneeName(item)"
                             ng-disabled="isFormPropertyDisabled(item) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                            class="form-control"
                             ng-class="{submitted:isRequired(item) && isTaskSubmitted()}">
                     </select>
                   </div>

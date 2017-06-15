@@ -74,6 +74,7 @@ public class Mail extends Abstract_Mail {
         LOG.info("(getHead()={})", getHead());
 
         Boolean bUniSender = generalConfig.isEnable_UniSender_Mail();
+        bUniSender = false;
         LOG.info("(bUniSender={})", bUniSender);
         LOG_BIG.info("(bUniSender={})", bUniSender);
         LOG_BIG.debug("(getFrom()={})", getFrom());
@@ -176,7 +177,7 @@ public class Mail extends Abstract_Mail {
             LOG.info("oMimeMessage head: " + getHead());
 
             _AttachBody(getBody());
-            LOG.info("(getBody()={})", getBody());
+            //LOG.info("(getBody()={})", getBody());
             
             if(getoMultiparts() != null){
                 oMimeMessage.setContent(getoMultiparts());

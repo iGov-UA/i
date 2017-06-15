@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('dashboardJsApp').directive('delegateButton', ['$http', 'tasks', 'Auth', '$rootScope', 'Modal', '$timeout',
-  function($http, tasks, Auth, $rootScope, Modal, $timeout) {
+angular.module('dashboardJsApp').directive('delegateButton', ['$http', 'tasks', 'Auth', '$rootScope', '$timeout', 'DocumentsService',
+  function($http, tasks, Auth, $rootScope, $timeout, DocumentsService) {
   return {
     restrict: 'EA',
     templateUrl: 'components/delegateButton/delegate.html',
@@ -82,7 +82,7 @@ angular.module('dashboardJsApp').directive('delegateButton', ['$http', 'tasks', 
           }
         }
 
-        tasks.delegateDocToUser(params).then(function () {
+        DocumentsService.delegateDocToUser(params).then(function () {
           $timeout(function(){
             scope.$apply();
             Modal.inform.success()('Документ успішно делеговано');

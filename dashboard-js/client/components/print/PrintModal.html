@@ -1,18 +1,11 @@
 <div class='ng-modal' ng-show='printModalState.show'>
   <div class='ng-modal-overlay' ng-click='hideModal()'></div>
-  <div class='ng-modal-dialog' ng-style='dialogStyle'>
+  <div class='ng-modal-dialog' ng-style='dialogStyle' ng-class="{'col-xs-9 ml-10':isMenuOpened, 'col-xs-12':!isMenuOpened}">
     <div class='ng-modal-header'>
       <div class='ng-modal-close' ng-click='hideModal()'>X</div>
     </div>
     <div class='col-md-12 ng-modal-dialog-content-view' ng-style='dialogStyle'>
       <div class='ng-modal-dialog-content' ng-transclude></div>
-    </div>
-    <div class='ng-modal-dialog-print-button' ng-if="$parent.$root.config.bTest">
-      <button ng-if="!(model.printTemplate.oEDS && model.printTemplate.oEDS.sSignedContentURL)" ng-click='signWithEDS()' class='btn btn-igov'>Підписати</button>
-      <a ng-if="model.printTemplate.oEDS && model.printTemplate.oEDS.sSignedContentURL" download="{{ model.printTemplate.oEDS.sSignedContentName }}.pdf" ng-href="{{ model.printTemplate.oEDS.sSignedContentURL }}" class='btn btn-igov'>Скачати документ</a>
-    </div>
-    <div class='ng-modal-dialog-print-button' ng-if="$parent.$root.config.bTest">
-      <button ng-if="showSignAndUploadButton()" ng-click='signAndUpload()' class='btn btn-igov'>Підписати та надіслати</button>
     </div>
     <div class='ng-modal-dialog-print-button'>
       <button ng-click='printContent()' class='btn btn-igov'>Роздрукувати</button>

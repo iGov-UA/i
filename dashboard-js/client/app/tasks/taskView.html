@@ -21,19 +21,22 @@
   .documentUsers {
     margin-top: 20px;
   }
-  .thisIsCurrentUser {
-    font-weight: bold;
-  }
-  .documentRole {
-    font-size: 15px;
-  }
   .documentDate {
     float: right;
     /*margin-left: 10px;*/
   }
 </style>
 
-<div class="tasks-form-view">
+<div class="back-forward-btns" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened, 'spinner-is-on': spinner}">
+  <button class="btn btn-default" ng-click="backAndForth()">&#60;&#60;</button>
+
+  <div style="float: right;">
+    <button class="btn btn-default" ng-click="nextOrPrevTask(-1)">&#60;</button>
+    <button class="btn btn-default" ng-click="nextOrPrevTask(1)">&#62;</button>
+  </div>
+</div>
+
+<div class="tasks-form-view" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened, 'spinner-is-on': spinner}">
   <show-error data="error" ng-show="error"></show-error>
 
   <div class="task-view-info">
@@ -43,26 +46,42 @@
   </div>
 
   <!--номер заявки и дата подачи-->
-  <div class="task-number-date" style="margin-bottom: 30px">
-    <h3 class="display-inline-block">{{nID_Process + lunaService.getLunaValue(nID_Process)}}</h3>
+  <div class="task-number-date" style="margin-bottom: 10px">
+    <h3 class="display-inline-block">{{'№ ' + nID_Process + lunaService.getLunaValue(nID_Process)}}</h3>
     <span class="float-right">від {{creationDateFormatted(taskData.oProcess.sDateCreate)}}</span>
   </div>
 
-  <div class="open-full-info">
-    <a class="btn btn-link glyphicon glyphicon-modal-window" title="Відкрити повний профіль задачі" href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()"></a>
+  <div style="position: relative; margin-bottom: 24px;">
+    <span style="font-size: 18px">{{taskData.oProcess.sName}}</span>
   </div>
 
+  <!--<div class="open-full-info">-->
+    <!--<a class="btn btn-link glyphicon glyphicon-modal-window" title="Відкрити повний профіль задачі" href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()"></a>-->
+  <!--</div>-->
+
   <div class="btn-group task-form-tabs" ng-if="!inUnassigned()">
-    <a href='#' ng-class="{'tab-is-selected' : tabHistoryAppeal === 'appeal'}"
-                class="btn btn-link"
-                ng-click="tabHistoryAppealChange('appeal')">Звернення</a>
-    <a href='#' ng-class="{'tab-is-selected' : tabHistoryAppeal === 'history'}"
-                class="btn btn-link"
-                ng-click="tabHistoryAppealChange('history')">Історія діалогу</a>
+    <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'appeal', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link">
+      <span ng-if="tabMenu === 'tasks'">Завдання</span>
+      <span ng-if="tabMenu === 'documents'">Документ</span>
+    </a>
+
+    <a ng-if="tabMenu === 'documents'"
+       ng-class="{'tab-is-selected' : tabHistoryAppeal === 'fulfillment', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link"
+       ui-sref="tasks.typeof.fulfillment({id: taskId})">Виконання
+    </a>
+
+    <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'history', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link"
+       ui-sref="tasks.typeof.history({id: taskId})">
+      <span ng-if="tabMenu === 'documents'">Iсторiя документу</span>
+      <span ng-if="tabMenu === 'tasks'">Iсторiя завдання</span>
+    </a>
   </div>
 
   <!--форма заявки-->
-  <div ng-if="tabHistoryAppeal === 'appeal' && !clarify">
+  <div ng-if="!clarify">
     <form name="form" novalidate style="padding-bottom: 70px">
       <div ng-repeat="item in taskForm" class="task-form-property row" ng-if="isFieldVisible(item)" ng-class="getBpAndFieldID(item)">
         <!-- сепаратор -->
@@ -244,7 +263,7 @@
         </div>
 
         <div ng-if="sSelectedTask !== 'unassigned'">
-          <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
+          <div class="dropup" ng-repeat="item in taskData.aAttachment" style="position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.description | tableButtonFilter}}</p>
               <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
@@ -266,16 +285,17 @@
             <button style="position:relative;"
                     ng-if="item.description !== ' '"
                     type="button"
-                    class="btn btn-link attach-btn dropdown-toggle"
+                    class="btn btn-link attach-btn idoc-attach-button dropdown-toggle"
                     data-toggle="dropdown"
                     title="{{item.description | tableButtonFilter}}">
+              <i class="fa fa-paperclip" aria-hidden="true"></i>
               {{item.description | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
 
           <div class="dropup"
                ng-repeat="item in taskData.aNewAttachment"
-               style="display: inline-block; position:relative;">
+               style="position:relative;">
 
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.sFieldLabel | tableButtonFilter}}</p>
@@ -304,9 +324,10 @@
             <button style="position:relative;"
                     ng-if="item.name !== ' '"
                     type="button"
-                    class="btn btn-link attach-btn dropdown-toggle"
+                    class="btn btn-link attach-btn idoc-attach-button dropdown-toggle"
                     data-toggle="dropdown"
                     title="{{item.sFieldLabel | tableButtonFilter}}">
+              <i class="fa fa-paperclip" aria-hidden="true"></i>
               {{item.sFieldLabel | cut : true : 25 | tableButtonFilter}}
             </button>
           </div>
@@ -318,16 +339,17 @@
 
       <!--document users role-->
       <div class="documentUsers">
-        <hr class="hr-divider" ng-if="documentLogins && documentLogins.length !== 0">
+        <div class="addition-hr" ng-if="documentLogins && documentLogins.length !== 0">
+          <hr class="hr-divider side-left"><span>Узгодження</span><hr class="hr-divider side-right">
+        </div>
         <div ng-if="documentLogins" ng-repeat="users in documentLogins" class="users-list">
           <div ng-if="users.aUser.length !== 0">
-
             <div ng-if="users.bWrite" class="col-xs-12 user-in-users-list" style="margin-bottom: 10px">
-              <div class="col-xs-8">
-                <span class="documentRole">{{users.sName}}:</span><br>
-                <span ng-repeat="user in users.aUser">
+              <div class="col-xs-12" ng-repeat="user in users.aUser">
+
+                <div class="col-xs-6">
+                  <div style="float:right;">
                   <span ng-if="user.sLogin === user.sID_Group"
-                        ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}"
                         title="{{user.sLogin}}">
                     {{ user.sFIO }}
                     <span ng-if="users.sDate && users.sFIO_Referent"
@@ -335,50 +357,61 @@
                           style="font-weight: normal">
                       ({{users.sFIO_Referent}})
                     </span>
-
                   </span>
-                </span>
-              </div>
-              <div class="col-xs-4">
-                <div ng-if="!users.bNeedECP">
-                  <span class="documentDate">{{users.sDate ? users.sDate : 'Немає підпису'}}</span>
+                  </div>
+                  <span class="documentRole" style="float:right;">{{users.sName}}</span>
                 </div>
-                <div ng-if="users.bNeedECP">
-                  <span class="documentDate">{{users.sDateECP ? users.sDateECP : 'Немає ЕЦП'}}</span>
+
+                <div class="col-xs-6" ng-if="user.sLogin === user.sID_Group">
+                  <div ng-if="!users.bNeedECP">
+                    <span class="documentDate" style="float: left;">
+                      <b ng-if="users.sDate">Узгоджено </b>
+                      {{users.sDate ? '(' + users.sDate + ')' : 'Немає підпису'}}
+                    </span>
+                  </div>
+                  <div ng-if="users.bNeedECP">
+                    <span class="documentDate" style="float: left;">
+                      <b ng-if="users.sDateECP">Узгоджено </b>
+                      {{users.sDateECP ? '(' + users.sDateECP + ')' : 'Немає ЕЦП'}}</span>
+                  </div>
                 </div>
+
               </div>
             </div>
 
             <div ng-if="!users.bWrite" class="col-xs-12" style="margin-bottom: 10px">
-              <div class="col-xs-8">
-                <span class="documentRole">{{users.sName}}:</span><br>
-                <span ng-repeat="user in users.aUser">
+              <div class="col-xs-12" ng-repeat="user in users.aUser">
+
+                <div class="col-xs-6">
+                  <div style="float: right;">
                   <span ng-if="user.sLogin === user.sID_Group"
-                        ng-class="{'thisIsCurrentUser':getCurrentUserLogin() === user.sLogin}"
                         title="{{user.sLogin}}"
                         style="font-weight: normal">
                     {{ user.sFIO }}
                     <span ng-if="users.sDate && users.sFIO_Referent" title="{{users.sLogin_Referent}}">
                       ({{users.sFIO_Referent}})
                     </span>
-                </span>
-              </span>
-              </div>
-              <div class="col-xs-4">
-                <span class="documentDate">{{users.sDate ? users.sDate : 'Немає ознайомлення'}}</span>
+                  </span>
+                  </div>
+                  <span class="documentRole" style="float: right;">{{users.sName}}</span>
+                </div>
+
+                <div class="col-xs-6" ng-if="user.sLogin === user.sID_Group">
+                  <span class="documentDate" style="float: left;">{{users.sDate ? users.sDate : 'Немає ознайомлення'}}</span>
+                </div>
+
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
       <div ng-if="aProcessSubject && aProcessSubject.length !== 0">
-        <div ng-if="!inUnassigned()">
-          <a ng-click="openUsersHierarchy()"
-             class="btn btn-link attach-btn">Детальніше
-          </a>
-        </div>
+        <!--<div ng-if="!inUnassigned()">-->
+          <!--<a ng-click="openUsersHierarchy()"-->
+             <!--class="btn btn-link attach-btn">Детальніше-->
+          <!--</a>-->
+        <!--</div>-->
 
         <h4>Виконавцi:</h4>
         <div ng-repeat="subject in aProcessSubject">
@@ -389,7 +422,7 @@
         </div>
       </div>
 
-      <div class="control-form-fields" style="position:fixed; bottom: 0; background: white; width: 100%;z-index: 5;">
+      <div class="control-form-fields" ng-class="{'width-with-opened-menu':isMenuOpened, 'width-with-closed-menu':!isMenuOpened}" style="position:fixed; bottom: 0; background: white; z-index: 5;">
 
         <div class="main-form-controls" ng-init="checkForEmpty()">
           <div ng-if="(!clarify && inUnassigned()) || (!clarify && isDocument())" class="fixed-bottom-menu-buttons">
@@ -506,13 +539,13 @@
   </div>
 
   <!--зауваження-->
-  <div ng-if="clarify && tabHistoryAppeal !== 'history'" style="overflow:hidden;">
+  <div ng-if="clarify" style="overflow:hidden;">
     <clarify-directive></clarify-directive>
   </div>
 
-  <div class="task-form-history" ng-if="tabHistoryAppeal === 'history'">
-    <div ng-if="!inUnassigned()" ng-include="'app/tasks/taskFormHistoryNew.html'"></div>
-  </div>
+  <!--<div class="task-form-history" ng-if="tabHistoryAppeal === 'history'">-->
+    <!--<div ng-if="!inUnassigned()" ng-include="'app/tasks/taskFormHistoryNew.html'"></div>-->
+  <!--</div>-->
 
 </div>
 

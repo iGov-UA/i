@@ -41,18 +41,6 @@
       showCount: true,
       tab: 'selfAssigned'
     }, {
-      title: 'Документи',
-      type: tasks.filterTypes.documents,
-      count: 0,
-      showCount: true,
-      tab: 'documents'
-    }, {
-      title: 'ЕЦП',
-      type: tasks.filterTypes.ecp,
-      count: 0,
-      showCount: false,
-      tab: 'ecp'
-    }, {
       title: 'Мій розклад',
       type: tasks.filterTypes.tickets,
       count: 0,
@@ -70,6 +58,32 @@
       count: 0,
       showCount: false,
       tab: 'finished'
+    }];
+
+    service.documentsMenus = [{
+      title: 'Нерозглянутi',
+      type: tasks.filterTypes.documents,
+      count: 0,
+      showCount: true,
+      tab: 'documents'
+    }, {
+      title: 'Мої чернетки',
+      type: tasks.filterTypes.myDrafts,
+      count: 0,
+      showCount: false,
+      tab: 'myDrafts'
+    }, {
+      title: 'Очiкують мого ЕЦП',
+        type: tasks.filterTypes.ecp,
+        count: 0,
+        showCount: false,
+        tab: 'ecp'
+    }, {
+      title: 'Переглянутi',
+      type: tasks.filterTypes.viewed,
+      count: 0,
+      showCount: false,
+      tab: 'viewed'
     }];
 
     service.instrumentsMenus = [
@@ -109,7 +123,7 @@
       service.loadTaskCounters();
     }
 
-    function loadTaskCounters() {
+    function loadTaskCounters(type) {
       var objForLoadCounter = [];
       if(service.currentUser && service.currentUser.id){
         var user = service.auth.getCurrentUser();
@@ -119,7 +133,7 @@
       }
       if(!service.isCountersLoaded){
         service.currentUser = service.auth.getCurrentUser();
-        objForLoadCounter = service.menus;
+        objForLoadCounter = type === 'documents' ? service.documentsMenus : service.menus;
       } else {
         _.each(service.menus, function (menu) {
           if(menu.tab === service.previousTab || menu.tab === service.currentTab){

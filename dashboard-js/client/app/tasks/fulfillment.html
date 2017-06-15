@@ -1,0 +1,60 @@
+<style>
+  .tree-trunk {
+    padding: .5em 0 0 .5em;
+  }
+  .tree-parent {
+    margin-bottom: .25em;
+    padding-left: 0;
+  }
+  .tree-child {
+    margin-bottom: .25em;
+    padding-left: 1em;
+  }
+  .clickable {
+    cursor: pointer;
+  }
+  .notClickable {
+    cursor: default;
+  }
+
+</style>
+
+<div class="back-forward-btns" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}">
+  <button class="btn btn-default" ui-sref="tasks.typeof.view({id: taskData.nID_Task})"> &#60;&#60; </button>
+</div>
+
+<div class="tasks-form-view" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}">
+
+  <div class="task-number-date" style="margin-bottom: 10px">
+    <h3 class="display-inline-block">{{'№ ' + taskData.oProcess.nID + lunaService.getLunaValue(taskData.oProcess.nID)}}</h3>
+    <span class="float-right">від {{::creationDateFormatted(taskData.oProcess.sDateCreate)}}</span>
+  </div>
+
+  <div style="position: relative; margin-bottom: 24px;">
+    <span style="font-size: 18px">{{::taskData.oProcess.sName}}</span>
+  </div>
+
+  <div class="btn-group task-form-tabs">
+    <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'appeal', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link"
+       ui-sref="tasks.typeof.view({id: taskData.nID_Task})">
+      <span ng-if="tabMenu === 'tasks'">Завдання</span>
+      <span ng-if="tabMenu === 'documents'">Документ</span>
+    </a>
+
+    <a ng-if="tabMenu === 'documents'"
+       ng-class="{'tab-is-selected' : tabHistoryAppeal === 'fulfillment', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link">Виконання
+    </a>
+
+    <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'history', 'w-33': tabMenu === 'documents'}"
+       class="btn btn-link"
+       ui-sref="tasks.typeof.history({id: taskData.nID_Task})">
+      <span ng-if="tabMenu === 'documents'">Iсторiя документу</span>
+      <span ng-if="tabMenu === 'tasks'">Iсторiя завдання</span>
+    </a>
+  </div>
+
+  <ea-tree-view branch-name='aProcessSubjectChild' item-template-url="components/usersHierarchyModal/tree.template.html" items="documentFullHierarchy.aProcessSubjectTree" dataset-id="$id" callback="show"></ea-tree-view>
+
+</div>

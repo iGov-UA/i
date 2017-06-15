@@ -11,16 +11,26 @@ angular.module('dashboardJsApp').service('generationService', function ($q, $htt
   };
 
   this.getSignedFile = function (sEncodedBase64, sFileName) {
+    if(!sFileName || sFileName === ''){
+      sFileName = 'document';
+    }
+    return this.getFileFromBase64(sEncodedBase64, sFileName + ".pdf", 'application/pdf');
+  };
+
+  this.getFileFromBase64 = function (sEncodedBase64, sFileNameAndExtension, sMimeType) {
     var byteCharacters = $base64.decode(sEncodedBase64);
     var byteNumbers = new Array(byteCharacters.length);
     for (var i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     var byteArray = new Uint8Array(byteNumbers);
-    if(!sFileName || sFileName === ''){
-      sFileName = 'document';
+    if(!sFileNameAndExtension || sFileNameAndExtension === ''){
+      sFileNameAndExtension = 'document';
     }
-    return new File([byteArray], sFileName + ".pdf", {type: "application/pdf"});
+    if(!sMimeType || sMimeType === ''){
+      sMimeType = 'text/plain';
+    }
+    return new File([byteArray], sFileNameAndExtension, {type: sMimeType});
   };
 
   this.getSignedFileLink = function(sEncodedBase64){

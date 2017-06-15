@@ -10,10 +10,18 @@
   }
 </style>
 
-<div class="tasks-form-view" ng-if="creatingTask.aFormProperty">
-  <div class="creating-task-title">
-    <h3>Створення задачi</h3>
+<div class="back-forward-btns" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}">
+  <button class="btn btn-default" ng-click="backAndForth()"> &#60;&#60; </button>
+</div>
+
+<div class="tasks-form-view" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}" ng-if="creatingTask.aFormProperty">
+  <div class="col-xs-12">
+    <select class="form-control" title="{{selectedTask.sName_BP}}" disabled>
+      <option value="currentBp" selected>{{selectedTask.sName_BP}}</option>
+    </select>
   </div>
+
+  <hr class="hr-divider" style="width:100%;margin-top: 60px">
 
   <div>
     <form name="form" style="padding-bottom: 70px">
@@ -21,12 +29,13 @@
       <div ng-repeat="item in creatingTask.aFormProperty track by item.id" class="task-form-property row">
 
         <div ng-if="['string', 'long', 'double'].indexOf(item.type) > -1" class="row form-field">
-          <div class="col-sm-12">
-            <span class="col-sm-6 task-form-title">
+          <div class="col-md-12">
+            <span class="col-md-6 task-form-title">
               <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
             </span>
-            <div class="col-sm-6">
+            <div class="col-md-6">
               <input name="{{item.id}}"
+                     class="form-control"
                      style="width:100%;"
                      ng-readonly="isFormPropertyDisabled(item)"
                      ng-required="item.required"
@@ -37,14 +46,14 @@
         </div>
 
         <div ng-if="['date'].indexOf(item.type) > -1" class="col-sm-12 form-field">
-            <span class="col-sm-6 task-form-title">
+            <span class="col-md-6 task-form-title">
               <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable"
                                                       style="color: red">*</span></label>
             </span>
-          <div class="col-sm-6">
+          <div class="col-md-6">
             <div class="input-group">
               <div class='input-group date' id='datetimepicker1'>
-                <input type="text" class="form-control input-sm"
+                <input type="text" class="form-control input-sm form-control"
                        format='DD/MM/YYYY'
                        separator='/'
                        datetimepicker
@@ -58,11 +67,12 @@
         </div>
 
         <div ng-if="item.type == 'textArea'" class="col-sm-12 form-field">
-          <div class="col-sm-6 task-form-title">
+          <div class="col-md-6 task-form-title">
             <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
           </div>
-          <div class="col-sm-6" style="padding-right: 0">
+          <div class="col-md-6" style="padding-right: 0">
             <textarea name="{{item.id}}"
+                      class="form-control"
                       ng-required="item.required"
                       ng-model="item.value"
                       ng-class="{'submitted': item.required && isFormInvalid}"
@@ -72,13 +82,14 @@
         </div>
 
         <div ng-if="item.type == 'enum'" class="row">
-          <div class="col-sm-12">
+          <div class="col-md-12">
             <div class="col-sm-6 task-form-title">
               <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
             </div>
-            <div class="col-sm-6" style="margin-bottom: 15px">
+            <div class="col-md-6" style="margin-bottom: 15px">
               <select name="{{item.id}}"
                       style="width:100%; height:25px;;"
+                      class="form-control"
                       ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.enumValues"
                       ng-required="item.required"
                       ng-class="{'submitted': item.required && isFormInvalid}"
@@ -89,11 +100,11 @@
         </div>
 
         <div ng-if="item.type == 'checkbox'" class="row">
-          <div class="col-sm-12">
+          <div class="col-md-12">
             <div class="col-sm-6 task-form-title">
               <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6">
               <div ng-class="{'checkbox-indeterminate': item.value === null}">
                 <input type="checkbox"
                        id="{{item.id}}"
@@ -111,14 +122,14 @@
         </div>
 
         <div ng-if="item.type == 'file' && item.id.indexOf('PrintForm') === -1"
-             class="col-sm-12 form-field">
-          <div class="col-sm-6 task-form-title">
+             class="col-md-12 form-field">
+          <div class="col-md-6 task-form-title">
             <label>
               {{sFieldLabel(item.name)}}
               <span ng-if="item.required && item.writable" style="color: red">*</span>
             </label>
           </div>
-          <div class="col-sm-6" style="margin-bottom: 15px">
+          <div class="col-md-6" style="margin-bottom: 15px">
             <file-field name="{{item.id}}"
                         ng-class="{'error-creating': item.required && isFormInvalid}"
                         ng-model="item.value"
@@ -136,7 +147,7 @@
           <div class="col-sm-6 task-form-title">
             <label>{{sFieldLabel(item.name)}} <span ng-if="item.required && item.writable" style="color: red">*</span></label>
           </div>
-          <div class="col-sm-6" style="padding-right: 0">
+          <div class="col-md-6" style="padding-right: 0">
             <ui-select dropdown-autocomplete ng-if="item.selectType=='autocomplete'"
                        ng-model="item.value"
                        name="item.id"
@@ -160,7 +171,7 @@
           </div>
         </div>
 
-        <span class="validation-message col-xs-offset-6 col-xs-6" style="position: relative;bottom: 5px;" ng-messages="isFormInvalid && form[item.id].$error">
+        <span class="validation-message col-md-offset-6 col-md-6" style="position: relative;bottom: 5px;" ng-messages="isFormInvalid && form[item.id].$error">
           <span ng-message="required">Необхідно заповнити.</span>
           <span ng-message="pattern">Значення має бути числом.</span>
           <span ng-message="email">Помилка в email.</span>
@@ -195,14 +206,11 @@
     </form>
   </div>
 
-  <div class="create-task-menu main-form-controls">
+  <div class="create-task-menu main-form-controls" ng-class="{'width-with-opened-menu':isMenuOpened, 'width-with-closed-menu':!isMenuOpened}">
     <button ng-click="submit(form)"
             class="btn btn-info take-to-work-button"
             ng-disabled="isSuccessfullySubmitted"
-            style="background-color: #337ACF; outline: none; border: none; margin: 5px">Завершити створення
-    </button>
-    <button class="btn btn-link" style="margin-bottom: 0" ng-click="backToTab()">
-      Вiдмiнити
+            style="background-color: #337ACF; outline: none; border: none; margin: 5px">Створити
     </button>
   </div>
 

@@ -1,0 +1,72 @@
+<div class="create-view" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened}">
+  <div>
+    <button class="btn btn-default back-button" ng-click="backAndForth()"> &#60;&#60; </button>
+  </div>
+
+  <div class="create-dropdown col-xs-12">
+    <div class="select-doc">
+      <div ng-if="(userTasksBPs.length > 0 || usersDocumentsBPs.length > 0)">
+
+        <div class="document-select-block"
+             ng-if="createViewTab('-doc')"
+             ng-class="{'move-select-block-to-bottom': userTasksBPs.length === 0}">
+          <ui-select style="border: 3px solid white; bottom: 6px; border-radius: 5px;"
+                     ng-model="document.selected"
+                     theme="bootstrap"
+                     on-select="selectBPTemplate($item)">
+
+            <ui-select-match placeholder="- Оберiть шаблон нового документа -">
+                    <span title="{{$select.selected.sName_BP}}">
+                      {{$select.selected.sName_BP}}
+                    </span>
+            </ui-select-match>
+
+            <ui-select-choices repeat="doc in usersDocumentsBPs | filter:$select.search">
+                    <span title="{{doc.sName_BP}}">
+                      {{doc.sName_BP}}
+                    </span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <div class="document-select-block"
+             ng-if="createViewTab('-task')"
+             ng-class="{'move-select-block-to-bottom': userTasksBPs.length === 0}">
+          <ui-select style="border: 3px solid white; bottom: 6px; border-radius: 5px;"
+                     ng-model="document.selected"
+                     theme="bootstrap"
+                     on-select="selectBPTemplate($item)">
+
+            <ui-select-match placeholder="- Оберiть шаблон нового завдання -">
+                    <span title="{{$select.selected.sName_BP}}">
+                      {{$select.selected.sName_BP}}
+                    </span>
+            </ui-select-match>
+
+            <ui-select-choices repeat="doc in userTasksBPs | filter:$select.search">
+                    <span title="{{doc.sName_BP}}">
+                      {{doc.sName_BP}}
+                    </span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+    </div>
+
+    <hr class="idoc-devider" style="margin-bottom: 9px;">
+
+    <div class="next-create">
+      <button class="btn btn-info"
+              ng-if="createViewTab('-doc')"
+              ng-click="onSelectDocument(selectedBP)"
+              ng-disabled="createButtonDisabled">Далi</button>
+      <button class="btn btn-info" ng-if="createViewTab('-task')" ng-click="onSelectTask(selectedBP)">Далi</button>
+    </div>
+  </div>
+
+  <div class="row" style="position:relative;top: 50px;text-align: center;" ng-if="spinner">
+    <div class="col-xs-12">
+      <img src="../../assets/images/loading.gif" alt="Завантаження">
+    </div>
+  </div>
+</div>

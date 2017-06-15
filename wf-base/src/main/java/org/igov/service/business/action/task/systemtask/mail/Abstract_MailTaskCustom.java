@@ -656,9 +656,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             throws Exception {
         
         String saToMail = getStringFromFieldExpression(to, oExecution);
+        LOG.info("saToMail {}", saToMail);
         String sHead = getStringFromFieldExpression(subject, oExecution);
+        LOG.info("sHead {}", sHead);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("sBodySource {}", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
+        LOG.info("sBody {}", sBody);
         Multipart oMultiparts = new MimeMultipart();
         Mail oMail = context.getBean(Mail.class);
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)

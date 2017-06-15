@@ -8,12 +8,14 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$sce', 'eaTreeViewFactory', '$location',
+      'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'DocumentsService', 'snapRemote', 'tasksSearchService',
+      'fieldsService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $sce, eaTreeViewFactory, $location) {
+                processSubject, $sce, eaTreeViewFactory, $location, DocumentsService, snapRemote, tasksSearchService,
+                fieldsService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -300,6 +302,7 @@
         $scope.usersHierarchyOpened = false;
         $scope.taskData.aNewAttachment = [];
         $rootScope.delegateSelectMenu = false;
+        $scope.spinner = false;
 
         // todo соеденить с isUnasigned
         $scope.isDocument = function () {
@@ -1191,20 +1194,11 @@
         $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
         $scope.isFieldVisible = function(item) {
-          var bVisible = item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
-              FieldMotionService.isFieldVisible(item.id, $scope.taskForm) : true);
-          if(item.options && item.options.hasOwnProperty('bVisible')){
-            bVisible = bVisible && item.options['bVisible'];
-          }
-          return bVisible;
+          return fieldsService.isFieldVisible(item, $scope.taskForm);
         };
 
         $scope.creationDateFormatted = function (date) {
-          if (date){
-            var unformatted = date.split(' ')[0];
-            var splittedDate = unformatted.split('-');
-            return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
-          }
+          return fieldsService.creationDateFormatted(date);
         };
 
         //Asignee user.
@@ -1225,9 +1219,9 @@
           $scope.tabHistoryAppeal = param;
         };
 
-        $scope.newPrint = function (form, item) {
+        $scope.newPrint = function (form, id) {
           runCalculation(form);
-          $scope.model.printTemplate = item;
+          $scope.model.printTemplate = id;
           $scope.print(form, true);
         };
 
@@ -1521,7 +1515,7 @@
 
         $scope.openUsersHierarchy = function () {
           $scope.attachIsLoading = true;
-          tasks.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
+          DocumentsService.getProcessSubjectTree($scope.selectedTask.processInstanceId).then(function (res) {
             $scope.documentFullHierarchy = res;
             $scope.attachIsLoading = false;
             eaTreeViewFactory.setItems($scope.documentFullHierarchy.aProcessSubjectTree, $scope.$id);
@@ -1638,7 +1632,7 @@
         $scope.removeDocument = function (nID_Process) {
           Modal.confirm.delete(function (event) {
             $scope.taskForm.isInProcess = true;
-            tasks.removeDocumentSteps(nID_Process)
+            DocumentsService.removeDocumentSteps(nID_Process)
               .then(function(){
                 $scope.taskForm.isInProcess = false;
                 for(var taskIndex = 0; taskIndex < $scope.filteredTasks.length; taskIndex++){
@@ -1699,8 +1693,70 @@
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
         };
-console.log($scope)
+
+        function toggleMenu(status) {
+          if(typeof status === 'boolean') {
+            if(status) {
+              $scope.isMenuOpened = true;
+              snapRemote.open('left');
+            } else {
+              $scope.isMenuOpened = false;
+              snapRemote.close();
+            }
+            localStorage.setItem('menu-status', JSON.stringify(status));
+          }
+        }
+
+        var menuStatus = localStorage.getItem('menu-status');
+        if(menuStatus) {
+          var status = JSON.parse(menuStatus);
+          toggleMenu(status);
+        } else {
+          $scope.isMenuOpened = false;
+          snapRemote.close();
+        }
+
+        (function selectedTab() {
+          var tab = localStorage.getItem('currentTab');
+          if(tab) $scope.tabMenu = tab;
+          else $scope.tabMenu = 'tasks';
+        })();
+
         $rootScope.$broadcast("update-search-counter");
+
+
+        $scope.nextOrPrevTask = function (direction) {
+          if($rootScope.tasksList) {
+            for(var i=0; i<$rootScope.tasksList.length; i++) {
+              if($scope.taskId === $rootScope.tasksList[i].id) {
+                var dir = i + direction;
+                if(direction === -1 && !$rootScope.tasksList[i + direction]) {
+                  dir = $rootScope.tasksList.length - 1;
+                } else if (direction === 1 && !$rootScope.tasksList[i + direction]) {
+                  dir = 0;
+                }
+                var taskId = $rootScope.tasksList[dir].processInstanceId + lunaService.getLunaValue($rootScope.tasksList[dir].processInstanceId);
+                tasksSearchService.searchTaskByUserInput(taskId);
+              }
+            }
+          } else {
+            console.warn('tasks list is empty')
+          }
+        };
+        snapRemote.getSnapper().then(function(snapper) {
+          snapper.on('animated', function() {
+            if(snapper.state().state === 'closed'){
+              $scope.isMenuOpened = false;
+              $scope.$apply();
+            } else if (snapper.state().state === 'left'){
+              $scope.isMenuOpened = true;
+              $scope.$apply();
+            }
+          });
+        });
+        $scope.backAndForth = function () {
+          $state.go('tasks.typeof', {type: $stateParams.type});
+        }
       }
     ])
 })();
