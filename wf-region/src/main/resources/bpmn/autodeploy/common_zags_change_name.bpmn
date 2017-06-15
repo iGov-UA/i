@@ -82,9 +82,8 @@
         <activiti:formProperty id="sDocPassport" name="Копія документа, що посвідчує особу; всі заповнені сторінки документу, з відмітками щодо сімейного стану та місця проживання ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocBirth" name="Свідоцтво про народження ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText2" name="; ;labelType=success" type="label" default="Про відповідальність за повідомлення завідомо неправдивих відомостей відділу державної реєстрації актів цивільного стану і про необхідність обміну паспорта громадянина України попереджений(а)" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_central.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_central2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers26" name="якщо раніше не змінювали" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;sSum&quot;,&quot;sDescription&quot;],&quot;asID_Field_sValue&quot;:[&quot;5.2&quot;,&quot;державне мито за державну реєстрацію зміни імені фізичної особи&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saChangeName&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'no'||[sClient] == 'ні'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_name_central.json')}"></activiti:formProperty>
+       <activiti:formProperty id="markers11" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_name_central2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва адміністративного органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -164,14 +163,16 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Результат обробки звернення" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, запросити заявника для надання оригіналів"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDateVisit1" name="Вкажіть дату і час - коли прийти громадянину для надання оригіналів документів" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, причину" type="textArea" default=" "></activiti:formProperty>
-       
+       <activiti:formProperty id="markers47" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_47&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers48" name="якщо погоджено" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_48&quot;:{&quot;aField_ID&quot;:[&quot;sDateVisit1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'accept'||[sReason] == 'Заповнені дані вірні, запросити заявника для надання оригіналів'&quot;}}}"></activiti:formProperty>
+        
        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
       
 	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -183,8 +184,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
-      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -262,12 +262,13 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_4" name="Чи з'явився заявник для надання оригіналів?" type="enum" required="true">
           <activiti:value id="accept" name="так - дані відправлено до МВС"></activiti:value>
           <activiti:value id="reject" name="ні - заявник не з'явився вродовж тривалого часу - відхилити звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення - внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
+        
        <activiti:formProperty id="bankIdinn" name="ІПН ; ;bVisible=false" type="string"></activiti:formProperty>
       
 	  <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -279,8 +280,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
-      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -358,7 +358,7 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_2" name="прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="наданно дозвіл на зміну імені"></activiti:value>
           <activiti:value id="reject" name="відмовлено у зміні імені"></activiti:value>
@@ -376,8 +376,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
-      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -456,7 +455,7 @@
           <activiti:value id="pasportdoc" name="свідоцтво про народження"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPassport" name="Серія, номер, яким органом і коли виданий документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintformDate" name="Дата подання звернення" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintformDate" name="Дата подання звернення; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decision_3" name="Заявник отримав свідоцтво про зміну імені, складено відповідний актовий запис" type="enum" required="true">
           <activiti:value id="accept" name="так"></activiti:value>
         </activiti:formProperty>
@@ -471,8 +470,7 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/common_zags_change_name_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers112" name="принтформа якщо онлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_112&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_online&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='online'||[sCond]=='сплатити онлайн'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers113" name="принтформа якщо офлайноплата" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_113&quot;:{&quot;aElement_ID&quot;:[&quot;oplata_offline&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asPaymentMethod&quot;},&quot;sCondition&quot;:&quot;[sCond]=='offline'||[sCond]=='отримати реквізити для сплати'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/common_zags_change_region.json')}"></activiti:formProperty>
-      	<activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumPr" name="сумма платежа чек ; ;bVisible=false" type="string"></activiti:formProperty>
