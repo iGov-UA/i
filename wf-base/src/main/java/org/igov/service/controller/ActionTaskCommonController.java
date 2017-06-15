@@ -2066,7 +2066,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     
                     if (bIncludeVariablesProcess) {
                         
-                        oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessDefinitionId()));
+                        oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessInstanceId()));
                     }
                 }
 
