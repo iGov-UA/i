@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="rada_0019_DohovirZhytla" name="Дозвіл на переоформлення договору найму жилого приміщення" isExecutable="true">
+  <process id="rada_0019_DohovirZhytla_WithJKH" name="Дозвіл на переоформлення договору найму жилого приміщення" isExecutable="true">
     <documentation>
     	12.06.17 Рефакторинг:
     		- перевод на таблицу
@@ -8,8 +8,7 @@
     		- маркер копирования адреса
     		- маркер на дашборде
     		- рефакторинг принтформы
-    		- переименование из chervonograd_cnap_314 в rada_0019_DohovirZhytla
-    		- добавление файлов для Николаева
+    		- переименование из chervonograd_cnap_314 в rada_0019_DohovirZhytla_WithJKH
 	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -39,13 +38,6 @@
         <activiti:formProperty id="sFIOhead" name="П.І.Б. на кого змінити в договірі-найму" type="string" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sReasonChange" name="Причина зміни договору;(у зв’язку зі смертю, зі зміною місця мешкання, за згодою всіх повнолітніх членів сім’ї тощо)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" required="true"></activiti:formProperty>
-		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" required="true"></activiti:formProperty>
-		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником;свід-во про нарожденяя, свід-во про браке, тощо;bNew=true" type="file" required="true"></activiti:formProperty>
-
-		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні;при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву;bNew=true" type="file" required="true"></activiti:formProperty>
-		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" required="true"></activiti:formProperty>		
-
 
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -117,13 +109,6 @@
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="markersUser1" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('Rada/rada_0019_DohovirZhytla_u1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -177,12 +162,6 @@
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     
@@ -222,13 +201,6 @@
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		            
 
         <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -465,8 +437,8 @@
     
     <endEvent id="endevent1" name="End"></endEvent>    
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0019_DohovirZhytla">
-    <bpmndi:BPMNPlane bpmnElement="rada_0019_DohovirZhytla" id="BPMNPlane_rada_0019_DohovirZhytla">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0019_DohovirZhytla_WithJKH">
+    <bpmndi:BPMNPlane bpmnElement="rada_0019_DohovirZhytla_WithJKH" id="BPMNPlane_rada_0019_DohovirZhytla_WithJKH">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
