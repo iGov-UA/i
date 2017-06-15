@@ -104,6 +104,7 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpeneUnassigneUnprocessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpeneUnassigneWithoutECPDocument";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -2685,24 +2686,35 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             LOG.info("Query to execute {}", sql.toString());
             taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
         } else {
+            
             taskQuery = oTaskService.createTaskQuery();
+            
             long startTime = System.currentTimeMillis();
+            
             if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED.equalsIgnoreCase(sFilterStatus)) {
                 ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
+                
             } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+                
             } else if (THE_STATUS_OF_TASK_IS_OPENED.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
                 LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
+                
             } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+                
             } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT.equals(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+                
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT.equals(sFilterStatus)) {
                 
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT.equals(sFilterStatus)) {
             
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT.equals(sFilterStatus)) {
+            
             }
+            
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
                 ((TaskQuery) taskQuery).orderByTaskCreateTime();
