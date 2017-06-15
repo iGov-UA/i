@@ -7,9 +7,13 @@ namespace TwainWeb.Standalone.App.Scanner
 {
 	public interface ISource
 	{
+        //Его номер
 		int Index { get; }
+        //Имя файла
 		string Name { get; }
-		ScannerSettings GetScannerSettings();
+        //настройки сканера
+		ScannerSettings GetScannerSettings();        
+        //метод сканирования
 		List<Image> Scan(SettingsAcquire settings);
 	}
 }

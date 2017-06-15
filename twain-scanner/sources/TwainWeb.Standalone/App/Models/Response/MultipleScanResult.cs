@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using TwainWeb.Standalone.App.Models.Request;
+using log4net;
 
 namespace TwainWeb.Standalone.App.Models.Response
 {
 	class MultipleScanResult : ScanResult
 	{
-		public MultipleScanResult(string error) : base(error) { }
+
+        private readonly ILog _log = LogManager.GetLogger(typeof(MultipleScanResult));
+
+        public MultipleScanResult(string error) : base(error) { }
 		public MultipleScanResult() { }
 	
 
@@ -25,7 +29,9 @@ namespace TwainWeb.Standalone.App.Models.Response
 				{
 					sb.Append(",");
 				}
-			}
+
+                _log.Info("сформированный multi-json" + sb.ToString());
+            }
 			sb.Append("]}");
             Content = Encoding.UTF8.GetBytes(sb.ToString());
         }		

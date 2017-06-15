@@ -34,7 +34,7 @@ namespace TwainWeb.Standalone.App.Commands
 			_log.Info("======================================= SCAN COMMAND ========================================");
 			_log.Info(string.Format("Start execute with scan params: " +
 			                        "source={0}, sourceFeed={1}, dpi={2}, colorMode={3}, compressionFormat={4}, format={5}, " +
-			                        "isPackage={6}, saveAs={7}", 
+                                    "isPackage={6}, saveAs={7}, CurrentSourceIndex={8}, Index={9}", 
 				_command.Source, 
 				_command.DocumentHandlingCap, 
 				_command.DPI,
@@ -42,7 +42,10 @@ namespace TwainWeb.Standalone.App.Commands
 				_command.CompressionFormat.ImgFormat,
 				_command.Format.Name,
 				_command.IsPackage,
-				_command.SaveAs));
+				_command.SaveAs,
+                _scannerManager.CurrentSourceIndex,
+                _scannerManager.CurrentSource.Index
+                ));
 
 			ScanResult scanResult;
 			try
@@ -69,6 +72,7 @@ namespace TwainWeb.Standalone.App.Commands
 						ScanSource =  _command.DocumentHandlingCap
 					};
 
+                    //создаем отдельный поток и передаем в него метод сканирования(callback) и параметры для него
 					var images = new AsyncWorker<SettingsAcquire, List<Image>>().RunWorkAsync(settingAcquire, _scannerManager.CurrentSource.Scan, WaitTimaeForScan);
 
 					if (images != null)

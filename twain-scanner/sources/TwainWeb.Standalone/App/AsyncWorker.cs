@@ -20,6 +20,9 @@ namespace TwainWeb.Standalone.App
 			_logger = LogManager.GetLogger(typeof(AsyncWorker<TArg>));
 			_backgroundWorker = new System.ComponentModel.BackgroundWorker { WorkerSupportsCancellation = true };
 		}
+        /// <summary>
+        /// Подписываемся на события, работы и выполнения
+        /// </summary>
 		private void InitializeBackgroundWorker()
 		{
 			// Attach event handlers to the BackgroundWorker object.
@@ -39,7 +42,12 @@ namespace TwainWeb.Standalone.App
 			if (_wasException)
 				throw _exception;
 		}
-
+        /// <summary>
+        /// Запускаем сканирование
+        /// </summary>
+        /// <param name="argument">Настройки сканирования</param>
+        /// <param name="meth">callback функция сканирования</param>
+        /// <param name="waitTime">время ожидания</param>
 		public void RunWorkAsync(TArg argument, AsyncAction meth, int waitTime)
 		{
 			_method = meth;
@@ -64,6 +72,7 @@ namespace TwainWeb.Standalone.App
 
 		private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
 		{
+            //создаем поток и ожидаем
 			var child = new Thread(() =>
 			{
 				while (!_backgroundWorker.CancellationPending)
@@ -73,6 +82,7 @@ namespace TwainWeb.Standalone.App
 				e.Cancel = true;
 				
 			});
+            //стратуем
 			child.Start();
 
 			var arg = (TArg)e.Argument;
