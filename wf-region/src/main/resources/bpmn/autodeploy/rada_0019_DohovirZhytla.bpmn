@@ -48,7 +48,6 @@
 
 
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" required="true"></activiti:formProperty>
 
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -114,7 +113,6 @@
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -129,7 +127,7 @@
       </extensionElements>
     </userTask>
     
-    <userTask id="usertask2_yellow" name="Підготовка відповіді управлінням ЖКГ (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_yellow" name="Відповідь громадянину (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
 
@@ -156,6 +154,13 @@
         <activiti:formProperty id="dRegistrastion" name="Дата реєстрації заяви" type="date" writable="false"></activiti:formProperty>
 
 
+        <activiti:formProperty id="asDecision2" name="Рішення держслужбовця" type="enum" required="true">
+          <activiti:value id="attr1_ok" name="Дозвіл готов. Запросити громадянина"></activiti:value>
+          <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
+        </activiti:formProperty>
+
+        <activiti:formProperty id="sDecisionComment2" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
+        
         <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file" required="true"></activiti:formProperty>
 
 
@@ -174,7 +179,6 @@
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -183,56 +187,12 @@
 
 		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+		
+		<activiti:formProperty id="markersUser1" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('Rada/rada_0019_DohovirZhytla_u2.json')}"></activiti:formProperty>
+		
       </extensionElements>
     </userTask>
     
-    <userTask id="usertask3_green" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
-      <extensionElements>
-        <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="sCountRoom" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="sLiveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="label_1" name="Змінити договір найму на квартиру з" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sRelations" name="Родинні відносини" type="string" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="sFIOchangeOff" name="П.І.Б. особи якої змінюється в договірі-найму" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFIOhead" name="П.І.Б. на кого змінити в договірі-найму" type="string" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="sAdminFIO" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dRegistrastion" name="Дата реєстрації заяви" type="date" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="asDecision2" name="Рішення держслужбовця" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Дозвіл готов. Запросити громадянина"></activiti:value>
-          <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
-        </activiti:formProperty>
-        
-        
-        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		            
-
-        <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file" writable="false"></activiti:formProperty>
-      </extensionElements>
-    </userTask>
 
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -299,9 +259,7 @@
 				На жаль, Ваше звернення щодо надання дозволу на переоформлення договору-найму було відхилено.
 			</p>
 			<p>
-			Причина в наступному: <br>
-			</p>			
-			<p>
+				Причина в наступному: <br>
 				${sDecisionComment1}
 			</p>
 			<p>
@@ -396,7 +354,8 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask6" name="Повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+
+    <serviceTask id="servicetask6" name="Повідомлення про негативне рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -414,7 +373,8 @@
 				Ваше звернення щодо надання дозволу на переоформлення договору-найму опрацьовано та відхилено Управлінням житлово-комунального господарства міської ради.
 			</p>
 			<p>
-				Відповідь у додатку до цього листа.
+				Причина в наступному: <br>
+				${sDecisionComment2}
 			</p>
 			<p>
 		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/19/general">iGov.org.ua</a>
@@ -430,13 +390,8 @@
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFilePermission}]]></activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
-
-
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
@@ -450,7 +405,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1 == 'doc_ok'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask4" targetRef="usertask2_yellow"></sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="usertask2_yellow" targetRef="usertask3_green"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="usertask2_yellow" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow12" name="Відмова" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision2 == 'attr1_ok'}]]></conditionExpression>
     </sequenceFlow>
@@ -459,25 +414,23 @@
     </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="usertask3_green" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    
-    <endEvent id="endevent1" name="End"></endEvent>    
+    <endEvent id="endevent1" name="End"></endEvent>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rada_0019_DohovirZhytla">
     <bpmndi:BPMNPlane bpmnElement="rada_0019_DohovirZhytla" id="BPMNPlane_rada_0019_DohovirZhytla">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1_red" id="BPMNShape_usertask1_red">
-        <omgdc:Bounds height="65.0" width="121.0" x="560.0" y="40.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="151.0" x="560.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
-        <omgdc:Bounds height="85.0" width="121.0" x="560.0" y="345.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask3_green" id="BPMNShape_usertask3_green">
-        <omgdc:Bounds height="78.0" width="105.0" x="408.0" y="349.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="151.0" x="560.0" y="317.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="65.0" width="105.0" x="280.0" y="40.0"></omgdc:Bounds>
@@ -486,28 +439,25 @@
         <omgdc:Bounds height="65.0" width="136.0" x="406.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="79.0" width="105.0" x="182.0" y="130.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="157.0" x="317.0" y="142.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="121.0" x="560.0" y="235.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="151.0" x="560.0" y="235.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="85.0" width="105.0" x="182.0" y="275.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="158.0" x="315.0" y="235.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="81.0" width="105.0" x="182.0" y="426.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="157.0" x="315.0" y="360.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="600.0" y="149.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="615.0" y="149.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="326.0" y="367.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="500.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="300.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="45.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="239.0" y="245.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="385.0" y="72.0"></omgdi:waypoint>
@@ -518,64 +468,60 @@
         <omgdi:waypoint x="560.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="620.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="620.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="149.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="600.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="287.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="474.0" y="169.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="374.0" y="140.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="510.0" y="140.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="182.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="169.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="317.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="245.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="620.0" y="189.0"></omgdi:waypoint>
-        <omgdi:waypoint x="620.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="235.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="630.0" y="193.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="645.0" y="193.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="620.0" y="291.0"></omgdi:waypoint>
-        <omgdi:waypoint x="620.0" y="345.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="291.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="317.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="560.0" y="387.0"></omgdi:waypoint>
-        <omgdi:waypoint x="513.0" y="388.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="350.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="346.0" y="367.0"></omgdi:waypoint>
-        <omgdi:waypoint x="345.0" y="317.0"></omgdi:waypoint>
-        <omgdi:waypoint x="287.0" y="317.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="519.0" y="262.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="262.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="42.0" x="298.0" y="301.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="488.0" y="241.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="346.0" y="407.0"></omgdi:waypoint>
-        <omgdi:waypoint x="345.0" y="466.0"></omgdi:waypoint>
-        <omgdi:waypoint x="287.0" y="466.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="370.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="393.0"></omgdi:waypoint>
+        <omgdi:waypoint x="472.0" y="392.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="37.0" x="298.0" y="468.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="37.0" x="489.0" y="406.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="182.0" y="317.0"></omgdi:waypoint>
-        <omgdi:waypoint x="128.0" y="317.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="262.0"></omgdi:waypoint>
+        <omgdi:waypoint x="274.0" y="262.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="182.0" y="466.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="466.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="335.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="408.0" y="388.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="392.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="391.0"></omgdi:waypoint>
+        <omgdi:waypoint x="256.0" y="280.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="255.0" y="72.0"></omgdi:waypoint>
