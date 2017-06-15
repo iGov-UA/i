@@ -445,7 +445,7 @@
                 <span ng-if="!isDocumentNotSigned()">Підписано</span>
                 <span ng-if="!documentRights.bWrite && isDocumentNotSigned()">Ознайомлений</span>
               </button>
-              <button ng-hide="sSelectedTask == 'finished'"
+              <button ng-hide="sSelectedTask == 'finished' && !inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -463,7 +463,7 @@
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Опрацювати
               </button>
-              <button ng-hide="sSelectedTask == 'finished'"
+              <button ng-hide="sSelectedTask == 'finished' && !inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -486,7 +486,7 @@
                 <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
                 <span ng-if="isDocument() && isDocumentNotSigned()">Створити</span>
               </button>
-              <button ng-hide="sSelectedTask == 'finished'"
+              <button ng-hide="sSelectedTask == 'finished' && !inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
