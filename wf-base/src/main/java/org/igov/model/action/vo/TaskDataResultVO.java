@@ -10,20 +10,13 @@ import java.util.List;
 public class TaskDataResultVO {
     
     private List<TaskDataVO> aoTaskDataVO = new ArrayList<>();
-    private Integer nSize = 10;
-    private Integer nStart = 0;
-    private String sOrder = "asc";
-    private String sSort = "id";
+    private Integer nSize;
+    private Integer nStart;
+    private String sOrder;
+    private String sSort;
+    private long nTotal;
 
     public TaskDataResultVO() {
-    }
-
-    public List<TaskDataVO> getaoTaskDataVO() {
-        return aoTaskDataVO;
-    }
-
-    public void setaoTaskDataVO(List<TaskDataVO> aoTaskDataVO) {
-        this.aoTaskDataVO = aoTaskDataVO;
     }
 
     public Integer getnSize() {
@@ -56,6 +49,22 @@ public class TaskDataResultVO {
 
     public void setsSort(String sSort) {
         this.sSort = sSort;
+    }
+
+    public List<TaskDataVO> getAoTaskDataVO() {
+        return aoTaskDataVO;
+    }
+
+    public void setAoTaskDataVO(List<TaskDataVO> aoTaskDataVO) {
+        this.aoTaskDataVO = aoTaskDataVO;
+    }
+
+    public long getnTotal() {
+        return nTotal;
+    }
+
+    public void setnTotal(long nTotal) {
+        this.nTotal = nTotal;
     }
       
 }

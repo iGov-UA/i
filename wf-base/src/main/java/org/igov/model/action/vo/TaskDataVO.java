@@ -35,8 +35,9 @@ public class TaskDataVO {
     private String sProcessDefinitionId;
     private String sProcessDefinitionUrl;
     private List aVariables;
-    private Map<String, Object> flowSlotTicketData;
-    
+    private Map<String, Object> mFlowSlotTicketData;
+    private Map<String, Object> mGlobalVariables;
+       
     public TaskDataVO() {
     }
 
@@ -232,13 +233,20 @@ public class TaskDataVO {
         this.aVariables = aVariables;
     }
 
-    public Map<String, Object> getFlowSlotTicketData() {
-        return flowSlotTicketData;
+    public Map<String, Object> getmFlowSlotTicketData() {
+        return mFlowSlotTicketData;
     }
 
-    public void setFlowSlotTicketData(Map<String, Object> flowSlotTicketData) {
-        this.flowSlotTicketData = flowSlotTicketData;
+    public void setmFlowSlotTicketData(Map<String, Object> mFlowSlotTicketData) {
+        this.mFlowSlotTicketData = mFlowSlotTicketData;
     }
-    
-    
+
+    public Map<String, Object> getmGlobalVariables() {
+        return mGlobalVariables;
+    }
+
+    public void setmGlobalVariables(Map<String, Object> mGlobalVariables) {
+        this.mGlobalVariables = mGlobalVariables;
+    }
+       
 }

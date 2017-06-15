@@ -70,6 +70,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import org.igov.model.action.vo.TaskDataVO;
 
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -2403,6 +2404,22 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             }
         }
     }
+    
+    public void populateResultSortedByTasksOrderNew(boolean bFilterHasTicket,
+            List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
+            List<TaskDataVO> aoTaskData) {
+
+        LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
+        for (int i = 0; i < tasks.size(); i++) {
+            try {
+                TaskInfo task = (TaskInfo) tasks.get(i);
+                TaskDataVO oPopulatedTaskDataVO = populateTaskInfoNew(task, mapOfTickets.get(task.getProcessInstanceId()));             
+                aoTaskData.add(oPopulatedTaskDataVO);
+            } catch (Exception e) {
+                LOG.error("error: Error while populatiing task", e);
+            }
+        }
+    }
 
     public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
             Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
@@ -2425,6 +2442,33 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
                 Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
                 data.add(taskInfo);
+            } catch (Exception e) {
+                LOG.error("error: ", e);
+            }
+        }
+    }
+    
+    public void populateResultSortedByTicketDateNew(boolean bFilterHasTicket, List<?> tasks,
+            Map<String, FlowSlotTicket> mapOfTickets, List<TaskDataVO> aoTaskData) {
+        LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
+
+        List<FlowSlotTicket> tickets = new LinkedList<>();
+        tickets.addAll(mapOfTickets.values());
+        Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
+        LOG.info("Sorted tickets by order create date");
+
+        Map<String, TaskInfo> tasksMap = new HashMap<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            TaskInfo task = (TaskInfo) tasks.get(i);
+            tasksMap.put(((TaskInfo) tasks.get(i)).getProcessInstanceId(), task);
+        }
+        
+        for (int i = 0; i < tickets.size(); i++) {
+            try {
+                FlowSlotTicket ticket = tickets.get(i);
+                TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
+                TaskDataVO oPopulatedTaskDataVO = populateTaskInfoNew(task, ticket);
+                aoTaskData.add(oPopulatedTaskDataVO);
             } catch (Exception e) {
                 LOG.error("error: ", e);
             }
@@ -2638,6 +2682,66 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         }
         
         return taskInfo;
+    }
+    
+        public TaskDataVO populateTaskInfoNew(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+
+        String sPlace = "";
+        
+        //Выполняем поиск sPlace только, если процесс начинается на system
+        if (task.getProcessDefinitionId().startsWith("system")) {        
+            HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                    processInstanceId(task.getProcessInstanceId()).
+                    includeProcessVariables().singleResult();
+
+            sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
+            LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        
+        TaskDataVO oTaskData = new TaskDataVO();
+        
+        oTaskData.setsId(task.getId());
+        oTaskData.setsUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
+        oTaskData.setsOwner(task.getOwner());
+        oTaskData.setsAssignee(task.getAssignee());
+        oTaskData.setoDelegationState((task instanceof Task) ? ((Task) task).getDelegationState() : null);
+        oTaskData.setsName(sPlace + task.getName());
+        oTaskData.setsDescription(task.getDescription());
+        oTaskData.setsCreateTime(sdf.format(task.getCreateTime()));
+        oTaskData.setsDueDate(task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+        oTaskData.setnPriority(task.getPriority());
+        oTaskData.setbSuspended((task instanceof Task) ? ((Task) task).isSuspended() : null);
+        oTaskData.setsTaskDefinitionKey(task.getTaskDefinitionKey());
+        oTaskData.setsTenantId(task.getTenantId());
+        oTaskData.setsCategory(task.getCategory());
+        oTaskData.setsFormKey(task.getFormKey());
+        oTaskData.setsParentTaskId(task.getParentTaskId());
+        oTaskData.setsParentTaskUrl("");
+        oTaskData.setsExecutionId(task.getExecutionId());
+        oTaskData.setsExecutionUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+        oTaskData.setsProcessInstanceId(task.getProcessInstanceId());
+        oTaskData.setsProcessInstanceUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+        oTaskData.setsProcessDefinitionId(task.getProcessDefinitionId());
+        oTaskData.setsProcessDefinitionUrl(oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+        oTaskData.setaVariables(new LinkedList());
+
+        if (flowSlotTicket != null) {
+            LOG.info("Populating flow slot ticket");
+            DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
+            
+            Map<String, Object> flowSlotTicketData = new HashMap<>();
+            
+            flowSlotTicketData.put("nID", flowSlotTicket.getId());
+            flowSlotTicketData.put("nID_Subject", flowSlotTicket.getnID_Subject());
+            flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()) : null);
+            flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
+
+            oTaskData.setmFlowSlotTicketData(flowSlotTicketData);
+        }
+        
+        return oTaskData;
     }
 
     /**
