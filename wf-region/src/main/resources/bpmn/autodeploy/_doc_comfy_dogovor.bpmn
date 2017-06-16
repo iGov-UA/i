@@ -16,13 +16,13 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sUnit" name="Оберіть підрозділ" type="enum" required="true">
-          <activiti:value id="Operational" name="Операційна дирекція"></activiti:value>
-          <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
+          <activiti:value id="sOperational" name="Операційна дирекція"></activiti:value>
+          <activiti:value id="sCommercial" name="Комерційна дирекція"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
-          <activiti:value id="Network " name="Управління розвитку мережі"></activiti:value>
-          <activiti:value id="Exploitation" name="Управління запуску та експлуатації торгових об'єктів"></activiti:value>
-          <activiti:value id="Retail" name="Роздрібна торгівля - магазини"></activiti:value>
+          <activiti:value id="sNetwork " name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="sExploitation" name="Управління запуску та експлуатації торгових об'єктів"></activiti:value>
+          <activiti:value id="sRetail" name="Роздрібна торгівля - магазини"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
@@ -56,7 +56,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow6" name="отказ" sourceRef="exclusivegateway1" targetRef="scripttask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
     </sequenceFlow>
@@ -197,7 +196,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow23" sourceRef="scripttask8" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow23" sourceRef="usertask2" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comfy_dogovor">
     <bpmndi:BPMNPlane bpmnElement="_doc_comfy_dogovor" id="BPMNPlane__doc_comfy_dogovor">
@@ -261,6 +261,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="189.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="660.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="160.0" y="137.0"></omgdi:waypoint>
@@ -276,10 +279,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="575.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="640.0" y="137.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="745.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="810.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="830.0" y="157.0"></omgdi:waypoint>
@@ -366,8 +365,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="455.0" y="457.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="362.0" y="189.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="692.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="677.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
