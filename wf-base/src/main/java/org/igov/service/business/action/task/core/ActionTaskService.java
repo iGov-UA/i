@@ -2742,10 +2742,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                                         .processInstanceId(snID_Process_Activiti).active();
                         
                         aTaskQuery.add(oTaskQuery);
+                        taskQuery = oTaskQuery;
                     }
                 }
                 LOG.info("aTaskQuery={}", aTaskQuery);
-                taskQuery = aTaskQuery;
+
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
