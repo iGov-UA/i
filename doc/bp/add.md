@@ -1060,9 +1060,9 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 * ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
 
-### _getdirectorydatafromscript
+### _getdirdatafromscript
 
-[вернуться...](#getdirectorydatafromscript)
+[вернуться...](#getdirdatafromscript)
 
 123
 
