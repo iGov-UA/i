@@ -1287,7 +1287,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
 
                 openUrl(res.ascUrl, {pareq: res.pareq, md: res.md, TermUrl: callbackUrl}, '_self');
               } else if(res.secure && res.secure === 'otp') {
-                $scope.phoneVerify.otpIsConfirmed = false;
+                $scope.phoneVerify.otpIsConfirmed = true;
                 $scope.otpErrorMsg = null;
                 $scope.checkoutConfirm.status = 'confirm';
                 $scope.checkoutData.payment= {otpToken: res.token, otpCode: '', invoice: res.invoice, pmt_id: res.pmt_id};
