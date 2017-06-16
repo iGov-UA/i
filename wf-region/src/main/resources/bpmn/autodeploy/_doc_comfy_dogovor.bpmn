@@ -49,7 +49,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
-    <userTask id="usertask2" name="Рук автора"></userTask>
+    <userTask id="usertask2" name="Рук автора">
+    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+    </userTask>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -68,7 +70,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow7" name="утверд" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
-    <userTask id="usertask3" name="финансист"></userTask>
+    <userTask id="usertask3" name="финансист">
+    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+    </userTask>
     <sequenceFlow id="flow8" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
@@ -87,7 +91,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow11" name="соглас" sourceRef="exclusivegateway2" targetRef="scripttask4"></sequenceFlow>
-    <userTask id="usertask4" name="юрист"></userTask>
+    <userTask id="usertask4" name="юрист">
+    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+    </userTask>
     <sequenceFlow id="flow12" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <scriptTask id="scripttask5" name="права автору,спет5" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -119,8 +125,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow13" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6"></sequenceFlow>
-    <userTask id="usertask5" name="автор"></userTask>
-    <userTask id="usertask6" name="круг рассмотрения"></userTask>
+    <userTask id="usertask5" name="автор">
+    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+    </userTask>
+    <userTask id="usertask6" name="круг рассмотрения">
+    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+    </userTask>
     <sequenceFlow id="flow16" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="scripttask6" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask5" targetRef="scripttask4"></sequenceFlow>
@@ -139,7 +149,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway3" targetRef="scripttask7"></sequenceFlow>
-    <userTask id="usertask7" name="деловод"></userTask>
+    <userTask id="usertask7" name="деловод">
+    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+    </userTask>
     <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask7"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow22" sourceRef="usertask7" targetRef="endevent1"></sequenceFlow>
