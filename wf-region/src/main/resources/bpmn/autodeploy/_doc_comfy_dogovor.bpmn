@@ -12,29 +12,110 @@
 execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="создание автором"></userTask>
+    <userTask id="usertask1" name="создание автором">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sUnit" name="Оберіть підрозділ" type="enum" required="true">
+          <activiti:value id="Operational" name="Операційна дирекція"></activiti:value>
+          <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="Network " name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="Exploitation" name="Управління запуску та експлуатації торгових об'єктів"></activiti:value>
+          <activiti:value id="Retail" name="Роздрібна торгівля - магазини"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask2" name="права руководителю автора, степ 2" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask2" name="права руководителю автора, степ 2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для керівника автора
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Author's_Head'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask2" name="Рук автора"></userTask>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="отказ" sourceRef="exclusivegateway1" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask3" name="права финас, степ 3" activiti:autoStoreVariables="false"></scriptTask>
+    <sequenceFlow id="flow6" name="отказ" sourceRef="exclusivegateway1" targetRef="scripttask8"></sequenceFlow>
+    <scriptTask id="scripttask3" name="права финас, степ 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_3'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для керівника автора
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Financier'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
     <sequenceFlow id="flow7" name="утверд" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
     <userTask id="usertask3" name="финансист"></userTask>
     <sequenceFlow id="flow8" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow10" name="отказ" sourceRef="exclusivegateway2" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask4" name="права юристам, степ4" activiti:autoStoreVariables="false"></scriptTask>
+    <sequenceFlow id="flow10" name="отказ" sourceRef="exclusivegateway2" targetRef="scripttask8"></sequenceFlow>
+    <scriptTask id="scripttask4" name="права юристам, степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для юристів
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Legal_Department'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
     <sequenceFlow id="flow11" name="соглас" sourceRef="exclusivegateway2" targetRef="scripttask4"></sequenceFlow>
     <userTask id="usertask4" name="юрист"></userTask>
     <sequenceFlow id="flow12" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask5" name="права автору,спет5" activiti:autoStoreVariables="false"></scriptTask>
-    <scriptTask id="scripttask6" name="права круг рассмотр,степ6" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask5" name="права автору,спет5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_5'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для автора
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_manager'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <scriptTask id="scripttask6" name="права круг рассмотр,степ6" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_6'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для круга
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Matching group_1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
     <sequenceFlow id="flow13" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6"></sequenceFlow>
@@ -44,12 +125,41 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <sequenceFlow id="flow17" sourceRef="scripttask6" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="usertask5" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="usertask6" targetRef="scripttask5"></sequenceFlow>
-    <scriptTask id="scripttask7" name="права деловоду,степ 7" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask7" name="права деловоду,степ 7" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_7'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для круга
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Clerk '
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
     <sequenceFlow id="flow20" sourceRef="exclusivegateway3" targetRef="scripttask7"></sequenceFlow>
     <userTask id="usertask7" name="деловод"></userTask>
     <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask7"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow22" sourceRef="usertask7" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask8" name="реклон прав, степ 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_1'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+
+//реклонирование прав
+//Клонування прав для начальника відділення
+var sKey_GroupPostfix = 'Comfy_Author's_Head'
+var sKey_GroupPostfix_New =('Comfy_manager')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow23" sourceRef="scripttask8" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comfy_dogovor">
     <bpmndi:BPMNPlane bpmnElement="_doc_comfy_dogovor" id="BPMNPlane__doc_comfy_dogovor">
@@ -110,6 +220,9 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="420.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="189.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="115.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="160.0" y="137.0"></omgdi:waypoint>
@@ -133,8 +246,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="830.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="829.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="415.0" y="216.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="16.0" width="31.0" x="575.0" y="199.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -156,8 +268,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="1102.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="415.0" y="216.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="16.0" width="31.0" x="862.0" y="210.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -196,7 +307,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="572.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="573.0" y="244.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1122.0" y="244.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1095.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="1122.0" y="300.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -215,6 +326,10 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="520.0" y="457.0"></omgdi:waypoint>
         <omgdi:waypoint x="455.0" y="457.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="362.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="165.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
