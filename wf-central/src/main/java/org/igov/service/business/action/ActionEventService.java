@@ -317,6 +317,7 @@ public class ActionEventService {
 					// divide average time (mins) to 60 to get hours
 					line.add(item.getAverageTime() == null ? "0"
 							: String.valueOf(item.getAverageTime().floatValue() / 60f));
+					LOG.info("Filling everi line>>>>>>>>>>>>>>> {}",line );
 					csvWriter.writeNext(line.toArray(new String[line.size()]));
 				}
 			}
