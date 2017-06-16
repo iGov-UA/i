@@ -2713,6 +2713,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT.equals(sFilterStatus)) {
                 
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT.equals(sFilterStatus)) {
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
+                
             
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT.equals(sFilterStatus)) {
                 
@@ -2742,6 +2747,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                                         .processInstanceId(snID_Process_Activiti).active();
                         
                         aTaskQuery.add(oTaskQuery);
+                        LOG.info("oTaskQuery tasks={}", oTaskQuery.list());
                         taskQuery = oTaskQuery;
                     }
                 }
