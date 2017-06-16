@@ -1448,6 +1448,7 @@ var obj = dictionaryService.processDictionary('MinFin_test', 'IPN', 'value');
 MinFin_test - имя справочника с расширением .csv
 IPN - имя столбца, который будет ключом.
 value - значение атрибута в столбце.
+
 [детальней...](#_getdirectorydatafromscript)
 
 
