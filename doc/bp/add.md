@@ -1064,6 +1064,8 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#getdirectorydatafromscript)
 
+123
+
 
 017_Configurationfiles.md
 
