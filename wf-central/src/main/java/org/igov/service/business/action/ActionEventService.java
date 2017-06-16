@@ -304,8 +304,8 @@ public class ActionEventService {
 			for (ServicesStatistics item : servicesStatistics) {
 				LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
 				List<String> line = new LinkedList<>();
-				if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
-					LOG.info("String.valueOf(item.getnID_Service()) -->> " + String.valueOf(item.getnID_Service()));
+				/*if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
+					LOG.info("String.valueOf(item.getnID_Service()) -->> " + String.valueOf(item.getnID_Service()));*/
 					line.add(String.valueOf(item.getnID_Service()));
 					line.add(item.getServiceName());
 					line.add(String.valueOf(item.getSID_UA()));
@@ -320,7 +320,7 @@ public class ActionEventService {
 					LOG.info("Filling everi line>>>>>>>>>>>>>>> {}",line );
 					csvWriter.writeNext(line.toArray(new String[line.size()]));
 				}
-			}
+			//}
             csvWriter.close();
         } catch (Exception e) {
             LOG.error("Error occurred while creating CSV file {}", e.getMessage());
