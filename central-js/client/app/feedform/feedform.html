@@ -1,0 +1,96 @@
+<div ng-app="popUp" ng-controller="PopUpController">
+  <div class="modal-header">
+    <button class="close" type="button" ng-click="close()">×</button>
+    <h1 class="modal-title">Маю питання щодо мого звернення</h1>
+  </div>
+  <div class="modal-body" align="justify"><p>Це питання буде надіслано в команду волонтерів порталу iGov і ми
+    обов'язково
+    будемо намагатися допомогти Вам у
+    вирішенні Вашого питання. Якщо ж питання стосується терміну обробки звернення, то найефективнішим є спілкування вже
+    безпосередньо з органом, що надає послугу (він зазвичай вказан в листах, що Вам приходять протягом обробки
+    звернення).</p>
+    <p style="color: red">* Обов'язкові для заповнення поля</p>
+    <form name="feedform" ng-submit="sendData()" pattern="[A-Za-zА-Яа-яЁё]{2,}" required>
+      <div class="form-group">
+        <b>Ваше ім'я <span style="color: red">*</span></b>
+        <br><input name="sNameCitizen" size="40" maxlength="40" class="input" type="text" ng-model="sNameCitizen">
+      </div>
+      <div class="form-group">
+        <b>Ваш email <span style="color: red">*</span></b>
+        <br>Щоб ми могли, у разі потреби, уточнити деталі
+        <br><input name="email" type="email" ng-model="email" required>
+      </div>
+      <div class="form-group">
+        <b>Ваш телефон</b>
+        <br><input name="phone" type="text" ng-model="phone">
+      </div>
+      <div class="form-group">
+        <b>У Вас питання щодо існуючого звернення?</b>
+        <select name="asExistentRequest" ng-model="dropDown">
+          <option value="sEnumExistentRequest_yes">Так</option>
+          <option value="sEnumExistentRequest_no">Ні</option>
+        </select>
+      </div>
+      <div ng-show="dropDown=='sEnumExistentRequest_yes'">
+        <div class="form-group">
+          <b>Номер звернення <span style="color: red">*</span></b>
+          <br>(якщо немає - то пишемо 0, всі номери заявок порталу починаються на 0-... , якщо у Вас інший номер, то Ви
+          подавали звернення на іншому порталі. Прохання звернутися саме на той портал)
+          <br><input name="sRequestNumber" type="text" ng-model="sRequestNumber">
+        </div>
+        <div class="form-group">
+          <b>Оберіть, будь ласка, область, де Ви замовляли послугу</b>
+          <br><select name="asRegionName" ng-model="asRegionName">
+          <option value="">-оберіть область-</option>
+          <option value="sEnumRegionName_1">Автономна республіка Крим</option>
+          <option value="sEnumRegionName_2">Вінницька область</option>
+          <option value="sEnumRegionName_3">Волинська область</option>
+          <option value="sEnumRegionName_4">Дніпропетровська область</option>
+          <option value="sEnumRegionName_5">Донецька область</option>
+          <option value="sEnumRegionName_6">Житомирська область</option>
+          <option value="sEnumRegionName_7">Закарпатська область</option>
+          <option value="sEnumRegionName_8">Запорізька область</option>
+          <option value="sEnumRegionName_9">Івано-Франківська область</option>
+          <option value="sEnumRegionName_10">Київська область</option>
+          <option value="sEnumRegionName_11">Кіровоградська область</option>
+          <option value="sEnumRegionName_12">Луганська область</option>
+          <option value="sEnumRegionName_13">Львівська область</option>
+          <option value="sEnumRegionName_14">Миколаївська область</option>
+          <option value="sEnumRegionName_15">Одеська область</option>
+          <option value="sEnumRegionName_16">Полтавська область</option>
+          <option value="sEnumRegionName_17">Рівненська область</option>
+          <option value="sEnumRegionName_18">Сумська область</option>
+          <option value="sEnumRegionName_19">Тернопільська область</option>
+          <option value="sEnumRegionName_20">Харківська область</option>
+          <option value="sEnumRegionName_21">Херсонська область</option>
+          <option value="sEnumRegionName_22">Хмельницька область</option>
+          <option value="sEnumRegionName_23">Черкаська область</option>
+          <option value="sEnumRegionName_24">Чернівецька область</option>
+          <option value="sEnumRegionName_25">Чернігівська область</option>
+        </select>
+        </div>
+        <div class="form-group">
+          <b>Вкажіть, будь ласка, місто/район, де Ви замовляли послугу</b>
+          <br><input name="sCityName" type="text" ng-model="sCityName">
+        </div>
+        <div class="form-group">
+          <b>Вкажіть, будь ласка, назву послуги</b>
+          <br><input name="sServiceName" type="text" ng-model="sServiceName">
+        </div>
+      </div>
+      <div class="form-group">
+        <b>Опишіть проблему, будь ласка</b>
+        <br><textarea name="sProblemDescription" cols="40" rows="10" ng-model="sProblemDescription" required></textarea>
+      </div>
+      <div class="form-group">
+        <b>Якщо бажаєте, можете додати скрін помилки</b>
+        <br><input name="Screen" type="file" accept="image/*" ng-model="Screen">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="close()">Закрити</button>
+        <button class="btn btn-info btn-lg" type="submit">Відправити</button>
+      </div>
+    </form>
+
+  </div>
+</div>
