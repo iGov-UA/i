@@ -6,6 +6,7 @@
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
@@ -718,8 +719,9 @@ var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 // Получение логина адресата
-var sGroupAddressee = execution.getVariable('sLogin_Addressee')
-execution.setVariable('sGroupAddressee', sGroupAddressee)</script>
+
+//var sGroupAddressee = documentStepService.getLoginsFromField(snID_Process_Activiti, 'null', 'sLogin_Addressee')
+//execution.setVariable('sGroupAddressee', sGroupAddressee)</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask7" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>

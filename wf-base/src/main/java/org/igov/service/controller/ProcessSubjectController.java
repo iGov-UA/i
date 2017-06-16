@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectResult;
 import org.igov.model.process.ProcessSubjectResultTree;
+import org.igov.model.process.ProcessSubjectTask;
 import org.igov.service.business.process.ProcessSubjectService;
 import org.igov.service.business.process.ProcessSubjectTreeService;
 import org.igov.service.business.process.ProcessSubjectTaskService;
@@ -209,9 +210,23 @@ public class ProcessSubjectController {
                 @ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
                 @ApiParam(value = "ид таски", required = true) @RequestParam(value = "snID_Task_Activiti", required = true) String snID_Task_Activiti,
                 @ApiParam(value = "логин", required = true) @RequestParam(value = "sLogin", required = true) String sLogin
-    ) {
+    		) {
     
         return processSubjectService.syncProcessSubject(snID_Process_Activiti, snID_Task_Activiti, sLogin);
+    }
+    
+    @ApiOperation(value = "Получить ProcessSubjectTask", notes = "Пример вызова:"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubjectTasks?snID_Process_Activiti=свое значение")
+    @RequestMapping(value = "/getProcessSubjectTasks", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ProcessSubjectTask> getProcessSubjectTasks(
+    		 @ApiParam(value = "ид процесса", required = true)
+    		 @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
+             @ApiParam(value = "глубина выбрки, 0 -  во всю глубину", required = false)
+    		 @RequestParam(value = "nDeepProcessSubjectTask ", required = false, defaultValue = "1") Integer nDeepProcessSubjectTask 
+    		) {
+    	
+    	return oProcessSubjectTaskService.getProcessSubjectTask(snID_Process_Activiti, nDeepProcessSubjectTask);
     }
        
 }
