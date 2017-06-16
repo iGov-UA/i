@@ -1341,7 +1341,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           } else if(res.error === 'otp max attempts') {
             otpError();
           } else if(res.error) {
-            $scope.phoneVerify.otpIsConfirmed = false;
+            $scope.phoneVerify.otpIsConfirmed = $scope.checkoutSpinner =  false;
             $scope.otpErrorMsg = MasterPassService.otpErrorMessages(res.error);
           } else {
             otpError();
