@@ -36,13 +36,6 @@
         width: 620px;
       }
     }
-
-    .card-list-disabled {
-      color: #AAAAAA !important;
-      cursor: default;
-      pointer-events: none;
-      text-decoration: none;
-    }
   </style>
 
   <div class="list-group-item disabled" ng-if="!spinner">
@@ -113,6 +106,7 @@
       <div class="col-md-12">
         <div class="highlight">
           <form name="form" novalidate>
+            <div ng-init="setFormToScope(form)"></div>
             <div class="clearfix" ng-if="oServiceData.oPlace">
                 <a class="pull-right" ng-hide="paramsBackup !== null" href ng-click="fillSelfPrevious()">Заповнити даними попередньої заявки</a>
                 <a class="pull-right" ng-hide="paramsBackup === null" href ng-click="fillSelfPreviousBack()">Відмінити авто-заповнені дані</a>
@@ -132,6 +126,10 @@
                 <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
                   <div><b>{{insertSeparator(property.id).sText}}</b></div>
                   <div class="line-separator"></div>
+                  <img src="../../../../assets/images/masterpass.jpg"
+                       alt="MasterPass"
+                       class="mp-emblem"
+                       ng-if="property.id === 'sID_Pay_MasterPass'">
                 </div>
                 <div ng-if="insertSeparator(property.id).sText.length == 0" style="width: 100%">
                   <div class="line-separator-full"></div>
@@ -155,6 +153,10 @@
                     Ви маєте можливість їх редагувати.</p>
                 </div>
 
+                <!--<div ng-if="property.type === 'tel' && isMPassField(null, true)">-->
+                  <!--<p style="font-size: 12px;color: darkgrey">На цей номер будет вiдправлено ОТР-пароль</p>-->
+                <!--</div>-->
+
                 <div class="inner-html s-field-notes" ng-if="property.options && (property.options.html || property.options.HTML)" ng-bind-html="property.options.html">
                 </div>
               </div>
@@ -176,7 +178,7 @@
                        ng-required="isFieldRequired(property)"
                        class="form-control_ {{labelStyle(property)}}"
                        ng-bind-html="htmldecode(data.formData.params[property.id].value)">
-                 </label>
+                </label>
 
                 <dropdown-country ng-switch-when="string"
                                   ng-if="property.id==='resident' || property.id === 'sCountry'"
@@ -502,24 +504,6 @@
                        ng-if="!isOKPOField(property.id) && !isMPassField(property.id)"
                        value="">
 
-                <!--masterpass button start-->
-                <img ng-switch-when="string"
-                     src="../../../../assets/images/masterpass.jpg"
-                     ng-hide="property.id==='resident' || property.id === 'sCountry' || property.id.indexOf('sCurrency') === 0 || property.id === 'sID_Merchant' || property.id.indexOf('sID_Merchant') === 0"
-                     ng-if="isMPassField(property.id)"
-                     style="width: 160px;cursor: pointer;"
-                     ng-click="authorizeCheckout()">
-                <input ng-switch-when="string"
-                       type="text"
-                       name="{{property.id}}"
-                       ng-hide="true"
-                       ng-model="data.formData.params[property.id].value"
-                       ng-required="isFieldRequired(property)"
-                       ng-class="getBpAndFieldID(property)"
-                       class="form-control"
-                       ng-if="isMPassField(property.id)">
-                <!--masterpass button end-->
-
                 <!--field for OKPO search start-->
                 <div ng-switch-when="string" ng-if="isOKPOField(property.id) && !isMPassField(property.id)">
                   <div class="okpo">
@@ -592,25 +576,40 @@
                          value="">
                   <div class="mp-phone-check" ng-if="isMPassField(null, true)">
                     <div class="phone-check-dialog" ng-if="phoneVerify.dialog">
+                      <span class="left-side-label">OTP-пароль</span>
                       <input type="text"
                              maxlength="4"
-                             class="form-control input-sm confirm-field"
+                             class="form-control confirm-field"
                              placeholder="Введiть надiсланий SMS-пароль"
+                             ng-disabled="checkoutSpinner"
+                             ng-class="{'error-phone-verification': !phoneVerify.otpIsConfirmed}"
                              ng-model="phoneVerify.otp">
+                      <span style="color: #a94442;" ng-if="!phoneVerify.otpIsConfirmed">Введено невiрний OTP</span>
                       <input type="button"
-                             class="btn btn-default btn-sm confirm-button"
+                             class="btn igov-upload-button confirm-button"
                              value="Пiдтвердити"
                              ng-disabled="phoneVerify.otp.length < 4"
+                             ng-if="!checkoutSpinner"
                              ng-click="confirmOtp()">
+                      <i class="fa fa-spinner fa-spin fa-2x fa-fw" ng-if="checkoutSpinner"></i>
                     </div>
                     <input type="button"
-                           class="btn btn-default btn-sm"
-                           value="Пiдтвердити номер"
-                           ng-if="data.formData.params[property.id].value.length === 16 && phoneVerify.showVerifyButton"
+                           class="btn igov-upload-button"
+                           value="Вiдправити"
+                           ng-if="data.formData.params[property.id].value.length === 16 && phoneVerify.showVerifyButton && !phoneVerify.dialog"
                            ng-click="phoneVerifyStart()">
                     <a ng-click="changePhone()"
-                       ng-if="!phoneVerify.showVerifyButton">Змiнити номер телефону</a>
+                       ng-if="!phoneVerify.showVerifyButton">Змiнити</a>
                   </div>
+                  <!--masterpass checkout block start-->
+                  <div ng-if="isMPassField(null, true) && isOpenedCheckout">
+                    <div class="checkout-mp">
+                      <div class="row">
+                        <masterpass-checkout></masterpass-checkout>
+                      </div>
+                    </div>
+                  </div>
+                  <!--masterpass checkout block end-->
                 </div>
 
 
@@ -872,26 +871,17 @@
               </div>
 
             </div>
-            <!--<div class="row">-->
-              <!--<div class="col-md-5"></div>-->
-              <!--<div class="col-md-3">-->
 
+            <div class="row col-md-12 igov-warning-label" ng-if="paymentStatus && paymentStatus == 4">
+              <span ng-if="!checkoutErrorMsg">
+                Сталась помилка, спробуйте пiзнiше, або <a ng-click="authorizeCheckout()">оновiть</a>
+              </span>
+              <span ng-if="checkoutErrorMsg">{{checkoutErrorMsg}}. <a ng-click="authorizeCheckout()">Оновити</a></span>
+            </div>
+            <div class="row col-md-12 igov-success-label" ng-if="paymentStatus && paymentStatus == 5">
+              Платiж успiшний
+            </div>
 
-                  <!--<label ng-hide="!sign.checked">Після натискання "Замовити послугу"-->
-                    <!--Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом.-->
-                    <!--Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність-->
-                  <!--</label>-->
-                  <!--<label  ng-if="isSignNeeded" ng-hide="isSignNeededRequired">Накласти ЕЦП :-->
-                  <!--<input type="checkbox"-->
-                         <!--ng-model="sign.checked"-->
-                         <!--name="{{data.formData.getSignFieldID()}}">-->
-                <!--</label>-->
-                  <!--&lt;!&ndash;label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"&ndash;&gt;-->
-                         <!--&lt;!&ndash;ng-model="isSignNeededRequired ? true : sign.checked"&ndash;&gt;-->
-
-              <!--</div>-->
-              <!--<div class="col-md-4"></div>-->
-              <!--</div>-->
             <div class="row col-md-12 igov-info-label" ng-if="isSignNeeded">
               Після натискання "Замовити послугу з ЕЦП"
               Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом. <br />
@@ -902,14 +892,10 @@
               Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність
             </div>
 
-            <div class="row" ng-if="isOpenedCheckout">
-              <masterpass-checkout></masterpass-checkout>
-             </div>
-
             <div class="row">
-              <div class="col-md-3" ng-class="{'col-md-5': isSignNeededRequired || !isSignNeeded}"></div>
+              <div class="col-md-3" ng-class="{'col-md-5': isSignNeededRequired || !isSignNeeded || checkoutConfirm.status === 'confirm'}"></div>
 
-              <div class="col-md-3" ng-if="!bSending(form) && !isSignNeededRequired">
+              <div class="col-md-3" ng-if="!bSending(form) && !isSignNeededRequired && checkoutConfirm.status !== 'confirm'">
                 <br/>
                 <button class="btn btn-info"
                         ng-click="processForm(form, activitiForm.formProperties, false)"
@@ -919,7 +905,7 @@
                 </button>
               </div>
 
-              <div class="col-md-3" ng-if="!bSending(form) && (isSignNeeded || isSignNeededRequired)">
+              <div class="col-md-3" ng-if="!bSending(form) && (isSignNeeded || isSignNeededRequired) && checkoutConfirm.status !== 'confirm'">
                 <br/>
                 <button class="btn btn-warning"
                         ng-click="processForm(form, activitiForm.formProperties, true)"
@@ -927,8 +913,22 @@
                 </button>
               </div>
 
-              <div class="col-md-3">
+              <div class="col-md-3" ng-if="checkoutConfirm.status !== 'confirm'">
                 <br><label ng-show="bSending(form)">Зачекайте...</label>
+              </div>
+
+              <div class="col-md-5 otp-verify-confirm" ng-if="checkoutConfirm.status === 'confirm'">
+                <div class="col-md-7" style="padding-left: 0;padding-right: 0;">
+                  <input type="text"
+                         placeholder="Введiть SMS-пароль"
+                         ng-model="checkoutData.payment.otpCode"
+                         class="form-control"
+                         ng-class="{'error-phone-verification': !phoneVerify.otpIsConfirmed}">
+                  <span style="color: #a94442;font-size: 14px;" ng-if="!phoneVerify.otpIsConfirmed">{{otpErrorMsg}}</span>
+                </div>
+                <div class="col-md-2">
+                  <input type="button" value="Пiдтвердити" ng-click="otpConfirmPayment()" ng-disabled="checkoutSpinner" class="btn btn-info">
+                </div>
               </div>
             </div>
 

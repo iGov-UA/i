@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app').service('MasterPassService', ['$http', '$location', '$window', 'modalService', function ($http, $location, $window, modalService) {
+angular.module('app').service('MasterPassService', ['$http', '$location', '$window', 'modalService', '$q', function ($http, $location, $window, modalService, $q) {
 
     var deleteCardModal = {
       closeButtonText: 'Скасувати',
@@ -58,6 +58,25 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
           }
         }
       }
+    },
+
+    getSum: function (form) {
+      var deferred = $q.defer();
+      for(var i=0; i<form.length; i++) {
+        if(form[i].id.indexOf('sID_Merchant_MasterPass') === 0) {
+          var object = JSON.parse(form[i].value), sum = 0;
+          angular.forEach(object.p2r, function (org) {
+            sum += parseFloat(org.amount);
+          });
+          for(var j=0; j<form.length; j++) {
+            if(form[j].id.indexOf('sSum_MasterPass') === 0){
+              deferred.resolve({sum: sum, id: form[j].id, position: j});
+            }
+          }
+        }
+      }
+
+      return deferred.promise;
     },
 
     phoneCheck: function (phone, value) {
@@ -132,6 +151,21 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
       };
 
       return $http.post('./api/masterpass/checkUser', params).then(function (res) {
+        if(res && res.data.response) {
+          return res.data.response;
+        }
+      })
+    },
+
+    getCommission: function (sum) {
+      var params = {
+        "body": {
+          "invoice": sum
+        },
+        "action": "CalcPaymentAmount"
+      };
+
+      return $http.post('./api/masterpass', params).then(function (res) {
         if(res && res.data.response) {
           return res.data.response;
         }
@@ -285,6 +319,23 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
         case 'phone-is-not-verified':
           return phoneIsNotVerified;
       }
+    },
+
+    otpErrorMessages: function (msg) {
+      var answer;
+      switch (msg) {
+        case 'otp max attempts':
+          answer = 'Перевищена максимальна кiлькiсть спроб';
+          break;
+        case 'otp expired':
+          answer = 'Термін дії ОТР-паролю закінчився';
+          break;
+        case 'wrong otp':
+        case 'invalid value':
+          answer = 'Невiрний ОТР';
+          break;
+      }
+      return answer;
     },
 
     bankErrorMessage: function (msg) {

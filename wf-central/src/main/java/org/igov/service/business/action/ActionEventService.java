@@ -288,7 +288,7 @@ public class ActionEventService {
         List<String> headers = new ArrayList<>();
         headers.addAll(Arrays.asList(headingFields));
 
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatistics.csv");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatisticsOfDnepr.csv");
         httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
 
         /**
@@ -317,6 +317,7 @@ public class ActionEventService {
 					// divide average time (mins) to 60 to get hours
 					line.add(item.getAverageTime() == null ? "0"
 							: String.valueOf(item.getAverageTime().floatValue() / 60f));
+					LOG.info("Filling everi line>>>>>>>>>>>>>>> {}",line );
 					csvWriter.writeNext(line.toArray(new String[line.size()]));
 				}
 			}

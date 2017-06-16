@@ -44,7 +44,7 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:string><![CDATA[btsol]]></activiti:string>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -216,7 +216,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable3', 'step_3',true,'sLogin_Approver')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_3',true,'sLogin_isExecute')
-
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_3')
 </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
@@ -233,6 +234,8 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',true,'sLogin_isExecute')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
 
 
 </script>
@@ -245,6 +248,8 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Pro
 
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_4',true,'sLogin_Approver')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_4',true,'sLogin_isExecute')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
 
 //4. получение ИД БП
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
@@ -309,14 +314,16 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
     <scriptTask id="scripttask16" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')
-//var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', 'btsol', 'step_1')</script>
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow104" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask17" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_read', sKey_GroupPostfix_New, 'step_5')
 
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol_view', 'sTable4', 'step_5','sLogin_Addressee')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_5',true,'sLogin_Approver')

@@ -1970,7 +1970,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                 Object taskQuery = oActionTaskService.createQueryNew(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
                         sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery={}", taskQuery);
 
                 totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
                         : oActionTaskService.getCountOfTasksForGroups(groupsIds);

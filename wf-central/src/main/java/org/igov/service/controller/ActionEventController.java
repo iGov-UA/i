@@ -977,7 +977,7 @@ public class ActionEventController implements ControllerConstants {
     
     @ApiOperation(value = "Получение статистики по выбранному списку сервисов и региону за заданный промежуток времени", notes
             = "##### Примеры:\n"
-            + "https://test.igov.org.ua/wf/service/action/event/getServicesStatisticOfDnepr?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/event/getServicesStatisticOfDnepr?sDate_from=2017-06-01 12:09:56&sDate_to=2017-06-15 12:09:56\n\n"
             + "Результат\n"
             + "\n```csv\n"
             + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
