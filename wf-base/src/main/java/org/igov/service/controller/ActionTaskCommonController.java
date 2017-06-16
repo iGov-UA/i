@@ -754,7 +754,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process)));
+        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1));
 
         return JsonRestUtils.toJsonResponse(response);
     }
@@ -1970,7 +1970,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                 Object taskQuery = oActionTaskService.createQueryNew(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
                         sFilterStatus, groupsIds, soaFilterField);
-                LOG.info("taskQuery={}", taskQuery);
 
                 totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
                         : oActionTaskService.getCountOfTasksForGroups(groupsIds);

@@ -52,5 +52,17 @@ namespace TwainWeb.Standalone {
                 this["MainURL"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.0.1")]
+        public string version {
+            get {
+                return ((string)(this["version"]));
+            }
+            set {
+                this["version"] = value;
+            }
+        }
     }
 }

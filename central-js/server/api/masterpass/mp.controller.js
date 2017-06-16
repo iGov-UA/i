@@ -1,6 +1,7 @@
 'use strict';
 var request = require('request'),
     masterPassAuth = require('./mp.service'),
+    errorMessages = require('./bankResponses.service'),
     async = require('async');
 
 function getOptions(req) {
@@ -170,8 +171,10 @@ module.exports.verify3DSCallback = function (req, res) {
           res.end();
         }
       });
-    } else {
-      res.redirect(callbackUrl + '?status=' + result.response.error)
+    } else if(result.response.pmt_status == 4 && result.response.error || result.response.error){
+      res.redirect(callbackUrl + '?status=' + result.response.error);
+    } else if(result.response.pmt_status == 4 && !result.response.error) {
+      res.redirect(callbackUrl + '?status=failed&bank_id=' + result.response.bank_response.bank_id + '&bank_response=' + result.response.bank_response.rc)
     }
   }
 };
@@ -241,4 +244,15 @@ module.exports.confirmOtp = function (req, res) {
       res.send(false);
       res.end();
     }
+};
+
+module.exports.getErrorMessage = function (req, res) {
+  var response = errorMessages.getErrorMessage(req.query.code, req.query.error);
+  if(response) {
+    res.send(response);
+    res.end();
+  } else {
+    res.send('Спробуйте пiзнiше');
+    res.end();
+  }
 };

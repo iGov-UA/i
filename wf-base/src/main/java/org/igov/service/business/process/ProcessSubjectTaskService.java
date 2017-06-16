@@ -569,9 +569,24 @@ public class ProcessSubjectTaskService {
      * @param snID_Process_Activiti
      * @return aListOfProcessSubjectTask
      */
-    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti) {
+    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Integer nDeepProcessSubjectTask) {
 
-        List<ProcessSubjectTask> aListOfProcessSubjectTask = oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti);
+        List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
+        
+        if (nDeepProcessSubjectTask == 1) {
+        	aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
+        	
+        } else if (nDeepProcessSubjectTask == 0) {
+        	ProcessSubject oProcessSubject = oProcessSubjectDao.findByExpected("snID_Process_Activiti", snID_Process_Activiti);
+        	aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
+        	
+        	List<ProcessSubject> aProcessSubjectChild = oProcessSubject.getaProcessSubjectChild();
+        	
+        	for (ProcessSubject oProcessSubjectChild : aProcessSubjectChild) {
+        		aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", oProcessSubjectChild.getSnID_Process_Activiti()));
+			}
+        }
+
         LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
 
         return aListOfProcessSubjectTask;
