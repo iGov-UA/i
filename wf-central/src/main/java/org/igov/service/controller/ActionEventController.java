@@ -977,19 +977,23 @@ public class ActionEventController implements ControllerConstants {
     
     @ApiOperation(value = "Получение статистики по выбранному списку сервисов и региону за заданный промежуток времени", notes
             = "##### Примеры:\n"
-            + "https://alpha.test.igov.org.ua/wf/service/action/event/getServicesStatisticOfDnepr?sDate_from=2017-06-01 12:09:56&sDate_to=2017-06-15 12:09:56\n\n"
+            + "https://alpha.test.igov.org.ua/wf/service/action/event/getServicesStatisticsOfDnepr?sDate_from=2017-06-01 12:09:56&sDate_to=2017-06-15 12:09:56\n\n"
             + "Результат\n"
             + "\n```csv\n"
             + "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
             + "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
             + "\n```\n")
-    @RequestMapping(value = "/getServicesStatisticOfDnepr", method = RequestMethod.GET)
+    @RequestMapping(value = "/getServicesStatisticsOfDnepr", method = RequestMethod.GET)
     public @ResponseBody
     void getServicesStatisticOfDnepr(
             @ApiParam(value = "дата \"С\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_from") String sDate_from,
             @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
             HttpServletResponse httpResponse) {
 
+    	LOG.info("sDate_from in /getServicesStatisticsOfDnepr = ", sDate_from);
+    	LOG.info("sDate_to in /getServicesStatisticsOfDnepr = ", sDate_to);
+    	
+    	
 		try {
 			oActionEventService.getServicesStatisticsOfDnepr(sDate_from, sDate_to, httpResponse);
 
