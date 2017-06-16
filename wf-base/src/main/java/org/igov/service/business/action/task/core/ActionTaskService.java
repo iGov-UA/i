@@ -2717,7 +2717,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT.equals(sFilterStatus)) {
                 
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
-                LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
                 
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                     
@@ -2740,10 +2741,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                         TaskQuery oTaskQuery = oTaskService.createTaskQuery()
                                         .processInstanceId(snID_Process_Activiti).active();
                         
-                        List<Task> aTask = oTaskQuery.list();
-                        LOG.info("aTask={}", aTask);
+                        aTaskQuery.add(oTaskQuery);
                     }
                 }
+                LOG.info("aTaskQuery={}", aTaskQuery);
+                taskQuery = aTaskQuery;
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
