@@ -1938,6 +1938,7 @@ public class DocumentStepService {
                         HistoricProcessInstance oHistoricProcessInstance = historyService
                                 .createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti)
                                 .singleResult();
+                        LOG.info("oHistoricProcessInstance.id={}, snID_Process_Activiti={}", oHistoricProcessInstance.getId(), snID_Process_Activiti);
 
                         if (oHistoricProcessInstance != null) {
                             ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()
