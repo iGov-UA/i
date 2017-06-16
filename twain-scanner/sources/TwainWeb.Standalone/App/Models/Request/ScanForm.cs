@@ -14,6 +14,7 @@ namespace TwainWeb.Standalone.App.Models.Request
         public string IsPackage { get; set; }
         public int SaveAs { get; set; }
         public FormatPage Format { get; set; }
+        public bool? asBase64 { get; set; }
     }
 
     public class CompressionFormat

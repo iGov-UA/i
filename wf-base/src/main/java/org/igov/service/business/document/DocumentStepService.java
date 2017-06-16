@@ -962,6 +962,7 @@ public class DocumentStepService {
                 for(DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight){
                     if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
                         oDocumentStepSubjectRight_saved = oDocumentStepSubjectRight;
+                        LOG.info("sKey_GroupPostfix_New for permition in cloneRights is {}", sKey_GroupPostfix_New);
                         break;
                     }
                 }
@@ -974,7 +975,9 @@ public class DocumentStepService {
                     oDocumentSubjectRightPermition_new.setPermitionType(oDocumentSubjectRightPermition.getPermitionType());
                     oDocumentSubjectRightPermition_new.setnID_DocumentStepSubjectRight(oDocumentStepSubjectRight_saved.getId());
                     oDocumentSubjectRightPermition_new.setsKeyGroup_Postfix(sKey_GroupPostfix_New);
-                
+                    LOG.info("oDocumentStepSubjectRight_saved id for permition in cloneRights is {}", oDocumentStepSubjectRight_saved.getId());
+                    oDocumentSubjectRightPermitionDao.saveOrUpdate(oDocumentSubjectRightPermition_new);
+                    LOG.info("oDocumentSubjectRightPermition_new id for permition in cloneRights is {}", oDocumentSubjectRightPermition_new.getId());
                 }
             }
 
@@ -1935,6 +1938,7 @@ public class DocumentStepService {
                         HistoricProcessInstance oHistoricProcessInstance = historyService
                                 .createHistoricProcessInstanceQuery().processInstanceId(snID_Process_Activiti)
                                 .singleResult();
+                        LOG.info("oHistoricProcessInstance.id={}, snID_Process_Activiti={}", oHistoricProcessInstance.getId(), snID_Process_Activiti);
 
                         if (oHistoricProcessInstance != null) {
                             ProcessDefinition oProcessDefinition = repositoryService.createProcessDefinitionQuery()

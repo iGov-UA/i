@@ -6,6 +6,7 @@ namespace TwainWeb.Standalone.App.Scanner
 	{
 		int? CurrentSourceIndex { get; }
 		
+        //налаштування сканування
 		ISource CurrentSource { get; }
 		
 		int SourceCount { get; }

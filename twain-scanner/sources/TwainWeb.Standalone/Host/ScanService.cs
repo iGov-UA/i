@@ -180,10 +180,20 @@ namespace TwainWeb.Standalone.Host
                 }
                 else
                 {
-                    var fileParam = new ModelBinder(GetGetData(ctx.Request)).BindDownloadFile();
-                    actionResult = contr.DownloadFile(fileParam);
+                    ModelBinder MB = new ModelBinder(GetGetData(ctx.Request));
+                    var fileParam = MB.BindDownloadFile();
+
+                    _logger.Info("IsBase64 - " + MB.IsBase64.ToString());
+
+                    if (MB.IsBase64)
+                        actionResult = contr.ConvertToBase64File(fileParam);
+                    else
+                        actionResult = contr.DownloadFile(fileParam);
+
                 }
+
             }
+
 
             if (actionResult.FileNameToDownload != null)
                 ctx.Response.AddHeader("Content-Disposition", "attachment; filename*=UTF-8''" + Uri.EscapeDataString(Uri.UnescapeDataString(actionResult.FileNameToDownload)));

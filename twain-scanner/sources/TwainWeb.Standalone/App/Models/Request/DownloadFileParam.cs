@@ -14,7 +14,6 @@ namespace TwainWeb.Standalone.App.Models.Request
 		    FileName = filename;
 		    TempFile = tempfile;
             Base64 = base64;
-
         }
         public string FileName { get; set; }
         public string TempFile { get; set; }

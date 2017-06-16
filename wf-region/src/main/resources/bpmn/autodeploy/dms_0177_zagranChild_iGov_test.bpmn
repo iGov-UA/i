@@ -1,0 +1,647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dms_0177_zagranChild_iGov" name="Паспорт громадянина України для виїзду за кордон для дитини" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="sWarning0" name=" ; ;labelType=info" type="label" default="Для оформлення закордонного паспорту для дорослого існує окрема &lt;a href=&quot;https://igov.org.ua/service/176/general&quot;&gt;послуга&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш телефон;заповніть перед обранням підрозділу ДМС" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Початок-блок для кого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані особи, яка буде отримувати паспорт&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Кынець-блок для кого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Public_SubjectOrganJoin&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sInfoFAQ" name=" ; ;labelType=info" type="label" default="Відповіді на найчастіші питання по закордонних паспортах (в т.ч. про наявність черги) Ви можете знайти за &lt;a href=&quot;https://docs.google.com/document/d/12tTbPz081dMJPxPicyXEe8xMMQdYNUet4Qx04VNCnys/edit?usp=sharing&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocChild" name="Документи у регіоні; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="Запуск таймера напоминания; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay1" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay1" name="Номер черги за довідником ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay1" name="Тип зовнішньої черги; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
+        <activiti:formProperty id="sTicketCode" name="Код талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
+      <errorEventDefinition></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="exclusivegateway6" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay != null}]]></conditionExpression>
+    </sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow30" sourceRef="parallelgateway1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
+    <intermediateCatchEvent id="timerintermediatecatchevent1" name="TimerCatchEvent">
+      <timerEventDefinition>
+        <timeDate>${sNotification_day}</timeDate>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="flow31" sourceRef="timerintermediatecatchevent1" targetRef="exclusivegateway3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow34" name="${sCancelInfo != 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="endevent4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent4" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
+    <sequenceFlow id="flow33" name="${sCancelInfo == 'Заявка актуальна'}" sourceRef="exclusivegateway3" targetRef="servicetask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Нагадування про візит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Паспорт громадянина України для виїзду за кордон для дитини]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>Відповіді на найчастіші питання по закордонних паспортах Ви можете знайти за <a href="https://docs.google.com/document/d/12tTbPz081dMJPxPicyXEe8xMMQdYNUet4Qx04VNCnys/edit?usp=sharing">посиланням</a></p><br>
+
+										Для того щоб закінчити процедуру необхідно:<br>
+										<ul>
+											<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату.Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a> </b> </li>
+											<li>Прийти за адресою: ${sAddress} з необхідними документами.</li>
+										</ul>
+									</p>
+									<p>
+																			<b>Деталі зустрічі:</b><br>
+Дата та час візиту: ${date_of_visit}.
+</p>
+									
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:</b>
+										<ul>
+										${sDocChild}
+<br>
+<li>свідоцтво про народження або паспорт громадянина України (для громадян, які досягли 14-річного віку);</li>
+
+<br>
+<li> якщо батьки або один із батьків дитини на момент її народження були іноземцями або особами без громадянства, також подається довідка про реєстрацію особи громадянином України (у разі оформлення вперше паспорта для виїзду за кордон із застосуванням засобів Реєстру);</li>	
+
+<br>							
+<li>квитанцію про сплату з мокрою печаткою банку, яка оформлена на одного з батьків з ким дитина зареєстрована (У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт!);</li>
+
+<br>
+<li>якщо на момент подання документів дитині виповнилось 12 років присутність дитини є обов'язковою! (якщо дитині не виповнилось 12 років потрібно надати одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (обов'язково матове фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії,<a href="https://drive.google.com/open?id=0B68lQ-z45GpYZ01rS3ZFQUFvQ0FJWGRxcC05Rk5laUgzOGdN">зразок</a>), присутність дитини не обов'язкова);</li>
+
+<br>
+<li>потрібна присутність одного з батьків (усиновлювачів), опікунів, піклувальників або інших законних представників з оригіналом та копією його паспорта;</li>
+
+<br>
+</ul>
+</p>
+<p>	
+<b>Зверніть увагу:</b> 
+<ul>
+<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
+<br>
+<li style="color:red">У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт;</li>
+<br>										
+<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
+<br>
+<li>У випадку, якщо Ви не зможете з`явитися ${date_of_visit} , Ви можете скасувати запис </li>
+<br>
+<li>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </li>
+<br>
+<li>Паспорт для виїзду за кордон, оформлений особі у віці від 12 до 16 років, може бути виданий особі, уповноваженій на це законним представником на підставі довіреності, засвідченої в установленому порядку, за умови присутності особи, на ім’я якої оформлено паспорт для виїзду за кордон.</li>
+</ul>
+</p>
+
+<p>[cancelTask]</p>                
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="parallelgateway1" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Паспорт громадянина України для виїзду за кордон для дитини]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>Відповіді на найчастіші питання по закордонних паспортах Ви можете знайти за <a href="https://docs.google.com/document/d/12tTbPz081dMJPxPicyXEe8xMMQdYNUet4Qx04VNCnys/edit?usp=sharing">посиланням</a></p><br>
+
+										Для того щоб закінчити процедуру необхідно:<br>
+										<ul>
+											<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату.Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a> </b> </li>
+											<li>Прийти за адресою: ${sAddress} з необхідними документами.</li>
+										</ul>
+									</p>
+									<p>
+																			<b>Деталі зустрічі:</b><br>
+Дата та час візиту: ${sNotification_day}.
+</p>
+									
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:</b>
+										<ul>
+										${sDocChild}
+<br>
+<li>свідоцтво про народження або паспорт громадянина України (для громадян, які досягли 14-річного віку);</li>
+
+<br>
+<li> якщо батьки або один із батьків дитини на момент її народження були іноземцями або особами без громадянства, також подається довідка про реєстрацію особи громадянином України (у разі оформлення вперше паспорта для виїзду за кордон із застосуванням засобів Реєстру);</li>	
+
+<br>							
+<li>квитанцію про сплату з мокрою печаткою банку, яка оформлена на одного з батьків з ким дитина зареєстрована (У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт!);</li>
+
+<br>
+<li>якщо на момент подання документів дитині виповнилось 12 років присутність дитини є обов'язковою! (якщо дитині не виповнилось 12 років потрібно надати одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (обов'язково матове фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії, <a href="https://drive.google.com/open?id=0B68lQ-z45GpYZ01rS3ZFQUFvQ0FJWGRxcC05Rk5laUgzOGdN">зразок</a>), присутність дитини не обов'язкова);</li>
+
+<br>
+<li>потрібна присутність одного з батьків (усиновлювачів), опікунів, піклувальників або інших законних представників з оригіналом та копією його паспорта;</li>
+
+<br>
+</ul>
+</p>
+<p>	
+<b>Зверніть увагу:</b> 
+<ul>
+<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
+<br>
+<li style="color:red">У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт;</li>
+<br>										
+<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
+<br>
+<li>У випадку, якщо Ви не зможете з`явитися ${sNotification_day} , Ви можете скасувати запис </li>
+<br>
+<li>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </li>
+<br>
+<li>Паспорт для виїзду за кордон, оформлений особі у віці від 12 до 16 років, може бути виданий особі, уповноваженій на це законним представником на підставі довіреності, засвідченої в установленому порядку, за умови присутності особи, на ім’я якої оформлено паспорт для виїзду за кордон.</li>
+</ul>
+</p>
+
+<p>[cancelTask]</p>                
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask1" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
+          <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
+          <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <boundaryEvent id="escalationTimer" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>${sEndDay}</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow42" sourceRef="escalationTimer" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask2" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src = execution.getVariable('asResult');
+var custom = 'Auto';
+if (src == 'attr1_ok'|| src == 'attr2_missed') {
+	custom = 'Custom'
+}
+execution.setVariable('sCustom', custom)</script>
+    </scriptTask>
+    <sequenceFlow id="flow37" sourceRef="scripttask2" targetRef="parallelgateway2"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow36" sourceRef="parallelgateway2" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="exclusivegateway4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCustom == 'Auto'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow38" sourceRef="exclusivegateway4" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo == 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="exclusivegateway4" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCancelInfo != 'Заявка актуальна'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="exclusivegateway5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCustom == 'Custom'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway5" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult == 'attr1_ok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult == 'attr2_missed'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Паспорт громадянина України для виїзду за кордон для дитини]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>
+Ви скористалися  послугою "Паспорт громадянина України для виїзду за кордон для дитини".
+</p>
+<p>Нагадуємо Вам, що Ви можете перевірити готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p> 
+
+                              		[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>      
+[pattern/mail/new_design/_common_signature_end.html]  
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow27" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
+    <endEvent id="endevent2" name="End">
+      <extensionElements>
+        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
+      </extensionElements>
+    </endEvent>
+    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow44" sourceRef="exclusivegateway6" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay == null}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask7" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Паспорт громадянина України для виїзду за кордон для дитини]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+<p>Відповіді на найчастіші питання по закордонних паспортах Ви можете знайти за <a href="https://docs.google.com/document/d/12tTbPz081dMJPxPicyXEe8xMMQdYNUet4Qx04VNCnys/edit?usp=sharing">посиланням</a></p><br>
+
+										Для того щоб закінчити процедуру необхідно:<br>
+										<ul>
+											<li>У будь-якому банку сплатити адмінсбір та отримати квитанцію про сплату.Реквізити для сплати адмінсбору доступні за <b><a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a> </b> </li>
+											<li>Прийти за адресою: ${sAddress} з необхідними документами.</li>
+										</ul>
+									</p>
+									<p>
+																			<b>Деталі зустрічі:</b><br>
+	Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
+</p>
+									
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести для оформлення паспорта громадянина України для виїзду за кордон для дитини:</b>
+										<ul>
+										${sDocChild}
+<br>
+<li>свідоцтво про народження або паспорт громадянина України (для громадян, які досягли 14-річного віку);</li>
+
+<br>
+<li> якщо батьки або один із батьків дитини на момент її народження були іноземцями або особами без громадянства, також подається довідка про реєстрацію особи громадянином України (у разі оформлення вперше паспорта для виїзду за кордон із застосуванням засобів Реєстру);</li>	
+
+<br>							
+<li>квитанцію про сплату з мокрою печаткою банку, яка оформлена на одного з батьків з ким дитина зареєстрована (У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт!);</li>
+
+<br>
+<li>якщо на момент подання документів дитині виповнилось 12 років присутність дитини є обов'язковою! (якщо дитині не виповнилось 12 років потрібно надати одну фотокартку розміром 10х15 сантиметрів для внесення відцифрованого зображення особи шляхом сканування (обов'язково матове фото виконане на білому фоні, обличчя дитини займає не менше 80% фотографії,<a href="https://drive.google.com/open?id=0B68lQ-z45GpYZ01rS3ZFQUFvQ0FJWGRxcC05Rk5laUgzOGdN">зразок</a>), присутність дитини не обов'язкова);</li>
+
+<br>
+<li>потрібна присутність одного з батьків (усиновлювачів), опікунів, піклувальників або інших законних представників з оригіналом та копією його паспорта;</li>
+
+<br>
+</ul>
+</p>
+<p>	
+<b>Зверніть увагу:</b> 
+<ul>
+<li>Оплата здійснюється від імені одного з батьків, чиї дані потрібно внести при формуванні квитанції;</li>
+<br>
+<li style="color:red">У призначенні платежу слід вказати ПІБ дитини, для якої буде оформлюватись закордонний паспорт;</li>
+<br>										
+<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не запізнюватись, бо електронна черга має доволі чіткий крок.</li>
+<br>
+<li>У випадку, якщо Ви не зможете з`явитися ${sNotification_day} , Ви можете скасувати запис </li>
+<br>
+<li>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </li>
+<br>
+<li>Паспорт для виїзду за кордон, оформлений особі у віці від 12 до 16 років, може бути виданий особі, уповноваженій на це законним представником на підставі довіреності, засвідченої в установленому порядку, за умови присутності особи, на ім’я якої оформлено паспорт для виїзду за кордон.</li>
+</ul>
+</p>
+<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
+								При цьому потрібно буде вказати код талону = ${sTicketCode}.                    
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow46" sourceRef="servicetask7" targetRef="usertask2"></sequenceFlow>
+    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Date_of_birth" name="Дата народження" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asResult" name="Результат візиту" type="enum" required="true">
+          <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
+          <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow47" sourceRef="escalationTimer1" targetRef="endevent2"></sequenceFlow>
+    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>${sEndDay}</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask8" name="Формирование даты" activiti:delegateExpression="#{queueDataConvertDate}"></serviceTask>
+    <sequenceFlow id="flow48" sourceRef="servicetask8" targetRef="servicetask7"></sequenceFlow>
+    <serviceTask id="servicetask9" name="Формирование даты" activiti:delegateExpression="#{queueDataConvertDate}"></serviceTask>
+    <sequenceFlow id="flow49" sourceRef="servicetask9" targetRef="parallelgateway1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0177_zagranChild_iGov">
+    <bpmndi:BPMNPlane bpmnElement="dms_0177_zagranChild_iGov" id="BPMNPlane_dms_0177_zagranChild_iGov">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="95.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="59.0" y="85.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
+        <omgdc:Bounds height="30.0" width="30.0" x="135.0" y="84.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="166.0" y="37.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="390.0" y="89.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="timerintermediatecatchevent1" id="BPMNShape_timerintermediatecatchevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="454.0" y="203.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="521.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="818.0" y="296.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="636.0" y="193.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="65.0" width="105.0" x="446.0" y="77.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="60.0" width="105.0" x="571.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer" id="BPMNShape_escalationTimer">
+        <omgdc:Bounds height="30.0" width="30.0" x="647.0" y="73.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="690.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="815.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="873.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="873.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="955.0" y="89.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="923.0" y="203.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1051.0" y="153.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="205.0" y="92.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="480.0" y="3.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="721.0" y="3.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="796.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="271.0" y="3.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="271.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="36.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="59.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="150.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="183.0" y="72.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="164.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="205.0" y="112.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="245.0" y="112.0"></omgdi:waypoint>
+        <omgdi:waypoint x="271.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="410.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="410.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="454.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="489.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="521.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="541.0" y="240.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="313.0"></omgdi:waypoint>
+        <omgdi:waypoint x="818.0" y="313.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="551.0" y="272.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="561.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="636.0" y="220.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="560.0" y="177.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="741.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="834.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="835.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="430.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="446.0" y="109.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="551.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="662.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="686.0" y="48.0"></omgdi:waypoint>
+        <omgdi:waypoint x="742.0" y="83.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="676.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="795.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="815.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="855.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="873.0" y="110.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="893.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="893.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="893.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="893.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="923.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="913.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1051.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1086.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="913.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="955.0" y="109.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="975.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="975.0" y="203.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="995.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="153.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="1028.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="188.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="225.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="224.0" y="30.0"></omgdi:waypoint>
+        <omgdi:waypoint x="271.0" y="30.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="585.0" y="30.0"></omgdi:waypoint>
+        <omgdi:waypoint x="721.0" y="30.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="826.0" y="16.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="15.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="153.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="376.0" y="30.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="30.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="376.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="109.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

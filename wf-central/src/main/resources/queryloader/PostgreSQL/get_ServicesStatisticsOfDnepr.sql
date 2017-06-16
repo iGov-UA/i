@@ -18,7 +18,10 @@ from ( select hes."nID_Service" AS nID_Service, hes."sID_UA" AS SID_UA, hes."sID
        from "HistoryEvent_Service" AS hes
       where hes."sDate" >= to_timestamp( :dateFrom , 'YYYY-MM-DD hh24:mi:ss')
             and hes."sDate" < to_timestamp( :dateTo , 'YYYY-MM-DD hh24:mi:ss')
-            and hes."sID_Public_SubjectOrganJoin" in ('lev','prav')
+            and hes."sID_Public_SubjectOrganJoin"  = 'prav' 
+            and hes."sID_Public_SubjectOrganJoin" =  'lev'
+            or hes."sID_Public_SubjectOrganJoin" in('lev', 'prav')
+            
        group by hes."nID_Service", hes."sID_UA", hes."sID_Public_SubjectOrganJoin"
      ) AS hes
   LEFT OUTER JOIN "Service" AS s

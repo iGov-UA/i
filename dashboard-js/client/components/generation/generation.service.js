@@ -28,7 +28,7 @@ angular.module('dashboardJsApp').service('generationService', function ($q, $htt
       sFileNameAndExtension = 'document';
     }
     if(!sMimeType || sMimeType === ''){
-      sMimeType = 'plain/text';
+      sMimeType = 'text/plain';
     }
     return new File([byteArray], sFileNameAndExtension, {type: sMimeType});
   };

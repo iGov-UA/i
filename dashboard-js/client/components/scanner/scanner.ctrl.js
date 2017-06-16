@@ -29,11 +29,12 @@
         }
       };
 
-      $('#scan-form .mode-switch').click(function () {
-        if ($(this).is('.inactive')) {
-          changeMode($(this).attr('id'));
+      $scope.switchMode = function (sMode) {
+        if ($scope.sScanMode !== sMode) {
+          changeMode(sMode);
+          $scope.sScanMode = sMode;
         }
-      });
+      };
 
       function pad(num, size) {
         var s = num + "";
@@ -56,17 +57,18 @@
           }
 
         } else {
+          save_as = save_as == undefined ? "" : "saveAs=" + save_as;
+          var query = "?";
+          for (var i = 0; i < downloadFiles.length; i++) {
+            query += 'fileId' + i + '=' + encodeURIComponent(downloadFiles[i].temp) + '&fileName' + i + '=' + encodeURIComponent(downloadFiles[i].file) + "&";
+          }
+          query += save_as;
 
           if (downloadToLocalMachine) {
-            save_as = save_as == undefined ? "" : "saveAs=" + save_as;
-            var query = "?";
-            for (var i = 0; i < downloadFiles.length; i++) {
-              query += 'fileId' + i + '=' + encodeURIComponent(downloadFiles[i].temp) + '&fileName' + i + '=' + encodeURIComponent(downloadFiles[i].file) + "&";
-            }
-            query += save_as;
             downloadFileFromFakeLink(encodeURI('download' + query));
           } else {
-            sendScannedFiles(downloadFiles, save_as);
+            var downloadUrl = sURL + encodeURI('download' + query);
+            sendScannedFiles(downloadFiles, save_as, downloadUrl);
           }
 
           counterModify();
@@ -88,8 +90,8 @@
         $modalInstance.dismiss('cancel');
       }
 
-      function sendScannedFiles(files, save_as) {
-        $modalInstance.close({downloadFiles: files, saveAs: save_as});
+      function sendScannedFiles(files, save_as, url) {
+        $modalInstance.close({downloadFiles: files, saveAs: save_as, downloadUrl: url});
       }
 
       var setSetting = function (setting, defaultSetting) {
@@ -390,14 +392,11 @@
         }, null, "Завантаження параметрів сканера...", true);
       };
 
-      $("#scan-form").find("#Form_FileName").on('change', function () {
-        if (!ApplyGlobalSettings(GetGlobalSettings(), $(this).val()))
+      $scope.changeFileName = function () {
+        if (!ApplyGlobalSettings(GetGlobalSettings(), $("#scan-form").find("#Form_FileName").val())){
           $("#scan-form").find("#Form_FileCounter").val(new ScanSettings({}).Counter);
-      });
-
-      $("#scan-form").find("#Form_Source").on('change', function () {
-        GetScanParameters($(this).val());
-      });
+        }
+      };
 
       var parseScanResponse = function (resp) {
 
@@ -512,6 +511,7 @@
         var scanFeed = $("#scan-form").find("#Form_ScanFeed");
         if (scanFeed.val() != 0 && scanFeed.is(':visible')) {
           var scanMode = $("#scan-form .mode-switch.active").attr('id');
+
           localStorage.setItem("previousScanMode", scanMode);
           changeMode("package-scan");
           $("#scan-form").find("#conventional-scan").attr('disabled', 'disabled');
@@ -528,12 +528,15 @@
         }
       };
 
-      $("#scan-form").find("#Form_Source").on('change', function () {
+      $scope.changeSource = function () {
+        GetScanParameters($("#scan-form").find("#Form_Source").val());
         scanFeedOnChange();
-      });
+      };
 
+      $scope.changeScanFeed = function () {
+        scanFeedOnChange();
+      };
 
-      $("#scan-form").find("#Form_ScanFeed").on('change', scanFeedOnChange);
       var FileForDownload = function (resp) {
         var self = this;
         self.temp = resp.temp;
@@ -559,32 +562,27 @@
         });
       };
 
-      $("#restartLink").click(function () {
-        /*
-        $(".overlay-message").text("Перезапуск застосунку...");
-        $(".overlay, .overlay-message").show();
-        */
+      $scope.restartApp = function () {
         $scope.oStatusMessage = {
           sText: 'Перезапуск застосунку...',
           bShow: true
         };
-
 
         sendAjax("Restart", function () {
           setTimeout(refreshPage, 2000);
         }, null, true, function () {
           setTimeout(refreshPage, 2000);
         }, null, "Перезапуск застосунку...", false);
-      });
+      };
 
-      $("#restartWiaLink").click(function () {
+      $scope.restartWia = function () {
         sendAjax("RestartWia", function () {
           Modal.inform.success(function () {
           })('Служба WIA успішно перезапущена')
         }, null, true, function () {
           Modal.inform.warning()("Не вдалося перезапустити службу WIA");
         }, null, "Перезапуск WIA...", true);
-      });
+      };
 
       $(function () {
         var trueAjax = (function () {

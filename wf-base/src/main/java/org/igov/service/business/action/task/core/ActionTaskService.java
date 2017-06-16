@@ -70,6 +70,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+import org.igov.model.action.vo.TaskDataVO;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -100,6 +103,10 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
     private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -109,29 +116,32 @@ public class ActionTaskService {
     };
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
+    
     @Autowired
     private RuntimeService oRuntimeService;
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
-    private TaskService oTaskService;
+    private TaskService oTaskService;    
     @Autowired
-    private HistoryEventService oHistoryEventService;
+    private HistoryEventService oHistoryEventService;    
     @Autowired
-    private RepositoryService oRepositoryService;
+    private RepositoryService oRepositoryService;    
     @Autowired
-    private FormService oFormService;
+    private FormService oFormService;    
     @Autowired
-    private IdentityService oIdentityService;
+    private IdentityService oIdentityService;    
     @Autowired
-    private HistoryService oHistoryService;
+    private HistoryService oHistoryService;    
     @Autowired
-    private GeneralConfig oGeneralConfig;
+    private GeneralConfig oGeneralConfig;    
     @Autowired
-    private FlowSlotTicketDao oFlowSlotTicketDao;
+    private FlowSlotTicketDao oFlowSlotTicketDao;   
     @Autowired
-    private CachedInvocationBean oCachedInvocationBean;
+    private CachedInvocationBean oCachedInvocationBean;    
     @Autowired
-    SubjectRightBPService oSubjectRightBPService;
+    private SubjectRightBPService oSubjectRightBPService;    
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
+    
 
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -2403,6 +2413,22 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             }
         }
     }
+    
+    public void populateResultSortedByTasksOrderNew(boolean bFilterHasTicket,
+            List<?> tasks, Map<String, FlowSlotTicket> mapOfTickets,
+            List<TaskDataVO> aoTaskData) {
+
+        LOG.info("populateResultSortedByTasksOrder. number of tasks:{} number of tickets:{} ", tasks.size(), mapOfTickets.size());
+        for (int i = 0; i < tasks.size(); i++) {
+            try {
+                TaskInfo task = (TaskInfo) tasks.get(i);
+                TaskDataVO oPopulatedTaskDataVO = populateTaskInfoNew(task, mapOfTickets.get(task.getProcessInstanceId()));             
+                aoTaskData.add(oPopulatedTaskDataVO);
+            } catch (Exception e) {
+                LOG.error("error: Error while populatiing task", e);
+            }
+        }
+    }
 
     public void populateResultSortedByTicketDate(boolean bFilterHasTicket, List<?> tasks,
             Map<String, FlowSlotTicket> mapOfTickets, List<Map<String, Object>> data) {
@@ -2425,6 +2451,33 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
                 Map<String, Object> taskInfo = populateTaskInfo(task, ticket);
                 data.add(taskInfo);
+            } catch (Exception e) {
+                LOG.error("error: ", e);
+            }
+        }
+    }
+    
+    public void populateResultSortedByTicketDateNew(boolean bFilterHasTicket, List<?> tasks,
+            Map<String, FlowSlotTicket> mapOfTickets, List<TaskDataVO> aoTaskData) {
+        LOG.info("Sorting result by flow slot ticket create date. Number of tasks:{} number of tickets:{}", tasks.size(), mapOfTickets.size());
+
+        List<FlowSlotTicket> tickets = new LinkedList<>();
+        tickets.addAll(mapOfTickets.values());
+        Collections.sort(tickets, FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR);
+        LOG.info("Sorted tickets by order create date");
+
+        Map<String, TaskInfo> tasksMap = new HashMap<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            TaskInfo task = (TaskInfo) tasks.get(i);
+            tasksMap.put(((TaskInfo) tasks.get(i)).getProcessInstanceId(), task);
+        }
+        
+        for (int i = 0; i < tickets.size(); i++) {
+            try {
+                FlowSlotTicket ticket = tickets.get(i);
+                TaskInfo task = tasksMap.get(ticket.getnID_Task_Activiti());
+                TaskDataVO oPopulatedTaskDataVO = populateTaskInfoNew(task, ticket);
+                aoTaskData.add(oPopulatedTaskDataVO);
             } catch (Exception e) {
                 LOG.error("error: ", e);
             }
@@ -2582,6 +2635,200 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
         return taskQuery;
     }
+    
+    public Object createQueryNew(String sLogin,
+            boolean bIncludeAlienAssignedTasks, String sOrderBy, String sFilterStatus,
+            List<String> groupsIds, String soaFilterField) {
+
+        Object taskQuery;
+        if (THE_STATUS_OF_TASK_IS_CLOSED.equalsIgnoreCase(sFilterStatus)) {
+            taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
+            } else {
+                ((TaskInfoQuery) taskQuery).orderByTaskId();
+            }
+
+            if (!StringUtils.isEmpty(soaFilterField)) {
+                JSONArray oJSONArray = new JSONArray(soaFilterField);
+                Map<String, String> mFilterField = new HashMap<>();
+                for (int i = 0; i < oJSONArray.length(); i++) {
+                    JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                    if (oJSON.has("sID") && oJSON.has("sValue")) {
+                        mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        ((TaskInfoQuery) taskQuery).processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+//                                    
+                    } else {
+                        LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                    }
+                }
+                LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
+            }
+            ((TaskInfoQuery) taskQuery).asc();
+        } else if (bIncludeAlienAssignedTasks) {
+            StringBuilder groupIdsSB = new StringBuilder();
+            for (int i = 0; i < groupsIds.size(); i++) {
+                groupIdsSB.append("'");
+                groupIdsSB.append(groupsIds.get(i));
+                groupIdsSB.append("'");
+                if (i < groupsIds.size() - 1) {
+                    groupIdsSB.append(",");
+                }
+            }
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT task.* FROM ACT_RU_TASK task, ACT_RU_IDENTITYLINK link WHERE task.ID_ = link.TASK_ID_ AND link.GROUP_ID_ IN(");
+            sql.append(groupIdsSB.toString());
+            sql.append(") ");
+
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                sql.append(" order by task.CREATE_TIME_ asc");
+            } else {
+                sql.append(" order by task.ID_ asc");
+            }
+            LOG.info("Query to execute {}", sql.toString());
+            taskQuery = oTaskService.createNativeTaskQuery().sql(sql.toString());
+        } else {
+            
+            taskQuery = oTaskService.createTaskQuery();
+            
+            long startTime = System.currentTimeMillis();
+            
+            if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED.equalsIgnoreCase(sFilterStatus)) {
+                ((TaskQuery) taskQuery).taskCandidateUser(sLogin);
+                
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+                
+            } else if (THE_STATUS_OF_TASK_IS_OPENED.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin);
+                LOG.info("Opened JSONValue element in filter {}", JSONValue.toJSONString(taskQuery));
+                
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
+                
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT.equals(sFilterStatus)) {
+                taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
+                
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT.equals(sFilterStatus)) {
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    
+                    Boolean bWrite = oDocumentStepSubjectRight.getbWrite();
+                    LOG.info("bWrite={}", bWrite);
+                   
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate={}", sDate);
+                                        
+                    if (sDate != null || bWrite == null) {
+
+                        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                                .getSnID_Process_Activiti();
+                        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        
+                        TaskQuery oTaskQuery = oTaskService.createTaskQuery()
+                                        .processInstanceId(snID_Process_Activiti).active();
+                        
+                        aTaskQuery.add(oTaskQuery);
+                        taskQuery = aTaskQuery.get(0);
+                    }
+                }
+                LOG.info("aTaskQuery={}", aTaskQuery);
+                
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT.equals(sFilterStatus)) {
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    
+                    boolean bWrite = oDocumentStepSubjectRight.getbWrite();
+                    LOG.info("bWrite={}", bWrite);
+                   
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate={}", sDate);
+                                        
+                    if (sDate == null && (bWrite == true || bWrite == false)) {
+
+                        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                                .getSnID_Process_Activiti();
+                        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        
+                        TaskQuery oTaskQuery = oTaskService.createTaskQuery()
+                                        .processInstanceId(snID_Process_Activiti).active();
+                        
+                        aTaskQuery.add(oTaskQuery);
+                        taskQuery = aTaskQuery.get(0);
+                    }
+                }
+                LOG.info("aTaskQuery={}", aTaskQuery);
+          
+            } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT.equals(sFilterStatus)) {
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    
+                    DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+                    LOG.info("sDateECP = ", oDocumentStepSubjectRight.getsDateECP());
+                    
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate = ", sDate);
+                    
+                    Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
+                    
+                    // проверяем, если даты ецп нет, но есть дата подписания - нашли
+                    if (sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == null) {
+                        // Достаем nID_Process_Activiti у найденного
+                        // oDocumentStepSubjectRight через DocumentStep
+                        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                                .getSnID_Process_Activiti();
+                        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        
+                        TaskQuery oTaskQuery = oTaskService.createTaskQuery()
+                                        .processInstanceId(snID_Process_Activiti).active();
+                        
+                        aTaskQuery.add(oTaskQuery);
+                        taskQuery = aTaskQuery.get(0);
+                    }
+                }
+                LOG.info("aTaskQuery={}", aTaskQuery);
+
+            }
+            
+            LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
+            if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
+                ((TaskQuery) taskQuery).orderByTaskCreateTime();
+            } else {
+                ((TaskQuery) taskQuery).orderByTaskId();
+            }
+
+            if (!StringUtils.isEmpty(soaFilterField)) {
+                JSONArray oJSONArray = new JSONArray(soaFilterField);
+                Map<String, String> mFilterField = new HashMap<>();
+                for (int i = 0; i < oJSONArray.length(); i++) {
+                    JSONObject oJSON = (JSONObject) oJSONArray.get(i);
+                    if (oJSON.has("sID") && oJSON.has("sValue")) {
+                        mFilterField.put(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        ((TaskQuery) taskQuery)
+                                .processVariableValueEqualsIgnoreCase(oJSON.getString("sID"), oJSON.getString("sValue"));
+                        LOG.info("{} json element doesn't have either sID or sValue fields", i);
+                    }
+                }
+                LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
+            }
+            ((TaskQuery) taskQuery).asc();
+        }
+
+        return taskQuery;
+    }
 
     public Map<String, Object> populateTaskInfo(TaskInfo task, FlowSlotTicket flowSlotTicket) {
 
@@ -2638,6 +2885,66 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         }
         
         return taskInfo;
+    }
+    
+        public TaskDataVO populateTaskInfoNew(TaskInfo task, FlowSlotTicket flowSlotTicket) {
+
+        String sPlace = "";
+        
+        //Выполняем поиск sPlace только, если процесс начинается на system
+        if (task.getProcessDefinitionId().startsWith("system")) {        
+            HistoricProcessInstance processInstance = oHistoryService.createHistoricProcessInstanceQuery().
+                    processInstanceId(task.getProcessInstanceId()).
+                    includeProcessVariables().singleResult();
+
+            sPlace = processInstance.getProcessVariables().containsKey("sPlace") ? (String) processInstance.getProcessVariables().get("sPlace") + " " : "";
+            LOG.info("Found process instance with variables. sPlace {} taskId {} processInstanceId {}", sPlace, task.getId(), task.getProcessInstanceId());
+        }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        
+        TaskDataVO oTaskData = new TaskDataVO();
+        
+        oTaskData.setsId(task.getId());
+        oTaskData.setsUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
+        oTaskData.setsOwner(task.getOwner());
+        oTaskData.setsAssignee(task.getAssignee());
+        oTaskData.setoDelegationState((task instanceof Task) ? ((Task) task).getDelegationState() : null);
+        oTaskData.setsName(sPlace + task.getName());
+        oTaskData.setsDescription(task.getDescription());
+        oTaskData.setsCreateTime(sdf.format(task.getCreateTime()));
+        oTaskData.setsDueDate(task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+        oTaskData.setnPriority(task.getPriority());
+        oTaskData.setbSuspended((task instanceof Task) ? ((Task) task).isSuspended() : null);
+        oTaskData.setsTaskDefinitionKey(task.getTaskDefinitionKey());
+        oTaskData.setsTenantId(task.getTenantId());
+        oTaskData.setsCategory(task.getCategory());
+        oTaskData.setsFormKey(task.getFormKey());
+        oTaskData.setsParentTaskId(task.getParentTaskId());
+        oTaskData.setsParentTaskUrl("");
+        oTaskData.setsExecutionId(task.getExecutionId());
+        oTaskData.setsExecutionUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+        oTaskData.setsProcessInstanceId(task.getProcessInstanceId());
+        oTaskData.setsProcessInstanceUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+        oTaskData.setsProcessDefinitionId(task.getProcessDefinitionId());
+        oTaskData.setsProcessDefinitionUrl(oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+        oTaskData.setaVariables(new LinkedList());
+
+        if (flowSlotTicket != null) {
+            LOG.info("Populating flow slot ticket");
+            DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd_HH-mm-ss");
+            
+            Map<String, Object> flowSlotTicketData = new HashMap<>();
+            
+            flowSlotTicketData.put("nID", flowSlotTicket.getId());
+            flowSlotTicketData.put("nID_Subject", flowSlotTicket.getnID_Subject());
+            flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()) : null);
+            flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
+
+            oTaskData.setmFlowSlotTicketData(flowSlotTicketData);
+        }
+        
+        return oTaskData;
     }
 
     /**

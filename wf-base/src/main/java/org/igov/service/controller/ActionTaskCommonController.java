@@ -79,6 +79,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
+import org.igov.model.action.vo.TaskDataResultVO;
+import org.igov.model.action.vo.TaskDataVO;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
@@ -1918,6 +1920,171 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.error("Error occured while getting list of tasks", e);
         }
         return res;
+    }
+    
+    @ApiOperation(value = "getTasksNew", notes = "#####  ActionCommonTaskController: Получение списка всех тасок, которые могут быть доступны указанному логину #####\n\n"
+            + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=[sLogin]\n\n\n"
+            + "- Возвращает список всех тасок, которые могут быть доступны указанному логину [sLogin] и которые уже заняты другими логинами, входящими во все те-же группы, в которые входит данный логин\n\n"
+            + "Во время выполнения производит поиск групп, в которые входит указанный пользователь, и затем возвращает список задач, которые могут быть "
+            + " заассайнены на пользователей из полученных групп:\n\n" + "Содержит следующие параметры:\n"
+            + "- sLogin - id пользователя. обязательный параметр, указывающий пользователя\n"
+            + "- bIncludeAlienAssignedTasks - необязательный параметр (по умолчанию false). Если значение false - то возвращать только свои и только не ассайнутые, к которым доступ.\n"
+            + "- sOrderBy - метод сортировки задач. Необязательный параметр. По умолчанию 'id'. Допустимые значения 'id', 'taskCreateTime', 'ticketCreateDate'\n"
+            + "- nSize - Количество задач в результате. Необязательный параметр. По умолчанию 10.\n"
+            + "- nStart - Порядковый номер первой задачи для возвращения. Необязательный параметр. По умолчанию 0\n"
+            + "- sFilterStatus - Необязательный параметр (по умолчанию обрабатывается как OpenedUnassigned). статус фильтрации задач, у которого возможные значения: OpenedUnassigned (только не-ассайнутые), "
+            + " OpenedAssigned(только ассайнутые), Opened(только открытые (не в истории)), Closed(только закрытые (история))\n"
+            + "- bFilterHasTicket - Необязательный параметр (по умолчанию false). Если true - возвращать только те задачи, у которых есть связанный тикет\n"
+            + "Примеры:\n\n" + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit\n\n"
+            + "https://test.region.igov.org.ua/wf/service/action/task/getTasks?sLogin=kermit&nSize=15&nStart=10\n\n")
+    @RequestMapping(value = "/getTasksNew", method = RequestMethod.GET)
+    public @ResponseBody
+    TaskDataResultVO getTasksNew(
+            @ApiParam(value = "sLogin", required = true) @RequestParam(value = "sLogin") String sLogin,
+            @ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
+            @ApiParam(value = "bIncludeAlienAssignedTasks", required = true) @RequestParam(value = "bIncludeAlienAssignedTasks", defaultValue = "false", required = false) boolean bIncludeAlienAssignedTasks,
+            @ApiParam(value = "sOrderBy", required = false) @RequestParam(value = "sOrderBy", defaultValue = "id", required = false) String sOrderBy,
+            @ApiParam(value = "nSize", required = false) @RequestParam(value = "nSize", defaultValue = "10", required = false) Integer nSize,
+            @ApiParam(value = "nStart", required = false) @RequestParam(value = "nStart", defaultValue = "0", required = false) Integer nStart,
+            @ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
+            @ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
+            @ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
+            @ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
+            throws CommonServiceException {
+
+        TaskDataResultVO aoResult = new TaskDataResultVO();
+
+        try {
+
+            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+
+            if (groups != null && !groups.isEmpty()) {
+                List<String> groupsIds = new LinkedList<>();
+                for (Group group : groups) {
+                    groupsIds.add(group.getId());
+                }
+                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+                LOG.info("Filter status: {}", sFilterStatus);
+                Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
+                long totalNumber = 0;
+
+                Object taskQuery = oActionTaskService.createQueryNew(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+                        sFilterStatus, groupsIds, soaFilterField);
+
+                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+                        : oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                LOG.info("total count before processing is: {}", totalNumber);
+
+                long totalCountServices = 0;
+
+                if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
+                    List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+                            : (List) ((NativeTaskQuery) taskQuery).list();
+                    if (aTaskInfo != null) {
+                        LOG.info("all tasks size is {}", aTaskInfo.size());
+                        for (TaskInfo oTaskInfo : aTaskInfo) {
+                            if (!oTaskInfo.getProcessDefinitionId().startsWith("_doc")) {
+                                totalCountServices++;
+                            }
+                        }
+                    } else {
+                        LOG.info("all tasks is null");
+                    }
+                }
+
+                LOG.info("totalCountServices is {}", totalCountServices);
+
+                int nStartBunch = nStart;
+                List<TaskInfo> tasks = new LinkedList<>();
+                long sizeOfTasksToSelect = nSize;
+                if (bFilterHasTicket) {
+                    sizeOfTasksToSelect = totalNumber;
+                    nStartBunch = 0;
+                }
+                while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
+                    LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
+                    List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch,
+                            nSize, bFilterHasTicket, mapOfTickets);
+                    tasks.addAll(currTasks);
+
+                    nStartBunch += nSize;
+
+                    if (!bFilterHasTicket) {
+                        break;
+                    }
+                }
+
+                LOG.info("tasks size is {}", tasks.size());
+
+                int tasksSize = tasks.size();
+                if (bFilterHasTicket) {
+                    totalNumber = tasksSize;
+                    if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
+                        tasks = tasks.subList(nStart, nStart + nSize);
+                    } else if (tasksSize > nStart) {
+                        tasks = tasks.subList(nStart, tasksSize);
+                    } else {
+                        LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}",
+                                tasksSize);
+                        tasks.clear();
+                    }
+                }
+
+                LOG.info("tasks size is {}", tasks.size());
+
+                List<TaskDataVO> aoTaskData = new ArrayList<>();
+                
+                if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {                   
+                    oActionTaskService.populateResultSortedByTicketDateNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
+                } else {
+                    oActionTaskService.populateResultSortedByTasksOrderNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
+                }
+
+                LOG.info("data size is {}", aoTaskData.size());
+
+                //long documentListSize = 0;
+                /*if (!"Documents".equals(sFilterStatus)) {
+                    for (Map<String, Object> dataElem : data) {
+                        if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
+                            if (bIncludeVariablesProcess) {
+                                dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
+                            }
+                            checkDocumentIncludesData.add(dataElem);
+                        }
+                    }
+                } else {
+                    for (Map<String, Object> dataElem : data) {
+                        if (bIncludeVariablesProcess) {
+                            dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
+                        }
+                        checkDocumentIncludesData.add(dataElem);
+                    }
+                }*/
+                
+                for (TaskDataVO oTaskData : aoTaskData) {
+                    
+                    if (bIncludeVariablesProcess) {
+                        
+                        oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessInstanceId()));
+                    }
+                }
+
+                aoResult.setAoTaskDataVO(aoTaskData);
+                aoResult.setnSize(nSize);
+                aoResult.setnStart(nStart);
+                aoResult.setsOrder("asc");
+                aoResult.setsSort("id");
+
+                if ("Documents".equalsIgnoreCase(sFilterStatus)) {
+                    aoResult.setnTotal(totalNumber);
+                } else {
+                    aoResult.setnTotal(totalCountServices);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Error occured while getting list of tasks", e);
+        }
+        return aoResult;
     }
 
     @Deprecated

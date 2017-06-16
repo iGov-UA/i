@@ -4,6 +4,7 @@ using System.IO;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using TwainWeb.Standalone.App.Binders;
 using TwainWeb.Standalone.App.Cache;
 using TwainWeb.Standalone.App.Commands;
 using TwainWeb.Standalone.App.Models;
@@ -27,8 +28,8 @@ namespace TwainWeb.Standalone.App.Controllers
 		{
 			var scanResult = new ScanCommand(command, scannerManager).Execute(_markerAsync);
 
-			if (scanResult.Validate())
-				return new ActionResult { Content = scanResult.Content, ContentType = "text/json" };
+            if (scanResult.Validate())
+                return new ActionResult { Content = scanResult.Content, ContentType = "text/json" };
 			
 			throw new Exception(scanResult.Error);
 		}
