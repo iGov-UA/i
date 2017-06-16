@@ -48,6 +48,7 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -93,6 +94,9 @@ public class ActionEventController implements ControllerConstants {
     private SubjectDao subjectDao;
     @Autowired
     private SubjectHumanDao subjectHumanDao;
+    
+    @Value("${asID_BpForStatisticsOfDnepr}")
+    private String [] asID_BpForStatisticsOfDnepr;
     
     @ApiOperation(value = "Получить объект события по услуге", notes = "##### Пример:\n"
             + "http://test.igov.org.ua/wf/service/action/event/getHistoryEvent_Service?nID_Protected=11\n"
@@ -975,7 +979,7 @@ public class ActionEventController implements ControllerConstants {
         return result;
     }
     
-    @ApiOperation(value = "Получение статистики по выбранному списку сервисов и региону за заданный промежуток времени", notes
+   /* @ApiOperation(value = "Получение статистики по выбранному списку сервисов и региону за заданный промежуток времени", notes
             = "##### Примеры:\n"
             + "https://test.igov.org.ua/wf/service/action/event/getServicesStatisticOfDnepr?sDate_from=2010-07-04 12:09:56&sDate_to=2019-07-04 12:09:56\n\n"
             + "Результат\n"
@@ -998,5 +1002,66 @@ public class ActionEventController implements ControllerConstants {
 			LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
 		}
     }
+*/
+	@ApiOperation(value = "Получение статистики по сервисам по Днепру за заданный промежуток времени", notes = "##### Примеры:\n"
+			+ "https://test.igov.org.ua/wf/service/action/event/getServicesStatisticsOfDnepr?sDate_from=2017-06-01 00:00:01&sDate_to=2017-06-16 12:00:00\n\n"
+			+ "Результат\n" + "\n```csv\n"
+			+ "nID_Service;ServiceName;SID_UA;placeName;nCountTotal;averageRate;averageTime\n"
+			+ "1;Надання довідки про притягнення до кримінальної відповідальності, відсутність (наявність) судимості або обмежень, передбачених кримінально-процесуальним законодавством України;1200000000;Дніпропетровська;4;0.0;7.516667\n"
+			+ "\n```\n")
+	@RequestMapping(value = "/getServicesStatisticsOfDnepr", method = RequestMethod.GET)
+	public @ResponseBody void getServicesStatisticOfDnepr(
+			@ApiParam(value = "дата \"С\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_from") String sDate_from,
+			@ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
+			HttpServletResponse httpResponse) {
 
+		// parse date to check that it has appropriate form
+		DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+		DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
+
+		List<ServicesStatistics> servicesStatistics = oActionEventService.getServicesStatisticsOfDnepr(from, to);
+		LOG.info("servicesStatisticsOfDnepr " + servicesStatistics);
+
+		String[] headingFields = { "nID_Service", "ServiceName", "SID_UA", "placeName", "nCountTotal", "nCountFeedback",
+				"nCountEscalation", "averageRate", "averageTime" };
+		List<String> headers = new ArrayList<>();
+		headers.addAll(Arrays.asList(headingFields));
+
+		httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatisticsOfDnepr.csv");
+		httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
+
+		CSVWriter csvWriter;
+		try {
+			csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
+			csvWriter.writeNext(headers.toArray(new String[headers.size()]));
+
+			
+
+			for (ServicesStatistics item : servicesStatistics) {
+				List<String> line = new LinkedList<>();
+				LOG.info("asID_BpForStatisticsOfDnepr " + Arrays.asList(asID_BpForStatisticsOfDnepr));
+				LOG.info("String.valueOf(item.getnID_Service()) " + String.valueOf(item.getnID_Service()));
+				if (Arrays.asList(asID_BpForStatisticsOfDnepr).contains(String.valueOf(item.getnID_Service()))) {
+					line.add(String.valueOf(item.getnID_Service()));
+					line.add(item.getServiceName());
+					line.add(String.valueOf(item.getSID_UA()));
+					line.add(item.getPlaceName());
+					line.add(item.getnCountTotal() == null ? "0" : item.getnCountTotal().toString());
+					LOG.info("ncount added ne csv = >>>>>>>>>" + item.getnCountTotal().toString());
+					line.add(item.getnCountFeedback() == null ? "0" : item.getnCountFeedback().toString());
+					line.add(item.getnCountEscalation() == null ? "0" : item.getnCountEscalation().toString());
+					line.add(item.getAverageRate() == null ? "0" : item.getAverageRate().toString());
+					// divide average time (mins) to 60 to get hours
+					line.add(item.getAverageTime() == null ? "0"
+							: String.valueOf(item.getAverageTime().floatValue() / 60f));
+					csvWriter.writeNext(line.toArray(new String[line.size()]));
+					
+				}
+			}
+			csvWriter.close();
+		} catch (Exception e) {
+			LOG.error("Error occurred while creating CSV file {}", e.getMessage());
+			LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
+		}
+    }
 }
