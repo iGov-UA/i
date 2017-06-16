@@ -71,6 +71,8 @@ import java.util.*;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
 import org.igov.model.action.vo.TaskDataVO;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -103,8 +105,8 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpeneUnassigneUnprocessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpeneUnassigneWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -114,29 +116,32 @@ public class ActionTaskService {
     };
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
+    
     @Autowired
     private RuntimeService oRuntimeService;
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
-    private TaskService oTaskService;
+    private TaskService oTaskService;    
     @Autowired
-    private HistoryEventService oHistoryEventService;
+    private HistoryEventService oHistoryEventService;    
     @Autowired
-    private RepositoryService oRepositoryService;
+    private RepositoryService oRepositoryService;    
     @Autowired
-    private FormService oFormService;
+    private FormService oFormService;    
     @Autowired
-    private IdentityService oIdentityService;
+    private IdentityService oIdentityService;    
     @Autowired
-    private HistoryService oHistoryService;
+    private HistoryService oHistoryService;    
     @Autowired
-    private GeneralConfig oGeneralConfig;
+    private GeneralConfig oGeneralConfig;    
     @Autowired
-    private FlowSlotTicketDao oFlowSlotTicketDao;
+    private FlowSlotTicketDao oFlowSlotTicketDao;   
     @Autowired
-    private CachedInvocationBean oCachedInvocationBean;
+    private CachedInvocationBean oCachedInvocationBean;    
     @Autowired
-    SubjectRightBPService oSubjectRightBPService;
+    private SubjectRightBPService oSubjectRightBPService;    
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
+    
 
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
@@ -2710,7 +2715,35 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT.equals(sFilterStatus)) {
             
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT.equals(sFilterStatus)) {
-            
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    
+                    DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
+                    LOG.info("sDateECP = ", oDocumentStepSubjectRight.getsDateECP());
+                    
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate = ", oDocumentStepSubjectRight.getsDate());
+                    
+                    Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
+                    
+                    // проверяем, если даты ецп нет, но есть дата подписания - нашли
+                    if (sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == null) {
+                        // Достаем nID_Process_Activiti у найденного
+                        // oDocumentStepSubjectRight через DocumentStep
+                        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                                .getSnID_Process_Activiti();
+                        LOG.info("snID_Process of oFindedDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        
+                        TaskQuery oTaskQuery = oTaskService.createTaskQuery()
+                                        .processInstanceId(snID_Process_Activiti).active();
+                        
+                        List<Task> aTask = oTaskQuery.list();
+                        LOG.info("aTask={}", aTask);
+                    }
+                }
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
