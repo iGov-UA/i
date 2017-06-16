@@ -50,12 +50,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask2" name="Рук автора">
-    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="отказ" sourceRef="exclusivegateway1" targetRef="scripttask8"></sequenceFlow>
+    <sequenceFlow id="flow6" name="отказ" sourceRef="exclusivegateway1" targetRef="scripttask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
     <scriptTask id="scripttask3" name="права финас, степ 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -69,14 +73,20 @@ var sKey_GroupPostfix_New ='Comfy_Financier'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow7" name="утверд" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow7" name="утверд" sourceRef="exclusivegateway1" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask3" name="финансист">
-    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow10" name="отказ" sourceRef="exclusivegateway2" targetRef="scripttask8"></sequenceFlow>
+    <sequenceFlow id="flow10" name="отказ" sourceRef="exclusivegateway2" targetRef="scripttask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
     <scriptTask id="scripttask4" name="права юристам, степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -90,9 +100,13 @@ var sKey_GroupPostfix_New ='Comfy_Legal_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow11" name="соглас" sourceRef="exclusivegateway2" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow11" name="соглас" sourceRef="exclusivegateway2" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask4" name="юрист">
-    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -123,13 +137,21 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow13" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="scripttask5"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="exclusivegateway3" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask5" name="автор">
-    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <userTask id="usertask6" name="круг рассмотрения">
-    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="scripttask5" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="scripttask6" targetRef="usertask6"></sequenceFlow>
@@ -148,9 +170,13 @@ var sKey_GroupPostfix_New ='Comfy_Clerk '
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway3" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway3" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[.]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask7" name="деловод">
-    <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Договір" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask7"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -257,17 +283,17 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="830.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="829.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="415.0" y="216.0"></omgdi:waypoint>
+        <omgdi:waypoint x="829.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="189.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="31.0" x="575.0" y="199.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="575.0" y="199.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="850.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="890.0" y="137.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="41.0" x="829.0" y="142.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="829.0" y="142.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -282,14 +308,14 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="1102.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="415.0" y="216.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="31.0" x="862.0" y="210.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="862.0" y="210.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="1122.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="1122.0" y="300.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="40.0" x="1120.0" y="259.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="1120.0" y="259.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
