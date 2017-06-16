@@ -321,6 +321,23 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
       }
     },
 
+    otpErrorMessages: function (msg) {
+      var answer;
+      switch (msg) {
+        case 'otp max attempts':
+          answer = 'Перевищена максимальна кiлькiсть спроб';
+          break;
+        case 'otp expired':
+          answer = 'Термін дії ОТР-паролю закінчився';
+          break;
+        case 'wrong otp':
+        case 'invalid value':
+          answer = 'Невiрний ОТР';
+          break;
+      }
+      return answer;
+    },
+
     bankErrorMessage: function (msg) {
      var messages = {
        "invalid request structure": "Невірна структура запиту",

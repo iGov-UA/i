@@ -1312,6 +1312,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         }
       };
 
+      function otpError() {
+        $scope.isSending = false;
+        $scope.paymentStatus = 4;
+        $scope.checkoutConfirm.status = 'checkout';
+        $scope.checkoutSpinner = false;
+      }
+
       $scope.otpConfirmPayment = function () {
         $scope.checkoutSpinner = true;
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
@@ -1319,7 +1326,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           if(res.status === 'OK') {
             MasterPassService.paymentSale($scope.checkoutData.payment).then(function (res) {
               if(res.pmt_status == 4) {
-                $scope.paymentStatus = 4;
+                otpError();
               } else if(res.pmt_status == 5) {
                 $scope.paymentStatus = 5;
                 for(var field in $scope.data.formData.params) {
@@ -1331,9 +1338,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
                 }
               }
             })
+          } else if(res.error === 'otp max attempts') {
+            otpError();
+          } else if(res.error) {
+            $scope.phoneVerify.otpIsConfirmed = false;
+            $scope.otpErrorMsg = MasterPassService.otpErrorMessages(res.error);
           } else {
-            $scope.paymentStatus = 4;
-            $scope.checkoutSpinner = false;
+            otpError();
           }
         });
       };

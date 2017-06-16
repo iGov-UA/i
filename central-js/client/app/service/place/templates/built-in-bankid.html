@@ -918,8 +918,17 @@
               </div>
 
               <div class="col-md-5 otp-verify-confirm" ng-if="checkoutConfirm.status === 'confirm'">
-                <input type="text" placeholder="Введiть SMS-пароль" ng-model="checkoutData.payment.otpCode" class="form-control">
-                <input type="button" value="Пiдтвердити" ng-click="otpConfirmPayment()" ng-disabled="checkoutSpinner" class="btn btn-info">
+                <div class="col-md-7" style="padding-left: 0;padding-right: 0;">
+                  <input type="text"
+                         placeholder="Введiть SMS-пароль"
+                         ng-model="checkoutData.payment.otpCode"
+                         class="form-control"
+                         ng-class="{'error-phone-verification': !phoneVerify.otpIsConfirmed}">
+                  <span style="color: #a94442;font-size: 14px;" ng-if="!phoneVerify.otpIsConfirmed">{{otpErrorMsg}}</span>
+                </div>
+                <div class="col-md-2">
+                  <input type="button" value="Пiдтвердити" ng-click="otpConfirmPayment()" ng-disabled="checkoutSpinner" class="btn btn-info">
+                </div>
               </div>
             </div>
 
