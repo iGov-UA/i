@@ -22,7 +22,8 @@
         </span>
       </span>
     </div>
-    <div class="col-md-4" style="padding-left: 27px;">
+    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="position: relative;top: 15px;left: 25px;" ng-if="!userCards && checkoutSpinner"></i>
+    <div class="col-md-4" style="padding-left: 27px;" ng-if="userCards">
       <select ng-model="selectedCard"
               ng-options="card.mask + ' ' + card_alias for (card_alias, card) in userCards"
               ng-disabled="checkoutSpinner"
