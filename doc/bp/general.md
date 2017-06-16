@@ -1443,6 +1443,13 @@ execution.setVariable('sID_Order', sID_Order)
 ```javaScript
 var obj = dictionaryService.processDictionary('MinFin_test', 'IPN', 'value');
 ```
+где
+
+MinFin_test - имя справочника с расширением .csv
+IPN - имя столбца, который будет ключом.
+value - значение атрибута в столбце.
+[детальней...](#_getdirectorydatafromscript)
+
 
 ###### configurationfiles
 # 18. Конфигурационные файлы
