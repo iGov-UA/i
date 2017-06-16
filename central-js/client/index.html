@@ -8,114 +8,134 @@
 <!--[if gt IE 8]><!-->
 <html class="no-js" ng-app="app"> <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible"
-          content="IE=edge">
-    <base href="/">
-    <title ng-if="profile.isKyivCity">Портал державних послуг</title>
-    <title ng-if="!profile.isKyivCity">iGov – Портал державних послуг</title>
-    <meta name="description"
-          content="">
-    <meta name="viewport"
-          content="width=device-width">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+  <base href="/">
+  <title ng-if="profile.isKyivCity">Портал державних послуг</title>
+  <title ng-if="!profile.isKyivCity">iGov – Портал державних послуг</title>
+  <meta name="description"
+        content="">
+  <meta name="viewport"
+        content="width=device-width">
 
-    <!-- Facebook Graph Properties -->
-    <meta ng-if="!profile.isKyivCity" property="og:site_name" content="igov.org.ua — Портал державних послуг"/>
-    <meta ng-if="!profile.isKyivCity" property="og:image" content="https://igov.org.ua/assets/images/1b3b16cb.icon-476x476.png" />
-    <meta ng-if="!profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу. Робота проводиться волонтерською командою iGov в рамках боротьби з корупцією в Україні та вдосконалення бізнес-процесів в державних органах. " />
-    <meta ng-if="profile.isKyivCity" property="og:site_name" content="es.kievcity.gov.ua — Портал державних послуг"/>
-    <meta ng-if="profile.isKyivCity" property="og:image" content="http://new.kievcity.gov.ua/logo.png" />
-    <meta ng-if="profile.isKyivCity" property="og:description" content="На порталі зібрано послуги державних органів України для громадян та бізнесу." />
-    <!-- End Of Facebook Graph Properties -->
+  <!-- Facebook Graph Properties -->
+  <meta ng-if="!profile.isKyivCity" property="og:site_name" content="igov.org.ua — Портал державних послуг"/>
+  <meta ng-if="!profile.isKyivCity" property="og:image"
+        content="https://igov.org.ua/assets/images/1b3b16cb.icon-476x476.png"/>
+  <meta ng-if="!profile.isKyivCity" property="og:description"
+        content="На порталі зібрано послуги державних органів України для громадян та бізнесу. Робота проводиться волонтерською командою iGov в рамках боротьби з корупцією в Україні та вдосконалення бізнес-процесів в державних органах. "/>
+  <meta ng-if="profile.isKyivCity" property="og:site_name" content="es.kievcity.gov.ua — Портал державних послуг"/>
+  <meta ng-if="profile.isKyivCity" property="og:image" content="http://new.kievcity.gov.ua/logo.png"/>
+  <meta ng-if="profile.isKyivCity" property="og:description"
+        content="На порталі зібрано послуги державних органів України для громадян та бізнесу."/>
+  <!-- End Of Facebook Graph Properties -->
 
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
 
 
-    <!-- Apple Touch Icons -->
-    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" href="assets/images/apple-touch-icon-60x60.png" />
-    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="76x76" href="assets/images/apple-touch-icon-76x76.png">
-    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="120x120" href="assets/images/apple-touch-icon-120x120.png">
-    <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="152x152" href="assets/images/apple-touch-icon-152x152.png">
-    <!-- End of Apple Touch Icons -->
+  <!-- Apple Touch Icons -->
+  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" href="assets/images/apple-touch-icon-60x60.png"/>
+  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="76x76"
+        href="assets/images/apple-touch-icon-76x76.png">
+  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="120x120"
+        href="assets/images/apple-touch-icon-120x120.png">
+  <link ng-if="!profile.isKyivCity" rel="apple-touch-icon" sizes="152x152"
+        href="assets/images/apple-touch-icon-152x152.png">
+  <!-- End of Apple Touch Icons -->
 
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(client) app/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-dialog-service/dist/dialogs.min.css" />
-    <link rel="stylesheet" href="bower_components/jsoneditor/dist/jsoneditor.min.css" />
-    <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
-    <link rel="stylesheet" href="bower_components/intl-tel-input/build/css/intlTelInput.css" />
-    <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
-    <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" href="bower_components/spectrum/spectrum.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-    <!-- build:css({.tmp,client}) app/app.css -->
-    <link rel="stylesheet"
-          href="app/app.css">
-    <link rel="stylesheet"
-          href="bower_components/angular-ui/build/angular-ui.css">
-    <!-- injector:css -->
-    <link rel="stylesheet" href="app/app.css">
-    <!-- endinjector -->
-    <!-- endbuild -->
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(client) app/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/angular-dialog-service/dist/dialogs.min.css" />
+  <link rel="stylesheet" href="bower_components/jsoneditor/dist/jsoneditor.min.css" />
+  <link rel="stylesheet" href="bower_components/ui-select/dist/select.css" />
+  <link rel="stylesheet" href="bower_components/intl-tel-input/build/css/intlTelInput.css" />
+  <link rel="stylesheet" href="bower_components/textAngular/dist/textAngular.css" />
+  <link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <link rel="stylesheet" href="bower_components/spectrum/spectrum.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+  <!-- build:css({.tmp,client}) app/app.css -->
+  <link rel="stylesheet"
+        href="app/app.css">
+  <link rel="stylesheet"
+        href="bower_components/angular-ui/build/angular-ui.css">
+  <!-- injector:css -->
+  <link rel="stylesheet" href="app/app.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
 
-    <script ng-if="profile.isKyivCity">
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-87139311-1', 'auto');
-      ga('send', 'pageview');
-    </script>
+  <script ng-if="profile.isKyivCity">
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+          (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-87139311-1', 'auto');
+    ga('send', 'pageview');
+  </script>
 </head>
 
 <body errors-container>
 
 <!-- Google Tag Manager -->
 <noscript>
-    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WXGXTJ"
-            height="0"
-            width="0"
-            style="display:none;visibility:hidden"></iframe>
+  <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WXGXTJ"
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"></iframe>
 </noscript>
 <script>
-    (function(w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({
-            'gtm.start': new Date().getTime(), event: 'gtm.js'
-        });
-        var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-        j.async = true;
-        j.src =
-                '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-        f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-WXGXTJ');
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({
+      'gtm.start': new Date().getTime(), event: 'gtm.js'
+    });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+    j.async = true;
+    j.src =
+      '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-WXGXTJ');
 </script>
 <!-- End Google Tag Manager -->
 
 <div ui-view=""
      class="full-height">
 
-    <div class="text-center"
-         ng-if="false">
-        <img class="text-center site-preloader"
-             src="assets/images/loading.gif"
-             alt="Loading"/>
+  <div class="text-center"
+       ng-if="false">
+    <img class="text-center site-preloader"
+         src="assets/images/loading.gif"
+         alt="Loading"/>
+  </div>
+
+
+  <div ui-view="header" class="main-header"></div>
+
+  <div class="main full-height">
+    <div class="view"
+         ui-view="main">
     </div>
+  </div>
 
+  <div ng-app="popUp" ng-controller="PopUpController">
+    <button class="btn btn-info btn-lg" type="button"
+            style="transform: rotate(-90deg); position: fixed; bottom: 70px; right: -70px; z-index: 3" ng-click="open()">Задати
+      питання
+    </button>
+  </div>
 
-    <div ui-view="header" class="main-header"></div>
-
-    <div class="main full-height">
-        <div class="view"
-             ui-view="main">
-         </div>
-    </div>
-
-    <div ui-view="footer" class="main-footer"></div>
+  <div ui-view="footer" class="main-footer"></div>
 </div>
 
 
@@ -282,6 +302,7 @@
 <script src="app/documents/factories/bankiddocumentspassport.factory.js"></script>
 <script src="app/feedback/controllers/feedback.controller.js"></script>
 <script src="app/feedback/feedback.js"></script>
+<script src="app/feedform/feedform.controller.js"></script>
 <script src="app/journal/answer/answer.content.controller.js"></script>
 <script src="app/journal/answer/answer.dfs.directive.js"></script>
 <script src="app/journal/journal.content.controller.js"></script>
