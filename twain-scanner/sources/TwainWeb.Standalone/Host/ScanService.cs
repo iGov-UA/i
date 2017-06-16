@@ -161,22 +161,19 @@ namespace TwainWeb.Standalone.Host
                     ctx.Response.Redirect("/TWAIN@Web/");
                 }
             }
-            else if (ctx.Request.Url.AbsolutePath.Length < 11)
+            else if (ctx.Request.HttpMethod == "GET")
             {
-                actionResult = new ActionResult { Content = new byte[0] };
-                ctx.Response.Redirect("/TWAIN@Web/");
-            }
-            else
-            {
-                var contr = new HomeController();
+                var homeCtrl = new HomeController();
                 var requestParameter = ctx.Request.Url.AbsolutePath.Substring(11);
+
+
                 if (requestParameter != "download")
                 {
                     // /twain@web/ — это 11 символов, а дальше — имя файла
                     if (requestParameter == "")
                         requestParameter = "index.html";
 
-                    actionResult = contr.StaticFile(requestParameter);
+                    actionResult = homeCtrl.StaticFile(requestParameter);
                 }
                 else
                 {
@@ -186,12 +183,16 @@ namespace TwainWeb.Standalone.Host
                     _logger.Info("IsBase64 - " + MB.IsBase64.ToString());
 
                     if (MB.IsBase64)
-                        actionResult = contr.ConvertToBase64File(fileParam);
+                        actionResult = homeCtrl.ConvertToBase64File(fileParam);
                     else
-                        actionResult = contr.DownloadFile(fileParam);
+                        actionResult = homeCtrl.DownloadFile(fileParam);
 
                 }
-
+            }
+            else
+            {
+                actionResult = new ActionResult { Content = new byte[0] };
+                ctx.Response.Redirect("/TWAIN@Web/");
             }
 
 
