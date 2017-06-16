@@ -187,7 +187,7 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
         servicesStatistics = query.list();
         
-        LOG.info("servicesStatistics after get sql = {} ", servicesStatistics );
+        LOG.info("List servicesStatistics after get sql = {} ", servicesStatistics );
 
         return servicesStatistics;
     }
