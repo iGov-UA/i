@@ -288,7 +288,7 @@ public class ActionEventService {
         List<String> headers = new ArrayList<>();
         headers.addAll(Arrays.asList(headingFields));
 
-        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatistics.csv");
+        httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatisticsOfDnepr.csv");
         httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
 
         /**

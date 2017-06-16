@@ -2712,8 +2712,62 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT.equals(sFilterStatus)) {
                 
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    
+                    Boolean bWrite = oDocumentStepSubjectRight.getbWrite();
+                    LOG.info("bWrite={}", bWrite);
+                   
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate={}", sDate);
+                                        
+                    if (sDate != null || bWrite == null) {
+
+                        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                                .getSnID_Process_Activiti();
+                        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        
+                        TaskQuery oTaskQuery = oTaskService.createTaskQuery()
+                                        .processInstanceId(snID_Process_Activiti).active();
+                        
+                        aTaskQuery.add(oTaskQuery);
+                        taskQuery = aTaskQuery.get(0);
+                    }
+                }
+                LOG.info("aTaskQuery={}", aTaskQuery);
+                
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT.equals(sFilterStatus)) {
-            
+                
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
+                
+                List<TaskQuery> aTaskQuery = new ArrayList<>();
+                
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    
+                    boolean bWrite = oDocumentStepSubjectRight.getbWrite();
+                    LOG.info("bWrite={}", bWrite);
+                   
+                    DateTime sDate = oDocumentStepSubjectRight.getsDate();
+                    LOG.info("sDate={}", sDate);
+                                        
+                    if (sDate == null && (bWrite == true || bWrite == false)) {
+
+                        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                                .getSnID_Process_Activiti();
+                        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        
+                        TaskQuery oTaskQuery = oTaskService.createTaskQuery()
+                                        .processInstanceId(snID_Process_Activiti).active();
+                        
+                        aTaskQuery.add(oTaskQuery);
+                        taskQuery = aTaskQuery.get(0);
+                    }
+                }
+                LOG.info("aTaskQuery={}", aTaskQuery);
+          
             } else if (THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT.equals(sFilterStatus)) {
                 
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
@@ -2726,7 +2780,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     LOG.info("sDateECP = ", oDocumentStepSubjectRight.getsDateECP());
                     
                     DateTime sDate = oDocumentStepSubjectRight.getsDate();
-                    LOG.info("sDate = ", oDocumentStepSubjectRight.getsDate());
+                    LOG.info("sDate = ", sDate);
                     
                     Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
                     
@@ -2736,16 +2790,17 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                         // oDocumentStepSubjectRight через DocumentStep
                         String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
                                 .getSnID_Process_Activiti();
-                        LOG.info("snID_Process of oFindedDocumentStepSubjectRight: {}", snID_Process_Activiti);
+                        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
                         
                         TaskQuery oTaskQuery = oTaskService.createTaskQuery()
                                         .processInstanceId(snID_Process_Activiti).active();
                         
                         aTaskQuery.add(oTaskQuery);
+                        taskQuery = aTaskQuery.get(0);
                     }
                 }
                 LOG.info("aTaskQuery={}", aTaskQuery);
-                taskQuery = aTaskQuery;
+
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
