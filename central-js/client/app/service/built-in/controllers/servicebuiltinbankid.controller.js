@@ -1313,8 +1313,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       };
 
       $scope.otpConfirmPayment = function () {
-        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         $scope.checkoutSpinner = true;
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         MasterPassService.otpConfirm($scope.checkoutData.payment.otpCode, $scope.checkoutData.payment.otpToken, phoneNumber).then(function (res) {
           if(res.status === 'OK') {
             MasterPassService.paymentSale($scope.checkoutData.payment).then(function (res) {
@@ -1333,6 +1333,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
             })
           } else {
             $scope.paymentStatus = 4;
+            $scope.checkoutSpinner = false;
           }
         });
       };
