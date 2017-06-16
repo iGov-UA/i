@@ -105,8 +105,8 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpeneUnassigneUnprocessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpeneUnassigneWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -2740,7 +2740,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                         TaskQuery oTaskQuery = oTaskService.createTaskQuery()
                                         .processInstanceId(snID_Process_Activiti).active();
                         
-                        taskQuery = oTaskQuery;
+                        List<Task> aTask = oTaskQuery.list();
+                        LOG.info("aTask={}", aTask);
                     }
                 }
             }
