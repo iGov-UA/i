@@ -1183,6 +1183,7 @@ digit3 - переменная, куда присвоится результат 
 1. [Получение логина и ФИО основного исполнителя](#gettingloginandname)  
 1. [Получение имени департамента](#obtainingdepartmentname)
 1. [Получение номера заявки](#getsidorder)
+1. [Обращение к справочникам из скрипт-таски](#getdirdatafromscript)
 
 
 
@@ -1436,6 +1437,20 @@ var processInstanceIdToLong = parseFloat(processInstanceId);
 var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong);
 execution.setVariable('sID_Order', sID_Order)
 ```
+
+###### getdirdatafromscript 
+### Обращение к справочникам из скрипт-таски
+```javaScript
+var obj = dictionaryService.processDictionary('MinFin_test', 'IPN', 'value');
+```
+где
+
+MinFin_test - имя справочника с расширением .csv
+IPN - имя столбца, который будет ключом.
+value - значение атрибута в столбце.
+
+[детальней...](#_getdirdatafromscript)
+
 
 ###### configurationfiles
 # 18. Конфигурационные файлы

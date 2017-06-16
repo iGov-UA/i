@@ -181,11 +181,13 @@ public class HistoryEvent_ServiceDaoImpl extends GenericEntityDao<Long, HistoryE
 
         List<ServicesStatistics> servicesStatistics = null;
         SQLQuery query = getSession().createSQLQuery(queryString);
-        query.setParameter("dateFrom", from.toString("y-MM-d HH:mm:ss"));
-        query.setParameter("dateTo", to.toString("y-MM-d HH:mm:ss"));
+        query.setParameter("dateFrom", from.toString("yyyy-MM-d HH:mm:ss"));
+        query.setParameter("dateTo", to.toString("yyyy-MM-d HH:mm:ss"));
         query.addEntity(ServicesStatistics.class);
 
         servicesStatistics = query.list();
+        
+        LOG.info("servicesStatistics after get sql = {} ", servicesStatistics );
 
         return servicesStatistics;
     }

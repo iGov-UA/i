@@ -44,7 +44,7 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -55,13 +55,13 @@
             <activiti:string><![CDATA[_task_btsol]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable6}</activiti:expression>
+            <activiti:expression><![CDATA[${sTable6}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression>${processDefinitionId}</activiti:expression>
+            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression>sTitleDoc::${sTitleDoc};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sName_Kontroler::${sName_Kontroler};;sLogin_Kontroler::${sLogin_Kontroler}</activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sName_Kontroler::${sName_Kontroler};;sLogin_Kontroler::${sLogin_Kontroler}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>

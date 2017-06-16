@@ -84,15 +84,15 @@ public class ServicesStatistics extends AbstractEntity {
         return averageTime;
     }
 
-    @Override
-    public String toString() {
-        return "ServicesStatistics{" +
-                "nID_Service=" + nID_Service +
-                ", ServiceName='" + ServiceName + '\'' +
-                ", SID_UA=" + SID_UA +
-                ", placeName='" + placeName + '\'' +
-                ", averageRate=" + averageRate +
-                ", averageTime=" + averageTime +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "ServicesStatistics [nID_Service=" + nID_Service + ", ServiceName=" + ServiceName + ", SID_UA=" + SID_UA
+				+ ", placeName=" + placeName + ", nCountTotal=" + nCountTotal + ", nCountFeedback=" + nCountFeedback
+				+ ", nCountEscalation=" + nCountEscalation + ", averageRate=" + averageRate + ", averageTime="
+				+ averageTime + "]";
+	}
+
+    
+    
+    
 }
