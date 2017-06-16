@@ -74,7 +74,6 @@
     <userTask id="usertask1_red" name="Обробка вхідної документації ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -113,16 +112,10 @@
 
         <activiti:formProperty id="sBody1" name="[pattern/print/rada/rada_0019_DohovirZhytla_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Адресат; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Керівник ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumberOfOwners" name="Кількість повнолітніх; ;bVisible=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -135,7 +128,6 @@
     <userTask id="usertask2_yellow" name="Підготовка відповіді управлінням ЖКГ (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
@@ -143,7 +135,6 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sCountRoom" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sLiveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
 
@@ -161,49 +152,34 @@
 
         <activiti:formProperty id="sFIOchangeOff" name="П.І.Б. особи якої змінюється в договірі-найму" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFIOhead" name="П.І.Б. на кого змінити в договірі-найму" type="string" writable="false"></activiti:formProperty>
-        
 
         <activiti:formProperty id="sAdminFIO" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dRegistrastion" name="Дата реєстрації заяви" type="date" writable="false"></activiti:formProperty>
 
-
         <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file" required="true"></activiti:formProperty>
 
-
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Керівник ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumberOfOwners" name="Кількість повнолітніх; ;bVisible=false" type="string"></activiti:formProperty>
-        
                 
         <activiti:formProperty id="sBody1" name="[pattern/print/rada/rada_0019_DohovirZhytla_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         
-        
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
       </extensionElements>
     </userTask>
     
     <userTask id="usertask3_green" name="Відповідь громадянину (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="sCountRoom" name="Кількість кімнат у квартирі" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sLiveArea" name="Жила площа квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReasonChange" name="Причина зміни договору" type="string" writable="false"></activiti:formProperty>
 
@@ -227,17 +203,14 @@
         <activiti:formProperty id="dRegistrastion" name="Дата реєстрації заяви" type="date" writable="false"></activiti:formProperty>
 
         <activiti:formProperty id="asDecision2" name="Рішення держслужбовця" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Дозвіл готов. Запросити громадянина"></activiti:value>
+          <activiti:value id="attr1_ok" name="Дозвіл готовий. Запросити громадянина"></activiti:value>
           <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
         </activiti:formProperty>
         
-        
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileRentingAgreement" name="Копія договору найму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>

@@ -20,7 +20,6 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>        
 
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>
         
@@ -30,10 +29,7 @@
         <activiti:formProperty id="sCountRoom" name="Кількість кімнат у квартирі" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLiveArea" name="Жила площа квартири" type="string" required="true"></activiti:formProperty>
 
-        <activiti:formProperty id="info1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Інформація про повнолітніх членів сім’ї&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;nRowsLimit=8,bNew=true" type="table" default="${markerService.loadFromFile('table/Rada/rada_0019_DohovirZhytla_table1.json')}"></activiti:formProperty>
-
-        <activiti:formProperty id="info2" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asRelationsOwn&quot;],&quot;sValue&quot;:&quot;Зміни до договору найму квартири&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="info1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asRelationsOwn&quot;],&quot;sValue&quot;:&quot;Зміни до договору найму квартири&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asRelationsOwn" name="Родинні відносини" type="enum" required="true">
           <activiti:value id="husband" name="чоловік"></activiti:value>
           <activiti:value id="wife" name="дружина"></activiti:value>
@@ -43,13 +39,15 @@
           <activiti:value id="sister" name="сестра"></activiti:value>
           <activiti:value id="son" name="син"></activiti:value>
           <activiti:value id="doughter" name="дочка"></activiti:value>
-        </activiti:formProperty>
-        
+        </activiti:formProperty>        
         <activiti:formProperty id="sFIOchangeOff" name="П.І.Б. особи якої змінюється в договірі-найму" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFIOhead" name="П.І.Б. на кого змінити в договірі-найму" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="sReasonChange" name="Причина зміни договору;(у зв’язку зі смертю, зі зміною місця мешкання, за згодою всіх повнолітніх членів сім’ї тощо)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="info2" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Інформація про повнолітніх членів сім’ї&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;nRowsLimit=8,bNew=true" type="table" default="${markerService.loadFromFile('table/Rada/rada_0019_DohovirZhytla_table1.json')}"></activiti:formProperty>
+
 		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" required="true"></activiti:formProperty>
 		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником;свід-во про нарожденяя, свід-во про браке, тощо;bNew=true" type="file" required="true"></activiti:formProperty>
 
@@ -121,12 +119,8 @@
 
         <activiti:formProperty id="sBody1" name="[pattern/print/rada/rada_0019_DohovirZhytla_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Адресат; ;bVisible=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="sShapka" name="Керівник ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumberOfOwners" name="Кількість повнолітніх; ;bVisible=false" type="string"></activiti:formProperty>
         
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
@@ -183,41 +177,26 @@
 
 
         <activiti:formProperty id="asDecision2" name="Рішення держслужбовця" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Дозвіл готов. Запросити громадянина"></activiti:value>
+          <activiti:value id="attr1_ok" name="Дозвіл готовий. Запросити громадянина"></activiti:value>
           <activiti:value id="attr2_no" name="Відмова управління ЖКГ"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sDecisionComment2" name="Будь ласка, укажіть причину Вашого рішення" type="textArea"></activiti:formProperty>
-        
-        <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFilePermission" name="Сканкопія дозволу або відповідь з відмовою" type="file"></activiti:formProperty>
 
-
-        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="Адресат ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Керівник ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumberOfOwners" name="Кількість повнолітніх; ;bVisible=false" type="string"></activiti:formProperty>
-        
                 
         <activiti:formProperty id="sBody1" name="[pattern/print/rada/rada_0019_DohovirZhytla_print.html]; ;bVisible=false ,bPrintform=true " type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         
-        
         <activiti:formProperty id="sTable1" name="Інформація про повнолітніх членів сім’ї; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="nFileFamilyMembers" name="Довідка про склад сім'ї та реєстрацію за місцем проживання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="nFile1" name="Копія документу, що підтверджує причину зміни договору; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="nFile2" name="Копія витягу із особового рахункку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="nFile3" name="Копія документу, що підтверджують родинний зв'язок між колишнім квартиронаймачем та заявником; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
 		<activiti:formProperty id="nFile4" name="Довідка з місця реєстрації на кожного зареєстрованого в житловому приміщенні; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 		<activiti:formProperty id="nFile5" name="Технічний висновок по квартирі із ЖЕК; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		
-		<activiti:formProperty id="markersUser1" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('Rada/rada_0019_DohovirZhytla_u2.json')}"></activiti:formProperty>
-		
+		<activiti:formProperty id="markersUser2" name="Маркер відповіді" type="markers" default="${markerService.loadFromFile('Rada/rada_0019_DohovirZhytla_u2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     
