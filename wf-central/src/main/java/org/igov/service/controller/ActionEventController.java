@@ -990,8 +990,12 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
             HttpServletResponse httpResponse) {
 
-    	LOG.info("sDate_from in /getServicesStatisticsOfDnepr = ", sDate_from);
-    	LOG.info("sDate_to in /getServicesStatisticsOfDnepr = ", sDate_to);
+    	//parse date to check that it has appropriate form
+        DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("yyyy-MM-d HH:mm:ss"));
+        DateTime to = DateTime.parse(sDate_to, DateTimeFormat.forPattern("yyyy-MM-d HH:mm:ss"));
+    	
+    	LOG.info("sDate_from in /getServicesStatisticsOfDnepr = "+ sDate_from);
+    	LOG.info("sDate_to in /getServicesStatisticsOfDnepr = "+ sDate_to);
     	
     	
 		try {
