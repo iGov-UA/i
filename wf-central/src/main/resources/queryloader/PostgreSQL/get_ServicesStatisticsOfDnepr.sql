@@ -12,7 +12,7 @@ select distinct CASE
                 hes.nCountEscalation AS nCountEscalation,
                 hes.averageRate AS averageRate,
                 hes.averageTime AS averageTime
-from ( select hes."nID_Service" AS nID_Service, hes."sID_UA" AS SID_UA, hes."sID_Public_SubjectOrganJoin" AS sID_Public, count(*) AS nCountTotal,
+from ( select hes."nID_Service" AS nID_Service, hes."sID_UA" AS SID_UA, hes."sID_Public_SubjectOrganJoin" AS sID_Public,count(*) AS nCountTotal,
          count(hes."nID_Proccess_Feedback") AS nCountFeedback, count(hes."nID_Proccess_Escalation") AS nCountEscalation,
               avg(hes."nRate") AS averageRate, avg(hes."nTimeMinutes") AS averageTime
        from "HistoryEvent_Service" AS hes

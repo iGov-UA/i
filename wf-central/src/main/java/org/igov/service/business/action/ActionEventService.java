@@ -87,7 +87,8 @@ public class ActionEventService {
     @Qualifier("regionDao")
     private GenericEntityDao<Long, Region> regionDao;
     
-  
+    @Value("${asID_BpForStatisticsOfDnepr}")
+    private String [] asID_BpForStatisticsOfDnepr;
 
 
     public void checkAuth(HistoryEvent_Service oHistoryEvent_Service, Long nID_Subject, String sToken) throws Exception {
@@ -273,13 +274,7 @@ public class ActionEventService {
      * @param sDate_to
      * @param httpResponse
      */
-    public List<ServicesStatistics> getServicesStatisticsOfDnepr(DateTime from, DateTime to) {
-		 List<ServicesStatistics> servicesStatistics = historyEventServiceDao.getServicesStatisticsOfDnepr(from, to);
-	        return servicesStatistics;
-	}
-
-
-   /* public void getServicesStatisticsOfDnepr(String sDate_from, String sDate_to, HttpServletResponse httpResponse) {
+    public void getServicesStatisticsOfDnepr(String sDate_from, String sDate_to, HttpServletResponse httpResponse) {
 
     	//parse date to check that it has appropriate form
         DateTime from = DateTime.parse(sDate_from, DateTimeFormat.forPattern("y-MM-d HH:mm:ss"));
@@ -296,9 +291,9 @@ public class ActionEventService {
         httpResponse.setHeader("Content-disposition", "attachment; filename=" + "ServicesStatisticsOfDnepr.csv");
         httpResponse.setHeader("Content-Type", "text/csv; charset=UTF-8");
 
-        *//**
+        /**
          * запись в файл
-         *//*
+         */
         CSVWriter csvWriter;
         try {
             csvWriter = new CSVWriter(httpResponse.getWriter(), ';', CSVWriter.NO_QUOTE_CHARACTER);
@@ -331,7 +326,7 @@ public class ActionEventService {
             LOG.error("stacktrace {}", ExceptionUtils.getStackTrace(e));
         }
     }
-*/
+
     public List<Map<String, Object>> getListOfHistoryEvents(Long nID_Service) {
 
         List<Map<String, Object>> aRowReturn = new LinkedList<>();
@@ -611,8 +606,5 @@ public class ActionEventService {
         setHistoryEvent(HistoryEventType.GET_SERVICE, nID_Subject, mParamMessage, oHistoryEvent_Service.getId(), null, null, null);
         return oHistoryEvent_Service;
     }
-
-	
-    
 
 }
