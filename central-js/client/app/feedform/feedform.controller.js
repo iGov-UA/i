@@ -31,7 +31,7 @@ angular.module('popUp').controller('PopUpController',
             "bReferent": false}
         });
 
-        $http.post('api/process-feedform', body).success(function (data, status, headers, config) {
+        $http.post('api/process-feedform', body, {headers: {'Authorization':'Basic dGVzdGVyOnRlc3Rlcg=='}}).success(function (data, status, headers, config) {
           console.log(data);
           $modal.open({
             templateUrl: 'app/feedform/feedsuccess.html'
