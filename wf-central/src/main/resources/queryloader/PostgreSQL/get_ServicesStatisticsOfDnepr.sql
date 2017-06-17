@@ -12,15 +12,15 @@ select distinct CASE
                 hes.nCountEscalation AS nCountEscalation,
                 hes.averageRate AS averageRate,
                 hes.averageTime AS averageTime
-from ( select hes."nID_Service" AS nID_Service, hes."sID_UA" AS SID_UA, hes."sID_Public_SubjectOrganJoin" AS sID_Public,count(*) AS nCountTotal,
+from ( select hes."nID_Service" AS nID_Service, hes."sID_UA" AS SID_UA, count(*) AS nCountTotal,
          count(hes."nID_Proccess_Feedback") AS nCountFeedback, count(hes."nID_Proccess_Escalation") AS nCountEscalation,
               avg(hes."nRate") AS averageRate, avg(hes."nTimeMinutes") AS averageTime
        from "HistoryEvent_Service" AS hes
       where hes."sDate" >= to_timestamp( :dateFrom , 'YYYY-MM-DD hh24:mi:ss')
             and hes."sDate" < to_timestamp( :dateTo , 'YYYY-MM-DD hh24:mi:ss')
-           and hes."sID_Public_SubjectOrganJoin" = 'lev' or hes."sID_Public_SubjectOrganJoin" = 'prav'
+           and hes."sID_Public_SubjectOrganJoin" in('lev', 'prav')
             
-       group by hes."nID_Service", hes."sID_UA", hes."sID_Public_SubjectOrganJoin"
+       group by hes."nID_Service", hes."sID_UA"
      ) AS hes
   LEFT OUTER JOIN "Service" AS s
     ON s."nID" = hes.nID_Service

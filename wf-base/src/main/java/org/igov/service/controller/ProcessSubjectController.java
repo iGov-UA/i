@@ -220,11 +220,11 @@ public class ProcessSubjectController {
     @RequestMapping(value = "/getProcessSubjectTasks", method = RequestMethod.GET)
     @ResponseBody
     public List<ProcessSubjectTask> getProcessSubjectTasks(
-    		 @ApiParam(value = "ид процесса", required = true)
-    		 @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
-             @ApiParam(value = "глубина выбрки, 0 -  во всю глубину", required = false)
-    		 @RequestParam(value = "nDeepProcessSubjectTask ", required = false, defaultValue = "1") Integer nDeepProcessSubjectTask 
-    		) {
+    		@ApiParam(value = "ид процесса", required = true)
+    		@RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
+                @ApiParam(value = "глубина выбрки, 0 -  во всю глубину", required = false)
+    		@RequestParam(value = "nDeepProcessSubjectTask ", required = false, defaultValue = "1") Long nDeepProcessSubjectTask 
+    	) {
     	
     	return oProcessSubjectTaskService.getProcessSubjectTask(snID_Process_Activiti, nDeepProcessSubjectTask);
     }
