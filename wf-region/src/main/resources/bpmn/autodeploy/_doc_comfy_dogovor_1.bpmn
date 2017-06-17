@@ -12,14 +12,23 @@
       <script>var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
-    <userTask id="usertask1" name="створ">
+    <userTask id="usertask1" name="створ автор">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sUnit" name="Оберіть підрозділ" type="enum" required="true">
+          <activiti:value id="sOperational" name="Операційна дирекція"></activiti:value>
+          <activiti:value id="sCommercial" name="Комерційна дирекція"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+          <activiti:value id="sNetwork " name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="sExploitation" name="Управління запуску та експлуатації торгових об'єктів"></activiti:value>
+          <activiti:value id="sRetail" name="Роздрібна торгівля - магазини"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="права рук, степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
@@ -32,7 +41,7 @@ var sKey_GroupPostfix_New ='AkordBank_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <userTask id="usertask2" name="User Task">
+    <userTask id="usertask2" name="руков автора">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -40,7 +49,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask3" name="права фин, степ3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_3'
@@ -53,14 +62,14 @@ var sKey_GroupPostfix_New ='AkordBank_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <userTask id="usertask3" name="User Task">
+    <userTask id="usertask3" name="финансист">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask4" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask4" name="права автору, степ1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_1'
@@ -84,7 +93,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow9" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
-    <scriptTask id="scripttask5" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask5" name="права юр,степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
@@ -97,7 +106,7 @@ var sKey_GroupPostfix_New ='AkordBank_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <userTask id="usertask4" name="User Task">
+    <userTask id="usertask4" name="юрист">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -107,7 +116,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask4"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
-    <scriptTask id="scripttask6" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask6" name="права автору, степ5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_5'
@@ -120,7 +129,7 @@ var sKey_GroupPostfix_New ='AkordBank_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <scriptTask id="scripttask7" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="права кругу, степ6" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_6'
@@ -133,7 +142,7 @@ var sKey_GroupPostfix_New ='AkordBank_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <scriptTask id="scripttask8" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask8" name="права деловод,степ7" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_7'
@@ -151,21 +160,21 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask7"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="scripttask8"></sequenceFlow>
-    <userTask id="usertask5" name="User Task">
+    <userTask id="usertask5" name="автор">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask6" name="User Task">
+    <userTask id="usertask6" name="круг рассмотр">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <userTask id="usertask7" name="User Task">
+    <userTask id="usertask7" name="деловод">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
