@@ -28,6 +28,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
@@ -71,6 +72,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
