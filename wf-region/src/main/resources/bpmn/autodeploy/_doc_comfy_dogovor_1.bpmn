@@ -17,6 +17,16 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявитель" type="string" default="Шкундра Євгеній"></activiti:formProperty>
+        <activiti:formProperty id="sVid" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpert" name="Експертиза"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTip" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата договору" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="права рук, степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
