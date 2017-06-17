@@ -30,6 +30,7 @@ angular.module('journal', ['appBoilerPlate']);
 angular.module('order', ['appBoilerPlate']);
 angular.module('about', ['appBoilerPlate']);
 angular.module('feedback', ['appBoilerPlate']);
+
 angular.module('popUp', ['ui.bootstrap']);
 
 angular.module('app', [
