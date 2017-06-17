@@ -1,15 +1,22 @@
+@echo off
+set serv=TWAIN@Web
+@echo è•‡•·Æß§†•¨ ·•‡¢®· TWAIN@Web
+@echo ============================
+@echo.
+
 @set @x=0; /*
 @cscript /e:jscript "%~f0"
 @exit */
+
 oShell = new ActiveXObject("WScript.Shell");
 myDir = oShell.CurrentDirectory;
-uShortcut = oShell.CreateShortcut(oShell.SpecialFolders("Desktop") + "\\TWAIN@Web1.lnk");
+uShortcut = oShell.CreateShortcut(oShell.SpecialFolders("Desktop") + "\\%serv%.lnk");
 uShortcut.TargetPath = myDir + "\\TwainWeb.Standalone.exe";
 uShortcut.Arguments = "run";
 uShortcut.WorkingDirectory = myDir;
 //uShortcut.HotKey = "CTRL+ALT+SHIFT+C";
 // uShortcut.Description = "";
 // uShortcut.IconLocation = "";
-// uShortcut.WindowStyle = 1;       // –°—Ç–∏–ª—å –æ–∫–Ω–∞: 1-–û–±—ã—á–Ω–æ–µ; 3-–†–∞–∑–≤—ë—Ä–Ω—É—Ç–æ–µ; 7-–°–≤—ë—Ä–Ω—É—Ç–æ–µ
+// uShortcut.WindowStyle = 1;       // ë‚®´Ï Æ™≠†: 1-é°ÎÁ≠Æ•; 3-ê†ß¢Ò‡≠„‚Æ•; 7-ë¢Ò‡≠„‚Æ•
 uShortcut.Save();
  

@@ -1,3 +1,9 @@
-@echo stop TWAIN@Web
-sc stop TWAIN@Web
-::@pause
+@echo off
+set serv=TWAIN
+@echo Останавливаем сервис %serv%
+@echo ===============================
+@echo.
+
+sc stop %serv%
+@echo.
+@pause

@@ -121,7 +121,7 @@
             this.Controls.Add(this.button1);
             this.Name = "FormForSetPort";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Конфигурация TWAIN@Web";
+            this.Text = "Конфигурация " + Settings.Default.ServiceName;
             this.Shown += new System.EventHandler(this.FormForSetPort_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

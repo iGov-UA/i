@@ -1,12 +1,11 @@
 @echo off
-set serv=TWAIN
+set serv=TWAIN@Web
 @echo Пересоздаем сервис %serv%
 @echo ============================
 @echo.
 
 cd %~dp0
 cd..\..
-cd bin\Debug
 
 sc stop %serv%
 sc delete %serv%

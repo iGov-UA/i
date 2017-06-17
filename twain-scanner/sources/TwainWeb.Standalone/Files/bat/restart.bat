@@ -1,5 +1,10 @@
-@echo dp0 = %~dp0
-sc stop TWAIN@Web
-sc start TWAIN@Web
+@echo off
+set serv=TWAIN@Web
+@echo Пересоздаем сервис %serv%
+@echo ============================
+@echo.
+sc stop %serv%
+sc start %serv%
 
+@echo.
 @pause

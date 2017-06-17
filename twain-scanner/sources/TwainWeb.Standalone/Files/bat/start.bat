@@ -1,5 +1,10 @@
-@echo ╤ЄрЁЄ яЁюЎхёё
+@echo off
+set serv=TWAIN
+@echo Стартуем сервис %serv%
+@echo ====================
+@echo.
 
-sc start TWAIN@Web
+sc start %serv%
 
-::@pause
+@echo.
+@pause

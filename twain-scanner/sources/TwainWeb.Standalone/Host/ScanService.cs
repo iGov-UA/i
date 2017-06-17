@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.ServiceProcess;
+using System.Text;
 using System.Threading;
 using TwainWeb.Standalone.App.Binders;
 using TwainWeb.Standalone.App.Cache;
@@ -16,6 +18,18 @@ namespace TwainWeb.Standalone.Host
     {
         private readonly ILog _logger = LogManager.GetLogger(typeof(ScanService));
         private WindowsMessageLoopThread _messageLoop;
+
+        private readonly object _markerAsynchrone = new object();
+        private readonly int _port;
+        private readonly string _procesName;
+
+        public ScanService(int port, string serviceName)
+        {
+            _port = port;
+            ServiceName = serviceName;
+            _procesName = "/" + serviceName + "/";
+        }
+
 
         public HttpServerError CheckServer()
         {
@@ -37,7 +51,7 @@ namespace TwainWeb.Standalone.Host
                 _httpServer = new HttpServer(10);
                 _httpServer.ProcessRequest += httpServer_ProcessRequest;
                 _cacheSettings = new CacheSettings();
-                _httpServer.Start("http://+:" + _port + "/TWAIN@Web/");
+                _httpServer.Start("http://+:" + _port + _procesName);
             }
             catch (Exception ex)
             {
@@ -73,11 +87,7 @@ namespace TwainWeb.Standalone.Host
 
         private IScannerManager _scannerManager;
 
-        public ScanService(int port)
-        {
-            _port = port;
-            ServiceName = "TWAIN@Web";
-        }
+
 
         private HttpServer _httpServer;
         private CacheSettings _cacheSettings;
@@ -115,8 +125,6 @@ namespace TwainWeb.Standalone.Host
             StartServer();
         }
 
-        private readonly object _markerAsynchrone = new object();
-        private readonly int _port;
 
         private void httpServer_ProcessRequest(System.Net.HttpListenerContext ctx)
         {
@@ -126,7 +134,7 @@ namespace TwainWeb.Standalone.Host
             if (ctx.Request.HttpMethod == "POST")
             {
                 var segments = new Uri(ctx.Request.Url.AbsoluteUri).Segments;
-                if (segments.Length > 1 && segments[segments.Length - 2] == "TWAIN@Web/" && segments[segments.Length - 1] == "ajax")
+                if (segments.Length > 1 && segments[segments.Length - 2] == (ServiceName + "/") && segments[segments.Length - 1] == "ajax")
                 {
                     var scanFormModelBinder = new ModelBinder(GetPostData(ctx.Request));
                     var method = scanFormModelBinder.BindAjaxMethod();
@@ -150,49 +158,54 @@ namespace TwainWeb.Standalone.Host
                             break;
 
                         default:
-                            actionResult = new ActionResult { Content = new byte[0] };
-                            ctx.Response.Redirect("/TWAIN@Web/");
+                            actionResult = DefaultResponce(ctx);
                             break;
                     }
                 }
                 else
                 {
-                    actionResult = new ActionResult { Content = new byte[0] };
-                    ctx.Response.Redirect("/TWAIN@Web/");
+                    actionResult = DefaultResponce(ctx);
                 }
             }
             else if (ctx.Request.HttpMethod == "GET")
             {
-                var homeCtrl = new HomeController();
-                var requestParameter = ctx.Request.Url.AbsolutePath.Substring(11);
-
-
-                if (requestParameter != "download")
+                if (ctx.Request.Url.AbsolutePath.Length >= _procesName.Length)
                 {
-                    // /twain@web/ — это 11 символов, а дальше — имя файла
-                    if (requestParameter == "")
-                        requestParameter = "index.html";
+                    var homeCtrl = new HomeController();
+                    var method = ctx.Request.Url.AbsolutePath.Substring(_procesName.Length);
 
-                    actionResult = homeCtrl.StaticFile(requestParameter);
+                    switch (method)
+                    {
+                        case "download":
+                            ModelBinder MB = new ModelBinder(GetGetData(ctx.Request));
+                            var fileParam = MB.BindDownloadFile();
+
+                            if (MB.IsBase64)
+                                actionResult = homeCtrl.ConvertToBase64File(fileParam);
+                            else
+                                actionResult = homeCtrl.DownloadFile(fileParam);
+                            break;
+
+                        case "version":
+                            actionResult = homeCtrl.GetVersionProgram(
+                                Assembly.GetEntryAssembly().GetName().Version.ToString());
+                            break;
+
+                        default:
+                            if (method == "")
+                                method = "index.html";
+                            actionResult = homeCtrl.StaticFile(method);
+                            break;
+                    }
                 }
                 else
                 {
-                    ModelBinder MB = new ModelBinder(GetGetData(ctx.Request));
-                    var fileParam = MB.BindDownloadFile();
-
-                    _logger.Info("IsBase64 - " + MB.IsBase64.ToString());
-
-                    if (MB.IsBase64)
-                        actionResult = homeCtrl.ConvertToBase64File(fileParam);
-                    else
-                        actionResult = homeCtrl.DownloadFile(fileParam);
-
+                    actionResult = DefaultResponce(ctx);
                 }
             }
             else
             {
-                actionResult = new ActionResult { Content = new byte[0] };
-                ctx.Response.Redirect("/TWAIN@Web/");
+                actionResult = DefaultResponce(ctx);
             }
 
 
@@ -210,6 +223,7 @@ namespace TwainWeb.Standalone.Host
             {
             }
         }
+
 
         private Dictionary<string, string> GetGetData(System.Net.HttpListenerRequest request)
         {
@@ -258,6 +272,18 @@ namespace TwainWeb.Standalone.Host
             {
                 appender.Close();
             }
+        }
+
+
+        /// <summary>
+        /// Ответ по умолчанию
+        /// </summary>
+        /// <param name="ctx">Объект запроса</param>
+        /// <returns></returns>
+        private ActionResult DefaultResponce(System.Net.HttpListenerContext ctx)
+        {
+            ctx.Response.Redirect(_procesName);
+            return new ActionResult { Content = new byte[0] };
         }
     }
 }

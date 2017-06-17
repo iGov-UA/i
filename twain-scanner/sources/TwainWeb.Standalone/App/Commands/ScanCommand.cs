@@ -156,18 +156,7 @@ namespace TwainWeb.Standalone.App.Commands
 
 			ImageTools.CompressAndSaveImage(image, file, _command.CompressionFormat);
 
-            string base64str = "";
-
-            using (var ms = new MemoryStream())
-            {
-                //сохраняем картинку в байты
-                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                //массив байт конвертируем в строку
-                base64str = Convert.ToBase64String(ms.ToArray());
-            }
-
-            var downloadFile = new DownloadFile(filename, tempfile, base64str);
+            var downloadFile = new DownloadFile(filename, tempfile);
 
 
             GlobalDictionaries.Scans.Add(downloadFile.TempFile);

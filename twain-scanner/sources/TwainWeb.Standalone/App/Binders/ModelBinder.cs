@@ -17,10 +17,7 @@ namespace TwainWeb.Standalone.App.Binders
         {
             _query = query;
 
-            string q = "\n";
-            foreach (var item in _query)
-                q += "key - " + item.Key + " : Value - " + item.Value + "\n";
-            _logger.Info("Запрос - " + q);
+           // _logger.Info("Запрос - " + this.ToString());
         }
 
         private string TryGet(string key)
@@ -38,7 +35,7 @@ namespace TwainWeb.Standalone.App.Binders
                 var tempFile = TryGet("fileId" + i);
                 if (fileName == null || tempFile == null)
                     break;
-                downloadParam.ListFiles.Add(new DownloadFile(fileName, tempFile, ""));
+                downloadParam.ListFiles.Add(new DownloadFile(fileName, tempFile));
                 i++;
             }
             if (downloadParam.ListFiles.Count == 0)
@@ -85,6 +82,15 @@ namespace TwainWeb.Standalone.App.Binders
             {
                 return TryGetBool("asBase64", false);
             }
+        }
+
+        public override string ToString()
+        {
+            string result = "\n";
+            foreach (var item in _query)
+                result += "key - " + item.Key + " : Value - " + item.Value + "\n";
+
+            return result;
         }
 
 

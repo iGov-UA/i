@@ -12,7 +12,7 @@ namespace TwainWeb.Standalone.Host
 		{
 			_logger = LogManager.GetLogger(typeof (FierwallHelper));
 		}
-		private const string RuleName = "TWAIN@Web";
+		private readonly string RuleName = Settings.Default.ServiceName;
 
 		private bool IsWinVistaOrHigher
 		{
@@ -76,7 +76,7 @@ namespace TwainWeb.Standalone.Host
 
 			firewallRule.Protocol = 6;
 			firewallRule.Action = NET_FW_ACTION_.NET_FW_ACTION_ALLOW;
-			firewallRule.Description = "Used to allow access to TWAIN@Web.";
+			firewallRule.Description = "Used to allow access to " + RuleName;
 			firewallRule.Direction = NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
 			firewallRule.Enabled = true;
 			firewallRule.InterfaceTypes = "All";
@@ -111,7 +111,7 @@ namespace TwainWeb.Standalone.Host
 				{
 					foreach (var globallyOpenPort in profile.GloballyOpenPorts)
 					{
-						if (globallyOpenPort is INetFwOpenPort && ((INetFwOpenPort) globallyOpenPort).Name == "TWAIN@Web")
+						if (globallyOpenPort is INetFwOpenPort && ((INetFwOpenPort) globallyOpenPort).Name == RuleName)
 							openPort = globallyOpenPort as INetFwOpenPort; 
 					}
 				}
@@ -125,7 +125,7 @@ namespace TwainWeb.Standalone.Host
 					newRule = true;
 				}
 
-				openPort.Name = "TWAIN@Web";
+				openPort.Name = RuleName;
 				openPort.Protocol = NET_FW_IP_PROTOCOL_.NET_FW_IP_PROTOCOL_TCP;
 				openPort.Port = port;
 				openPort.Enabled = true;
