@@ -48,6 +48,21 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодитися"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -69,6 +84,21 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодитися"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask4" name="права автору, степ1" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -89,8 +119,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="scripttask3"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="scripttask4" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -113,10 +147,28 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="направити на розгляд"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+          <activiti:value id="registration" name="направити на регістрацію"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="scripttask5"></sequenceFlow>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
     <scriptTask id="scripttask6" name="права автору, степ5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
@@ -159,14 +211,31 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6"></sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask7"></sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="scripttask8"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="exclusivegateway3" targetRef="scripttask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='registration'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask5" name="автор">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask6" name="круг рассмотр">
@@ -174,6 +243,17 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask7" name="деловод">
@@ -181,12 +261,25 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
+          <activiti:value id="tip1" name="тра"></activiti:value>
+          <activiti:value id="tip2" name="тру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow18" sourceRef="scripttask6" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="scripttask8" targetRef="usertask7"></sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="usertask5" targetRef="scripttask5"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="usertask5" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow22" sourceRef="usertask7" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow23" sourceRef="usertask6" targetRef="scripttask6"></sequenceFlow>
