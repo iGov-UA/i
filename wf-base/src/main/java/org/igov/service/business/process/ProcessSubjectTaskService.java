@@ -579,7 +579,7 @@ public class ProcessSubjectTaskService {
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
         } else {
-        	
+            LOG.info("getProcessSubjectTask else block");
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
             
             ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
@@ -587,9 +587,9 @@ public class ProcessSubjectTaskService {
             LOG.info("aProcessSubject={}", aProcessSubject);
             
             for (ProcessSubject oProcessSubject : aProcessSubject) {
-    			String snID_Process_Activiti_Root = oProcessSubject.getSnID_Process_Activiti();
-    			aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
-    		}        
+                String snID_Process_Activiti_Root = oProcessSubject.getSnID_Process_Activiti();
+    		aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
+            }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
 
         }
