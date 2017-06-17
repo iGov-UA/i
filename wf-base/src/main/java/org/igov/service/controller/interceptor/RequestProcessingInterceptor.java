@@ -433,7 +433,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
-                    LOG.info("sResponseBody: {}", sResponseBody);
+                    //LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
                     LOG.info("-----------------------------------------------");
