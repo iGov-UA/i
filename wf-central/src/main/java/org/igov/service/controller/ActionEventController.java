@@ -990,10 +990,7 @@ public class ActionEventController implements ControllerConstants {
             @ApiParam(value = "дата \"По\", обязательный в формате YYYY-MM-DD hh:mm:ss", required = true) @RequestParam(value = "sDate_to") String sDate_to,
             HttpServletResponse httpResponse) {
 
-    	LOG.info("sDate_from in /getServicesStatisticsOfDnepr = ", sDate_from);
-    	LOG.info("sDate_to in /getServicesStatisticsOfDnepr = ", sDate_to);
-    	
-    	
+    	    	
 		try {
 			oActionEventService.getServicesStatisticsOfDnepr(sDate_from, sDate_to, httpResponse);
 
