@@ -22,6 +22,7 @@ execution.setVariable('sID_Order', sID_Order)
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order" name="sID_Order" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nOrder" name="nOrder;bOrder=true" type="String"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -53,8 +54,7 @@ execution.setVariable('sID_Order', sID_Order)
     <scriptTask id="scripttask2" name="степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_idoc','MJU_Dnipro_Top1_Dep1', 'step_2')</script>          
-
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_idoc','MJU_Dnipro_Top1_Dep1', 'step_2')</script>
     </scriptTask>
     <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
