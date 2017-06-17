@@ -415,7 +415,7 @@ public class ProcessSubjectTaskService {
 
             byte[] aByteDocument = getFileData_Pattern(sPath);
             if (aByteDocument != null && aByteDocument.length > 0) {
-                String soJSON = soJSON = Tool.sData(aByteDocument);
+                String soJSON = Tool.sData(aByteDocument);
                 LOG.info("soJSON in ProcessSubjectTask is: {}", soJSON);
                 org.activiti.engine.impl.util.json.JSONObject oJSON = new org.activiti.engine.impl.util.json.JSONObject(soJSON);
                 asKey_Step = Arrays.asList(org.activiti.engine.impl.util.json.JSONObject.getNames(oJSON));
@@ -569,33 +569,29 @@ public class ProcessSubjectTaskService {
      * @param snID_Process_Activiti
      * @return aListOfProcessSubjectTask
      */
-    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Integer nDeepProcessSubjectTask) {
+    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
 
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
         
-        /*if (nDeepProcessSubjectTask == 1) {
+        if (nDeepProcessSubjectTask == 1) {
+        	
         	aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
-        } else if (nDeepProcessSubjectTask == 0) {
-        	ProcessSubject oProcessSubject = oProcessSubjectDao.findByExpected("snID_Process_Activiti", snID_Process_Activiti);
+        } else {
+        	
         	aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
-        	
-        	List<ProcessSubject> aProcessSubjectChild = oProcessSubject.getaProcessSubjectChild();
-        	
-        	for (ProcessSubject oProcessSubjectChild : aProcessSubjectChild) {
-        		aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", oProcessSubjectChild.getSnID_Process_Activiti()));
-			}
-        }*/
-        
-        ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.getCatalogProcessSubject(snID_Process_Activiti, 1l, null);
-        List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
-        LOG.info("aProcessSubject={}", aProcessSubject);
-        
-        for (ProcessSubject oProcessSubject : aProcessSubject) {
-			String snID_Process_Activiti_Root = oProcessSubject.getSnID_Process_Activiti();
-			aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
-		}        
-        LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
+            
+            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
+            List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
+            LOG.info("aProcessSubject={}", aProcessSubject);
+            
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
+    			String snID_Process_Activiti_Root = oProcessSubject.getSnID_Process_Activiti();
+    			aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
+    		}        
+            LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
+
+        }
 
         return aListOfProcessSubjectTask;
     }
