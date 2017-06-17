@@ -52,7 +52,7 @@ module.exports.submit = function (req, res) {
 
     var body = { "aFormProperty": properties};
 
-    activiti.post('/service/action/task/startProcess', qs, body, {headers: {'Authorization':'Basic dGVzdGVyOnRlc3Rlcg=='}}, callback, sHost);
+    activiti.post('/service/action/task/startProcess', qs, body, callback, sHost);
 
   }
 
