@@ -16,16 +16,17 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ ЦОВ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAvtor" name="Заявитель" type="string" default="Шкундра Євгеній"></activiti:formProperty>
-        <activiti:formProperty id="sVid" name="Вид заяви" type="enum" required="true">
-          <activiti:value id="sExpert" name="Експертиза"></activiti:value>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Документ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTip" name="Тип договору" type="enum" required="true">
+        <activiti:formProperty id="sType1" name="Тип договору" type="enum" required="true">
           <activiti:value id="tip1" name="тра"></activiti:value>
           <activiti:value id="tip2" name="тру"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата договору" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -37,8 +38,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Author's_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -58,8 +59,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Financier'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -78,8 +79,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_manager'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -102,8 +103,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Legal_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -125,8 +126,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_manager'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -138,8 +139,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Matching group_1'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -151,8 +152,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Head'
-var sKey_GroupPostfix_New ='AkordBank_Head'
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Clerk'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
