@@ -566,8 +566,9 @@ public class ProcessSubjectTaskService {
     /**
      * Получение списка ProcessSubjectTask
      *
-     * @param snID_Process_Activiti
-     * @return aListOfProcessSubjectTask
+     * @param snID_Process_Activiti         ид процесса
+     * @param nDeepProcessSubjectTask       глубина выборки (0 - все, 1 - только заданного процесса)
+     * @return список задач, которые относятся к заданому процессу(-ам)
      */
     public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
 
@@ -575,11 +576,11 @@ public class ProcessSubjectTaskService {
         
         if (nDeepProcessSubjectTask == 1) {
         	
-        	aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
+            aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
         } else {
         	
-        	aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
+            aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
             
             ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
             List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
