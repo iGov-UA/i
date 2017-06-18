@@ -291,7 +291,7 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("buildFlowSlots started nID_Flow = {}, oDateStart = {}, oDateEnd = {}", nID_Flow, oDateStart, oDateEnd);
         Flow oFlow = flowDao.findByIdExpected(nID_Flow);
 
-        //List<FlowSlotVO> result = new ArrayList<>();
+        List<FlowSlotVO> result = new ArrayList<>();
         List<ExcludeDateRange> aoDateRange_Exclude = new ArrayList<>();
         CronExpression cronExpression = null;
         DateTimeFormatter format = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
