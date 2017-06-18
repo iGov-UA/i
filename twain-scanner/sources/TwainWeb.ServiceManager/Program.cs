@@ -7,19 +7,34 @@ namespace TwainWeb.ServiceManager
 {
 	class Program
 	{
-		static void Main(string[] args)
+        const string SeviceName = "TWAIN@Web";
+
+        static void Main(string[] args)
 		{
-			try
+
+            var logger = new FileLogger("InstallationLog.txt");
+
+            //SeviceName = args[0];
+            //var parameter = string.Concat(args).Substring(SeviceName.Length);
+
+            try
 			{
-				using (var serviceHelper = new ServiceHelper("TWAIN@Web", "TwainWeb.Standalone.exe"))
+				using (var serviceHelper = new ServiceHelper(SeviceName, "TwainWeb.Standalone.exe"))
 				{
 
 					var parameter = string.Concat(args);
 					switch (parameter)
 					{
 						case "-install":
-							if (serviceHelper.Install())
-								return;
+                            if (serviceHelper.Install())
+                            {
+                                logger.Info("Start install service...");
+                                return;
+                            }
+                            else
+                            {
+                                logger.Error("NOT Start install service...");
+                            }
 
 							Environment.Exit(-1);
 							break;
@@ -41,7 +56,6 @@ namespace TwainWeb.ServiceManager
 
 						case "-run-uninstaller":
 
-							var logger = new FileLogger("InstallationLog.txt");
 							try
 							{
 								var uninstallString = GetUninstallString();
@@ -81,7 +95,7 @@ namespace TwainWeb.ServiceManager
 
 		public static string GetUninstallString()
 		{
-			const string productsRoot = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TWAIN@Web Standalone";
+			string productsRoot = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\"+ SeviceName + @" Standalone";
 			var helper = new RegistryHelper();
 			var uninstallString = helper.ReadRegKey(HKEY_LOCAL_MACHINE, productsRoot, "UninstallString");
 

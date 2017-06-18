@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,6 +51,42 @@ public class ActionIdentityCommonScenario {
         usersService = webApplicationContext.getBean(UsersService.class);
     }
 
+    @Test
+    public void shouldSuccessfullySetUser() throws Exception {
+        String sURL_Template_Set = "/action/identity/setUser";
+        String sURL_Template_Get = "/action/identity/getUsers";
+        
+        String sLogin = "test12345";
+        String sFirstName = "test12345";        
+        
+        String sBody = "{\n"
+                + "  \"sPassword\" : \"12345\",\n"
+                + "  \"sName\" : \""+sFirstName+"\",\n"
+                + "  \"sDescription\" : \"test12345\"  \n"
+                + "}";
+
+        requestBuilder = post(sURL_Template_Set)
+                .param("sLogin", sLogin).content(sBody);
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+
+        requestBuilder = get(sURL_Template_Get);
+
+        List<Map<String, String>> aResultUsers
+                = JsonRestUtils.readObject(fetchJSONData(requestBuilder), List.class);
+
+        Predicate<Map<String, String>> expectedUser = user
+                -> sLogin.equals(user.get("sLogin"))                
+                && sFirstName.equals(user.get("sFirstName"));
+        List<Map<String, String>> aFilteredUsers = aResultUsers.stream()
+                .filter(expectedUser)
+                .collect(Collectors.toList());
+
+        Assert.assertEquals(1, aFilteredUsers.size());
+    }
+    
+    
     @Test
     public void shouldSuccessfullySetGroup()throws Exception {
         String sURL_Template_Set = "/action/identity/setGroup";

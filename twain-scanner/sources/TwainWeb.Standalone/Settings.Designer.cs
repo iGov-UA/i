@@ -52,5 +52,17 @@ namespace TwainWeb.Standalone {
                 this["MainURL"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("TWAIN@Web")]
+        public string ServiceName {
+            get {
+                return ((string)(this["ServiceName"]));
+            }
+            set {
+                this["ServiceName"] = value;
+            }
+        }
     }
 }

@@ -9,14 +9,12 @@ namespace TwainWeb.Standalone.App.Models.Request
     }
     public class DownloadFile
     {
-	    public DownloadFile(string filename, string tempfile, string base64)
+	    public DownloadFile(string filename, string tempfile)
 	    {
 		    FileName = filename;
 		    TempFile = tempfile;
-            Base64 = base64;
         }
         public string FileName { get; set; }
         public string TempFile { get; set; }
-        public string Base64 { get; set; }
     }
 }

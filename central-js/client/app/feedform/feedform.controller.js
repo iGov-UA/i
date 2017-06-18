@@ -1,6 +1,6 @@
 angular.module('popUp').controller('PopUpController',
-  ['$scope', '$modal', '$http', '$modalStack', '$window',
-    function ($scope, $modal, $http, $modalStack) {
+  ['$scope', '$modal', '$http', '$modalStack', '$window', '$log',
+    function ($scope, $modal, $http, $modalStack, $log) {
 
       $scope.dropDown = 'sEnumExistentRequest_no';
 
@@ -32,10 +32,12 @@ angular.module('popUp').controller('PopUpController',
         });
 
         $http.post('api/process-feedform', body).success(function (data, status, headers, config) {
+          console.log(data);
           $modal.open({
             templateUrl: 'app/feedform/feedsuccess.html'
           });
         }).error(function (data, status, headers, config) {
+          console.log(data);
           $modal.open({
             templateUrl: 'app/feedform/feederror.html'
           });

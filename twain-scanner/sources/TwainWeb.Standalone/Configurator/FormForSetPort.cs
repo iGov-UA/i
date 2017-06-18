@@ -11,7 +11,7 @@ namespace TwainWeb.Standalone.Configurator
 		/// <summary>
 		/// Флаг, указывающий на цель запуска конфигуратора. 
 		/// Если true, конфигуратор запущен намеренно с целью изменения значений. 
-		/// Если false, конфигуратор запущен перед запуском Twain@WEB с целью проверки доступности порта.
+		/// Если false, конфигуратор запущен перед запуском СЕРВИС с целью проверки доступности порта.
 		/// </summary>
         private readonly bool _needToChangeSettings;
 		private bool _firstShowEvent;
@@ -39,24 +39,24 @@ namespace TwainWeb.Standalone.Configurator
 			UpdateScannerManager(scannerManager);
         }
 
-		/// <summary>
-		/// Конструктор с возможностью указать цель запуска конфигуратора
-		/// </summary>
-		/// <param name="needToChangeSettings">
-		/// Флаг, указывающий на цель запуска конфигуратора. 
-		/// Если true, конфигуратор запущен намеренно с целью изменения значений. 
-		/// Если false, конфигуратор запущен перед запуском Twain@WEB с целью проверки доступности порта.</param>
-		public FormForSetPort(bool needToChangeSettings) : this()
+        /// <summary>
+        /// Конструктор с возможностью указать цель запуска конфигуратора
+        /// </summary>
+        /// <param name="needToChangeSettings">
+        /// Флаг, указывающий на цель запуска конфигуратора. 
+        /// Если true, конфигуратор запущен намеренно с целью изменения значений. 
+        /// Если false, конфигуратор запущен перед запуском СЕРВИС с целью проверки доступности порта.</param>
+        public FormForSetPort(bool needToChangeSettings) : this()
         {
 			_needToChangeSettings = needToChangeSettings;
             _firstShowEvent = true;
         }
 
-		/// <summary>
-		/// Обновление настроек порта для запуска Twain@WEB в интерфейсе.
-		/// </summary>
-		/// <param name="portNumber">Порт для запуска Twain@WEB.</param>
-		private void UpdatePort(int portNumber)
+        /// <summary>
+        /// Обновление настроек порта для запуска СЕРВИСА в интерфейсе.
+        /// </summary>
+        /// <param name="portNumber">Порт для запуска СЕРВИСА.</param>
+        private void UpdatePort(int portNumber)
 	    {
 			port.Text = portNumber.ToString(CultureInfo.InvariantCulture);
 	    }
@@ -78,10 +78,10 @@ namespace TwainWeb.Standalone.Configurator
 			}
 	    }
 
-		/// <summary>
-		/// Сохранение выбранного порта в конфигурационный файл.
-		/// </summary>
-		/// <param name="portNumber">Порт для запуска Twain@WEB.</param>
+        /// <summary>
+        /// Сохранение выбранного порта в конфигурационный файл.
+        /// </summary>
+        /// <param name="portNumber">Порт для запуска СЕРВИСА.</param>
         private void SavePortSettings(int portNumber)
         {
 			if (RuntimeConfigurationManager.UpdateAppSettings("Port", portNumber.ToString(CultureInfo.InvariantCulture)))
@@ -134,7 +134,7 @@ namespace TwainWeb.Standalone.Configurator
 
 		private bool CheckPortAvailability(int portNumber)
         {
-			var scanService = new ScanService(portNumber);
+			var scanService = new ScanService(portNumber, Settings.Default.ServiceName);
             var resultCheckServer = scanService.CheckServer();
             if (resultCheckServer != null)
             {

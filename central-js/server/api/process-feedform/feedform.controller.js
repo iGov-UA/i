@@ -1,15 +1,10 @@
 var url = require('url')
   , request = require('request')
   , fs = require('fs')
-  , FormData = require('form-data')
   , config = require('../../config/environment')
-  , authProviderRegistry = require('../../auth/auth.provider.registry')
   , _ = require('lodash')
-  , StringDecoder = require('string_decoder').StringDecoder
   , async = require('async')
-  , uploadFileService = require('../uploadfile/uploadfile.service')
   , activiti = require('../../components/activiti')
-  , admZip = require('adm-zip')
   , errors = require('../../components/errors')
   , loggerFactory = require('../../components/logger')
   , logger = loggerFactory.createLogger(module);
@@ -17,7 +12,7 @@ var url = require('url')
 module.exports.submit = function (req, res) {
   var formData = req.body;
   var nID_Subject = 20049;
-  var sHost = req.region.sHost;
+  var sHost = "https://alpha.test.region.igov.org.ua/wf";
   var keys = [];
   var properties = [];
 
@@ -45,23 +40,6 @@ module.exports.submit = function (req, res) {
       res.send(body);
       res.end();
     };
-
-    // var qs = {
-    //   nID_Subject: nID_Subject,
-    //   nID_Service: formData.nID_Service,
-    //   nID_ServiceData: formData.nID_ServiceData,
-    //   nID_Region: formData.nID_Region,
-    //   sID_UA: formData.sID_UA
-    // };
-    //
-    // var body = {
-    //   processDefinitionId: formData.processDefinitionId,
-    //   businessKey: "key",
-    //   nID_Subject: nID_Subject,
-    //   properties: properties
-    // };
-    //
-    // activiti.post('/service/form/form-data', qs, body, callback, sHost);
 
     var qs = {
       sID_BP: "_FAQ",
@@ -99,7 +77,7 @@ module.exports.submit = function (req, res) {
               sID_StorageType:'Redis',
               sID_Field:table.id,
               sFileNameAndExt:nameAndExt
-            }
+            };
           } else {
             url = '/object/file/upload_file_to_redis';
           }
@@ -109,8 +87,8 @@ module.exports.submit = function (req, res) {
 
         putTableToRedis(formData.params[key], function (error, response, data) {
           formData.params[key] = data;
-          next()
-        })
+          next();
+        });
       },
       function (err) {
         formSubmit();

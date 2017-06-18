@@ -56,7 +56,7 @@ import java.util.*;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
 import static org.igov.util.Tool.sTextTranslit;
-
+ 
 //import org.igov.service.business.access.BankIDConfig;
 
 /**
