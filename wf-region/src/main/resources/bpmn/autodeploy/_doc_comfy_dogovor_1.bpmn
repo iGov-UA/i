@@ -51,6 +51,14 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
