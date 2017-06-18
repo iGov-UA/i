@@ -3709,7 +3709,13 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 [вернуться...](#gettingloginandname)
 
   ![16_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_1.JPG)
+  
+###### _getdirdatafromscript
 
+[вернуться...](#getdirdatafromscript)
+   
+   ![16_10]https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_10.JPG)
+   ![16_11](https://github.com/e-government-ua/i/blob/test/doc/bp/img/16_11.JPG)
 
 ###### 18. Конфигурационные файлы
 ###### _service
