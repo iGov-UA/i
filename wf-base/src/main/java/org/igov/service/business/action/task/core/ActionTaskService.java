@@ -1105,7 +1105,11 @@ public class ActionTaskService {
                 Map<String, String> mPropertyBP = new HashMap<String, String>();
                 mPropertyBP.put("sID", property.getId());
                 mPropertyBP.put("sName", property.getName());
-                mPropertyBP.put("sID_Type", property.getType().getName());
+                
+                if(property.getType() != null){
+                    mPropertyBP.put("sID_Type", property.getType().getName());
+                }
+                
                 amPropertyBP.put(mPropertyBP.get("sID"), mPropertyBP);
                 LOG.debug("Added record to response {}", mPropertyBP);
             }
