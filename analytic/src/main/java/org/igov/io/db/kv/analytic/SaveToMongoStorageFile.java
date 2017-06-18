@@ -6,7 +6,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.igov.io.db.kv.statical.IFileStorage;
 import org.igov.io.db.kv.statical.exceptions.RecordNotFoundException;
-import org.igov.io.db.kv.statical.impl.BytesDataStorage;
 import org.igov.io.db.kv.statical.model.UploadedFile;
 import org.igov.io.db.kv.statical.model.UploadedFileMetadata;
 import org.slf4j.Logger;
