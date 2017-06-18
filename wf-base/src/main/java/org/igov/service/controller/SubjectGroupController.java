@@ -110,6 +110,8 @@ public class SubjectGroupController {
             @RequestParam(value = "sID_Group_Activiti", required = true) String sID_Group_Activiti,
             @ApiParam(value = "глубина выборки", required = false) 
             @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию yes)", required = false) 
+            @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
             @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей", required = false) 
             @RequestParam(value = "sSubjectType", required = false) String sSubjectType) {
         
