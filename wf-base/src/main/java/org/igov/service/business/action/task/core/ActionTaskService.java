@@ -1221,8 +1221,9 @@ public class ActionTaskService {
                 "Selecting business processes for the user with login: %s",
                 sLogin));
 
-        List<ProcessDefinition> processDefinitionsList = oRepositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
+        //List<ProcessDefinition> processDefinitionsList = oRepositoryService
+        //        .createProcessDefinitionQuery().active().latestVersion().list();
+        List<ProcessDefinition> processDefinitionsList = new LinkedList();
         if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
             LOG.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
