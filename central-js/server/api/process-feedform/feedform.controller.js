@@ -12,7 +12,7 @@ var url = require('url')
 module.exports.submit = function (req, res) {
   var formData = req.body;
   var nID_Subject = 20049;
-  var sHost = req.region.sHost;
+  var sHost = "https://alpha.test.region.igov.org.ua/wf";
   var keys = [];
   var properties = [];
 
