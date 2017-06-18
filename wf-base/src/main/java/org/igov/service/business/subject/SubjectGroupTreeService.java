@@ -315,13 +315,13 @@ public class SubjectGroupTreeService {
 
         List<SubjectGroup> aSubjectGroupParent = new ArrayList<>();
 
-        String sSubjectTypeToFind;
+        /*String sSubjectTypeToFind;
 
         sSubjectTypeToFind = sSubjectType;
 
         if (sSubjectTypeToFind == null) {
             sSubjectTypeToFind = getSubjectType(sID_Group_Activiti);
-        }
+        }*/
 
         //Получить SubjectGroup, который относятся к группе sID_Group_Activiti
         Optional<SubjectGroup> oSubjectGroup = SubjectGroupDao.findBy("sID_Group_Activiti", sID_Group_Activiti);
@@ -330,7 +330,6 @@ public class SubjectGroupTreeService {
         if (oSubjectGroup.isPresent()) {
             //ID для которого ищем департаменты, которым он подчиняется
             Long nID = oSubjectGroup.get().getId();
-
             //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
             List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
             LOG.info("aSubjectGroupTree size={}, {}",  aSubjectGroupTree.size(), aSubjectGroupTree.toString());
@@ -339,13 +338,13 @@ public class SubjectGroupTreeService {
                 SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
                 LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
                 String sSubjectGroup_ParentType = getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti());
-                if (sSubjectGroup_ParentType.equals(sSubjectTypeToFind)) {
+                //if (sSubjectGroup_ParentType.equals(sSubjectTypeToFind)) {
+                if(sSubjectType == null || sSubjectGroup_ParentType.equalsIgnoreCase(sSubjectType)){
                     aSubjectGroupParent.add(oSubjectGroup_Parent);
                 }
+                //}
             }
-
             LOG.info("aSubjectGroupParent: " + aSubjectGroupParent.toString());
-
         }
         return aSubjectGroupParent;
     }
