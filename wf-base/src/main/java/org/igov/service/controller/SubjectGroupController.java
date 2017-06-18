@@ -1,6 +1,5 @@
 package org.igov.service.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.igov.model.subject.SubjectGroupAndUser;
@@ -9,7 +8,6 @@ import org.igov.service.business.subject.SubjectGroupService;
 import org.igov.service.business.subject.SubjectGroupTreeService;
 import org.igov.service.business.subject.SubjectRightBPService;
 import org.igov.service.business.subject.SubjectRightBPVO;
-import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.Map;
 import org.igov.model.subject.SubjectGroup;
-import org.igov.service.business.subject.SubjectGroupTreeService_new;
 
 @Controller
 @Api(tags = {"SubjectGroupController — Организационная иерархия"})
@@ -38,9 +35,6 @@ public class SubjectGroupController {
 
     @Autowired
     private SubjectGroupTreeService subjectGroupTreeService;
-
-    @Autowired
-    private SubjectGroupTreeService_new subjectGroupTreeService_new;
 
     @Autowired
     SubjectRightBPService subjectRightBPService;
@@ -71,9 +65,12 @@ public class SubjectGroupController {
     )
     @RequestMapping(value = "/getSubjectGroups", method = RequestMethod.GET)
     @ResponseBody
-    public SubjectGroupAndUser getSubjectGroups(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
-            @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
-            @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
+    public SubjectGroupAndUser getSubjectGroups(@ApiParam(value = "ид группы", required = true) 
+    @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+            @ApiParam(value = "глубина выборки", required = false) 
+            @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+            @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) 
+            @RequestParam(value = "sFind", required = false) String sFind)
             throws Exception {
         SubjectGroupAndUser subjectGroupResult = null;
         try {
@@ -87,46 +84,58 @@ public class SubjectGroupController {
 
     @RequestMapping(value = "/getSubjectGroupsTree", method = RequestMethod.GET)
     @ResponseBody
-    public SubjectGroupResultTree getSubjectGroupsTree(@ApiParam(value = "ид группы", required = true) @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
-            @ApiParam(value = "глубина выборки", required = false) @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
-            @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) @RequestParam(value = "sFind", required = false) String sFind,
-            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию Y)", required = false) @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
-            @ApiParam(value = "Ширина выборки", required = false) @RequestParam(value = "nDeepLevelWidth", required = false) Long nDeepLevelWidth,
-            @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей, * - иерархия органы+люди", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType)
+    public SubjectGroupResultTree getSubjectGroupsTree(
+            @ApiParam(value = "ид группы", required = true) 
+            @RequestParam(value = "sID_Group_Activiti") String sID_Group_Activiti,
+            @ApiParam(value = "глубина выборки", required = false) 
+            @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+            @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) 
+            @RequestParam(value = "sFind", required = false) String sFind,
+            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию yes)", required = false) 
+            @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
+            @ApiParam(value = "Ширина выборки", required = false) 
+            @RequestParam(value = "nDeepLevelWidth", required = false) Long nDeepLevelWidth,
+            @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей, * - иерархия органы+люди", required = false) 
+            @RequestParam(value = "sSubjectType", required = false) String sSubjectType)
             throws Exception {
         return subjectGroupTreeService.getCatalogSubjectGroupsTree(sID_Group_Activiti, nDeepLevel, 
                 sFind, bIncludeRoot, nDeepLevelWidth, sSubjectType);
-    }
-
-    @RequestMapping(value = "/getBPs_ForReferent", method = RequestMethod.GET)
-    @ResponseBody
-    public List<SubjectRightBPVO> getBPs_ForReferent(
-            @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
-            throws Exception {
-        LOG.info("sLogin: ", sLogin);
-        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
-        //LOG.info("aResSubjectRightBPVO in getSubjectRightBPs is {}", aResSubjectRightBPVO);
-        return aResSubjectRightBPVO;
-    }
-    
-    @RequestMapping(value = "/getBPs_ForExport", method = RequestMethod.GET)
-    @ResponseBody
-    public List<Map<String, String>> getBPs_ForExport(
-            @ApiParam(value = "Логин сотрудника", required = false) @RequestParam(required = false, value = "sLogin") String sLogin)
-            throws Exception {
-        
-        return subjectRightBPService.getBPs_ForExport(sLogin);
     }
     
     @ApiOperation(value = "Получение организационной иерархии вверх")
     @RequestMapping(value = "/getSubjectGroupsTreeUp", method = RequestMethod.GET)
     @ResponseBody
     public List<SubjectGroup> getSubjectGroupsTreeUp(
-            @ApiParam(value = "Идентификатор группы", required = true) @RequestParam(value = "sID_Group_Activiti", required = true) String sID_Group_Activiti,
-            @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей", required = false) @RequestParam(value = "sSubjectType", required = false) String sSubjectType) {
+            @ApiParam(value = "Идентификатор группы", required = true) 
+            @RequestParam(value = "sID_Group_Activiti", required = true) String sID_Group_Activiti,
+            @ApiParam(value = "глубина выборки", required = false) 
+            @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
+            @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей", required = false) 
+            @RequestParam(value = "sSubjectType", required = false) String sSubjectType) {
         
         return subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
        
+    }
+
+    @RequestMapping(value = "/getBPs_ForReferent", method = RequestMethod.GET)
+    @ResponseBody
+    public List<SubjectRightBPVO> getBPs_ForReferent(
+            @ApiParam(value = "Логин сотрудника", required = false) 
+            @RequestParam(required = false, value = "sLogin") String sLogin)
+            throws Exception {
+        LOG.info("sLogin: ", sLogin);
+        List<SubjectRightBPVO> aResSubjectRightBPVO = subjectRightBPService.getBPs_ForReferent(sLogin);
+        return aResSubjectRightBPVO;
+    }
+    
+    @RequestMapping(value = "/getBPs_ForExport", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map<String, String>> getBPs_ForExport(
+            @ApiParam(value = "Логин сотрудника", required = false) 
+            @RequestParam(required = false, value = "sLogin") String sLogin)
+            throws Exception {
+        
+        return subjectRightBPService.getBPs_ForExport(sLogin);
     }
     
 }
