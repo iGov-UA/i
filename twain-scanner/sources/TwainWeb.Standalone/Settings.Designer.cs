@@ -55,13 +55,13 @@ namespace TwainWeb.Standalone {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.0.1")]
-        public string version {
+        [global::System.Configuration.DefaultSettingValueAttribute("TWAIN@Web")]
+        public string ServiceName {
             get {
-                return ((string)(this["version"]));
+                return ((string)(this["ServiceName"]));
             }
             set {
-                this["version"] = value;
+                this["ServiceName"] = value;
             }
         }
     }

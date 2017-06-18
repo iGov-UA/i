@@ -72,8 +72,6 @@ namespace TwainWeb.Standalone.App.Controllers
             }
             var file = Path.Combine(tempDir, fileId);
 
-            string base64str = "";
-
             if (File.Exists(file))
             {
                 response = File.ReadAllBytes(file);
@@ -147,11 +145,18 @@ namespace TwainWeb.Standalone.App.Controllers
 
 
             var singleScanResult = new SingleScanResult();
-            singleScanResult.FillContent(new DownloadFile(fileName, fileId, base64str));
+            singleScanResult.FillContent(new DownloadFile(fileName, fileId), base64str);
 
             //отправляем не файл а base64
             return                
                 new ActionResult { Content = singleScanResult.Content, ContentType = "text/json" };
+        }
+
+
+
+        public ActionResult GetVersionProgram(string version)
+        {
+            return new ActionResult { Content = Encoding.UTF8.GetBytes("{\"version\":\""+ version + "\"}"), ContentType = "text/json" };            
         }
 
         private string MakePdf(IEnumerable<DownloadFile> listPictures)

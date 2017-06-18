@@ -46,7 +46,7 @@ namespace TwainWeb.Standalone.App.Twain
 		{
 			if (!_twain32.OpenSM())
 			{
-				throw new Exception("Возникла непредвиденная ошибка, пожалуйста перезапустите TWAIN@Web");
+				throw new Exception("Возникла непредвиденная ошибка, пожалуйста перезапустите " + Settings.Default.ServiceName);
 			}
 			_twain32.MyAcquire(settings);
 
