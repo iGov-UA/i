@@ -42,12 +42,23 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
@@ -67,7 +78,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
 var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Author's_Head'
+var sKey_GroupPostfix_New ='Comfy_Clerk'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -101,14 +112,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -157,14 +167,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -240,7 +249,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
@@ -336,7 +345,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -372,9 +381,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
