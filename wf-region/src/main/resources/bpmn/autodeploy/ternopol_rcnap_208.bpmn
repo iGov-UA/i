@@ -47,13 +47,6 @@
         <activiti:formProperty id="postV" name="електронна пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'z'
@@ -134,29 +127,28 @@ execution.setVariable('postV', per1)
 execution.setVariable('rNum', per2)
 	  </script>
     </scriptTask>
-    <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    					&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-								&lt;p&gt;
-            						Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    					<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+								<p>
+            						Ваше звернення щодо видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями успішно зареєстроване.<br>
 									Спеціалісти ЦНАП повинні дати відповідь найближчим часом.
-                                &lt;/p&gt;
+                                </p>
                                 [pattern/mail/_common_signature_start.html]
-								[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br&gt;
+								[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],<br>
 								[pattern/mail/_common_signature_end.html]
-								[pattern/mail/_common_footer.html]</activiti:expression>
+								[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -167,13 +159,13 @@ execution.setVariable('rNum', per2)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${postV}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -228,7 +220,7 @@ execution.setVariable('rNum', per2)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${dilianka},${dovidka}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${dilianka},${dovidka}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -244,25 +236,25 @@ execution.setVariable('rNum', per2)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
 				На жаль, ми змушені відмовити Вам у реєстрації звернення. 
-			&lt;/p&gt;
-			&lt;p&gt;
-			Коментар державного службовця:&lt;br&gt;
+			</p>
+			<p>
+			Коментар державного службовця:<br>
 			${comment}
-			&lt;/p&gt;
-			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+			</p>
+			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2].&lt;/p&gt;
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2].</p>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -277,28 +269,28 @@ execution.setVariable('rNum', per2)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${privateMail}</activiti:expression>
+          <activiti:expression><![CDATA[${privateMail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на тему: Видача довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний колего!&lt;/h3&gt;
-			&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний колего!</h3>
+			<p>
 				Направляємо Вам документи для видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.
-			&lt;/p&gt;
-			&lt;p&gt;						
-					Заявник: ${clFio};&lt;br&gt;
+			</p>
+			<p>						
+					Заявник: ${clFio};<br>
                     Реєстраційний номер ЦНАП ${vnnumb}. 
-			&lt;/p&gt;
+			</p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],<br>
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${bankId_scan_passport},${dilianka},${dovidka}</activiti:expression>
+          <activiti:expression><![CDATA[${bankId_scan_passport},${dilianka},${dovidka}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -309,22 +301,22 @@ execution.setVariable('rNum', per2)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-				Ваші документи передані на опрацювання відповідальним спеціалістам.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+				Ваші документи передані на опрацювання відповідальним спеціалістам.<br>
 				Ви отримаєте відповідь у визначений законом термін. 
-			&lt;/p&gt;
+			</p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br /&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],<br />
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -355,7 +347,7 @@ execution.setVariable('rNum', per2)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${dilianka},${dovidka}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${dilianka},${dovidka}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -371,35 +363,35 @@ execution.setVariable('rNum', per2)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Замовлена Вами довідка з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями готова.&lt;br /&gt;
-			Ви можете завантажити її з додатку до цього листа, та отримати оригінал у ЦНАП за адресою:&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Замовлена Вами довідка з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями готова.<br />
+			Ви можете завантажити її з додатку до цього листа, та отримати оригінал у ЦНАП за адресою:<br />
 			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:3]
-			&lt;/p&gt; 
-			&lt;p&gt;Режим роботи центру:&lt;br&gt;
+			</p> 
+			<p>Режим роботи центру:<br>
 			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:4]
-			&lt;/p&gt;  
-			&lt;p&gt;
+			</p>  
+			<p>
 			телефон для довідок: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6]
-			&lt;/p&gt;
-			&lt;p&gt;
+			</p>
+			<p>
 			Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
-            &lt;/p&gt;
+            </p>
             [pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],&lt;br /&gt;
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2],<br />
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -414,48 +406,40 @@ execution.setVariable('rNum', per2)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача довідки з  державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Вам відмовлено у видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.&lt;br /&gt;
-			Ви можете завантажити офіційну відмову з додатку до цього листа, та отримати оригінал у ЦНАП за адресою:&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Вам відмовлено у видачі довідки з державної статистичної звітності про наявність земель та розподіл їх за власниками земель, землекористувачами, угіддями.<br />
+			Ви можете завантажити офіційну відмову з додатку до цього листа, та отримати оригінал у ЦНАП за адресою:<br />
 			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:3]
-			&lt;/p&gt; 
-			&lt;p&gt;Режим роботи центру:&lt;br&gt;
+			</p> 
+			<p>Режим роботи центру:<br>
 			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:4]
-			&lt;/p&gt;  
-			&lt;p&gt;телефон для довідок: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6]
-			&lt;/p&gt;
+			</p>  
+			<p>телефон для довідок: [pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:6]
+			</p>
 			[pattern/mail/_common_signature_start.html]
-			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2].&lt;/p&gt;
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern_dictonary:tern_obl_cnap.csv:value{[rNum]}:2].</p>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_rcnap_208">
     <bpmndi:BPMNPlane bpmnElement="ternopol_rcnap_208" id="BPMNPlane_ternopol_rcnap_208">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="145.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="65.0" width="105.0" x="60.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="136.0" y="167.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="125.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="185.0" y="50.0"></omgdc:Bounds>
@@ -499,19 +483,6 @@ execution.setVariable('rNum', per2)
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="1018.0" y="239.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="45.0" y="162.0"></omgdi:waypoint>
-        <omgdi:waypoint x="60.0" y="162.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="151.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="142.0" y="220.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="112.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="112.0" y="77.0"></omgdi:waypoint>
-        <omgdi:waypoint x="185.0" y="77.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="290.0" y="162.0"></omgdi:waypoint>
         <omgdi:waypoint x="312.0" y="162.0"></omgdi:waypoint>
@@ -578,6 +549,10 @@ execution.setVariable('rNum', per2)
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="237.0" y="105.0"></omgdi:waypoint>
         <omgdi:waypoint x="237.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="27.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

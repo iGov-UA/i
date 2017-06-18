@@ -194,11 +194,6 @@
         <activiti:formProperty id="markers20" name="маркер якщо 10 вантаж." type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;dangerous_name_2&quot;,&quot;packing_group_2&quot;,&quot;dangerous_inn_2&quot;,&quot;number_oon_2&quot;,&quot;number_dangerous_2&quot;,&quot;first_dangerous_2&quot;,&quot;dangerous_cargo_2&quot;,&quot;dangerous_previous_2&quot;,&quot;dangerous_name_3&quot;,&quot;packing_group_3&quot;,&quot;dangerous_inn_3&quot;,&quot;number_oon_3&quot;,&quot;number_dangerous_3&quot;,&quot;first_dangerous_3&quot;,&quot;dangerous_cargo_3&quot;,&quot;dangerous_previous_3&quot;,&quot;dangerous_name_4&quot;,&quot;packing_group_4&quot;,&quot;dangerous_inn_4&quot;,&quot;number_oon_4&quot;,&quot;number_dangerous_4&quot;,&quot;first_dangerous_4&quot;,&quot;dangerous_cargo_4&quot;,&quot;dangerous_previous_4&quot;,&quot;dangerous_name_5&quot;,&quot;packing_group_5&quot;,&quot;dangerous_inn_5&quot;,&quot;number_oon_5&quot;,&quot;number_dangerous_5&quot;,&quot;first_dangerous_5&quot;,&quot;dangerous_cargo_5&quot;,&quot;dangerous_previous_5&quot;,&quot;dangerous_name_6&quot;,&quot;packing_group_6&quot;,&quot;dangerous_inn_6&quot;,&quot;number_oon_6&quot;,&quot;number_dangerous_6&quot;,&quot;first_dangerous_6&quot;,&quot;dangerous_cargo_6&quot;,&quot;dangerous_previous_6&quot;,&quot;dangerous_name_7&quot;,&quot;packing_group_7&quot;,&quot;dangerous_inn_7&quot;,&quot;number_oon_7&quot;,&quot;number_dangerous_7&quot;,&quot;first_dangerous_7&quot;,&quot;dangerous_cargo_7&quot;,&quot;dangerous_previous_7&quot;,&quot;dangerous_name_8&quot;,&quot;packing_group_8&quot;,&quot;dangerous_inn_8&quot;,&quot;number_oon_8&quot;,&quot;number_dangerous_8&quot;,&quot;first_dangerous_8&quot;,&quot;dangerous_cargo_8&quot;,&quot;dangerous_previous_8&quot;,&quot;dangerous_name_9&quot;,&quot;packing_group_9&quot;,&quot;dangerous_inn_9&quot;,&quot;number_oon_9&quot;,&quot;number_dangerous_9&quot;,&quot;first_dangerous_9&quot;,&quot;dangerous_cargo_9&quot;,&quot;dangerous_previous_9&quot;,&quot;dangerous_name_10&quot;,&quot;packing_group_10&quot;,&quot;dangerous_inn_10&quot;,&quot;number_oon_10&quot;,&quot;number_dangerous_10&quot;,&quot;first_dangerous_10&quot;,&quot;dangerous_cargo_10&quot;,&quot;dangerous_previous_10&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;dangerous_count&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ten'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <serviceTask id="servicetask10" name="успішно зарестроване" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -619,7 +614,7 @@ ${sNameOrgan}<br />
     </serviceTask>
     <serviceTask id="servicetask2" name="успішне подання зверенння" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -655,7 +650,7 @@ ${sNameOrgan}<br />
     </serviceTask>
     <serviceTask id="servicetask9" name="відхилення звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -691,7 +686,7 @@ ${sNameOrgan}<br />
     </serviceTask>
     <serviceTask id="servicetask4" name="повідомлення про рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -800,25 +795,20 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    
-    <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="servicetask10"></sequenceFlow>
     <sequenceFlow id="flow59" sourceRef="servicetask10" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="startevent1" targetRef="servicetask10"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_224">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_224" id="BPMNPlane_dnepr_cnap_224">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="119.0" y="71.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="98.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="71.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="71.0"></omgdc:Bounds>
@@ -844,13 +834,6 @@ execution.setVariable('rName', per4)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="157.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="71.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="105.0" y="98.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="98.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="171.0" y="221.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="195.0"></omgdi:waypoint>
@@ -885,21 +868,17 @@ execution.setVariable('rName', per4)
         <omgdi:waypoint x="558.0" y="126.0"></omgdi:waypoint>
         <omgdi:waypoint x="558.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="135.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="160.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="475.0" y="98.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="224.0" y="98.0"></omgdi:waypoint>
-        <omgdi:waypoint x="250.0" y="98.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="355.0" y="98.0"></omgdi:waypoint>
         <omgdi:waypoint x="370.0" y="98.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
+        <omgdi:waypoint x="105.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

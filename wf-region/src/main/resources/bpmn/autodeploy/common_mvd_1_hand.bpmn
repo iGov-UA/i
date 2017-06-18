@@ -61,7 +61,7 @@
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="regDoc_type" name="Документ, що посвідчує особу; ;bVisible=false" type="string" default="Паспорт громадянина України"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія громадянського паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія громадянського паспорту ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" required="true">
@@ -94,14 +94,6 @@
         <activiti:formProperty id="markers2" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Надання послуги" activiti:candidateGroups="common_mvd_1_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -194,8 +186,9 @@
         <activiti:formProperty id="comment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги. Ця інформація буде відправлена на e-mail заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_usertask.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="fields for print" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія громадянського паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -211,53 +204,50 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-		  [pattern/mail/new_design/_common_header.html]
-<!--		  [pattern/mail/_common_header.html] -->
-<!--&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt; -->
-		[pattern/mail/new_design/_common_content_start.html]
-Ваш запит успішно оброблено. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 
-Оригінал довідки Ви зможете отримати за адресою  &lt;br /&gt;
+
+		[pattern/mail/new_design/_common_content_start.html]
+Ваш запит успішно оброблено. <br />
+
+Оригінал довідки Ви зможете отримати за адресою  <br />
 ${sAddress}
 
-&lt;br /&gt;
+<br />
 Примітка щодо дати отримання довідки:
-${comment}&lt;br /&gt;
- &lt;b&gt; Увага! При собі обов'язково мати громадянський паспорт або інший документ, що посвідчує особу. &lt;/b&gt;  &lt;br /&gt;
-Графік прийому:&lt;br /&gt;
+${comment}<br />
+ <b> Увага! При собі обов'язково мати громадянський паспорт або інший документ, що посвідчує особу. </b>  <br />
+Графік прийому:<br />
 ${sWork_Time}
 
-<!-- &lt;/p&gt;-->
+
 [pattern/mail/new_design/_common_content_end.html]
 
 [pattern/mail/new_design/_common_feedback.html]
 
 [pattern/mail/new_design/_common_signature_start.html]
-<!--[pattern/mail/_common_signature_start.html]-->
+
 ${sMail_Signature}
-<!--[pattern/mail/_common_signature_end.html]-->
+
 [pattern/mail/new_design/_common_signature_end.html]
-<!--[pattern/mail/_common_feedback.html]-->
-<!--[pattern/mail/_common_footer.html]-->
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+
+
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -271,43 +261,40 @@ ${sMail_Signature}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-		  [pattern/mail/new_design/_common_header.html]
-<!--		  [pattern/mail/_common_header.html] -->
-<!--&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;br /&gt;-->
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+
+
 		[pattern/mail/new_design/_common_content_start.html]
-На жаль, неможливо обробити Ваш запит щодо замовлення довідки про наявність або відсутність судимості.&lt;br /&gt;
-Підстава: &lt;br /&gt;
+На жаль, неможливо обробити Ваш запит щодо замовлення довідки про наявність або відсутність судимості.<br />
+Підстава: <br />
 ${comment}
-<!--&lt;br /&gt;-->
+
 
 [pattern/mail/new_design/_common_content_end.html]
 
 [pattern/mail/new_design/_common_signature_start.html]
-<!--[pattern/mail/_common_signature_start.html]-->
+
 ${sMail_Signature}
-<!--[pattern/mail/_common_signature_end.html]-->
+
 [pattern/mail/new_design/_common_signature_end.html]
-<!--[pattern/mail/_common_feedback.html]-->
-<!--[pattern/mail/_common_footer.html]-->
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+
+
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -318,59 +305,48 @@ ${sMail_Signature}
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання довідки про відсутність або наявніть судимості]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-		  [pattern/mail/new_design/_common_header.html]
-<!--		  [pattern/mail/_common_header.html] -->
-<!--      &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;-->
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+
+
 		[pattern/mail/new_design/_common_content_start.html]
 
 Дякуємо, що скористалися Інтернет-сервісом замовлення довідки про наявність або відсутність судимості! Ваш запит успішно зареєстровано.
-<!--&lt;br&gt;-->
+
 
 [pattern/mail/new_design/_common_content_end.html]
 
 [pattern/mail/new_design/_common_signature_start.html]
-<!--[pattern/mail/_common_signature_start.html]-->
+
 ${sMail_Signature}
-<!--[pattern/mail/_common_signature_end.html]-->
+
 [pattern/mail/new_design/_common_signature_end.html]
-<!--[pattern/mail/_common_feedback.html]-->
-<!--[pattern/mail/_common_footer.html]-->
-[pattern/mail/new_design/_common_footer.html]
-</activiti:expression>
+
+
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mvd_1_hand">
     <bpmndi:BPMNPlane bpmnElement="common_mvd_1_hand" id="BPMNPlane_common_mvd_1_hand">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="149.0" x="212.0" y="70.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="320.0" y="51.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="269.0" y="13.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="161.0" x="400.0" y="170.0"></omgdc:Bounds>
@@ -390,18 +366,6 @@ ${sMail_Signature}
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="191.0" x="385.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="145.0" y="97.0"></omgdi:waypoint>
-        <omgdi:waypoint x="212.0" y="97.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="361.0" y="97.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="97.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="320.0" y="66.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="48.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="480.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="480.0" y="250.0"></omgdi:waypoint>
@@ -411,7 +375,7 @@ ${sMail_Signature}
         <omgdi:waypoint x="624.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="297.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="575.0" y="254.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="95.0" x="575.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -423,7 +387,7 @@ ${sMail_Signature}
         <omgdi:waypoint x="334.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="334.0" y="300.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="222.0" y="240.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="222.0" y="240.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -435,6 +399,10 @@ ${sMail_Signature}
         <omgdi:waypoint x="625.0" y="358.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="457.0"></omgdi:waypoint>
         <omgdi:waypoint x="498.0" y="457.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="145.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="97.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

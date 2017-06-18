@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankIdinn" name="Реєстраційний номер облікової картки платника податків" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string"  default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asType" name="Прошу видати довідку про" type="enum" required="true">
           <activiti:value id="sEnumGet" name="неотримання аліментів від боржника"></activiti:value>
@@ -63,54 +63,53 @@
         <activiti:formProperty id="markers" name="Гроші" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '2'&quot;},&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;,&quot;sChildName3&quot;,&quot;sChildBirth3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '3'&quot;},&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sChildName1&quot;,&quot;sChildBirth1&quot;,&quot;sChildName2&quot;,&quot;sChildBirth2&quot;,&quot;sChildName3&quot;,&quot;sChildBirth3&quot;,&quot;sChildName4&quot;,&quot;sChildBirth4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;anAmount&quot;},&quot;sCondition&quot;:&quot;[sClient] == '4'&quot;},&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sLabel4&quot;,&quot;sMonth1&quot;,&quot;sSum1&quot;,&quot;sMonth2&quot;,&quot;sSum2&quot;,&quot;sMonth3&quot;,&quot;sSum3&quot;,&quot;sMonth4&quot;,&quot;sSum4&quot;,&quot;sMonth5&quot;,&quot;sSum5&quot;,&quot;sMonth6&quot;,&quot;sSum6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumSize'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Лист Держслужбовцю" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask3" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt; Ваше звернення №[sID_Order] щодо Довідки про неотримання аліментів або розмір аліментів було зареєстровано у системі.&lt;br/&gt;
-			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p> Ваше звернення №[sID_Order] щодо Довідки про неотримання аліментів або розмір аліментів було зареєстровано у системі.<br/>
+			Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+			<br />
+			${sPhoneOrgan}<br />
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
+			${sNameOrgan}<br />
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -165,98 +164,92 @@
           <activiti:value id="sEnumDeny" name="Відмова заявнику у видачі довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Завантажте копію довідки, з накладеним ЕЦП (електронно-цифровим підписом)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте скановану копію довідки ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Завантажте копію довідки, з накладеним ЕЦП (електронно-цифровим підписом) ; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask4" name="Лист з відмовою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів було відхилено.&lt;/p&gt;
-			&lt;p&gt;Причина в наступному:&lt;/p&gt;
-			&lt;p&gt;${sComment}&lt;/p&gt;
-			&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			На жаль, Ваше звернення щодо Довідки про неотримання аліментів або розмір аліментів було відхилено.</p>
+			<p>Причина в наступному:</p>
+			<p>${sComment}</p>
+			<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+			<br />
+			${sPhoneOrgan}<br />
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
+			${sNameOrgan}<br />
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask5" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
-      <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Довідка про неотримання аліментів або розмір аліментів.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-			&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-			&lt;p&gt;
-			Довідка про неотримання аліментів або розмір аліментів - готова&lt;br /&gt;
-			&lt;/p&gt;
-			Скан-копію довідки з накладеним ЕЦП (електронно-цифровим підписом) прикріплено до цього листа.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+			<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+			<p>
+			Довідка про неотримання аліментів або розмір аліментів - готова<br />
+			</p>
+			Скан-копію довідки з накладеним ЕЦП (електронно-цифровим підписом) прикріплено до цього листа.<br />
 			Ви можете використати її для подання до державних органів соціального захисту населення.
-			&lt;p&gt;
+			<p>
 			Оригінал довідки можете отримати за адресою:
-			&lt;br /&gt;
-			&lt;br /&gt;
-			${sAddress}&lt;br /&gt;
-			${sWorkTime}&lt;br /&gt;
-			&lt;br /&gt;
-			${sPhoneOrgan}&lt;br /&gt;
+			<br />
+			<br />
+			${sAddress}<br />
+			${sWorkTime}<br />
+			<br />
+			${sPhoneOrgan}<br />
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}&lt;br /&gt;
+			${sNameOrgan}<br />
 			[pattern/mail/_common_signature_end.html]
 			[pattern/mail/_common_feedback.html]
-			[pattern/mail/_common_footer.html]
-			</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${file1},${file2}</activiti:expression>
+          <activiti:expression><![CDATA[${file1},${file2}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -268,18 +261,12 @@
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dvs_621">
     <bpmndi:BPMNPlane bpmnElement="dvs_621" id="BPMNPlane_dvs_621">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="67.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="61.0" width="105.0" x="110.0" y="57.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="107.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="60.0"></omgdc:Bounds>
@@ -302,14 +289,6 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="147.0" y="191.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="75.0" y="84.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="215.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="230.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="335.0" y="87.0"></omgdi:waypoint>
         <omgdi:waypoint x="350.0" y="87.0"></omgdi:waypoint>
@@ -326,14 +305,14 @@
         <omgdi:waypoint x="512.0" y="200.0"></omgdi:waypoint>
         <omgdi:waypoint x="465.0" y="164.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="25.0" x="473.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="25.0" x="473.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="512.0" y="200.0"></omgdi:waypoint>
         <omgdi:waypoint x="412.0" y="220.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="35.0" x="473.0" y="217.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="35.0" x="473.0" y="217.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -344,9 +323,9 @@
         <omgdi:waypoint x="360.0" y="164.0"></omgdi:waypoint>
         <omgdi:waypoint x="164.0" y="191.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="165.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="164.0" y="191.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="75.0" y="84.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

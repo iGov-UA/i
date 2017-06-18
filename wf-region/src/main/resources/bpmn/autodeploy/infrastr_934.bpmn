@@ -91,15 +91,7 @@
         <activiti:formProperty id="sTypeBiz" name="Діяльність для якої потрібна ліцензія ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask6"></sequenceFlow>
-    <serviceTask id="servicetask6" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask6">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow49" sourceRef="boundaryerror1" targetRef="endevent7"></sequenceFlow>
-    <endEvent id="endevent7" name="End"></endEvent>
-    <sequenceFlow id="flow47" sourceRef="servicetask6" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1"  name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var k1=' '
 var k2=' '
@@ -140,7 +132,7 @@ k9='міжнародні перевезення вантажів вантажн�
 var res=k1+k2+k3+k4+k5+k6+k7+k8+k9     
 execution.setVariable('sTypeBiz', res)
 	  </script>
-	</scriptTask>
+    </scriptTask>
     <sequenceFlow id="flow48" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -415,11 +407,15 @@ execution.setVariable('sTypeBiz', res)
     </serviceTask>
     <sequenceFlow id="flow46" sourceRef="servicetask5" targetRef="endevent6"></sequenceFlow>
     <endEvent id="endevent6" name="End"></endEvent>
+    <sequenceFlow id="flow49" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_934">
     <bpmndi:BPMNPlane bpmnElement="infrastr_934" id="BPMNPlane_infrastr_934">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="121.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="181.0" y="122.0"></omgdc:Bounds>
@@ -451,21 +447,9 @@ execution.setVariable('sTypeBiz', res)
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="851.0" y="320.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="121.0" y="50.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="71.0" width="105.0" x="61.0" y="122.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="61.0" y="165.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="111.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="61.0" y="157.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="173.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="233.0" y="122.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="286.0" y="157.0"></omgdi:waypoint>
@@ -509,17 +493,9 @@ execution.setVariable('sTypeBiz', res)
         <omgdi:waypoint x="814.0" y="337.0"></omgdi:waypoint>
         <omgdi:waypoint x="851.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="113.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="173.0" y="105.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
-        <omgdi:waypoint x="173.0" y="105.0"></omgdi:waypoint>
-        <omgdi:waypoint x="233.0" y="122.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
-        <omgdi:waypoint x="76.0" y="195.0"></omgdi:waypoint>
-        <omgdi:waypoint x="128.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="173.0" y="105.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

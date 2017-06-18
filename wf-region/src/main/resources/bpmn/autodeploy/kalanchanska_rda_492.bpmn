@@ -10,11 +10,8 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>        
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника" type="file" required="true"></activiti:formProperty>
-        
-        
-        
         <activiti:formProperty id="asDocumentTarget" name="Довідка для посвідчення" type="enum" required="true">
           <activiti:value id="doc1" name="дитини, потерпілої від аварії на ЧАЕС"></activiti:value>
           <activiti:value id="doc2" name="потерпілого від аварії на ЧАЕС категорії 2"></activiti:value>
@@ -23,44 +20,26 @@
           <activiti:value id="doc5" name="родича померлого громадянина, смерть якого пов'язана з аварією на ЧАЕС"></activiti:value>
           <activiti:value id="doc6" name="особи, яка працювала на роботах з особливо шкідливими умовами праці(за радіаційним фактором)"></activiti:value>
         </activiti:formProperty>
-        
-        
-        <!-- **********************************         Для детей              **************************** -->
-                
         <activiti:formProperty id="asDoc1" name="підстава отримання" type="enum" required="true">
           <activiti:value id="cause1" name="один з батьків постраждав від аварії на ЧАЕС"></activiti:value>
           <activiti:value id="cause2" name="проживала в зоні ураження на  момент  аварії ЧАЕС чи  проживала якийсь період після"></activiti:value>
           <activiti:value id="cause3" name="проживала в зоні ураження від аварії на ЧАЕС з високим опроміненям"></activiti:value>
         </activiti:formProperty>
-
-        <!-- **********************************        категорія 2           **************************** -->    
         <activiti:formProperty id="asDoc2" name="підстава отримання" type="enum" required="true">
           <activiti:value id="cause1" name="постійно проживав і у встановленому порядку евакуйований"></activiti:value>
           <activiti:value id="cause2" name="постійно проживав (ла) у зоні безумовного (обов'язкового) відселення"></activiti:value>
         </activiti:formProperty>
-
-        <!-- **********************************        категорія 3           **************************** -->    
         <activiti:formProperty id="asDoc3" name="підстава отримання" type="enum" required="true">
           <activiti:value id="cause1" name="постійно проживав(ла) в небезпечній зоні"></activiti:value>
           <activiti:value id="cause2" name="постійно проживав(ла) в небезпечній зоні і зараз проживає"></activiti:value>
-        </activiti:formProperty>        
-                
-        
-        <!-- **********************************         Для детей              **************************** -->
-        
+        </activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="kids_Birth" name="День народження дитини" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nfile_BirthDayDocument" name="Cвідоцтво про народження дитини" type="file" required="true"></activiti:formProperty>
-
-        
-        <!-- Приложение 8 -->
-        
-        
-        
         <activiti:formProperty id="sFIOParent" name="Прізвище, Ім'я, По батькові потерпілого від ЧАЕС" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="asC1Arg" name="Із числа" type="enum" required="true">
+        <activiti:formProperty id="asC1Arg" name="Із числа" type="enum" required="true">
           <activiti:value id="arg1" name="ліквідаторів"></activiti:value>
           <activiti:value id="arg2" name="потерпілих"></activiti:value>
         </activiti:formProperty>
@@ -71,58 +50,30 @@
           <activiti:value id="cat4" name="четверта"></activiti:value>
           <activiti:value id="cat5" name="інша"></activiti:value>
         </activiti:formProperty>
-        
-        <!-- Приложение 9 -->
-        
-        
-		<activiti:formProperty id="asC2Zone" name="категорія" type="enum" required="true">
+        <activiti:formProperty id="asC2Zone" name="категорія" type="enum" required="true">
           <activiti:value id="zone0" name="На  момент  аварії"></activiti:value>
           <activiti:value id="zone1" name="Після аварії не менше 1-го року у зоні безумовного (обов'язкового) відселення"></activiti:value>
           <activiti:value id="zone2" name="Після аварії не менше 2-х років у зоні гарантованого  добровільного  відселення"></activiti:value>
           <activiti:value id="zone2" name="Після аварії не менше 3-х років у зоні посиленого радіоекологічного контролю"></activiti:value>
         </activiti:formProperty>
-        
-        <!-- **********************************        общие переменные           **************************** -->     
         <activiti:formProperty id="aAdressAcident" name="Найменування населеного пункту, району, області де проживав(ла) на момент аварії" type="textArea" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="dStartPeriod" name="з якого числа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dFinishPeriod" name="по яке число" type="date" required="true"></activiti:formProperty>
-
-        <!-- Приложение 10 -->        
-        
-        <activiti:formProperty id="lDoseChildren" name="Середня доза опромінення щитовидної залози становила для дітей" default=" " type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lDoseChildren" name="Середня доза опромінення щитовидної залози становила для дітей" type="long" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nDoseChildrenLitle" name="віком від 0 до 3 років" type="long" required="true"></activiti:formProperty>
-		<activiti:formProperty id="nDoseChildrenBig" name="віком від 3 до 18 років" type="long" required="true"></activiti:formProperty>	        
-        
-
-        <!-- **********************************        категорія 6           **************************** -->        
-        
-        <!-- Приложение 01 --> 
-        
-                
+        <activiti:formProperty id="nDoseChildrenBig" name="віком від 3 до 18 років" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostOnCHAES" name="На посаді" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWorkOnCHAES" name="Виконував роботи; через кому" type="textArea" required="true"></activiti:formProperty>
-		
         <activiti:formProperty id="nArea" name="номер органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-		<activiti:formProperty id="sAreaRod" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAreaRod" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="sMailClerk1" name="Пошта ЦНАП; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        
         <activiti:formProperty id="markers1" name="Дітям" type="markers" default="${markerService.loadFromFile('chernobyl/kalanchanska_rda_492_StartTask.json')}"></activiti:formProperty>
-
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист-звернення до держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -145,14 +96,14 @@
         <activiti:field name="from">
           <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
-       <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
-        </activiti:field>        
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -176,24 +127,19 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="usertask1"></sequenceFlow>
-    
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAdressFactual" name="Адреса (місце реєстрації)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asDocumentTarget" name="Довідка для посвідчення" type="enum" writable="false">
           <activiti:value id="doc1" name="дитини, потерпілої від аварії на ЧАЕС"></activiti:value>
           <activiti:value id="doc2" name="потерпілого від аварії на ЧАЕС категорії 2"></activiti:value>
@@ -202,42 +148,24 @@
           <activiti:value id="doc5" name="родича померлого громадянина, смерть якого пов'язана з аварією на ЧАЕС"></activiti:value>
           <activiti:value id="doc6" name="особи, яка працювала на роботах з особливо шкідливими умовами праці(за радіаційним фактором)"></activiti:value>
         </activiti:formProperty>
-        
-        
-        <!-- **********************************         Для детей              **************************** -->
-                
         <activiti:formProperty id="asDoc1" name="підстава отримання" type="enum" writable="false">
           <activiti:value id="cause1" name="один з батьків постраждав від аварії на ЧАЕС"></activiti:value>
           <activiti:value id="cause2" name="проживала в зоні ураження на  момент  аварії ЧАЕС чи  проживала якийсь період після"></activiti:value>
           <activiti:value id="cause3" name="проживала в зоні ураження від аварії на ЧАЕС з високим опроміненям"></activiti:value>
         </activiti:formProperty>
-
-        <!-- **********************************        категорія 2           **************************** -->    
         <activiti:formProperty id="asDoc2" name="підстава отримання" type="enum" writable="false">
           <activiti:value id="cause1" name="постійно проживав і у встановленому порядку евакуйований"></activiti:value>
           <activiti:value id="cause2" name="постійно проживав (ла) у зоні безумовного (обов'язкового) відселення"></activiti:value>
         </activiti:formProperty>
-
-        <!-- **********************************        категорія 3           **************************** -->    
         <activiti:formProperty id="asDoc3" name="підстава отримання" type="enum" writable="false">
           <activiti:value id="cause1" name="постійно проживав(ла) в небезпечній зоні"></activiti:value>
           <activiti:value id="cause2" name="постійно проживав(ла) в небезпечній зоні і зараз проживає"></activiti:value>
-        </activiti:formProperty>        
-                
-        
-        <!-- **********************************         Для детей              **************************** -->
-        
+        </activiti:formProperty>
         <activiti:formProperty id="sClFioChild" name="ПІБ дитини" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kids_Birth" name="День народження дитини" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nfile_BirthDayDocument" name="Cвідоцтво про народження дитини" type="file" writable="false"></activiti:formProperty>
-
-        
-        <!-- Приложение 8 -->
-        
-        
-        
         <activiti:formProperty id="sFIOParent" name="Прізвище, Ім'я, По батькові потерпілого від ЧАЕС" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="asC1Arg" name="Із числа" type="enum" writable="false">
+        <activiti:formProperty id="asC1Arg" name="Із числа" type="enum" writable="false">
           <activiti:value id="arg1" name="ліквідаторів"></activiti:value>
           <activiti:value id="arg2" name="потерпілих"></activiti:value>
         </activiti:formProperty>
@@ -248,58 +176,34 @@
           <activiti:value id="cat4" name="четверта"></activiti:value>
           <activiti:value id="cat5" name="інша"></activiti:value>
         </activiti:formProperty>
-        
-        <!-- Приложение 9 -->
-        
-        
-		<activiti:formProperty id="asC2Zone" name="категорія" type="enum" writable="false">
+        <activiti:formProperty id="asC2Zone" name="категорія" type="enum" writable="false">
           <activiti:value id="zone0" name="На  момент  аварії"></activiti:value>
           <activiti:value id="zone1" name="Після аварії не менше 1-го року у зоні безумовного (обов'язкового) відселення"></activiti:value>
           <activiti:value id="zone2" name="Після аварії не менше 2-х років у зоні гарантованого  добровільного  відселення"></activiti:value>
           <activiti:value id="zone2" name="Після аварії не менше 3-х років у зоні посиленого радіоекологічного контролю"></activiti:value>
         </activiti:formProperty>
-        
-        <!-- **********************************        общие переменные           **************************** -->     
         <activiti:formProperty id="aAdressAcident" name="Найменування населеного пункту, району, області де проживав(ла) на момент аварії" type="textArea" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="dStartPeriod" name="з якого числа" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dFinishPeriod" name="по яке число" type="date" writable="false"></activiti:formProperty>
-
-        <!-- Приложение 10 -->        
-        
-        <activiti:formProperty id="lDoseChildren" name="Середня доза опромінення щитовидної залози становила для дітей" default=" " type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lDoseChildren" name="Середня доза опромінення щитовидної залози становила для дітей" type="long" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="nDoseChildrenLitle" name="віком від 0 до 3 років" type="long" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="nDoseChildrenBig" name="віком від 3 до 18 років" type="long" writable="false"></activiti:formProperty>	        
-        
-
-        <!-- **********************************        категорія 6           **************************** -->        
-        
-        <!-- Приложение 01 --> 
-        
-                
+        <activiti:formProperty id="nDoseChildrenBig" name="віком від 3 до 18 років" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPostOnCHAES" name="На посаді" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWorkOnCHAES" name="Виконував роботи; через кому" type="textArea" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="sNumberArticle" name="Статті за якими передбачено пільги (словами)" type="textArea" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sNumberDocument" name="Номер довідки" type="string" required="true"></activiti:formProperty>
-
+        <activiti:formProperty id="sNumberArticle" name="Статті за якими передбачено пільги (словами)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDocument" name="Номер довідки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDocument" name="Рішення щодо видачі довідки" type="enum" required="true">
           <activiti:value id="OK" name="Надати довідку"></activiti:value>
           <activiti:value id="NO" name="Довідка НЕ може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Вкажіть причину відмови чи дату коли довідку можна буде забрати(дані будуть надіслані громадянинові по електронній пошті)*" type="textArea"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sAreaRod" name="адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sBody_1" name="[pattern/print/chernobyl/kalanchanska_rda_492_Print.html]; ;bVisible=false" type="string" default="Довідка" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_StartTask_Print" name="Під прінт форму" type="markers" default="${markerService.loadFromFile('chernobyl/kalanchanska_rda_492_StartTask_Print.json')}"></activiti:formProperty>
-        
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nfile_BirthDayDocument}, ${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${nfile_BirthDayDocument}, ${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -315,14 +219,14 @@
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-       <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field>        
+          <activiti:expression><![CDATA[Za Vashym zvernennyam [sID_Order] vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -353,8 +257,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -362,20 +265,19 @@
     <sequenceFlow id="flow13" name="Документи відповідають" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDocument=='OK'}]]></conditionExpression>
     </sequenceFlow>
-
     <serviceTask id="servicetask5" name="Згода" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-       <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
-        </activiti:field> 
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -403,27 +305,24 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow15" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kalanchanska_rda_492">
     <bpmndi:BPMNPlane bpmnElement="kalanchanska_rda_492" id="BPMNPlane_kalanchanska_rda_492">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="34.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="75.0" width="105.0" x="119.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="108.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="75.0" width="105.0" x="284.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="70.0" width="105.0" x="442.0" y="83.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="70.0" width="105.0" x="442.0" y="229.0"></omgdc:Bounds>
@@ -434,30 +333,19 @@
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="70.0" width="105.0" x="442.0" y="83.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="287.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="105.0" y="246.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="69.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="123.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="122.0" y="246.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="224.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="284.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="389.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="442.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="494.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="494.0" y="229.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="442.0" y="264.0"></omgdi:waypoint>
@@ -484,14 +372,14 @@
           <omgdc:Bounds height="42.0" width="100.0" x="312.0" y="330.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="494.0" y="153.0"></omgdi:waypoint>
-        <omgdi:waypoint x="494.0" y="229.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="180.0" y="314.0"></omgdi:waypoint>
         <omgdi:waypoint x="146.0" y="314.0"></omgdi:waypoint>
         <omgdi:waypoint x="122.0" y="281.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="69.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="284.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -35,9 +35,8 @@
         <activiti:formProperty id="report" name="Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій Ви працюєте." type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="report_other" name="Звіти з попередніх місць роботи, затверджені керівниками цих закладів; (завантажте єдиним архівом)" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="вперше категорія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;certificate_doctor&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;kategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'second'&quot;}}}"></activiti:formProperty>
-  		<activiti:formProperty id="markers2" name="категорія вже є" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;certificate_kategory&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;kategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'first' || [sClient] == 'higher' &quot;}}}"></activiti:formProperty>
- 		<activiti:formProperty id="markers3" name="якщо змінював місця роботи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;report_other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;change_job&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
-      
+        <activiti:formProperty id="markers2" name="категорія вже є" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;certificate_kategory&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;kategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'first' || [sClient] == 'higher' &quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="якщо змінював місця роботи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;report_other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;change_job&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
@@ -68,14 +67,14 @@
           <activiti:value id="accept" name="Заповнені дані вірні - повідомити лікаря про дату, час та місце проведення аттестації"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно - відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
- 		<activiti:formProperty id="date_visit" name="Внесіть дату, час та місце проведення аттестації" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="date_visit" name="Внесіть дату, час та місце проведення аттестації" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар у це поле" type="textArea"></activiti:formProperty>
-       	<activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/HealthMinistry/health_ministry_10_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${diploma},${employment_history},${certificate_doctor},${certificate_kategory},${doc_training},${attestation_list},${report},${report_other}</activiti:expression>
+            <activiti:expression><![CDATA[${diploma},${employment_history},${certificate_doctor},${certificate_kategory},${doc_training},${attestation_list},${report},${report_other}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -97,12 +96,12 @@
         <activiti:formProperty id="rishen" name="Завантажте витяг з протоколу" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови  внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦАК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${remail}</activiti:expression>
+          <activiti:expression><![CDATA[${remail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -111,13 +110,13 @@
           <activiti:string><![CDATA[Нове  звернення. Атестація лікарів на присвоєння (підтвердження) кваліфікаційних категорій]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний колего!&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Надійшло нове звернення щодо enum{[certification_type]}.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Перевірте пакет вхідних документів в електронному вигляді на &lt;a href="http://region.igov.org.ua"&gt;порталі&lt;/a&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний колего!</b><br /><br />
+Надійшло нове звернення щодо enum{[certification_type]}.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Перевірте пакет вхідних документів в електронному вигляді на <a href="http://region.igov.org.ua">порталі</a><br />
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -127,37 +126,37 @@
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Атестація лікарів на присвоєння (підтвердження) кваліфікаційних категорій]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо enum{[certification_type]} опрацьовано. Пакет документів вірний.&lt;br /&gt;&lt;br /&gt;
-Просимо Вас бути присутнім на засіданні центральної атестаційної комісії ${date_visit}&lt;br /&gt;
-&lt;br /&gt;
-При собі треба мати:&lt;br /&gt;
-1. Документ, що посвідчує особу.&lt;br /&gt;
-2. Копію диплома;&lt;br /&gt;
-3. Копію трудової книжки;&lt;br /&gt;
-4. Копію сертифіката лікаря-спеціаліста або копію посвідчення про наявність кваліфікаційної категорії, якщо таке було видано раніше;&lt;br /&gt;
-2. Свідоцтво закладу освіти або факультету удосконалення лікарів про складання іспиту після закінчення передатестаційного циклу;&lt;br /&gt;
-3. Заповнений атестаційний листок;&lt;br /&gt;
-4. Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій лікар працює;&lt;br /&gt;
-5. Лікарі, які змінювали місце роботи за останні три роки, подають звіти також з попередніх місць роботи, затверджені керівниками цих закладів;&lt;br /&gt;
-6. Фото 3 х 4 см (1 шт.).&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення щодо enum{[certification_type]} опрацьовано. Пакет документів вірний.<br /><br />
+Просимо Вас бути присутнім на засіданні центральної атестаційної комісії ${date_visit}<br />
+<br />
+При собі треба мати:<br />
+1. Документ, що посвідчує особу.<br />
+2. Копію диплома;<br />
+3. Копію трудової книжки;<br />
+4. Копію сертифіката лікаря-спеціаліста або копію посвідчення про наявність кваліфікаційної категорії, якщо таке було видано раніше;<br />
+2. Свідоцтво закладу освіти або факультету удосконалення лікарів про складання іспиту після закінчення передатестаційного циклу;<br />
+3. Заповнений атестаційний листок;<br />
+4. Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій лікар працює;<br />
+5. Лікарі, які змінювали місце роботи за останні три роки, подають звіти також з попередніх місць роботи, затверджені керівниками цих закладів;<br />
+6. Фото 3 х 4 см (1 шт.).<br />
 7. Роздруковану заяву, яку ви подавали в електронному вигляді (знаходbться у додатку до листа), засвідчену особистим підписом.
 [pattern/mail/_common_signature_start.html]
-Відділ медичних та фармацевтичних кадрів&lt;br /&gt;
-Департаменту кадрової політики, освіти, науки та запобігання корупції&lt;br /&gt;
-Міністерства охорони здоров’я України&lt;br /&gt;
+Відділ медичних та фармацевтичних кадрів<br />
+Департаменту кадрової політики, освіти, науки та запобігання корупції<br />
+Міністерства охорони здоров’я України<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -167,23 +166,23 @@
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Атестація лікарів на присвоєння (підтвердження) кваліфікаційних категорій]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо enum{[certification_type]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-${comment_1}&lt;br /&gt;
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо enum{[certification_type]} відхилено через недостатню або неправильну інформацію.<br />
+${comment_1}<br />
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
 [pattern/mail/_common_signature_start.html]
-Відділ медичних та фармацевтичних кадрів&lt;br /&gt;
-Департаменту кадрової політики, освіти, науки та запобігання корупції&lt;br /&gt;
-Міністерства охорони здоров’я України&lt;br /&gt;
+Відділ медичних та фармацевтичних кадрів<br />
+Департаменту кадрової політики, освіти, науки та запобігання корупції<br />
+Міністерства охорони здоров’я України<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -193,27 +192,27 @@ ${comment_1}&lt;br /&gt;
           <activiti:string><![CDATA[test_noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Атестація лікарів на присвоєння (підтвердження) кваліфікаційних категорій]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${rishen}</activiti:expression>
+          <activiti:expression><![CDATA[${rishen}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-За результатми атестації Вам enum{[decision_2]}.&lt;br /&gt; 
-${comment_2}&lt;br /&gt; 
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+За результатми атестації Вам enum{[decision_2]}.<br /> 
+${comment_2}<br /> 
 Витяг з протоколу знаходиться у додатку до листа.
 [pattern/mail/_common_signature_start.html]
-Відділ медичних та фармацевтичних кадрів&lt;br /&gt;
-Департаменту кадрової політики, освіти, науки та запобігання корупції&lt;br /&gt;
-Міністерства охорони здоров’я України&lt;br /&gt;
+Відділ медичних та фармацевтичних кадрів<br />
+Департаменту кадрової політики, освіти, науки та запобігання корупції<br />
+Міністерства охорони здоров’я України<br />
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -233,11 +232,6 @@ execution.setVariable('remail', per1)
 execution.setVariable('rName', per4)
 	</script>
     </scriptTask>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow43" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow19" name="документи ок" sourceRef="exclusivegateway2" targetRef="servicetask2">
@@ -251,102 +245,87 @@ execution.setVariable('rName', per4)
     <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow61" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_ministry_of_health_10">
-    <bpmndi:BPMNPlane bpmnElement="ministry_of_health_10" id="BPMNPlane_ministry_of_health_10">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_health_ministry_10">
+    <bpmndi:BPMNPlane bpmnElement="health_ministry_10" id="BPMNPlane_health_ministry_10">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="70.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="137.0" x="490.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="231.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="211.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="488.0" y="231.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="139.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="141.0" x="296.0" y="159.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="119.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="223.0" y="-19.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="119.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="87.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="223.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="149.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="154.0" y="169.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="146.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="166.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="105.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="171.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="184.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="204.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="558.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="206.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="231.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="175.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="195.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="488.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="258.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="538.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="538.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="186.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="149.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="169.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="296.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="189.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="189.0" y="186.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
-        <omgdi:waypoint x="296.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="224.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="296.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="224.0" y="258.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
-        <omgdi:waypoint x="558.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="558.0" y="146.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="135.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="149.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="558.0" y="166.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
-        <omgdi:waypoint x="437.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="490.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="194.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
+        <omgdi:waypoint x="437.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="490.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
-        <omgdi:waypoint x="366.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="56.0"></omgdi:waypoint>
+        <omgdi:waypoint x="366.0" y="80.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
+        <omgdi:waypoint x="87.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="275.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

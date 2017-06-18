@@ -531,7 +531,7 @@ public abstract class AbstractModelTask {
 
                                                                     try {
                                                                         oJsonTableFile = (JSONObject)parser.parse(oFileValue);
-                                                                    } catch (ParseException ex) {
+                                                                    } catch (Exception ex) {
                                                                         LOG.error("There aren't TaskAttachVO objects in sFieldValue in table - JSON parsing error: ", ex);
                                                                     }
                                                                     

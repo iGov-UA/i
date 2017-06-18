@@ -41,7 +41,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${file1},${file2},${file3},${file4},${file5},${file6},${file7}</activiti:expression>
+            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},${file6},${file7}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -73,7 +73,7 @@
     <serviceTask id="mailtask1" name="Відправлення листа громадянину" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -85,10 +85,10 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.
+          <activiti:expression><![CDATA[Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.
 
 Вам відмовлено в реєстраціі громадського об’єднання
-Підстава: ${comment}</activiti:expression>
+Підстава: ${comment}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -99,24 +99,16 @@
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="mailtask2" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow9" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow10" sourceRef="servicetask2" targetRef="mailtask3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <serviceTask id="mailtask2" name="Відправлення листа громадянину" activiti:type="mail">
       <extensionElements>
         <activiti:field name="text">
-          <activiti:expression>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.
+          <activiti:expression><![CDATA[Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.
 
 Ваше звернення оброблено. 
-Ви можете отримати довідку про присвоєння поштової адреси об’єктам нерухомого майна %дата% за адресою %адреса%</activiti:expression>
+Ви можете отримати довідку про присвоєння поштової адреси об’єктам нерухомого майна %дата% за адресою %адреса%]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -132,7 +124,7 @@
     <serviceTask id="mailtask3" name="Повідомлення громадянина" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -144,13 +136,14 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.
+          <activiti:expression><![CDATA[Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.
 
-Ваше звернення успішно зареєстровано.</activiti:expression>
+Ваше звернення успішно зареєстровано.]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow12" sourceRef="mailtask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="startevent1" targetRef="mailtask3"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Выбирается услуга:
 Київ МДА - Присвоєння поштової адреси об’єкту нерухомого майна</text>
@@ -179,15 +172,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1070.0" y="600.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="185.0" y="190.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="275.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="350.0" y="208.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask2" id="BPMNShape_mailtask2">
         <omgdc:Bounds height="55.0" width="191.0" x="790.0" y="590.0"></omgdc:Bounds>
@@ -232,21 +216,13 @@
         <omgdi:waypoint x="981.0" y="617.0"></omgdi:waypoint>
         <omgdi:waypoint x="1070.0" y="617.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="237.0" y="165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="237.0" y="190.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="237.0" y="245.0"></omgdi:waypoint>
-        <omgdi:waypoint x="237.0" y="320.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="305.0" y="225.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="225.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="237.0" y="375.0"></omgdi:waypoint>
         <omgdi:waypoint x="237.0" y="470.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="237.0" y="165.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="320.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="190.0" y="110.0"></omgdi:waypoint>

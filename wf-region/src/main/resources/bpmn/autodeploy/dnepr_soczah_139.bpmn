@@ -10,18 +10,15 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressRegistered" name="Адреса реєстрації;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>     
-        
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання;Уточніть, якщо адреса не повна(область, назва населеного пункту, вулиця, квартира)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="asTransferType" name="Прошу в разі призначення допомоги кошти перераховувати; оберіть зручний для Вас спосіб перерахування коштів" type="enum" required="true">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -31,46 +28,37 @@
         <activiti:formProperty id="mfo" name="МФО банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку" type="file"></activiti:formProperty>
-
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asNumberApplication" name="Ваше звернення до Управління праці та соціального захисту населення за даной послугой" type="enum" required="true">
           <activiti:value id="sFirst" name="Первинне"></activiti:value>
           <activiti:value id="sSecond" name="Повторне"></activiti:value>
-        </activiti:formProperty>        
-        
+        </activiti:formProperty>
         <activiti:formProperty id="asChoiceFileDownloads" name="Оберіть підстави, на яких призначається тимчасова допомога" type="enum" required="true">
           <activiti:value id="sCase1" name="Після рішення суду - аліменти не сплачуються протягом 6-ти місяців"></activiti:value>
           <activiti:value id="sCase2" name="Один з батьків знаходиться у місцях позбавлення волі, на примусовому лікуванні або перебування на строковій військовій службі"></activiti:value>
           <activiti:value id="sCase3" name="Місце проживання (перебування) одного з батьків дитини не встановлено (виплата призначається на 6-ть місяців)"></activiti:value>
         </activiti:formProperty>
-                
         <activiti:formProperty id="lInfo2" name="Заповніть декларацію" type="label" default="Завантажте &lt;a href=&quot;https://www.dropbox.com/s/jyrbb4d12dt9vui/blank-deklaratsiya-dopomogi.doc?dl=0&quot; target=&quot;_blank&quot;&gt;декларацію&lt;/a&gt;, роздрукуйте, заповніть, та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFileIncomeStatement" name="Декларація про доходи та майновий стан;(заповнюється на підставі довідок про доходи кожного члена сім'ї)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileBirthCertificate" name="Копія свідоцтва про народження дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileRegReb" name="Довідка про реєстрацію місця проживання (перебування) дитини" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileRegOder" name="Довідка про реєстрацію місця проживання (перебування) одержувача" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileRishSudu" name="Рішення суду про стягнення з одного з батьків аліментів на дитину" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileDovVikon" name="Довідка Державної виконавчої служби про несплату аліментів одним з батьків протягом 6 міс., що передують місяцю звернення" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileDovProvad" name="Довідка відповідної установи про здійснення стосовно одного з батьків кримінального провадження або про його перебування на примусовому лікуванні, у місцях позбавлення волі, визнання його в установленому порядку недієздатним, а також перебування на строковій військовій службі" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileDovOvs" name="Повідомлення органу внутрішніх справ про те, що місце перебування одного з батьків не встановлено" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileIncomeStatement" name="Декларація про доходи та майновий стан;(заповнюється на підставі довідок про доходи кожного члена сім'ї) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileBirthCertificate" name="Копія свідоцтва про народження дитини ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileRegReb" name="Довідка про реєстрацію місця проживання (перебування) дитини ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileRegOder" name="Довідка про реєстрацію місця проживання (перебування) одержувача ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileRishSudu" name="Рішення суду про стягнення з одного з батьків аліментів на дитину ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovVikon" name="Довідка Державної виконавчої служби про несплату аліментів одним з батьків протягом 6 міс., що передують місяцю звернення ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovProvad" name="Довідка відповідної установи про здійснення стосовно одного з батьків кримінального провадження або про його перебування на примусовому лікуванні, у місцях позбавлення волі, визнання його в установленому порядку недієздатним, а також перебування на строковій військовій службі ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovOvs" name="Повідомлення органу внутрішніх справ про те, що місце перебування одного з батьків не встановлено ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="lInfo3" name="Довідку про неотримання аліментів або розмір аліментів Ви можете отримати в електронному вигляді за посиланням" type="label" default="&lt;a href=&quot;https://igov.org.ua/service/97/general&quot; target=&quot;_blank&quot;&gt;перейти за посиланням&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="nFileRozmirAlim" name="Довідка про розмір аліментів;(якщо розмір аліментів, визначений судом у твердій грошовій сумі, менший від мінімального розміру аліментів на одну дитину, що передбачений частиною другою статті 182 Сімейного кодексу  України)" type="file"></activiti:formProperty>
-        
-        
+        <activiti:formProperty id="nFileRozmirAlim" name="Довідка про розмір аліментів;(якщо розмір аліментів, визначений судом у твердій грошовій сумі, менший від мінімального розміру аліментів на одну дитину, що передбачений частиною другою статті 182 Сімейного кодексу  України) ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="lNotice" name="Зверніть увагу" type="label" default="Я усвідомлюю, що наведені мною відомості про доходи та майно, що вплинули або могли вплинути на прийняте рішення щодо надання соціальної допомоги, компенсацій та пільг, будуть перевірені згідно з чинним законодавством України."></activiti:formProperty>
-        
         <activiti:formProperty id="nArea" name="номер органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
         <activiti:formProperty id="cc_6" name="Помітка в прінтформі ; ;bVisible=false" type="string" default="true"></activiti:formProperty>
-
         <activiti:formProperty id="markersStart" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_139_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersAdressTransfer" name="Маркер адреса и выбора типа передачи помощи" type="markers" default="${markerService.loadFromFile('soczah/soc_help_adress_transfer.json')}"></activiti:formProperty>
-
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Перевірка документів в Управлінні праці та соціального захисту населення (1-й крок)" activiti:candidateGroups="upszn${nArea}">
@@ -80,13 +68,10 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sAddressRegistered" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>                             
-                
+        <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail замовника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asNumberApplication" name="Ваше звернення до Управління праці та соціального захисту населення за даной послугой" type="enum" writable="false">
           <activiti:value id="sFirst" name="Первинне"></activiti:value>
           <activiti:value id="sSecond" name="Повторне"></activiti:value>
@@ -96,7 +81,6 @@
           <activiti:value id="sCase2" name="Один з батьків знаходиться у місцях позбавлення волі, на примусовому лікуванні або перебування на строковій військовій службі"></activiti:value>
           <activiti:value id="sCase3" name="Місце проживання (перебування) одного з батьків дитини не встановлено (виплата призначається на 6-ть місяців)"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="asTransferType" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -106,20 +90,28 @@
         <activiti:formProperty id="mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р); ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="asDecision1" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept1" name="Запросити громадянина до управління з оригіналами документів"></activiti:value>
           <activiti:value id="reject1" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
-		
-		<activiti:formProperty id="sRoom" name="Номер кабінету, в який запросити громадянина" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRoom" name="Номер кабінету, в який запросити громадянина" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Уточніть підставу відмови" type="textArea"></activiti:formProperty>
-
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soczah_139_zayava1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина, продовження" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_6" name="Помітка в прінтформі ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('soczah/dnepr_soczah_139_user.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFileIncomeStatement" name="Декларація про доходи та майновий стан; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileBirthCertificate" name="Копія свідоцтва про народження дитини ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRegReb" name="Довідка про реєстрацію місця проживання (перебування) дитини ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRegOder" name="Довідка про реєстрацію місця проживання (перебування) одержувача ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRishSudu" name="Рішення суду про стягнення з одного з батьків аліментів на дитину ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovVikon" name="Довідка Державної виконавчої служби про несплату аліментів одним з батьків протягом 6 міс., що передують місяцю звернення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovProvad" name="Довідка відповідної установи про здійснення стосовно одного з батьків кримінального провадження або про його перебування на примусовому лікуванні, у місцях позбавлення волі, визнання його в установленому порядку недієздатним, а також перебування на строковій військовій службі ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovOvs" name="Повідомлення органу внутрішніх справ про те, що місце перебування одного з батьків не встановлено ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRozmirAlim" name="Довідка про розмір аліментів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -130,13 +122,10 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sAddressRegistered" name="Місце реєстрації; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>                             
-                
+        <activiti:formProperty id="sAddressFactual" name="Адреса проживання; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail замовника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asTransferType" name="спосіб перерахування коштів; ;writable=false" type="enum">
           <activiti:value id="post" name="через національного оператора поштового зв'язку"></activiti:value>
           <activiti:value id="bank" name="на рахунок у банку"></activiti:value>
@@ -146,28 +135,35 @@
         <activiti:formProperty id="mfo" name="МФО банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку (р/р); ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="asDecision2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept2" name="Зауважень немає, державна допомога буде надана"></activiti:value>
           <activiti:value id="reject2" name="Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sBody" name="[pattern/print/minsoc/min_soc_help_441_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/UPSZN/dnepr_soczah_139_zayava1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина, продовження" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cc_6" name="Помітка в прінтформі ; ;bVisible=false" type="string"></activiti:formProperty>
-
-        <activiti:formProperty id="nFileRishCopy" name="Завантажте копію рішення по наданню послуги" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFileRishCopy" name="Завантажте копію рішення по наданню послуги ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileIncomeStatement" name="Декларація про доходи та майновий стан; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileBirthCertificate" name="Копія свідоцтва про народження дитини ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRegReb" name="Довідка про реєстрацію місця проживання (перебування) дитини ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRegOder" name="Довідка про реєстрацію місця проживання (перебування) одержувача ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRishSudu" name="Рішення суду про стягнення з одного з батьків аліментів на дитину ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovVikon" name="Довідка Державної виконавчої служби про несплату аліментів одним з батьків протягом 6 міс., що передують місяцю звернення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovProvad" name="Довідка відповідної установи про здійснення стосовно одного з батьків кримінального провадження або про його перебування на примусовому лікуванні, у місцях позбавлення волі, визнання його в установленому порядку недієздатним, а також перебування на строковій військовій службі ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDovOvs" name="Повідомлення органу внутрішніх справ про те, що місце перебування одного з батьків не встановлено ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSocAccount" name="Довідка про відкриття соц.рахунку у банку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileRozmirAlim" name="Довідка про розмір аліментів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" name="Дані заповнені невірно" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1 =='reject1'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask2_green" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow8" name="Відмовити" sourceRef="exclusivegateway2" targetRef="servicetask4">
@@ -177,13 +173,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow14" sourceRef="servicetask1" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask5" targetRef="servicetask8"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <serviceTask id="servicetask5" name="Повідомлення держслужбовця про новий запит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -199,8 +189,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_head.html]
 			Послуга: Призначення тимчасової державної допомоги дітям, батьки яких ухиляються від сплати аліментів.<br>
 			Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-			[pattern/mail/new_design/_common_employee_notify_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_employee_notify_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -233,8 +222,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -246,7 +234,7 @@
           <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
-    </serviceTask>    
+    </serviceTask>
     <serviceTask id="servicetask6" name="E-mail при помилках у документах" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -278,8 +266,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -328,8 +315,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -372,8 +358,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${nFileRishCopy}]]></activiti:expression>
@@ -424,8 +409,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-		  </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${nFileRishCopy}]]></activiti:expression>
@@ -443,20 +427,18 @@
     </sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="servicetask7" targetRef="usertask2_green"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_soczah_139">
     <bpmndi:BPMNPlane bpmnElement="dnepr_soczah_139" id="BPMNPlane_dnepr_soczah_139">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="143.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="68.0" width="105.0" x="170.0" y="127.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="253.0" y="111.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="71.0" width="177.0" x="500.0" y="304.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
+        <omgdc:Bounds height="69.0" width="185.0" x="867.0" y="306.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="568.0" y="233.0"></omgdc:Bounds>
@@ -464,26 +446,17 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="571.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask2_green" id="BPMNShape_usertask2_green">
-        <omgdc:Bounds height="69.0" width="185.0" x="867.0" y="306.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="939.0" y="233.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="64.0" width="137.0" x="1085.0" y="129.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="65.0" width="165.0" x="877.0" y="128.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1051.0" y="54.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="250.0" y="54.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="75.0" width="105.0" x="170.0" y="302.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="73.0" width="131.0" x="340.0" y="124.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="64.0" width="147.0" x="515.0" y="129.0"></omgdc:Bounds>
@@ -491,13 +464,12 @@
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="69.0" width="105.0" x="738.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="73.0" width="131.0" x="340.0" y="124.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="64.0" width="137.0" x="1085.0" y="129.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="125.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="170.0" y="161.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="65.0" width="165.0" x="877.0" y="128.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="588.0" y="304.0"></omgdi:waypoint>
         <omgdi:waypoint x="588.0" y="273.0"></omgdi:waypoint>
@@ -506,26 +478,18 @@
         <omgdi:waypoint x="588.0" y="233.0"></omgdi:waypoint>
         <omgdi:waypoint x="588.0" y="193.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="78.0" x="501.0" y="217.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="78.0" x="501.0" y="217.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="959.0" y="306.0"></omgdi:waypoint>
         <omgdi:waypoint x="959.0" y="273.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="979.0" y="253.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1153.0" y="252.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1153.0" y="193.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="978.0" y="255.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="959.0" y="233.0"></omgdi:waypoint>
         <omgdi:waypoint x="959.0" y="193.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="891.0" y="203.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="62.0" x="891.0" y="203.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -540,19 +504,19 @@
         <omgdi:waypoint x="1153.0" y="129.0"></omgdi:waypoint>
         <omgdi:waypoint x="1068.0" y="89.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="222.0" y="195.0"></omgdi:waypoint>
-        <omgdi:waypoint x="222.0" y="302.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="275.0" y="339.0"></omgdi:waypoint>
         <omgdi:waypoint x="299.0" y="340.0"></omgdi:waypoint>
         <omgdi:waypoint x="299.0" y="161.0"></omgdi:waypoint>
         <omgdi:waypoint x="340.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="268.0" y="111.0"></omgdi:waypoint>
-        <omgdi:waypoint x="267.0" y="89.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="979.0" y="253.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1153.0" y="252.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1153.0" y="193.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="16.0" width="78.0" x="978.0" y="255.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="608.0" y="253.0"></omgdi:waypoint>
@@ -560,7 +524,7 @@
         <omgdi:waypoint x="711.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="738.0" y="160.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="84.0" x="607.0" y="254.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="48.0" x="607.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
@@ -572,6 +536,10 @@
         <omgdi:waypoint x="405.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="405.0" y="339.0"></omgdi:waypoint>
         <omgdi:waypoint x="500.0" y="339.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="107.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="222.0" y="302.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

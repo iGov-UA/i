@@ -32,13 +32,13 @@
         <activiti:formProperty id="mfo" name="МФО банку;шість цифр" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="edrpou" name="ЄДРПОУ банку;вісім цифр" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку в банку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Паспорт" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFilePensionCertificate" name="Пенсійне посвідчення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileDeathCertificateCatOne" name="Свідоцтво про смерть учасника ліквідації 1 категорії" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileChernobylCertificateDeath" name="Чорнобильське посвідчення померлого учасника ліквідації аварії на ЧАЕС" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileExpertOpinionCausalDeath" name="Експертний висновок міжвідомчих експертних комісій по встановленню причинного зв’язку смерті з роботами по ліквідації аварії на ЧАЕС" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFilePensionCertificate" name="Пенсійне посвідчення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDeathCertificateCatOne" name="Свідоцтво про смерть учасника ліквідації 1 категорії ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileChernobylCertificateDeath" name="Чорнобильське посвідчення померлого учасника ліквідації аварії на ЧАЕС ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileExpertOpinionCausalDeath" name="Експертний висновок міжвідомчих експертних комісій по встановленню причинного зв’язку смерті з роботами по ліквідації аварії на ЧАЕС ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPage" name="Вкажіть загальну кількість сторінок відсканованих документів" type="long" default="10" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -51,13 +51,6 @@
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_bill.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>
 import java.util.regex.Matcher
@@ -217,20 +210,17 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="nDocument" name="количество документов ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_print.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFilePensionCertificate" name="Пенсійне посвідчення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDeathCertificateCatOne" name="Свідоцтво про смерть учасника ліквідації 1 категорії ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileChernobylCertificateDeath" name="Чорнобильське посвідчення померлого учасника ліквідації аварії на ЧАЕС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileExpertOpinionCausalDeath" name="Експертний висновок міжвідомчих експертних комісій по встановленню причинного зв’язку смерті з роботами по ліквідації аварії на ЧАЕС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>
-            	${bankId_scan_passport},
-				${bankId_scan_inn},
-				${nFilePersonalAccountBank},
-				${nFilePensionCertificate},
-				${nFileDeathCertificateCatOne},
-				${nFileChernobylCertificateDeath},
-				${nFileExpertOpinionCausalDeath}
-			</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -350,20 +340,16 @@ execution.setVariable("dPassportDate",strDate)
         <activiti:formProperty id="nDocument" name="количество документов ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCompensationCategory" name="Категорія компенсацій (галочка на формі) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('chernobyl/chaes_654_print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>
-            	${bankId_scan_passport},
-				${bankId_scan_inn},
-				${nFilePersonalAccountBank},
-				${nFilePensionCertificate},
-				${nFileDeathCertificateCatOne},
-				${nFileChernobylCertificateDeath},
-				${nFileExpertOpinionCausalDeath}
-			</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFilePersonalAccountBank" name="Виписка про відкриття особового рахунку з банку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFilePensionCertificate" name="Пенсійне посвідчення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileDeathCertificateCatOne" name="Свідоцтво про смерть учасника ліквідації 1 категорії ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileChernobylCertificateDeath" name="Чорнобильське посвідчення померлого учасника ліквідації аварії на ЧАЕС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileExpertOpinionCausalDeath" name="Експертний висновок міжвідомчих експертних комісій по встановленню причинного зв’язку смерті з роботами по ліквідації аварії на ЧАЕС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+              </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask2_green" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -409,17 +395,12 @@ execution.setVariable("dPassportDate",strDate)
     </serviceTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow16" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_chaes_655">
     <bpmndi:BPMNPlane bpmnElement="chaes_655" id="BPMNPlane_chaes_655">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="34.0" y="100.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="75.0" width="105.0" x="119.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="108.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="191.0" y="10.0"></omgdc:Bounds>
@@ -454,18 +435,6 @@ execution.setVariable("dPassportDate",strDate)
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="143.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="69.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="123.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="171.0" y="80.0"></omgdi:waypoint>
-        <omgdi:waypoint x="243.0" y="65.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="243.0" y="65.0"></omgdi:waypoint>
         <omgdi:waypoint x="336.0" y="85.0"></omgdi:waypoint>
@@ -486,7 +455,7 @@ execution.setVariable("dPassportDate",strDate)
         <omgdi:waypoint x="630.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="389.0" y="217.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="523.0" y="200.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="523.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -497,7 +466,7 @@ execution.setVariable("dPassportDate",strDate)
         <omgdi:waypoint x="650.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="650.0" y="292.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="650.0" y="243.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="650.0" y="243.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -512,19 +481,23 @@ execution.setVariable("dPassportDate",strDate)
         <omgdi:waypoint x="336.0" y="306.0"></omgdi:waypoint>
         <omgdi:waypoint x="336.0" y="245.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="341.0" y="252.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="341.0" y="252.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="316.0" y="326.0"></omgdi:waypoint>
         <omgdi:waypoint x="213.0" y="326.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="72.0" x="225.0" y="333.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="72.0" x="225.0" y="333.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="160.0" y="299.0"></omgdi:waypoint>
         <omgdi:waypoint x="160.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="51.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="243.0" y="65.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

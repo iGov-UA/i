@@ -162,6 +162,11 @@
                      title="Ця послуга поки не доступна онлайн. Зайдіть у послугу та залиште свій email, щоб дізнатися, коли стане доступна.">
                   </i>
                   <a ui-sref="index.service.general({'id': service.nID })" ng-click="goToService(service.nID)">{{service.sName}}</a>
+                  <div class="row container" ng-if="service.aKeywords && service.aKeywords.length > 0">
+                    <span ng-repeat="keyword in service.aKeywords" class="services-keyword">
+                      {{keyword}}
+                    </span>
+                  </div>
                 </li>
               </ul>
             </div>
