@@ -3714,14 +3714,14 @@ var unixdate= Math.round((new Date()).getTime())   // в формате UNIX
 
 [вернуться...](#getdirdatafromscript)
    
-   Сервис возвращает массив следующего вида:
+   Сервис возвращает массив следующего вида:<br>
    <b>[{"IS_DEP":"12425","IPN":"1234567890","REZ":"0"}]</b>
    
-   Получить данные из массива можно так:
+   Получить данные из массива можно так:<br>
    <b>var IPNcheck = obj[0].REZ;</b>
    
    ![16_10](https://raw.githubusercontent.com/e-government-ua/i/test/doc/bp/img/16_10.jpg)
-   
+   <br>
    ![16_11](https://raw.githubusercontent.com/e-government-ua/i/test/doc/bp/img/16_11.jpg)
 
 ###### 18. Конфигурационные файлы
