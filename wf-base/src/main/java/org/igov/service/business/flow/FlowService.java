@@ -428,10 +428,10 @@ public class FlowService implements ApplicationContextAware {
 
                     if (oFlowProperty.getsData() != null && !"".equals(oFlowProperty.getsData().trim())) {
                         handler.generateObjects(oFlowProperty.getsData());
-                        /*List<FlowSlot> generatedSlots = handler.generateObjects(oFlowProperty.getsData());
+                        List<FlowSlot> generatedSlots = handler.generateObjects(oFlowProperty.getsData());
                         for (FlowSlot slot : generatedSlots) {
                             result.add(new FlowSlotVO(slot));
-                        }*/
+                        }
                     }
                 }
             }
@@ -477,7 +477,7 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ok!!!", nID_Flow, aoDateRange_Exclude.size());
-        return new ArrayList<>();
+        return result;
     }
 
     public ClearSlotsResult clearFlowSlots(Long nID_Flow, DateTime startDate, DateTime stopDate,
