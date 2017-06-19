@@ -28,11 +28,11 @@ import org.springframework.web.multipart.MultipartFile;
  * @author BW
  */
 @Component("MailTaskWithAttachmentsAndSMS")
-public class MailTaskWithAttachmentsAndSMS implements JavaDelegate{
+public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom implements JavaDelegate{
 
-    private Expression saAttachmentsForSend;
+    /*private Expression saAttachmentsForSend;
     protected Expression sPhone_SMS;
-    protected Expression sText_SMS;
+    protected Expression sText_SMS;*/
 
     @Autowired
     MailTaskWithAttachmentsAndSMSService oMailTaskWithAttachmentsAndSMSService;
