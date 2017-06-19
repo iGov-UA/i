@@ -263,32 +263,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                 if (isDocumentSubmit(oRequest)) {
                     if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
-                        LOG.info("--------------isDocumentSubmit (POSTPROCESSING)--------------");
-                        LOG.info("sRequestBody: {}", sRequestBody);
-                        
-                        String sTaskId = (String) omRequestBody.get("taskId");
-                        LOG.info("sTaskId is: {}", sTaskId);
-                        
-                        List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
-                                .taskId(sTaskId).list();
-                        
-                        for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
-                            LOG.info("oHistoricVariableInstance.getId {}", oHistoricVariableInstance.getId());
-                            LOG.info("oHistoricVariableInstance.getVariableName {}", oHistoricVariableInstance.getVariableName());
-                            LOG.info("oHistoricVariableInstance.getVariableTypeName {}", oHistoricVariableInstance.getVariableTypeName());
-                        }
-                        
-                        HistoricVariableInstance oHistoricVariableInstance =
-                            historyService.createHistoricVariableInstanceQuery().taskId(sTaskId).variableNameLike("%bOrder=true%").singleResult();
-                    
-                        if(oHistoricVariableInstance != null){
-                            LOG.info("oHistoricVariableInstance.getVariableName with like {}", oHistoricVariableInstance.getVariableName());
-                        }
                         
                         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                         String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
                         
                         if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
+                            
+                            LOG.info("--------------isDocumentSubmit (POSTPROCESSING)--------------");
+                            LOG.info("sRequestBody: {}", sRequestBody);
+
+                            String sTaskId = (String) omRequestBody.get("taskId");
+                            LOG.info("sTaskId is: {}", sTaskId);
+
+                            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                                    .processInstanceId(processInstanceId).list();
+
+                            for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                                LOG.info("oHistoricVariableInstance.getId {}", oHistoricVariableInstance.getId());
+                                LOG.info("oHistoricVariableInstance.getVariableName {}", oHistoricVariableInstance.getVariableName());
+                                LOG.info("oHistoricVariableInstance.getVariableTypeName {}", oHistoricVariableInstance.getVariableTypeName());
+                            }
+
+                            HistoricVariableInstance oHistoricVariableInstance =
+                                historyService.createHistoricVariableInstanceQuery().processInstanceId(processInstanceId).variableNameLike("%bOrder=true%").singleResult();
+
+                            if(oHistoricVariableInstance != null){
+                                LOG.info("oHistoricVariableInstance.getVariableName with like {}", oHistoricVariableInstance.getVariableName());
+                            }
+                            
                             runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", oHistoricTaskInstance.getAssignee());
                         }
                     }
