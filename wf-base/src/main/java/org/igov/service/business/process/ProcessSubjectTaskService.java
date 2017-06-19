@@ -572,6 +572,7 @@ public class ProcessSubjectTaskService {
      */
     public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
 
+        LOG.info("nDeepProcessSubjectTask={}", nDeepProcessSubjectTask);
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
         
         if (nDeepProcessSubjectTask == 1) {
@@ -582,7 +583,9 @@ public class ProcessSubjectTaskService {
             LOG.info("getProcessSubjectTask else block");
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
             
-            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
+            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+                    getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
+            
             List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
             LOG.info("aProcessSubject={}", aProcessSubject);
             
@@ -591,7 +594,6 @@ public class ProcessSubjectTaskService {
     		aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
             }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
-
         }
 
         return aListOfProcessSubjectTask;
