@@ -485,6 +485,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("oHistoricTaskInstance.processInstanceId {}", processInstanceId);
             LOG.info("oHistoricTaskInstance.getExecutionId {}", executionId);
 
+            HistoricVariableInstance oHistoricVariableInstance =
+                            historyService.createHistoricVariableInstanceQuery().taskId(sTaskId).variableNameLike("%bOrder=true%").singleResult();
+                    
+            if(oHistoricVariableInstance != null){
+                LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
+            }
+            
             if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 LOG.info("We catch document submit (ECP)");
                 JSONArray properties = (JSONArray) omRequestBody.get("properties");
@@ -496,15 +503,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                     String sId = (String) jsonObject.get("id");
                     String sValue = (String) jsonObject.get("value");
-                    
-                    HistoricVariableInstance oHistoricVariableInstance =
-                            historyService.createHistoricVariableInstanceQuery().taskId(sTaskId).id(sId).singleResult();
-                    
-                    if(oHistoricVariableInstance != null){
-                        LOG.info("sId {}", sId);
-                        LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
-                    }
-                    
                     
                     if (sId.equals("sKey_Step_Document")) {
                         sKey_Step_Document = sValue;
