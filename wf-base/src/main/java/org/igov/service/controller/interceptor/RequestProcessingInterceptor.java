@@ -264,6 +264,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 if (isDocumentSubmit(oRequest)) {
                     if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
                         
+                        String sTaskId = (String) omRequestBody.get("taskId");
+                        LOG.info("sTaskId is: {}", sTaskId);
+                        
                         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                         String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
                         
@@ -272,8 +275,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                             LOG.info("--------------isDocumentSubmit (POSTPROCESSING)--------------");
                             LOG.info("sRequestBody: {}", sRequestBody);
 
-                            String sTaskId = (String) omRequestBody.get("taskId");
-                            LOG.info("sTaskId is: {}", sTaskId);
 
                             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                                     .processInstanceId(processInstanceId).list();
