@@ -252,13 +252,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 if (isUpdateTask(oRequest)) {
                     LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (POSTPROCESSING)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
-                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");*/
+                    LOG.info("-----------------------------------------------");
                 }
 
                 if (isDocumentSubmit(oRequest)) {
@@ -418,13 +418,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 if (isUpdateTask(oRequest)) {
                     LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
-                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
-                    LOG.info("sResponseBody: {}", sResponseBody);
+                    //LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");*/
+                    LOG.info("-----------------------------------------------");
                 }
 
                 if (isDocumentSubmit(oRequest)) {
@@ -485,13 +485,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("oHistoricTaskInstance.processInstanceId {}", processInstanceId);
             LOG.info("oHistoricTaskInstance.getExecutionId {}", executionId);
 
-            HistoricVariableInstance oHistoricVariableInstance =
-                            historyService.createHistoricVariableInstanceQuery().taskId(sTaskId).variableNameLike("%bOrder=true%").singleResult();
-                    
-            if(oHistoricVariableInstance != null){
-                LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
-            }
-            
             if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 LOG.info("We catch document submit (ECP)");
                 JSONArray properties = (JSONArray) omRequestBody.get("properties");
@@ -503,6 +496,17 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                     String sId = (String) jsonObject.get("id");
                     String sValue = (String) jsonObject.get("value");
+                    
+                    LOG.info("sId is {}", sId);
+                    
+                    HistoricVariableInstance oHistoricVariableInstance =
+                            historyService.createHistoricVariableInstanceQuery().taskId(sTaskId).variableNameLike(sId).singleResult();
+                    
+                    if(oHistoricVariableInstance != null){
+                        LOG.info("sId {}", sId);
+                        LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
+                    }
+                    
                     
                     if (sId.equals("sKey_Step_Document")) {
                         sKey_Step_Document = sValue;
