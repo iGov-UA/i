@@ -47,7 +47,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
@@ -86,7 +86,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
 var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Clerk'
+var sKey_GroupPostfix_New ='Comfy_Author_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
