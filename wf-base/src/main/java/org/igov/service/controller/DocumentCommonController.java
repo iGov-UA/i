@@ -260,7 +260,7 @@ public class DocumentCommonController {
 
             List<DocumentSubmitedUnsignedVO> aDocumentSubmitedUnsignedVO = documentStepService.getDocumentSubmitedUnsigned(sLogin);
 
-            LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
+            //LOG.info("aDocumentSubmitedUnsignedVO in getDocumentSubmitedUnsigned is {}", aDocumentSubmitedUnsignedVO);
 
             /*if (aDocumentSubmitedUnsignedVO != null) {
                     return JSONValue.toJSONString(aDocumentSubmitedUnsignedVO);

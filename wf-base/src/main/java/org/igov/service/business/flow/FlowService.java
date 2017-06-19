@@ -966,7 +966,7 @@ public class FlowService implements ApplicationContextAware {
                 }
             }
         } catch (Exception ex) {
-            LOG.info("Error during gettion of flowservice: {}", ex);
+            LOG.info("Error during gettion of flowservice: {}", ex.getMessage());
         }
 
         return mReturn;

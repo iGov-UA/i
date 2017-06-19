@@ -754,7 +754,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1));
+        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
 
         return JsonRestUtils.toJsonResponse(response);
     }
@@ -1796,7 +1796,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (Group group : groups) {
                     groupsIds.add(group.getId());
                 }
-                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+                //LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
                 LOG.info("Filter status: {}", sFilterStatus);
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
                 long totalNumber = 0;

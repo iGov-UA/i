@@ -570,12 +570,12 @@ public class ProcessSubjectTaskService {
      * @param nDeepProcessSubjectTask       глубина выборки (0 - все, 1 - только заданного процесса)
      * @return список задач, которые относятся к заданому процессу(-ам)
      */
-    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Integer nDeepProcessSubjectTask) {
+    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
 
         LOG.info("nDeepProcessSubjectTask={}", nDeepProcessSubjectTask);
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
         
-        if (nDeepProcessSubjectTask == 1) {
+        if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
@@ -584,7 +584,7 @@ public class ProcessSubjectTaskService {
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
             
             ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
-                    getCatalogProcessSubject(snID_Process_Activiti, Long.valueOf(nDeepProcessSubjectTask), null);
+                    getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
             
             List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
             LOG.info("aProcessSubject={}", aProcessSubject);

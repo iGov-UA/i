@@ -255,10 +255,10 @@ public class SubjectGroupTreeService {
                 aChildResult.addAll(children);
                 LOG.info("idChildren.size: " + idChildren.size());
                 hierarchyProcessSubject = getChildrenTree(children, idChildren, subjToNodeMap, idParentList, checkDeepLevel(deepLevel), 1, aChildResult);
-                LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
+                //LOG.info("hierarchyProcessSubject" + hierarchyProcessSubject);
             }
 
-            LOG.info("aChildResult {}", aChildResult);
+            //LOG.info("aChildResult {}", aChildResult);
 
             List<SubjectGroup> aChildResultByUser = new ArrayList<>();
 
