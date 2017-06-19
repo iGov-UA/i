@@ -42,16 +42,10 @@ angular.module('dashboardJsApp').directive('fileField', function($modal, $http, 
         });
 
         modalInstance.result.then(function (oScanResult) {
-          if(oScanResult.saveAs === 'saveAs=1' && oScanResult.downloadFiles.length > 1){
-            $http.get(oScanResult.downloadUrl+'&asBase64=true').success(function (data) {
-              uploadFile(data.base64, data.file, 'application/pdf');
-            })
 
-          } else {
-            var base64content = oScanResult.downloadFiles["0"].base64;
-            var sName = oScanResult.downloadFiles["0"].file;
-            uploadFile(base64content, sName, getImagesMymeType(sName));
-          }
+          $http.get(oScanResult.downloadUrl+'&asBase64=true').success(function (data) {
+            uploadFile(data.base64, data.file, getImagesMymeType(data.file));
+          })
 
         });
       }
@@ -64,6 +58,8 @@ angular.module('dashboardJsApp').directive('fileField', function($modal, $http, 
           return 'image/bmp';
         } else if (ext === 'tiff'){
           return 'image/tiff'
+        } else if (ext === 'pdf'){
+          return 'application/pdf'
         }
         return undefined;
       }
