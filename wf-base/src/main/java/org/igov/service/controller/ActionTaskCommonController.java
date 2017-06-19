@@ -1796,7 +1796,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (Group group : groups) {
                     groupsIds.add(group.getId());
                 }
-                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+                //LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
                 LOG.info("Filter status: {}", sFilterStatus);
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
                 long totalNumber = 0;

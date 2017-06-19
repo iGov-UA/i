@@ -464,7 +464,7 @@ public class DocumentStepService {
 
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
-            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            //LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                 if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
@@ -499,9 +499,9 @@ public class DocumentStepService {
 
     private void addVisor(DocumentStep oDocumentStep, List<DocumentStepSubjectRight> aDocumentStepSubjectRight,
             String sKey_Group, String snID_Process_Activiti, String sKey_Group_Delegate, String sKey_Step) throws Exception {
-        LOG.info("addVisor params: oDocumentStep {}  aDocumentStepSubjectRight {} sKey_Group {} "
+        /*LOG.info("addVisor params: oDocumentStep {}  aDocumentStepSubjectRight {} sKey_Group {} "
                 + "snID_Process_Activiti {} sKey_Group_Delegate {} sKey_Step{}", oDocumentStep, aDocumentStepSubjectRight,
-                sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+                sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);*/
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
@@ -622,7 +622,7 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
 
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
-            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            //LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
 
             if (sOperationType.equals("delegate")) {
                 delegate(sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
@@ -791,8 +791,8 @@ public class DocumentStepService {
             List<String> asID_Group_Activiti_New_Selected = new LinkedList();
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_From = oDocumentStep_From.getRights();
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To = oDocumentStep_To.getRights();
-            LOG.info("aDocumentStepSubjectRight_From is {}", aDocumentStepSubjectRight_From);
-            LOG.info("aDocumentStepSubjectRight_To is {}", aDocumentStepSubjectRight_To);
+            //LOG.info("aDocumentStepSubjectRight_From is {}", aDocumentStepSubjectRight_From);
+            //LOG.info("aDocumentStepSubjectRight_To is {}", aDocumentStepSubjectRight_To);
             DocumentStepSubjectRight oDocumentStepSubjectRight_From = null;
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight_From) {
                 if (sKey_GroupPostfix.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
@@ -1028,11 +1028,11 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.getRights();
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_ForRemove = new LinkedList();
-            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            //LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
 
             // DocumentStepSubjectRight oDocumentStepSubjectRight = null;
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                LOG.info("oDocumentStepSubjectRight={}", oDocumentStepSubjectRight);
+                //LOG.info("oDocumentStepSubjectRight={}", oDocumentStepSubjectRight);
                 if (sID_Field.equals(oDocumentStepSubjectRight.getsID_Field())) {
                     String sLogin = oDocumentStepSubjectRight.getsKey_GroupPostfix();
                     if (asLogin.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
@@ -1067,7 +1067,7 @@ public class DocumentStepService {
 			 * aDocumentStepSubjectRight_Return.addAll(
 			 * aDocumentStepSubjectRight_Current); }
              */
-            LOG.info("aDocumentStepSubjectRight_ForRemove={}", aDocumentStepSubjectRight_ForRemove);
+            //LOG.info("aDocumentStepSubjectRight_ForRemove={}", aDocumentStepSubjectRight_ForRemove);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_GroupPostfix=" + sKey_Group_Default + "" + ",sID_Field=" + sID_Field + ""
@@ -1333,7 +1333,7 @@ public class DocumentStepService {
         if (aGroup != null) {
             aGroup.stream().forEach(group -> asID_Group.add(group.getId()));
         }
-        LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
+        //LOG.info("sLogin={}, asID_Group={}", sLogin, asID_Group);
 
         long stopTime = System.nanoTime();
 
@@ -1348,11 +1348,11 @@ public class DocumentStepService {
                     .filter(oRight -> asID_Group.contains(oRight.getsKey_GroupPostfix())).collect(Collectors.toList());
         }
 
-        LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
+        //LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active.getRights().stream()
                 .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix())).collect(Collectors.toList());
-        LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
+        //LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
 
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
 
@@ -1371,7 +1371,7 @@ public class DocumentStepService {
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
-        LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
+        //LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
         Map<String, Object> mReturn = new HashMap();
 
@@ -1650,7 +1650,7 @@ public class DocumentStepService {
 
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = cloneDocumentStepSubject(
                         snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document);
-                LOG.info("aDocumentStepSubjectRight in checkDocumentInit is {}", aDocumentStepSubjectRight);
+                //LOG.info("aDocumentStepSubjectRight in checkDocumentInit is {}", aDocumentStepSubjectRight);
             }
 
         }
@@ -1800,7 +1800,7 @@ public class DocumentStepService {
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin",
                 sLogin);
-        LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
+        //LOG.info("aDocumentStepSubjectRight in method getDocumentSubmitedUnsigned = {}", aDocumentStepSubjectRight);
         DocumentStepSubjectRight oFindedDocumentStepSubjectRight;
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
@@ -1821,7 +1821,7 @@ public class DocumentStepService {
                 if (bNeedECP != null && bNeedECP != false && sDateECP == null) {
                     if (sDate != null) {
                         oFindedDocumentStepSubjectRight = oDocumentStepSubjectRight;
-                        LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
+                        //LOG.info("oFindedDocumentStepSubjectRight= {}", oFindedDocumentStepSubjectRight);
                         // Достаем nID_Process_Activiti у найденного
                         // oDocumentStepSubjectRight через DocumentStep
                         String snID_Process_Activiti = oFindedDocumentStepSubjectRight.getDocumentStep()
@@ -1887,7 +1887,7 @@ public class DocumentStepService {
                                 oDocumentSubmitedUnsignedVO.setsID_Order(sID_Order);
 
                                 aResDocumentSubmitedUnsigned.add(oDocumentSubmitedUnsignedVO);
-                                LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
+                                //LOG.info("aResDocumentSubmitedUnsigned = {}", aResDocumentSubmitedUnsigned);
                             } else {
                                 LOG.error(String.format("oProcessDefinition [id = '%s']  is null",
                                         oHistoricProcessInstance.getProcessDefinitionId()));
