@@ -55,7 +55,7 @@
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="anVibor_performer" name="Техническая переменная, для работы sShapka220, не удалять!; ;bVisible=false" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Видимість полів" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_221_ST.json')}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script  pulling data" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -269,7 +269,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[alexander.polovenko@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки.]]></activiti:string>
