@@ -10,7 +10,10 @@
     </startEvent>
     <scriptTask id="scripttask1" name="id процесу" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getProcessInstanceId();
-execution.setVariable('processInstanceId', processInstanceId)</script>
+execution.setVariable('processInstanceId', processInstanceId)
+
+//скрипт по доставанию фио автора
+//execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
     <userTask id="usertask1" name="створ автор">
       <extensionElements>
@@ -44,9 +47,9 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
@@ -86,6 +89,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
+//скрипт получения логина руководителя
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Clerk'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
@@ -526,12 +530,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="Operating" name="Операційна дирекція"></activiti:value>
           <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum8" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
           <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
