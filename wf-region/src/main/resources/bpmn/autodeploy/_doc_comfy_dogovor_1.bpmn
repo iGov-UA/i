@@ -29,10 +29,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum" required="true">
-          <activiti:value id="Operating" name="Операційна дирекція"></activiti:value>
-          <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
@@ -71,6 +68,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Shop"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
@@ -169,7 +167,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
 var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Financier'
+var sKey_GroupPostfix_New ='Comfy_Financial_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -230,6 +228,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
+         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодитися"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
