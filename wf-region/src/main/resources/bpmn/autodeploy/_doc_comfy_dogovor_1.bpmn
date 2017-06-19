@@ -16,7 +16,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
         <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
@@ -68,7 +68,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
@@ -96,9 +95,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка" type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви" type="enum" writable="false" required="true">
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" writable="false">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -174,9 +173,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка" type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви" type="enum" writable="false" required="true">
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" writable="false">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -275,9 +274,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
-          <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+        <activiti:formProperty id="sTypeDoc1" name="Заявка" type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -285,16 +284,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum" required="true">
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum">
           <activiti:value id="Operating" name="Операційна дирекція"></activiti:value>
           <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum8" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
           <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
@@ -395,9 +394,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка" type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -405,16 +404,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum" required="true">
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum">
           <activiti:value id="Operating" name="Операційна дирекція"></activiti:value>
           <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum8" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
           <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
@@ -454,9 +453,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+        <activiti:formProperty id="sTypeDoc1" name="Заявка" type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -464,16 +463,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum" required="true">
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum">
           <activiti:value id="Operating" name="Операційна дирекція"></activiti:value>
           <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum8" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
           <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
@@ -513,9 +512,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-         <activiti:formProperty id="sTypeDoc1" name="Заявка на підготовку(експертизу) документа" type="string" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+        <activiti:formProperty id="sTypeDoc1" name="Заявка" type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" default="Шкундра Євгеній Олександрович"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -523,16 +522,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum" required="true">
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ" type="enum">
           <activiti:value id="Operating" name="Операційна дирекція"></activiti:value>
           <activiti:value id="Commercial" name="Комерційна дирекція"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum8" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
           <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
