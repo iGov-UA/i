@@ -263,11 +263,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                 if (isDocumentSubmit(oRequest)) {
                     if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+                        LOG.info("--------------isDocumentSubmit (POSTPROCESSING)--------------");
+                        LOG.info("sRequestBody: {}", sRequestBody);
+                        
                         String sTaskId = (String) omRequestBody.get("taskId");
                         LOG.info("sTaskId is: {}", sTaskId);
+                        
+                        List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                                .taskId(sTaskId).list();
+                        
+                        for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                            LOG.info("oHistoricVariableInstance.getId {}", oHistoricVariableInstance.getId());
+                            LOG.info("oHistoricVariableInstance.getVariableName {}", oHistoricVariableInstance.getVariableName());
+                            LOG.info("oHistoricVariableInstance.getVariableTypeName {}", oHistoricVariableInstance.getVariableTypeName());
+                        }
+                        
+                        HistoricVariableInstance oHistoricVariableInstance =
+                            historyService.createHistoricVariableInstanceQuery().taskId(sTaskId).variableNameLike("%bOrder=true%").singleResult();
+                    
+                        if(oHistoricVariableInstance != null){
+                            LOG.info("oHistoricVariableInstance.getVariableName with like {}", oHistoricVariableInstance.getVariableName());
+                        }
+                        
                         HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
                         String processInstanceId = oHistoricTaskInstance.getProcessInstanceId();
-
+                        
                         if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                             runtimeService.setVariable(processInstanceId, "sLogin_LastSubmited", oHistoricTaskInstance.getAssignee());
                         }
@@ -278,14 +298,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))) {
                     LOG.info("--------------ALL REQUEST DOCUMENT PARAMS (POSTPROCESSING)--------------");
                     sURL = oRequest.getRequestURL().toString();
-                    LOG.info("protocolize sURL is: " + sURL);
+                    /*LOG.info("protocolize sURL is: " + sURL);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");
+                    LOG.info("-----------------------------------------------");*/
 
                     String sID_Process = null;
                     //String sID_Order = null;
@@ -418,13 +438,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 if (isUpdateTask(oRequest)) {
                     LOG.info("--------------ALL PARAMS IN SUBMIT DOCUMENT (PREPROCESSING)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
-                    LOG.info("-----------------------------------------------");
+                    /*LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     //LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");
+                    LOG.info("-----------------------------------------------");*/
                 }
 
                 if (isDocumentSubmit(oRequest)) {
