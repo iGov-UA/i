@@ -39,10 +39,6 @@ public class ArmServiceImpl implements ArmService {
 		
 	}
 
-	@Override
-	public Integer selectMaxNumber441() {
-		return armDao.selectMaxNumber441();
-	}
 	
 	
 
