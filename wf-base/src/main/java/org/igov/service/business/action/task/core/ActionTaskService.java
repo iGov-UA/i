@@ -2970,7 +2970,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
 
                 // проверяем, если даты ецп нет, но есть дата подписания - нашли
-                if (sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == null) {
+                if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)
+                        && sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == null) {
                     // Достаем nID_Process_Activiti у найденного
                     // oDocumentStepSubjectRight через DocumentStep
                     String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
@@ -2982,7 +2983,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
                     aAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                     
-                } else if (sDate == null && (bWrite == true || bWrite == false)) {
+                } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT) 
+                        && sDate == null && (bWrite == true || bWrite == false)) {
 
                     String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
                             .getSnID_Process_Activiti();
@@ -2993,7 +2995,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
                     aAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
 
-                } else  if (sDate != null || bWrite == null) {
+                } else  if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)
+                        && (sDate != null || bWrite == null)) {
 
                     String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
                             .getSnID_Process_Activiti();
@@ -3012,16 +3015,21 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             SimpleDateFormat oFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
             
             List<TaskDataVO> aTaskDataVO = new ArrayList<>();
-            for (int i = nStart; aTaskDataVO.size() < nSize; i++) {
-                Task oTask = aAllTasks.get(i);               
-                TaskDataVO oTaskDataVO = new TaskDataVO();
-                oTaskDataVO.setsProcessDefinitionId(oTask.getProcessDefinitionId());
-                oTaskDataVO.setsCreateTime(oFormatter.format(oTask.getCreateTime()));
-                oTaskDataVO.setsName(oTask.getName());
-                oTaskDataVO.setsId(oTask.getId());
-                oTaskDataVO.setsProcessInstanceId(oTask.getProcessInstanceId());
+            //паджинация: из отсортированной коллекции берем nSize тасок,
+            //брать начинаем из nStart
+            for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
+                if (nIndex < nTotalNumber) {
+                    Task oTask = aAllTasks.get(nIndex);               
                 
-                aTaskDataVO.add(oTaskDataVO);
+                    TaskDataVO oTaskDataVO = new TaskDataVO();
+                    oTaskDataVO.setsProcessDefinitionId(oTask.getProcessDefinitionId());
+                    oTaskDataVO.setsCreateTime(oFormatter.format(oTask.getCreateTime()));
+                    oTaskDataVO.setsName(oTask.getName());
+                    oTaskDataVO.setsId(oTask.getId());
+                    oTaskDataVO.setsProcessInstanceId(oTask.getProcessInstanceId());
+
+                    aTaskDataVO.add(oTaskDataVO);
+                }
             }
             
             oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);

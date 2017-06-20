@@ -1955,15 +1955,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         TaskDataResultVO aoResult = new TaskDataResultVO();
 
         try {
-            //отработанные
-            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument")) {
+            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument") || sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")
+                    || sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")) {
+                
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
-            //неотработанные    
-            } else if (sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")) {
-                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
-            //доки без ЭЦП    
-            } else if (sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")) {
-                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
+                
             } else {
 
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
