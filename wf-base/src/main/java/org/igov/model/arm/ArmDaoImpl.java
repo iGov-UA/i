@@ -426,46 +426,5 @@ public class ArmDaoImpl implements ArmDao {
 
 	}
 
-	@Override
-	public Integer selectMaxNumber441() {
-		Connection dbConnection = null;
-		PreparedStatement preparedStatement = null;
-		
-		Integer currVal=null;
-		try {
-			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
-					
-
-			// execute select SQL stetement
-			ResultSet rs = preparedStatement.executeQuery();
-
-			while (rs.next()) {
-				
-			   			
-			   currVal = rs.getInt(1);
-			}
-		} catch (Exception e) {
-			LOG.error("FAIL: {}", e.getMessage());
-		} finally {
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-				if (dbConnection != null) {
-					dbConnection.close();
-				}
-			} catch (Exception e) {
-				LOG.error("FAIL: {}", e.getMessage());
-			}
-
-		}
-		
-			
-		return currVal;
-	}
-
-
-
-
+	
 }
