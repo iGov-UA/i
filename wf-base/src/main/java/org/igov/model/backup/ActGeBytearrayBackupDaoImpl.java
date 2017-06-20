@@ -63,7 +63,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 			    }, keyHolder);*/
 			 LOG.info("actGeBytearray.getGenerated_() >>>>>>>>>> " + actGeBytearray.getGenerated_());
 			jdbcTemplate.update(insertActGeBytearrayBackup, actGeBytearray.getId_(), actGeBytearray.getRev_(),
-					actGeBytearray.getName_(), actGeBytearray.getDeployment_id_(), Base64.encodeBase64(actGeBytearray.getBytes_().getBytes()), actGeBytearray.getGenerated_());
+					actGeBytearray.getName_(), actGeBytearray.getDeployment_id_(), actGeBytearray.getBytes_().getBytes(), actGeBytearray.getGenerated_());
 			return BackupResult.fillResult("isnert ok", BackupResult.PRCODE_OK, BackupResult.PRSTATE_OK);
 		}catch (Exception e) {
             LOG.error("FAIL insertActGeBytearrayBackup: {}", e.getMessage());
