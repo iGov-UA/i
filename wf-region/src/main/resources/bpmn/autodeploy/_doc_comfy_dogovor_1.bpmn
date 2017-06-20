@@ -20,22 +20,22 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string"></activiti:formProperty>
         <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum">
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum" required="true">
           <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
           <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
         </activiti:formProperty>
@@ -46,10 +46,10 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
           <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum" required="true">
           <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum" required="true">
           <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
@@ -61,7 +61,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
@@ -69,7 +69,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
@@ -79,7 +79,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Shop"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
