@@ -48,7 +48,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 	public List<ActGeBytearray> getActGeBytearray(String condition) {
 		return jdbcTemplate.query(selectActGeByteArray,
 				BeanPropertyRowMapper.newInstance(ActGeBytearray.class),
-				condition);
+				"%"+condition);
 	}
 
 
