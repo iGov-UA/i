@@ -810,8 +810,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         
         if (oMail.getBody().contains("Шановний колего!")){
             if (generalConfig.isSelfTest()){
-                
-                oMail.send();
+                Mail oMail_New = context.getBean(Mail.class);
+                oMail_New._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
+                ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
+                ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
+                ._Port(oMail.getPort())
+                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+                oMail_New.send();
             }
         }else{
             oMail.send();
