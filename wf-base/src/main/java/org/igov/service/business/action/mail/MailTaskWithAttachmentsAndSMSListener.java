@@ -1,4 +1,4 @@
-package org.igov.service.business.action.task.systemtask.mail;
+package org.igov.service.business.action.mail;
 
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -11,12 +11,15 @@ import org.igov.io.mail.Mail;
 import javax.activation.DataSource;
 
 import static org.igov.util.ToolLuna.getProtectedNumber;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
+import static org.igov.util.ToolLuna.getProtectedNumber;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,13 +27,15 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @author BW
  */
-@Component("MailTaskWithAttachmentsAndSMS")
-public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
+@Component("MailTaskWithAttachmentsAndSMSListener")
+public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom {
 
     private Expression saAttachmentsForSend;
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
-
+    
+    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachmentsAndSMSListener.class);
+    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
