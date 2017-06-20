@@ -651,9 +651,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             throws Exception {
         
         String saToMail = getStringFromFieldExpression(to, oExecution);
+        LOG.info("saToMail: {}", saToMail);
         String sHead = getStringFromFieldExpression(subject, oExecution);
+        LOG.info("sHead: {}", sHead);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("sBodySource: {}", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
+        LOG.info("sBody: {}", sBody);
         Multipart oMultiparts = new MimeMultipart();
         Mail oMail = context.getBean(Mail.class);
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
@@ -799,7 +803,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     ._Port(oMail.getPort())
                     ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
         }*/
-        
+        LOG.info("oMail.getTo in sendMailOfTask {}", oMail.getTo());
         LOG.info("oMail.getFrom in sendMailOfTask {}", oMail.getFrom());
         LOG.info("oMail.getBody in sendMailOfTask {}", oMail.getBody());
         LOG.info("oMail.getHead in sendMailOfTask {}", oMail.getHead());
