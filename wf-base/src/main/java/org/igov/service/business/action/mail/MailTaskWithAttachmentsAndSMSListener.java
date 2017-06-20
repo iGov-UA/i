@@ -30,39 +30,33 @@ import org.springframework.web.multipart.MultipartFile;
  * @author BW
  */
 @Component("MailTaskWithAttachmentsAndSMSListener")
-public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom implements TaskListener{
+public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom implements TaskListener {
 
     private Expression saAttachmentsForSend;
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
-    
-    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachmentsAndSMSListener.class);
-    
-   @Override
-   public void notify(DelegateTask oTask){
-       
-       DelegateExecution oExecution = oTask.getExecution();
-        
-        try {
-            
-        String saToMail = getStringFromFieldExpression(to, oExecution);
-        LOG.info("saToMail {}", saToMail);
-        String sHead = getStringFromFieldExpression(subject, oExecution);
-        LOG.info("sHead {}", sHead);
-        String sBodySource = getStringFromFieldExpression(text, oExecution);
-        LOG.info("sBodySource {}", sBodySource);
-        String sBody = replaceTags(sBodySource, oExecution);
-        LOG.info("sBody {}", sBody);
-        Multipart oMultiparts = new MimeMultipart();
-        Mail oMail = context.getBean(Mail.class);
-        oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
-                ._Body(sBody)._AuthUser(mailServerUsername)
-                ._AuthPassword(mailServerPassword)._Host(mailServerHost)
-                ._Port(Integer.valueOf(mailServerPort))
-                ._SSL(bSSL)._TLS(bTLS)._oMultiparts(oMultiparts);
+    public Expression sFrom;
+    public Expression sTo;
+    public Expression sSubject;
+    public Expression sText;
 
-        String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-       
+    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachmentsAndSMSListener.class);
+
+    @Override
+    public void notify(DelegateTask oTask) {
+
+        DelegateExecution oExecution = oTask.getExecution();
+
+        this.to = sTo;
+        this.from = sFrom;
+        this.subject = sSubject;
+        this.text = sText;
+
+        try {
+
+            Mail oMail = Mail_BaseFromTask(oExecution);
+
+            String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
 
             LOG.info("sOldAttachmentsForSend: in MailTaskWithAttachmentsAndSMS: " + sAttachmentsForSend.trim());
 
@@ -112,9 +106,9 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
                     }
                 }
             }
-            
+
             sendMailOfTask(oMail, oExecution);
-            
+
         } catch (Exception ex) {
             LOG.info("Error during old file mail processing ", ex);
         }
@@ -122,8 +116,8 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
         try {
             Mail oMail = Mail_BaseFromTask(oExecution);
 
-        String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-       
+            String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+
             LOG.info("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO;
             JSONParser parser = new JSONParser();
@@ -159,14 +153,12 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
                     LOG.info("There aren't TaskAttachVO objects in mail - JSON parsing error: ", ex);
                 }
             }
-            
+
             sendMailOfTask(oMail, oExecution);
-            
+
         } catch (Exception ex) {
             LOG.info("Error during new file mail processing ", ex);
         }
-
-        
 
         try {
             System.setProperty("mail.mime.address.strict", "false");
