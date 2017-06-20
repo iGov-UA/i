@@ -651,13 +651,9 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             throws Exception {
         
         String saToMail = getStringFromFieldExpression(to, oExecution);
-        LOG.info("saToMail: {}", saToMail);
         String sHead = getStringFromFieldExpression(subject, oExecution);
-        LOG.info("sHead: {}", sHead);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        LOG.info("sBodySource: {}", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
-        LOG.info("sBody: {}", sBody);
         Multipart oMultiparts = new MimeMultipart();
         Mail oMail = context.getBean(Mail.class);
         oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
@@ -798,33 +794,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         if (generalConfig.isSelfTest() && oMail.getBody() != null && oMail.getBody().contains("Шановний колего!")) {
             oMail = context.getBean(Mail.class);
             oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
-                    //._Body(oMail.getBody())
-                    ._AuthUser(generalConfig.getsUsnameClerk())
+                    ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
                     ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
-            
-            LOG.info("oMail.getTo in sendMailOfTask {}", oMail.getTo());
-            LOG.info("oMail.getFrom in sendMailOfTask {}", oMail.getFrom());
-            LOG.info("oMail.getBody in sendMailOfTask {}", oMail.getBody());
-            LOG.info("oMail.getHead in sendMailOfTask {}", oMail.getHead());
         }
-        
-        /*if (oMail.getBody().contains("Шановний колего!")){
-            if (generalConfig.isSelfTest()){
-                Mail oMail_New = context.getBean(Mail.class);
-                oMail_New._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
-                ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
-                ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
-                ._Port(oMail.getPort())
-                ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
-                oMail_New.send();
-            }
-        }
-        else{
-            oMail.send();
-        }*/
-        
         oMail.send();
         saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
         LOG.info("sendMailOfTask ok!");
