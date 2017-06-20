@@ -802,7 +802,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     ._Body(sBody)._AuthUser(generalConfig.getsUsnameClerk())
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
-                    ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+                    ._SSL(oMail.isSSL())._TLS(oMail.isTLS())
+                    ._oMultiparts(new MimeMultipart());
             LOG.info("oMail.getFrom() {}", oMail.getFrom());
             LOG.info(" oMail.getTo() {}", oMail.getTo());
             LOG.info("oMail.getBody() {}", oMail.getBody());
