@@ -59,7 +59,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 			            if(actGeBytearray.getGenerated_()!=null){
 			            	ps.setBoolean(6, Boolean.getBoolean(actGeBytearray.getGenerated_()));
 			            }else{
-			            	ps.setNull(6, Types.VARCHAR);	
+			            	ps.setString(6, null);	
 			            }
 			            return ps;
 			        }
