@@ -798,6 +798,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
                     ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+            LOG.info("oMail.getFrom() {}", oMail.getFrom());
+            LOG.info(" oMail.getTo() {}", oMail.getTo());
+            LOG.info("oMail.getBody() {}", oMail.getBody());
+            LOG.info("oMail.getHead() {}", oMail.getHead());
+            
         }
         oMail.send();
         saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
