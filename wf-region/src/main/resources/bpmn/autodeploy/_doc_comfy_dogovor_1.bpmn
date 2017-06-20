@@ -35,21 +35,21 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType2" name="Вид договора" type="enum" required="true">
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
           <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
           <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
           <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
           <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
           <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType3" name="Вид договора" type="enum" required="true">
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
           <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sType4" name="Вид договора" type="enum" required="true">
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
           <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
@@ -77,6 +77,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
         <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
@@ -105,7 +106,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 //Клонування прав для начальника відділення
 //скрипт получения логина руководителя
 var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Clerk'
+var sKey_GroupPostfix_New ='Comfy_Author_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
