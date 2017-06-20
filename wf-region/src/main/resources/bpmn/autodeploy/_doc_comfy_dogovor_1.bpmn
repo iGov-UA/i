@@ -29,7 +29,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
           <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
@@ -68,7 +68,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Shop"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Shop"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
@@ -250,7 +250,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="scripttask10"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -621,7 +621,6 @@ false}]]></conditionExpression>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll ==
 true}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="scripttask10" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comfy_dogovor_1">
     <bpmndi:BPMNPlane bpmnElement="_doc_comfy_dogovor_1" id="BPMNPlane__doc_comfy_dogovor_1">
@@ -702,8 +701,8 @@ true}]]></conditionExpression>
         <omgdi:waypoint x="150.0" y="97.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="202.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="97.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="405.0" y="97.0"></omgdi:waypoint>
@@ -821,10 +820,6 @@ true}]]></conditionExpression>
         <omgdi:waypoint x="320.0" y="249.0"></omgdi:waypoint>
         <omgdi:waypoint x="861.0" y="249.0"></omgdi:waypoint>
         <omgdi:waypoint x="862.0" y="260.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="352.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
