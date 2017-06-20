@@ -3009,6 +3009,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 }
             }
             nTotalNumber = aAllTasks.size();
+            LOG.info("nTotalNumber={}", nTotalNumber);
             //Сортировка коллекции по дате создания таски, для реализации паджинации
             Collections.sort(aAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
             
@@ -3017,8 +3018,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             List<TaskDataVO> aTaskDataVO = new ArrayList<>();
             //паджинация: из отсортированной коллекции берем nSize тасок,
             //брать начинаем из nStart
-            for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
-                if (nIndex < nTotalNumber) {
+            for (int nIndex = nStart; aTaskDataVO.size() <= nSize; nIndex++) {
+                if (nIndex < aAllTasks.size()) {
                     Task oTask = aAllTasks.get(nIndex);               
                 
                     TaskDataVO oTaskDataVO = new TaskDataVO();
