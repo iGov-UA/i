@@ -1095,8 +1095,9 @@ public class ActionTaskService {
 
     public List<Map<String, String>> getBusinessProcessesFieldsOfLogin(String sLogin, Boolean bDocOnly) {
 
-        List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
-                sLogin, bDocOnly);
+        //List<ProcessDefinition> aProcessDefinition_Return = getBusinessProcessesObjectsOfLogin(
+        //        sLogin, bDocOnly);
+        List<ProcessDefinition> aProcessDefinition_Return = new LinkedList();
 
         Map<String, Map<String, String>> amPropertyBP = new HashMap<String, Map<String, String>>();
         for (ProcessDefinition oProcessDefinition : aProcessDefinition_Return) {
@@ -1220,8 +1221,9 @@ public class ActionTaskService {
                 "Selecting business processes for the user with login: %s",
                 sLogin));
 
-        List<ProcessDefinition> processDefinitionsList = oRepositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
+        //List<ProcessDefinition> processDefinitionsList = oRepositoryService
+        //        .createProcessDefinitionQuery().active().latestVersion().list();
+        List<ProcessDefinition> processDefinitionsList = new LinkedList();
         if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
             LOG.info(String.format("Found %d active process definitions",
                     processDefinitionsList.size()));
