@@ -17,4 +17,10 @@
 			      <property name="autoStartScheduler" value="${flowSlot.enable}"/>
     		</bean> 
     		<bean id="jobBuilderFlowSlotsProcessor" class="org.igov.processor.JobBuilderFlowSlotsProcessor"/>
+    		
+    		 <bean id="createBackup" class="org.apache.camel.component.quartz.QuartzComponent">
+			      <property name="startDelayedSeconds" value="${cron.CreateBackup.delay}"/>
+			      <property name="autoStartScheduler" value="${createBackup.enable}"/>
+    		</bean> 
+    		<bean id="jobActGeBytearrayBackupProcessor" class="org.igov.processor.JobActGeBytearrayBackupProcessor"/>
 </beans>
