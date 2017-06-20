@@ -2829,6 +2829,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      * @param sLogin - login of user in user activity
      * @param bDocOnly
+     * @param sProcessDefinitionId
      * @return
      */
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
@@ -2885,10 +2886,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcesses(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
-    )
-            throws IOException {
-         return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
+            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value = "sProcessDefinitionId", required = false) String sProcessDefinitionId
+    ) throws IOException {
+
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
     @ApiOperation(value = "Получение списка полей бизнес процессов, к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка полей бизнес процессов к которым у пользователя есть доступ #####\n\n"
@@ -2909,12 +2911,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcessesFields(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
+            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value = "sProcessDefinitionId", required = false) String sProcessDefinitionId
     )
             throws IOException {
     	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {}", sLogin, bDocOnly);
     	
-        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
+        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
     @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")

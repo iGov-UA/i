@@ -791,18 +791,28 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
-        if (generalConfig.isSelfTest() && oMail.getBody() != null && oMail.getBody().contains("Шановний колего!")) {
-            //oMail = context.getBean(Mail.class);
-            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())
-                    //._Head(oMail.getHead())
-                    //._Body(oMail.getBody())
-                    ._AuthUser(generalConfig.getsUsnameClerk())
+        /*if (generalConfig.isSelfTest() && oMail.getBody() != null && oMail.getBody().contains("Шановний колего!")) {
+            oMail = context.getBean(Mail.class);
+            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
+                    ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
-                    ._SSL(oMail.isSSL())
-                    ._TLS(oMail.isTLS());
+                    ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+        }*/
+        
+        LOG.info("oMail.getFrom in sendMailOfTask {}", oMail.getFrom());
+        LOG.info("oMail.getBody in sendMailOfTask {}", oMail.getBody());
+        LOG.info("oMail.getHead in sendMailOfTask {}", oMail.getHead());
+        
+        if (oMail.getBody().contains("Шановний колего!")){
+            if (generalConfig.isSelfTest()){
+                
+                oMail.send();
+            }
+        }else{
+            oMail.send();
         }
-        oMail.send();
+        
         saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
         LOG.info("sendMailOfTask ok!");
         /*if(oMail.getBody()!=null && !oMail.getBody().contains("Шановний колего!")) {
