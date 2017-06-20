@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.TaskListener;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import static org.igov.util.ToolLuna.getProtectedNumber;
@@ -28,21 +30,33 @@ import org.springframework.web.multipart.MultipartFile;
  * @author BW
  */
 @Component("MailTaskWithAttachmentsAndSMSListener")
-public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom {
+public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom implements TaskListener {
 
     private Expression saAttachmentsForSend;
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
-    
+    public Expression sFrom;
+    public Expression sTo;
+    public Expression sSubject;
+    public Expression sText;
+
     private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachmentsAndSMSListener.class);
-    
+
     @Override
-    public void execute(DelegateExecution oExecution) throws Exception {
+    public void notify(DelegateTask oTask) {
 
-        Mail oMail = Mail_BaseFromTask(oExecution);
+        DelegateExecution oExecution = oTask.getExecution();
 
-        String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+        this.to = sTo;
+        this.from = sFrom;
+        this.subject = sSubject;
+        this.text = sText;
+
         try {
+
+            Mail oMail = Mail_BaseFromTask(oExecution);
+
+            String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
 
             LOG.info("sOldAttachmentsForSend: in MailTaskWithAttachmentsAndSMS: " + sAttachmentsForSend.trim());
 
@@ -92,11 +106,18 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
                     }
                 }
             }
+
+            sendMailOfTask(oMail, oExecution);
+
         } catch (Exception ex) {
             LOG.info("Error during old file mail processing ", ex);
         }
 
         try {
+            Mail oMail = Mail_BaseFromTask(oExecution);
+
+            String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+
             LOG.info("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO;
             JSONParser parser = new JSONParser();
@@ -132,11 +153,12 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
                     LOG.info("There aren't TaskAttachVO objects in mail - JSON parsing error: ", ex);
                 }
             }
+
+            sendMailOfTask(oMail, oExecution);
+
         } catch (Exception ex) {
             LOG.info("Error during new file mail processing ", ex);
         }
-
-        sendMailOfTask(oMail, oExecution);
 
         try {
             System.setProperty("mail.mime.address.strict", "false");
@@ -154,7 +176,7 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
             }
         } catch (Exception ex) {
             LOG.error("Eror during sms sending in MailTaskWithAttachmentsAndSMS:", ex);
-            throw ex;
+            //throw ex;
         }
     }
 
