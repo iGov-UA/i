@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.TaskListener;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import static org.igov.util.ToolLuna.getProtectedNumber;
@@ -28,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author BW
  */
 @Component("MailTaskWithAttachmentsAndSMSListener")
-public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom {
+public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCustom implements TaskListener{
 
     private Expression saAttachmentsForSend;
     protected Expression sPhone_SMS;
@@ -36,13 +38,31 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
     
     private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachmentsAndSMSListener.class);
     
-    @Override
-    public void execute(DelegateExecution oExecution) throws Exception {
-
-        Mail oMail = Mail_BaseFromTask(oExecution);
+   @Override
+   public void notify(DelegateTask oTask){
+       
+       DelegateExecution oExecution = oTask.getExecution();
+        
+        try {
+            
+        String saToMail = getStringFromFieldExpression(to, oExecution);
+        LOG.info("saToMail {}", saToMail);
+        String sHead = getStringFromFieldExpression(subject, oExecution);
+        LOG.info("sHead {}", sHead);
+        String sBodySource = getStringFromFieldExpression(text, oExecution);
+        LOG.info("sBodySource {}", sBodySource);
+        String sBody = replaceTags(sBodySource, oExecution);
+        LOG.info("sBody {}", sBody);
+        Multipart oMultiparts = new MimeMultipart();
+        Mail oMail = context.getBean(Mail.class);
+        oMail._From(mailAddressNoreplay)._To(saToMail)._Head(sHead)
+                ._Body(sBody)._AuthUser(mailServerUsername)
+                ._AuthPassword(mailServerPassword)._Host(mailServerHost)
+                ._Port(Integer.valueOf(mailServerPort))
+                ._SSL(bSSL)._TLS(bTLS)._oMultiparts(oMultiparts);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-        try {
+       
 
             LOG.info("sOldAttachmentsForSend: in MailTaskWithAttachmentsAndSMS: " + sAttachmentsForSend.trim());
 
@@ -92,11 +112,18 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
                     }
                 }
             }
+            
+            sendMailOfTask(oMail, oExecution);
+            
         } catch (Exception ex) {
             LOG.info("Error during old file mail processing ", ex);
         }
 
         try {
+            Mail oMail = Mail_BaseFromTask(oExecution);
+
+        String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+       
             LOG.info("sAttachmentsForSend after parsing: " + sAttachmentsForSend);
             JSONObject oJsonTaskAttachVO;
             JSONParser parser = new JSONParser();
@@ -132,11 +159,14 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
                     LOG.info("There aren't TaskAttachVO objects in mail - JSON parsing error: ", ex);
                 }
             }
+            
+            sendMailOfTask(oMail, oExecution);
+            
         } catch (Exception ex) {
             LOG.info("Error during new file mail processing ", ex);
         }
 
-        sendMailOfTask(oMail, oExecution);
+        
 
         try {
             System.setProperty("mail.mime.address.strict", "false");
@@ -154,7 +184,7 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
             }
         } catch (Exception ex) {
             LOG.error("Eror during sms sending in MailTaskWithAttachmentsAndSMS:", ex);
-            throw ex;
+            //throw ex;
         }
     }
 
