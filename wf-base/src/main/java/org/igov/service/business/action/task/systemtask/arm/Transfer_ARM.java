@@ -51,7 +51,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		LOG.info("prilog>>>>>>>>>>>> = {}",prilog);
 		dataForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 	    LOG.info("dataForTransferToArm = {}",dataForTransferToArm);
-	    dataForTransferToArm.setNumber_441(armService.selectMaxNumber441()+1);
+	    dataForTransferToArm.setNumber_441((armService.selectMaxNumber441())+1);
 	    LOG.info("number 441 in base = ", armService.selectMaxNumber441());
 	    LOG.info("dataForTransferToArm after insert = ", dataForTransferToArm );
 		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);

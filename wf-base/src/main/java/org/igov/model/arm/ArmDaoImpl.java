@@ -69,6 +69,7 @@ public class ArmDaoImpl implements ArmDao {
 				dboTkModel.setOut_number(rs.getString("Out_number"));
 				dboTkModel.setData_out(rs.getDate("Data_out"));
 			    dboTkModel.setDep_number(rs.getString("Dep_number"));
+			    dboTkModel.setNumber_441(rs.getInt("Number_441"));
 			    dboTkModel.setData_in(rs.getDate("Data_in"));
 			    dboTkModel.setState(rs.getString("State"));
 			    dboTkModel.setName_object(rs.getString("Name_object"));
@@ -137,6 +138,7 @@ public class ArmDaoImpl implements ArmDao {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		DboTkResult dboTkResult = null;
+		
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(createDboTk);
@@ -426,40 +428,43 @@ public class ArmDaoImpl implements ArmDao {
 
 	@Override
 	public Integer selectMaxNumber441() {
-			Connection dbConnection = null;
-			PreparedStatement preparedStatement = null;
-			Integer maxNumber_441 = 0;
-			try {
-				dbConnection = getDBConnection();
-				preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		
+		Integer currVal=null;
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+					
+
+			// execute select SQL stetement
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
 				
-				// execute select SQL stetement
-				ResultSet rs = preparedStatement.executeQuery();
-
-				if(!rs.wasNull()){
-								  
-				    maxNumber_441 = rs.getInt("Number_441");
-				   	
+			   			
+			   currVal = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
 				}
-
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
 			} catch (Exception e) {
 				LOG.error("FAIL: {}", e.getMessage());
-			} finally {
-				try {
-					if (preparedStatement != null) {
-						preparedStatement.close();
-					}
-					if (dbConnection != null) {
-						dbConnection.close();
-					}
-				} catch (Exception e) {
-					LOG.error("FAIL: {}", e.getMessage());
-				}
 			}
-			
-			
-			return maxNumber_441;
+
 		}
+		
+			
+		return currVal;
+	}
+
 
 
 
