@@ -44,7 +44,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 		try {
 			/*jdbcTemplate.update(insertActGeBytearrayBackup, actGeBytearray.getId_(), actGeBytearray.getRev_(),
 					actGeBytearray.getName_(), actGeBytearray.getDeployment_id_(), actGeBytearray.getBytes_().getBytes(), actGeBytearray.getGenerated_());*/
-			 KeyHolder keyHolder = new GeneratedKeyHolder();
+			/* KeyHolder keyHolder = new GeneratedKeyHolder();
 			jdbcTemplate.update(new PreparedStatementCreator(){
 
 				@Override
@@ -56,10 +56,14 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 			            ps.setString(3, actGeBytearray.getName_());
 			            ps.setString(4, actGeBytearray.getDeployment_id_());
 			            ps.setBytes(5, Base64.encodeBase64(actGeBytearray.getBytes_().getBytes()));
+			           
 			            ps.setBoolean(6, actGeBytearray.getGenerated_()==null?null:Boolean.getBoolean(actGeBytearray.getGenerated_()));
 			            return ps;
 			        }
-			    }, keyHolder);
+			    }, keyHolder);*/
+			 LOG.info("actGeBytearray.getGenerated_() >>>>>>>>>> " + actGeBytearray.getGenerated_());
+			jdbcTemplate.update(insertActGeBytearrayBackup, actGeBytearray.getId_(), actGeBytearray.getRev_(),
+					actGeBytearray.getName_(), actGeBytearray.getDeployment_id_(), Base64.encodeBase64(actGeBytearray.getBytes_().getBytes()), actGeBytearray.getGenerated_());
 			return BackupResult.fillResult("isnert ok", BackupResult.PRCODE_OK, BackupResult.PRSTATE_OK);
 		}catch (Exception e) {
             LOG.error("FAIL insertActGeBytearrayBackup: {}", e.getMessage());
