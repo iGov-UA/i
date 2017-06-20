@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import org.apache.commons.codec.binary.Base64;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 			            ps.setInt(2, actGeBytearray.getRev_());
 			            ps.setString(3, actGeBytearray.getName_());
 			            ps.setString(4, actGeBytearray.getDeployment_id_());
-			            ps.setByte(5, actGeBytearray.getBytes_());
+			            ps.setBytes(5, Base64.encodeBase64(actGeBytearray.getBytes_().getBytes()));
 			            if(actGeBytearray.getGenerated_()!=null){
 			            	ps.setBoolean(6, Boolean.getBoolean(actGeBytearray.getGenerated_()));
 			            }else{
@@ -84,7 +85,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 				actGeBytearray.setRev_(result.getInt("rev_"));
 				actGeBytearray.setName_(result.getString("name_"));
 				actGeBytearray.setDeployment_id_(result.getString("deployment_id_"));
-				actGeBytearray.setBytes_(result.getByte("bytes_"));
+				actGeBytearray.setBytes_(new String(result.getBytes("bytes_")));
 				actGeBytearray.setGenerated_(result.getString("generated_"));
                 return actGeBytearray;
             }
