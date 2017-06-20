@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring"
+	xmlns:prop="http://camel.apache.org/schema/placeholder"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring 
+       http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<camelContext id="camel-context-backup.xml" trace="${routeTrace}"
+		xmlns="http://camel.apache.org/schema/spring">
+			<propertyPlaceholder id="properties" location="ref:quartzProps" />
+		<route id="Timer-createBackup" autoStartup="{{createBackup.enable}}">
+			<description>Таймер для запуска процесса очистки таблицы ActGeBytearray</description>
+			<from uri="quartz://createBackup?cron={{cron.CreateBackup.start}}" />
+			<setHeader headerName="condition">
+					<simple resultType="java.lang.String">{{condition}}</simple>
+		    </setHeader>
+		<bean id="createBackup" ref="jobActGeBytearrayBackupProcessor"
+				method="createBackup" />
+		</route>
+	</camelContext>
+</beans>
