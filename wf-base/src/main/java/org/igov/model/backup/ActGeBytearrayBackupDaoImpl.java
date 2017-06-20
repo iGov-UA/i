@@ -56,7 +56,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 			            ps.setString(3, actGeBytearray.getName_());
 			            ps.setString(4, actGeBytearray.getDeployment_id_());
 			            ps.setBytes(5, Base64.encodeBase64(actGeBytearray.getBytes_().getBytes()));
-			            ps.setString(6, actGeBytearray.getGenerated_());
+			            ps.setBoolean(6, actGeBytearray.getGenerated_()==null?null:Boolean.getBoolean(actGeBytearray.getGenerated_()));
 			            return ps;
 			        }
 			    }, keyHolder);
