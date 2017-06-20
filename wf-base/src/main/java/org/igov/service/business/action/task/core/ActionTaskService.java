@@ -3017,11 +3017,12 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             List<TaskDataVO> aTaskDataVO = new ArrayList<>();
             //паджинация: из отсортированной коллекции берем nSize тасок,
             //брать начинаем из nStart
-            for (int nIndex = nStart; aTaskDataVO.size() <= nSize; nIndex++) {
-                if (nIndex < nTotalNumber - 1) {
-                    LOG.info("nIndex={}", nIndex);
-                    Task oTask = aAllTasks.get(nIndex);               
+            for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
                 
+                if (nIndex < nTotalNumber) {
+                    
+                    Task oTask = aAllTasks.get(nIndex);  
+                    
                     TaskDataVO oTaskDataVO = new TaskDataVO();
                     oTaskDataVO.setsProcessDefinitionId(oTask.getProcessDefinitionId());
                     oTaskDataVO.setsCreateTime(oFormatter.format(oTask.getCreateTime()));
@@ -3030,6 +3031,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     oTaskDataVO.setsProcessInstanceId(oTask.getProcessInstanceId());
 
                     aTaskDataVO.add(oTaskDataVO);
+                } else {
+                    break;
                 }
             }
             
