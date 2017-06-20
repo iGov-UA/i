@@ -31,9 +31,13 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sDate" name="Дата документа" type="date"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
-          <activiti:value id="enum6" name="Управління розвитку мережі"></activiti:value>
-          <activiti:value id="enum7" name="Управління запуску торгових обєктів"></activiti:value>
-          <activiti:value id="enum8" name="Роздріб(магазини)"></activiti:value>
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sType1" name="Вид договору" type="enum" required="true">
           <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
@@ -41,6 +45,13 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
           <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
           <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
@@ -70,18 +81,10 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Shop"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sType2" name="Вид договора1" type="enum">
-          <activiti:value id="enum7" name="Договір підряду по ремонту нерухомості"></activiti:value>
-          <activiti:value id="enum8" name="Договір придбання стендів"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sType3" name="Вид договора2" type="enum">
-          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sType4" name="Вид договора3" type="enum">
-          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
-          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers4" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
