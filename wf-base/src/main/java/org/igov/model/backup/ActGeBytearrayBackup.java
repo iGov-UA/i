@@ -37,7 +37,7 @@ public class ActGeBytearrayBackup implements Serializable {
 		 private String bytes_;
 		 
 		 @JsonProperty(value = "generated")
-	     private boolean generated_;
+	     private String generated_;
 		 
 		 
 		public String getId_() {
@@ -80,11 +80,11 @@ public class ActGeBytearrayBackup implements Serializable {
 			this.bytes_ = bytes_;
 		}
 
-		public boolean isGenerated_() {
+		public String getGenerated_() {
 			return generated_;
 		}
 
-		public void setGenerated_(boolean generated_) {
+		public void setGenerated_(String generated_) {
 			this.generated_ = generated_;
 		}
 
