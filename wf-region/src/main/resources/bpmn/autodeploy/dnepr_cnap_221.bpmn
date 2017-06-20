@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_221" name="Висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки" isExecutable="true">
+    <documentation>
+    Смоктій О.Д. 20.06.2017 рефакторінг (формат листів, формат файлів, маркери перенесено в json)
+    </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -145,7 +148,7 @@
 		}
 		execution.setVariable('list_documents', res)</script>
     </scriptTask>
-    <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${vibor}">
+    <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Назва органа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -207,7 +210,7 @@
     <sequenceFlow id="flow8" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення держсанепідслужби (2-й крок)" activiti:candidateGroups="cnap_${vibor}">
+    <userTask id="usertask2" name="Підготовка відповіді після рішення держсанепідслужби (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
