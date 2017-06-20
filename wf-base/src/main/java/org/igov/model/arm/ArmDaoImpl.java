@@ -441,10 +441,9 @@ public class ArmDaoImpl implements ArmDao {
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-				DboTkModel dboTkModel = new DboTkModel();
-				dboTkModel.setNumber_441(rs.getInt("Number_441"));
+				
 			   			
-			   currVal = dboTkModel.getNumber_441();
+			   currVal = rs.getInt(1);
 			}
 		} catch (Exception e) {
 			LOG.error("FAIL: {}", e.getMessage());
