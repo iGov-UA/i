@@ -35,6 +35,13 @@ public class ArmServiceImpl implements ArmService {
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel) {
 		return armDao.updateDboTkByExpert(dboTkModel);
 		
+		
+		
+	}
+
+	@Override
+	public Integer selectMaxNumber441() {
+		return armDao.selectMaxNumber441();
 	}
 	
 	
