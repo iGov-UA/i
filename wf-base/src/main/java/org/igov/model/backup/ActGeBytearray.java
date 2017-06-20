@@ -34,7 +34,7 @@ public class ActGeBytearray implements Serializable {
 	     private String deployment_id_;
 		 
 		 @JsonProperty(value = "bytes")
-		 private String bytes_;
+		 private byte bytes_;
 		 
 		 @JsonProperty(value = "generated")
 	     private String generated_;
@@ -72,11 +72,11 @@ public class ActGeBytearray implements Serializable {
 			this.deployment_id_ = deployment_id_;
 		}
 
-		public String getBytes_() {
+		public byte getBytes_() {
 			return bytes_;
 		}
 
-		public void setBytes_(String bytes_) {
+		public void setBytes_(byte bytes_) {
 			this.bytes_ = bytes_;
 		}
 
