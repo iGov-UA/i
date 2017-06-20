@@ -1177,68 +1177,6 @@ public class ActionTaskService {
     }
 
     private List<ProcessDefinition> getProcessDefinitionOfLogin(String sLogin, Boolean bDocOnly, String sProcessDefinitionId) {    
-        /*
-        if (sLogin == null || sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for sLogin=" + sLogin);
-            throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for sLogin=" + sLogin,
-                    ProcessDefinition.class);
-        }
-        LOG.debug("Selecting business processes for the user with login: {}", sLogin);
-
-        List<ProcessDefinition> aProcessDefinition_Return = new LinkedList<>();
-        List<ProcessDefinition> aProcessDefinition = oRepositoryService
-                .createProcessDefinitionQuery()
-                .active()
-                .latestVersion().list();
-
-        
-        if (CollectionUtils.isNotEmpty(aProcessDefinition)) {
-             
-            List<Group> aGroup = oIdentityService.createGroupQuery().groupMember(sLogin).list();
-            
-            if (aGroup != null && !aGroup.isEmpty()) {
-                StringBuilder sb = new StringBuilder();
-                for (Group oGroup : aGroup) {
-                    sb.append(oGroup.getId());
-                    sb.append(",");
-                }
-                LOG.info("Found {}  groups for the user {}:{}", aGroup.size(), sLogin, sb.toString());
-            }
-            
-            LOG.debug("Found {} active process definitions", aProcessDefinition.size());
-
-            for (ProcessDefinition oProcessDefinition : aProcessDefinition) {
-
-                String sID_BP = oProcessDefinition.getId();
-
-                LOG.debug("process definition id: sID_BP={}", oProcessDefinition.getId());
-
-                if (!bDocOnly || sID_BP.startsWith("_doc_")) {
-                    Set<String> aCandidateCroupsToCheck = getGroupsOfProcessTask(oProcessDefinition);
-
-                    loadCandidateStarterGroup(oProcessDefinition, aCandidateCroupsToCheck);
-                    LOG.info("aCandidateCroupsToCheck = {}", aCandidateCroupsToCheck);
-                    for (Group oGroup : aGroup) {
-                        for (String sProcessGroupMask : aCandidateCroupsToCheck) {//asProcessGroupMask
-                            if (sProcessGroupMask.contains("${")) {
-                                sProcessGroupMask = sProcessGroupMask.replaceAll("\\$\\{?.*}", "(.*)");
-                            }
-                            if (!sProcessGroupMask.contains("*")) {
-                                if (oGroup.getId().matches(sProcessGroupMask)) {
-                                    //return true;
-                                    aProcessDefinition_Return.add(oProcessDefinition);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            LOG.info("Have not found active process definitions.");
-        }
-        
-        LOG.info("getBusinessProcessesObjectsOfLogin: aProcessDefinition_Return = {}", aProcessDefinition_Return);*/
         
         List<ProcessInstance> aAllProcessInstance = new ArrayList<>();
         
@@ -1306,8 +1244,8 @@ public class ActionTaskService {
 
         for (ProcessInstance oProcessInstance : aAllProcessInstance) {
             
-            String sProcessDefinitionIdRoot = oProcessInstance.getProcessDefinitionId()
-                                                              .substring(0, oProcessInstance.getProcessDefinitionId().indexOf(":"));
+            String sProcessDefinitionIdRoot = oProcessInstance.
+                    getProcessDefinitionId().substring(0, oProcessInstance.getProcessDefinitionId().indexOf(":"));
 
             //если в сете уже лежит такой ProcessDefinitionId, то не кладем в итоговый лист
             if (!asProcessDefinitionIdWithoutVersion.contains(sProcessDefinitionIdRoot)) {
@@ -1322,7 +1260,8 @@ public class ActionTaskService {
                         
         for (ProcessInstance oProcessInstance : aProcessInstanceWithoutDuplicates) {   
             
-            ProcessDefinition oProcessDefinition = oRepositoryService.getProcessDefinition(oProcessInstance.getProcessDefinitionId());
+            ProcessDefinition oProcessDefinition = oRepositoryService.
+                    getProcessDefinition(oProcessInstance.getProcessDefinitionId());
             aProcessDefinition_Return.add(oProcessDefinition);
         }  
         LOG.info("aProcessDefinition_Return={}", aProcessDefinition_Return);
