@@ -32,6 +32,9 @@ public class ArmDaoImpl implements ArmDao {
 	@Value("#{sqlProperties['dbo_tk.updateDboTkByExpert']}")
 	private String updateDboTkByExpert;
 	
+	@Value("#{sqlProperties['dbo_tk.selectMaxNumber441']}")
+	private String selectMaxNumber441;
+	
 	@Value("#{datasourceProps['datasource.driverClassName']}")
     private String driverClassName;
 	
@@ -53,6 +56,7 @@ public class ArmDaoImpl implements ArmDao {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(getDboTkByOutNumber);
 			preparedStatement.setString(1, outNumber);
+			
 
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
@@ -419,5 +423,44 @@ public class ArmDaoImpl implements ArmDao {
 		return dbConnection;
 
 	}
+
+	@Override
+	public Integer selectMaxNumber441() {
+			Connection dbConnection = null;
+			PreparedStatement preparedStatement = null;
+			Integer maxNumber_441 = 0;
+			try {
+				dbConnection = getDBConnection();
+				preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+				
+				// execute select SQL stetement
+				ResultSet rs = preparedStatement.executeQuery();
+
+				if(!rs.wasNull()){
+								  
+				    maxNumber_441 = rs.getInt("Number_441");
+				   	
+				}
+
+			} catch (Exception e) {
+				LOG.error("FAIL: {}", e.getMessage());
+			} finally {
+				try {
+					if (preparedStatement != null) {
+						preparedStatement.close();
+					}
+					if (dbConnection != null) {
+						dbConnection.close();
+					}
+				} catch (Exception e) {
+					LOG.error("FAIL: {}", e.getMessage());
+				}
+			}
+			
+			
+			return maxNumber_441;
+		}
+
+
 
 }

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ActGeBytearrayBackupDaoImpl.class);
-
+	
 	@Value("#{sqlProperties['select.act_ge_bytearray']}")
 	private String selectActGeByteArray;
 	
@@ -28,13 +28,13 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
+	
 
 	@Override
 	public BackupResult insertActGeBytearrayBackup(ActGeBytearray actGeBytearray) {
 		try {
 			jdbcTemplate.update(insertActGeBytearrayBackup, actGeBytearray.getId_(), actGeBytearray.getRev_(),
-					actGeBytearray.getName_(), actGeBytearray.getDeployment_id_(), actGeBytearray.getBytes_(), actGeBytearray.isGenerated_());
+					actGeBytearray.getName_(), actGeBytearray.getDeployment_id_(), actGeBytearray.getBytes_().getBytes(), actGeBytearray.getGenerated_());
 			return BackupResult.fillResult("isnert ok", BackupResult.PRCODE_OK, BackupResult.PRSTATE_OK);
 		}catch (Exception e) {
             LOG.error("FAIL insertActGeBytearrayBackup: {}", e.getMessage());
@@ -48,7 +48,7 @@ public class ActGeBytearrayBackupDaoImpl implements ActGeBytearrayBackupDao {
 	public List<ActGeBytearray> getActGeBytearray(String condition) {
 		return jdbcTemplate.query(selectActGeByteArray,
 				BeanPropertyRowMapper.newInstance(ActGeBytearray.class),
-				condition);
+				"%"+condition);
 	}
 
 
