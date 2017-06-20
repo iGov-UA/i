@@ -792,12 +792,15 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             throws Exception {
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
         if (generalConfig.isSelfTest() && oMail.getBody() != null && oMail.getBody().contains("Шановний колего!")) {
-            oMail = context.getBean(Mail.class);
-            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
-                    ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
+            //oMail = context.getBean(Mail.class);
+            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())
+                    //._Head(oMail.getHead())
+                    //._Body(oMail.getBody())
+                    ._AuthUser(generalConfig.getsUsnameClerk())
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
-                    ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+                    ._SSL(oMail.isSSL())
+                    ._TLS(oMail.isTLS());
         }
         oMail.send();
         saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
