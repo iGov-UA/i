@@ -803,11 +803,12 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
                     ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+            
+            LOG.info("oMail.getTo in sendMailOfTask {}", oMail.getTo());
+            LOG.info("oMail.getFrom in sendMailOfTask {}", oMail.getFrom());
+            LOG.info("oMail.getBody in sendMailOfTask {}", oMail.getBody());
+            LOG.info("oMail.getHead in sendMailOfTask {}", oMail.getHead());
         }
-        LOG.info("oMail.getTo in sendMailOfTask {}", oMail.getTo());
-        LOG.info("oMail.getFrom in sendMailOfTask {}", oMail.getFrom());
-        LOG.info("oMail.getBody in sendMailOfTask {}", oMail.getBody());
-        LOG.info("oMail.getHead in sendMailOfTask {}", oMail.getHead());
         
         /*if (oMail.getBody().contains("Шановний колего!")){
             if (generalConfig.isSelfTest()){
