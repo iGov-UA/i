@@ -1453,6 +1453,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Returns business processes which belong to a specified user
      *
      * @param sLogin - login of user in user activity
+     * @return processes witch relate to login
+     * @throws java.io.IOException 
      */
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
@@ -1508,8 +1510,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Deprecated //новый: getBPs 
     public @ResponseBody
     String getBusinessProcessesForUser(
-            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
-            throws IOException {
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) throws IOException {
 
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
@@ -2983,7 +2984,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //save curretn values to Form
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public HttpServletRequest saveForm(
+    public @ResponseBody String saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
             throws ParseException, CommonServiceException, IOException {
         
@@ -3025,7 +3026,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             formService.saveFormData(nID_Task, values);
             LOG.info("Process of update data finiched");
             LOG.info("saveForm ended...");
-            return req;
+            
+            return "";
         } catch (Exception e) {
             LOG.info("saveForm error...");
             String message = "The process of update variables fail.";

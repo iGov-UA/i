@@ -6,7 +6,9 @@ import java.util.List;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.igov.model.arm.ArmDao;
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.DboTkModelMaxNum;
 import org.igov.model.arm.ValidationARM;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.arm.ArmService;
@@ -46,9 +48,12 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
+		
+		
+		
 		try {
-			Integer maxValueNumber441 = armService.getMaxValue();
-			LOG.info("maxValueNumber441 = {}",maxValueNumber441==null?armService.getMaxValue():null);
+			Integer maxNum = armService.getMaxValue();
+			LOG.info("int max.... " + maxNum);
 		} catch (Exception e) {
 			LOG.info("Method didn't work >>>>>>>>>>>> ");
 			}

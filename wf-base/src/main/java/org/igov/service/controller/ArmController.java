@@ -3,6 +3,7 @@ package org.igov.service.controller;
 import java.util.List;
 
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.DboTkModelMaxNum;
 import org.igov.model.arm.DboTkResult;
 import org.igov.service.business.arm.ArmService;
 import org.slf4j.Logger;
@@ -82,6 +83,23 @@ public class ArmController {
          }
     	
     	return dboTkResult;
+    }
+    
+    
+    @ApiOperation(value = "Получение MaxNumber441 из таблицы arm.dbo.TK", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/arm/getMaxValue\n")
+    @RequestMapping(value = "/getMaxValue", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getMaxValue()
+            throws Exception {
+    	Integer maxValue = null;
+        try {
+        	maxValue = armService.getMaxValue();
+
+        } catch (Exception e) {
+        	LOG.error("FAIL: {}", e.getMessage());
+        }
+        return maxValue;
     }
 	
 }

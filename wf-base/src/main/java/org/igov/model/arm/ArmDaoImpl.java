@@ -411,37 +411,26 @@ public class ArmDaoImpl implements ArmDao {
 		return dboTkResult;
 	}
 	
-	private Connection getDBConnection() {
-		Connection dbConnection = null;
-		try {
-			Class.forName(driverClassName);
-			dbConnection = DriverManager.getConnection(
-					url, username,password);
-			return dbConnection;
-		} catch (SQLException|ClassNotFoundException e) {
-			LOG.error("FAIL: {}", e.getMessage());
-		}
-
-		return dbConnection;
-
-	}
-
 	@Override
-	public Integer getMaxValue() {
+	public List<DboTkModelMaxNum> getMaxValue() {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
-		Integer maxValue = null;
+		List<DboTkModelMaxNum> listResult = new ArrayList<>();
 		try {
 			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+			preparedStatement = dbConnection.prepareStatement(getDboTkByOutNumber);
 			
+
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 
-			 while(rs.next()){
-			maxValue = rs.getInt(1);
-				
-			 }
+			while (rs.next()) {
+				DboTkModelMaxNum dboTkModelMaxNum = new DboTkModelMaxNum();
+
+				dboTkModelMaxNum.setNumber_441(rs.getInt("Number_441"));
+			   
+				listResult.add(dboTkModelMaxNum);
+			}
 
 		} catch (Exception e) {
 			LOG.error("FAIL: {}", e.getMessage());
@@ -458,10 +447,25 @@ public class ArmDaoImpl implements ArmDao {
 			}
 
 		}
-		
-		return maxValue;
+		if(listResult.isEmpty()) {
+			return null;
+		}
+		return listResult;
+	}
+	
+	private Connection getDBConnection() {
+		Connection dbConnection = null;
+		try {
+			Class.forName(driverClassName);
+			dbConnection = DriverManager.getConnection(
+					url, username,password);
+			return dbConnection;
+		} catch (SQLException|ClassNotFoundException e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		}
+
+		return dbConnection;
+
 	}
 
-
-	
 }
