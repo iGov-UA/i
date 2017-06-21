@@ -1187,14 +1187,14 @@ public class DocumentStepService {
         }
         LOG.info("mProcessVariable(added)={}", mProcessVariable);
 
+        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
+
         List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         LOG.info("aDocumentStep={}", aDocumentStep);
 
         DocumentStep oDocumentStep_Common = aDocumentStep.stream().filter(o -> o.getsKey_Step().equals("_")).findAny()
                 .orElse(null);
         LOG.info("oDocumentStep_Common={}", oDocumentStep_Common);
-
-        String sKey_Step_Document = (String) mProcessVariable.get("sKey_Step_Document");
 
         DocumentStep oDocumentStep_Active = aDocumentStep.stream().filter(
                 o -> sKey_Step_Document == null ? o.getnOrder().equals(1) : o.getsKey_Step().equals(sKey_Step_Document))
@@ -1349,7 +1349,6 @@ public class DocumentStepService {
         }
 
         //LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
-
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active.getRights().stream()
                 .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix())).collect(Collectors.toList());
         //LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
@@ -1377,11 +1376,6 @@ public class DocumentStepService {
 
         Boolean bWrite = null;
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-            /*if (bWrite == null) {
-                bWrite = false;
-            }
-            bWrite = bWrite || oDocumentStepSubjectRight.getbWrite();*/
-
             if (oDocumentStepSubjectRight.getbWrite() != null) {
                 if (bWrite == null) {
                     bWrite = false;
@@ -1411,8 +1405,6 @@ public class DocumentStepService {
             groupSearch:
             {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                    // List<String> asID_Field_Read_Temp = new LinkedList();
-                    // List<String> asID_Field_Write_Temp = new LinkedList();
                     LOG.info("oDocumentStepSubjectRight.getsKey_GroupPostfix()={}",
                             oDocumentStepSubjectRight.getsKey_GroupPostfix());
 
@@ -1467,11 +1459,6 @@ public class DocumentStepService {
                             if (bAll || bFound) {
                                 Boolean bWriteField = oDocumentStepSubjectRightField.getbWrite();
                                 if (bNot) {
-                                    /*
-									 * if (bWriteField) {
-									 * asID_Field_Write_Temp.remove(sID); } else
-									 * { asID_Field_Read_Temp.remove(sID); }
-                                     */
                                     resultMap.remove(sID);
                                 } else if (bWriteField) {
                                     // asID_Field_Write_Temp.add(sID);
@@ -1620,27 +1607,12 @@ public class DocumentStepService {
             byte[] aByteDocument = getFileData_Pattern(sPath);
             if (aByteDocument != null && aByteDocument.length > 0) {
                 String soJSON = soJSON = Tool.sData(aByteDocument);
-                //LOG.info("soJSON={}", soJSON);
-
                 List<DocumentStep> aDocumentStep = setDocumentSteps(snID_Process_Activiti, soJSON);
                 if (aDocumentStep != null && aDocumentStep.size() > 1) {
                     sKey_Step_Document = aDocumentStep.get(1).getsKey_Step();
                     LOG.info("AFTER:snID_Process_Activiti={} sKey_Step_Document={}", snID_Process_Activiti, sKey_Step_Document);
                     runtimeService.setVariable(snID_Process_Activiti, "sKey_Step_Document", sKey_Step_Document);
                 }
-                /*List<DocumentStep> aDocumentStep = oDocumentStepDao.findAllBy("snID_Process_Activiti",
-                        snID_Process_Activiti);
-                LOG.info("aDocumentStep={}", aDocumentStep);
-                
-                if (aDocumentStep.size() > 1) {
-                    DocumentStep oDocumentStep = aDocumentStep.get(1);
-                    sKey_Step_Document = oDocumentStep.getsKey_Step();
-                } else if (aDocumentStep.size() > 0) {
-                    DocumentStep oDocumentStep = aDocumentStep.get(0);
-                    sKey_Step_Document = oDocumentStep.getsKey_Step();
-                } else {
-                    sKey_Step_Document = "_";
-                }*/
             }
 
             if (sKey_GroupPostfix != null && !sKey_GroupPostfix.trim().equals("") && sKey_GroupPostfix_New != null
@@ -1650,7 +1622,6 @@ public class DocumentStepService {
 
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = cloneDocumentStepSubject(
                         snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document);
-                //LOG.info("aDocumentStepSubjectRight in checkDocumentInit is {}", aDocumentStepSubjectRight);
             }
 
         }
