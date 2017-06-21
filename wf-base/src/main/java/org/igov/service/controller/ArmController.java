@@ -3,7 +3,6 @@ package org.igov.service.controller;
 import java.util.List;
 
 import org.igov.model.arm.DboTkModel;
-import org.igov.model.arm.DboTkModelMaxNum;
 import org.igov.model.arm.DboTkResult;
 import org.igov.service.business.arm.ArmService;
 import org.slf4j.Logger;
@@ -97,7 +96,6 @@ public class ArmController {
         	maxValue = armService.getMaxValue();
 
         } catch (Exception e) {
-        	LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
         	LOG.error("FAIL: {}", e.getMessage());
         }
         return maxValue;

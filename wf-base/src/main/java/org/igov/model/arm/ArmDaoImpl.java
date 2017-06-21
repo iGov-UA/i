@@ -18,64 +18,35 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArmDaoImpl implements ArmDao {
 	
-/*	private static final String getDboTkByOutNumber = "SELECT Id,Industry,Priznak,Out_number,Data_out,Dep_number,Number_441,Data_in,State,Name_object,"+
-			"Kod,Gruppa,Undergroup,Finans,Data_out_raz,Number_442,Winner,Kod_okpo,Phone,Srok,Expert,Summa,UAN,If_oplata,Uslovie,Bank,Smeta,DataEZ,"+
-			"Prilog,UpdateData,UpdOKBID,Notes,Arhiv,CreateDate,Zametki,Id_corp,DataBB,Priemka,Prockred,Sumkred,Sumzak,AuctionForm,Protocol_Number,"+
-			"CorrectionDoc,Prioritet,Longterm FROM \"dbo\".\"TK\" where out_number = ?";*/
-	
-	private static final String createDboTk = "insert into \"dbo\".\"TK\"(Industry,Priznak,Out_number,Data_out,Dep_number,Number_441,Data_in,State,Name_object,"+
-			"Kod,Gruppa,Undergroup,Finans,Data_out_raz,Number_442,Winner,Kod_okpo,Phone,Srok,Expert,Summa,UAN,If_oplata,Uslovie,Bank,Smeta,DataEZ,"+
-			"Prilog,UpdateData,UpdOKBID,Notes,Arhiv,CreateDate,Zametki,Id_corp,DataBB,Priemka,Prockred,Sumkred,Sumzak,AuctionForm,Protocol_Number,"+
-			"CorrectionDoc,Prioritet,Longterm) values(?, ?, ?, CONVERT(DATETIME, ?) ?, ?, CONVERT(DATETIME, ?), ?, ?,"+
-			"?, ?, ?, ?, CONVERT(DATETIME, ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CONVERT(DATETIME, ?),"+
-			"?, CONVERT(DATETIME, ?), ?, ?, ?, CONVERT(DATETIME, ?), ?, ?, CONVERT(DATETIME, ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			
-	private static final String updateDboTk = "update \"dbo\".\"TK\""+
-			"set Industry = ?,Priznak = ?,Data_out = CONVERT(DATETIME, ?),Dep_number = ?,Number_441 = ?,Data_in = CONVERT(DATETIME, ?),State = ?,Name_object = ?,"+
-			"Kod = ?,Gruppa = ?,Undergroup = ?,Finans = ?,Data_out_raz = CONVERT(DATETIME, ?),Number_442 = ?,Winner = ?,Kod_okpo = ?,Phone = ?,Srok = ?,Expert = ?,Summa = ?,UAN = ?,If_oplata = ?,Uslovie = ?,Bank = ?,Smeta = ?,DataEZ = CONVERT(DATETIME, ?),"+
-			"Prilog = ?,UpdateData = CONVERT(DATETIME, ?),UpdOKBID = ?,Notes = ?,Arhiv = ?,CreateDate = CONVERT(DATETIME, ?),Zametki = ?,Id_corp = ?,DataBB = CONVERT(DATETIME, ?),Priemka = ?,Prockred = ?,Sumkred = ?,Sumzak = ?,AuctionForm = ?,Protocol_Number = ?,"+
-			"CorrectionDoc = ?,Prioritet = ?,Longterm = ? where  Out_number = ?";
-	
-	private static final String updateDboTkByExpert = "update \"dbo\".\"TK\""+
-			"set Industry = ?,Priznak = ?,Data_out = CONVERT(DATETIME, ?),Dep_number = ?,Number_441 = ?,Data_in = CONVERT(DATETIME, ?),State = ?,Name_object = ?,"+
-			"Kod = ?,Gruppa = ?,Undergroup = ?,Finans = ?,Data_out_raz = CONVERT(DATETIME, ?),Number_442 = ?,Winner = ?,Kod_okpo = ?,Phone = ?,Srok = ?,Expert = ?,Summa = ?,UAN = ?,If_oplata = ?,Uslovie = ?,Bank = ?,Smeta = ?,DataEZ = CONVERT(DATETIME, ?),"+
-			"Prilog = ?,UpdateData = CONVERT(DATETIME, ?),UpdOKBID = ?,Notes = ?,Arhiv = ?,CreateDate = CONVERT(DATETIME, ?),Zametki = ?,Id_corp = ?,DataBB = CONVERT(DATETIME, ?),Priemka = ?,Prockred = ?,Sumkred = ?,Sumzak = ?,AuctionForm = ?,Protocol_Number = ?,"+
-			"CorrectionDoc = ?,Prioritet = ?,Longterm = ? where  Out_number = ? and Expert = ?";
-					
-	private static final String selectMaxNumber441 = "SELECT Number_441 FROM \"dbo\".\"TK\"";
-	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 	
 	 @Value("${dbo_tk.getDboTkByOutNumber}")
 	 private String getDboTkByOutNumber;
+	 
+	 @Value("${dbo_tk.createDboTk}")
+	 private String createDboTk;
+	 
+	 @Value("${dbo_tk.updateDboTk}")
+	 private String updateDboTk;
+	 
+	 @Value("${dbo_tk.updateDboTkByExpert}")
+	 private String updateDboTkByExpert;
+	 
+	 @Value("${dbo_tk.selectMaxNumber441}")
+	 private String selectMaxNumber441;
+	 
+	 @Value("${arm.driverClassName}")
+	 private String driverClassName;
+	 
+	 @Value("${arm.url}")
+	 private String url;
+	 
+	 @Value("${arm.username}")
+	 private String username;
+	 
+	 @Value("${arm.password}")
+	 private String password;
 
-	/*@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
-	private String getDboTkByOutNumber;
-	
-	@Value("#{sqlProperties['dbo_tk.createDboTk']}")
-	private String createDboTk;
-	
-	@Value("#{sqlProperties['dbo_tk.updateDboTk']}")
-	private String updateDboTk;
-	
-	@Value("#{sqlProperties['dbo_tk.updateDboTkByExpert']}")
-	private String updateDboTkByExpert;
-	
-	@Value("#{sqlProperties['dbo_tk.selectMaxNumber441']}")
-	private String selectMaxNumber441;*/
-	
-/*	@Value("#{datasourceProps['datasource.driverClassName']}")
-    private String driverClassName;
-	
-	@Value("#{datasourceProps['datasource.url']}")
-    private String url;
-	
-	@Value("#{datasourceProps['datasource.username']}")
-    private String username;
-	
-	@Value("#{datasourceProps['datasource.password']}")
-    private String password;*/
-	
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
 		Connection dbConnection = null;
@@ -441,10 +412,10 @@ public class ArmDaoImpl implements ArmDao {
 	}
 	
 	@Override
-	public List<DboTkModelMaxNum> getMaxValue() {
+	public Integer getMaxValue() {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
-		List<DboTkModelMaxNum> listResult = new ArrayList<>();
+		Integer dboTkModelMaxNum =null;
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
@@ -452,18 +423,14 @@ public class ArmDaoImpl implements ArmDao {
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				
-				DboTkModelMaxNum dboTkModelMaxNum = new DboTkModelMaxNum();
+				dboTkModelMaxNum = rs.getInt("Number_441");
 
-				dboTkModelMaxNum.setNumber_441(rs.getInt("Number_441"));
-			   
-				listResult.add(dboTkModelMaxNum);
 			}
 
 		} catch (Exception e) {
 			try {
 				throw e;
 			} catch (Exception e1) {
-				LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
 				LOG.error("FAIL: {}", e.getMessage());
 			}
 			
@@ -476,24 +443,20 @@ public class ArmDaoImpl implements ArmDao {
 					dbConnection.close();
 				}
 			} catch (Exception e) {
-				LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
 				LOG.error("FAIL: {}", e.getMessage());
 			}
 
 		}
 		
-		if(listResult.isEmpty()) {
-			return null;
-		}
-		return listResult;
+		return dboTkModelMaxNum;
 	}
 	
 	private Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			Class.forName(driverClassName);
 			dbConnection = DriverManager.getConnection(
-					"jdbc:sqlserver://77.109.59.43:14033;DatabaseName=ARM", "activiti","2xm53DhqB8VD");
+					url, username,password);
 			return dbConnection;
 		} catch (SQLException|ClassNotFoundException e) {
 			LOG.error("FAIL: {}", e.getMessage());
