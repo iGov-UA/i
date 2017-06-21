@@ -434,14 +434,14 @@ public class ArmDaoImpl implements ArmDao {
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
-			
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 
-			 while(rs.next()){
-			maxValue = rs.getInt(1);
+			while (rs.next()) {
 				
-			 }
+				maxValue = rs.getInt(1);
+			    
+			}
 
 		} catch (Exception e) {
 			LOG.error("FAIL: {}", e.getMessage());
@@ -458,10 +458,8 @@ public class ArmDaoImpl implements ArmDao {
 			}
 
 		}
-		
-		return maxValue;
+			
+	return maxValue;
 	}
-
-
-	
+		
 }
