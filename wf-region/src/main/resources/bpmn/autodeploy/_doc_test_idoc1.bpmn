@@ -24,6 +24,7 @@ execution.setVariable('sID_Order', sID_Order)
         <activiti:formProperty id="sID_Order" name="sID_Order" type="string"></activiti:formProperty>
         <activiti:formProperty id="nOrder" name="nOrder;bOrder=true" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="email" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="testfile" name="testFile; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -34,7 +35,7 @@ execution.setVariable('sID_Order', sID_Order)
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
           <activiti:field name="saAttachmentsForSend">
-            <activiti:string><![CDATA[""]]></activiti:string>
+            <activiti:expression><![CDATA[${testfile}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sPhone_SMS">
             <activiti:string><![CDATA[""]]></activiti:string>
