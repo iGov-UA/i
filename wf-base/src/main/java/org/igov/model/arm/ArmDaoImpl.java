@@ -20,7 +20,7 @@ public class ArmDaoImpl implements ArmDao {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 
-	/*@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
+	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
 	private String getDboTkByOutNumber;
 	
 	@Value("#{sqlProperties['dbo_tk.createDboTk']}")
@@ -33,9 +33,9 @@ public class ArmDaoImpl implements ArmDao {
 	private String updateDboTkByExpert;
 	
 	@Value("#{sqlProperties['dbo_tk.selectMaxNumber441']}")
-	private String selectMaxNumber441;*/
+	private String selectMaxNumber441;
 	
-	/*@Value("#{datasourceProps['datasource.driverClassName']}")
+	@Value("#{datasourceProps['datasource.driverClassName']}")
     private String driverClassName;
 	
 	@Value("#{datasourceProps['datasource.url']}")
@@ -45,8 +45,8 @@ public class ArmDaoImpl implements ArmDao {
     private String username;
 	
 	@Value("#{datasourceProps['datasource.password']}")
-    private String password;*/
-	 @Value("${dbo_tk.getDboTkByOutNumber}")
+    private String password;
+	 /*@Value("${dbo_tk.getDboTkByOutNumber}")
 	private String getDboTkByOutNumber;
 	
 	 @Value("${dbo_tk.createDboTk}")
@@ -71,7 +71,7 @@ public class ArmDaoImpl implements ArmDao {
 	 private String username;
 	 
 	 @Value("${datasource.password}")
-	 private String password;
+	 private String password;*/
 	
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
