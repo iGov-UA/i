@@ -300,7 +300,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="scripttask10"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -713,7 +713,7 @@ oDocumentStepSubmitedAll.bSubmitedAll.toString())</script>
     <sequenceFlow id="flow26" sourceRef="exclusivegateway4" targetRef="scripttask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthors'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask10" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask10" name="ПІБ автора" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>// ФИО заявителя
 var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
@@ -730,6 +730,7 @@ false}]]></conditionExpression>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll ==
 true}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="scripttask10" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comfy_dogovor_1">
     <bpmndi:BPMNPlane bpmnElement="_doc_comfy_dogovor_1" id="BPMNPlane__doc_comfy_dogovor_1">
@@ -810,8 +811,8 @@ true}]]></conditionExpression>
         <omgdi:waypoint x="150.0" y="97.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="255.0" y="97.0"></omgdi:waypoint>
-        <omgdi:waypoint x="300.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="202.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="405.0" y="97.0"></omgdi:waypoint>
@@ -925,6 +926,10 @@ true}]]></conditionExpression>
         <omgdi:waypoint x="320.0" y="249.0"></omgdi:waypoint>
         <omgdi:waypoint x="861.0" y="249.0"></omgdi:waypoint>
         <omgdi:waypoint x="862.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
