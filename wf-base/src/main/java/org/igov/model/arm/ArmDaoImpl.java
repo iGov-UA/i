@@ -18,10 +18,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArmDaoImpl implements ArmDao {
 	
+	private static final String getDboTkByOutNumber = "SELECT Id,Industry,Priznak,Out_number,Data_out,Dep_number,Number_441,Data_in,State,Name_object,"+
+			"Kod,Gruppa,Undergroup,Finans,Data_out_raz,Number_442,Winner,Kod_okpo,Phone,Srok,Expert,Summa,UAN,If_oplata,Uslovie,Bank,Smeta,DataEZ,"+
+			"Prilog,UpdateData,UpdOKBID,Notes,Arhiv,CreateDate,Zametki,Id_corp,DataBB,Priemka,Prockred,Sumkred,Sumzak,AuctionForm,Protocol_Number,"+
+			"CorrectionDoc,Prioritet,Longterm FROM \"dbo\".\"TK\" where out_number = ?";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 
-	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
-	private String getDboTkByOutNumber;
+/*	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
+	private String getDboTkByOutNumber;*/
 	
 	@Value("#{sqlProperties['dbo_tk.createDboTk']}")
 	private String createDboTk;
@@ -420,10 +425,6 @@ public class ArmDaoImpl implements ArmDao {
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement("SELECT Number_441 FROM \"dbo\".\"TK\"");
-			
-			
-			preparedStatement.setInt(1, 1);
-
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
