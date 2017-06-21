@@ -90,16 +90,16 @@ public class ArmController {
             + "https://alpha.test.region.igov.org.ua/wf/service/arm/getMaxValue\n")
     @RequestMapping(value = "/getMaxValue", method = RequestMethod.GET)
     @ResponseBody
-    public DboTkModelMaxNum getMaxValue()
+    public Integer getMaxValue()
             throws Exception {
-    	DboTkModelMaxNum dboTkModelMaxNum = null;
+    	Integer maxValue = null;
         try {
-        	dboTkModelMaxNum = armService.getMaxValue();
+        	maxValue = armService.getMaxValue();
 
         } catch (Exception e) {
         	LOG.error("FAIL: {}", e.getMessage());
         }
-        return dboTkModelMaxNum;
+        return maxValue;
     }
 	
 }

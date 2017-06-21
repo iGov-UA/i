@@ -3,7 +3,6 @@ package org.igov.service.business.arm;
 import java.util.List;
 
 import org.igov.model.arm.DboTkModel;
-import org.igov.model.arm.DboTkModelMaxNum;
 import org.igov.model.arm.DboTkResult;
 
 public interface ArmService {
@@ -16,7 +15,7 @@ public interface ArmService {
 	
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel);
 	
-	public DboTkModelMaxNum getMaxValue();
+	public Integer getMaxValue();
 	
 	
 	

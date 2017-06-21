@@ -21,19 +21,23 @@ public class DboTkModelMaxNum implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
-		 @JsonProperty(value = "maxNumber441")
-	     private Integer maxNumber441;
-		 
+	 @JsonProperty(value = "number_441")
+     private Integer number_441;
+	 
 
-		public Integer getMaxNumber441() {
-			return maxNumber441;
-		}
+	public Integer getNumber_441() {
+		return number_441;
+	}
 
 
 
-		public void setMaxNumber441(Integer maxNumber441) {
-			this.maxNumber441 = maxNumber441;
-		}
+
+
+	public void setNumber_441(Integer number_441) {
+		this.number_441 = number_441;
+	}
+
+
 
 
 

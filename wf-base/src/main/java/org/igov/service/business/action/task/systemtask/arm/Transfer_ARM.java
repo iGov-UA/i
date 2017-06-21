@@ -52,8 +52,8 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		
 		
 		try {
-			DboTkModelMaxNum dboTkModelMaxNum = armService.getMaxValue();
-			LOG.info("int max.... " + dboTkModelMaxNum.getMaxNumber441());
+			Integer maxNum = armService.getMaxValue();
+			LOG.info("int max.... " + maxNum);
 		} catch (Exception e) {
 			LOG.info("Method didn't work >>>>>>>>>>>> ");
 			}
