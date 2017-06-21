@@ -20,7 +20,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAvtor" name="Заявник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
@@ -105,12 +105,18 @@ var sKey_Step= 'step_2'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+
 //скрипт получения логина руководителя
-var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Author_Head'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+//var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Author_Head'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+//sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+//Клонування прав для начальника відділення
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+/var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
+// execution.setVariable('sID_Group_Activiti_1', obj1[0].sID_Group_Activiti)
+execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
     </scriptTask>
     <userTask id="usertask2" name="руков автора">
       <extensionElements>
@@ -189,6 +195,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin" name="Логин рук автора" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
