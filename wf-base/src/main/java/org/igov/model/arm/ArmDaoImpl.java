@@ -46,32 +46,6 @@ public class ArmDaoImpl implements ArmDao {
 	
 	@Value("#{datasourceProps['datasource.password']}")
     private String password;
-	 /*@Value("${dbo_tk.getDboTkByOutNumber}")
-	private String getDboTkByOutNumber;
-	
-	 @Value("${dbo_tk.createDboTk}")
-	private String createDboTk;
-	
-	 @Value("${dbo_tk.updateDboTk}")
-	private String updateDboTk;
-	
-	 @Value("${dbo_tk.updateDboTkByExpert}")
-	private String updateDboTkByExpert;
-	
-	 @Value("${dbo_tk.selectMaxNumber441}")
-	private String selectMaxNumber441;
-	
-	 @Value("${datasource.driverClassName}")
-	 private String driverClassName;
-	 
-	 @Value("${datasource.url}")
-	 private String url;
-	 
-	 @Value("${datasource.username}")
-	 private String username;
-	 
-	 @Value("${datasource.password}")
-	 private String password;*/
 	
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
@@ -493,9 +467,9 @@ public class ArmDaoImpl implements ArmDao {
 	private Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {
-			Class.forName(driverClassName);
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			dbConnection = DriverManager.getConnection(
-					url, username,password);
+					"jdbc:sqlserver://77.109.59.43:14033;DatabaseName=ARM", "activiti","2xm53DhqB8VD");
 			return dbConnection;
 		} catch (SQLException|ClassNotFoundException e) {
 			LOG.error("FAIL: {}", e.getMessage());
