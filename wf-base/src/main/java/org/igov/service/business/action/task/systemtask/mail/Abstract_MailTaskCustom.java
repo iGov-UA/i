@@ -790,14 +790,25 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     
     public void sendMailOfTask(Mail oMail, DelegateExecution oExecution)
             throws Exception {
+        
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
         if (generalConfig.isSelfTest() && oMail.getBody() != null && oMail.getBody().contains("Шановний колего!")) {
+            
+            String sHead = oMail.getHead();
+            String sBody = oMail.getBody();
+                    
             oMail = context.getBean(Mail.class);
-            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
-                    ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
+            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(sHead)
+                    ._Body(sBody)._AuthUser(generalConfig.getsUsnameClerk())
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
-                    ._SSL(oMail.isSSL())._TLS(oMail.isTLS());
+                    ._SSL(oMail.isSSL())._TLS(oMail.isTLS())
+                    ._oMultiparts(new MimeMultipart());
+            LOG.info("oMail.getFrom() {}", oMail.getFrom());
+            LOG.info(" oMail.getTo() {}", oMail.getTo());
+            LOG.info("oMail.getBody() {}", oMail.getBody());
+            LOG.info("oMail.getHead() {}", oMail.getHead());
+            
         }
         oMail.send();
         saveServiceMessage_Mail(oMail.getHead(), oMail.getBody(), generalConfig.getOrderId_ByProcess(Long.valueOf(oExecution.getProcessInstanceId())), oMail.getTo());
