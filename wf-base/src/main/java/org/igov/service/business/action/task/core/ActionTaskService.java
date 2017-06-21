@@ -1262,51 +1262,7 @@ public class ActionTaskService {
     @Deprecated //новый: getBusinessProcessesOfLogin 
     public List<Map<String, String>> getBusinessProcessesForUser(String sLogin) {
 
-        if (sLogin == null || sLogin.isEmpty()) {
-            LOG.error("Unable to found business processes for sLogin=" + sLogin);
-            throw new ActivitiObjectNotFoundException(
-                    "Unable to found business processes for sLogin=" + sLogin,
-                    ProcessDefinition.class);
-        }
-
-        List<Map<String, String>> result = new LinkedList<>();
-        //List<ProcessDefinition> resultProcessDefinitionList = new LinkedList<>();
-
-        List<ProcessInfoShortVO> aProcessInfoShortVO = new LinkedList<>();
-
-        LOG.info(String.format(
-                "Selecting business processes for the user with login: %s",
-                sLogin));
-
-        List<ProcessDefinition> processDefinitionsList = oRepositoryService
-                .createProcessDefinitionQuery().active().latestVersion().list();
-        if (CollectionUtils.isNotEmpty(processDefinitionsList)) {
-            LOG.info(String.format("Found %d active process definitions",
-                    processDefinitionsList.size()));
-
-            //resultProcessDefinitionList = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
-            aProcessInfoShortVO = getAvailabilityProcessDefinitionByLogin(sLogin, processDefinitionsList);
-        } else {
-            LOG.info("Have not found active process definitions.");
-        }
-
-        for (ProcessInfoShortVO oProcessInfoShortVO : aProcessInfoShortVO) {
-            Map<String, String> process = new HashMap<>();
-            process.put("sID", oProcessInfoShortVO.getsID());
-            process.put("sName", oProcessInfoShortVO.getsName());
-            LOG.info(String.format("Added record to response %s", process.toString()));
-            result.add(process);
-        }
-        /*
-        for (ProcessDefinition processDef : resultProcessDefinitionList){
-            Map<String, String> process = new HashMap<>();
-            process.put("sID", processDef.getKey());
-            process.put("sName", processDef.getName());
-            LOG.info(String.format("Added record to response %s", process.toString()));
-            result.add(process);
-        }*/
-
-        return result;
+        return getBusinessProcessesOfLogin(sLogin, false, null);
     }
 
     private List<ProcessInfoShortVO> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> aProcessDefinition) {
