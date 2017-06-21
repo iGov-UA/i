@@ -44,22 +44,7 @@ public class ArmServiceImpl implements ArmService {
 
 	@Override
 	public Integer getMaxValue() {
-		
-		List<DboTkModelMaxNum> dboTkModelMaxNumList = armDao.getMaxValue();
-		
-		final List<Integer> number441 = Lists.newArrayList(Collections2.transform(
-				dboTkModelMaxNumList, new Function<DboTkModelMaxNum, Integer>() {
-					@Override
-					public Integer apply(DboTkModelMaxNum dboTkModelMaxNum) {
-						return dboTkModelMaxNum.getNumber_441();
-					}
-				}));
-		
-		Integer maxNumber = number441.stream()
-		        .max(Comparator.comparing(i -> i)).get();
-		
-		
-		return maxNumber;
+		return armDao.getMaxValue();
 	}
 
 	

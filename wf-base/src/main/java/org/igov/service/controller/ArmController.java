@@ -97,7 +97,6 @@ public class ArmController {
         	maxValue = armService.getMaxValue();
 
         } catch (Exception e) {
-        	LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
         	LOG.error("FAIL: {}", e.getMessage());
         }
         return maxValue;
