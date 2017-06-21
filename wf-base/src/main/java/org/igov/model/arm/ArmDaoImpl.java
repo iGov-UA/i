@@ -419,7 +419,7 @@ public class ArmDaoImpl implements ArmDao {
 		List<DboTkModelMaxNum> listResult = new ArrayList<>();
 		try {
 			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+			preparedStatement = dbConnection.prepareStatement("SELECT Number_441 FROM \"dbo\".\"TK\"");
 			
 			
 			preparedStatement.setInt(1, 1);
