@@ -8,6 +8,7 @@ import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.JavaDelegate;
 import org.igov.model.arm.ArmDao;
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.DboTkModelMaxNum;
 import org.igov.model.arm.ValidationARM;
 import org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom;
 import org.igov.service.business.arm.ArmService;
@@ -32,9 +33,6 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 	@Autowired
 	private ArmService armService;
 	
-	@Autowired
-	private ArmDao armDao;
-	
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// получаю из екзекьюшена sID_order
@@ -54,10 +52,8 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		
 		
 		try {
-			int maxValueNumber441 = armDao.getMaxValue();
-			LOG.info("maxValueNumber441 = {}",maxValueNumber441==0?armDao.getMaxValue():0);
-			int max = armService.getMaxValue();
-			LOG.info("int max",max ==0? armService.getMaxValue():0);
+			DboTkModelMaxNum dboTkModelMaxNum = armService.getMaxValue();
+			LOG.info("int max.... " + dboTkModelMaxNum.getMaxNumber441());
 		} catch (Exception e) {
 			LOG.info("Method didn't work >>>>>>>>>>>> ");
 			}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.igov.model.arm.ArmDao;
 import org.igov.model.arm.DboTkModel;
+import org.igov.model.arm.DboTkModelMaxNum;
 import org.igov.model.arm.DboTkResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,13 +35,10 @@ public class ArmServiceImpl implements ArmService {
 	@Override
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel) {
 		return armDao.updateDboTkByExpert(dboTkModel);
-		
-		
-		
 	}
 
 	@Override
-	public int getMaxValue() {
+	public DboTkModelMaxNum getMaxValue() {
 		return armDao.getMaxValue();
 	}
 
