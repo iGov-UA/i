@@ -419,11 +419,14 @@ public class ArmDaoImpl implements ArmDao {
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+			LOG.info(" sql script from properties >>>>>>>>>>>> " + selectMaxNumber441);
+			
 			preparedStatement.setInt(1, 1);
 
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
+				
 				DboTkModelMaxNum dboTkModelMaxNum = new DboTkModelMaxNum();
 
 				dboTkModelMaxNum.setNumber_441(rs.getInt("Number_441"));
