@@ -20,7 +20,7 @@ public class ArmDaoImpl implements ArmDao {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 
-	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
+	/*@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
 	private String getDboTkByOutNumber;
 	
 	@Value("#{sqlProperties['dbo_tk.createDboTk']}")
@@ -33,9 +33,9 @@ public class ArmDaoImpl implements ArmDao {
 	private String updateDboTkByExpert;
 	
 	@Value("#{sqlProperties['dbo_tk.selectMaxNumber441']}")
-	private String selectMaxNumber441;
+	private String selectMaxNumber441;*/
 	
-	@Value("#{datasourceProps['datasource.driverClassName']}")
+	/*@Value("#{datasourceProps['datasource.driverClassName']}")
     private String driverClassName;
 	
 	@Value("#{datasourceProps['datasource.url']}")
@@ -45,7 +45,33 @@ public class ArmDaoImpl implements ArmDao {
     private String username;
 	
 	@Value("#{datasourceProps['datasource.password']}")
-    private String password;
+    private String password;*/
+	 @Value("${dbo_tk.getDboTkByOutNumber}")
+	private String getDboTkByOutNumber;
+	
+	 @Value("${dbo_tk.createDboTk}")
+	private String createDboTk;
+	
+	 @Value("${dbo_tk.updateDboTk}")
+	private String updateDboTk;
+	
+	 @Value("${dbo_tk.updateDboTkByExpert}")
+	private String updateDboTkByExpert;
+	
+	 @Value("${dbo_tk.selectMaxNumber441}")
+	private String selectMaxNumber441;
+	
+	 @Value("${datasource.driverClassName}")
+	 private String driverClassName;
+	 
+	 @Value("${datasource.url}")
+	 private String url;
+	 
+	 @Value("${datasource.username}")
+	 private String username;
+	 
+	 @Value("${datasource.password}")
+	 private String password;
 	
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
@@ -419,7 +445,7 @@ public class ArmDaoImpl implements ArmDao {
 		List<DboTkModelMaxNum> listResult = new ArrayList<>();
 		try {
 			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+			preparedStatement = dbConnection.prepareStatement("SELECT Number_441 FROM \"dbo\".\"TK\"");
 			
 			
 			preparedStatement.setInt(1, 1);
