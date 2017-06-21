@@ -1278,7 +1278,7 @@ public class ActionTaskService {
     @Deprecated //новый: getBusinessProcessesOfLogin 
     public List<Map<String, String>> getBusinessProcessesForUser(String sLogin) {
 
-        return getBusinessProcessesOfLogin(sLogin, null, null);
+        return getBusinessProcessesOfLogin(sLogin, false, null);
     }
 
     private List<ProcessInfoShortVO> getAvailabilityProcessDefinitionByLogin(String sLogin, List<ProcessDefinition> aProcessDefinition) {
