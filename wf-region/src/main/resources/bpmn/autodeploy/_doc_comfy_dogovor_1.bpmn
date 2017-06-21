@@ -227,7 +227,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="doc" name="Договір"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа; ;writable=false" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Оберіть управління; ;writable=false" type="enum" required="true">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
@@ -464,7 +464,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthors'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
