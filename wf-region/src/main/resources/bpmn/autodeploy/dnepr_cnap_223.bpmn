@@ -61,32 +61,9 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Видача висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Переоформлення висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="Видача дублікату висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4" name="Анулювання висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers1_1" name="Видача висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers2_2" name="Переоформлення висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers3_3" name="Видача дублікату висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers4_4" name="Анулювання висновку" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers106" name="Виконавець" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="Видача висновку в email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers6" name="Переоформлення висновку в email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="Видача дублікату висновку в email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers8" name="Анулювання висновку в email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers9" name="Видача висновку в контекст email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="Переоформлення висновку в контекст email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Видача дублікату висновку в контекст email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="Анулювання висновку в контекст email" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="Видача висновку срок" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="Переоформлення висновку срок" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="Видача дублікату висновку срок" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="Анулювання висновку срок" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker23" name="Правобережний ЦНАП" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker23_1" name="Правобережний ЦНАП_ЖД" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker24" name="Лівобережний ЦНАП" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="marker24_1" name="Лівобережний ЦНАП_ЖД" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="markers1" name="m1" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="m2" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_223_ST2.json')}"></activiti:formProperty>
+        </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${sID_Public_SubjectOrganJoin}">
@@ -132,7 +109,7 @@
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу; ;bVisible=false" type="string" default="висновок державної санітарно-епідеміологічної експертизи щодо об’єктів поводження з відходами"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви; ;bVisible=false" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
