@@ -423,7 +423,8 @@ public class ArmDaoImpl implements ArmDao {
 
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
-
+			if(rs !=null){
+			LOG.error("ResultSet>>>>: {}", rs);
 			while (rs.next()) {
 				DboTkModelMaxNum dboTkModelMaxNum = new DboTkModelMaxNum();
 
@@ -431,10 +432,16 @@ public class ArmDaoImpl implements ArmDao {
 			   
 				listResult.add(dboTkModelMaxNum);
 			}
+			}
 
 		} catch (Exception e) {
-			LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
-			LOG.error("FAIL: {}", e.getMessage());
+			try {
+				throw e;
+			} catch (Exception e1) {
+				LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+			
 		} finally {
 			try {
 				if (preparedStatement != null) {
@@ -449,6 +456,7 @@ public class ArmDaoImpl implements ArmDao {
 			}
 
 		}
+		
 		if(listResult.isEmpty()) {
 			return null;
 		}
