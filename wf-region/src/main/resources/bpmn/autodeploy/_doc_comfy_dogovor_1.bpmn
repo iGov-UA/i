@@ -107,10 +107,10 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 
 //скрипт получения логина руководителя
-var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Author_Head'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+//var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Author_Head'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+//sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 //Клонування прав для начальника відділення
 var sLoginAuthor = execution.getVariable('sLoginAuthor')
@@ -431,7 +431,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
 var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_manager'
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -901,6 +901,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask12" name="права автору, степ8" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -912,7 +913,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
 var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_manager'
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -1291,6 +1292,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="596.0" y="446.0"></omgdi:waypoint>
         <omgdi:waypoint x="573.0" y="463.0"></omgdi:waypoint>
+        <omgdi:waypoint x="519.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
