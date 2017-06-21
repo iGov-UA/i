@@ -35,9 +35,21 @@
         <activiti:formProperty id="nFile_StatVutiag" name="Витяг зі статуту;(відскануйте частину статуту що дає вам право отримувати такі ділянки) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження;(завантажте сканкопію документа, що підтверджує ваше право подавати заяву від юридичної особи) ;bNew=true" type="file" required="true"></activiti:formProperty>
         
+        <activiti:formProperty id="markersLine_Z" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Z&quot;:{&quot;aElement_ID&quot;:[&quot;sZemNom&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sZemNom" name="№ земельної ділянки" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sZemKSP" name="Назва колишнього Колгоспно сільського підприємства" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dZemPlosh" name="Площа ділянки (га)" type="double" required="true"></activiti:formProperty>
         
-        
-        
+        <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_VukMap&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_VukMap" name="Мапа з розташуванням ділянки;(викопіювання з кадастрової карти або інші графічні матеріали) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Pay" name="Сертифікат на право на земельну ділянку;(пай) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ProgZem" name="Проект землеустрою щодо відведення ділянки;(або технічна документація щодо встановлення меж ділянки) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="chekBud" name="Чи розташовано на ділянці будівлі?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_VlasnBud" name="Право власності на об'єкт нерухомого майна;(у разі наявності на ділянці будівель чи споруд) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_files" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/zem_283_F.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -128,6 +140,21 @@ ${sNameOrgan}<br />
         
         <activiti:formProperty id="nFile_StatVutiag" name="Витяг зі статуту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_Z" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Z&quot;:{&quot;aElement_ID&quot;:[&quot;sZemNom&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sZemNom" name="№ земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sZemKSP" name="Назва колишнього Колгоспно сільського підприємства; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dZemPlosh" name="Площа ділянки (га); ;writable=false" type="double"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_VukMap" name="Мапа з розташуванням ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Pay" name="Сертифікат на право на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ProgZem" name="Проект землеустрою щодо відведення ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chekBud" name="Чи розташовано на ділянці будівлі?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nFile_VlasnBud" name="Право власності на об'єкт нерухомого майна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
