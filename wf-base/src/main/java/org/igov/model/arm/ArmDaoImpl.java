@@ -426,5 +426,42 @@ public class ArmDaoImpl implements ArmDao {
 
 	}
 
+	@Override
+	public Integer getMaxValue() {
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		Integer maxValue = null;
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+			
+			// execute select SQL stetement
+			ResultSet rs = preparedStatement.executeQuery();
+
+			 while(rs.next()){
+			maxValue = rs.getInt(1);
+				
+			 }
+
+		} catch (Exception e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			} catch (Exception e) {
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+
+		}
+		
+		return maxValue;
+	}
+
+
 	
 }
