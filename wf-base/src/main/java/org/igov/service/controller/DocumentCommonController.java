@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.activiti.engine.HistoryService;
 import org.igov.service.business.document.DocumentStepService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,6 @@ import org.igov.model.document.DocumentStep;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 
 @Controller
 @Api(tags = {"DocumentCommonController -- Проверки наложености ЭЦП по строкам-подписантам"})
@@ -296,7 +294,7 @@ public class DocumentCommonController {
             @ApiParam(value = "sKey_Step", required = true)
             @RequestParam(value = "sKey_Step", required = true) String sKey_Step
     ) throws Exception {
-        return getDocumentStep(snID_Process_Activiti, sKey_Step);
+        return oDocumentStepService.getDocumentStep(snID_Process_Activiti, sKey_Step);
     }
 
 }
