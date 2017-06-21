@@ -433,6 +433,7 @@ public class ArmDaoImpl implements ArmDao {
 			}
 
 		} catch (Exception e) {
+			LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
 			LOG.error("FAIL: {}", e.getMessage());
 		} finally {
 			try {
@@ -443,6 +444,7 @@ public class ArmDaoImpl implements ArmDao {
 					dbConnection.close();
 				}
 			} catch (Exception e) {
+				LOG.error("Exception>>>>>>>>: {}", e.getStackTrace());
 				LOG.error("FAIL: {}", e.getMessage());
 			}
 
