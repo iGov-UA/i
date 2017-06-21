@@ -2986,6 +2986,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public HttpServletRequest saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
             throws ParseException, CommonServiceException, IOException {
+        
+        LOG.info("saveForm started...");
         StringBuilder osRequestBody = new StringBuilder();
         BufferedReader oReader = req.getReader();
         String line;
@@ -3012,7 +3014,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } else {
                 LOG.error("Variable \"properties\" not found");
             }
-            LOG.info("properties = " + dates.toJSONString());
+            //LOG.info("properties = " + dates.toJSONString());
 
             org.json.simple.JSONObject result;
             Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
@@ -3022,8 +3024,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             formService.saveFormData(nID_Task, values);
             LOG.info("Process of update data finiched");
+            LOG.info("saveForm ended...");
             return req;
         } catch (Exception e) {
+            LOG.info("saveForm error...");
             String message = "The process of update variables fail.";
             LOG.debug(message);
             throw new CommonServiceException(
@@ -3031,7 +3035,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     message,
                     HttpStatus.FORBIDDEN);
         }
-
     }
 
     /**
