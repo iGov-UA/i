@@ -53,10 +53,11 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		
 		
 		
-		
 		try {
-			Integer maxValueNumber441 = armDao.getMaxValue();
-			LOG.info("maxValueNumber441 = {}",maxValueNumber441==null?armDao.getMaxValue():null);
+			int maxValueNumber441 = armDao.getMaxValue();
+			LOG.info("maxValueNumber441 = {}",maxValueNumber441==0?armDao.getMaxValue():0);
+			int max = armService.getMaxValue();
+			LOG.info("int max",max ==0? armService.getMaxValue():0);
 		} catch (Exception e) {
 			LOG.info("Method didn't work >>>>>>>>>>>> ");
 			}

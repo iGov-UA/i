@@ -427,10 +427,10 @@ public class ArmDaoImpl implements ArmDao {
 	}
 
 	@Override
-	public Integer getMaxValue() {
+	public int getMaxValue() {
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
-		Integer maxValue = null;
+		int maxValue = 0;
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
