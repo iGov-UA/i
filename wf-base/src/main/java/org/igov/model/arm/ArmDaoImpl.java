@@ -18,15 +18,39 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArmDaoImpl implements ArmDao {
 	
-	private static final String getDboTkByOutNumber = "SELECT Id,Industry,Priznak,Out_number,Data_out,Dep_number,Number_441,Data_in,State,Name_object,"+
+/*	private static final String getDboTkByOutNumber = "SELECT Id,Industry,Priznak,Out_number,Data_out,Dep_number,Number_441,Data_in,State,Name_object,"+
 			"Kod,Gruppa,Undergroup,Finans,Data_out_raz,Number_442,Winner,Kod_okpo,Phone,Srok,Expert,Summa,UAN,If_oplata,Uslovie,Bank,Smeta,DataEZ,"+
 			"Prilog,UpdateData,UpdOKBID,Notes,Arhiv,CreateDate,Zametki,Id_corp,DataBB,Priemka,Prockred,Sumkred,Sumzak,AuctionForm,Protocol_Number,"+
-			"CorrectionDoc,Prioritet,Longterm FROM \"dbo\".\"TK\" where out_number = ?";
+			"CorrectionDoc,Prioritet,Longterm FROM \"dbo\".\"TK\" where out_number = ?";*/
+	
+	private static final String createDboTk = "insert into \"dbo\".\"TK\"(Industry,Priznak,Out_number,Data_out,Dep_number,Number_441,Data_in,State,Name_object,"+
+			"Kod,Gruppa,Undergroup,Finans,Data_out_raz,Number_442,Winner,Kod_okpo,Phone,Srok,Expert,Summa,UAN,If_oplata,Uslovie,Bank,Smeta,DataEZ,"+
+			"Prilog,UpdateData,UpdOKBID,Notes,Arhiv,CreateDate,Zametki,Id_corp,DataBB,Priemka,Prockred,Sumkred,Sumzak,AuctionForm,Protocol_Number,"+
+			"CorrectionDoc,Prioritet,Longterm) values(?, ?, ?, CONVERT(DATETIME, ?) ?, ?, CONVERT(DATETIME, ?), ?, ?,"+
+			"?, ?, ?, ?, CONVERT(DATETIME, ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CONVERT(DATETIME, ?),"+
+			"?, CONVERT(DATETIME, ?), ?, ?, ?, CONVERT(DATETIME, ?), ?, ?, CONVERT(DATETIME, ?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			
+	private static final String updateDboTk = "update \"dbo\".\"TK\""+
+			"set Industry = ?,Priznak = ?,Data_out = CONVERT(DATETIME, ?),Dep_number = ?,Number_441 = ?,Data_in = CONVERT(DATETIME, ?),State = ?,Name_object = ?,"+
+			"Kod = ?,Gruppa = ?,Undergroup = ?,Finans = ?,Data_out_raz = CONVERT(DATETIME, ?),Number_442 = ?,Winner = ?,Kod_okpo = ?,Phone = ?,Srok = ?,Expert = ?,Summa = ?,UAN = ?,If_oplata = ?,Uslovie = ?,Bank = ?,Smeta = ?,DataEZ = CONVERT(DATETIME, ?),"+
+			"Prilog = ?,UpdateData = CONVERT(DATETIME, ?),UpdOKBID = ?,Notes = ?,Arhiv = ?,CreateDate = CONVERT(DATETIME, ?),Zametki = ?,Id_corp = ?,DataBB = CONVERT(DATETIME, ?),Priemka = ?,Prockred = ?,Sumkred = ?,Sumzak = ?,AuctionForm = ?,Protocol_Number = ?,"+
+			"CorrectionDoc = ?,Prioritet = ?,Longterm = ? where  Out_number = ?";
+	
+	private static final String updateDboTkByExpert = "update \"dbo\".\"TK\""+
+			"set Industry = ?,Priznak = ?,Data_out = CONVERT(DATETIME, ?),Dep_number = ?,Number_441 = ?,Data_in = CONVERT(DATETIME, ?),State = ?,Name_object = ?,"+
+			"Kod = ?,Gruppa = ?,Undergroup = ?,Finans = ?,Data_out_raz = CONVERT(DATETIME, ?),Number_442 = ?,Winner = ?,Kod_okpo = ?,Phone = ?,Srok = ?,Expert = ?,Summa = ?,UAN = ?,If_oplata = ?,Uslovie = ?,Bank = ?,Smeta = ?,DataEZ = CONVERT(DATETIME, ?),"+
+			"Prilog = ?,UpdateData = CONVERT(DATETIME, ?),UpdOKBID = ?,Notes = ?,Arhiv = ?,CreateDate = CONVERT(DATETIME, ?),Zametki = ?,Id_corp = ?,DataBB = CONVERT(DATETIME, ?),Priemka = ?,Prockred = ?,Sumkred = ?,Sumzak = ?,AuctionForm = ?,Protocol_Number = ?,"+
+			"CorrectionDoc = ?,Prioritet = ?,Longterm = ? where  Out_number = ? and Expert = ?";
+					
+	private static final String selectMaxNumber441 = "SELECT Number_441 FROM \"dbo\".\"TK\"";
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
+	
+	 @Value("${dbo_tk.getDboTkByOutNumber}")
+	 private String getDboTkByOutNumber;
 
-/*	@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
-	private String getDboTkByOutNumber;*/
+	/*@Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
+	private String getDboTkByOutNumber;
 	
 	@Value("#{sqlProperties['dbo_tk.createDboTk']}")
 	private String createDboTk;
@@ -38,9 +62,9 @@ public class ArmDaoImpl implements ArmDao {
 	private String updateDboTkByExpert;
 	
 	@Value("#{sqlProperties['dbo_tk.selectMaxNumber441']}")
-	private String selectMaxNumber441;
+	private String selectMaxNumber441;*/
 	
-	@Value("#{datasourceProps['datasource.driverClassName']}")
+/*	@Value("#{datasourceProps['datasource.driverClassName']}")
     private String driverClassName;
 	
 	@Value("#{datasourceProps['datasource.url']}")
@@ -50,7 +74,7 @@ public class ArmDaoImpl implements ArmDao {
     private String username;
 	
 	@Value("#{datasourceProps['datasource.password']}")
-    private String password;
+    private String password;*/
 	
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
@@ -418,13 +442,12 @@ public class ArmDaoImpl implements ArmDao {
 	
 	@Override
 	public List<DboTkModelMaxNum> getMaxValue() {
-		LOG.info(" sql script from properties >>>>>>>>>>>> " + selectMaxNumber441);
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		List<DboTkModelMaxNum> listResult = new ArrayList<>();
 		try {
 			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement("SELECT Number_441 FROM \"dbo\".\"TK\"");
+			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {

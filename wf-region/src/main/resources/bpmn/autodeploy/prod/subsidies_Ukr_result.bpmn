@@ -112,31 +112,6 @@
         <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker22" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
-        <activiti:taskListener event="complete" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
-          <activiti:field name="saAttachmentsForSend">
-            <activiti:expression><![CDATA[${result}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sPhone_SMS">
-            <activiti:string><![CDATA[${phone}]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sText_SMS">
-            <activiti:string><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sFrom">
-            <activiti:string><![CDATA[notification@igov.org.ua]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sTo">
-            <activiti:expression><![CDATA[${email}]]></activiti:expression>
-          </activiti:field>
-          <activiti:field name="sSubject">
-            <activiti:string><![CDATA[test Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sText">
-            <activiti:string><![CDATA[text]]></activiti:string>
-          </activiti:field>
-        </activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
