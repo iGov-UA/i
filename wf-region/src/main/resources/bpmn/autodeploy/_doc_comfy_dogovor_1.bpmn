@@ -425,7 +425,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <scriptTask id="scripttask6" name="права автору, степ5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_5'
+var sKey_Step= 'step_8'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -822,8 +822,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow32" sourceRef="scripttask11" targetRef="usertask8"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow33" sourceRef="usertask8" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow34" sourceRef="exclusivegateway6" targetRef="scripttask6"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="exclusivegateway6" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway6" targetRef="scripttask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway6" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask9" name="автор">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -1285,7 +1289,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdi:waypoint x="942.0" y="701.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
-        <omgdi:waypoint x="576.0" y="466.0"></omgdi:waypoint>
+        <omgdi:waypoint x="596.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="573.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
