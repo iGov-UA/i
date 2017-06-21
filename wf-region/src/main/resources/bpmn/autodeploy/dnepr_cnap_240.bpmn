@@ -3,6 +3,7 @@
   <process id="dnepr_cnap_240" name="Висновок державної санітарно-епідеміологічної експертизи на виробництво, зберігання, транспортування, використання, захоронення, знищення та утилізацію отруйних речовин, у тому числі продуктів біотехнологій та інших біологічних агентів" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною (в розмірі 200,00грн. без ПДВ за один висновок державної санітарно-епідеміологічної експертизи), при заповненні полів треба буде завантажити документ, що засвідчує внесення плати. Ви можете завантажити єлектронну квітанцію, сформовану в інтернет-банку, або платіжне доручення з відміткою банку." type="label" default="Детальні реквізити для оплати знаходяться за &lt;a href=&quot;http://e-services.dp.gov.ua/_layouts/WordViewer.aspx?id=/Lists/PermitStages/Attachments/3822/%D0%A0%D0%B5%D0%BA%D0%B2%D1%96%D0%B7%D0%B8%D1%82%D0%B8+%D1%80%D0%B0%D1%85%D1%83%D0%BD%D0%BA%D1%96%D0%B2.doc&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -13,11 +14,7 @@
           <activiti:value id="restructuring" name="Переоформлення висновку"></activiti:value>
           <activiti:value id="duplicate" name="Видача дублікату висновку"></activiti:value>
           <activiti:value id="cansel" name="Анулювання висновку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Оберіть ЦНАП Вашого міста (району)" type="enum" required="true">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
+        </activiti:formProperty>       
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
@@ -85,7 +82,7 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
+    <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -115,10 +112,6 @@
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
@@ -156,7 +149,7 @@
     <sequenceFlow id="flow8" name="status == 'attr1_wait'" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'attr1_wait'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Підготовка відповіді після рішення держсанепідслужби (2-й крок)" activiti:candidateGroups="dnepr_cnap_${vibor}">
+    <userTask id="usertask2" name="Підготовка відповіді після рішення держсанепідслужби (2-й крок)" activiti:candidateGroups="dnepr_cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -190,10 +183,6 @@
         <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="vibor" name="Обраний ЦНАП" type="enum" writable="false">
-          <activiti:value id="prav" name="ЦНАП „Правобережний”, м.Дніпропетровськ, пр.Карла Маркса, 75"></activiti:value>
-          <activiti:value id="lev" name="ЦНАП „Лівобережний”, м.Дніпропетровськ, пр.Газети „Правда”, 42"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
