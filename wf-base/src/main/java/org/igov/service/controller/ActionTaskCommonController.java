@@ -2989,7 +2989,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //save curretn values to Form
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public @ResponseBody HttpServletRequest saveForm(
+    public @ResponseBody String saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
             throws ParseException, CommonServiceException, IOException {
         
@@ -3032,7 +3032,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Process of update data finiched");
             LOG.info("saveForm ended...");
             
-            return req;
+            return "";
         } catch (Exception e) {
             LOG.info("saveForm error...");
             String message = "The process of update variables fail.";
