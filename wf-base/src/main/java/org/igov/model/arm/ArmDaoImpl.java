@@ -439,7 +439,7 @@ public class ArmDaoImpl implements ArmDao {
 
 			while (rs.next()) {
 				
-				maxValue = rs.getInt(1);
+				maxValue = rs.getInt("Number_441");
 			    
 			}
 
