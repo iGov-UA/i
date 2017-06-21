@@ -1453,8 +1453,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Returns business processes which belong to a specified user
      *
      * @param sLogin - login of user in user activity
-     * @param bDocOnly - boolean flag 
-     * @param sProcessDefinitionId - ProcessDefinitionId
      * @return processes witch relate to login
      * @throws java.io.IOException 
      */
@@ -1512,12 +1510,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Deprecated //новый: getBPs 
     public @ResponseBody
     String getBusinessProcessesForUser(
-            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
-            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value = "sProcessDefinitionId", required = false) String sProcessDefinitionId
-            ) throws IOException {
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) throws IOException {
 
-        String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly, sProcessDefinitionId));
+        String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
         return jsonRes;
     }
