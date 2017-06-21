@@ -39,6 +39,11 @@ public class ArmServiceImpl implements ArmService {
 		
 	}
 
+	@Override
+	public Integer getMaxValue() {
+		return armDao.getMaxValue();
+	}
+
 	
 	
 

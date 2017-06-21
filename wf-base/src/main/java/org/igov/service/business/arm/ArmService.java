@@ -15,6 +15,9 @@ public interface ArmService {
 	
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel);
 	
+	public Integer getMaxValue();
+	
+	
 	
 
 }
