@@ -413,13 +413,14 @@ public class ArmDaoImpl implements ArmDao {
 	
 	@Override
 	public List<DboTkModelMaxNum> getMaxValue() {
+		LOG.info(" sql script from properties >>>>>>>>>>>> " + selectMaxNumber441);
 		Connection dbConnection = null;
 		PreparedStatement preparedStatement = null;
 		List<DboTkModelMaxNum> listResult = new ArrayList<>();
 		try {
 			dbConnection = getDBConnection();
 			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
-			LOG.info(" sql script from properties >>>>>>>>>>>> " + selectMaxNumber441);
+			
 			
 			preparedStatement.setInt(1, 1);
 
