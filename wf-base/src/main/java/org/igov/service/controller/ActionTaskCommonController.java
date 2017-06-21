@@ -3026,7 +3026,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Process of update data finiched");
             LOG.info("saveForm ended...");
             
-            return "OK!";
+            return req;
         } catch (Exception e) {
             LOG.info("saveForm error...");
             String message = "The process of update variables fail.";
