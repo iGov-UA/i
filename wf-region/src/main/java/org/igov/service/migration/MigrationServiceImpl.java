@@ -26,15 +26,13 @@ import org.igov.analytic.model.source.SourceDB;
 import org.igov.analytic.model.source.SourceDBDao;
 import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.object.ObjectFileService;
-import org.igov.service.conf.AttachmetService;
+import org.igov.service.migration.exception.MigrationException;
 import org.igov.util.VariableMultipartFile;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,7 +56,6 @@ import java.util.*;
  * 4) If populating analytic tables succeeds, then 'Config' table is updated with last process_instance_id
  * 5) Corresponding record is deleted from act_hi_procinst & act_hi_taskinst (this option is disabled in development mode)
  * <p>
- * Attribute & Attribute{*type*} это к соотношению CustomProcess & CustomProcessTask
  */
 @Service
 public class MigrationServiceImpl implements MigrationService {
@@ -111,7 +108,6 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private DateTime getStartTime() {
-        //Config config = configDao.findLatestConfig();
         Config config = configDao.findBy("name", "dateLastBackup").get();
         String dateTime = config.getsValue();
         DateTime time = DateTime.parse(dateTime);//date parsing doesn't work properly
@@ -123,10 +119,12 @@ public class MigrationServiceImpl implements MigrationService {
 
     private String composeSql(DateTime startTime, String processId) {
         DateTime endTime = startTime.plusDays(3);
-        return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'" + processId + "\'";
-//        return "SELECT * from act_hi_procinst where start_time_ > TIMESTAMP \' "
-//               + startTime.toString("yyyy-MM-dd HH:mm:ss")
-//                + "\' AND start_time_ < TIMESTAMP \'" + endTime.toString("yyyy-MM-dd HH:mm:ss") + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
+        if (processId != null)
+            return "SELECT * from act_hi_procinst where proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null AND proc_inst_id_ =\'" + processId + "\'";
+        else
+            return "SELECT * from act_hi_procinst where start_time_ > TIMESTAMP \' "
+                    + startTime.toString("yyyy-MM-dd HH:mm:ss")
+                    + "\' AND start_time_ < TIMESTAMP \'" + endTime.toString("yyyy-MM-dd HH:mm:ss") + "\' AND proc_def_id_ not like \'%common_mreo_2%\' AND end_time_ is not null";
     }
 
     private void prepareAndSave(List<HistoricProcessInstance> historicProcessList) {
@@ -144,7 +142,7 @@ public class MigrationServiceImpl implements MigrationService {
         process.setoSourceDB(getSourceDBForIGov());
         process.setaAttribute(createAttributes(historicProcess.getId(), process, null));
         process.setaProcessTask(createProcessTaskList(historicProcess.getId(), process));
-        process.setsID_Data("sID_Data Process");
+        process.setsID_Data("");
         process.setCustomProcess(createCustomProcessToInsert(historicProcess, process));
         process.setaAccessGroup(getAccessGroupFromStartForm(historicProcess));//это со стартовой формы заполняется(act_hi_identitylink глянуть)
         process.setaAccessUser(null);
@@ -299,36 +297,43 @@ public class MigrationServiceImpl implements MigrationService {
                 createHistoricVariableInstanceQuery().processInstanceId(instanceId).list() :
                 historyService.
                         createHistoricVariableInstanceQuery().taskId(instanceId).list();
-
         Map<String, Object> attributes = convertToAttributesMap(variableInstanceList);
         List<Attribute> resultList = new ArrayList<>(attributes.size());
         attributes.forEach((id, value) -> {
             Attribute attribute = new Attribute();
-            if (process != null) {
+            if (process != null)
                 attribute.setoProcess(process);
-            } else {
+            else
                 attribute.setoProcessTask(processTask);
-            }
             attribute.setoAttributeTypeCustom(createAttributeTypeCustom(id, process == null ? processTask.getoProcess().getsID_() : process.getsID_()));
             attribute.setoAttributeType(getAttributeType(value, attribute, process == null ? processTask.getoProcess().getsID_() : process.getsID_()));
             attribute.setName(id);
-            attribute.setsID_("sID_ Attribute");
+            attribute.setsID_(getsID_ForAttribute(id, process == null ? processTask.getoProcess().getsID_() : process.getsID_()));
             attribute.setoAttributeName(createAttributeName(id));
-
             resultList.add(attribute);
         });
         return resultList;
+    }
+
+    private String getsID_ForAttribute(String variableId, String processId) {
+        List<HistoricVariableInstance> historicVariableInstance =
+                historyService.createNativeHistoricVariableInstanceQuery()
+                        .sql("SELECT * FROM act_hi_varinst where name_ = \'" + variableId + "\' AND proc_inst_id_ = \'" + processId + "\'").list();
+        return historicVariableInstance.get(0).getId();
     }
 
     private AttributeTypeCustom createAttributeTypeCustom(String variableId, String processId) {
         List<HistoricVariableInstance> historicVariableInstance =
                 historyService.createNativeHistoricVariableInstanceQuery()
                         .sql("SELECT * FROM act_hi_varinst where name_ = \'" + variableId + "\' AND proc_inst_id_ = \'" + processId + "\'").list();
+        if (!attributeTypeCustomDao.findBy("name", historicVariableInstance.get(0).getVariableTypeName()).isPresent())
+            throw new MigrationException("This id is missing in reference: " + historicVariableInstance.get(0).getVariableTypeName());
         return attributeTypeCustomDao.findBy("name", historicVariableInstance.get(0).getVariableTypeName()).get();
     }
 
     private AttributeName createAttributeName(String id) {
-        //return attributeNameDao.getAttributeNameByStringId(id);
+        if (!attributeNameDao.findBy("sID", id).isPresent())
+            throw new MigrationException("This sID is missing in reference (attributeNameDao): " + id);
         return attributeNameDao.findBy("sID", id).get();
     }
 
@@ -452,7 +457,6 @@ public class MigrationServiceImpl implements MigrationService {
                     + fileKey + "' doesn't have content associated with it.",
                     Attachment.class);
         }
-
         int nTo = fileName.lastIndexOf(".");
         if (nTo >= 0) {
             fileName = "attach_" + fileKey + "."
@@ -463,7 +467,6 @@ public class MigrationServiceImpl implements MigrationService {
                 fileName, contentType);
 
         byte[] result = multipartFile.getBytes();
-
         return bytesStorageAnalytic.saveData(result);
     }
 }
