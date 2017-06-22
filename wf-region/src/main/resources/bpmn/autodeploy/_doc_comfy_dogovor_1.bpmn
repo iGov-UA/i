@@ -55,7 +55,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору; ;bNew=true" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
@@ -124,7 +124,8 @@ execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви; ;writable=false" type="enum" writable="false">
+        <activiti:formProperty id="sLogin" name="ПІБ керівника автора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -158,7 +159,7 @@ execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;writable=false" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору; ;writable=false" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
@@ -196,7 +197,7 @@ execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="fDoc1" name="Договір з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLogin" name="ПІБ керівника автора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin" name="ПІБ керівника автора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -221,7 +222,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sType" name="Вид заяви; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
         </activiti:formProperty>
@@ -448,7 +449,14 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Matching_group_1'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+//права из таблицы
+//var snID_Process_Activiti = execution.getProcessInstanceId()
+//var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
+//var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Comfy', 'sTable', 'step_4',true,'sLogin_isExecute')
+
+</script>
     </scriptTask>
     <scriptTask id="scripttask8" name="права деловод,степ10" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
@@ -959,6 +967,7 @@ for (var i = 0; i&lt;aDocumentStepSubjectRight.length; i++){
 
 if(sKey_GroupPostfix_New == null){
 	sKey_GroupPostfix_New = 'Comfy_Yurist_1'
+}
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_9')</script>
     </scriptTask>
     <userTask id="usertask10" name="тот же юрист">
