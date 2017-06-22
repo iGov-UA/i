@@ -54,7 +54,19 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
-		
+		/**
+		 * Достаем макс значение из базы - будет общее для всех исполнителей в рамках одного докумаента
+		 */
+		Integer maxNum = armService.getMaxValue();
+		LOG.info("int max.... " + maxNum);
+	    int number441toModel = maxNum+1;
+	    LOG.info("int number441toModel.... " + number441toModel);
+	    dataWithExecutorForTransferToArm.setNumber_441(number441toModel);
+	    LOG.info("dataWithExecutorForTransferToArm with number441>>>>>>>>>>= {}",dataWithExecutorForTransferToArm);
+	    
+	    Integer maxNum442 = armService.getMaxValue442();
+	    LOG.info("int maxNum442.... " + maxNum442);
+	    
 	//ветка - когда назначаются исполнители	
 			if(expert==null){
 				if(dataWithExecutorForTransferToArm.getExpert()!=null){

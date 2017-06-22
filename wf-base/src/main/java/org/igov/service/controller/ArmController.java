@@ -101,4 +101,19 @@ public class ArmController {
         return maxValue;
     }
 	
+    @ApiOperation(value = "Получение MaxNumber442 из таблицы arm.dbo.TK", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/arm/getMaxValue442\n")
+    @RequestMapping(value = "/getMaxValue442", method = RequestMethod.GET)
+    @ResponseBody
+    public Integer getMaxValue442()
+            throws Exception {
+    	Integer maxValue = null;
+        try {
+        	maxValue = armService.getMaxValue442();
+
+        } catch (Exception e) {
+        	LOG.error("FAIL: {}", e.getMessage());
+        }
+        return maxValue;
+    }
 }

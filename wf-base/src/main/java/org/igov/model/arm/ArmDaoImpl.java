@@ -35,6 +35,9 @@ public class ArmDaoImpl implements ArmDao {
 	 @Value("${dbo_tk.selectMaxNumber441}")
 	 private String selectMaxNumber441;
 	 
+	 @Value("${dbo_tk.selectMaxNumber442}")
+	 private String selectMaxNumber442;
+	 
 	 @Value("${arm.driverClassName}")
 	 private String driverClassName;
 	 
@@ -451,6 +454,46 @@ public class ArmDaoImpl implements ArmDao {
 		return dboTkModelMaxNum;
 	}
 	
+	@Override
+	public Integer getMaxValue442() {
+		Connection dbConnection = null;
+		PreparedStatement preparedStatement = null;
+		Integer dboTkModelMaxNum442 =null;
+		try {
+			dbConnection = getDBConnection();
+			preparedStatement = dbConnection.prepareStatement(selectMaxNumber442);
+			// execute select SQL stetement
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				
+				dboTkModelMaxNum442 = rs.getInt("Number_442");
+
+			}
+
+		} catch (Exception e) {
+			try {
+				throw e;
+			} catch (Exception e1) {
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+			
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (dbConnection != null) {
+					dbConnection.close();
+				}
+			} catch (Exception e) {
+				LOG.error("FAIL: {}", e.getMessage());
+			}
+
+		}
+		
+		return dboTkModelMaxNum442;
+	}
+	
 	private Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {
@@ -465,5 +508,7 @@ public class ArmDaoImpl implements ArmDao {
 		return dbConnection;
 
 	}
+
+	
 
 }
