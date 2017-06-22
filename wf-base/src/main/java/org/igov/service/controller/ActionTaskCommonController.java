@@ -1784,7 +1784,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         Map<String, Object> res = new HashMap<>();
 
-        try {
+        //try {
 
             List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
@@ -1913,9 +1913,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     res.put("total", totalCountServices);
                 }
             }
-        } catch (Exception e) {
-            LOG.error("Error occured while getting list of tasks", e);
-        }
+        //} catch (Exception e) {
+        //    LOG.error("Error occured while getting list of tasks", e);
+        //}
         return res;
     }
     
