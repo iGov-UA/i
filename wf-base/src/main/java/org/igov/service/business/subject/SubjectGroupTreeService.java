@@ -348,11 +348,11 @@ public class SubjectGroupTreeService {
                 List<SubjectGroup> oSubjectGroupRoot = SubjectGroupDao.findAllBy("sID_Group_Activiti", sChain);
                 LOG.info("oSubjectGroupOrgan size={}, {}",  oSubjectGroupRoot.size(), oSubjectGroupRoot.toString());
                     
-                if(sSubjectType == "Organ"){                   
+                if(sSubjectType.equals("Organ")){                   
                     aSubjectGroupResult.addAll(oSubjectGroupRoot);
                     LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
                 }
-                else if (sSubjectType == "Human"){
+                else if (sSubjectType.equals("Human")){
                 
                     for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
                         List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
