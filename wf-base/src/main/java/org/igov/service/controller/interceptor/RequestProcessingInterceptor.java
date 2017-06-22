@@ -568,7 +568,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                     //runtimeService.setVariable(executionId, "sLogin_LastSubmited", sAssignLogin);
                     if (oCurrDocumentStep != null) {
-                        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.getRights();
+                        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oCurrDocumentStep.aDocumentStepSubjectRight();
                         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                             for (Group oGroup : aUserGroup) {
                                 LOG.info("oGroup name: {}", oGroup.getName());
@@ -592,7 +592,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                 }
                             }
                         }
-                        LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.getRights());
+                        LOG.info("oCurrDocumentStep.getRights() in interceptor is {}", oCurrDocumentStep.aDocumentStepSubjectRight());
                         List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
                         boolean bProcessClosed = aTask == null || aTask.size() == 0;
                         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
@@ -623,7 +623,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("aDocumentStep new in interceptor is {}", aNewDocumentStep);
 
                     for (DocumentStep oNewCurrDocumentStep : aNewDocumentStep) {
-                        LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.getRights());
+                        LOG.info("aDocumentStep new rights  in interceptor is {}", oNewCurrDocumentStep.aDocumentStepSubjectRight());
                     }
 
                 }

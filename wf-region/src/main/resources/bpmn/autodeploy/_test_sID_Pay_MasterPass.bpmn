@@ -9,10 +9,32 @@
 	</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+		<activiti:formProperty id="markerAddressFactual" name="для правки bankIdAddressFactual; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_IdAddressFactual&quot;:{&quot;aField_ID&quot;:[&quot;bankIdAddressFactual&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdAddressFactual&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
+		<activiti:formProperty id="markerPassport" name="для правки bankIdPassport; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;WritableFieldsOnCondition_Passport&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;],&quot;asID_Field&quot;:{&quot;sOverload&quot;:&quot;bankIdPassport&quot;},&quot;sCondition&quot;:&quot;[sOverload]!='null'&quot;}}}"></activiti:formProperty>
+
+        <activiti:formProperty id="asSelectTypeApplicant" name="Оберіть тип заявника" type="enum" default=" " required="true">
+          <activiti:value id="sFiz" name="Фізична особа"></activiti:value>
+          <activiti:value id="sJur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+
+<!-- блок для юриков -->
+        <activiti:formProperty id="markers_01" name="Дані юрособи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ - 01&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Найменування скорочене" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+
+
+<!-- блок для Физиков -->
+	
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdAddressFactual" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="email" name="Е-Mail для зворотнього зв'язку;на цей e-mail Ви отримаєте результат обробки Вашого звернення;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Pay_MasterPass" name="" type="string"></activiti:formProperty>
@@ -22,8 +44,8 @@
         <activiti:formProperty id="sVarSum_MP" name="Сума до сплати" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers_st_01" name="Сума" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_st_01&quot;:{&quot;aField_ID&quot;:[&quot;sVarSum_MP&quot;],&quot;asID_Field_sValue&quot;:[&quot;[sSum_MasterPass]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
 -->
-        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;: [{&quot;amount&quot;: &quot;110&quot;,&quot;fio&quot;: &quot;ФОП Иванов&quot;,&quot;edrpou&quot;: &quot;00000001&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-1&quot;}, {&quot;amount&quot;: &quot;120&quot;,&quot;fio&quot;: &quot;ФОП Петров&quot;,&quot;edrpou&quot;: &quot;00000002&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-2&quot;}, {&quot;amount&quot;: &quot;130&quot;,&quot;fio&quot;: &quot;ФОП Сидоров&quot;,&quot;edrpou&quot;: &quot;00000003&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-3&quot;}, {&quot;amount&quot;: &quot;140&quot;,&quot;fio&quot;: &quot;ООО Рога&quot;,&quot;edrpou&quot;: &quot;00000004&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый-4&quot;}]}"></activiti:formProperty>
-        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="Призначення_платежу_у_форматі_текст_до_100_знаків"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;: [{&quot;amount&quot;: &quot;100&quot;,&quot;fio&quot;: &quot;ФОП ЛЕГКИЙ АНТОН ВІКТОРОВИЧ&quot;,&quot;edrpou&quot;: &quot;3304313318&quot;,&quot;mfo&quot;: &quot;305299&quot;,&quot;rr&quot;: &quot;26000050270195&quot;,&quot;comment&quot;: &quot;За услуги консультирования по акту №1&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За надання послуг згідно договору №2112-2002"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Е-mail" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

@@ -34,9 +34,6 @@ public class ArmServiceImpl implements ArmService {
 	@Override
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel) {
 		return armDao.updateDboTkByExpert(dboTkModel);
-		
-		
-		
 	}
 
 	@Override

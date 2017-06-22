@@ -175,28 +175,28 @@ public class ArchiveServiceImpl implements ArchiveService {
                     stat.close();
                     stat = null;
                 }
-            } catch (Exception _) {
+            } catch (Exception ex) {
             }
             try {
                 if (null != statComplain) {
                     statComplain.close();
                     statComplain = null;
                 }
-            } catch (Exception _) {
+            } catch (Exception ex) {
             }
             try {
                 if (null != statUpdateComplain) {
                     statUpdateComplain.close();
                     statUpdateComplain = null;
                 }
-            } catch (Exception _) {
+            } catch (Exception ex) {
             }
             try {
                 if (null != conn) {
                     conn.close();
                     conn = null;
                 }
-            } catch (Exception _) {
+            } catch (Exception ex) {
             }
         }
     }
