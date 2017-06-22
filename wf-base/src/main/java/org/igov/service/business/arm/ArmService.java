@@ -17,7 +17,7 @@ public interface ArmService {
 	
 	public Integer getMaxValue();
 	
+	public Integer getMaxValue442(); 
 	
 	
-
 }

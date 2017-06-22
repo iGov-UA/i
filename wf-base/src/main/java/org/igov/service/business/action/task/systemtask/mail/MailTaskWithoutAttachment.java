@@ -1,5 +1,6 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.util.HashMap;
 import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.igov.io.mail.Mail;
@@ -21,7 +22,14 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
         
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+        
+        Map<String, Object> mOnlyDateVariables = new HashMap<>();
+
+        mExecutionVaraibles.forEach((key, value) -> {
+            mOnlyDateVariables.put(key,value.getClass().getName());
+        });
     	LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+        LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
     	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);

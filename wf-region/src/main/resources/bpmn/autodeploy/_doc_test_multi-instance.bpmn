@@ -18,7 +18,10 @@
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/test/sTable_doc_test_multi-instance.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Тестирование селекта экзекьютора; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/test/sTable_doc_test_multi-instance.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Селект экзекьютора вне таблицы; ;sID_SubjectRole=oProcessSubject_Executor_1,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=1,sID_BP=_task_test_multi-instance" type="select"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_2" name="Тестирование селекта экзекьютора; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/test/sTable_doc_test_multi-instance1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor_second" name="Селект экзекьютора вне таблицы_второй; ;sID_SubjectRole=oProcessSubject_Executor_2,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=5,sID_BP=_task_test_multi-instance" type="select"></activiti:formProperty>
        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
