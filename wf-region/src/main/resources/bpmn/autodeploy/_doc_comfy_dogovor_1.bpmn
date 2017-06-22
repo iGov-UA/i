@@ -106,17 +106,17 @@ var sKey_Step= 'step_2'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-
 //скрипт получения логина руководителя
-var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Author_Head'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-
-//Клонування прав для начальника відділення
 var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
-execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
+execution.setVariable('sLogin', obj1[0].oSubject.sLabel)
+
+//Клонування прав для начальника відділення
+var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Author_Head'
+var sKey_GroupPostfix_New = obj1[0].sID_Group_Activiti;
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask2" name="руков автора">
       <extensionElements>
