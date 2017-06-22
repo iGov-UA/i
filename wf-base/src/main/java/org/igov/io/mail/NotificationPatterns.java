@@ -5,6 +5,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import javax.mail.internet.MimeMultipart;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
