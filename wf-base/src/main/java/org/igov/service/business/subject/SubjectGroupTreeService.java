@@ -305,40 +305,84 @@ public class SubjectGroupTreeService {
      * @param sID_Group_Activiti - идентификатор группы
      * @param sSubjectType - Тип выборки: Organ- иерархия в разрезе органы,
      * Human -иерархия в разрезе людей
+     * @param nDeepLevel - 1: получаем родителя на уровень выше, 0: получаем самого верхнего родителя, null: получаем 
      * @return aSubjectGroupParent - лист который содержит в себе SubjectGroup
      * родительских департаментов
      *
      * @see SubjectGroup
      * @see SubjectGroupTree
      */
-    public List<SubjectGroup> getSubjectGroupsTreeUp(final String sID_Group_Activiti, final String sSubjectType) {
+    public List<SubjectGroup> getSubjectGroupsTreeUp(final String sID_Group_Activiti, final String sSubjectType, final Long nDeepLevel) {
 
-        List<SubjectGroup> aSubjectGroupParent = new ArrayList<>();
-
+        List<SubjectGroup> aSubjectGroupResult = new ArrayList<>();
+        
         //Получить SubjectGroup, который относятся к группе sID_Group_Activiti
         Optional<SubjectGroup> oSubjectGroup = SubjectGroupDao.findBy("sID_Group_Activiti", sID_Group_Activiti);
         LOG.info("aSubjectGroup consist: size={}, {}", oSubjectGroup, oSubjectGroup.toString());
-
+        
+        
         if (oSubjectGroup.isPresent()) {
-            //ID для которого ищем департаменты, которым он подчиняется
-            Long nID = oSubjectGroup.get().getId();
-            //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
-            List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
-            LOG.info("aSubjectGroupTree size={}, {}",  aSubjectGroupTree.size(), aSubjectGroupTree.toString());
+            if (nDeepLevel == 1){
+                //ID для которого ищем департаменты, которым он подчиняется
+                Long nID = oSubjectGroup.get().getId(); 
+                //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
+                List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
+                LOG.info("aSubjectGroupTree size={}, {}",  aSubjectGroupTree.size(), aSubjectGroupTree.toString());
 
-            for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {     
+                for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {     
                 
-                SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
-                LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
+                    SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
+                    LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
                 
-                String sSubjectGroup_ParentType = getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti());
-                if(sSubjectType == null || sSubjectGroup_ParentType.equalsIgnoreCase(sSubjectType)){
-                    aSubjectGroupParent.add(oSubjectGroup_Parent);
+                    String sSubjectGroup_ParentType = getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti());
+                    if(sSubjectType == null || sSubjectGroup_ParentType.equalsIgnoreCase(sSubjectType)){
+                        aSubjectGroupResult.add(oSubjectGroup_Parent);
+                    }
                 }
+                LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
             }
-            LOG.info("aSubjectGroupParent: " + aSubjectGroupParent.toString());
+            else if (nDeepLevel == 0){              
+                
+                String sChain = oSubjectGroup.get().getsChain();
+                
+                List<SubjectGroup> oSubjectGroupRoot = SubjectGroupDao.findAllBy("sID_Group_Activiti", sChain);
+                LOG.info("oSubjectGroupOrgan size={}, {}",  oSubjectGroupRoot.size(), oSubjectGroupRoot.toString());
+                    
+                if(sSubjectType == "Organ"){                   
+                    aSubjectGroupResult.addAll(oSubjectGroupRoot);
+                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }
+                else if (sSubjectType == "Human"){
+                
+                    for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
+                        List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
+                                findAllBy("oSubjectGroup_Parent.id", oSubjectGroupParent.getId());
+                    
+                        for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
+                            SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
+                            aSubjectGroupResult.add(oSubjcetGroupChild);
+                        }         
+                    }
+                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }
+                else if (sSubjectType == null){
+                    aSubjectGroupResult.addAll(oSubjectGroupRoot);
+                
+                    for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
+                        List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
+                                findAllBy("oSubjectGroup_Parent.id", oSubjectGroupParent.getId());
+                        LOG.info("oSubjectGroup_Parent={}", aSubjectGroupRoot);
+                    
+                        for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
+                            SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
+                            aSubjectGroupResult.add(oSubjcetGroupChild);
+                        }
+                    }
+                LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }
+            }     
         }
-        return aSubjectGroupParent;
+        return aSubjectGroupResult;
     }
 
 //------------------------------------------------------------------------------Дополнительные методы-----------------------------------------------------------------
