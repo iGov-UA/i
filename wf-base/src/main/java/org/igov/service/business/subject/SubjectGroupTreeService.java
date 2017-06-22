@@ -320,7 +320,7 @@ public class SubjectGroupTreeService {
         Optional<SubjectGroup> oSubjectGroup = SubjectGroupDao.findBy("sID_Group_Activiti", sID_Group_Activiti);
         LOG.info("aSubjectGroup consist: size={}, {}", oSubjectGroup, oSubjectGroup.toString());
         
-        
+        LOG.info("getSubjectGroupsTreeUp nDeepLevel: {}", nDeepLevel);
         if (oSubjectGroup.isPresent()) {
             if (nDeepLevel == 1){
                 //ID для которого ищем департаменты, которым он подчиняется
