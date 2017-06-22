@@ -61,6 +61,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		LOG.info("int max.... " + maxNum);
 	    int number441toModel = maxNum+1;
 	    LOG.info("int number441toModel.... " + number441toModel);
+	    
 	    /**
 		 * Достаем макс значение number 442 из базы - для каждого из исполнителей свое
 		 */
@@ -103,6 +104,8 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
+				dataWithExecutorForTransferToArm.setNumber_441(number441toModel);
+				dataWithExecutorForTransferToArm.setNumber_442(maxNum442);
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		
