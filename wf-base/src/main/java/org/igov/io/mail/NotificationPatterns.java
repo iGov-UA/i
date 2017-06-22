@@ -115,9 +115,11 @@ public class NotificationPatterns {
             String sHead = "Верифікація адреси";
             String sBody = "Код підтвердження: " + sToken;
             Mail oMail = context.getBean(Mail.class);
+            LOG.info("sMailTo in sendVerifyEmail {}", sMailTo);
             oMail._To(sMailTo)
                     ._Head(sHead)
-                    ._Body(sBody);
+                    ._Body(sBody)
+                    ._oMultiparts(new MimeMultipart());
             oMail.send();
             LOG.info("Send email with sToken={} to the sMailTo={}", sToken, sMailTo);
         } catch (Exception oException) {
