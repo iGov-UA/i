@@ -118,10 +118,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-
-    @Autowired
-    private HistoryEvent_ServiceDao historyEventServiceDao;
-
     @Autowired
     private IdentityService identityService;
 
@@ -1879,7 +1875,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<>();
 
                 //long documentListSize = 0;
-                /*if (!"Documents".equals(sFilterStatus)) {
+                if (!"Documents".equals(sFilterStatus)) {
                     for (Map<String, Object> dataElem : data) {
                         if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
                             if (bIncludeVariablesProcess) {
@@ -1895,13 +1891,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         }
                         checkDocumentIncludesData.add(dataElem);
                     }
-                }*/
-                for (Map<String, Object> dataElem : data) {
+                }
+                /*for (Map<String, Object> dataElem : data) {
                     if (bIncludeVariablesProcess) {
                         dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
                     }
                     checkDocumentIncludesData.add(dataElem);
-                }
+                }*/
 
                 LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
 
