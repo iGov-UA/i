@@ -103,7 +103,7 @@ public class ArmController {
 	
     @ApiOperation(value = "Получение MaxNumber442 из таблицы arm.dbo.TK", notes = "##### Пример:\n"
             + "https://alpha.test.region.igov.org.ua/wf/service/arm/getMaxValue442\n")
-    @RequestMapping(value = "/getMaxValue", method = RequestMethod.GET)
+    @RequestMapping(value = "/getMaxValue442", method = RequestMethod.GET)
     @ResponseBody
     public Integer getMaxValue442()
             throws Exception {
