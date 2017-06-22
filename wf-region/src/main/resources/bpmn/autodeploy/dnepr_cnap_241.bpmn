@@ -128,11 +128,30 @@
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8},${nFile9},${nFile11},${nFile12},${nFile13},${nFile13_1},${nFile14},${nFile15},${nFile16},${nFile17},${nFile18},${nFile19},${nFile21},${nFile22},${nFile23}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
+         <activiti:formProperty id="nFile1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;(документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Дані щодо реєстрації об'єкта експертизи в країні виробника (для зарубіжної продукції) та перелік країн, де зареєстрований об'єкт експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Документи з країни-постачальника (виробника), що засвідчують безпечність об'єкта експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile11" name="Нормативний документ та технічна документація, у відповідності до яких виготовлений об'єкт експертизи;(за наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile12" name="Акт про обстеження підприємства-виробника продукції (за наявності), висновки галузевих експертиз або фахівців та інші матеріали, що характерезують виробництво за показниками якості та безпеки; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile13" name="Протоколи досліджень об’єкта експертизи за показниками якості та безпеки,  також ті, які проведені в іншій лабораторії (установі); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile13_1" name="Протоколи досліджень об’єкта експертизи за показниками якості та безпеки які проведені і за кордоном; (за наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile14" name="Токсикологічне досьє (для основних діючих речовин, а також для спеціальних інгредієнтів) за розділами: гостра токсичність, підгостра токсичність, хронічна токсичність, алергенна, сенсибілітазивна, імунотоксична, тератогенна, ембріотоксична, канцерогенна, мутагенна дія тощо з посиланням на виконавця досліджень;(досьє може надаватися українською, англійською, російською мовами, а його анотована частина - у перекладі українською мовою);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile15" name="Результати клінічних, натурних випробувань, епідеміологічних, популяційних досліджень тощо або науково обгрунтовані докази їх недоцільності (у випадках передбачених законодавством України), методи контролю небезпечних факторів в об'єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile16" name="Рекомендації із застосування та інструкція для споживача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile17" name="Етикетка; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile18" name="Ветеринарний дозвіл для продукції тваринного походження та карантинний дозвіл для продукції рослинного походження, якщо їх наявність регламинтована чинним в Україні законодавством; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile19" name="Лист від виробника (власника) про надання зразків або акт відбору зразків для проведення досліджень; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile21" name="Копія зовнішньо-економічного договору (контракту) або іншого документу, що використо-вується в міжнародній практиці замість договору (контракту), та специфікація до нього, завірені у встановленому порядку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile22" name="Копії документів, що визначають країну походження товарів (сертифікат про походження тощо) та їх переклад, завірені у встановленому порядку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile23" name="Методи контролю небезпечних факторів в об’єктах експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>

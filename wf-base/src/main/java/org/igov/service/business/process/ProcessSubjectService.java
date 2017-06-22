@@ -548,7 +548,7 @@ public class ProcessSubjectService {
     }
 
     public void setProcessSubjects(Map<String, Object> mParam, String snProcess_ID) {
-
+        LOG.info("setProcessSubjects mParam" + mParam);
         try {
             ProcessSubjectStatus processSubjectStatus = processSubjectStatusDao.findByIdExpected(1L);
             DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");

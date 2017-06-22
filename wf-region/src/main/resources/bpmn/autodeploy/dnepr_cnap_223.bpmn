@@ -121,11 +121,18 @@
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6},${nFile_7},${nFile_8},${nFile_9},${nFile_11},${nFile_12}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_2" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_3" name="Спеціфікація - довідка про повний склад об'єкта експертизи та показники його ідентифікації;(з урахуванням результатів інвентаризації, перелік і характеристика відходів);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_4" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;(документ, що містить дані про показники безпечності);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_5" name="Протоколи лабораторних досліджень впливу об'єкта експертизи на навколишнє природне середовище (атмосферне повітря, повітря робочої зони, грунт, водоносний гаризонт, тощо); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_12" name="Відомості про склад і властивості відходів, що утворюються, а також ступінь небезпечності відходів для навколишнього середовища та здоров'я людини відповідно до нормативно-правових актів;(які затверджуються центральним органом виконавчої влади, що забезпечує формування державної політики у сфері санітарного та епідемічного благополуччя населення та зареєстрованих центральним органом виконавчої влади, що забезпечує формування державної політики у сфері охорони навколишнього природного середовища);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_6" name="Акт про обстеження підприємства;(за наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_11" name="Висновки галузевих експертиз або фахівців та інші матеріали, що характеризують виробництво за показниками безпечності та класами небезпеки відходів;(за наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
