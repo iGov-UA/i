@@ -322,7 +322,7 @@ public class SubjectGroupTreeService {
         
         LOG.info("getSubjectGroupsTreeUp nDeepLevel: {}", nDeepLevel);
         if (oSubjectGroup.isPresent()) {
-            if (nDeepLevel == 1){
+            if (nDeepLevel == 1 || nDeepLevel == null){
                 //ID для которого ищем департаменты, которым он подчиняется
                 Long nID = oSubjectGroup.get().getId(); 
                 //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
