@@ -113,8 +113,14 @@
         <activiti:formProperty id="marker22" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         
-        <activiti:taskListener event="complete" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
-          <activiti:field name="saAttachmentsForSend">
+       </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Скан розрахунку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMSListener}">
+         <extensionElements>
+       <activiti:field name="saAttachmentsForSend">
             <activiti:expression><![CDATA[${result}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sPhone_SMS">
@@ -124,7 +130,7 @@
             <activiti:string><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:string>
           </activiti:field>
           <activiti:field name="sFrom">
-            <activiti:string><![CDATA[notification@igov.org.ua]]></activiti:string>
+            <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
           </activiti:field>
           <activiti:field name="sTo">
             <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -133,34 +139,7 @@
             <activiti:string><![CDATA[test Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
           </activiti:field>
           <activiti:field name="sText">
-            <activiti:string><![CDATA[text]]></activiti:string>
-          </activiti:field>
-        </activiti:taskListener>
-        
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Скан розрахунку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Отримання інформації про призначення субсидії на оплату житлово-комунальних]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+            <activiti:string><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 			<p>Результат Вашого звернення з приводу призначення субсидії знаходиться у прикріпленому нижче файлі. (Якщо прикріплений файл відсутній, просимо звернутись у  <a href="https://goo.gl/jUqX3p">форму технічної підтримки,</a>  вказавши номер звернення і район, до якого подавалась заявка)</p>
 [pattern/mail/new_design/_common_content_end.html]
@@ -169,11 +148,8 @@
 			<p>${sNameOrgan}<br />
 			</p>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${result}]]></activiti:expression>
-        </activiti:field>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:string>
+          </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" name="Заявка прийнята " sourceRef="exclusivegateway1" targetRef="servicetask3">
