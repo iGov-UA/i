@@ -118,8 +118,9 @@
     <sequenceFlow id="flow2" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Скан розрахунку" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
-          <activiti:field name="saAttachmentsForSend">
+    <serviceTask id="servicetask3" name="Скан розрахунку" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMSListener}">
+         <extensionElements>
+       <activiti:field name="saAttachmentsForSend">
             <activiti:expression><![CDATA[${result}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sPhone_SMS">
