@@ -2773,7 +2773,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //save curretn values to Form
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public HttpServletRequest saveForm(
+    public @ResponseBody String saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
             throws ParseException, CommonServiceException, IOException {
         StringBuilder osRequestBody = new StringBuilder();
@@ -2812,7 +2812,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             formService.saveFormData(nID_Task, values);
             LOG.info("Process of update data finiched");
-            return req;
+            return "";
         } catch (Exception e) {
             String message = "The process of update variables fail.";
             LOG.debug(message);
@@ -2829,6 +2829,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      * @param sLogin - login of user in user activity
      * @param bDocOnly
+     * @param sProcessDefinitionId
      * @return
      */
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
@@ -2885,10 +2886,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcesses(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "true") Boolean bDocOnly
-    )
-            throws IOException {
-         return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly);
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
+            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value = "sProcessDefinitionId", required = false) String sProcessDefinitionId
+    ) throws IOException {
+
+        return oActionTaskService.getBusinessProcessesOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
     @ApiOperation(value = "Получение списка полей бизнес процессов, к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка полей бизнес процессов к которым у пользователя есть доступ #####\n\n"
@@ -2909,12 +2911,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     List<Map<String, String>> getBusinessProcessesFields(
             @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin", required = true) String sLogin,
-            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly
+            @ApiParam(value = "Выводить только список БП документов", required = false) @RequestParam(value = "bDocOnly", required = false, defaultValue = "false") Boolean bDocOnly,
+            @ApiParam(value = "ИД БП (без версионности)", required = false) @RequestParam(value = "sProcessDefinitionId", required = false) String sProcessDefinitionId
     )
             throws IOException {
     	LOG.info("getBusinessProcessesFields. sLogin: {} bDocOnly: {}", sLogin, bDocOnly);
     	
-        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly);
+        return oActionTaskService.getBusinessProcessesFieldsOfLogin(sLogin, bDocOnly, sProcessDefinitionId);
     }
 
     @ApiOperation(value = "/setDocument", notes = "##### Создание документа (позже будет заменен на универсальній сервис /setProcess)#####\n\n")

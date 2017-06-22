@@ -5,6 +5,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import javax.mail.internet.MimeMultipart;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
 import org.igov.io.GeneralConfig;
@@ -92,7 +93,8 @@ public class NotificationPatterns {
 
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sBody)
-                    ._ToName(makeStringAsName(bankIdFirstName), makeStringAsName(bankIdLastName));
+                    ._ToName(makeStringAsName(bankIdFirstName), makeStringAsName(bankIdLastName))
+                     ._oMultiparts(new MimeMultipart());
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
         } catch (Exception oException) {
@@ -115,9 +117,11 @@ public class NotificationPatterns {
             String sHead = "Верифікація адреси";
             String sBody = "Код підтвердження: " + sToken;
             Mail oMail = context.getBean(Mail.class);
+            LOG.info("sMailTo in sendVerifyEmail {}", sMailTo);
             oMail._To(sMailTo)
                     ._Head(sHead)
-                    ._Body(sBody);
+                    ._Body(sBody)
+                    ._oMultiparts(new MimeMultipart());
             oMail.send();
             LOG.info("Send email with sToken={} to the sMailTo={}", sToken, sMailTo);
         } catch (Exception oException) {
@@ -173,7 +177,7 @@ public class NotificationPatterns {
 
             String sBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO);
+            oMail._To(sMailTo)._Head(sHead)._Body(sBody)._ToName(sClientFIO)._oMultiparts(new MimeMultipart());
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sToken={},nID_Process={},saField={})", oException.getMessage(), sMailTo,
@@ -229,7 +233,7 @@ public class NotificationPatterns {
 
             String sMailBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
-            oMail._To(sMailTo)._Head(sHead)._Body(sMailBody)._ToName(sClientFIO);
+            oMail._To(sMailTo)._Head(sHead)._Body(sMailBody)._ToName(sClientFIO)._oMultiparts(new MimeMultipart());
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo,
