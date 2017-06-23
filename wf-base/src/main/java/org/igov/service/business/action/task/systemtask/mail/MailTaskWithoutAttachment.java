@@ -25,7 +25,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();        
+    	/*Map<String, Object> mExecutionVaraibles = oExecution.getVariables();        
         Map<String, Object> mOnlyDateVariables = new HashMap<>();
         
         // выбираем все переменные типа Date, приводим к нужному формату 
@@ -38,7 +38,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             }
         });
         //сетим отформатированные переменные в екзекьюшен
-        oExecution.setVariables(mOnlyDateVariables);
+        oExecution.setVariables(mOnlyDateVariables);*/
     	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
