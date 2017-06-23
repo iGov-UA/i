@@ -55,21 +55,20 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 
-		List<DboTkModel> listOfModels = armService
-				.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-
-		
 		// ветка - когда назначаются исполнители
 		if (expert == null) {
 			if (dataWithExecutorForTransferToArm.getExpert() != null) {
 				List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(
 						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json с ключом из монги																		
 				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
+				
+				List<DboTkModel> listOfModels = armService
+						.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
 
 				if (listOfModels != null && !listOfModels.isEmpty()) {
 					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
-						dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
-						dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442());
+						//dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
+						//dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442());
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 						LOG.info("dataBEFOREgetEXEC первый исполнитель = {}", dataWithExecutorForTransferToArm);
 						armService.updateDboTk(dataWithExecutorForTransferToArm);
@@ -77,8 +76,8 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 						if (asExecutorsFromsoData.size() > 1) {
 							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
-								dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
-								dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442() + 1);
+								//dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
+								//dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442() + 1);
 								armService.createDboTk(dataWithExecutorForTransferToArm);
 							}
 						}
@@ -93,7 +92,15 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		} else {
 			// ветка, когда исполнители уже есть и они отрабатывают свое задание
-			for (DboTkModel dboTkModel : listOfModels) {
+			Integer maxNum441 = armService.getMaxValue();
+			LOG.info("int max.... " + maxNum441);
+			Integer maxNum442 = armService.getMaxValue442();
+			dataWithExecutorForTransferToArm.setExpert(expert);
+			dataWithExecutorForTransferToArm.setNumber_441(maxNum441);
+			dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
+			armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
+			
+/*			for (DboTkModel dboTkModel : listOfModels) {
 				if (dboTkModel.getExpert().equals(expert)) {
 					dataWithExecutorForTransferToArm.setExpert(expert);
 					dataWithExecutorForTransferToArm.setNumber_441(dboTkModel.getNumber_441());
@@ -102,7 +109,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 					break;
 				}
 
-			}
+			}*/
 		}
 
 	}
