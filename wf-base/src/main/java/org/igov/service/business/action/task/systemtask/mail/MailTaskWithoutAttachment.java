@@ -3,7 +3,9 @@ package org.igov.service.business.action.task.systemtask.mail;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
@@ -29,7 +31,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         mExecutionVaraibles.forEach((sKey, oValue) -> {
             String sClassName = oValue.getClass().getName();
             if (sClassName.endsWith("Date")) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
                 String sDate = sdf.format((Date) oValue);
                 mOnlyDateVariables.put(sKey, sDate);
             }
