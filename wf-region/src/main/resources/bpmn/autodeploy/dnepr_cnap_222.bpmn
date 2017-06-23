@@ -182,9 +182,9 @@ execution.setVariable('list_documents', res)</script>
           <activiti:value id="1" name="Головне управління Держсанепідслужби у Дніпропетровській області"></activiti:value>
           <activiti:value id="2" name="Управління на Придніпровській залізниці Головного управління Держсанепідслужби на залізничному транспорті"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
@@ -192,7 +192,7 @@ execution.setVariable('list_documents', res)</script>
         <activiti:formProperty id="document" name="Назва дозвільного документа; ;bVisible=false" type="string" default="висновок державної санітарно-епідеміологічної експертизи документації на розроблювану техніку, технології, устаткування, інструменти тощо"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -203,19 +203,19 @@ execution.setVariable('list_documents', res)</script>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-       <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_2" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_3" name="Проект документа (нормативний, проектний, державний, галузевий стандарт, технічні умови тощо), програми в одному примірнику;(даний документ подається в останній редакції с супровідним листом, де наводяться реквізити організації-розробника. У разі повторного подання документа обов'язкове посилання на номер і дату раніше виданого висновку або погодження головним державним санітарним лікарем);bNew=true" type="file" writable="false"></activiti:formProperty>
-        
-        <activiti:formProperty id="nFile_4" name="Пояснювальна записка з описом матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо; ;bNew=true" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_5" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації, тощо;(за наявності);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_4" name="Пояснювальна записка з описом матеріалів, сфери та умов застосування, фізико-хімічних властивостей, небезпечності, токсичності, міграції речовин, методик їх виявлення, способів утилізації матеріалів по закінченні гарантійного строку, якщо вони не зазначені в документі тощо; ;bNew=true" type="file" default=" " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_5" name="Результати відповідних вимірювань, випробувань, досліджень, обстежень, регламентації, тощо;(за наявності);bNew=true" type="file" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_6" name="Проект маркування, інструкції тощо; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFile_11" name="Опис технологічного процесу, регламенту (технологічна інструкція) виготовлення та застосування продукції; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_12" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_12" name="Інші відомості, необхідні для оцінки можливого впливу продукції на здоров'я людини; ;bNew=true" type="file" default=" " writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
