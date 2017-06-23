@@ -14,10 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+
 /**
  *
- * @author Elena
- * Предназначен для работы с исполнителями и апдейта существующих заявок
+ * @author Elena Предназначен для работы с исполнителями и апдейта существующих
+ *         заявок
  *
  */
 @Component("Update_ARM")
@@ -29,52 +33,50 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 
 	@Autowired
 	private ArmService armService;
-	
-	//имя исполнителя , который выполняет заявку
-		private Expression name_isExecute;
+
+	// имя исполнителя , который выполняет заявку
+	private Expression name_isExecute;
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		// получаю из екзекьюшена soData
 		String soData_Value = this.soData.getExpressionText();
 		LOG.info("soData_Value before: " + soData_Value);
-		
+
 		String soData_Value_Result = replaceTags(soData_Value, execution);
 		LOG.info("soData_Value after: " + soData_Value_Result);
-		
+
 		/**
 		 * Достаем имя исполнителя
 		 */
 		String expert = getStringFromFieldExpression(this.name_isExecute, execution);
-		
-		LOG.info("expert>>>>>>>>>>>> = {}",expert);
+
+		LOG.info("expert>>>>>>>>>>>> = {}", expert);
 
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
-		
-		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
+
+		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(), oAttachmetService);
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
-		
-		
+
 		List<DboTkModel> listOfModels = armService
 				.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-					
-		
-			// если заявка есть в базе, получаем из листа моделей из базы - номера 441 и 442 и сетим их в свою модель
-			// и сетим их в свою модель
-			dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
-			dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442());
-		
-		
-		
-	//ветка - когда назначаются исполнители	
+
+		// ветка - когда назначаются исполнители
 		if (expert == null) {
 			if (dataWithExecutorForTransferToArm.getExpert() != null) {
 				List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(
-						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json c ключом из монги			 
+						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json c ключом из монги
 				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 
 				if (listOfModels != null && !listOfModels.isEmpty()) {
+					// если заявка есть в базе, получаем из листа моделей из
+					// базы - номера 441 и 442 и сетим их в свою модель
+					int _441fromModelFromBase = listOfModels.get(0).getNumber_441();
+					int _442fromModelFromBase = listOfModels.get(0).getNumber_442();
+					// и сетим их в свою модель
+					dataWithExecutorForTransferToArm.setNumber_441(_441fromModelFromBase);
+					dataWithExecutorForTransferToArm.setNumber_442(_442fromModelFromBase);
 					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 						// dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
@@ -99,17 +101,43 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 							+ "not found in ARM");
 				}
 			}
+		} else {
+			if (listOfModels != null && !listOfModels.isEmpty()) {
+				// получить только нужных експертов
+				final List<DboTkModel> dboTkModels = Lists
+						.newArrayList(Collections2.filter(listOfModels, new Predicate<DboTkModel>() {
+							@Override
+							public boolean apply(DboTkModel dboTkModel) {
+								return dboTkModel.equals(expert);
+							}
+						}));
+
+				if (dboTkModels != null && !dboTkModels.isEmpty()) {
+					for (DboTkModel dboTkModel : dboTkModels) {
+						dataWithExecutorForTransferToArm.setExpert(expert);
+						LOG.info("dataWithExecutorForTransferToArm what will be upload to ARM >>>",
+								dataWithExecutorForTransferToArm);
+						dataWithExecutorForTransferToArm.setNumber_442(dboTkModel.getNumber_442());
+						dataWithExecutorForTransferToArm.setNumber_441(dboTkModel.getNumber_441());
+						armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
+					}
+				} else {
+					updateExpert(expert, dataWithExecutorForTransferToArm);
+				}
 			}else{
-					//ветка, когда исполнители уже есть и они отрабатывают свое задание
-				dataWithExecutorForTransferToArm.setExpert(expert);
-				LOG.info("dataWithExecutorForTransferToArm what will be upload to ARM >>>",dataWithExecutorForTransferToArm );
-				//dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
-				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
+				updateExpert(expert, dataWithExecutorForTransferToArm);
 			}
-		
+		}
 	}
-	
-	
-	
+
+	private void updateExpert(String expert, DboTkModel dataWithExecutorForTransferToArm) {
+		// ветка, когда исполнители уже есть и они отрабатывают свое
+		// задание
+		dataWithExecutorForTransferToArm.setExpert(expert);
+		LOG.info("dataWithExecutorForTransferToArm what will be upload to ARM >>>",
+				dataWithExecutorForTransferToArm);
+		// dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
+		armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
+	}
 
 }
