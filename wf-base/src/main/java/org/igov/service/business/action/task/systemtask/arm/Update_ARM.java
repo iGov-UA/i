@@ -80,7 +80,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			
 						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
+							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());//убираю из getNumber_442()+1 +1 чтоб не увеличивался счетчик у первого исполнителя
 							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 							armService.updateDboTk(dataWithExecutorForTransferToArm);
 							// если в листе не одно значение - для каждого исполнителя сетим
