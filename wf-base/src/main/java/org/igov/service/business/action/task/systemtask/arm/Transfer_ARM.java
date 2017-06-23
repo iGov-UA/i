@@ -53,7 +53,7 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		dataForTransferToArm.setNumber_441(number441toModel);
 
 		Integer maxNum442 = armService.getMaxValue442();
-		LOG.info("int max442.... " + maxNum);
+		LOG.info("int max442.... " + maxNum442);
 
 		int number442toModel = maxNum + 1;
 		String prilog = ValidationARM.getPrilog(dataForTransferToArm.getPrilog(), oAttachmetService);
