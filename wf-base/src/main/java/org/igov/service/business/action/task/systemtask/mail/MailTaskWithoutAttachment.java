@@ -28,16 +28,17 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables(); 
         if (!mExecutionVaraibles.isEmpty()) {
             try {
-                LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
                 Map<String, Object> mOnlyDateVariables = new HashMap<>();       
                 // выбираем все переменные типа Date, приводим к нужному формату 
                 mExecutionVaraibles.forEach((sKey, oValue) -> {
-                    LOG.info("map elements: key={}, value={}", sKey, oValue);
-                String sClassName = oValue.getClass().getName();
-                    if (sClassName.endsWith("Date")) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
-                        String sDate = sdf.format((Date) oValue);
-                        mOnlyDateVariables.put(sKey, sDate);
+                    if (oValue != null) {
+                        String sClassName = oValue.getClass().getName();
+                        LOG.info("sClassName={}", sClassName);
+                        if (sClassName.endsWith("Date")) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
+                            String sDate = sdf.format((Date) oValue);
+                            mOnlyDateVariables.put(sKey, sDate);
+                        }
                     }
                 });
                 //сетим отформатированные переменные в екзекьюшен
