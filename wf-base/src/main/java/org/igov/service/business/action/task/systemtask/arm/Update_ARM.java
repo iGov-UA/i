@@ -46,7 +46,6 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		 * Достаем имя исполнителя
 		 */
 		String expert = getStringFromFieldExpression(this.name_isExecute, execution);
-
 		LOG.info("expert>>>>>>>>>>>> = {}", expert);
 
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
@@ -63,8 +62,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		if (expert == null) {
 			if (dataWithExecutorForTransferToArm.getExpert() != null) {
 				List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(
-						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json с ключом из монги
-																											
+						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json с ключом из монги																		
 				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 
 				if (listOfModels != null && !listOfModels.isEmpty()) {
@@ -72,22 +70,14 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 						dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
 						dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442());
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-						// dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 						LOG.info("dataBEFOREgetEXEC первый исполнитель = {}", dataWithExecutorForTransferToArm);
 						armService.updateDboTk(dataWithExecutorForTransferToArm);
-						// если в листе не одно значение - для каждого
-						// исполнителя сетим
+						// если в листе не одно значение - для каждого исполнителя сетим
 						if (asExecutorsFromsoData.size() > 1) {
 							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
 								dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
 								dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442() + 1);
-								/*
-								 * dataWithExecutorForTransferToArm
-								 * .setNumber_442(
-								 * dataWithExecutorForTransferToArm.
-								 * getNumber_442() + 1);
-								 */
 								armService.createDboTk(dataWithExecutorForTransferToArm);
 							}
 						}
@@ -104,7 +94,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			// ветка, когда исполнители уже есть и они отрабатывают свое задание
 			for (DboTkModel DboTkModel : listOfModels) {
 				String expertFromDb = DboTkModel.getExpert();
-				LOG.info("expertFromDb >>>>>>>>", expertFromDb);
+				LOG.info("expertFromDb >>>>>>>>" + expertFromDb);
 				if (expertFromDb.equals(expert)) {
 					dataWithExecutorForTransferToArm.setExpert(expert);
 					dataWithExecutorForTransferToArm.setNumber_441(DboTkModel.getNumber_441());
