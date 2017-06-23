@@ -102,7 +102,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
-				dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
+				//dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		
