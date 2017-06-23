@@ -537,6 +537,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     String sId = (String) jsonObject.get("id");
                     String sValue = (String) jsonObject.get("value");
                     
+                    LOG.info("sId field {}", sId);
+                    
                     if (sId.equals("sKey_Step_Document")) {
                         sKey_Step_Document = sValue;
                         break;

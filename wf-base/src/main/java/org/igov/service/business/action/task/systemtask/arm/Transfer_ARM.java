@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Elena Листинер, предназначен для создания новой заявки в АРМ
+ * @author Elena
+ * Листинер, предназначен для создания новой заявки в АРМ
  *
  */
 @Component("Transfer_ARM")

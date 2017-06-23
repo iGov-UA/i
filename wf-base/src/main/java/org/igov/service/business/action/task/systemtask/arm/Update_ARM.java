@@ -16,8 +16,9 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Elena Предназначен для работы с исполнителями и апдейта существующих
- *         заявок
+ * @author Elena 
+ * Предназначен для работы с исполнителями и апдейта существующих
+ * заявок
  *
  */
 @Component("Update_ARM")
@@ -92,13 +93,11 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		} else {
 			// ветка, когда исполнители уже есть и они отрабатывают свое задание
-			for (DboTkModel DboTkModel : listOfModels) {
-				String expertFromDb = DboTkModel.getExpert();
-				LOG.info("expertFromDb >>>>>>>>" + expertFromDb);
-				if (expertFromDb.equals(expert)) {
+			for (DboTkModel dboTkModel : listOfModels) {
+				if (dboTkModel.getExpert().equals(expert)) {
 					dataWithExecutorForTransferToArm.setExpert(expert);
-					dataWithExecutorForTransferToArm.setNumber_441(DboTkModel.getNumber_441());
-					dataWithExecutorForTransferToArm.setNumber_442(DboTkModel.getNumber_442());
+					dataWithExecutorForTransferToArm.setNumber_441(dboTkModel.getNumber_441());
+					dataWithExecutorForTransferToArm.setNumber_442(dboTkModel.getNumber_442());
 					armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 					break;
 				}
