@@ -11,5 +11,8 @@ public interface ArmDao {
 	public DboTkResult updateDboTk(DboTkModel dboTkModel);
 	
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel);
-
+	
+	public Integer getMaxValue();
+	
+	public Integer getMaxValue442(); 
 }

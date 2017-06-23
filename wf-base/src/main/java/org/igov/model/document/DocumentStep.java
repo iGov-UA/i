@@ -25,21 +25,22 @@ public class DocumentStep extends AbstractEntity {
     @JsonProperty(value = "snID_Process_Activiti")
     private String snID_Process_Activiti;
 
+    @JsonProperty(value = "aDocumentStepSubjectRight") //Todo переименовать
     @OneToMany(targetEntity = DocumentStepSubjectRight.class, mappedBy = "documentStep", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<DocumentStepSubjectRight> rights;
+    private List<DocumentStepSubjectRight> aDocumentStepSubjectRight;
     
     @JsonProperty(value = "nID_DocumentStepType")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_DocumentStepType")
     private DocumentStepType oDocumentStepType;
 
-    public List<DocumentStepSubjectRight> getRights() {
-        return rights;
+    public List<DocumentStepSubjectRight> aDocumentStepSubjectRight() {
+        return aDocumentStepSubjectRight;
     }
 
-    public void setRights(List<DocumentStepSubjectRight> rights) {
-        this.rights = rights;
+    public void setaDocumentStepSubjectRight(List<DocumentStepSubjectRight> rights) {
+        this.aDocumentStepSubjectRight = rights;
     }
 
     public String getsKey_Step() {

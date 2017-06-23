@@ -17,7 +17,18 @@
             <property name="username" value="${jdbc.username}"/>
             <property name="password" value="${jdbc.password}"/>
         </bean>
-
+        
+        <bean id="dataSourceBackup" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+            <property name="driverClass" value="#{datasourceBackup['jdbc.driver']}"/>
+            <property name="url" value="#{datasourceBackup['jdbc.url']}"/>
+            <property name="username" value="#{datasourceBackup['jdbc.username']}"/>
+            <property name="password" value="#{datasourceBackup['jdbc.password']}"/>
+        </bean>
+        
+        <bean  id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    		<property name="dataSource" ref="dataSourceBackup" />
+		</bean> 
+		
         <bean class="org.igov.util.logging.LoggingBean">
             <property name="message" value="dataSource: [url=${jdbc.url}, username=${jdbc.username}]"/>
         </bean>

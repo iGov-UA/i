@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component("DocumentInit_iDoc")
 public class DocumentInit_iDoc extends AbstractModelTask implements TaskListener  {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CreateDocument_UkrDoc.class);
+    private final static Logger LOG = LoggerFactory.getLogger(DocumentInit_iDoc.class);
 
     @Autowired
     private DocumentStepService oDocumentStepService;

@@ -5,7 +5,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-
     <beans profile="prod">
 
         <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -17,6 +16,8 @@
                     <value>classpath:sendMail.properties</value>
                     <value>classpath:quartz.properties</value>
                     <value>classpath:bpDnepr.properties</value>
+                    <value>classpath:sql_arm.properties</value>
+                    <value>classpath:DB.ARM.properties</value>
                     <!--value>file:${catalina.home}/conf/bankID.properties</value-->
                     <!--value>file:${catalina.home}/conf/merch.properties</value-->
                 </list>
@@ -43,6 +44,8 @@
                      <value>classpath:sendMail.properties</value>
                      <value>classpath:quartz.properties</value>
                      <value>classpath:bpDnepr.properties</value>
+                     <value>classpath:sql_arm.properties</value>
+                     <value>classpath:DB.ARM.properties</value>
                     <!--value>file:${catalina.home}/conf/email.properties</value-->
                     <!--value>file:${catalina.home}/conf/bankID.properties</value-->
                     <!--value>file:${catalina.home}/conf/merch.properties</value-->
@@ -76,6 +79,8 @@
                     <!--value>classpath:bankID.properties</value-->
                     <!--value>classpath:merch.properties</value-->
                     <value>classpath:springfox.properties</value>
+                    <value>classpath:sql_arm.properties</value>
+                    <value>classpath:DB.ARM.properties</value>
                 </list>
             </property>
             <property name="ignoreUnresolvablePlaceholders" value="true"/>
@@ -111,7 +116,8 @@
         <import resource="classpath:context-scheduler.xml"/>
         <import resource="classpath:context-camel-scheduler.xml"/>
         <import resource="classpath:camel-context-flowSlot.xml"/>
-        <import resource="classpath:context-arm-db.xml"/>        
+        <import resource="classpath:context-backup-db.xml"/> 
+        <import resource="classpath:camel-context-backup.xml"/>
     </beans>
 
 </beans>

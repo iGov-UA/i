@@ -3,11 +3,14 @@ package org.igov.service.business.action.task.listener.test;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.pb.util.Base64Encoder;
+import org.activiti.engine.ActivitiIllegalArgumentException;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.delegate.TaskListener;
+import org.activiti.engine.identity.Group;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpRequester;
 import org.slf4j.Logger;
@@ -28,6 +31,15 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 public class testApiGIS implements TaskListener {
 
     private static final transient Logger LOG = LoggerFactory.getLogger(testApiGIS.class);
+
+    @Autowired
+    private RuntimeService runtimeService;
+
+    @Autowired
+    private GeneralConfig generalConfig;
+
+    @Autowired
+    private HttpRequester httpRequester;
 
     public Expression sStreet;
     public Expression sNumber;

@@ -1,6 +1,6 @@
 <div class='ng-modal' ng-show='checkSignState.show'>
   <div class='ng-modal-overlay' ng-click='hideSignInfoModal()'></div>
-  <div class='ng-modal-dialog' ng-style='dialogStyle'>
+  <div class='ng-modal-dialog'  ng-class="{'col-xs-9 ml-10':isMenuOpened, 'col-xs-12':!isMenuOpened}" ng-style='dialogStyle'>
     <div class='ng-modal-header'>
       <div class='ng-modal-close' ng-click='hideSignInfoModal()'>X</div>
     </div>
@@ -8,7 +8,7 @@
       <div class='ng-modal-dialog-content' ng-transclude></div>
     </div>
     <div class='ng-modal-dialog-print-button'>
-      <button ng-click='printSignInfo()' class='btn btn-success' ng-if="checkSignState.signInfo.customer">Роздрукувати</button>
+      <button ng-click='printSignInfo()' style="background-color: #337ACF;outline: none;border: none;" class='btn btn-info take-to-work-button' ng-if="checkSignState.signInfo.customer">Роздрукувати</button>
     </div>
   </div>
 </div>

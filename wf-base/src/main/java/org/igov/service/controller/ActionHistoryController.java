@@ -50,6 +50,7 @@ public class ActionHistoryController {
             @ApiParam(value = "ид бп созданного документа (для вызова субпроцесса)", required = false) @RequestParam(value = "new_BP_ID", required = false) String new_BP_ID,
             @ApiParam(value = "логин или ФИО", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
             @ApiParam(value = "логин", required = false) @RequestParam(value = "sLoginNew", required = false) String sLoginNew,
+            @ApiParam(value = "ордер связанного документа", required = false) @RequestParam(value = "sID_Order_Link", required = false) String sID_Order_Link,
             @ApiParam(value = "ФИО", required = false) @RequestParam(value = "sName", required = false) String sName
         ){
         LOG.info("addHistoryEvent was started with params: sID_Order: {} nID_Subject : {} sUserTaskName: {} "
@@ -80,6 +81,7 @@ public class ActionHistoryController {
                 new_BP_ID,
                 sLoginNew,
                 sName,
+                sID_Order_Link,
                 true,
                 true,
                 false

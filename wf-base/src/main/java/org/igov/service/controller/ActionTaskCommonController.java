@@ -118,10 +118,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
-
-    @Autowired
-    private HistoryEvent_ServiceDao historyEventServiceDao;
-
     @Autowired
     private IdentityService identityService;
 
@@ -754,7 +750,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1));
+        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
 
         return JsonRestUtils.toJsonResponse(response);
     }
@@ -1453,6 +1449,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * Returns business processes which belong to a specified user
      *
      * @param sLogin - login of user in user activity
+     * @return processes witch relate to login
+     * @throws java.io.IOException 
      */
     @ApiOperation(value = "Получение списка бизнес процессов к которым у пользователя есть доступ", notes = "#####  ActionCommonTaskController: Получение списка бизнес процессов к которым у пользователя есть доступ #####\n\n"
             + "HTTP Context: https://test.region.igov.org.ua/wf/service/action/task/getLoginBPs?sLogin=userId\n\n"
@@ -1508,8 +1506,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Deprecated //новый: getBPs 
     public @ResponseBody
     String getBusinessProcessesForUser(
-            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin)
-            throws IOException {
+            @ApiParam(value = "Логин пользователя", required = true) @RequestParam(value = "sLogin") String sLogin) throws IOException {
 
         String jsonRes = JSONValue.toJSONString(oActionTaskService.getBusinessProcessesForUser(sLogin));
         //LOG.info("Result: {}", jsonRes);
@@ -1787,7 +1784,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         Map<String, Object> res = new HashMap<>();
 
-        try {
+        //try {
 
             List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
@@ -1796,7 +1793,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (Group group : groups) {
                     groupsIds.add(group.getId());
                 }
-                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+                //LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
                 LOG.info("Filter status: {}", sFilterStatus);
                 Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
                 long totalNumber = 0;
@@ -1878,7 +1875,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 List<Map<String, Object>> checkDocumentIncludesData = new LinkedList<>();
 
                 //long documentListSize = 0;
-                /*if (!"Documents".equals(sFilterStatus)) {
+                if (!"Documents".equals(sFilterStatus)) {
                     for (Map<String, Object> dataElem : data) {
                         if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
                             if (bIncludeVariablesProcess) {
@@ -1894,13 +1891,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         }
                         checkDocumentIncludesData.add(dataElem);
                     }
-                }*/
-                for (Map<String, Object> dataElem : data) {
+                }
+                /*for (Map<String, Object> dataElem : data) {
                     if (bIncludeVariablesProcess) {
                         dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
                     }
                     checkDocumentIncludesData.add(dataElem);
-                }
+                }*/
 
                 LOG.info("checkDocumentIncludesData size: {}", checkDocumentIncludesData.size());
 
@@ -1916,9 +1913,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     res.put("total", totalCountServices);
                 }
             }
-        } catch (Exception e) {
-            LOG.error("Error occured while getting list of tasks", e);
-        }
+        //} catch (Exception e) {
+        //    LOG.error("Error occured while getting list of tasks", e);
+        //}
         return res;
     }
     
@@ -1955,130 +1952,137 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         TaskDataResultVO aoResult = new TaskDataResultVO();
 
         try {
+            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument") || sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")
+                    || sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")) {
+                
+                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
+                
+            } else {
 
-            List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
+                List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
-            if (groups != null && !groups.isEmpty()) {
-                List<String> groupsIds = new LinkedList<>();
-                for (Group group : groups) {
-                    groupsIds.add(group.getId());
-                }
-                LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
-                LOG.info("Filter status: {}", sFilterStatus);
-                Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
-                long totalNumber = 0;
+                if (groups != null && !groups.isEmpty()) {
+                    List<String> groupsIds = new LinkedList<>();
+                    for (Group group : groups) {
+                        groupsIds.add(group.getId());
+                    }
+                    LOG.info("Got list of groups for current user {} : {}", sLogin, groupsIds);
+                    LOG.info("Filter status: {}", sFilterStatus);
+                    Map<String, FlowSlotTicket> mapOfTickets = new HashMap<>();
+                    long totalNumber = 0;
 
-                Object taskQuery = oActionTaskService.createQueryNew(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
-                        sFilterStatus, groupsIds, soaFilterField);
+                    Object taskQuery = oActionTaskService.createQueryNew(sLogin, bIncludeAlienAssignedTasks, sOrderBy,
+                            sFilterStatus, groupsIds, soaFilterField);
 
-                totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
-                        : oActionTaskService.getCountOfTasksForGroups(groupsIds);
-                LOG.info("total count before processing is: {}", totalNumber);
+                    totalNumber = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).count()
+                            : oActionTaskService.getCountOfTasksForGroups(groupsIds);
+                    LOG.info("total count before processing is: {}", totalNumber);
 
-                long totalCountServices = 0;
+                    long totalCountServices = 0;
 
-                if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
-                    List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
-                            : (List) ((NativeTaskQuery) taskQuery).list();
-                    if (aTaskInfo != null) {
-                        LOG.info("all tasks size is {}", aTaskInfo.size());
-                        for (TaskInfo oTaskInfo : aTaskInfo) {
-                            if (!oTaskInfo.getProcessDefinitionId().startsWith("_doc")) {
-                                totalCountServices++;
+                    if (!"Documents".equalsIgnoreCase(sFilterStatus)) {
+                        List<TaskInfo> aTaskInfo = (taskQuery instanceof TaskInfoQuery) ? ((TaskInfoQuery) taskQuery).list()
+                                : (List) ((NativeTaskQuery) taskQuery).list();
+                        if (aTaskInfo != null) {
+                            LOG.info("all tasks size is {}", aTaskInfo.size());
+                            for (TaskInfo oTaskInfo : aTaskInfo) {
+                                if (!oTaskInfo.getProcessDefinitionId().startsWith("_doc")) {
+                                    totalCountServices++;
+                                }
+                            }
+                        } else {
+                            LOG.info("all tasks is null");
+                        }
+                    }
+
+                    LOG.info("totalCountServices is {}", totalCountServices);
+
+                    int nStartBunch = nStart;
+                    List<TaskInfo> tasks = new LinkedList<>();
+                    long sizeOfTasksToSelect = nSize;
+                    if (bFilterHasTicket) {
+                        sizeOfTasksToSelect = totalNumber;
+                        nStartBunch = 0;
+                    }
+                    while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
+                        LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
+                        List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch,
+                                nSize, bFilterHasTicket, mapOfTickets);
+                        tasks.addAll(currTasks);
+
+                        nStartBunch += nSize;
+
+                        if (!bFilterHasTicket) {
+                            break;
+                        }
+                    }
+
+                    LOG.info("tasks size is {}", tasks.size());
+
+                    int tasksSize = tasks.size();
+                    if (bFilterHasTicket) {
+                        totalNumber = tasksSize;
+                        if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
+                            tasks = tasks.subList(nStart, nStart + nSize);
+                        } else if (tasksSize > nStart) {
+                            tasks = tasks.subList(nStart, tasksSize);
+                        } else {
+                            LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}",
+                                    tasksSize);
+                            tasks.clear();
+                        }
+                    }
+
+                    LOG.info("tasks size is {}", tasks.size());
+
+                    List<TaskDataVO> aoTaskData = new ArrayList<>();
+
+                    if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {                   
+                        oActionTaskService.populateResultSortedByTicketDateNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
+                    } else {
+                        oActionTaskService.populateResultSortedByTasksOrderNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
+                    }
+
+                    LOG.info("data size is {}", aoTaskData.size());
+
+                    //long documentListSize = 0;
+                    /*if (!"Documents".equals(sFilterStatus)) {
+                        for (Map<String, Object> dataElem : data) {
+                            if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
+                                if (bIncludeVariablesProcess) {
+                                    dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
+                                }
+                                checkDocumentIncludesData.add(dataElem);
                             }
                         }
                     } else {
-                        LOG.info("all tasks is null");
-                    }
-                }
-
-                LOG.info("totalCountServices is {}", totalCountServices);
-
-                int nStartBunch = nStart;
-                List<TaskInfo> tasks = new LinkedList<>();
-                long sizeOfTasksToSelect = nSize;
-                if (bFilterHasTicket) {
-                    sizeOfTasksToSelect = totalNumber;
-                    nStartBunch = 0;
-                }
-                while ((tasks.size() < sizeOfTasksToSelect) && (nStartBunch < totalNumber)) {
-                    LOG.info("Populating response with results. nStartFrom:{} nSize:{}", nStartBunch, nSize);
-                    List<TaskInfo> currTasks = oActionTaskService.getTasksWithTicketsFromQuery(taskQuery, nStartBunch,
-                            nSize, bFilterHasTicket, mapOfTickets);
-                    tasks.addAll(currTasks);
-
-                    nStartBunch += nSize;
-
-                    if (!bFilterHasTicket) {
-                        break;
-                    }
-                }
-
-                LOG.info("tasks size is {}", tasks.size());
-
-                int tasksSize = tasks.size();
-                if (bFilterHasTicket) {
-                    totalNumber = tasksSize;
-                    if (tasksSize > nStart && tasksSize > (nStart + nSize)) {
-                        tasks = tasks.subList(nStart, nStart + nSize);
-                    } else if (tasksSize > nStart) {
-                        tasks = tasks.subList(nStart, tasksSize);
-                    } else {
-                        LOG.info("Number of tasks with FlowSlotTicket is less than starting point to fetch:{}",
-                                tasksSize);
-                        tasks.clear();
-                    }
-                }
-
-                LOG.info("tasks size is {}", tasks.size());
-
-                List<TaskDataVO> aoTaskData = new ArrayList<>();
-                
-                if ("ticketCreateDate".equalsIgnoreCase(sOrderBy)) {                   
-                    oActionTaskService.populateResultSortedByTicketDateNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
-                } else {
-                    oActionTaskService.populateResultSortedByTasksOrderNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
-                }
-
-                LOG.info("data size is {}", aoTaskData.size());
-
-                //long documentListSize = 0;
-                /*if (!"Documents".equals(sFilterStatus)) {
-                    for (Map<String, Object> dataElem : data) {
-                        if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
+                        for (Map<String, Object> dataElem : data) {
                             if (bIncludeVariablesProcess) {
                                 dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
                             }
                             checkDocumentIncludesData.add(dataElem);
                         }
-                    }
-                } else {
-                    for (Map<String, Object> dataElem : data) {
+                    }*/
+
+                    for (TaskDataVO oTaskData : aoTaskData) {
+
                         if (bIncludeVariablesProcess) {
-                            dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
+
+                            oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessInstanceId()));
                         }
-                        checkDocumentIncludesData.add(dataElem);
                     }
-                }*/
-                
-                for (TaskDataVO oTaskData : aoTaskData) {
-                    
-                    if (bIncludeVariablesProcess) {
-                        
-                        oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessInstanceId()));
+
+                    aoResult.setAoTaskDataVO(aoTaskData);
+                    aoResult.setnSize(nSize);
+                    aoResult.setnStart(nStart);
+                    aoResult.setsOrder("asc");
+                    aoResult.setsSort("id");
+
+                    if ("Documents".equalsIgnoreCase(sFilterStatus)) {
+                        aoResult.setnTotal(totalNumber);
+                    } else {
+                        aoResult.setnTotal(totalCountServices);
                     }
-                }
-
-                aoResult.setAoTaskDataVO(aoTaskData);
-                aoResult.setnSize(nSize);
-                aoResult.setnStart(nStart);
-                aoResult.setsOrder("asc");
-                aoResult.setsSort("id");
-
-                if ("Documents".equalsIgnoreCase(sFilterStatus)) {
-                    aoResult.setnTotal(totalNumber);
-                } else {
-                    aoResult.setnTotal(totalCountServices);
                 }
             }
         } catch (Exception e) {
@@ -2976,9 +2980,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //save curretn values to Form
     @ApiOperation(value = "saveForm", notes = "saveForm")
     @RequestMapping(value = "/saveForm", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public HttpServletRequest saveForm(
+    public @ResponseBody String saveForm(
             @ApiParam(value = "проперти формы", required = false) @RequestBody String sParams, HttpServletRequest req)
             throws ParseException, CommonServiceException, IOException {
+        
+        LOG.info("saveForm started...");
         StringBuilder osRequestBody = new StringBuilder();
         BufferedReader oReader = req.getReader();
         String line;
@@ -3005,7 +3011,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } else {
                 LOG.error("Variable \"properties\" not found");
             }
-            LOG.info("properties = " + dates.toJSONString());
+            //LOG.info("properties = " + dates.toJSONString());
 
             org.json.simple.JSONObject result;
             Iterator<org.json.simple.JSONObject> datesIterator = dates.iterator();
@@ -3015,8 +3021,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
             formService.saveFormData(nID_Task, values);
             LOG.info("Process of update data finiched");
-            return req;
+            LOG.info("saveForm ended...");
+            
+            return "";
         } catch (Exception e) {
+            LOG.info("saveForm error...");
             String message = "The process of update variables fail.";
             LOG.debug(message);
             throw new CommonServiceException(
@@ -3024,7 +3033,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     message,
                     HttpStatus.FORBIDDEN);
         }
-
     }
 
     /**
