@@ -23,7 +23,6 @@ public class MessageService {
     @Autowired
     private HttpRequester oHttpRequester;
     
-    @Autowired
     
     /**
      * Получение сообщений по заявке
