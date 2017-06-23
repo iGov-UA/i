@@ -1,5 +1,7 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -21,15 +23,22 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-        
+    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();        
         Map<String, Object> mOnlyDateVariables = new HashMap<>();
 
-        mExecutionVaraibles.forEach((key, value) -> {
-            mOnlyDateVariables.put(key,value.getClass().getName());
+        mExecutionVaraibles.forEach((sKey, oValue) -> {
+            String sClassName = oValue.getClass().getName();
+            if (sClassName.endsWith("Date")) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm");
+                String sDate = sdf.format((Date) oValue);
+                mOnlyDateVariables.put(sKey, sDate);
+            }
         });
     	LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
+        
+        oExecution.setVariables(mOnlyDateVariables);
+        LOG.info("New mExecutionVaraibles={}", oExecution.getVariables());
     	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
