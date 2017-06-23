@@ -58,7 +58,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		 * Достаем макс значение number 441 из базы - будет общее для всех исполнителей в рамках одного докумаента
 		 */
 		Integer maxNum = armService.getMaxValue();
-		dataWithExecutorForTransferToArm.setNumber_441(maxNum+1);
+		dataWithExecutorForTransferToArm.setNumber_441(maxNum);
 		LOG.info("int dataWithExecutorForTransferToArm.getNumber_441(.... " + dataWithExecutorForTransferToArm.getNumber_441());
 	    
 	    /**
@@ -102,7 +102,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
-				dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
+				dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		

@@ -48,18 +48,17 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		Integer maxNum = armService.getMaxValue();
 		LOG.info("int max.... " + maxNum);
 
-		int number441toModel = maxNum + 1;
-		LOG.info("int number441toModel.... " + number441toModel);
-		dataForTransferToArm.setNumber_441(number441toModel);
+		dataForTransferToArm.setNumber_441(maxNum + 1);
+		LOG.info("int dataForTransferToArm.getNumber_441().... " + dataForTransferToArm.getNumber_441());
 
 		Integer maxNum442 = armService.getMaxValue442();
 		LOG.info("int max442.... " + maxNum442);
+		dataForTransferToArm.setNumber_442(maxNum442+1);
+		LOG.info("int dataForTransferToArm.getNumber_442().... " + dataForTransferToArm.getNumber_442());
 
-		int number442toModel = maxNum + 1;
 		String prilog = ValidationARM.getPrilog(dataForTransferToArm.getPrilog(), oAttachmetService);
 		LOG.info("prilog>>>>>>>>>>>> = {}", prilog);
 		dataForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
-		dataForTransferToArm.setNumber_442(number442toModel);
 		LOG.info("dataForTransferToArm in TransferArm = {}", dataForTransferToArm);
 
 		List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(sID_order);
