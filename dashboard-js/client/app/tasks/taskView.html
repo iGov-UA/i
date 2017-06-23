@@ -279,7 +279,7 @@
                 class="btn btn-info"
                 ng-disabled="checkSignState.inProcess"
                 ng-click="checkAttachmentSign(taskId, item.id, item.description)"
-                ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item.description)">Перевірити ЕЦП
+                ng-if="!isTableAttachment(item.description)">Перевірити ЕЦП
               </button>
             </div>
             <button style="position:relative;"
@@ -314,7 +314,7 @@
                 class="btn btn-info"
                 ng-disabled="checkSignState.inProcess"
                 ng-click="checkAttachmentSign(taskData.oProcess.nID, item.id, item.name, true)"
-                ng-if="sSelectedTask=='selfAssigned' && !isTableAttachment(item)">Перевірити ЕЦП
+                ng-if="!isTableAttachment(item)">Перевірити ЕЦП
               </button>
               <a ng-click="openTableAttachment(item.id, taskData.oProcess.nID, true)"
                  ng-if="isTableAttachment(item)"

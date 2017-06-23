@@ -55,15 +55,16 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 		/**
-		 * Достаем макс значение из базы - будет общее для всех исполнителей в рамках одного докумаента
+		 * Достаем макс значение number 441 из базы - будет общее для всех исполнителей в рамках одного докумаента
 		 */
 		Integer maxNum = armService.getMaxValue();
 		LOG.info("int max.... " + maxNum);
 	    int number441toModel = maxNum+1;
 	    LOG.info("int number441toModel.... " + number441toModel);
-	    dataWithExecutorForTransferToArm.setNumber_441(number441toModel);
-	    LOG.info("dataWithExecutorForTransferToArm with number441>>>>>>>>>>= {}",dataWithExecutorForTransferToArm);
 	    
+	    /**
+		 * Достаем макс значение number 442 из базы - для каждого из исполнителей свое
+		 */
 	    Integer maxNum442 = armService.getMaxValue442();
 	    LOG.info("int maxNum442.... " + maxNum442);
 	    
@@ -79,12 +80,16 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			
 						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+							dataWithExecutorForTransferToArm.setNumber_441(number441toModel);
+							dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
 							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 							armService.updateDboTk(dataWithExecutorForTransferToArm);
 							// если в листе не одно значение - для каждого исполнителя сетим
 							if (asExecutorsFromsoData.size()>1) {
 								for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 									dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
+									dataWithExecutorForTransferToArm.setNumber_441(number441toModel);
+									dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
 									armService.createDboTk(dataWithExecutorForTransferToArm);
 								}
 							}
@@ -99,6 +104,8 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
+				dataWithExecutorForTransferToArm.setNumber_441(number441toModel);
+				dataWithExecutorForTransferToArm.setNumber_442(maxNum442);
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		
