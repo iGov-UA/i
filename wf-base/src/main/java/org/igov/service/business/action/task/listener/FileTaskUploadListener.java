@@ -75,6 +75,7 @@ public class FileTaskUploadListener extends AbstractModelTask implements TaskLis
         LOG.info("beginning of addAttachmentsToTask(startformData, task):execution.getProcessDefinitionId()={}",
                 oExecution.getProcessDefinitionId());
         aAttachment = addAttachmentsToTask(oStartFormData, oTask);
+        LOG.info("oStartFormData={}", oStartFormData);
         
     }
 
