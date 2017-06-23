@@ -80,7 +80,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			
 						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
+							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 							armService.updateDboTk(dataWithExecutorForTransferToArm);
 							// если в листе не одно значение - для каждого исполнителя сетим
@@ -102,7 +102,8 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
-				dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
+				LOG.info("dataWithExecutorForTransferToArm what will be upload to ARM >>>",dataWithExecutorForTransferToArm );
+				//dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		

@@ -115,8 +115,10 @@
           <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
           <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
           <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+          <activiti:value id="Enum8" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="если другие условия оплаты" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sSpecialConditions&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPrefPay&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum8'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования; ;bVisible=false" type="enum">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
           <activiti:value id="Enum2" name="Инвестпрограмма"></activiti:value>
@@ -280,6 +282,7 @@
           <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
           <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
           <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+          <activiti:value id="Enum8" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
@@ -443,6 +446,7 @@
           <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
           <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
           <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+          <activiti:value id="Enum8" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
@@ -606,6 +610,7 @@
           <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
           <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
           <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+          <activiti:value id="Enum8" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSpecialConditions" name="Особые условия" type="string"></activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum">
@@ -688,7 +693,7 @@
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;asZonePersRespons::${asZonePersRespons};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;asAttributeApplication::${asAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;sNumberDep::${sNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;asZonePersRespons::${asZonePersRespons};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;asAttributeApplication::${asAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;sNumberDep::${sNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID};;oDateBegin::${oDateBegin};;oDateEnd::${oDateEnd};;asSupplyMaterials::${asSupplyMaterials};;asServicemMachines::${asServicemMachines}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -913,6 +918,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
           <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
           <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
           <activiti:value id="Enum7" name="Предоплата"></activiti:value>
+          <activiti:value id="Enum8" name="Другое"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
           <activiti:value id="Enum1" name="Текущие"></activiti:value>
@@ -1095,7 +1101,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <omgdi:waypoint x="311.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -1103,14 +1109,14 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <omgdi:waypoint x="312.0" y="652.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="27.0" x="377.0" y="634.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="27.0" x="377.0" y="634.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="719.0" y="420.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="464.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="721.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="721.0" y="426.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -1129,7 +1135,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <omgdi:waypoint x="719.0" y="765.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="944.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="74.0" x="719.0" y="765.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="74.0" x="719.0" y="765.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
@@ -1161,14 +1167,14 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <omgdi:waypoint x="453.0" y="1220.0"></omgdi:waypoint>
         <omgdi:waypoint x="364.0" y="1220.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="382.0" y="1206.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="382.0" y="1206.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
         <omgdi:waypoint x="185.0" y="1220.0"></omgdi:waypoint>
         <omgdi:waypoint x="141.0" y="1220.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="72.0" x="142.0" y="1227.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="72.0" x="142.0" y="1227.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
