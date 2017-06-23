@@ -231,7 +231,7 @@
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
     	<extensionElements>
-    	<activiti:taskListener event="create" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
+    	<activiti:executionListener event="create"  delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
           <activiti:field name="saAttachmentsForSend">
             <activiti:string><![CDATA[" "]]></activiti:string>
           </activiti:field>
@@ -253,12 +253,12 @@
           <activiti:field name="sText">
             <activiti:string><![CDATA[text-otkaz]]></activiti:string>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:executionListener>
         </extensionElements>
         </endEvent>
     <endEvent id="endevent2" name="End">
     <extensionElements>
-    	<activiti:taskListener event="create" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
+    	<activiti:executionListener event="create"  delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
           <activiti:field name="saAttachmentsForSend">
             <activiti:expression><![CDATA[${result}]]></activiti:expression>
           </activiti:field>
@@ -280,11 +280,11 @@
           <activiti:field name="sText">
             <activiti:string><![CDATA[text-result]]></activiti:string>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:executionListener>
         </extensionElements>
         </endEvent>
     <endEvent id="endevent1" name="End"><extensionElements>
-    	<activiti:taskListener event="create" delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
+    	<activiti:executionListener event="create"  delegateExpression="${MailTaskWithAttachmentsAndSMSListener}">
           <activiti:field name="saAttachmentsForSend">
             <activiti:expression><![CDATA[" "]]></activiti:expression>
           </activiti:field>
@@ -306,7 +306,7 @@
           <activiti:field name="sText">
             <activiti:string><![CDATA[text-process]]></activiti:string>
           </activiti:field>
-        </activiti:taskListener>
+        </activiti:executionListener>
         </extensionElements>
         </endEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
