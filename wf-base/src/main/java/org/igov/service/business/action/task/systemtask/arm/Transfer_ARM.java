@@ -45,17 +45,9 @@ public class Transfer_ARM extends Abstract_MailTaskCustom implements JavaDelegat
 		// из мапы получаем по ключу значения и укладываем все это в
 		// модель и туда же укладываем по ключу Out_number значение sID_order
 		DboTkModel dataForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
-
+		
 		Integer maxNum = armService.getMaxValue();
-		LOG.info("int max.... " + maxNum);
-
 		dataForTransferToArm.setNumber_441(maxNum + 1);
-		LOG.info("int dataForTransferToArm.getNumber_441().... " + dataForTransferToArm.getNumber_441());
-
-		Integer maxNum442 = armService.getMaxValue442();
-		LOG.info("int max442.... " + maxNum442);
-		dataForTransferToArm.setNumber_442(maxNum442+1);
-		LOG.info("int dataForTransferToArm.getNumber_442().... " + dataForTransferToArm.getNumber_442());
 
 		String prilog = ValidationARM.getPrilog(dataForTransferToArm.getPrilog(), oAttachmetService);
 		LOG.info("prilog>>>>>>>>>>>> = {}", prilog);
