@@ -115,7 +115,7 @@ public class SubjectGroupController {
             @ApiParam(value = "Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей", required = false) 
             @RequestParam(value = "sSubjectType", required = false) String sSubjectType) {
         
-        return subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
+        return subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType, nDeepLevel);
        
     }
 

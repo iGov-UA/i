@@ -54,7 +54,20 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
-		
+		/**
+		 * Достаем макс значение number 441 из базы - будет общее для всех исполнителей в рамках одного докумаента
+		 */
+		Integer maxNum = armService.getMaxValue();
+		dataWithExecutorForTransferToArm.setNumber_441(maxNum);
+		LOG.info("int dataWithExecutorForTransferToArm.getNumber_441(.... " + dataWithExecutorForTransferToArm.getNumber_441());
+	    
+	    /**
+		 * Достаем макс значение number 442 из базы - для каждого из исполнителей свое
+		 */
+	    Integer maxNum442 = armService.getMaxValue442();
+	    dataWithExecutorForTransferToArm.setNumber_442(maxNum442);
+	    LOG.info("int dataWithExecutorForTransferToArm.getNumber_442().... " + dataWithExecutorForTransferToArm.getNumber_442());
+	    
 	//ветка - когда назначаются исполнители	
 			if(expert==null){
 				if(dataWithExecutorForTransferToArm.getExpert()!=null){
@@ -67,12 +80,14 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			
 						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 							armService.updateDboTk(dataWithExecutorForTransferToArm);
 							// если в листе не одно значение - для каждого исполнителя сетим
 							if (asExecutorsFromsoData.size()>1) {
 								for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 									dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
+									dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
 									armService.createDboTk(dataWithExecutorForTransferToArm);
 								}
 							}
@@ -87,6 +102,8 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
+				LOG.info("dataWithExecutorForTransferToArm what will be upload to ARM >>>",dataWithExecutorForTransferToArm );
+				//dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		
