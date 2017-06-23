@@ -22,7 +22,8 @@ public class MessageService {
 
     @Autowired
     private HttpRequester oHttpRequester;
-
+    
+    
     /**
      * Получение сообщений по заявке
      * @param nID_Process - номер-ИД процесса
@@ -31,10 +32,19 @@ public class MessageService {
     public String gerOrderMessagesByProcessInstanceID(Long nID_Process) throws Exception {
         String sID_Order = oGeneralConfig.getOrderId_ByProcess(nID_Process);
         Map<String, String> params = new HashMap<>();
+        int nID_Server_current = oGeneralConfig.getSelfServerId();
+        
         params.put("sID_Order", sID_Order);
+        
         LOG.info("SelfHost in gerOrderMessagesByProcessInstanceID: {}", oGeneralConfig.getSelfHost());
         
-        if(oGeneralConfig.getSelfHost().contains("region")){
+        /*if(oGeneralConfig.getSelfHost().contains("region")){
+            params.put("isRegion", "true");
+            
+        }*/
+        
+        if(nID_Server_current == Integer.parseInt(sID_Order.split("-")[0])){
+            LOG.info("we get messages from region server");
             params.put("isRegion", "true");
         }
         
