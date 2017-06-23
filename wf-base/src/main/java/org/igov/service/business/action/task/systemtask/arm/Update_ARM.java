@@ -55,10 +55,11 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
 		
-		Integer maxNum441 = armService.getMaxValue();
-		LOG.info("int maxNum441.... " + maxNum441);
-		dataWithExecutorForTransferToArm.setNumber_441(maxNum441+1);
+		List<DboTkModel> listOfModels = armService
+				.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
+		dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
 		
+				
 		// ветка - когда назначаются исполнители
 		if (expert == null) {
 			if (dataWithExecutorForTransferToArm.getExpert() != null) {
@@ -66,9 +67,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json с ключом из монги																		
 				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
 				
-				List<DboTkModel> listOfModels = armService
-						.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-				
+								
 				if (listOfModels != null && !listOfModels.isEmpty()) {
 					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
