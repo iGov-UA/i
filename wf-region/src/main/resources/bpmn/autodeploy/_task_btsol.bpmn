@@ -343,13 +343,13 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Подгруппа товаров" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
@@ -403,9 +403,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="double"></activiti:formProperty>
-        <activiti:formProperty id="sSaveSum" name="Экономия" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="select"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum">
@@ -538,7 +538,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" sourceRef="usertask4_red" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="exclusivegateway5" targetRef="servicetask2">
+    <sequenceFlow id="flow18" sourceRef="exclusivegateway5" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask != 'delegated'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" name="делегировать" sourceRef="exclusivegateway5" targetRef="usertask4_red">
@@ -575,13 +575,13 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Исход № предприятия/Вх.№ карточки (БЗ)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateApprove" name="Дата исход №/Дата вх.№ карточки (БЗ)" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
           <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
@@ -635,9 +635,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="double" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="double" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSaveSum" name="Экономия" type="double" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="Валюта" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Currency" name="Код валюты" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
@@ -1213,7 +1213,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow40" sourceRef="servicetask2" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_btsol">
     <bpmndi:BPMNPlane bpmnElement="_task_btsol" id="BPMNPlane__task_btsol">
@@ -1299,7 +1298,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="652.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="526.0" y="422.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="526.0" y="371.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="105.0" y="150.0"></omgdi:waypoint>
@@ -1382,7 +1381,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="459.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="526.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="449.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="439.0" y="429.0"></omgdi:waypoint>
@@ -1477,10 +1476,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="645.0" y="679.0"></omgdi:waypoint>
         <omgdi:waypoint x="695.0" y="679.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="631.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="449.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
