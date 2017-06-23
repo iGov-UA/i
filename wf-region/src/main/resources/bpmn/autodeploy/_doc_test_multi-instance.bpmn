@@ -15,13 +15,13 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_sec" name="id группы для второго селекта ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel_sec" name="глубина первого селекта ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel_sec" name="глубина первого селекта ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Executor_1" name="Тестирование селекта экзекьютора; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/test/sTable_doc_test_multi-instance.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Селект экзекьютора вне таблицы; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti_sec,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Селект экзекьютора вне таблицы; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti_sec,nDeepLevel=nDeepLevel_sec" type="select"></activiti:formProperty>
        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
