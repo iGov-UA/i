@@ -54,51 +54,63 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(),oAttachmetService);
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
-		/**
+		
+		/*//достаем из базы заполненую модель по 
+		*//**
 		 * Достаем макс значение number 441 из базы - будет общее для всех исполнителей в рамках одного докумаента
-		 */
+		 *//*
 		Integer maxNum = armService.getMaxValue();
 		dataWithExecutorForTransferToArm.setNumber_441(maxNum);
 		LOG.info("int dataWithExecutorForTransferToArm.getNumber_441(.... " + dataWithExecutorForTransferToArm.getNumber_441());
 	    
-	    /**
+	    *//**
 		 * Достаем макс значение number 442 из базы - для каждого из исполнителей свое
-		 */
+		 *//*
 	    Integer maxNum442 = armService.getMaxValue442();
 	    dataWithExecutorForTransferToArm.setNumber_442(maxNum442);
-	    LOG.info("int dataWithExecutorForTransferToArm.getNumber_442().... " + dataWithExecutorForTransferToArm.getNumber_442());
+	    LOG.info("int dataWithExecutorForTransferToArm.getNumber_442().... " + dataWithExecutorForTransferToArm.getNumber_442());*/
 	    
 	//ветка - когда назначаются исполнители	
-			if(expert==null){
-				if(dataWithExecutorForTransferToArm.getExpert()!=null){
-					List <String> asExecutorsFromsoData = ValidationARM.getAsExecutors(dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");//json с ключом из монги
-					LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
-			
-					List<DboTkModel> listOfModels = armService.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-					
-					if (listOfModels != null && !listOfModels.isEmpty()) {
-			
-						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
-							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
-							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
-							armService.updateDboTk(dataWithExecutorForTransferToArm);
-							// если в листе не одно значение - для каждого исполнителя сетим
-							if (asExecutorsFromsoData.size()>1) {
-								for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
-									dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
-									dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
-									armService.createDboTk(dataWithExecutorForTransferToArm);
-								}
+		if (expert == null) {
+			if (dataWithExecutorForTransferToArm.getExpert() != null) {
+				List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(
+						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json c ключом из монги			 
+				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
+
+				List<DboTkModel> listOfModels = armService
+						.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
+							
+				if (listOfModels != null && !listOfModels.isEmpty()) {
+					// если заявка есть в базе, получаем из листа моделей из базы - номера 441 и 442 и сетим их в свою модель
+					int _441fromModelFromBase = listOfModels.get(0).getNumber_441();
+					int _442fromModelFromBase = listOfModels.get(0).getNumber_442();
+					// и сетим их в свою модель
+					dataWithExecutorForTransferToArm.setNumber_441(_441fromModelFromBase);
+					dataWithExecutorForTransferToArm.setNumber_442(_442fromModelFromBase);
+					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
+						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
+						// dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
+						LOG.info("dataBEFOREgetEXEC первый исполнитель = {}", dataWithExecutorForTransferToArm);
+						armService.updateDboTk(dataWithExecutorForTransferToArm);
+						// если в листе не одно значение - для каждого
+						// исполнителя сетим
+						if (asExecutorsFromsoData.size() > 1) {
+							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
+								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
+								dataWithExecutorForTransferToArm
+										.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442() + 1);
+								armService.createDboTk(dataWithExecutorForTransferToArm);
 							}
-						}else{
-							LOG.info("Executors are abcent ");
 						}
-			
-					}else {
-						LOG.info("Model include sID_order "+ dataWithExecutorForTransferToArm.getOut_number() + "not found in ARM");
+					} else {
+						LOG.info("Executors are abcent ");
 					}
+
+				} else {
+					LOG.info("Model include sID_order " + dataWithExecutorForTransferToArm.getOut_number()
+							+ "not found in ARM");
 				}
+			}
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
