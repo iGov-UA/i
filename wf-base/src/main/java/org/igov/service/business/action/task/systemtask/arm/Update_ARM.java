@@ -58,7 +58,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		 * Достаем макс значение number 441 из базы - будет общее для всех исполнителей в рамках одного докумаента
 		 */
 		Integer maxNum = armService.getMaxValue();
-		dataWithExecutorForTransferToArm.setNumber_441(maxNum+1);
+		dataWithExecutorForTransferToArm.setNumber_441(maxNum);
 		LOG.info("int dataWithExecutorForTransferToArm.getNumber_441(.... " + dataWithExecutorForTransferToArm.getNumber_441());
 	    
 	    /**
@@ -80,14 +80,14 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			
 						if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
 							dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
-							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
+							dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 							LOG.info("dataBEFOREgetEXEC первый исполнитель = {}",dataWithExecutorForTransferToArm);
 							armService.updateDboTk(dataWithExecutorForTransferToArm);
 							// если в листе не одно значение - для каждого исполнителя сетим
 							if (asExecutorsFromsoData.size()>1) {
 								for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 									dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
-									dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
+									dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 									armService.createDboTk(dataWithExecutorForTransferToArm);
 								}
 							}
@@ -102,7 +102,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}else{
 					//ветка, когда исполнители уже есть и они отрабатывают свое задание
 				dataWithExecutorForTransferToArm.setExpert(expert);
-				dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442()+1);
+				dataWithExecutorForTransferToArm.setNumber_442(dataWithExecutorForTransferToArm.getNumber_442());
 				armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 			}
 		
