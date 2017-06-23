@@ -27,25 +27,21 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables(); 
         if (!mExecutionVaraibles.isEmpty()) {
-            try {
-                Map<String, Object> mOnlyDateVariables = new HashMap<>();       
-                // выбираем все переменные типа Date, приводим к нужному формату 
-                mExecutionVaraibles.forEach((sKey, oValue) -> {
-                    if (oValue != null) {
-                        String sClassName = oValue.getClass().getName();
-                        LOG.info("sClassName={}", sClassName);
-                        if (sClassName.endsWith("Date")) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
-                            String sDate = sdf.format((Date) oValue);
-                            mOnlyDateVariables.put(sKey, sDate);
-                        }
+            Map<String, Object> mOnlyDateVariables = new HashMap<>();       
+            // выбираем все переменные типа Date, приводим к нужному формату 
+            mExecutionVaraibles.forEach((sKey, oValue) -> {
+                if (oValue != null) {
+                    String sClassName = oValue.getClass().getName();
+                    LOG.info("sClassName={}", sClassName);
+                    if (sClassName.endsWith("Date")) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
+                        String sDate = sdf.format((Date) oValue);
+                        mOnlyDateVariables.put(sKey, sDate);
                     }
-                });
-                //сетим отформатированные переменные в екзекьюшен
-                oExecution.setVariables(mOnlyDateVariables);
-            } catch (NullPointerException oException) {
-                LOG.info("NPE happed={}", oException);
-            }
+                }
+            });
+            //сетим отформатированные переменные в екзекьюшен
+            oExecution.setVariables(mOnlyDateVariables);
         }
         	
         Mail oMail = null;
