@@ -24,22 +24,27 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        /*
+        
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables(); 
         if (!mExecutionVaraibles.isEmpty()) {
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();       
-            // выбираем все переменные типа Date, приводим к нужному формату 
-            mExecutionVaraibles.forEach((sKey, oValue) -> {
-            String sClassName = oValue.getClass().getName();
-                if (sClassName.endsWith("Date")) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
-                    String sDate = sdf.format((Date) oValue);
-                    mOnlyDateVariables.put(sKey, sDate);
-                }
-            });
-            //сетим отформатированные переменные в екзекьюшен
-            oExecution.setVariables(mOnlyDateVariables);
-        }*/
+            try {
+                LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+                Map<String, Object> mOnlyDateVariables = new HashMap<>();       
+                // выбираем все переменные типа Date, приводим к нужному формату 
+                mExecutionVaraibles.forEach((sKey, oValue) -> {
+                String sClassName = oValue.getClass().getName();
+                    if (sClassName.endsWith("Date")) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
+                        String sDate = sdf.format((Date) oValue);
+                        mOnlyDateVariables.put(sKey, sDate);
+                    }
+                });
+                //сетим отформатированные переменные в екзекьюшен
+                oExecution.setVariables(mOnlyDateVariables);
+            } catch (NullPointerException oException) {
+                LOG.error("NPE happed={}", oException.getMessage());
+            }
+        }
         	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
