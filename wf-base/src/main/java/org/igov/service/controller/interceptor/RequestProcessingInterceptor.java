@@ -541,7 +541,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     
                     if (sId.equals("sKey_Step_Document")) {
                         sKey_Step_Document = sValue;
-                        break;
+                        //break;
                     }
                     
                     if(sId.startsWith("sID_Order_Relation")){
