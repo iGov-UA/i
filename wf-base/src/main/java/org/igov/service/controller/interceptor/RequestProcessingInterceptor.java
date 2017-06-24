@@ -558,7 +558,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                         
                         Map<String, String> mParam = new HashMap<>();
-                        mParam.put("new_BP_ID", taskService.createTaskQuery().taskId(nID_Task_Linked).list().get(0).getProcessDefinitionId());
+                        mParam.put("new_BP_ID", 
+                                (taskService.createTaskQuery().taskId(nID_Task_Linked).list().get(0).getProcessDefinitionId()).split(":")[0]);
                         mParam.put("sID_Order_Link", sValue);
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                         LOG.info("mParam 1-st {}", mParam);
