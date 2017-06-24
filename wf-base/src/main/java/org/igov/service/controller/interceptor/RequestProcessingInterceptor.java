@@ -565,7 +565,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         LOG.info("mParam 1-st {}", mParam);
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 29L);
                         
-                        mParam.replace("new_BP_ID", aTask.get(0).getProcessDefinitionId());
+                        mParam.replace("new_BP_ID", aTask.get(0).getProcessDefinitionId().split(":")[0]);
                         mParam.replace("sID_Order_Link", sID_Order);
                         
                         LOG.info("mParam 2-nd {}", mParam);
