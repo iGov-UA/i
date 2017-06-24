@@ -24,7 +24,7 @@ var initPrivateKey = function () {
     } catch (err) {
       throw new Error('Can\'t read private key file for bankID. ' +
         'It should be specified. ' +
-        'See config/local.env.sample.js ' +
+        'See config ' +
         'Nested message if\n' + err.message);
     }
   }
