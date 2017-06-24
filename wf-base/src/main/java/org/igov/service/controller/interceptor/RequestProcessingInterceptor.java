@@ -528,7 +528,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 LOG.info("We catch document submit (ECP)");
                 JSONArray properties = (JSONArray) omRequestBody.get("properties");
-                
+                LOG.info("properties size {}", properties.size());
                 Iterator<JSONObject> iterator = properties.iterator();
                 String sKey_Step_Document = null;
                 while (iterator.hasNext()) {
