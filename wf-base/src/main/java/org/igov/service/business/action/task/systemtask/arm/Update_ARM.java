@@ -16,8 +16,9 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author Elena Предназначен для работы с исполнителями и апдейта существующих
- *         заявок
+ * @author Elena 
+ * Предназначен для работы с исполнителями и апдейта существующих
+ * заявок
  *
  */
 @Component("Update_ARM")
@@ -53,22 +54,22 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(), oAttachmetService);
 
 		dataWithExecutorForTransferToArm.setPrilog(ValidationARM.isValidSizePrilog(prilog));
-
+		
 		List<DboTkModel> listOfModels = armService
 				.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
-
+		dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
 		
+				
 		// ветка - когда назначаются исполнители
 		if (expert == null) {
 			if (dataWithExecutorForTransferToArm.getExpert() != null) {
 				List<String> asExecutorsFromsoData = ValidationARM.getAsExecutors(
 						dataWithExecutorForTransferToArm.getExpert(), oAttachmetService, "sName_isExecute");// json с ключом из монги																		
 				LOG.info("asExecutorsFromsoData = {}", asExecutorsFromsoData);
-
+				
+								
 				if (listOfModels != null && !listOfModels.isEmpty()) {
 					if (asExecutorsFromsoData != null && !asExecutorsFromsoData.isEmpty()) {
-						dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
-						dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442());
 						dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(0));
 						LOG.info("dataBEFOREgetEXEC первый исполнитель = {}", dataWithExecutorForTransferToArm);
 						armService.updateDboTk(dataWithExecutorForTransferToArm);
@@ -76,8 +77,6 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 						if (asExecutorsFromsoData.size() > 1) {
 							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
-								dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
-								dataWithExecutorForTransferToArm.setNumber_442(listOfModels.get(0).getNumber_442() + 1);
 								armService.createDboTk(dataWithExecutorForTransferToArm);
 							}
 						}
@@ -92,18 +91,10 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		} else {
 			// ветка, когда исполнители уже есть и они отрабатывают свое задание
-			for (DboTkModel DboTkModel : listOfModels) {
-				String expertFromDb = DboTkModel.getExpert();
-				LOG.info("expertFromDb >>>>>>>>" + expertFromDb);
-				if (expertFromDb.equals(expert)) {
-					dataWithExecutorForTransferToArm.setExpert(expert);
-					dataWithExecutorForTransferToArm.setNumber_441(DboTkModel.getNumber_441());
-					dataWithExecutorForTransferToArm.setNumber_442(DboTkModel.getNumber_442());
-					armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
-					break;
-				}
-
-			}
+			Integer maxNum442 = armService.getMaxValue442();
+			dataWithExecutorForTransferToArm.setExpert(expert);
+			dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
+			armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 		}
 
 	}
