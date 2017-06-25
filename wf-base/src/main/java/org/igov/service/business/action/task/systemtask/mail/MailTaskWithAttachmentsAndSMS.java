@@ -40,7 +40,16 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
         try {
 
             LOG.info("sOldAttachmentsForSend: in MailTaskWithAttachmentsAndSMS: " + sAttachmentsForSend.trim());
-
+            
+            if(!sAttachmentsForSend.trim().equals("")||sAttachmentsForSend.equals(" ")){
+                Thread.sleep(2000);
+                Object oAttachmentsForSendSelected = oExecution.getVariable("result");
+                if (oAttachmentsForSendSelected != null && !((String)oAttachmentsForSendSelected).trim().equals("")){
+                    LOG.info("some sleep always help! {}", oAttachmentsForSendSelected);
+                    sAttachmentsForSend = (String)oAttachmentsForSendSelected;
+                }
+            }
+            
             String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "")
                     .replaceAll("^\"|\"$", "").trim();
             LOG.info("MailTaskWithAttachmentsAndSMS: " + sOldAttachmentsForSend);
