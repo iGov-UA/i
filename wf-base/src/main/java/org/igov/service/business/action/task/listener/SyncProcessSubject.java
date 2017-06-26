@@ -48,8 +48,8 @@ public class SyncProcessSubject implements TaskListener {
         
         for (IdentityLink oCandidateLink : aoCandidates) {
             
-            String sCandidateGroupId = oCandidateLink.getGroupId();
-            
+            String sCandidateGroupId = oCandidateLink.getUserId();
+         
             if (sCandidateGroupId != null) {
             
                 asLogin.add(sCandidateGroupId);            
