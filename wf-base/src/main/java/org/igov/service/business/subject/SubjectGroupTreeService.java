@@ -322,7 +322,7 @@ public class SubjectGroupTreeService {
                               
         LOG.info("getSubjectGroupsTreeUp nDeepLevel: {}", nDeepLevel);       
         if (oSubjectGroup.isPresent()) {
-            if (nDeepLevel == 1 || Objects.isNull(nDeepLevel)){
+            if (nDeepLevel == null || nDeepLevel == 1){
                 //ID для которого ищем департаменты, которым он подчиняется
                 Long nID = oSubjectGroup.get().getId(); 
                 //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
@@ -359,7 +359,11 @@ public class SubjectGroupTreeService {
                     
                         for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
                             SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
-                            aSubjectGroupResult.add(oSubjcetGroupChild);
+                            
+                            String sSubjectGroup_ChildType = getSubjectType(oSubjcetGroupChild.getsID_Group_Activiti());
+                            if(sSubjectGroup_ChildType.equalsIgnoreCase("Human")){
+                                aSubjectGroupResult.add(oSubjcetGroupChild);
+                            }
                         }
                     }
                 LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
@@ -376,7 +380,11 @@ public class SubjectGroupTreeService {
                         
                         for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
                             SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
-                            aSubjectGroupResult.add(oSubjcetGroupChild);
+                            
+                            String sSubjectGroup_ChildType = getSubjectType(oSubjcetGroupChild.getsID_Group_Activiti());
+                            if(sSubjectGroup_ChildType.equalsIgnoreCase("Human")){
+                                aSubjectGroupResult.add(oSubjcetGroupChild);
+                            }
                         }         
                     }
                     LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
