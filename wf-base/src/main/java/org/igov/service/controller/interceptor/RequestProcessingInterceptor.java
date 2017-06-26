@@ -528,7 +528,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 LOG.info("We catch document submit (ECP)");
                 JSONArray properties = (JSONArray) omRequestBody.get("properties");
-                
+                LOG.info("properties size {}", properties.size());
                 Iterator<JSONObject> iterator = properties.iterator();
                 String sKey_Step_Document = null;
                 while (iterator.hasNext()) {
@@ -558,13 +558,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
                         
                         Map<String, String> mParam = new HashMap<>();
-                        mParam.put("new_BP_ID", taskService.createTaskQuery().taskId(nID_Task_Linked).list().get(0).getProcessDefinitionId());
+                        mParam.put("new_BP_ID", 
+                                (taskService.createTaskQuery().taskId(nID_Task_Linked).list().get(0).getProcessDefinitionId()).split(":")[0]);
                         mParam.put("sID_Order_Link", sValue);
                         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
                         LOG.info("mParam 1-st {}", mParam);
                         oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 29L);
                         
-                        mParam.replace("new_BP_ID", aTask.get(0).getProcessDefinitionId());
+                        mParam.replace("new_BP_ID", aTask.get(0).getProcessDefinitionId().split(":")[0]);
                         mParam.replace("sID_Order_Link", sID_Order);
                         
                         LOG.info("mParam 2-nd {}", mParam);

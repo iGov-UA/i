@@ -821,6 +821,22 @@
         };
 
         $scope.isFormInvalid = false;
+
+        function relinkPrintFormsIntoFileFields() {
+          var aFileFields = $scope.taskForm.filter(function (field) {
+            return field.type === 'file' || field.options.hasOwnProperty('sID_Field_Printform_ForECP');
+          });
+
+          angular.forEach(aFileFields, function (oFileField) {
+            var oLinkedPrintForm = $scope.taskForm.filter(function (field) {
+              return field.id === oFileField.options['sID_Field_Printform_ForECP'];
+            })[0];
+            if (oLinkedPrintForm) {
+              oFileField.options['sPatternFileUrl'] = oLinkedPrintForm.name.substr(0, oLinkedPrintForm.name.indexOf(';')).replace('[', '').replace(']', '').replace(/^pattern\//, '');
+            }
+          });
+        }
+
         $scope.submitTask = function (form, bNotShowSuccessModal) {
           $scope.validateForm(form);
           if(form.$invalid){
@@ -891,8 +907,23 @@
               if(sKey_Step_field){
                 $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
               }
-            }
-            tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
+            }/*
+            if($rootScope.checkboxForAutoECP.status){
+              relinkPrintFormsIntoFileFields();
+              tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
+
+              }, function (err) {
+
+              }).catch(defaultErrorHandler);
+            } else {
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
+            }*/
+            submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
+
+          }
+
+          function submitTaskForm(taskForm, selectedTask, attachmets) {
+            return tasks.submitTaskForm(selectedTask.id, taskForm, selectedTask, attachmets)
               .then(function (result) {
                 if(result.status == 500){
                   var message = result.data.message;
@@ -911,7 +942,7 @@
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
-                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
+                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
                     bNotShowSuccessModal = true;
                   }
 
@@ -1421,6 +1452,18 @@
         $scope.updateTemplateList = function () {
           $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
           if ($scope.printTemplateList.length > 0) {
+            var aFileFields = $scope.taskForm.filter(function (field) {
+              return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printform_ForECP');
+            });
+            if(aFileFields && aFileFields.length > 0){
+              angular.forEach($scope.printTemplateList, function (oTemplate) {
+                angular.forEach(aFileFields, function (oFileField) {
+                  if(oFileField.options['sID_Field_Printform_ForECP'] === oTemplate.id){
+                    oTemplate.printFormLinkedToFileField = oFileField.id;
+                  }
+                })
+              })
+            }
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           return true;
