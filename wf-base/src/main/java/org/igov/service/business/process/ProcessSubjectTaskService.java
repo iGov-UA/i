@@ -584,7 +584,7 @@ public class ProcessSubjectTaskService {
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
         
         
-        List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        /*List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
         
         for(ProcessSubject oProcessSubject : aProcessSubject){
             ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
@@ -598,7 +598,7 @@ public class ProcessSubjectTaskService {
         ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
         
         oProcessSubjectTask.setaProcessSubject(aProcessSubject);
-        aListOfProcessSubjectTask.add(oProcessSubjectTask);
+        aListOfProcessSubjectTask.add(oProcessSubjectTask);*/
 
         /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
