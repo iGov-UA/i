@@ -108,13 +108,18 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private DateTime getStartTime() {
-        Config config = configDao.findBy("name", "dateLastBackup").get();
-        String dateTime = config.getsValue();
-        DateTime time = DateTime.parse(dateTime);//date parsing doesn't work properly
-        HistoricProcessInstance processInstance =
-                historyService.createHistoricProcessInstanceQuery().finishedAfter(time.toDate())
-                        .orderByProcessInstanceStartTime().asc().listPage(0, 1).get(0);
-        return new DateTime(processInstance.getStartTime());
+        Config config;
+        if(configDao.findBy("name", "dateLastBackup").isPresent()) {
+             config = configDao.findBy("name", "dateLastBackup").get();
+            String dateTime = config.getsValue();
+            DateTime time = DateTime.parse(dateTime);//date parsing doesn't work properly
+            HistoricProcessInstance processInstance =
+                    historyService.createHistoricProcessInstanceQuery().finishedAfter(time.toDate())
+                            .orderByProcessInstanceStartTime().asc().listPage(0, 1).get(0);
+            return new DateTime(processInstance.getStartTime());
+        }
+        else throw new MigrationException("Date cannot be parsed; dateLastBackup is missing");
+
     }
 
     private String composeSql(DateTime startTime, String processId) {
