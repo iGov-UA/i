@@ -50,7 +50,7 @@ module.exports.submit = function (req, res) {
       nID_Service: 22,
       nID_ServiceData: 3339,
       sID_UA: "",
-      sLogin: "tester",
+      sLogin: "tester"
     };
 
     var body = {"aFormProperty": properties};
@@ -108,7 +108,7 @@ module.exports.getTaskData = function (req, res) {
     res.end();
   };
 
-  var sHost = 'http://alpha.test.region.igov.org.ua/wf';
+  var sHost = req.region.sHost;
   var params = req.body;
   activiti.get('/service/action/task/getTaskData', params, callback, sHost);
 };

@@ -22,7 +22,7 @@
       <div class="form-group">
         <b>Ваше ім'я <span style="color: red">*</span></b>
         <br><input name="sNameCitizen" size="40" maxlength="40" class="input" type="text" ng-model="sNameCitizen"
-                   pattern="[A-Za-zА-Яа-яЁё]{2,}" required>
+                   required>
       </div>
 
       <div class="form-group">
@@ -51,7 +51,15 @@
             <br>(якщо немає - то пишемо 0, всі номери заявок порталу починаються на 0-... , якщо у Вас інший номер, то
             Ви подавали звернення на іншому порталі. Прохання звернутися саме на той портал)
             <br><input name="sRequestNumber" type="text" ng-model="sRequestNumber">
-            <button class="btn btn-default" type="button" ng-click="getOrderData(sRequestNumber)">Додати інформацію</button>
+            <span ng-show="!gotOrder">
+              <button class="btn btn-default" type="button"
+                      ng-click="getOrderData(sRequestNumber)">Отримати інформацію</button>
+            </span>
+            <span ng-show="gotOrder">
+              <button class="btn btn-default" type="button"
+                      ng-click="getOrderData(sRequestNumber)">Оновити інформацію</button>
+            </span>
+
           </div>
 
           <div class="form-group">
@@ -110,9 +118,9 @@
 
       <div class="form-group">
         <b>Відобразити дані звернення</b>
-        <br><input type="checkbox" ng-model="checked">
+        <br><input type="checkbox" ng-model="ch" checked>
         <br>
-        <div ng-show="checked">
+        <div ng-show="ch">
         <span ng-repeat="(key, value) in oTask">
           <label><b>{{key}}: </b></label>
           <label>{{value}}</label>
