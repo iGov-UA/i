@@ -808,7 +808,7 @@ execution.setVariable('bSubmitedAll3', oCheckSubmitedAll3.bSubmitedAll.toString(
     </scriptTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask7">
+    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll3 == true}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask12" name="All Signes Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -828,7 +828,7 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == false}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="exclusivegateway11">
+    <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow100" name="надо генерить" sourceRef="exclusivegateway11" targetRef="callactivity1">
@@ -978,6 +978,8 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <script>execution.setVariable('sDateApprove', new Date().format("dd/MM/yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow109" sourceRef="scripttask18" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow110" sourceRef="servicetask1" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow111" sourceRef="servicetask2" targetRef="exclusivegateway11"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1051,10 +1053,10 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <omgdc:Bounds height="55.0" width="105.0" x="36.0" y="1024.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="105.0" x="830.0" y="813.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="105.0" x="667.0" y="810.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="259.0" y="1104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="272.0" y="1193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
         <omgdc:Bounds height="55.0" width="105.0" x="525.0" y="626.0"></omgdc:Bounds>
@@ -1132,7 +1134,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
         <omgdi:waypoint x="719.0" y="765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="944.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="810.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="74.0" x="719.0" y="765.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -1164,7 +1166,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
         <omgdi:waypoint x="453.0" y="1220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="225.0" y="1220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="377.0" y="1220.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="75.0" x="382.0" y="1206.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -1196,6 +1198,14 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
         <omgdi:waypoint x="525.0" y="653.0"></omgdi:waypoint>
         <omgdi:waypoint x="493.0" y="653.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
+        <omgdi:waypoint x="719.0" y="894.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="944.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
+        <omgdi:waypoint x="272.0" y="1220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="1220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

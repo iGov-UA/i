@@ -20,7 +20,8 @@
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="fileHTML" name="fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nDouble" name="double" type="double"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="queueData дата визита " type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="visitDay" name="Тип queueData" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="Тип queueData" type="queueData"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обработка заявки" activiti:candidateGroups="test1">
@@ -43,7 +44,6 @@
         <activiti:formProperty id="fileHTML" name="fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nDouble" name="double; ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="sTestDate2" name="Тип дейт2" type="date"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="queueData дата визита " type="queueData" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -77,19 +77,12 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask3">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow11" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow12" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_coment">
     <bpmndi:BPMNPlane bpmnElement="_test_coment" id="BPMNPlane__test_coment">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="270.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="380.0" y="130.0"></omgdc:Bounds>
@@ -100,15 +93,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="260.0" y="128.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="281.0" y="70.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="485.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="560.0" y="157.0"></omgdi:waypoint>
@@ -117,16 +101,8 @@
         <omgdi:waypoint x="665.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="750.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="165.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="220.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="275.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="298.0" y="105.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="325.0" y="157.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="305.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

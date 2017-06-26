@@ -26,14 +26,15 @@ angular.module('dashboardJsApp').directive('printModal', ['$window', '$rootScope
         scope.hideModal();
       };
 
-      scope.model.printTemplate.printFormLinkedToFileField = undefined;
+      //scope.model.printTemplate.printFormLinkedToFileField = undefined;
       scope.showSignAndUploadButton = function () {
+        if(!scope.model || !scope.model.printTemplate) return false;
         var aFileFields = scope.taskForm.filter(function (field) {
           return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printform_ForECP');
         });
         for(var j = 0; j < aFileFields.length; j++){
           if(aFileFields[j].options['sID_Field_Printform_ForECP'] === scope.model.printTemplate.id){
-            scope.model.printTemplate.printFormLinkedToFileField = aFileFields[j].id;
+            //scope.model.printTemplate.printFormLinkedToFileField = aFileFields[j].id;
             return !(aFileFields[j].value && aFileFields[j].value.length > 0);
           }
         }

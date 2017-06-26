@@ -12,7 +12,7 @@ var url = require('url')
 module.exports.submit = function (req, res) {
   var formData = req.body;
   var nID_Subject = 20049;
-  var sHost = "https://alpha.test.region.igov.org.ua/wf";
+  var sHost = req.region.sHost;
   var keys = [];
   var properties = [];
 
@@ -29,10 +29,13 @@ module.exports.submit = function (req, res) {
           value = formData.sID_UA;
         }
 
-        properties.push({
-          id: id,
-          value: value
-        });
+        if (value !== null) {
+          properties.push({
+            id: id,
+            value: value
+          });
+        }
+
       }
     }
 
@@ -43,14 +46,14 @@ module.exports.submit = function (req, res) {
 
     var qs = {
       sID_BP: "_FAQ",
-      nID_Subject: 20049,
+      nID_Subject: nID_Subject,
       nID_Service: 22,
       nID_ServiceData: 3339,
       sID_UA: "",
-      sLogin: "tester",
+      sLogin: "tester"
     };
 
-    var body = { "aFormProperty": properties};
+    var body = {"aFormProperty": properties};
 
     activiti.post('/service/action/task/startProcess', qs, body, callback, sHost);
 
@@ -64,19 +67,19 @@ module.exports.submit = function (req, res) {
 
   if (keys.length > 0) {
     async.forEach(keys, function (key, next) {
-        function putTableToRedis (table, callback) {
+        function putTableToRedis(table, callback) {
           var url,
             params = {},
             nameAndExt = table.id + '.json',
             checkForNewService = table.name.split(';');
 
           // now we have two services for saving table, so we checking what service is needed;
-          if(checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
+          if (checkForNewService.length === 3 && checkForNewService[2].indexOf('bNew=true') > -1) {
             url = '/object/file/setProcessAttach';
             params = {
-              sID_StorageType:'Redis',
-              sID_Field:table.id,
-              sFileNameAndExt:nameAndExt
+              sID_StorageType: 'Redis',
+              sID_Field: table.id,
+              sFileNameAndExt: nameAndExt
             };
           } else {
             url = '/object/file/upload_file_to_redis';
@@ -96,4 +99,16 @@ module.exports.submit = function (req, res) {
   } else {
     formSubmit();
   }
+};
+
+
+module.exports.getTaskData = function (req, res) {
+  var callback = function (error, response, body) {
+    res.send(body);
+    res.end();
+  };
+
+  var sHost = req.region.sHost;
+  var params = req.body;
+  activiti.get('/service/action/task/getTaskData', params, callback, sHost);
 };
