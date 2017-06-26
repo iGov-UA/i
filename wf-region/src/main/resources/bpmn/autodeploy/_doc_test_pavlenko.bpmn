@@ -81,7 +81,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="тестове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sValue}</activiti:expression>
@@ -94,6 +94,12 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression>ПИСЬМО ПРИШЛО</activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:string><![CDATA[+380961335385]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${sOrder}</activiti:expression>
         </activiti:field>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTable', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
