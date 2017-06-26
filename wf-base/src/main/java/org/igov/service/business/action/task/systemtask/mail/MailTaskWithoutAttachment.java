@@ -25,13 +25,15 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables(); 
+    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+        LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         if (!mExecutionVaraibles.isEmpty()) {
             Map<String, Object> mOnlyDateVariables = new HashMap<>();       
             // выбираем все переменные типа Date, приводим к нужному формату 
             mExecutionVaraibles.forEach((sKey, oValue) -> {
                 if (oValue != null) {
                     String sClassName = oValue.getClass().getName();
+                    LOG.info("sClassName={}", sClassName);
                     if (sClassName.endsWith("Date")) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
                         String sDate = sdf.format((Date) oValue);
