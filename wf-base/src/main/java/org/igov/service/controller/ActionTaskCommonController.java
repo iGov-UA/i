@@ -750,7 +750,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
+        //response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
+        response.put("aProcessSubjectTask", oProcessSubjectTaskService.createStubOfProcessSubjectTask());
 
         return JsonRestUtils.toJsonResponse(response);
     }
