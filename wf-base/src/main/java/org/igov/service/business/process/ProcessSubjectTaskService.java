@@ -576,27 +576,37 @@ public class ProcessSubjectTaskService {
      * @return список задач, которые относятся к заданому процессу(-ам)
      */
     public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
-
-        List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
         
-        if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
+        List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
+        ProcessSubjectResult oProcessSubjectResult = null;
+        List<ProcessSubject> aProcessSubject = null;
+        
+        oProcessSubjectResult = oProcessSubjectService.
+                    getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
+        
+        aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
+        oProcessSubjectTask.setaProcessSubject(oProcessSubjectResult.getaProcessSubject());
+        aListOfProcessSubjectTask.add(oProcessSubjectTask);
+
+        /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
         } else {
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
             
-            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+            oProcessSubjectResult = oProcessSubjectService.
                     getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
             
-            List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
+            aProcessSubject = oProcessSubjectResult.getaProcessSubject();
             
             for (ProcessSubject oProcessSubject : aProcessSubject) {
                 String snID_Process_Activiti_Root = oProcessSubject.getSnID_Process_Activiti();
     		aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
             }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
-        }
+        }*/
 
         return aListOfProcessSubjectTask;
     }
