@@ -581,8 +581,12 @@ public class ProcessSubjectTaskService {
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
 
             for(ProcessSubject oProcessSubject : aProcessSubject){
+                oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
                 ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
                         getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
+                for(ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()){
+                    processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
+                }
                 oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
             }
 
