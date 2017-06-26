@@ -471,7 +471,7 @@ public class ProcessSubjectTaskService {
             DateTime datePlan = null;
 
             if (((JSONObject) oJsonProcessSubject).get("sDatePlan") != null) {
-                datePlan = new DateTime(oProcessSubjectService.parseDate(
+                datePlan = new DateTime(df_sDatePlan.parse(
                         (String) ((JSONObject) oJsonProcessSubject).get("sDatePlan")));
             }
 
