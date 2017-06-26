@@ -577,16 +577,26 @@ public class ProcessSubjectTaskService {
      */
     public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
         
+        LOG.info("getProcessSubjectTask started...");
+        LOG.info("snID_Process_Activiti {}, nDeepProcessSubjectTask {}", snID_Process_Activiti, nDeepProcessSubjectTask);
+        
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
-        ProcessSubjectResult oProcessSubjectResult = null;
-        List<ProcessSubject> aProcessSubject = null;
         
-        oProcessSubjectResult = oProcessSubjectService.
-                    getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
         
-        aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+        
+        for(ProcessSubject oProcessSubject : aProcessSubject){
+            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+                    getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
+            oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
+        }
+        
+        
+        LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
+        LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
         ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
-        oProcessSubjectTask.setaProcessSubject(oProcessSubjectResult.getaProcessSubject());
+        
+        oProcessSubjectTask.setaProcessSubject(aProcessSubject);
         aListOfProcessSubjectTask.add(oProcessSubjectTask);
 
         /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
