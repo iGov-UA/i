@@ -38,6 +38,8 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
                         String sDate = sdf.format((Date) oValue);
                         mOnlyDateVariables.put(sKey, sDate);
+                    } else if (sClassName.contains("queueData")) {
+                        LOG.info("queueData found");
                     }
                 }
             });
