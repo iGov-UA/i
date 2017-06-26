@@ -772,9 +772,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private List<ProcessSubjectTask> createStubOfProcessSubjectTask() {
         List<ProcessSubjectTask> aRusultList = new ArrayList<>();
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(new Long(1));
-        String sBody = "\"{\"sID_StorageType\":\"Mongo\",\"sKey\":\"03fc5f8b-bef2-4fe8-b2e0-ba3495aff7ae\","
+        String sBody = "{\"sID_StorageType\":\"Mongo\",\"sKey\":\"03fc5f8b-bef2-4fe8-b2e0-ba3495aff7ae\","
                 + "\"sVersion\":\"2017-06-26\",\"sDateTime\":\"2017-06-26 07:27:55\",\"sFileNameAndExt\":\"issue_content.html\","
-                + "\"sContentType\":\"text/html\",\"nBytes\":\"1581\",\"bSigned\":false,\"aAttribute\":[]}\"";
+                + "\"sContentType\":\"text/html\",\"nBytes\":\"1581\",\"bSigned\":false,\"aAttribute\":[]}";
         String sHead = "sHead";
         
         ProcessSubjectTask oSampleOne = new ProcessSubjectTask();
