@@ -81,6 +81,10 @@ import org.activiti.engine.task.NativeTaskQuery;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
+import org.igov.model.process.ProcessSubject;
+import org.igov.model.process.ProcessSubjectStatus;
+import org.igov.model.process.ProcessSubjectStatusDao;
+import org.igov.model.process.ProcessSubjectTask;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
@@ -89,6 +93,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolLuna;
+import org.joda.time.DateTime;
 
 /**
  * @author BW
@@ -159,6 +164,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private ProcessSubjectTaskService oProcessSubjectTaskService;
+    
+    @Autowired
+    private ProcessSubjectStatusDao oProcessSubjectStatusDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -565,6 +573,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * @param bIncludeMessages (опциональный) если задано значение true - в
      * отдельном элементе aMessage возвращается массив сообщений по задаче
      * @param bIncludeProcessVariables
+     * @param bTest
      *
      * @return сериализованный объект Map{String : Object}
      * <br>{
@@ -645,7 +654,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages,
-            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables)
+            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
+            @ApiParam(value = "заглушка", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -750,9 +760,76 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 0l));
+        if (bTest) {
+            response.put("aProcessSubjectTask", createStubOfProcessSubjectTask());
+        } else {
+            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
+        }      
 
         return JsonRestUtils.toJsonResponse(response);
+    }
+    
+     private List<ProcessSubjectTask> createStubOfProcessSubjectTask() {
+        List<ProcessSubjectTask> aRusultList = new ArrayList<>();
+        ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(new Long(1));
+        String sBody = "sBody";
+        String sHead = "sHead";
+        
+        ProcessSubjectTask oSampleOne = new ProcessSubjectTask();
+        oSampleOne.setId(new Long(1));
+        oSampleOne.setSnID_Process_Activiti_Root("00000001");
+        oSampleOne.setsBody(sBody);
+        oSampleOne.setsHead(sHead);
+        
+        List<ProcessSubject> aProcessSubjectFirstLevel = new ArrayList<>();
+        ProcessSubject oProcessSubject1 = new ProcessSubject();
+        oProcessSubject1.setId(new Long(11));
+        oProcessSubject1.setSnID_Process_Activiti("00000001");
+        oProcessSubject1.setSnID_Task_Activiti("00000002");
+        oProcessSubject1.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject1.setnOrder(new Long(11));
+        oProcessSubject1.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject1.setsDateEdit(new DateTime());
+        oProcessSubject1.setsDateFact(new DateTime());
+        oProcessSubject1.setsDatePlan(new DateTime());
+        oProcessSubject1.setsDatePlanNew(new DateTime());
+        oProcessSubject1.setsLogin("sLogin1");
+        oProcessSubject1.setsLoginRole("Controller");
+        oProcessSubject1.setsText("sTest");
+        oProcessSubject1.setsTextType("sTextType");
+        aProcessSubjectFirstLevel.add(oProcessSubject1);
+        
+        List<ProcessSubject> aProcessSubjectSecondLevel = new ArrayList<>();
+        ProcessSubject oProcessSubject2 = new ProcessSubject();
+        oProcessSubject2.setId(new Long(3));
+        oProcessSubject2.setSnID_Process_Activiti("00000001");
+        oProcessSubject2.setSnID_Task_Activiti("00000003");
+        oProcessSubject2.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject2.setnOrder(new Long(12));
+        oProcessSubject2.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject2.setsDateEdit(new DateTime());
+        oProcessSubject2.setsDateFact(new DateTime());
+        oProcessSubject2.setsDatePlan(new DateTime());
+        oProcessSubject2.setsDatePlanNew(new DateTime());
+        oProcessSubject2.setsLogin("sLogin2");
+        oProcessSubject2.setsLoginRole("Executor");
+        oProcessSubject2.setsText("sTest");
+        oProcessSubject2.setsTextType("sTextType");
+        aProcessSubjectSecondLevel.add(oProcessSubject2);
+        oProcessSubject1.setaProcessSubjectChild(aProcessSubjectSecondLevel);
+        
+        oSampleOne.setaProcessSubject(aProcessSubjectFirstLevel);
+        //------------------------------------------------------
+        ProcessSubjectTask oSampleTwo = new ProcessSubjectTask();
+        oSampleTwo.setId(new Long(2));
+        oSampleTwo.setSnID_Process_Activiti_Root("00000001");
+        oSampleTwo.setsBody(sBody);
+        oSampleTwo.setsHead(sHead);
+        
+        aRusultList.add(oSampleOne);
+        aRusultList.add(oSampleTwo);
+        
+        return aRusultList;
     }
 
     /**
