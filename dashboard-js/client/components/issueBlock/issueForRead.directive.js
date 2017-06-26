@@ -21,6 +21,17 @@ angular.module('dashboardJsApp').directive('issueForRead', ['Issue', '$http', '$
         var splittedDate = date.split('-');
         return splittedDate[2] + '.' + splittedDate[1] + '.' + splittedDate[0];
       };
+      scope.convertInitials = function (init) {
+        var split = init.split('');
+        var result = [split[0]];
+        for (var i=0; i<split.length; i++) {
+          if(split[i] === ' '){
+            result.push(y[i + 1] + '.');
+            break;
+          }
+        }
+        return result.join('.');
+      }
     }
   }
 }]);
