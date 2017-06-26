@@ -508,7 +508,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("oHistoricTaskInstance.processInstanceId {}", processInstanceId);
             LOG.info("oHistoricTaskInstance.getExecutionId {}", executionId);
 
-            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+            /*List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                                     .processInstanceId(processInstanceId).list();
 
             for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
@@ -523,11 +523,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if(oHistoricVariableInstance != null){
                 LOG.info("oHistoricVariableInstance.getVariableName with like {}", oHistoricVariableInstance.getVariableName());
             }
+            */
             
             if (oHistoricTaskInstance.getProcessDefinitionId().startsWith("_doc_")) {
                 LOG.info("We catch document submit (ECP)");
                 JSONArray properties = (JSONArray) omRequestBody.get("properties");
-                
+                LOG.info("properties size {}", properties.size());
                 Iterator<JSONObject> iterator = properties.iterator();
                 String sKey_Step_Document = null;
                 while (iterator.hasNext()) {
@@ -536,9 +537,39 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     String sId = (String) jsonObject.get("id");
                     String sValue = (String) jsonObject.get("value");
                     
+                    LOG.info("sId field {}", sId);
+                    
                     if (sId.equals("sKey_Step_Document")) {
                         sKey_Step_Document = sValue;
-                        break;
+                        //break;
+                    }
+                    
+                    if(sId.startsWith("sID_Order_Relation")){
+                        
+                        LOG.info("sID_Order_Relation in {}", sId);
+                        String sID_Order = generalConfig.getOrderId_ByProcess(Long.parseLong(processInstanceId));
+                        String nID_Task_Linked = actionTaskService.getTaskIDbyProcess(null, sValue, Boolean.FALSE).toString();
+                        
+                        LOG.info("sID_Order {}", sID_Order);
+                        LOG.info("nID_Task_Linked {}", nID_Task_Linked);
+                        
+                        List<Task> aTask = taskService.createTaskQuery().processInstanceId(processInstanceId).active().list();
+                        boolean bProcessClosed = aTask == null || aTask.size() == 0;
+                        String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();
+                        
+                        Map<String, String> mParam = new HashMap<>();
+                        mParam.put("new_BP_ID", 
+                                (taskService.createTaskQuery().taskId(nID_Task_Linked).list().get(0).getProcessDefinitionId()).split(":")[0]);
+                        mParam.put("sID_Order_Link", sValue);
+                        mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                        LOG.info("mParam 1-st {}", mParam);
+                        oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 29L);
+                        
+                        mParam.replace("new_BP_ID", aTask.get(0).getProcessDefinitionId().split(":")[0]);
+                        mParam.replace("sID_Order_Link", sID_Order);
+                        
+                        LOG.info("mParam 2-nd {}", mParam);
+                        oActionEventHistoryService.addHistoryEvent(sValue, sUserTaskName, mParam, 30L);
                     }
                 }
 

@@ -162,7 +162,7 @@ module.exports.get = function (apiURL, params, callback, sHost, session, buffer)
 
 module.exports.post = function (apiURL, params, body, callback, sHost, session) {
   var prepared = this.buildGET(apiURL, params, sHost, session);
-  prepared = _.extend(prepared, {body: body});
+  prepared = _.extend(prepared, {body: body, "headers": {"Content-type": "application/json; charset=utf-8"}});
   request.post(prepared, callback);
 };
 
