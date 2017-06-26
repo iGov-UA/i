@@ -33,7 +33,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             mExecutionVaraibles.forEach((sKey, oValue) -> {
                 if (oValue != null) {
                     String sClassName = oValue.getClass().getName();
-                    LOG.info("sClassName={}", sClassName);
+                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
                     if (sClassName.endsWith("Date")) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
                         String sDate = sdf.format((Date) oValue);
