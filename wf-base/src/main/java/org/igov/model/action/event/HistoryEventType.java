@@ -146,7 +146,7 @@ public enum HistoryEventType {
     RELATED_DOCUMENT(30L,
             "DocumentRelated",
             "Документ связан",
-            "Створено вкладений документ до" +  HistoryEventMessage.LINKED_ORDER_ID + " " + HistoryEventMessage.BP_ID);
+            "Створено вкладений документ до " +  HistoryEventMessage.LINKED_ORDER_ID + " " + HistoryEventMessage.BP_ID);
     
     private Long nID;
     private String sID;

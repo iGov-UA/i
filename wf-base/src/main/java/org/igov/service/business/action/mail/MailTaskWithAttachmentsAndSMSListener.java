@@ -44,7 +44,8 @@ public class MailTaskWithAttachmentsAndSMSListener extends Abstract_MailTaskCust
 
     @Override
     public void notify(DelegateTask oTask) {
-
+        
+        LOG.info("MailTaskWithAttachmentsAndSMSListener started");
         DelegateExecution oExecution = oTask.getExecution();
 
         this.to = sTo;

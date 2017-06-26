@@ -942,7 +942,7 @@
 
                   $scope.convertDisabledEnumFiedsToReadonlySimpleText();
 
-                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
+                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
                     bNotShowSuccessModal = true;
                   }
 
