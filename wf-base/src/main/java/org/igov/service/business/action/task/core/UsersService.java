@@ -81,6 +81,8 @@ public class UsersService {
         for (User oUser : aoUsers) {
             aUsers.add(oUser.getId());
         }
+        
+        LOG.info("aUsers in getUsersLoginByGroup {}", aUsers);
         return aUsers;
     }
     

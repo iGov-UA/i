@@ -34,16 +34,18 @@ public class ArmServiceImpl implements ArmService {
 	@Override
 	public DboTkResult updateDboTkByExpert(DboTkModel dboTkModel) {
 		return armDao.updateDboTkByExpert(dboTkModel);
-		
-		
-		
 	}
 
-/*	@Override
+	@Override
 	public Integer getMaxValue() {
 		return armDao.getMaxValue();
 	}
-*/
+
+	@Override
+	public Integer getMaxValue442() {
+		return armDao.getMaxValue442();
+	}
+
 	
 	
 

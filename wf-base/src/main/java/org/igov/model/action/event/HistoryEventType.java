@@ -138,9 +138,16 @@ public enum HistoryEventType {
     TASK_NOT_ACTUAL(28L,
             "TaskNotActual",
             "Контролирующий снял задание как выполненное",
-            HistoryEventMessage.PIP + "(" + HistoryEventMessage.LOGIN + ")" + " - завдання не актуальне");
+            HistoryEventMessage.PIP + "(" + HistoryEventMessage.LOGIN + ")" + " - завдання не актуальне"),
+    RELATE_DOCUMENT(29L,
+            "DocumentRelated",
+            "Документ связан",
+            "Створено вкладений документ " +  HistoryEventMessage.LINKED_ORDER_ID + " " + HistoryEventMessage.BP_ID),
+    RELATED_DOCUMENT(30L,
+            "DocumentRelated",
+            "Документ связан",
+            "Створено вкладений документ до " +  HistoryEventMessage.LINKED_ORDER_ID + " " + HistoryEventMessage.BP_ID);
     
-
     private Long nID;
     private String sID;
     private String sName;

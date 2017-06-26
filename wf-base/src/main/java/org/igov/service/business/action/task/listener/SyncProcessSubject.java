@@ -37,9 +37,9 @@ public class SyncProcessSubject implements TaskListener {
     public void notify(DelegateTask oDelegateTask) {
         
         String snID_Process_Activiti = oDelegateTask.getProcessInstanceId();
-      
-        String snID_Task_Activiti = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().singleResult().getId();
-        
+        //oDelegateTask
+        //String snID_Task_Activiti = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).active().singleResult().getId();
+        String snID_Task_Activiti = oDelegateTask.getId();
         Set<IdentityLink> aoCandidates = oDelegateTask.getCandidates();
         LOG.info("SyncProcessSubject: выбраные кандидаты aoCandidates={}", aoCandidates);
         
@@ -48,8 +48,8 @@ public class SyncProcessSubject implements TaskListener {
         
         for (IdentityLink oCandidateLink : aoCandidates) {
             
-            String sCandidateGroupId = oCandidateLink.getGroupId();
-            
+            String sCandidateGroupId = oCandidateLink.getUserId();
+         
             if (sCandidateGroupId != null) {
             
                 asLogin.add(sCandidateGroupId);            

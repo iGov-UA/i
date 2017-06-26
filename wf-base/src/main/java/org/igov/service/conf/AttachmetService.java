@@ -158,8 +158,8 @@ public class AttachmetService implements CustomRegexPattern{
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
         
         if(oFindedDocumentStep != null){
-            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.getRights());
-            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
+            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.aDocumentStepSubjectRight());
+            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.aDocumentStepSubjectRight());
         }
         
         // пробегаюсь по листу логинов, ищу нужный
@@ -303,8 +303,8 @@ public class AttachmetService implements CustomRegexPattern{
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = new ArrayList<>();
         
         if(oFindedDocumentStep != null){
-            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.getRights());
-            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.getRights());
+            aDocumentStepSubjectRight.addAll(oFindedDocumentStep.aDocumentStepSubjectRight());
+            LOG.info("oFindedDocumentStep ={}", oFindedDocumentStep.aDocumentStepSubjectRight());
         }
         
         DocumentStepSubjectRight oTargetDocumentStepSubjectRight = null;

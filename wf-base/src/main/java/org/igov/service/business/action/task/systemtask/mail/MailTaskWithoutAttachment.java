@@ -1,6 +1,11 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
 import org.activiti.engine.delegate.DelegateExecution;
 import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
@@ -21,8 +26,27 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
         
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-    	LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-    	
+        LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+        if (!mExecutionVaraibles.isEmpty()) {
+            Map<String, Object> mOnlyDateVariables = new HashMap<>();       
+            // выбираем все переменные типа Date, приводим к нужному формату 
+            mExecutionVaraibles.forEach((sKey, oValue) -> {
+                if (oValue != null) {
+                    String sClassName = oValue.getClass().getName();
+                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
+                    if (sClassName.endsWith("Date")) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
+                        String sDate = sdf.format((Date) oValue);
+                        mOnlyDateVariables.put(sKey, sDate);
+                    } else if (sClassName.contains("queueData")) {
+                        LOG.info("queueData found");
+                    }
+                }
+            });
+            //сетим отформатированные переменные в екзекьюшен
+            oExecution.setVariables(mOnlyDateVariables);
+        }
+        	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);

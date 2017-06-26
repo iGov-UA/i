@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.igov.model.core.AbstractEntity;
@@ -29,8 +30,9 @@ public class ProcessSubjectTask extends AbstractEntity{
     private String snID_Process_Activiti_Root;
     
     /*@OneToMany(mappedBy = "oProcessSubjectTask", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE) 
-    private List<ProcessSubject> aProcessSubject;*/
+    @LazyCollection(LazyCollectionOption.FALSE) */
+    @Transient
+    private List<ProcessSubject> aProcessSubject;
 
     public String getsHead() {
         return sHead;
@@ -56,13 +58,13 @@ public class ProcessSubjectTask extends AbstractEntity{
         this.snID_Process_Activiti_Root = snID_Process_Activiti_Root;
     }
 
-    /*public void setaProcessSubject(List<ProcessSubject> aProcessSubject) {
+    public void setaProcessSubject(List<ProcessSubject> aProcessSubject) {
         this.aProcessSubject = aProcessSubject;
     }
     
     public List<ProcessSubject> getaProcessSubject() {
         return aProcessSubject;
-    }*/
+    }
 
     /*@Override
     public String toString() {
