@@ -47,6 +47,7 @@ angular.module('popUp').controller('PopUpController',
       $scope.getOrderData = function (sID_Order) {
         $scope.gotOrder = true;
         var body = {
+          "nID_Server": "5",
           sID_Order: sID_Order,
           bIncludeStartForm: true
         };
