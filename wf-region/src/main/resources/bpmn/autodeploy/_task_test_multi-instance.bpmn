@@ -69,7 +69,7 @@
         <activiti:formProperty id="sRemark" name="Комментарий - что необходимо доработать" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processSubjectTaskService.getProcessSubjectLoginsWithoutTask(execution.getProcessInstanceId(), 'Controller')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
@@ -94,7 +94,7 @@
           <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processSubjectTaskService.getProcessSubjectLoginsWithoutTask(execution.getProcessInstanceId(), 'Executor')}" activiti:elementVariable="sLogin"></multiInstanceLoopCharacteristics>
     </userTask>
