@@ -3515,7 +3515,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mJsonBody.containsKey("aProcessSubjectTask")) {
                     JSONParser parser = new JSONParser();
                     LOG.info("The request to updateProcess contains aProcessSubjectTask key");
-
+                    LOG.info("aProcessSubjectTask in updateProcess is {}", ((org.json.simple.JSONObject) parser.parse(sJsonBody)).toJSONString());
                     /*org.json.simple.JSONObject oaProcessSubjectTask 
                             = (org.json.simple.JSONObject)mJsonBody.get("aProcessSubjectTask");*/
                     isSubmitFlag = oProcessSubjectTaskService.syncProcessSubjectTask((org.json.simple.JSONArray) ((org.json.simple.JSONObject) parser.parse(sJsonBody)).get("aProcessSubjectTask"), taskId);
