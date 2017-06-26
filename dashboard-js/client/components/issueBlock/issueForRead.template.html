@@ -17,6 +17,7 @@
         <span>Виконання</span>
         <span style="float: right">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
+          <span>{{::convertDate(issue.aProcessSubject[0].sDatePlan)}}</span>
         </span>
       </div>
       <div class="issue-padding-10" ng-repeat="exec in issue.aProcessSubject" ng-if="exec.sLoginRole !== 'Controller'">
@@ -31,7 +32,7 @@
     <div class="col-md-5 issue-no-padding">
       <div class="issue-read-headers">
         <span>Звiт</span>
-        <span style="float: right;">(Документ)</span>
+        <span style="float: right;">{{::getIssueType(issue.sTextType)}}</span>
       </div>
     </div>
   </div>
