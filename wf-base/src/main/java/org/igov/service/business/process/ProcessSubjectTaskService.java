@@ -69,12 +69,6 @@ public class ProcessSubjectTaskService {
     private ProcessSubjectTaskDao oProcessSubjectTaskDao;
 
     @Autowired
-    private DocumentStepDao oDocumentStepDao;
-
-    @Autowired
-    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
-
-    @Autowired
     private ProcessSubjectDao oProcessSubjectDao;
 
     @Autowired
