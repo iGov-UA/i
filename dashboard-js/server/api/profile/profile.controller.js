@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var errors = require('../../components/errors');
+var environment = require('../../config/environment');
 var async = require('async');
 
 function createHttpError(error, statusCode) {
@@ -13,9 +14,10 @@ function createHttpError(error, statusCode) {
 exports.getSubjects = function (req, res) {
   var saAccount = req.params.saAccount;
   var nID_SubjectAccountType = req.params.nID_SubjectAccountType;
+  var central = environment.activiti_central;
 
   var options = {
-    path: ' https://test.igov.org.ua/wf/service/subject/getSubjectsBy?saAccount=["'+saAccount+'"]&nID_SubjectAccountType=' + nID_SubjectAccountType,
+    path: central.prot + '://' + central.host + ':' + central.port + '/' + central.rest + '/subject/getSubjectsBy?saAccount=["'+saAccount+'"]&nID_SubjectAccountType=' + nID_SubjectAccountType,
     json: true,
     doNotUseActivityConfigUrl: true
   };

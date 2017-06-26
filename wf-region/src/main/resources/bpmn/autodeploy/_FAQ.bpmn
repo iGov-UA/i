@@ -3,6 +3,10 @@
   <process id="_FAQ" name="Маю питання щодо послуги" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCitizen" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -47,6 +51,9 @@
     </startEvent>
     <userTask id="usertask1" name="Первичная обработка" activiti:candidateGroups="request">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCitizen" name="Ваше ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
@@ -101,6 +108,7 @@
           <activiti:value id="tester" name="Тестер"></activiti:value>
           <activiti:value id="kermit" name="Кермит"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="saField" name="Дані заявки" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -108,6 +116,9 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <userTask id="usertask2" name="User Task" activiti:assignee="${asDelegateTo}">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище " type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameCitizen" name="Ваше ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта; для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон" type="string" writable="false"></activiti:formProperty>
@@ -157,6 +168,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sAnswer" name="Відповідь громадянину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentToAnalitic" name="Коментар для аналітика" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="saField" name="Дані заявки" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

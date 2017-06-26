@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app').service('MasterPassService', ['$http', '$location', '$window', 'modalService', '$q', function ($http, $location, $window, modalService, $q) {
+angular.module('app').service('MasterPassService', ['$http', '$location', '$window', 'modalService', '$q', 'UserService', function ($http, $location, $window, modalService, $q, UserService) {
 
     var deleteCardModal = {
       closeButtonText: 'Скасувати',
@@ -58,6 +58,14 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
           }
         }
       }
+    },
+
+    getUserId: function () {
+      var deferred = $q.defer();
+      UserService.fio().then(function (res) {
+        deferred.resolve(res.subjectID);
+      });
+      return deferred.promise;
     },
 
     getSum: function (form) {
@@ -145,82 +153,110 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
     },
 
     checkUser: function (phone) {
-      var params = {
-        "body": {"msisdn": phone},
-        "action": "Check"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "msisdn": phone,
+            "user_id": id
+          },
+          "action": "Check"
+        };
 
-      return $http.post('./api/masterpass/checkUser', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass/checkUser', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
-    getCommission: function (sum) {
-      var params = {
-        "body": {
-          "invoice": sum
-        },
-        "action": "CalcPaymentAmount"
-      };
+    getCommission: function (sum, phone) {
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "msisdn": phone,
+            "invoice": sum,
+            "user_id": id
+          },
+          "action": "CalcPaymentAmount"
+        };
 
-      return $http.post('./api/masterpass', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     addCard: function (phone, lang) {
-      var params = {
-        "body": {
-          "msisdn": phone,
-          "lang": lang
-        },
-        "action": "AddcardByURL"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "msisdn": phone,
+            "lang": lang,
+            "user_id": id
+          },
+          "action": "AddcardByURL"
+        };
 
-      return $http.post('./api/masterpass', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response.url;
-        }
-      })
+        return $http.post('./api/masterpass', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response.url);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     removeCard: function (phone, card) {
-      var params = {
-        "body": {
-          "msisdn": phone,
-          "card_alias": card
-        },
-        "action": "DeleteCard"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "msisdn": phone,
+            "card_alias": card,
+            "user_id": id
+          },
+          "action": "DeleteCard"
+        };
 
-      return $http.post('./api/masterpass', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     createPayment: function (phone, data) {
-      var params = {
-        "body": {
-          "invoice": data.invoice,
-          "card_alias": data.card_alias,
-          "pmt_info": data.pmt_info,
-          "pmt_desc": data.pmt_desc,
-          "msisdn": phone
-        },
-        "action": "PaymentCreate"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "invoice": data.invoice,
+            "card_alias": data.card_alias,
+            "pmt_info": data.pmt_info,
+            "pmt_desc": data.pmt_desc,
+            "msisdn": phone,
+            "user_id": id
+          },
+          "action": "PaymentCreate"
+        };
 
-      return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     // redirectForVerify3DS: function (url, res, md, callback) {
@@ -241,67 +277,87 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
     // },
 
     otpConfirm: function (otp, token, phone) {
-      var params = {
-        "body": {
-          "value": otp,
-          "token": token,
-          "msisdn": phone
-        },
-        "action": "Otp"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "value": otp,
+            "token": token,
+            "msisdn": phone,
+            "user_id": id
+          },
+          "action": "Otp"
+        };
 
-      return $http.post('./api/masterpass', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     paymentSale: function (data) {
-      var params = {
-        "body": {
-          "pmt_id": data.pmt_id,
-          "invoice": data.invoice
-        },
-        "action": "PaymentSale"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "pmt_id": data.pmt_id,
+            "invoice": data.invoice,
+            "user_id": id
+          },
+          "action": "PaymentSale"
+        };
 
-      return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     paymentCancel: function (id, phone) {
-      var params = {
-        "body": {
-          "pmt_id": id,
-          "msisdn": phone
-        },
-        "action": "PaymentCancel"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "pmt_id": id,
+            "msisdn": phone,
+            "user_id": id
+          },
+          "action": "PaymentCancel"
+        };
 
-      return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     statusRequest: function (phone) {
-      var params = {
-        "body": {
-          "msisdn": phone
-        },
-        "action": "StatusRequest"
-      };
+      var deferred = $q.defer();
+      this.getUserId().then(function (id) {
+        var params = {
+          "body": {
+            "msisdn": phone,
+            "user_id": id
+          },
+          "action": "StatusRequest"
+        };
 
-      return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
-        if(res && res.data.response) {
-          return res.data.response;
-        }
-      })
+        return $http.post('./api/masterpass/createSaleCancelPayment', params).then(function (res) {
+          if(res && res.data.response) {
+            deferred.resolve(res.data.response);
+          }
+        })
+      });
+      return deferred.promise;
     },
 
     messages: function (type) {

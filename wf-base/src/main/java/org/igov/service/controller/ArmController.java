@@ -107,13 +107,13 @@ public class ArmController {
     @ResponseBody
     public Integer getMaxValue442()
             throws Exception {
-    	Integer maxValue = null;
+    	Integer maxValue442 = null;
         try {
-        	maxValue = armService.getMaxValue442();
+        	maxValue442 = armService.getMaxValue442();
 
         } catch (Exception e) {
         	LOG.error("FAIL: {}", e.getMessage());
         }
-        return maxValue;
+        return maxValue442;
     }
 }

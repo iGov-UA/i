@@ -15,7 +15,7 @@ execution.setVariable('processInstanceId', processInstanceId)
 //скрипт по доставанию фио автора
 //execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
-    <userTask id="usertask1" name="створ автор">
+    <userTask id="usertask1" name="створення документа">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -54,7 +54,7 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору; ;bNew=true" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -99,26 +99,22 @@ execution.setVariable('processInstanceId', processInstanceId)
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask2" name="права рук, степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="права керівнику, степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_2'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-
-//скрипт получения логина руководителя
+//Клонування прав для керівника автора
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Author_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-//Клонування прав для начальника відділення
-var sLoginAuthor = execution.getVariable('sLoginAuthor')
-var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
-execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
+</script>
     </scriptTask>
-    <userTask id="usertask2" name="руков автора">
+    <userTask id="usertask2" name="керівник автора">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -158,7 +154,7 @@ execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;writable=false" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору; ;writable=false" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -210,13 +206,13 @@ var sKey_Step= 'step_3'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для финансиста
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Financial_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <userTask id="usertask3" name="финансист">
+    <userTask id="usertask3" name="фінансист">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -231,7 +227,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа; ;writable=false" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління; ;writable=false" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління; ;writable=false" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -255,7 +251,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;writable=false" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору; ;writable=false" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -332,7 +328,7 @@ var sKey_Step= 'step_4'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для юриста
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Legal_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
@@ -353,7 +349,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -377,7 +373,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -432,7 +428,7 @@ var sKey_Step= 'step_5'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для автора
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
@@ -445,7 +441,7 @@ var sKey_Step= 'step_6'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для круга рассмотрения
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Matching_group_1'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
@@ -453,8 +449,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 //права из таблицы
 //var snID_Process_Activiti = execution.getProcessInstanceId()
-//var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-//var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Comfy', 'sTable', 'step_4',true,'sLogin_isExecute')
+//var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_6')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Comfy', 'sTable', 'step_6',true,'sLogin_isExecute')
 
 </script>
     </scriptTask>
@@ -465,7 +461,7 @@ var sKey_Step= 'step_10'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для деловода
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Clerk'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
@@ -494,7 +490,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -518,7 +514,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -569,7 +565,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -593,7 +589,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -633,7 +629,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask7" name="деловод">
+    <userTask id="usertask7" name="діловод">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -648,7 +644,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -672,7 +668,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -713,7 +709,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow19" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask9" name="все подписали" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask9" name="всі підписали" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oDocumentStepSubmitedAll =
@@ -743,7 +739,7 @@ var sKey_Step= 'step_7'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для того же юриста
 var snID_Process_Activiti = execution.getProcessInstanceId();
 var aDocumentStepSubjectRight = documentStepService.getDocumentStep(snID_Process_Activiti, 'step_4');
 var sKey_GroupPostfix_New;
@@ -774,7 +770,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -798,7 +794,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -888,7 +884,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -932,7 +928,7 @@ var sKey_Step= 'step_8'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для автора
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
@@ -953,7 +949,7 @@ var sKey_Step= 'step_9'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для начальника відділення
+//Клонування прав для автора
 var snID_Process_Activiti = execution.getProcessInstanceId();
 var aDocumentStepSubjectRight = documentStepService.getDocumentStep(snID_Process_Activiti, 'step_4');
 var sKey_GroupPostfix_New;
@@ -985,7 +981,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum" required="true">
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
           <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
           <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
           <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
@@ -1009,7 +1005,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc" name="шаблон(проект) документа" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>

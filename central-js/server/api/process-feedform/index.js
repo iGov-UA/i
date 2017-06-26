@@ -8,5 +8,6 @@ var express = require('express')
 
 
 router.post('/', feedform.submit);
+router.post('/getTaskData', feedform.getTaskData);
 
 module.exports = router;
