@@ -39,6 +39,7 @@ import org.igov.model.process.ProcessSubjectTask;
 import org.igov.model.process.ProcessSubjectTaskDao;
 import org.igov.model.process.ProcessSubjectTree;
 import org.igov.model.process.ProcessSubjectTreeDao;
+import org.igov.model.process.ProcessUser;
 import org.igov.service.business.document.DocumentStepService;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
@@ -576,27 +577,50 @@ public class ProcessSubjectTaskService {
      * @return список задач, которые относятся к заданому процессу(-ам)
      */
     public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
-
+        
+        LOG.info("getProcessSubjectTask started...");
+        LOG.info("snID_Process_Activiti {}, nDeepProcessSubjectTask {}", snID_Process_Activiti, nDeepProcessSubjectTask);
+        
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
         
-        if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
+        try{
+            List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+
+            for(ProcessSubject oProcessSubject : aProcessSubject){
+                ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+                        getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
+                oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
+            }
+
+
+            LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
+            LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
+            ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
+
+            oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+            aListOfProcessSubjectTask.add(oProcessSubjectTask);
+        }
+        catch (Exception ex){
+            LOG.error("Error in getProcessSubjectTask {}", ex);
+        } 
+        /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
         } else {
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
             
-            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+            oProcessSubjectResult = oProcessSubjectService.
                     getCatalogProcessSubject(snID_Process_Activiti, nDeepProcessSubjectTask, null);
             
-            List<ProcessSubject> aProcessSubject = oProcessSubjectResult.getaProcessSubject();
+            aProcessSubject = oProcessSubjectResult.getaProcessSubject();
             
             for (ProcessSubject oProcessSubject : aProcessSubject) {
                 String snID_Process_Activiti_Root = oProcessSubject.getSnID_Process_Activiti();
     		aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root));
             }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
-        }
+        }*/
 
         return aListOfProcessSubjectTask;
     }
