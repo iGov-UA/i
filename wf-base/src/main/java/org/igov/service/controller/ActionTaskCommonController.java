@@ -843,6 +843,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject3.setsText("sTest");
         oProcessSubject3.setsTextType("sTextType");
         aProcessSubjectFirstLevel3.add(oProcessSubject3);
+        List<ProcessSubject> aoProcessSubject3Child = new ArrayList<>();       
         
         List<ProcessSubject> aProcessSubjectFirstLevel4 = new ArrayList<>();
         ProcessSubject oProcessSubject4 = new ProcessSubject();
@@ -861,7 +862,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject4.setsText("sTest");
         oProcessSubject4.setsTextType("sTextType");
         aProcessSubjectFirstLevel4.add(oProcessSubject4);
-        oProcessSubject3.setaProcessSubjectChild(aProcessSubjectFirstLevel4);
+        aoProcessSubject3Child.addAll(aProcessSubjectFirstLevel4);
         oSampleTwo.setaProcessSubject(aProcessSubjectFirstLevel3);
         
         List<ProcessSubject> aProcessSubjectFirstLevel5 = new ArrayList<>();
@@ -881,9 +882,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject5.setsText("sTest");
         oProcessSubject5.setsTextType("sTextType");
         aProcessSubjectFirstLevel5.add(oProcessSubject5);
-        oProcessSubject3.setaProcessSubjectChild(aProcessSubjectFirstLevel5);
-
+        aoProcessSubject3Child.addAll(aProcessSubjectFirstLevel5);
+        oProcessSubject3.setaProcessSubjectChild(aoProcessSubject3Child);
         List<ProcessSubject> aProcessSubjectFirstLevel6 = new ArrayList<>();
+        List<ProcessSubject> aoProcessSubject5Child = new ArrayList<>();
+        
         ProcessSubject oProcessSubject6 = new ProcessSubject();
         oProcessSubject6.setId(new Long(11));
         oProcessSubject6.setSnID_Process_Activiti("00000002");
@@ -900,7 +903,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject6.setsText("sTest");
         oProcessSubject6.setsTextType("sTextType");
         aProcessSubjectFirstLevel6.add(oProcessSubject6);
-        oProcessSubject5.setaProcessSubjectChild(aProcessSubjectFirstLevel6);
+        aoProcessSubject5Child.addAll(aProcessSubjectFirstLevel6);
         
         List<ProcessSubject> aProcessSubjectFirstLevel7 = new ArrayList<>();
         ProcessSubject oProcessSubject7 = new ProcessSubject();
@@ -919,7 +922,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject7.setsText("sTest");
         oProcessSubject7.setsTextType("sTextType");
         aProcessSubjectFirstLevel7.add(oProcessSubject7);
-        oProcessSubject5.setaProcessSubjectChild(aProcessSubjectFirstLevel7);
+        aoProcessSubject5Child.addAll(aProcessSubjectFirstLevel7);
+        oProcessSubject5.setaProcessSubjectChild(aoProcessSubject5Child);
         
         aRusultList.add(oSampleOne);
         aRusultList.add(oSampleTwo);
