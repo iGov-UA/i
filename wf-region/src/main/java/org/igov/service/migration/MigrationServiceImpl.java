@@ -354,7 +354,10 @@ public class MigrationServiceImpl implements MigrationService {
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
             if (StringUtils.isNumeric(string) && StringUtils.isNotEmpty(string)) {
-                type = attributeTypeDao.findById(7L).get();
+                if(attributeTypeDao.findById(7L).isPresent())
+                    type = attributeTypeDao.findById(7L).get();
+                else
+                    throw new MigrationException("Attribute Type is missing; its id is " + 7L);
                 Attribute_File fileAttribute = new Attribute_File();
                 AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
                 fileAttribute.setsContentType(file.getType());
@@ -365,7 +368,10 @@ public class MigrationServiceImpl implements MigrationService {
                 fileAttribute.setsID_Data(newKey);
                 attribute.setoAttribute_File(fileAttribute);
             } else if (string.startsWith("{") && string.contains("Mongo")) {
-                type = attributeTypeDao.findById(7L).get();
+                if(attributeTypeDao.findById(7L).isPresent())
+                    type = attributeTypeDao.findById(7L).get();
+                else
+                    throw new MigrationException("Attribute Type is missing; its id is " + 7L);
                 Attribute_File fileAttribute = new Attribute_File();
                 Map<String, String> fileValuesMap = parseJsonStringToMap(string);
                 fileAttribute.setsFileName(fileValuesMap.get("sFileNameAndExt"));
@@ -376,13 +382,19 @@ public class MigrationServiceImpl implements MigrationService {
                 fileAttribute.setsID_Data(newKey);
                 attribute.setoAttribute_File(fileAttribute);
             } else if (string.length() < 255) {
-                type = attributeTypeDao.findById(3L).get();
+                if(attributeTypeDao.findById(3L).isPresent())
+                    type = attributeTypeDao.findById(3L).get();
+                else
+                    throw new MigrationException("Attribute Type is missing; its id is " + 3L);
                 Attribute_StringShort shortString = new Attribute_StringShort();
                 shortString.setsValue(string);
                 shortString.setoAttribute(attribute);
                 attribute.setoAttribute_StringShort(shortString);
             } else {
-                type = attributeTypeDao.findById(4L).get();
+                if(attributeTypeDao.findById(4L).isPresent())
+                    type = attributeTypeDao.findById(4L).get();
+                else
+                    throw new MigrationException("Attribute Type is missing; its id is " + 4L);
                 Attribute_StringLong longString = new Attribute_StringLong();
                 longString.setsValue(string);
                 longString.setoAttribute(attribute);
@@ -391,21 +403,30 @@ public class MigrationServiceImpl implements MigrationService {
         }
 
         if (clazz.getSimpleName().equalsIgnoreCase("integer")) {
-            type = attributeTypeDao.findById(1L).get();
+            if(attributeTypeDao.findById(1L).isPresent())
+                type = attributeTypeDao.findById(1L).get();
+            else
+                throw new MigrationException("Attribute Type is missing; its id is " + 1L);
             Attribute_Integer integer = new Attribute_Integer();
             integer.setnValue((Integer) obj);
             integer.setoAttribute(attribute);
             attribute.setoAttribute_Integer(integer);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("boolean")) {
-            type = attributeTypeDao.findById(5L).get();
+            if(attributeTypeDao.findById(5L).isPresent())
+                type = attributeTypeDao.findById(5L).get();
+            else
+                throw new MigrationException("Attribute Type is missing; its id is " + 5L);
             Attribute_Boolean boolean_attr = new Attribute_Boolean();
             boolean_attr.setbValue((Boolean) obj);
             boolean_attr.setoAttribute(attribute);
             attribute.setoAttribute_Boolean(boolean_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("date")) {
-            type = attributeTypeDao.findById(6L).get();
+            if(attributeTypeDao.findById(6L).isPresent())
+                type = attributeTypeDao.findById(6L).get();
+            else
+                throw new MigrationException("Attribute Type is missing; its id is " + 6L);
             Attribute_Date date_attr = new Attribute_Date();
             date_attr.setoValue(new DateTime(obj));
             date_attr.setoAttribute(attribute);
@@ -413,14 +434,20 @@ public class MigrationServiceImpl implements MigrationService {
         }
         if (clazz.getSimpleName().equalsIgnoreCase("float")
                 || clazz.getSimpleName().equalsIgnoreCase("double")) {
-            type = attributeTypeDao.findById(2L).get();
+            if(attributeTypeDao.findById(2L).isPresent())
+                type = attributeTypeDao.findById(2L).get();
+            else
+                throw new MigrationException("Attribute Type is missing; its id is " + 2L);
             Attribute_Float float_attr = new Attribute_Float();
             float_attr.setnValue((Double) obj);
             float_attr.setoAttribute(attribute);
             attribute.setoAttribute_Float(float_attr);
         }
         if (clazz.getSimpleName().equalsIgnoreCase("long")) {
-            type = attributeTypeDao.findById(8L).get();
+            if(attributeTypeDao.findById(8L).isPresent())
+                type = attributeTypeDao.findById(8L).get();
+            else
+                throw new MigrationException("Attribute Type is missing; its id is " + 8L);
             Attribute_Long long_attr = new Attribute_Long();
             long_attr.setnValue((Long) obj);
             long_attr.setoAttribute(attribute);
