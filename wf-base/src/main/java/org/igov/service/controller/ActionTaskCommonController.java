@@ -769,7 +769,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return JsonRestUtils.toJsonResponse(response);
     }
     
-     private List<ProcessSubjectTask> createStubOfProcessSubjectTask() {
+    private List<ProcessSubjectTask> createStubOfProcessSubjectTask() {
         List<ProcessSubjectTask> aRusultList = new ArrayList<>();
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(new Long(1));
         String sBody = "sBody";
@@ -799,7 +799,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject1.setsTextType("sTextType");
         aProcessSubjectFirstLevel.add(oProcessSubject1);
         
-        List<ProcessSubject> aProcessSubjectSecondLevel = new ArrayList<>();
+        List<ProcessSubject> aProcessSubjectfirstLevel2 = new ArrayList<>();
         ProcessSubject oProcessSubject2 = new ProcessSubject();
         oProcessSubject2.setId(new Long(3));
         oProcessSubject2.setSnID_Process_Activiti("00000001");
@@ -815,8 +815,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oProcessSubject2.setsLoginRole("Executor");
         oProcessSubject2.setsText("sTest");
         oProcessSubject2.setsTextType("sTextType");
-        aProcessSubjectSecondLevel.add(oProcessSubject2);
-        oProcessSubject1.setaProcessSubjectChild(aProcessSubjectSecondLevel);
+        aProcessSubjectfirstLevel2.add(oProcessSubject2);
+        oProcessSubject1.setaProcessSubjectChild(aProcessSubjectfirstLevel2);
         
         oSampleOne.setaProcessSubject(aProcessSubjectFirstLevel);
         //------------------------------------------------------
@@ -825,6 +825,101 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oSampleTwo.setSnID_Process_Activiti_Root("00000001");
         oSampleTwo.setsBody(sBody);
         oSampleTwo.setsHead(sHead);
+        
+        List<ProcessSubject> aProcessSubjectFirstLevel3 = new ArrayList<>();
+        ProcessSubject oProcessSubject3 = new ProcessSubject();
+        oProcessSubject3.setId(new Long(11));
+        oProcessSubject3.setSnID_Process_Activiti("00000001");
+        oProcessSubject3.setSnID_Task_Activiti("00000004");
+        oProcessSubject3.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject3.setnOrder(new Long(11));
+        oProcessSubject3.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject3.setsDateEdit(new DateTime());
+        oProcessSubject3.setsDateFact(new DateTime());
+        oProcessSubject3.setsDatePlan(new DateTime());
+        oProcessSubject3.setsDatePlanNew(new DateTime());
+        oProcessSubject3.setsLogin("sLogin3");
+        oProcessSubject3.setsLoginRole("Controller");
+        oProcessSubject3.setsText("sTest");
+        oProcessSubject3.setsTextType("sTextType");
+        aProcessSubjectFirstLevel3.add(oProcessSubject3);
+        
+        List<ProcessSubject> aProcessSubjectFirstLevel4 = new ArrayList<>();
+        ProcessSubject oProcessSubject4 = new ProcessSubject();
+        oProcessSubject4.setId(new Long(11));
+        oProcessSubject4.setSnID_Process_Activiti("00000001");
+        oProcessSubject4.setSnID_Task_Activiti("00000005");
+        oProcessSubject4.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject4.setnOrder(new Long(11));
+        oProcessSubject4.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject4.setsDateEdit(new DateTime());
+        oProcessSubject4.setsDateFact(new DateTime());
+        oProcessSubject4.setsDatePlan(new DateTime());
+        oProcessSubject4.setsDatePlanNew(new DateTime());
+        oProcessSubject4.setsLogin("sLogin4");
+        oProcessSubject4.setsLoginRole("Executor");
+        oProcessSubject4.setsText("sTest");
+        oProcessSubject4.setsTextType("sTextType");
+        aProcessSubjectFirstLevel4.add(oProcessSubject4);
+        oProcessSubject3.setaProcessSubjectChild(aProcessSubjectFirstLevel4);
+        oSampleTwo.setaProcessSubject(aProcessSubjectFirstLevel3);
+        
+        List<ProcessSubject> aProcessSubjectFirstLevel5 = new ArrayList<>();
+        ProcessSubject oProcessSubject5 = new ProcessSubject();
+        oProcessSubject5.setId(new Long(11));
+        oProcessSubject5.setSnID_Process_Activiti("00000001");
+        oProcessSubject5.setSnID_Task_Activiti("00000006");
+        oProcessSubject5.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject5.setnOrder(new Long(11));
+        oProcessSubject5.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject5.setsDateEdit(new DateTime());
+        oProcessSubject5.setsDateFact(new DateTime());
+        oProcessSubject5.setsDatePlan(new DateTime());
+        oProcessSubject5.setsDatePlanNew(new DateTime());
+        oProcessSubject5.setsLogin("sLogin5");
+        oProcessSubject5.setsLoginRole("Executor");
+        oProcessSubject5.setsText("sTest");
+        oProcessSubject5.setsTextType("sTextType");
+        aProcessSubjectFirstLevel5.add(oProcessSubject5);
+        oProcessSubject3.setaProcessSubjectChild(aProcessSubjectFirstLevel5);
+
+        List<ProcessSubject> aProcessSubjectFirstLevel6 = new ArrayList<>();
+        ProcessSubject oProcessSubject6 = new ProcessSubject();
+        oProcessSubject6.setId(new Long(11));
+        oProcessSubject6.setSnID_Process_Activiti("00000002");
+        oProcessSubject6.setSnID_Task_Activiti("00000007");
+        oProcessSubject6.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject6.setnOrder(new Long(11));
+        oProcessSubject6.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject6.setsDateEdit(new DateTime());
+        oProcessSubject6.setsDateFact(new DateTime());
+        oProcessSubject6.setsDatePlan(new DateTime());
+        oProcessSubject6.setsDatePlanNew(new DateTime());
+        oProcessSubject6.setsLogin("sLogin5");
+        oProcessSubject6.setsLoginRole("Controller");
+        oProcessSubject6.setsText("sTest");
+        oProcessSubject6.setsTextType("sTextType");
+        aProcessSubjectFirstLevel6.add(oProcessSubject6);
+        oProcessSubject5.setaProcessSubjectChild(aProcessSubjectFirstLevel6);
+        
+        List<ProcessSubject> aProcessSubjectFirstLevel7 = new ArrayList<>();
+        ProcessSubject oProcessSubject7 = new ProcessSubject();
+        oProcessSubject7.setId(new Long(11));
+        oProcessSubject7.setSnID_Process_Activiti("00000002");
+        oProcessSubject7.setSnID_Task_Activiti("00000008");
+        oProcessSubject7.setnID_ProcessSubjectTask(new Long(1));
+        oProcessSubject7.setnOrder(new Long(11));
+        oProcessSubject7.setoProcessSubjectStatus(oProcessSubjectStatus);
+        oProcessSubject7.setsDateEdit(new DateTime());
+        oProcessSubject7.setsDateFact(new DateTime());
+        oProcessSubject7.setsDatePlan(new DateTime());
+        oProcessSubject7.setsDatePlanNew(new DateTime());
+        oProcessSubject7.setsLogin("sLogin6");
+        oProcessSubject7.setsLoginRole("Executor");
+        oProcessSubject7.setsText("sTest");
+        oProcessSubject7.setsTextType("sTextType");
+        aProcessSubjectFirstLevel7.add(oProcessSubject7);
+        oProcessSubject5.setaProcessSubjectChild(aProcessSubjectFirstLevel7);
         
         aRusultList.add(oSampleOne);
         aRusultList.add(oSampleTwo);
