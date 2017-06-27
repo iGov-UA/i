@@ -107,12 +107,18 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для керівника автора
-var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Author_Head'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+//var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Author_Head'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+//sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-</script>
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human',null)
+execution.setVariable('sLogin', obj1[0].sID_Group_Activiti)
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New = obj1[0].sID_Group_Activiti
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask2" name="керівник автора">
       <extensionElements>
