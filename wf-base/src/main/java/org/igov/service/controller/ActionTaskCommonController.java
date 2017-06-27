@@ -3559,6 +3559,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
             }
         } catch (Exception e) {
+            LOG.error("updateProcess error {}", e);
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
 
