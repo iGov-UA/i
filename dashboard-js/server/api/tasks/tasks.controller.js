@@ -351,7 +351,13 @@ exports.getAttachmentContentTable = function (req, res) {
 
 exports.submitForm = function (req, res) {
   var options = {
-    path: 'form/form-data'
+    path: 'action/task/updateProcess',
+    query: {
+      bSaveOnly: false
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   };
   activiti.post(options, function (error, statusCode, result) {
     res.statusCode = statusCode;
@@ -861,4 +867,19 @@ exports.checkAttachmentSignNew = function (req, res) {
 
     res.status(200).send(body);
   });
+};
+
+module.exports.uploadFileHTML = function (req, res) {
+  activiti.post({
+    path: 'object/file/setProcessAttachText',
+    query: {
+      sFileNameAndExt: req.body.sFileNameAndExt
+    },
+    headers: {
+      'Content-Type': 'text/html;charset=utf-8'
+    }
+  }, function (error, statusCode, result) {
+    error ? res.send(error) : res.status(statusCode).json(result);
+  }, req.body.sContent, false);
+
 };
