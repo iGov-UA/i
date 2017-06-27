@@ -256,6 +256,10 @@
 
       </div>
 
+      <div ng-if="issue">
+        <issue-block></issue-block>
+      </div>
+
       <!--атачи-->
       <div class="control-form-fields" ng-if="taskData.aAttachment.length > 0 || taskData.aNewAttachment.length > 0">
         <div class="addition-hr">
@@ -336,6 +340,12 @@
           <span>Щоб переглянути додатки, необхідно взяти звернення в роботу</span>
         </div>
       </div>
+
+      <!--issues start-->
+      <div class="issue-block" ng-if="taskData.aProcessSubjectTask.length > 0">
+        <issue-for-read></issue-for-read>
+      </div>
+      <!--issues end-->
 
       <!--document users role-->
       <div class="documentUsers">
@@ -532,6 +542,10 @@
 
           <div ng-if="isDocument()" class="fixed-bottom-menu-buttons">
             <delegate-button></delegate-button>
+          </div>
+
+          <div style="display: inline-block;">
+            <button type="button" class="btn btn-link" ng-click="addIssue()">Додати завдання</button>
           </div>
 
           <div style="display:none;" ng-if="!inUnassigned()">

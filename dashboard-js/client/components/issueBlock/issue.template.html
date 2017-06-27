@@ -1,0 +1,154 @@
+<div class="row issue-block col-md-12" ng-repeat="issue in issues track by $index">
+  <div class="col-md-12">
+    <div class="issue-header">
+      <div>
+        <b>Завдання №{{issue.task}}</b>
+      </div>
+      <div>
+        <a ng-click="remove($index)" style="cursor: pointer;">Видалити завдання</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 left-side">
+        <span>Коротка назва завдання </span>
+        <span class="red-star">*</span>
+      </div>
+      <div class="col-md-5 right-side">
+        <input type="text" class="form-control" ng-model="issue.taskName">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 left-side">
+        <span>Термiн виконання </span>
+        <span class="red-star">*</span>
+      </div>
+      <div class="col-md-5 right-side">
+        <div class="col-md-6" style="padding-right: 0;padding-left: 0">
+          <select class="form-control" ng-model="issue.taskTerm.property">
+            <option value="calendar">Календарна дата</option>
+            <!--<option value="days">Кiлькiсть днiв пiсля</option>-->
+          </select>
+        </div>
+        <div class="col-md-6" style="padding-right: 0">
+          <div class='input-group date' id='datetimepicker1' style="width:100%;" ng-if="issue.taskTerm.property === 'calendar'">
+            <input type="text" class="form-control input-sm"
+                   format='DD/MM/YYYY'
+                   separator='/'
+                   datetimepicker
+                   ng-model="issue.taskTerm.value">
+          </div>
+          <div ng-if="issue.taskTerm.property === 'days'">
+            <input min="0" class="form-control" style="width: 30%; display: inline-block;" type="number" ng-model="issue.taskTerm.value">
+            <span>днiв</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 left-side">
+        <span>Форма звiту </span>
+        <span class="red-star">*</span>
+      </div>
+      <div class="col-md-5 right-side">
+        <select class="form-control" ng-model="issue.taskForm">
+          <option value="fileHTML">Документ</option>
+          <option value="file">Файл</option>
+          <option value="textArea">Текстове повiдомлення</option>
+        </select>
+      </div>
+    </div>
+
+    <!--<div class="row">-->
+      <!--<div class="col-md-6 left-side">-->
+        <!--<span>Тип завдання </span>-->
+        <!--<span class="red-star">*</span>-->
+      <!--</div>-->
+      <!--<div class="col-md-5 right-side">-->
+        <!--<select class="form-control" ng-model="issue.taskType">-->
+          <!--<option value="all">Спiльне завдання для всiх виконавцiв</option>-->
+          <!--<option value="one">Окреме завдання для кожного виконавця</option>-->
+        <!--</select>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <div class="row issue-workers">
+      <div class="col-md-6">
+        <div class="col-md-6">
+          <span style="display: block;font-weight: bold;margin-bottom: 10px;">Контролюючий</span>
+          <ui-select ng-model="issue.taskController"
+                     theme="bootstrap"
+                     on-select="onSelectUser($item)">
+
+            <ui-select-match>
+                      <span title="{{$select.selected.sName}}">
+                        {{$select.selected.sName}}
+                      </span>
+            </ui-select-match>
+
+            <ui-select-choices repeat="user in ctrl | filter:$select.search">
+                      <span title="{{user.sName}}, <{{user.sLogin}}>">
+                        {{user.sName}}
+                      </span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="executor-block">
+          <span style="display: block;font-weight: bold;margin-bottom: 10px;">Виконавець</span>
+          <div class="row" ng-repeat="executor in issue.taskExecutor">
+            <div class="col-md-7">
+              <ui-select ng-model="executor.value"
+                         theme="bootstrap"
+                         on-select="onSelectUser($item)">
+
+                <ui-select-match>
+                    <span title="{{$select.selected.sName}}">
+                      {{$select.selected.sName}}
+                    </span>
+                </ui-select-match>
+
+                <ui-select-choices repeat="user in executors | filter:$select.search">
+                    <span title="{{user.sName}}, <{{user.sLogin}}>">
+                      {{user.sName}}
+                    </span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+            <span ng-if="issue.taskExecutor.length > 1"
+                  style="position: absolute;margin-top: 10px;top: inherit;z-index: 200;"
+                  ng-click="removeExecutor($parent.$parent.$index, $parent.$index)"
+                  class="glyphicon glyphicon-remove"></span>
+            <div class="col-md-5" style="padding-left: 25px;margin-top: 6px;">
+              <input type="radio"
+                     ng-model="executor.isMain"
+                     ng-change="updateExecutorsSelect(executor, $parent.$index)"
+                     ng-value="true"
+                     ng-checked="executor.isMain">
+              <span>Головний вик-ць</span>
+            </div>
+          </div>
+          </div>
+        </div>
+        <a href="#" class="col-md-offset-6 col-md-6" ng-click="addNewExecutor($index)">Додати виконавця</a>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <span>Змiст завдання </span>
+          <span class="red-star">*</span>
+        </div>
+        <div class="col-md-12 fileHTML">
+          <text-angular ta-toolbar="[['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
+                                 ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
+                                 ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
+                        ng-model="issue.taskContents"
+                        style="width:100%;">
+          </text-angular>
+        </div>
+      </div>
+    </div>
+</div>

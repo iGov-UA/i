@@ -190,7 +190,8 @@ public class ProcessSubject extends AbstractEntity {
     }
 
     public void setsTextType(String sTextType) {
-        this.sTextType = sTextType;
+        this.sTextType = sTextType == null ? "textArea" : sTextType;
+        //this.sTextType = sTextType;
     }
     
     /*public ProcessSubjectTask getoProcessSubjectTask() {

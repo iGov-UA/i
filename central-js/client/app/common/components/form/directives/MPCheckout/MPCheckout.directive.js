@@ -7,15 +7,19 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
     templateUrl: 'app/common/components/form/directives/MPCheckout/MPCheckout.template.html',
       link: function (scope) {
 
-        MasterPassService.getSum(scope.activitiForm.formProperties).then(function (res) {
-          scope.data.formData.params[res.id].value = res.sum/100 + ' грн';
-          scope.activitiForm.formProperties[res.position].value = res.sum;
-          scope.sum = {price: res.sum/100};
+        (function () {
+          var phoneNumber = MasterPassService.searchValidPhoneNumber(scope.data.formData.params);
 
-          MasterPassService.getCommission(res.sum).then(function (response) {
-            scope.sum.commission = response.amount/100 - scope.sum.price;
-          })
-        });
+          MasterPassService.getSum(scope.activitiForm.formProperties).then(function (res) {
+            scope.data.formData.params[res.id].value = res.sum/100 + ' грн';
+            scope.activitiForm.formProperties[res.position].value = res.sum;
+            scope.sum = {price: res.sum/100};
+
+            MasterPassService.getCommission(res.sum, phoneNumber).then(function (response) {
+              scope.sum.commission = response.amount/100 - scope.sum.price;
+            })
+          });
+        })();
 
         scope.addNewCardToWallet = function () {
           var phoneNumber = MasterPassService.searchValidPhoneNumber(scope.data.formData.params);

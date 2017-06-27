@@ -319,10 +319,10 @@ public class SubjectGroupTreeService {
         //Получить SubjectGroup, который относятся к группе sID_Group_Activiti
         Optional<SubjectGroup> oSubjectGroup = SubjectGroupDao.findBy("sID_Group_Activiti", sID_Group_Activiti);
         LOG.info("aSubjectGroup consist: size={}, {}", oSubjectGroup, oSubjectGroup.toString());
-        
-        LOG.info("getSubjectGroupsTreeUp nDeepLevel: {}", nDeepLevel);
+                              
+        LOG.info("getSubjectGroupsTreeUp nDeepLevel: {}", nDeepLevel);       
         if (oSubjectGroup.isPresent()) {
-            if (nDeepLevel == 1 || nDeepLevel == null){
+            if (nDeepLevel == null || nDeepLevel == 1){
                 //ID для которого ищем департаменты, которым он подчиняется
                 Long nID = oSubjectGroup.get().getId(); 
                 //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
@@ -339,34 +339,18 @@ public class SubjectGroupTreeService {
                         aSubjectGroupResult.add(oSubjectGroup_Parent);
                     }
                 }
-                LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());               
             }
             else if (nDeepLevel == 0){              
                 
                 String sChain = oSubjectGroup.get().getsChain();
+                LOG.info("getSubjectGroupsTreeUp sChain: "+sChain);              
                 
                 List<SubjectGroup> oSubjectGroupRoot = SubjectGroupDao.findAllBy("sID_Group_Activiti", sChain);
-                LOG.info("oSubjectGroupOrgan size={}, {}",  oSubjectGroupRoot.size(), oSubjectGroupRoot.toString());
-                    
-                if(sSubjectType.equals("Organ")){                   
-                    aSubjectGroupResult.addAll(oSubjectGroupRoot);
-                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
-                }
-                else if (sSubjectType.equals("Human")){
-                
-                    for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
-                        List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
-                                findAllBy("oSubjectGroup_Parent.id", oSubjectGroupParent.getId());
-                    
-                        for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
-                            SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
-                            aSubjectGroupResult.add(oSubjcetGroupChild);
-                        }         
-                    }
-                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
-                }
-                else if (sSubjectType == null){
-                    aSubjectGroupResult.addAll(oSubjectGroupRoot);
+                LOG.info("oSubjectGroupRoot size={}, {}",  oSubjectGroupRoot.size(), oSubjectGroupRoot.toString());
+                                
+                if (sSubjectType == null){
+                    aSubjectGroupResult.addAll(oSubjectGroupRoot);                   
                 
                     for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
                         List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
@@ -375,13 +359,38 @@ public class SubjectGroupTreeService {
                     
                         for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
                             SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
-                            aSubjectGroupResult.add(oSubjcetGroupChild);
+                            
+                            String sSubjectGroup_ChildType = getSubjectType(oSubjcetGroupChild.getsID_Group_Activiti());
+                            if(sSubjectGroup_ChildType.equalsIgnoreCase("Human")){
+                                aSubjectGroupResult.add(oSubjcetGroupChild);
+                            }
                         }
                     }
                 LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
                 }
+                else if(sSubjectType.equals("Organ")){                   
+                    aSubjectGroupResult.addAll(oSubjectGroupRoot);
+                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }
+                else if (sSubjectType.equals("Human")){
+                
+                    for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
+                        List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
+                                findAllBy("oSubjectGroup_Parent.id", oSubjectGroupParent.getId());
+                        
+                        for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
+                            SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
+                            
+                            String sSubjectGroup_ChildType = getSubjectType(oSubjcetGroupChild.getsID_Group_Activiti());
+                            if(sSubjectGroup_ChildType.equalsIgnoreCase("Human")){
+                                aSubjectGroupResult.add(oSubjcetGroupChild);
+                            }
+                        }         
+                    }
+                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }                
             }     
-        }
+        }               
         return aSubjectGroupResult;
     }
 

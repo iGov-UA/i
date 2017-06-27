@@ -99,7 +99,6 @@ angular.module('dashboardJsApp').service('taskFilterService', ['$filter', '$root
         }
         return false;
       });
-      console.log('filteredTasks', filteredTasks);
       return filteredTasks;
     },
     // method to get all available task definitions like 'usertask1', 'usertask2' from provided tasks
