@@ -510,7 +510,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
     private void processDocumentSubmit(Map<String, String> mRequestParam, JSONObject omRequestBody) throws Exception {
 
-        if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+        if (omRequestBody != null && omRequestBody.containsKey("taskId")) {
             String sTaskId = (String) omRequestBody.get("taskId");
             LOG.info("sTaskId is: {}", sTaskId);
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
