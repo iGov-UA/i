@@ -25,6 +25,21 @@ angular.module('dashboardJsApp')
       }).catch(errorCallback);
     }
 
+    function signContents(contentDataOrLoader, resultCallback, dismissCallback, errorCallback, modalClass) {
+      $q.when(contentDataOrLoader).then(function (contentData) {
+        var modalScope = $rootScope.$new();
+        modalScope.contentData = contentData;
+        var signModal = openModal(modalScope, modalClass);
+        signModal.result.then(function (signedContent) {
+
+          resultCallback(signedContent);
+
+        }, function () {
+          dismissCallback();
+        });
+      }).catch(errorCallback);
+    }
+
     function signManuallySelectedFile(resultCallback, dismissCallback, errorCallback) {
       var modalScope = $rootScope.$new();
       modalScope._isManuallySelectedFile = true;
@@ -64,6 +79,7 @@ angular.module('dashboardJsApp')
        *  }
        */
       signContent: signContent,
+      signContents: signContents,
       signManuallySelectedFile: signManuallySelectedFile
     }
   });
@@ -154,7 +170,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
         signService.selectKey(edsContext.selectedKey.key, edsContext.selectedKey.password)
         : true).then(function () {
 
-        return signService.signCMS($scope.contentData.content, !$scope.contentData.base64encoded)
+        return signService.signCMS($scope.contentData, !$scope.contentData.base64encoded)
           .then(function (signResult) {
             var sign = signResult.sign;
             var certBase64 = signResult.certificate;
