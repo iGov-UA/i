@@ -302,14 +302,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))) {
                     LOG.info("--------------ALL REQUEST DOCUMENT PARAMS (POSTPROCESSING)--------------");
                     sURL = oRequest.getRequestURL().toString();
-                    /*LOG.info("protocolize sURL is: " + sURL);
+                    LOG.info("protocolize sURL is: " + sURL);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");*/
+                    LOG.info("-----------------------------------------------");
 
                     String sID_Process = null;
                     //String sID_Order = null;
@@ -455,13 +455,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                     LOG.info("--------------ALL PARAMS IN SUBMIT(REGION - PreProcessing)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
-                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     //LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");*/
+                    LOG.info("-----------------------------------------------");
 
                     processDocumentSubmit(mRequestParam, omRequestBody);
 
