@@ -9,13 +9,13 @@
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
       'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'DocumentsService', 'snapRemote', 'tasksSearchService',
-      'fieldsService',
+      'fieldsService', 'Issue',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
                 processSubject, $sce, eaTreeViewFactory, $location, DocumentsService, snapRemote, tasksSearchService,
-                fieldsService) {
+                fieldsService, Issue) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -392,7 +392,18 @@
                 o[k].valueVisible = res;
               })
             }
-          })
+          });
+
+          if($scope.taskData.aProcessSubjectTask && $scope.taskData.aProcessSubjectTask.length > 0) {
+            angular.forEach($scope.taskData.aProcessSubjectTask, function (issue, key, object) {
+              if(issue.sBody && issue.sBody.indexOf('sKey') > -1) {
+                var parse = JSON.parse(issue.sBody);
+                tasks.getTableOrFileAttachment(parse.sKey, parse.sID_StorageType, true).then(function (res) {
+                  object[key].visibleBody = res;
+                })
+              }
+            })
+          }
         }
         downloadFileHTMLContent();
 
@@ -821,13 +832,65 @@
         };
 
         $scope.isFormInvalid = false;
+
+        function relinkPrintFormsIntoFileFields() {
+          var aFileFields = $scope.taskForm.filter(function (field) {
+            return field.type === 'file' || field.options.hasOwnProperty('sID_Field_Printform_ForECP');
+          });
+
+          angular.forEach(aFileFields, function (oFileField) {
+            var oLinkedPrintForm = $scope.taskForm.filter(function (field) {
+              return field.id === oFileField.options['sID_Field_Printform_ForECP'];
+            })[0];
+            if (oLinkedPrintForm) {
+              oFileField.options['sPatternFileUrl'] = oLinkedPrintForm.name.substr(0, oLinkedPrintForm.name.indexOf(';')).replace('[', '').replace(']', '').replace(/^pattern\//, '');
+            }
+          });
+        }
+
         $scope.submitTask = function (form, bNotShowSuccessModal) {
+          var isAnyIssuesExist = Issue.getIssues();
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
             return;
           } else {
             $scope.isFormInvalid = false;
+          }
+
+          function submitCallback(result) {
+            if(result.status == 500){
+              var message = result.data.message;
+              var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
+              $scope.taskForm.isInProcess = false;
+              $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+              Modal.inform.error(function (result) {
+              })(errMsg + " " + (result && result.length > 0 ? (': ' + result) : ''));
+            } else {
+              Issue.clearIssues();
+              var sMessage = "Форму відправлено.";
+              angular.forEach($scope.taskForm, function (oField) {
+                if (oField.id === "sNotifyEvent_AfterSubmit") {
+                  sMessage = oField.value;
+                }
+              });
+
+              $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+
+              if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
+                bNotShowSuccessModal = true;
+              }
+
+              if(bNotShowSuccessModal){
+                $scope.lightweightRefreshAfterSubmit();
+              } else {
+                Modal.inform.success(function (result) {
+                  $scope.lightweightRefreshAfterSubmit();
+                })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
+              }
+
+              $scope.$emit('task-submitted', $scope.selectedTask);
+            }
           }
 
           if ($scope.selectedTask && $scope.taskForm) {
@@ -892,40 +955,30 @@
                 $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
               }
             }
-            tasks.submitTaskForm($scope.selectedTask.id, $scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment)
-              .then(function (result) {
-                if(result.status == 500){
-                  var message = result.data.message;
-                  var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
-                  $scope.taskForm.isInProcess = false;
-                  $scope.convertDisabledEnumFiedsToReadonlySimpleText();
-                  Modal.inform.error(function (result) {
-                  })(errMsg + " " + (result && result.length > 0 ? (': ' + result) : ''));
-                } else {
-                  var sMessage = "Форму відправлено.";
-                  angular.forEach($scope.taskForm, function (oField) {
-                    if (oField.id === "sNotifyEvent_AfterSubmit") {
-                      sMessage = oField.value;
-                    }
-                  });
+            /*
+            if($rootScope.checkboxForAutoECP.status){
+              relinkPrintFormsIntoFileFields();
+              tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
 
-                  $scope.convertDisabledEnumFiedsToReadonlySimpleText();
+              }, function (err) {
 
-                  if(!bNotShowSuccessModal && iGovNavbarHelper.currentTab.indexOf("documents") >= 0){
-                    bNotShowSuccessModal = true;
-                  }
+              }).catch(defaultErrorHandler);
+            } else {
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
+            }*/
 
-                  if(bNotShowSuccessModal){
-                    $scope.lightweightRefreshAfterSubmit();
-                  } else {
-                    Modal.inform.success(function (result) {
-                      $scope.lightweightRefreshAfterSubmit();
-                    })(sMessage + " " + (result && result.length > 0 ? (': ' + result) : ''));
-                  }
+            if($scope.issue && isAnyIssuesExist.length !== 0) {
+              Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
+                submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, res);
+              });
+            } else {
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
+            }
+          }
 
-                  $scope.$emit('task-submitted', $scope.selectedTask);
-                }
-              })
+          function submitTaskForm(taskForm, selectedTask, attachmets, issues) {
+            return tasks.submitTaskForm(selectedTask.id, taskForm, selectedTask, attachmets, issues)
+              .then(submitCallback)
               .catch(defaultErrorHandler);
           }
         };
@@ -951,7 +1004,6 @@
         };
         $scope.saveChangesTask = function (form) {
           if ($scope.selectedTask && $scope.taskForm) {
-            console.log($scope.taskForm);
             $scope.taskForm.isSubmitted = true;
 
             $scope.taskForm.isInProcess = true;
@@ -1421,6 +1473,18 @@
         $scope.updateTemplateList = function () {
           $scope.printTemplateList = PrintTemplateService.getTemplates($scope.taskForm);
           if ($scope.printTemplateList.length > 0) {
+            var aFileFields = $scope.taskForm.filter(function (field) {
+              return field.type === 'file' && field.options.hasOwnProperty('sID_Field_Printform_ForECP');
+            });
+            if(aFileFields && aFileFields.length > 0){
+              angular.forEach($scope.printTemplateList, function (oTemplate) {
+                angular.forEach(aFileFields, function (oFileField) {
+                  if(oFileField.options['sID_Field_Printform_ForECP'] === oTemplate.id){
+                    oTemplate.printFormLinkedToFileField = oFileField.id;
+                  }
+                })
+              })
+            }
             $scope.model.printTemplate = $scope.printTemplateList[0];
           }
           return true;
@@ -1756,7 +1820,15 @@
         });
         $scope.backAndForth = function () {
           $state.go('tasks.typeof', {type: $stateParams.type});
-        }
+        };
+
+        Issue.isIssue($scope.taskForm).then(function (answ) {
+          $scope.issue = answ;
+        });
+        $scope.addIssue = function () {
+          Issue.addIssue();
+        };
+
       }
     ])
 })();

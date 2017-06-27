@@ -96,9 +96,6 @@ public class ProcessSubjectService {
     
     @Autowired
     private ActionTaskService oActionTaskService;
-    
-    @Autowired
-    private ProcessSubjectTaskService oProcessSubjectTaskService;
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 

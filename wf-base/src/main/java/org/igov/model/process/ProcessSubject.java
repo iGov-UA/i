@@ -15,8 +15,12 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @javax.persistence.Entity
 public class ProcessSubject extends AbstractEntity {
@@ -77,7 +81,8 @@ public class ProcessSubject extends AbstractEntity {
     private List<ProcessUser> aUser;
     
     @JsonProperty(value = "aProcessSubjectChild")
-    @Transient
+    @OneToMany(mappedBy = "ProcessSubjectTree.nID_ProcessSubject_Child", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<ProcessSubject> aProcessSubjectChild;
     
     @JsonProperty(value = "sTextType")
@@ -190,7 +195,8 @@ public class ProcessSubject extends AbstractEntity {
     }
 
     public void setsTextType(String sTextType) {
-        this.sTextType = sTextType;
+        this.sTextType = sTextType == null ? "textArea" : sTextType;
+        //this.sTextType = sTextType;
     }
     
     /*public ProcessSubjectTask getoProcessSubjectTask() {

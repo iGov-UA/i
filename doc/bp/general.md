@@ -489,7 +489,8 @@ type="queueData" required="true"></activiti:formProperty>
 ###### assigngroupsandusers
 # Назначение групп и пользователей
 [вернуться в начало](general.md)
-
+<br><br>
+<a href="https://docs.google.com/spreadsheets/d/1qSOpxtcC8O1FQLWzLu5--307dlBiMQDA2m6ahfSlOdg/edit#gid=1215479518">Группы и пользователи Днепропетровской области</a><br><br>
 В данный момент основной веткой для работы считается Дельта (test-delta). Пользователи и группы заведенные в этой ветке автоматически добавятся в другие ветки на следующий день. В случае необходимости сделать проливку групп и пользователей с Дельты на другие ветки в режиме он-лайн, необходимо перейти по ссылке https://ci-jenkins.tech.igov.org.ua/view/active/job/_sync_users/ нажать Build with Parameters выбрать галочками необходимые ветки и нажать сборку.
 
 ###### addingauser

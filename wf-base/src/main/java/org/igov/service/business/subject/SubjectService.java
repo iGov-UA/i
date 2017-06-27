@@ -465,7 +465,7 @@ public class SubjectService {
                 sSubjectType = "Human";
             }            
             
-            List<SubjectGroup> aSubjectGroupParent = oSubjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType);
+            List<SubjectGroup> aSubjectGroupParent = oSubjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType, 1l);
             
             //Если нет родителя ищем детей для рутового елемента
             if(aSubjectGroupParent.isEmpty()) {
