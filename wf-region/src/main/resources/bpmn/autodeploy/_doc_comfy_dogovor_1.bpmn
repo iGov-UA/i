@@ -126,7 +126,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLogin" name="ПІБ керівника автора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLogin" name="ПІБ керівника автора" type="string" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sType" name="Вид заяви" type="enum">
           <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
           <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
@@ -199,7 +199,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="fDoc1" name="Договір з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLogin" name="ПІБ керівника автора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
