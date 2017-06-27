@@ -452,7 +452,7 @@ public class ProcessSubjectTaskService {
 
             LOG.info("oJsonProcessSubject in setProcessSubjectList: {}", ((JSONObject) oJsonProcessSubject).toJSONString());
 
-            oProcessSubject.setsTextType((String) ((JSONObject) oJsonProcessSubjectTask).get("sTextType"));
+            oProcessSubject.setsTextType((String) ((JSONObject) oJsonProcessSubjectTask).get("sReportType"));
             oProcessSubject.setsLogin((String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
             oProcessSubject.setsLoginRole((String) ((JSONObject) oJsonProcessSubject).get("sLoginRole"));
 //            oProcessSubject.setoProcessSubjectTask(oProcessSubjectTask);
@@ -460,7 +460,7 @@ public class ProcessSubjectTaskService {
             oProcessSubject.setoProcessSubjectStatus(oProcessSubjectStatus);
             oProcessSubject.setsDateEdit(new DateTime(new Date()));
             oProcessSubject.setnOrder(nOrder);
-
+                    
             nOrder = nOrder + 1L;
             oProcessSubject.setSnID_Process_Activiti(snID_Process_Activiti);
             DateTime datePlan = null;
