@@ -719,8 +719,7 @@ angular.module('dashboardJsApp')
                 return generationService.generatePDFFromHTML(printContents).then(function (pdfContent) {
                   resultsPdf.push({
                     sID_Field: print[i].data.sID_Field,
-                    sHTML: printContents,
-                    sPdfAsBase64: pdfContent.base64
+                    content: pdfContent.base64
                   });
                   defs[i].resolve();
                   return asyncPdfGenerate(i + 1, print, defs);
