@@ -3636,8 +3636,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
                     }
                 }
-
-                addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
+                //processInstanceId oProcessInstance.getActivityId()
+                addEditHistoryEvent(processInstanceId, sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
             }
         }
     }
