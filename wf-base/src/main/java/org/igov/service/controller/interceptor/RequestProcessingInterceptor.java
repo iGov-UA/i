@@ -87,6 +87,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private static final String START_PROCESS = "/startProcess";
     private static final String DOCUMENT_SERVICE = "/action/task/setDocument";
     private static final String RUNTIME_TASKS = "/runtime/tasks";
+    private static final String UPDATE_PROCESS = "task/updateProcess";
     private static final String POST = "POST";
     private static final String PUT = "PUT";
     private static final String GET = "GET";
@@ -1152,7 +1153,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private boolean isCloseTask(HttpServletRequest oRequest, String sResponseBody) {
         return POST.equalsIgnoreCase(oRequest.getMethod().trim())
                 && (((sResponseBody == null || "".equals(sResponseBody))
-                && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0)
+                && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0))
                 || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()
                 || (oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0));
     }
@@ -1160,7 +1162,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 //&& oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
-                && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && ((oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0)
                 ||
                 oRequest.getRequestURL().toString().indexOf(START_PROCESS) > 0
                 )
@@ -1168,7 +1171,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     private boolean isDocumentSubmit(HttpServletRequest oRequest) {
-        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+        return (oRequest != null && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0 
+                || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0)
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
 
