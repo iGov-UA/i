@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_243" name="Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом" isExecutable="true">
-    <documentation>
-    Смоктій О.Д. 21.06.2017 рефакторінг (формат листів, формат файлів, маркери перенесено в json)
-    </documentation>
+    <documentation>Смоктій О.Д. 21.06.2017 рефакторінг (формат листів, формат файлів, маркери перенесено в json)</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -21,7 +19,7 @@
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату; ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
@@ -46,15 +44,15 @@
         <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="substance" name="Суть заяви; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="substance" name="Суть заяви; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="list_documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="list_documents" name="Список документів; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="anVibor_performer" name="Техническая переменная, для работы sShapka220, не удалять!; ;bVisible=false" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="nFlag" name="Строк виконання 30 днів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers_flag" name="m1" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_243_ST.json')}"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -128,7 +126,7 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="document" name="Назва документу; ;bVisible=false" type="string" default="дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -136,12 +134,19 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="Per3" name="Перевірте подані громадянином дані, заповніть всі необхідні поля (П.І.Б адміністратора, дату реєстрації, реєстраційний номер та рішення про надання послуги), потім роздрукуйте форму заяви." type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_2" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_3" name="Акт санітарно-епідеміологічного обстеження спецавтотранспорту, виданий теріторіальним закладом державної санітарно-епідеміологічної служби України; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_4" name="Ліцензія на вид діяльності, видана Державною інспекцією з ядерної та радіаційної безпеки Державного комітету ядерного регулювання України; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_5" name="Замовлення-заявка на передачу радіоактивних матеріалів (обладнання), узгоджена Головним управлінням Держсанепідслужби у Дніпропетровській області; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_6" name="Реєстраційні документи на спецавтотраспорт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_11" name="Результати дозиметричного контролю; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_12" name="Показники потужності поглинутої дози (на борту, у кабіні водія, на відстані 2-х метрів від спецавтотранспорту); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_13" name="Акт перевірки дотримання санітарного законодавства на діючих підприємствах; який містить відомості, що необхідні для оформлення санітарного паспорту згідно додатку 2 до пункту 3.2. «Основних санітарних правил забезпечення радіаційної безпеки України» ДСП 6.177-2005-09-02;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile_1},${nFile_2},${nFile_3},${nFile_4},${nFile_5},${nFile_6},${nFile_7},${nFile_8},${nFile_9},${nFile_11},${nFile_12},${nFile_13}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -180,7 +185,7 @@ execution.setVariable('term', per7)
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum">
+        <activiti:formProperty id="status2" name="Статус дозволу (санітарного паспорту)" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Дозвіл (санітарний паспорт) або рішення про анулювання готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
@@ -194,13 +199,13 @@ execution.setVariable('term', per7)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[$sMailClerk]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -225,7 +230,7 @@ execution.setVariable('term', per7)
           <activiti:string><![CDATA[Дозвіл (санітарний паспорт) на постійні перевезення ДІВ (радіоактивних речовин і матеріалів, пристроїв і установок із джерелами іонізуючих випромінювань і радіоактивних відходів) спеціалізованим транспортним засобом.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 <p> Ваше звернення №[sID_Order] щодо ${substance_3} дозволу (санітарний паспорт) на постійні перевезення ДІВ спеціалізованим транспортним засобом було зареєстровано у системі.<br/>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
@@ -423,15 +428,19 @@ execution.setVariable('list_documents', res)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="scripttask3"></sequenceFlow>
+    <scriptTask id="scripttask3" name="Cформировать date_today (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow19" sourceRef="scripttask3" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_243">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_243" id="BPMNPlane_dnepr_cnap_243">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="237.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="41.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="95.0" y="41.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="72.0" width="105.0" x="500.0" y="110.0"></omgdc:Bounds>
@@ -465,6 +474,9 @@ execution.setVariable('list_documents', res)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="41.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="135.0" x="80.0" y="135.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="335.0" y="145.0"></omgdi:waypoint>
@@ -523,7 +535,7 @@ execution.setVariable('list_documents', res)</script>
         <omgdi:waypoint x="907.0" y="163.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="205.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="68.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="68.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -531,8 +543,12 @@ execution.setVariable('list_documents', res)</script>
         <omgdi:waypoint x="282.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="37.0" y="116.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="147.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

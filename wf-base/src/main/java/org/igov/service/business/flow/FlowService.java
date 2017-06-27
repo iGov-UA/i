@@ -427,7 +427,7 @@ public class FlowService implements ApplicationContextAware {
                             oDateStart, oDateEnd, oFlowProperty.getsData());
 
                     if (oFlowProperty.getsData() != null && !"".equals(oFlowProperty.getsData().trim())) {
-                        handler.generateObjects(oFlowProperty.getsData());
+                        //handler.generateObjects(oFlowProperty.getsData());
                         List<FlowSlot> generatedSlots = handler.generateObjects(oFlowProperty.getsData());
                         for (FlowSlot slot : generatedSlots) {
                             result.add(new FlowSlotVO(slot));
