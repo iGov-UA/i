@@ -763,7 +763,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bTest) {
             response.put("aProcessSubjectTask", createStubOfProcessSubjectTask());
         } else {
-            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
+            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 0l));
         }      
 
         return JsonRestUtils.toJsonResponse(response);
