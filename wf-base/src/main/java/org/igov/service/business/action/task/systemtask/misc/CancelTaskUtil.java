@@ -16,7 +16,7 @@ public class CancelTaskUtil {
     private static final String sURL_CancelTask = "/wf/service/action/task/cancelTask";
     private static final String TAG_action = "[sURL_CancelTask]";
     private static final String cancelButtonHTML = new StringBuilder()
-            .append("<form onsubmit=\"confirm(\"Ви впевнені, що бажаєте скасувати Ваш візит?\") method=\"POST\" action=\"")
+            .append("<form onsubmit=\"confirm(\'Ви впевнені, що бажаєте скасувати Ваш візит?\');\" method=\"POST\" action=\"")
             .append(TAG_action)
             .append("\" ")
             .append("accept-charset=\"utf-8\">")
