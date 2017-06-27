@@ -263,6 +263,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }*/
 
                 if (isDocumentSubmit(oRequest)) {
+                    
+                    sURL = oRequest.getRequestURL().toString();
+                    LOG.info("--------------------isDocumentSubmit---------------------------");
+                    LOG.info("protocolize sURL is: " + sURL);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    LOG.info("-----------------------------------------------");
+                    
                     if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
                         
                         String sTaskId = (String) omRequestBody.get("taskId");
