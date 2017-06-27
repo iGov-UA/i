@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory) {
+angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory, $timeout) {
   var tspURL = "http://acsk.privatbank.ua/services/tsp/";//presume we have online mode and pass url to plugin
   var sessionTimeout = 36000;
   var pluginVersion = '1.0.3';
@@ -144,13 +144,10 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     })
   };
 
-  this.signCMS = function (data, isForcedBase64Encoding) {
-    var isDataSavedInEDS = true;
-    var isCertificateSavedInEDS = true;
-
+  function doSingleSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS) {
     return executeIfPluginCreated(function () {
       var d = $q.defer();
-      var dataBase64 = isForcedBase64Encoding ? $base64.encode(data) : data;
+      var dataBase64 = isForcedBase64Encoding ? $base64.encode(data.content) : data.content;
       plugin.getCertificate(function (data) {
         var certBase64 = data.certificate;
         plugin.CMSSign(dataBase64,
@@ -175,6 +172,97 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
 
       return d.promise;
     });
+  }
+
+  function doMultiSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS) {
+    return executeIfPluginCreated(function () {
+      var d = $q.defer();
+      var dataBase64s = [];// isForcedBase64Encoding ? $base64.encode(data.content) : data.content;
+      angular.forEach(data, function (fileContent) {
+        if(isForcedBase64Encoding){
+          dataBase64s.push($base64.encode(fileContent.content ? fileContent.content : fileContent))
+        } else {
+          dataBase64s.push(fileContent.content ? fileContent.content : fileContent);
+        }
+      });
+      plugin.getCertificate(function (data) {
+        var certBase64 = data.certificate;
+        var signedContents = [];
+
+        angular.forEach(dataBase64s, function (file) {
+          signedContents.push($q.resolve(file));
+        });
+
+        $q.all(signedContents).then(function (contents) {
+
+          var readyPromises = [],
+            content = [],
+            signPromises = [],
+            signDefer = [],
+            counter = 0;
+
+          angular.forEach(contents, function (dataBase64, key) {
+            readyPromises.push($timeout(function(){
+              signDefer[key] = $q.defer();
+              content[key] = dataBase64;
+              signPromises[key] = signDefer[key].promise;
+            }))
+          });
+
+
+          var asyncSign = function(i, contentForSign, defs) {
+            if (i < contentForSign.length) {
+              var dataBase64 = contentForSign[i];
+
+              return plugin.CMSSign(dataBase64, "", certBase64,
+                tspURL,
+                isDataSavedInEDS,
+                isCertificateSavedInEDS,
+                function (data) {
+                  defs[i].resolve({
+                    sign: data.sign,
+                    certificate: certBase64
+                  });
+                  return asyncSign(i + 1, contentForSign, defs);
+                }, function () {
+                  defs[i].reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+                });
+
+            }
+          };
+
+          var first = $q.all(readyPromises).then(function () {
+            return asyncSign(counter, content, signDefer);
+          });
+
+          $q.all([first, signPromises]).then(function (signedDefers) {
+            $q.all(signedDefers[1]).then(function (resp) {
+              d.resolve(resp);
+            })
+          });
+        })
+
+      }, function (result) {
+        if (result.code == 107 && result.source == "getCertificate") {
+          d.reject({code: errorCodes.noCertificateFromKey, msg: "Ключ немає сертифікату"});
+          //TODO implement here manual certificate search in 2 iteration
+        } else {
+          d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+        }
+      });
+
+      return d.promise;
+    });
+  }
+
+  this.signCMS = function (data, isForcedBase64Encoding) {
+    var isDataSavedInEDS = true;
+    var isCertificateSavedInEDS = true;
+    if(angular.isArray(data)){
+      return doMultiSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS);
+    } else if (data.content){
+      return doSingleSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS);
+    }
   };
 
   this.errorCodes = errorCodes;

@@ -291,6 +291,15 @@
       }, function () {
         console.log('Sign Dismissed');
       })
+    };
+
+    $scope.isActive = function (tab) {
+      return $state.current.name.indexOf(tab) === 0;
+    };
+
+    $scope.backToTasks = function () {
+      localStorage.setItem('currentTab', 'tasks');
+      $state.go('tasks.typeof', {type:'unassigned'});
     }
 
   }
