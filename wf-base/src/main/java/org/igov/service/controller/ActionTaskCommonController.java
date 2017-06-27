@@ -3543,7 +3543,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             taskService.complete(firstTask.getId());
                         }
 
-                        updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
+                        //updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
                     } else {
                         LOG.info("Have not found any tasks with ID " + taskId);
                     }
