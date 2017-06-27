@@ -16,11 +16,10 @@ public class CancelTaskUtil {
     private static final String sURL_CancelTask = "/wf/service/action/task/cancelTask";
     private static final String TAG_action = "[sURL_CancelTask]";
     private static final String cancelButtonHTML = new StringBuilder()
-            .append("<form method=\"POST\" action=\"")
+            .append("<form onsubmit=\"confirm(\"Ви впевнені, що бажаєте скасувати Ваш візит?\") method=\"POST\" action=\"")
             .append(TAG_action)
             .append("\" ")
-            .append("accept-charset=\"utf-8\" "
-                    + "onsubmit=\"confirm(this);return false;\"" + ">")
+            .append("accept-charset=\"utf-8\">")
             /*.append("Ви можете скасувати свою заявку, вказавши причину в цьому полі: <br/>\n")
             .append("<input type=\"text\" name=\"sInfo\"/><br/>\n")*/
                     //.append("<input type=\"hidden\" name=\"nID_Protected\" value=\"")
