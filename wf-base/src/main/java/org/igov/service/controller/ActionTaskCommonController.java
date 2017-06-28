@@ -763,7 +763,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bTest) {
             response.put("aProcessSubjectTask", createStubOfProcessSubjectTask());
         } else {
-            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 1l));
+            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 0l));
         }      
 
         return JsonRestUtils.toJsonResponse(response);
@@ -772,9 +772,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private List<ProcessSubjectTask> createStubOfProcessSubjectTask() {
         List<ProcessSubjectTask> aRusultList = new ArrayList<>();
         ProcessSubjectStatus oProcessSubjectStatus = oProcessSubjectStatusDao.findByIdExpected(new Long(1));
-        String sBody = "\"{\"sID_StorageType\":\"Mongo\",\"sKey\":\"03fc5f8b-bef2-4fe8-b2e0-ba3495aff7ae\","
+        String sBody = "{\"sID_StorageType\":\"Mongo\",\"sKey\":\"03fc5f8b-bef2-4fe8-b2e0-ba3495aff7ae\","
                 + "\"sVersion\":\"2017-06-26\",\"sDateTime\":\"2017-06-26 07:27:55\",\"sFileNameAndExt\":\"issue_content.html\","
-                + "\"sContentType\":\"text/html\",\"nBytes\":\"1581\",\"bSigned\":false,\"aAttribute\":[]}\"";
+                + "\"sContentType\":\"text/html\",\"nBytes\":\"1581\",\"bSigned\":false,\"aAttribute\":[]}";
         String sHead = "sHead";
         
         ProcessSubjectTask oSampleOne = new ProcessSubjectTask();
@@ -3543,7 +3543,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             taskService.complete(firstTask.getId());
                         }
 
-                        updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
+                        //updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
                     } else {
                         LOG.info("Have not found any tasks with ID " + taskId);
                     }
@@ -3559,6 +3559,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
             }
         } catch (Exception e) {
+            LOG.error("updateProcess error {}", e);
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
 
@@ -3635,7 +3636,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
                     }
                 }
-
                 addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
             }
         }

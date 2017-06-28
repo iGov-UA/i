@@ -1,0 +1,52 @@
+<div ng-repeat="issue in taskData.aProcessSubjectTask" ng-class="{'issue-pb-20': $last}">
+
+  <div class="addition-hr">
+    <hr class="hr-divider side-left"><span>Задача №{{$index + 1}}</span><hr class="hr-divider side-right">
+  </div>
+
+  <p><b>{{issue.sHead}}</b></p>
+  <p ng-bind-html="html(issue.visibleBody)"></p>
+
+  <div class="col-md-12 issue-no-padding">
+    <div class="col-md-2 issue-no-padding">
+      <div class="issue-read-headers">Контроль</div>
+      <span style="font-size: 13px;" ng-repeat="exec in issue.aProcessSubject" ng-if="exec.sLoginRole === 'Controller'">
+        <span ng-repeat="user in exec.aUser" ng-if="user.sLogin === exec.sLogin">
+          <span class="issue-padding-10" style="display: block">{{user.sFirstName}}</span>
+          <span class="issue-padding-10">{{user.sLastName}}</span>
+        </span>
+      </span>
+    </div>
+    <div class="col-md-5" style="padding-left: 5px; padding-right: 5px;">
+      <div class="issue-read-headers">
+        <span>Виконання</span>
+        <span style="float: right">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+          <span>{{::convertDate(issue.aProcessSubject[0].sDatePlan)}}</span>
+        </span>
+      </div>
+      <div ng-repeat="exec in issue.aProcessSubject" ng-if="exec.sLoginRole !== 'Controller'">
+        <span ng-repeat="user in exec.aUser" ng-if="user.sLogin === exec.sLogin">
+          <span style="font-size: 13px;" class="issue-padding-10">{{user.sFirstName}} {{user.sLastName}}</span>
+        </span>
+        <span style="float: right;color: grey;font-size: 13px;padding-right: 10px;" ng-if="$index === 1">(Головний виконавець)</span>
+        <span style="display: block;" ng-if="exec.aProcessSubjectChild && exec.aProcessSubjectChild.length > 0" ng-repeat="delegate in exec.aProcessSubjectChild">
+          <i class="fa fa-reply gly-rotate-180" aria-hidden="true"></i>
+          <span ng-repeat="user in delegate.aUser">
+            <span ng-repeat="user in exec.aUser" ng-if="user.sLogin === exec.sLogin">
+              <span style="font-size: 13px;" class="issue-padding-10">{{user.sFirstName}} {{user.sLastName}}</span>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-5 issue-no-padding">
+      <div class="issue-read-headers">
+        <span>Звiт</span>
+        <span style="float: right;">{{::getIssueType(issue.aProcessSubject[0].sTextType)}}</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+

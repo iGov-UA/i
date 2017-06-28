@@ -196,7 +196,7 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      submitTaskForm: function (taskId, formProperties, task, attachments) {
+      submitTaskForm: function (taskId, formProperties, task, attachments, issue) {
         var self = this,
             deferred = $q.defer(),
             promises = [],
@@ -293,6 +293,10 @@ angular.module('dashboardJsApp')
             'taskId': taskId,
             'properties': createProperties(formProperties)
           };
+
+          if(issue) {
+            submitTaskFormData.aProcessSubjectTask = issue;
+          }
 
           var req = {
             method: 'POST',
@@ -719,8 +723,7 @@ angular.module('dashboardJsApp')
                 return generationService.generatePDFFromHTML(printContents).then(function (pdfContent) {
                   resultsPdf.push({
                     sID_Field: print[i].data.sID_Field,
-                    sHTML: printContents,
-                    sPdfAsBase64: pdfContent.base64
+                    content: pdfContent.base64
                   });
                   defs[i].resolve();
                   return asyncPdfGenerate(i + 1, print, defs);
@@ -1211,7 +1214,7 @@ angular.module('dashboardJsApp')
               code : code
             }
           })
-        },
+      },
       delegateDocToUser : function (params) {
         if (params)
           return simpleHttpPromise({
@@ -1238,6 +1241,20 @@ angular.module('dashboardJsApp')
             snID_Process_Activiti: nID_Process
           }
         })
+      },
+      uploadFileHtml: function(name, content) {
+        var deferred = $q.defer();
+        var data = {
+          sFileNameAndExt: name + '.html',
+          sContent: content
+        } ;
+
+        var url = '/api/tasks/uploadFileHTML';
+
+        $http.post(url, data).then(function(uploadResult){
+          deferred.resolve(uploadResult.data);
+          });
+        return deferred.promise;
       }
     }
   });
