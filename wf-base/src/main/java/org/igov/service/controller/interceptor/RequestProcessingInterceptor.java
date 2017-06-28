@@ -87,6 +87,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private static final String START_PROCESS = "/startProcess";
     private static final String DOCUMENT_SERVICE = "/action/task/setDocument";
     private static final String RUNTIME_TASKS = "/runtime/tasks";
+    private static final String UPDATE_PROCESS = "task/updateProcess";
     private static final String POST = "POST";
     private static final String PUT = "PUT";
     private static final String GET = "GET";
@@ -262,6 +263,18 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }*/
 
                 if (isDocumentSubmit(oRequest)) {
+                    
+                    sURL = oRequest.getRequestURL().toString();
+                    LOG.info("--------------------isDocumentSubmit---------------------------");
+                    LOG.info("protocolize sURL is: " + sURL);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sRequestBody: {}", sRequestBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("sResponseBody: {}", sResponseBody);
+                    LOG.info("-----------------------------------------------");
+                    LOG.info("mRequestParam {}", mRequestParam);
+                    LOG.info("-----------------------------------------------");
+                    
                     if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
                         
                         String sTaskId = (String) omRequestBody.get("taskId");
@@ -301,14 +314,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         && mRequestParam.get("sID_BP") != null && mRequestParam.get("sID_BP").startsWith("_doc"))) {
                     LOG.info("--------------ALL REQUEST DOCUMENT PARAMS (POSTPROCESSING)--------------");
                     sURL = oRequest.getRequestURL().toString();
-                    /*LOG.info("protocolize sURL is: " + sURL);
+                    LOG.info("protocolize sURL is: " + sURL);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");*/
+                    LOG.info("-----------------------------------------------");
 
                     String sID_Process = null;
                     //String sID_Order = null;
@@ -454,13 +467,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                     LOG.info("--------------ALL PARAMS IN SUBMIT(REGION - PreProcessing)--------------");
                     LOG.info("protocolize sURL is: " + sURL);
-                    /*LOG.info("-----------------------------------------------");
+                    LOG.info("-----------------------------------------------");
                     LOG.info("sRequestBody: {}", sRequestBody);
                     LOG.info("-----------------------------------------------");
                     //LOG.info("sResponseBody: {}", sResponseBody);
                     LOG.info("-----------------------------------------------");
                     LOG.info("mRequestParam {}", mRequestParam);
-                    LOG.info("-----------------------------------------------");*/
+                    LOG.info("-----------------------------------------------");
 
                     processDocumentSubmit(mRequestParam, omRequestBody);
 
@@ -497,7 +510,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
     private void processDocumentSubmit(Map<String, String> mRequestParam, JSONObject omRequestBody) throws Exception {
 
-        if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
+        if (omRequestBody != null && omRequestBody.containsKey("taskId")) {
             String sTaskId = (String) omRequestBody.get("taskId");
             LOG.info("sTaskId is: {}", sTaskId);
             HistoricTaskInstance oHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().taskId(sTaskId).singleResult();
@@ -1152,7 +1165,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private boolean isCloseTask(HttpServletRequest oRequest, String sResponseBody) {
         return POST.equalsIgnoreCase(oRequest.getMethod().trim())
                 && (((sResponseBody == null || "".equals(sResponseBody))
-                && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0)
+                && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0))
                 || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()
                 || (oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0));
     }
@@ -1160,7 +1174,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 //&& oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
-                && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                && ((oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+                || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0)
                 ||
                 oRequest.getRequestURL().toString().indexOf(START_PROCESS) > 0
                 )
@@ -1168,7 +1183,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     private boolean isDocumentSubmit(HttpServletRequest oRequest) {
-        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
+        return (oRequest != null && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0 
+                || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0)
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
 

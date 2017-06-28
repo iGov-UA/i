@@ -80,9 +80,10 @@ public class ProcessSubject extends AbstractEntity {
     @Transient
     private List<ProcessUser> aUser;
     
-    @JsonProperty(value = "aProcessSubjectChild")
-    @OneToMany(mappedBy = "ProcessSubjectTree.nID_ProcessSubject_Child", cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    /*@JsonProperty(value = "aProcessSubjectChild")
+    @OneToMany(mappedBy = "aProcessSubjectChild", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)*/
+    @Transient
     private List<ProcessSubject> aProcessSubjectChild;
     
     @JsonProperty(value = "sTextType")
