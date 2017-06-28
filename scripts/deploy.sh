@@ -123,7 +123,7 @@ build_central-js ()
 		npm cache clean
 		npm install
 		bower install
-		npm install grunt-contrib-imagemin
+		#npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production
@@ -135,7 +135,7 @@ build_central-js ()
 		npm cache clean
 		npm install
 		bower install
-		npm install grunt-contrib-imagemin
+		#npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production
@@ -159,7 +159,7 @@ build_dashboard-js ()
 		npm list grunt
 		npm list grunt-google-cdn
 		bower install
-		npm install grunt-contrib-imagemin
+		#npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production
@@ -172,7 +172,7 @@ build_dashboard-js ()
 		npm list grunt
 		npm list grunt-google-cdn
 		bower install
-		npm install grunt-contrib-imagemin
+		#npm install grunt-contrib-imagemin
 		grunt build
 		cd dist
 		npm install --production
