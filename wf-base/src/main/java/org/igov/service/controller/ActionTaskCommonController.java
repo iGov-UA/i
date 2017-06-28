@@ -343,6 +343,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+    @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
+    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String cancelTaskNew(
+            @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
+            @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
+            @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
+            @ApiParam(value = "ключ для аутентификации", required = false) @RequestParam(value = "accessKey", required = false) String accessKey,
+            @ApiParam(value = "тип доступа", required = false) @RequestParam(value = "sAccessContract", required = false) String sAccessContract
+    ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
+        LOG.info("cancelTaskNew started");
+        LOG.info("cancelTaskNew nID_Order {}", nID_Order);
+        LOG.info("cancelTaskNew sInfo {}", sInfo);
+        LOG.info("cancelTaskNew started {}", bSimple);
+        LOG.info("cancelTaskNew started {}", accessKey);
+        LOG.info("cancelTaskNew started {}", sAccessContract);
+    }
+    
+    
     /**
      * Отмена задачи (в т.ч. электронной очереди)
      *

@@ -14,6 +14,7 @@ public class CancelTaskUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(CancelTaskUtil.class);
     private static final String sURL_CancelTask = "/wf/service/action/task/cancelTask";
+    private static final String sURL_CancelTask_New = "/wf/service/action/task//cancelTaskNew";
     private static final String TAG_action = "[sURL_CancelTask]";
     private static final String cancelButtonHTML = new StringBuilder()
             .append("<form onsubmit=\"confirm(\'Ви впевнені, що бажаєте скасувати Ваш візит?\');\" method=\"POST\" action=\"")
@@ -44,7 +45,7 @@ public class CancelTaskUtil {
 
     public String getCancelFormHTML(Long nID_Order, boolean bSimple) throws Exception {
 
-        String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
+        String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask_New)
                 .append("?nID_Order=").append(nID_Order)
                 .append("&bSimple=").append(bSimple)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
