@@ -88,10 +88,7 @@
         <activiti:formProperty id="nFile_Adress" name="Документ про присвоєння адреси; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDK2000kode" name="Код об’єкта згідно з Державним класифікатором будівель та споруд ДК 018-2000;(введіть у форматі ХХХХ.Х)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabelDK2000" name=" ; ;labelType=info" type="label" default="посилання на &lt;a href=&quot;http://zakon5.rada.gov.ua/rada/show/va507565-00 &quot; target=&quot;_blank&quot;&gt;класифікатор будівель та споруд ДК 018-2000&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="asSklKategor" name="Категорія складності" type="enum" required="true">
-          <activiti:value id="sEnam1" name="I категорія"></activiti:value>
-          <activiti:value id="sEnam2" name="II категорія"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="dFinanse" name="Вартість основних засобів, які приймаються в експлуатацію (тис.грн)" type="double" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Повідомлення про початок будівництва" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sPB_Organ&quot;],&quot;sValue&quot;:&quot;Повідомлення про початок будівництва&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPB_Organ" name="Найменування органу, до якого подано повідомлення;(наприклад: Управління державного архітектурно-будівельного контролю Дніпровської міської ради)" type="string" required="true"></activiti:formProperty>
@@ -152,9 +149,13 @@
         
         <activiti:formProperty id="markersLine_6" name="Характеристики будинку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;lPov&quot;],&quot;sValue&quot;:&quot;Характеристики будинку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lPov" name="Кількість поверхів" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKilkKvart" name="Кількість квартир" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKilkKimnat" name="Кількість кімнат" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="dZagPlosh" name="Загальна площа (кв.м)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="dZtPlosh" name="Житлова площа (кв.м)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="dNZtPlosh" name="Нежитлова площа (кв.м)" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMZStinu" name="Матеріали зовнішніх стін" type="string" required="true"></activiti:formProperty>
+        
         
         <activiti:formProperty id="chekTexNag" name="Чи є окремі господарські будівлі?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -368,10 +369,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sAdresBud" name="Будівельна адреса об'єкту; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresZakinch" name="Адреса новозбудованого об'єкта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDK2000kode" name="Код об’єкта згідно з Державним класифікатором будівель та споруд ДК 018-2000; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asSklKategor" name="Категорія складності" type="enum" writable="false">
-          <activiti:value id="sEnam1" name="I категорія"></activiti:value>
-          <activiti:value id="sEnam2" name="II категорія"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="dFinanse" name="Вартість основних засобів, які приймаються в експлуатацію (тис.грн); ;writable=false" type="double"></activiti:formProperty>
+
         <activiti:formProperty id="nFile_Adress" name="Документ про присвоєння адреси; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_3" name="Повідомлення про початок будівництва" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sPB_Organ&quot;],&quot;sValue&quot;:&quot;Повідомлення про початок будівництва&quot;}}}"></activiti:formProperty>
@@ -432,17 +431,19 @@ ${sNameOrgan}<br />
         
         <activiti:formProperty id="markersLine_6" name="Характеристики будинку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;lPov&quot;],&quot;sValue&quot;:&quot;Характеристики будинку&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lPov" name="Кількість поверхів; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="lKilkKvart" name="Кількість квартир; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="lKilkKimnat" name="Кількість кімнат; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="dZagPlosh" name="Загальна площа (кв.м); ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="dZtPlosh" name="Житлова площа (кв.м); ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="dNZtPlosh" name="Нежитлова площа (кв.м); ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sMZStinu" name="Матеріали зовнішніх стін; ;writable=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="chekTexNag" name="Чи є окремі господарські будівлі?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dGospPlosh" name="Загальна площа окремих господарських будівель (кв.м); ;writable=false" type="double"></activiti:formProperty>
         <activiti:formProperty id="tGospBud" name="Перелік господарських будівель; ;writable=false" type="textArea"></activiti:formProperty>
-        
-        
         
         <activiti:formProperty id="markersLine_115" name="Спосіб отримання відповіді" type="markers" default="{&quot;attributes&quot;:{&quot;Line_115&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання відповіді&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хочете отримати відповідь" type="enum" writable="false">

@@ -115,7 +115,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 //Клонування прав для начальника відділення
 var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
-execution.setVariable('sLogin', obj1[0].oSubject.sLabel)</script>
+execution.setVariable('sLogin', obj1[0].sID_Group_Activiti)
+</script>
     </scriptTask>
     <userTask id="usertask2" name="руков автора">
       <extensionElements>
@@ -733,10 +734,24 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Legal_Department'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+//var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Legal_Department'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+//sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
+
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var aDocumentStepSubjectRight = documentStepService.getDocumentStep(snID_Process_Activiti, 'step_4');
+var sKey_GroupPostfix_New;
+for (var i = 0; i&lt;aDocumentStepSubjectRight.length; i++){
+ var oDocumentStepSubjectRight = aDocumentStepSubjectRight[i]
+ if(oDocumentStepSubjectRight.sDate != null){
+  sKey_GroupPostfix_New = oDocumentStepSubjectRight.sKey_GroupPostfix;
+  break;
+ }
+}
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_7')</script>
     </scriptTask>
     <userTask id="usertask8" name="тот же юрист">
       <extensionElements>
@@ -928,10 +943,23 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Comfy'
-var sKey_GroupPostfix_New ='Comfy_Legal_Department'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+//var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Legal_Department'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+//sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var aDocumentStepSubjectRight = documentStepService.getDocumentStep(snID_Process_Activiti, 'step_4');
+var sKey_GroupPostfix_New;
+for (var i = 0; i&lt;aDocumentStepSubjectRight.length; i++){
+ var oDocumentStepSubjectRight = aDocumentStepSubjectRight[i]
+ if(oDocumentStepSubjectRight.sDate != null){
+  sKey_GroupPostfix_New = oDocumentStepSubjectRight.sKey_GroupPostfix;
+  break;
+ }
+}
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_9')</script>
     </scriptTask>
     <userTask id="usertask10" name="тот же юрист">
       <extensionElements>
