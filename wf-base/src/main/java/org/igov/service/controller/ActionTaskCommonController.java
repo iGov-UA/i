@@ -358,6 +358,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("cancelTaskNew started {}", bSimple);
         LOG.info("cancelTaskNew started {}", accessKey);
         LOG.info("cancelTaskNew started {}", sAccessContract);
+        return "cancelTaskNew finished";
     }
     
     
