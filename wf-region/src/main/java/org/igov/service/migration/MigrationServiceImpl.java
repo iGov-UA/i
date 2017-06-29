@@ -112,6 +112,7 @@ public class MigrationServiceImpl implements MigrationService {
         if(counter < 0)
             throw new MigrationException("Data cannot be saved");
         if (configDao.findBy("name", "dateLastBackup").isPresent()) {
+            LOG.info("DateTime getStartTime(int counter): {}", counter);
             config = configDao.findBy("name", "dateLastBackup").get();
             String dateTime = config.getsValue();
             DateTime time = DateTime.parse(dateTime);//date parsing doesn't work properly
