@@ -359,7 +359,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
             @ApiParam(value = "ключ для аутентификации", required = false) @RequestParam(value = "sAccessKey", required = false) String sAccessKey,
-            @ApiParam(value = "закрывать ли таску", required = false) @RequestParam(value = "bCancel", required = false) Boolean bCancel,
             @ApiParam(value = "тип доступа", required = false) @RequestParam(value = "sAccessContract", required = false) String sAccessContract
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
         LOG.info("cancelTaskNew started");
@@ -377,7 +376,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
         
         StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost()); 
-        oStringBuilder_URL.append("/wf/service/action/task/cancelTaskNew?").append("nID_Order=".concat(nID_Order.toString()));
+        oStringBuilder_URL.append("/wf/service/action/task/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
         
         if(sInfo != null){
             oStringBuilder_URL.append("&sInfo=".concat(sInfo));
@@ -385,7 +384,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
-        oStringBuilder_URL.append("&bCancel=".concat("true"));
         String sResultURL = oStringBuilder_URL.toString();
         
         String sBody =  org.apache.commons.io.IOUtils.toString(oBufferedReader);
@@ -400,10 +398,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("sResultURL is {}", sResultURL);
         if(sResultURL != null){
             sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
-        }
-        
-        if(bCancel){
-             cancelTask(nID_Order, sInfo, bSimple);
         }
         
         return sBody;

@@ -48,7 +48,6 @@ public class CancelTaskUtil {
         String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
                 .append("?nID_Order=").append(nID_Order)
                 .append("&bSimple=").append(bSimple)
-                .append("&bCancel=").append("false")
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
                 .append(AccessContract.RequestAndLoginUnlimited.name())
                 .toString();
