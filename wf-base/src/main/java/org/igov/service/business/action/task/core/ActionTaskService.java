@@ -108,6 +108,7 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED = "DocumentClosed";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -2606,6 +2607,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT.equals(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
                 
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED.equals(sFilterStatus)) {
+                taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).
+                        processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));

@@ -1007,4 +1007,8 @@ public class ProcessSubjectService {
         
         return oProcessSubject;
     }
+
+    public ProcessSubject getProcessSubject(String snID_Process_Activiti, String sLogin) {
+        return processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
+    }
 }
