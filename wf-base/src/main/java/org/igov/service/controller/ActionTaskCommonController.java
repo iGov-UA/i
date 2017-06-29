@@ -402,10 +402,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
         }
         
-        if(sResultURL != null){
-            sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
-        }
-        
         if(bCancel){
              cancelTask(nID_Order, sInfo, bSimple);
         }
