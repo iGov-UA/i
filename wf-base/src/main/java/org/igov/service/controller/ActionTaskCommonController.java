@@ -743,7 +743,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
                 }else if (oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("date")){
                     LOG.info("oHistoricVariableInstance.getValue() {}", new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSS").format(((Date)oHistoricVariableInstance.getValue())));
+                }else{
+                    LOG.info("oHistoricVariableInstance.getValue() {}", (String)oHistoricVariableInstance.getValue());
                 }
+                    
             }
             
             return JsonRestUtils.toJsonResponse(response.put("mProcessHistoryVariable", mProcessHistoryVariable));
