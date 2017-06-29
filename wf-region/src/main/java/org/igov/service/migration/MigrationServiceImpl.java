@@ -104,11 +104,13 @@ public class MigrationServiceImpl implements MigrationService {
     }
 
     private List<HistoricProcessInstance> getHistoricProcessList(String processId) {
-        return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime(), processId)).list();
+        return historyService.createNativeHistoricProcessInstanceQuery().sql(composeSql(getStartTime(1), processId)).list();
     }
 
-    private DateTime getStartTime() {
+    private DateTime getStartTime(int counter) {
         Config config;
+        if(counter < 0)
+            throw new MigrationException("Data cannot be saved");
         if (configDao.findBy("name", "dateLastBackup").isPresent()) {
             config = configDao.findBy("name", "dateLastBackup").get();
             String dateTime = config.getsValue();
@@ -119,7 +121,7 @@ public class MigrationServiceImpl implements MigrationService {
             return new DateTime(processInstance.getStartTime());
         } else {
             configDao.saveOrUpdate(createNewConfigPoint());
-            return getStartTime();
+            return getStartTime(--counter);
         }
     }
 
