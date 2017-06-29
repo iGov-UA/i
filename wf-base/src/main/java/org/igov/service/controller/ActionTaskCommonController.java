@@ -383,7 +383,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
         oStringBuilder_URL.append("&sAccessKey=".concat(sAccessKey));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
-        oStringBuilder_URL.append("&bCancel=".concat(bCancel.toString()));
+        oStringBuilder_URL.append("&bCancel=".concat("true"));
         String sResultURL = oStringBuilder_URL.toString();
                 
         String sBody =  org.apache.commons.io.IOUtils.toString(oBufferedReader);
@@ -396,9 +396,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                  sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
         }
         
+        
         if(bCancel){
             cancelTask(nID_Order, sInfo, bSimple);
-
+            sBody = sBody.replaceAll("\\[host\\]", sResultURL);    
         }
         
         return sBody;
