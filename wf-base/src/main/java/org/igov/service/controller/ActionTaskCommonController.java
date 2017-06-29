@@ -91,6 +91,7 @@ import org.igov.model.process.ProcessSubjectTask;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
+import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
@@ -110,7 +111,9 @@ import org.springframework.http.MediaType;
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
-
+    
+    @Autowired
+    AccessKeyService accessCover;
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
@@ -381,11 +384,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
-        oStringBuilder_URL.append("&sAccessKey=".concat(sAccessKey));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
         oStringBuilder_URL.append("&bCancel=".concat("true"));
         String sResultURL = oStringBuilder_URL.toString();
-                
+        
         String sBody =  org.apache.commons.io.IOUtils.toString(oBufferedReader);
         
         if (sID_Order != null) {
@@ -393,13 +395,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         if(sResultURL != null){
-                 sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
+            sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
         }
         
         
         if(bCancel){
+            sAccessKey = accessCover.getAccessKey(sResultURL);
+            sResultURL = sResultURL + ("&sAccessKey=".concat(sAccessKey));
             cancelTask(nID_Order, sInfo, bSimple);
-            sBody = sBody.replaceAll("\\[host\\]", sResultURL);    
         }
         
         return sBody;
