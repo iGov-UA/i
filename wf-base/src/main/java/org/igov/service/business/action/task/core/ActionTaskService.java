@@ -2608,8 +2608,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
                 
             } else if (THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED.equals(sFilterStatus)) {
-                taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).
-                        processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
+                taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin).finished();
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
