@@ -299,6 +299,10 @@ public class SubjectGroupTreeService {
 
     }
 
+    public List<SubjectGroup> getSubjectGroupsTreeUp(final String sID_Group_Activiti, final String sSubjectType) {
+        return getSubjectGroupsTreeUp(sID_Group_Activiti, sSubjectType, null);
+    }
+    
     /**
      * Сервис для получения департамента по идентификатору группы.
      *
