@@ -397,7 +397,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         sAccessKey = accessCover.getAccessKey(sResultURL);
         sResultURL = sResultURL + ("&sAccessKey=".concat(sAccessKey));
            
-        
+        LOG.info("sResultURL is {}", sResultURL);
         if(sResultURL != null){
             sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
         }
