@@ -94,6 +94,7 @@ import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
@@ -380,7 +381,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
-        oStringBuilder_URL.append("&sAccessKey=".concat(sAccessKey));
+        oStringBuilder_URL.append("&sAccessKey=".concat(AuthenticationTokenSelector.ACCESS_KEY));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
         String sResultURL = oStringBuilder_URL.toString();
                 
