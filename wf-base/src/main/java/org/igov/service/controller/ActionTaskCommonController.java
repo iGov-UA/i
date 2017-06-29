@@ -3543,7 +3543,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             taskService.complete(firstTask.getId());
                         }
 
-                        updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
+                        //updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
                     } else {
                         LOG.info("Have not found any tasks with ID " + taskId);
                     }
@@ -3636,7 +3636,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         sNewHistoryData = sNewHistoryData + mKey + " : " + mParamDocumentNew.get(mKey) + "\n";
                     }
                 }
-
                 addEditHistoryEvent(oProcessInstance.getActivityId(), sNewHistoryData, sOldHistoryData, null, HistoryEvent_Service_StatusType.OPENED_ASSIGNED.getnID());
             }
         }
