@@ -720,6 +720,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
             @ApiParam(value = "заглушка", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
+        Map<String, Object> response = new HashMap<>();
         
         if(isHistory){
             Map<String, Object> mProcessHistoryVariable = null;
@@ -770,7 +771,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeMessages == null) {
             bIncludeMessages = Boolean.FALSE;
         }
-        Map<String, Object> response = new HashMap<>();
+        
         
         try {
             response.put("oProcess", oActionTaskService.getProcessInfo(nID_Process, nID_Task, sID_Order));
