@@ -2866,13 +2866,49 @@ default=” “ - в дефолте в виде json - объекта пропи
       "default": "дефолтная запись",
       "nWidth": "100"
     },
- {
+   
+   {
       "id": "sFile01",
       "name": "file1",
       "type": "file",
       "required": "true",
       "writable": "true"
-    }
+    },
+    
+    {
+	"id" : "asRelations", 
+	"name" : "Ступінь спорідненості", 
+	"type" : "enum", 
+	"required" : "true", 
+	"writable" : "true", 
+	"a" : [
+	        {
+		"id" : "husband", 
+		"name" : "чоловік"},
+		{
+		"id" : "wife", 
+		"name" : "дружина"},
+		{
+		"id" : "father", 
+		"name" : "батько"},
+		{
+		"id" : "mother", 
+		"name" : "мати"},
+		{
+		"id" : "brother", 
+		"name" : "брат"},
+		{
+		"id" : "sister", 
+		"name" : "сестра"},
+		{
+		"id" : "son", 
+		"name" : "син"},
+		{
+		"id" : "doughter", 
+		"name" : "дочка"}
+	       ], 
+	"nWidth" : "25%"
+     }
 ]
 }
 ```
