@@ -319,57 +319,99 @@ public class SubjectGroupTreeService {
 
     }
     
- /**
+    /**
      * Сервис для получения департамента по идентификатору группы.
      *
      * @param sID_Group_Activiti - идентификатор группы
-     * @param sSubjectType - Тип выборки: Organ- иерархия в разрезе органы,  Human -иерархия в разрезе людей
-     * @return aSubjectGroupParent - лист который содержит в себе SubjectGroup родительских департаментов
+     * @param sSubjectType - Тип выборки: Organ- иерархия в разрезе органы,
+     * Human -иерархия в разрезе людей
+     * @param nDeepLevel - 1: получаем родителя на уровень выше, 0: получаем самого верхнего родителя, null: получаем 
+     * @return aSubjectGroupParent - лист который содержит в себе SubjectGroup
+     * родительских департаментов
      *
      * @see SubjectGroup
      * @see SubjectGroupTree
      */
-    public List<SubjectGroup> getSubjectGroupsTreeUp(final String sID_Group_Activiti, final String sSubjectType) {
-        
-        List<SubjectGroup> aSubjectGroupParent = new ArrayList<>();
+    public List<SubjectGroup> getSubjectGroupsTreeUp(final String sID_Group_Activiti, final String sSubjectType, final Long nDeepLevel) {
 
-        String sSubjectTypeToFind;
+        List<SubjectGroup> aSubjectGroupResult = new ArrayList<>();
         
-        sSubjectTypeToFind = sSubjectType;
-        
-        if (sSubjectTypeToFind == null) {
-            
-            sSubjectTypeToFind = getSubjectType(sID_Group_Activiti);
-        }
-        
-        //Получили все SubjectGroup, которые относятся к группе sID_Group_Activiti
-        List<SubjectGroup> aSubjectGroup = SubjectGroupDao.findAllBy("sID_Group_Activiti", sID_Group_Activiti);
-        LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroup.size() + ", " + aSubjectGroup.toString());
-        
-        for (SubjectGroup oSubjectGroup : aSubjectGroup) {
-            
-            //ID для которого ищем департаменты, которым он подчиняется
-            Long nID = oSubjectGroup.getoSubject().getId();
-            
-            //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
-            List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
-            LOG.info("aSubjectGroup consist: " + "size: " + aSubjectGroupTree.size() + ", " + aSubjectGroupTree.toString());
-                        
-            for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {
-                               
-                SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
+        //Получить SubjectGroup, который относятся к группе sID_Group_Activiti
+        Optional<SubjectGroup> oSubjectGroup = SubjectGroupDao.findBy("sID_Group_Activiti", sID_Group_Activiti);
+        LOG.info("aSubjectGroup consist: size={}, {}", oSubjectGroup, oSubjectGroup.toString());
+                              
+        LOG.info("getSubjectGroupsTreeUp nDeepLevel: {}", nDeepLevel);       
+        if (oSubjectGroup.isPresent()) {
+            if (nDeepLevel == null || nDeepLevel == 1){
+                //ID для которого ищем департаменты, которым он подчиняется
+                Long nID = oSubjectGroup.get().getId(); 
+                //Получаем SubjectGroupTree у которых oSubjectGroup_Child равны nID
+                List<SubjectGroupTree> aSubjectGroupTree = SubjectGroupTreeDao.findAllBy("oSubjectGroup_Child.id", nID);
+                LOG.info("aSubjectGroupTree size={}, {}",  aSubjectGroupTree.size(), aSubjectGroupTree.toString());
+
+                for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupTree) {     
                 
-                if (getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti()).equals(sSubjectTypeToFind)) {
-                  
-                    aSubjectGroupParent.add(oSubjectGroup_Parent);
+                    SubjectGroup oSubjectGroup_Parent = oSubjectGroupTree.getoSubjectGroup_Parent();
+                    LOG.info("oSubjectGroup_Parent={}", oSubjectGroup_Parent);
+                
+                    String sSubjectGroup_ParentType = getSubjectType(oSubjectGroup_Parent.getsID_Group_Activiti());
+                    if(sSubjectType == null || sSubjectGroup_ParentType.equalsIgnoreCase(sSubjectType)){
+                        aSubjectGroupResult.add(oSubjectGroup_Parent);
+                    }
                 }
+                LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());               
             }
-              
-            LOG.info("aSubjectGroupParent: " + aSubjectGroupParent.toString());
-            
-        }
-
-        return aSubjectGroupParent;
+            else if (nDeepLevel == 0){              
+                
+                String sChain = oSubjectGroup.get().getsChain();
+                LOG.info("getSubjectGroupsTreeUp sChain: "+sChain);              
+                
+                List<SubjectGroup> oSubjectGroupRoot = SubjectGroupDao.findAllBy("sID_Group_Activiti", sChain);
+                LOG.info("oSubjectGroupRoot size={}, {}",  oSubjectGroupRoot.size(), oSubjectGroupRoot.toString());
+                                
+                if (sSubjectType == null){
+                    aSubjectGroupResult.addAll(oSubjectGroupRoot);                   
+                
+                    for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
+                        List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
+                                findAllBy("oSubjectGroup_Parent.id", oSubjectGroupParent.getId());
+                        LOG.info("oSubjectGroup_Parent={}", aSubjectGroupRoot);
+                    
+                        for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
+                            SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
+                            
+                            String sSubjectGroup_ChildType = getSubjectType(oSubjcetGroupChild.getsID_Group_Activiti());
+                            if(sSubjectGroup_ChildType.equalsIgnoreCase("Human")){
+                                aSubjectGroupResult.add(oSubjcetGroupChild);
+                            }
+                        }
+                    }
+                LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }
+                else if(sSubjectType.equals("Organ")){                   
+                    aSubjectGroupResult.addAll(oSubjectGroupRoot);
+                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }
+                else if (sSubjectType.equals("Human")){
+                
+                    for (SubjectGroup oSubjectGroupParent : oSubjectGroupRoot) {
+                        List<SubjectGroupTree> aSubjectGroupRoot = SubjectGroupTreeDao.
+                                findAllBy("oSubjectGroup_Parent.id", oSubjectGroupParent.getId());
+                        
+                        for (SubjectGroupTree oSubjectGroupTree : aSubjectGroupRoot) {
+                            SubjectGroup oSubjcetGroupChild = oSubjectGroupTree.getoSubjectGroup_Child();
+                            
+                            String sSubjectGroup_ChildType = getSubjectType(oSubjcetGroupChild.getsID_Group_Activiti());
+                            if(sSubjectGroup_ChildType.equalsIgnoreCase("Human")){
+                                aSubjectGroupResult.add(oSubjcetGroupChild);
+                            }
+                        }         
+                    }
+                    LOG.info("aSubjectGroupResult: " + aSubjectGroupResult.toString());
+                }                
+            }     
+        }               
+        return aSubjectGroupResult;
     }
     
     
