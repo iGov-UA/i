@@ -727,6 +727,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(nID_Process.toString()).list();
             
+            if(isHistory == null){
+                isHistory = Boolean.FALSE;
+            }
+            
             LOG.info("getTaskData try to find history variables");
             for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                 LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
@@ -735,9 +739,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 
                 if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("long")){
                     LOG.info("oHistoricVariableInstance.getValue() {}", ((Long)oHistoricVariableInstance.getValue()).toString());
-                }
-                
-                if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("double")){
+                }else if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("double")){
+                    LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
+                }else{
                     LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
                 }
             }
@@ -766,9 +770,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeGroups == null) {
             bIncludeGroups = Boolean.FALSE;
         }
-        if(isHistory == null){
-           isHistory = Boolean.FALSE;
-        }
+        
         if (bIncludeStartForm == null) {
             bIncludeStartForm = Boolean.FALSE;
         }
