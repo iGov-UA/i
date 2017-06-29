@@ -94,6 +94,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
 
@@ -365,9 +366,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
         LOG.info("sID_Order {}", sID_Order);
         
-        File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "cancelTask_disign.html");
-        String sBody = Files.toString(oFile, Charset.defaultCharset());
-            
+        BufferedReader oBufferedReader
+                    = new BufferedReader(new InputStreamReader(
+                            ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
+        
+        String sBody = oBufferedReader.toString();
+        
         if (sID_Order != null) {
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
         }
