@@ -720,7 +720,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
             @ApiParam(value = "заглушка", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
-
+        
+        if(isHistory){
+            Map<String, Object> mProcessHistoryVariable = null;
+            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                    .processInstanceId(nID_Process.toString()).list();
+            
+            LOG.info("getTaskData try to find history variables");
+            for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
+                LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
+                LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
+                LOG.info("oHistoricVariableInstance.getValue() {}", (String)oHistoricVariableInstance.getValue());
+            }
+            
+            return JsonRestUtils.toJsonResponse(response.put("mProcessHistoryVariable", mProcessHistoryVariable));
+            
+        }
+        
         if (nID_Task == null) {
             nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
@@ -754,22 +771,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             bIncludeMessages = Boolean.FALSE;
         }
         Map<String, Object> response = new HashMap<>();
-        
-        if(isHistory){
-            Map<String, Object> mProcessHistoryVariable = null;
-            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
-                    .processInstanceId(nID_Process.toString()).list();
-            
-            LOG.info("getTaskData try to find history variables");
-            for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
-                LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
-                LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
-                LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
-                LOG.info("oHistoricVariableInstance.getValue() {}", (String)oHistoricVariableInstance.getValue());
-            }
-            
-            response.put("mProcessHistoryVariable", mProcessHistoryVariable);
-        }
         
         try {
             response.put("oProcess", oActionTaskService.getProcessInfo(nID_Process, nID_Task, sID_Order));
