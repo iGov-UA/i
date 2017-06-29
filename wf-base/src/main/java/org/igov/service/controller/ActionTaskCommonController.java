@@ -389,6 +389,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
         }
         
+        if(sResultURL != null){
+                 sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
+        }
+        
         return sBody;
     }
     
