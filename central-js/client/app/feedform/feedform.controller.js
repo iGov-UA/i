@@ -6,9 +6,18 @@ angular.module('popUp').controller('PopUpController',
       var isOrder = false;
       var oTaskData;
       var properties = [];
+      var firstName;
+      var lastName;
+      var middleName;
 
       $scope.isAuthenticated = function () {
         $http.get('auth/isAuthenticated').success(function (data) {
+          $http.get('api/user/fio').success(function (data) {
+            lastName = data.lastName;
+            firstName = data.firstName;
+            middleName = data.middleName;
+            $scope.sNameCitizen = firstName + " " + middleName + " " + lastName;
+          })
           $scope.isAuth = true;
         })
           .error(function (data, status) {
@@ -131,7 +140,10 @@ angular.module('popUp').controller('PopUpController',
             "sProblemDescription": $scope.sProblemDescription ? $scope.sProblemDescription : null,
             "Screen": $scope.Screen ? $scope.Screen : null,
             "markers1": "{\r\n  \"motion\": {\r\n    \"ShowFieldsOnCondition_1\": {\r\n      \"aField_ID\": [\r\n        \"sRequestNumber\", \"asRegionName\",\"sCityName\",\"sServiceName\", \"sProblemDescription\"\r\n      ],\r\n      \"asID_Field\": {\r\n        \"sCondit\": \"asExistentRequest\"\r\n      },\r\n      \"sCondition\": \"[sCondit]== 'sEnumExistentRequest_yes'\"\r\n    },\r\n    \"ShowFieldsOnCondition_2\": {\r\n      \"aField_ID\": [\r\n        \"asRegionName\",\"sCityName\",\"sServiceName\", \"sProblemDescription\"\r\n      ],\r\n      \"asID_Field\": {\r\n        \"sCondit\": \"asExistentRequest\"\r\n      },\r\n      \"sCondition\": \"[sCondit]=='sEnumExistentRequest_no'\"\r\n    \t}\r\n     \r\n\t}\r\n}",
-            "saField": JSON.stringify(oTaskData)
+            "saField": JSON.stringify(oTaskData),
+            "bankIdlastName" : lastName,
+            "bankIdfirstName": firstName,
+            "bankIdmiddleName": middleName
           }
         });
 
