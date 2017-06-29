@@ -198,7 +198,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //отримання назви департамента
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
+var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ',null);
 execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel) 
 
 	 </script>
@@ -223,7 +223,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <serviceTask id="servicetask2" name="тесатове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+          <activiti:expression>${sValue}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -247,7 +247,7 @@ ${sEmail}
           <activiti:expression>${PrintForm_7}</activiti:expression>
         </activiti:field>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersLoginByGroup('GrekD')}" activiti:elementVariable="sEmail"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTableFamiliarize', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
     </serviceTask>
     <serviceTask id="mailtask1" name="Mail Task" activiti:type="mail">
       <extensionElements>
