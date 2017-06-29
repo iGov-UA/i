@@ -98,6 +98,7 @@ import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
+import org.springframework.http.MediaType;
 
 /**
  * @author BW
@@ -348,7 +349,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
-    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.TEXT_HTML_VALUE)
     public @ResponseBody String  cancelTaskNew(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
