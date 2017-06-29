@@ -2615,9 +2615,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
-                ((TaskQuery) taskQuery).orderByTaskCreateTime();
+                ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
             } else {
-                ((TaskQuery) taskQuery).orderByTaskId();
+                ((TaskInfoQuery) taskQuery).orderByTaskId();
             }
 
             if (!StringUtils.isEmpty(soaFilterField)) {
@@ -2634,7 +2634,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 }
                 LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
             }
-            ((TaskQuery) taskQuery).asc();
+            ((TaskInfoQuery) taskQuery).asc();
         }
 
         return taskQuery;

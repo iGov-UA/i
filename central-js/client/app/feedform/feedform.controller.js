@@ -114,10 +114,12 @@ angular.module('popUp').controller('PopUpController',
 
           //console.log($scope.oTask);
 
-          $scope.email = response.data.aFieldStartForm.email;
-          $scope.phone = response.data.aFieldStartForm.phone;
-          $scope.sNameCitizen = response.data.aFieldStartForm.bankIdfirstName + " " + response.data.aFieldStartForm.bankIdmiddleName + " " + response.data.aFieldStartForm.bankIdlastName;
+          $scope.email = response.data.aFieldStartForm.email || response.data.aField[4].sValue;
+          $scope.phone = response.data.aFieldStartForm.phone || response.data.aField[5].sValue;
+
           $scope.sServiceName = response.data.oProcess.sName;
+
+          console.log(response);
 
         }, function errorCallback(response) {
 
