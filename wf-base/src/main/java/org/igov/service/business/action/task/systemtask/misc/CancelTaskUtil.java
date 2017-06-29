@@ -45,7 +45,7 @@ public class CancelTaskUtil {
 
     public String getCancelFormHTML(Long nID_Order, boolean bSimple) throws Exception {
 
-        String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask_New)
+        String sURL_ForAccessKey = new StringBuilder(sURL_CancelTask)
                 .append("?nID_Order=").append(nID_Order)
                 .append("&bSimple=").append(bSimple)
                 .append("&").append(AuthenticationTokenSelector.ACCESS_CONTRACT).append("=")
