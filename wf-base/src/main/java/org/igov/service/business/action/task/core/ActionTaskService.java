@@ -2610,7 +2610,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             } else if (THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED.equals(sFilterStatus)) {
                 taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin)
                         .processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
-                LOG.info("Document closed count={}, list={}", ((TaskInfoQuery) taskQuery).count(), ((TaskInfoQuery) taskQuery).list());
+                LOG.info("Document closed count={}", ((TaskInfoQuery) taskQuery).count());
+                Map<String, Object> mVariable = new HashMap<>();
+                List<Task> aoTask = ((TaskInfoQuery) taskQuery).list();
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
