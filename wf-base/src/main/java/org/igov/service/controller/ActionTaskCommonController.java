@@ -94,10 +94,12 @@ import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.controller.security.AuthenticationTokenSelector;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
+import org.springframework.http.MediaType;
 
 /**
  * @author BW
@@ -348,12 +350,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
     @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
-    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-    public String cancelTaskNew(
+    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = MediaType.TEXT_HTML_VALUE)
+    public @ResponseBody String  cancelTaskNew(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
             @ApiParam(value = "ключ для аутентификации", required = false) @RequestParam(value = "sAccessKey", required = false) String sAccessKey,
+            @ApiParam(value = "закрывать ли таску", required = false) @RequestParam(value = "bCancel", required = false) Boolean bCancel,
             @ApiParam(value = "тип доступа", required = false) @RequestParam(value = "sAccessContract", required = false) String sAccessContract
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
         LOG.info("cancelTaskNew started");
@@ -372,15 +375,16 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
         
         StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost()); 
-        oStringBuilder_URL.append("/wf/service/action/task/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+        oStringBuilder_URL.append("/wf/service/action/task/cancelTaskNew?").append("nID_Order=".concat(nID_Order.toString()));
         
         if(sInfo != null){
             oStringBuilder_URL.append("&sInfo=".concat(sInfo));
         }
         
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
-        oStringBuilder_URL.append("&sAccessKey=".concat(sAccessKey));
+        oStringBuilder_URL.append("&sAccessKey=".concat(AuthenticationTokenSelector.ACCESS_KEY));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
+        oStringBuilder_URL.append("&bCancel=".concat(bCancel.toString()));
         String sResultURL = oStringBuilder_URL.toString();
                 
         String sBody =  org.apache.commons.io.IOUtils.toString(oBufferedReader);
@@ -391,6 +395,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         
         if(sResultURL != null){
                  sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
+        }
+        
+        if(bCancel){
+            cancelTask(nID_Order, sInfo, bSimple);
+
         }
         
         return sBody;
