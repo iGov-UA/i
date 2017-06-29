@@ -349,7 +349,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
     @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-    public @ResponseBody String cancelTaskNew(
+    public String cancelTaskNew(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
