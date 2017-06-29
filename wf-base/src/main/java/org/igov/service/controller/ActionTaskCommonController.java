@@ -366,7 +366,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("cancelTaskNew sAccessKey {}", sAccessKey);
         LOG.info("cancelTaskNew sAccessContract {}", sAccessContract);
         
-        
         String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
         LOG.info("sID_Order {}", sID_Order);
         

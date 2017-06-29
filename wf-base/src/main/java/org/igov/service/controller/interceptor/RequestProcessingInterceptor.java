@@ -814,7 +814,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("saveClosedTaskInfo block started");
                 List<String> aTaskId = new ArrayList<>();
                 
-                if(oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0){
+                if((oRequest.getRequestURL().toString().indexOf("bCancel=true") > 0 ) &&
+                        (oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0)){
                     LOG.info("We catch cancel task...");
                     //LOG.info("mRequestParam {}", mRequestParam);
                     String nID_Order = mRequestParam.get("nID_Order");
@@ -1168,7 +1169,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 || oRequest.getRequestURL().toString().indexOf(UPDATE_PROCESS) > 0))
                 || TAG_PATTERN_PREFIX.matcher(oRequest.getRequestURL()).find()
-                || (oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0));
+                || ((oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0)&&
+                (oRequest.getRequestURL().toString().indexOf("bCancel=true") > 0)));
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
