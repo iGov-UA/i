@@ -742,7 +742,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }else if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("double")){
                     LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
                 }else{
-                    LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
+                    LOG.info("oHistoricVariableInstance.getValue() {}", ((String)oHistoricVariableInstance.getValue()).toString());
                 }
             }
             
