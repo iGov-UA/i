@@ -394,6 +394,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
         }
         
+        sAccessKey = accessCover.getAccessKey(sResultURL);
+        sResultURL = sResultURL + ("&sAccessKey=".concat(sAccessKey));
+           
+        
         if(sResultURL != null){
             sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
         }
@@ -403,9 +407,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         if(bCancel){
-            sAccessKey = accessCover.getAccessKey(sResultURL);
-            sResultURL = sResultURL + ("&sAccessKey=".concat(sAccessKey));
-            cancelTask(nID_Order, sInfo, bSimple);
+             cancelTask(nID_Order, sInfo, bSimple);
         }
         
         return sBody;
