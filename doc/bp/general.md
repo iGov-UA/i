@@ -2545,6 +2545,65 @@ var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, '
 ### /delegateDocumentStepSubject
 ### /syncDocumentSubmitersByField
 
+### Получение ИД процесса активити
+**getProcessInstanceId()**
+пример вызова:
+```javascript
+var processInstanceId = execution.getProcessInstanceId();
+```
+
+### Получение ИД БП
+**getProcessDefinitionId()**
+пример вызова:
+```javascript
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+```
+
+### Разделение переменной символом
+**executeProcessDefinitionId.split(':')[0]**
+пример вызова:
+```javascript
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+```
+
+### Получение по логину автора документа данных о дереве групп
+**getSubjectGroupsTreeUp(sLoginAuthor,'Human')**
+пример вызова:
+```javascript
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
+execution.setVariable('sID_Group_Activiti_1', obj1[0].sID_Group_Activiti)
+execution.setVariable('sName_DelegateUT2', obj1[0].oSubject.sLabel)
+```
+
+### Сервис получения полной иерархии (родитель - ребенок)
+**getCatalogProcessSubjectTree(String snID_Process_Activiti, Long deepLevel, String sFind, Boolean bIncludeRoot, Long deepLevelWidth)**
+пример вызова:
+```javascript
+var processInstanceId = execution.getVariable('processInstanceId');
+var obj = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1);
+```
+
+### Преобразование даты в нужный формат
+**dateUtil.getDateFormatted_ByField(snID_Process, sDateVacationBegin, 'dd.MM.yyyy')**
+пример вызова:
+```javascript
+var snID_Process = execution.getProcessInstanceId()
+var sDateVacationBegin = execution.getVariable('sDateVacationBegin')
+var sDateVacationBegin_Email = dateUtil.getDateFormatted_ByField(snID_Process, sDateVacationBegin, 'dd.MM.yyyy')
+```
+
+### Получение сабджекта по логину
+**subjectService.getSubjectByLoginAccount(sLoginAuthor)**
+пример вызова:
+```javascript
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
+execution.setVariable('sAuthorName', oResultAuthorName.sLabel)
+```
+
+
 ###### generationtasks
 ### Порождение задач
 Системный процесс - порождает задачи, расписанные на исполнителей в родительском процессе.  

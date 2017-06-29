@@ -24,6 +24,8 @@
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDocCM" name="Заголовок документа" type="string" default="Заявка на тендер по определению поставщика ТМЦ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTitleDocServices" name="Заголовок документа" type="string" default="Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT2" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT3" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
@@ -44,7 +46,7 @@
         <activiti:formProperty id="sDate_441" name="Дата №441; ;bVisible=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" default="${sID_Order}"></activiti:formProperty>
         <activiti:formProperty id="sDateApprove" name="Дата исход №; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Предмет заявки; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string"></activiti:formProperty>
@@ -211,7 +213,7 @@
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateApprove" name="Дата исход №" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
@@ -338,7 +340,7 @@
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -375,7 +377,7 @@
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateApprove" name="Дата исход №" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
@@ -502,7 +504,7 @@
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -539,7 +541,7 @@
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateApprove" name="Дата исход №" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Наименование объекта/План. поставщик(БЗ)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
