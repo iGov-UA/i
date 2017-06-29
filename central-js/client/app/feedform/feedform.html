@@ -5,7 +5,7 @@
   </div>
   <div class="modal-body" align="justify">
     <div ng-show="!isAuth">
-      <p style="color: red">* Якщо ви маєте питання стосовно існуючого звернення, вам необхідно авторізуватися на
+      <p style="color: red">* Якщо ви маєте питання стосовно існуючого звернення, вам необхідно авторизуватися на
         порталі, тоді ви будете мати можливість додати номер звернення. </p>
     </div>
     <p>Це питання буде надіслано в команду волонтерів порталу iGov і ми
@@ -116,14 +116,14 @@
         <br><input name="Screen" type="file" accept="image/*" ng-model="Screen">
       </div>
 
-      <div class="form-group">
+      <div ng-show="isAuth" class="form-group">
         <b>Відобразити дані звернення</b>
         <br><input type="checkbox" ng-model="ch" checked>
         <br>
         <div ng-show="ch">
         <span ng-repeat="(key, value) in oTask">
           <label><b>{{key}}: </b></label>
-          <label>{{value}}</label>
+          <label ng-bind-html="value">{{value}}</label>
           <br>
         </span>
         </div>

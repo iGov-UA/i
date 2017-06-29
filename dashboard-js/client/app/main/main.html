@@ -1,9 +1,9 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <header class="hero-unit" id="banner">
-  <div class="container">
-    <h1 class="hero-unit-heading">iGov.org.ua</h1>
-    <h3>портал обробки звернень громадян</h3>
+  <div class="container" ng-controller="MainCtrl">
+    <h1 class="hero-unit-heading">{{ProjectRegion_LogonPage_sName}}</h1>
+    <h3>{{ProjectRegion_LogonPage_sNote}}</h3>
   </div>
 </header>
 
@@ -55,9 +55,6 @@
     </div>
   </div>
 </div>
-<div style="position: absolute; bottom: 3px; right: 30px">
-    Служба підтримки:<br>
-    start@igov.org.ua<br>
-    +380 68 211-5510<br>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd0olQtOjM1GchgtmRN-K82BZN-mTqyju0feG2qNoYsEJ42mQ/viewform" target="_blank">Зв`язатися з командою iGov</a>
+<div style="position: absolute; bottom: 3px; right: 30px" ng-bind-html="ProjectRegion_LogonPage_sContacts">
+    {{ProjectRegion_LogonPage_sContacts}}
 </div>

@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.io.Files;
 
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
@@ -78,6 +79,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
+import org.igov.io.fs.FileSystemData;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
@@ -92,6 +94,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
 
@@ -343,6 +346,40 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+    @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
+    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+    public @ResponseBody String cancelTaskNew(
+            @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
+            @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
+            @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
+            @ApiParam(value = "ключ для аутентификации", required = false) @RequestParam(value = "sAccessKey", required = false) String sAccessKey,
+            @ApiParam(value = "тип доступа", required = false) @RequestParam(value = "sAccessContract", required = false) String sAccessContract
+    ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
+        LOG.info("cancelTaskNew started");
+        LOG.info("cancelTaskNew nID_Order {}", nID_Order);
+        LOG.info("cancelTaskNew sInfo {}", sInfo);
+        LOG.info("cancelTaskNew bSimple {}", bSimple);
+        LOG.info("cancelTaskNew sAccessKey {}", sAccessKey);
+        LOG.info("cancelTaskNew sAccessContract {}", sAccessContract);
+        
+        LOG.info("selfHost {}", generalConfig.getSelfHost());
+        String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
+        LOG.info("sID_Order {}", sID_Order);
+        
+        BufferedReader oBufferedReader
+                    = new BufferedReader(new InputStreamReader(
+                            ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
+        
+        String sBody = oBufferedReader.toString();
+        
+        if (sID_Order != null) {
+                sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
+        }
+        
+        return sBody;
+    }
+    
+    
     /**
      * Отмена задачи (в т.ч. электронной очереди)
      *
