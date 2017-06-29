@@ -99,8 +99,8 @@ angular.module('popUp').controller('PopUpController',
             }
           }
 
-          for (id in oTaskData){
-            if(oTaskData.hasOwnProperty(id)){
+          for (id in oTaskData) {
+            if (oTaskData.hasOwnProperty(id)) {
               for (id in oRename) {
                 if (oRename.hasOwnProperty(id) && oTaskData[id]) {
                   renamed[oRename[id]] = oTaskData[id];
@@ -116,7 +116,7 @@ angular.module('popUp').controller('PopUpController',
 
           $scope.email = response.data.aFieldStartForm.email;
           $scope.phone = response.data.aFieldStartForm.phone;
-          $scope.sNameCitizen = response.data.aFieldStartForm.bankIdfirstName + " " + response.data.aFieldStartForm.bankIdlastName;
+          $scope.sNameCitizen = response.data.aFieldStartForm.bankIdfirstName + " " + response.data.aFieldStartForm.bankIdmiddleName + " " + response.data.aFieldStartForm.bankIdlastName;
           $scope.sServiceName = response.data.oProcess.sName;
 
         }, function errorCallback(response) {
@@ -141,7 +141,7 @@ angular.module('popUp').controller('PopUpController',
             "Screen": $scope.Screen ? $scope.Screen : null,
             "markers1": "{\r\n  \"motion\": {\r\n    \"ShowFieldsOnCondition_1\": {\r\n      \"aField_ID\": [\r\n        \"sRequestNumber\", \"asRegionName\",\"sCityName\",\"sServiceName\", \"sProblemDescription\"\r\n      ],\r\n      \"asID_Field\": {\r\n        \"sCondit\": \"asExistentRequest\"\r\n      },\r\n      \"sCondition\": \"[sCondit]== 'sEnumExistentRequest_yes'\"\r\n    },\r\n    \"ShowFieldsOnCondition_2\": {\r\n      \"aField_ID\": [\r\n        \"asRegionName\",\"sCityName\",\"sServiceName\", \"sProblemDescription\"\r\n      ],\r\n      \"asID_Field\": {\r\n        \"sCondit\": \"asExistentRequest\"\r\n      },\r\n      \"sCondition\": \"[sCondit]=='sEnumExistentRequest_no'\"\r\n    \t}\r\n     \r\n\t}\r\n}",
             "saField": JSON.stringify(oTaskData),
-            "bankIdlastName" : lastName,
+            "bankIdlastName": lastName,
             "bankIdfirstName": firstName,
             "bankIdmiddleName": middleName
           }
