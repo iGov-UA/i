@@ -219,6 +219,13 @@ var all = {
   },
   databot: {
     key: config.getProperty('sDataBotApiKey') || process.env.sDataBotApiKey
+  },
+
+  main_env: {
+    ProjectRegion_LogonPage_sName: config.getProperty('ProjectRegion_LogonPage_sName')|| process.env.ProjectRegion_LogonPage_sName,
+    ProjectRegion_LogonPage_sNote: config.getProperty('ProjectRegion_LogonPage_sNote')|| process.env.ProjectRegion_LogonPage_sNote,
+    ProjectRegion_LogonPage_sContacts: config.getProperty('ProjectRegion_LogonPage_sContacts')|| process.env.ProjectRegion_LogonPage_sContacts,
+    ProjectRegion_MainPage_bTasksOnly: config.getProperty('ProjectRegion_MainPage_bTasksOnly')|| process.env.ProjectRegion_MainPage_bTasksOnly
   }
 };
 
