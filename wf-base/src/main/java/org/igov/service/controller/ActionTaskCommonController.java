@@ -741,8 +741,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     LOG.info("oHistoricVariableInstance.getValue() {}", ((Long)oHistoricVariableInstance.getValue()).toString());
                 }else if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("double")){
                     LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
-                }else{
-                    LOG.info("oHistoricVariableInstance.getValue() {}", ((String)oHistoricVariableInstance.getValue()).toString());
+                }else if (oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("date")){
+                    LOG.info("oHistoricVariableInstance.getValue() {}", new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSS").format(((Date)oHistoricVariableInstance.getValue())));
                 }
             }
             
