@@ -620,6 +620,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      * не задан nID_Task и sID_Order)
      * @param sID_Order номер-ИД заявки (опциональный, но обязательный если не
      * задан nID_Task и nID_Process)
+     * @param isHistory
      * @param sLogin (опциональный) логин, по которому проверяется вхождение
      * пользователя в одну из групп, на которые распространяется данная задача
      * @param bIncludeGroups (опциональный) если задано значение true - в
@@ -710,6 +711,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД таски (обязательный)", required = false) @RequestParam(value = "nID_Task", required = false) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
+            @ApiParam(value = "искомая задача закрыта", required = false) @RequestParam(value = "isHistory", required = false) Boolean isHistory,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroup возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
@@ -722,7 +724,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (nID_Task == null) {
             nID_Task = oActionTaskService.getTaskIDbyProcess(nID_Process, sID_Order, Boolean.FALSE);
         }
-
+        
         if (sLogin != null) {
             if (oActionTaskService.checkAvailabilityTaskGroupsForUser(sLogin, nID_Task)) {
                 LOG.info("User {} have access to the Task {}", sLogin, nID_Task);
@@ -739,6 +741,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeGroups == null) {
             bIncludeGroups = Boolean.FALSE;
         }
+        if(isHistory == null){
+           isHistory = Boolean.FALSE;
+        }
         if (bIncludeStartForm == null) {
             bIncludeStartForm = Boolean.FALSE;
         }
@@ -749,7 +754,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             bIncludeMessages = Boolean.FALSE;
         }
         Map<String, Object> response = new HashMap<>();
-
+        
+        if(isHistory){
+            Map<String, Object> mProcessHistoryVariable = null;
+            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                    .processInstanceId(nID_Process.toString()).list();
+            
+            LOG.info("getTaskData try to find history variables");
+            for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
+                LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
+                LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
+                LOG.info("oHistoricVariableInstance.getValue() {}", (String)oHistoricVariableInstance.getValue());
+            }
+            
+            response.put("mProcessHistoryVariable", mProcessHistoryVariable);
+        }
+        
         try {
             response.put("oProcess", oActionTaskService.getProcessInfo(nID_Process, nID_Task, sID_Order));
         } catch (NullPointerException e) {
@@ -826,7 +847,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } else {
             response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 0l));
         }      
-
+        
         return JsonRestUtils.toJsonResponse(response);
     }
     
