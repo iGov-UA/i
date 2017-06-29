@@ -2609,7 +2609,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 
             } else if (THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED.equals(sFilterStatus)) {
                 taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin)
-                        .finished().processDefinitionKeyLikeIgnoreCase("_doc_%");
+                        .processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
                 LOG.info("Document closed count={}, list={}", ((TaskInfoQuery) taskQuery).count(), ((TaskInfoQuery) taskQuery).list());
             }
             
