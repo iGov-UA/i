@@ -12,15 +12,25 @@
             </a>
           </div>
 
-          <p class="navbar-text idoc-emblem">
+          <p class="navbar-text idoc-emblem" style="cursor:pointer;" ng-click="backToTasks()" ng-show="ProjectRegion_MainPage_bTasksOnly=='FALSE'">
             <span>iDoc</span><span>powered by iGov</span>
+          </p>
+
+          <p class="navbar-text idoc-emblem" style="cursor:pointer;" ng-click="backToTasks()" ng-show="ProjectRegion_MainPage_bTasksOnly=='TRUE'">
+            <span>iGov</span><span>powered by volunteers</span>
           </p>
 
           <div class="navbar-text divider-separator"></div>
 
-          <p class="navbar-text navbar-idoc-text idoc-about">
-            <span class="idoc-about-span">
+          <p class="navbar-text navbar-idoc-text idoc-about" ng-show="ProjectRegion_MainPage_bTasksOnly=='FALSE'">
+          <span class="idoc-about-span">
               <span>система</span><span>електронного</span><span>документообiгу</span>
+            </span>
+          </p>
+
+          <p class="navbar-text navbar-idoc-text idoc-about" ng-show="ProjectRegion_MainPage_bTasksOnly=='TRUE'">
+            <span class="idoc-about-span">
+              <span>адміністративний</span><span>інтерфейс</span><span>системи</span>
             </span>
           </p>
 
@@ -42,9 +52,12 @@
 
                 <li role="separator" class="idoc-divider"></li>
 
-                <li><a href="#" ng-click="goToProfile()">Мiй Профіль</a></li>
+                <li><a href="#" ng-class="{'isActiveTab': isActive('tasks.typeof')}" ng-click="backToTasks()">Документи / задачi</a></li>
+
+                <li><a href="#" ng-class="{'isActiveTab': isActive('profile')}" ng-click="goToProfile()">Мiй Профіль</a></li>
 
                 <li ng-repeat="menuItem in iGovNavbarHelper.instrumentsMenus"
+                    ng-class="{'isActiveTab': isActive(menuItem.state)}"
                     ng-show="isVisibleInstrument(menuItem.state)">
                   <a ui-sref="{{::menuItem.state}}" ng-bind="::menuItem.title"></a>
                 </li>

@@ -182,6 +182,22 @@ public class ProcessSubjectController {
         return oProcessSubjectTaskService.getProcessSubjectLoginsWithoutTask(snID_Process_Activiti, sFilterLoginRole);
     }
     
+    @ApiOperation(value = "Вернуть объект ProcessSubjectTask", notes = "##### Пример:\n"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubjectTask?snID_Process_Activiti=33267773 \n")
+    @RequestMapping(value = "/getProcessSubjectTask", method = RequestMethod.GET)
+    @ResponseBody
+    public List<ProcessSubjectTask> getProcessSubjectTask(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "глубина", required = false) @RequestParam(value = "nDeepProcessSubjectTask", required = false) Long nDeepProcessSubjectTask) throws RecordInmemoryException, ParseException
+    {   
+        if(nDeepProcessSubjectTask != null){
+            nDeepProcessSubjectTask = 1L;
+        }
+        
+        return oProcessSubjectTaskService.getProcessSubjectTask(snID_Process_Activiti, nDeepProcessSubjectTask);
+    }
+
+    
+    
     @ApiOperation(value = "Задать статус процесса ", notes = "##### Пример:\n" 
             + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/setProcessSubjectStatus?nID_ProcessSubjectStatus=1&snID_Task_Activiti=33042597&sLogin=justice_common \n")
     @RequestMapping(value = "/setProcessSubjectStatus", method = RequestMethod.GET)
@@ -227,6 +243,17 @@ public class ProcessSubjectController {
     	) {
     	
     	return oProcessSubjectTaskService.getProcessSubjectTask(snID_Process_Activiti, nDeepProcessSubjectTask);
+    }
+    
+    @ApiOperation(value = "Получить ProcessSubject", notes = "Пример вызова:"
+            + "https://alpha.test.region.igov.org.ua/wf/service/subject/process/getProcessSubjectTest?snID_Process_Activiti=свое значение&"
+            + "sLogin=свое значение")
+    @RequestMapping(value = "/getProcessSubjectTest", method = RequestMethod.GET)
+    @ResponseBody
+    public ProcessSubject getProcecssSubjectTest(@ApiParam(value = "ид процесса", required = true) @RequestParam(value = "snID_Process_Activiti") String snID_Process_Activiti,
+            @ApiParam(value = "логин", required = false) @RequestParam(value = "sLogin", required = false) String sLogin) {
+    
+        return processSubjectService.getProcessSubject(snID_Process_Activiti, sLogin);
     }
        
 }

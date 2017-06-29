@@ -96,9 +96,6 @@ public class ProcessSubjectService {
     
     @Autowired
     private ActionTaskService oActionTaskService;
-    
-    @Autowired
-    private ProcessSubjectTaskService oProcessSubjectTaskService;
 
     public ProcessSubjectResult getCatalogProcessSubject(String snID_Process_Activiti, Long deepLevel, String sFind) {
 
@@ -1009,5 +1006,9 @@ public class ProcessSubjectService {
         processSubjectDao.saveOrUpdate(oProcessSubject);
         
         return oProcessSubject;
+    }
+
+    public ProcessSubject getProcessSubject(String snID_Process_Activiti, String sLogin) {
+        return processSubjectDao.findByProcessActivitiIdAndLogin(snID_Process_Activiti, sLogin);
     }
 }

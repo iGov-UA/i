@@ -2,7 +2,7 @@
 
 angular.module('dashboardJsApp')
   .factory('tasks', function tasks($http, $q, $rootScope, uiUploader, $compile, $timeout, processes, $filter,
-                                   PrintTemplateProcessor, Auth) {
+                                   PrintTemplateProcessor, Auth, generationService) {
     function simpleHttpPromise(req, callback) {
       var cb = callback || angular.noop;
       var deferred = $q.defer();
@@ -196,7 +196,7 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      submitTaskForm: function (taskId, formProperties, task, attachments) {
+      submitTaskForm: function (taskId, formProperties, task, attachments, issue) {
         var self = this,
             deferred = $q.defer(),
             promises = [],
@@ -293,6 +293,10 @@ angular.module('dashboardJsApp')
             'taskId': taskId,
             'properties': createProperties(formProperties)
           };
+
+          if(issue) {
+            submitTaskFormData.aProcessSubjectTask = issue;
+          }
 
           var req = {
             method: 'POST',
@@ -533,22 +537,226 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
+      generatePDFFromPrintForms: function (formProperties, task) {
+        // нужно найти все поля с тимом "file" и id, начинающимся с "PrintForm_"
+        var filesFields = $filter('filter')(formProperties, function (prop) {
+          return prop.type === 'file' && (prop.options.hasOwnProperty('sID_Field_Printform_ForECP') || /^PrintForm_/.test(prop.id));
+        });
+
+        var self = this;
+        var deferred = $q.defer();
+        var filesDefers = [];
+        // загрузить все шаблоны
+        angular.forEach(filesFields, function (fileField) {
+          var defer = $q.defer();
+          filesDefers.push(defer.promise);
+          var patternFileName = fileField.options.sPatternFileUrl ? fileField.options.sPatternFileUrl : fileField.name.split(';')[2];
+          if (patternFileName) {
+            patternFileName = patternFileName.replace(/^pattern\//, '');
+            self.getPatternFile(patternFileName).then(function (result) {
+              defer.resolve({
+                fileField: fileField,
+                template: result
+              });
+            });
+          } else
+            defer.resolve({
+              fileField: fileField,
+              template: ''
+            });
+        });
+        var isDocPrintFormPresent = !formProperties.sendDefaultPrintForm;
+        angular.forEach(formProperties, function (field) {
+          if(field.id.match(/^PrintForm_/) && field.options.sPrintFormFileAsPDF){
+            var printFormName = field.options.sPrintFormFileAsPDF.split('/');
+            var ind = printFormName.length - 1 < 0 ? 0 : printFormName.length - 1;
+            if(printFormName[ind].match(/^_doc_/)){
+              isDocPrintFormPresent = true;
+            }
+          }
+        });
+        if(formProperties.sendDefaultPrintForm && !isDocPrintFormPresent){
+          filesDefers.push($q.resolve({
+            fileField: null,
+            template: '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="style.css" /></head><body">' + $(".ng-modal-dialog-content")[0].innerHTML + '</html>'
+          }));
+        }
+        // компиляция и отправка html
+        $q.all(filesDefers).then(function (results) {
+          var uploadPromises = [],
+            printforms = [],
+            printPromises = [],
+            printDefer = [],
+            counter = 0;
+
+          angular.forEach(results, function (templateResult, key) {
+            var scope = $rootScope.$new();
+            scope.selectedTask = task;
+            scope.taskForm = formProperties;
+            //scope.getPrintTemplate = function(){return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template, scope.lunaService);},
+            scope.getPrintTemplate = function () {
+              return PrintTemplateProcessor.getPrintTemplate(task, formProperties, templateResult.template);
+            };
+            scope.containsPrintTemplate = function () {
+              return templateResult.template !== '';
+            };
+            scope.getProcessName = processes.getProcessName;
+            scope.sDateShort = function (sDateLong) {
+              if (sDateLong !== null) {
+                var o = new Date(sDateLong);
+                return o.getFullYear() + '-' + ((o.getMonth() + 1) > 9 ? '' : '0') + (o.getMonth() + 1) + '-' + (o.getDate() > 9 ? '' : '0') + o.getDate() + ' ' + (o.getHours() > 9 ? '' : '0') + o.getHours() + ':' + (o.getMinutes() > 9 ? '' : '0') + o.getMinutes();
+              }
+            };
+            scope.sFieldLabel = function (sField) {
+              var s = '';
+              if (sField !== null) {
+                var a = sField.split(';');
+                s = a[0].trim();
+              }
+              return s;
+            };
+            scope.sEnumValue = function (aItem, sID) {
+              var s = sID;
+              _.forEach(aItem, function (oItem) {
+                if (oItem.id == sID) {
+                  s = oItem.name;
+                }
+              });
+              return s;
+            };
+            var compiled = $compile('<print-dialog></print-dialog>')(scope);
+
+            /**
+             * https://github.com/e-government-ua/i/issues/1382
+             * parse name string property to get file names sPrintFormFileAsPDF and sPrintFormFileAsIs
+             */
+            var fileName = null;
+            var fileNameTemp = null;
+            var sFileFieldID = null;
+            var sOutputFileType = null;
+            var html = null;
+            var sKey_Step_field = formProperties.filter(function (item) {
+              return item.id === "sKey_Step_Document";
+            })[0];
+            if(sKey_Step_field){
+              var sKey_Step = sKey_Step_field.value
+            }
+
+            if(templateResult.fileField) {
+              if (typeof templateResult.fileField.name === 'string') {
+                fileNameTemp = templateResult.fileField.name.split(/;/).reduce(function (prev, current) {
+                  var reduceResult = prev += current.match(/sPrintFormFileAsPDF/i) || current.match(/sPrintFormFileAsIs/i) || [];
+                  if (reduceResult !== '') {
+                    var parts = current.split(',');
+                    angular.forEach(parts, function (el) {
+                      if (el.match(/^sFileName=/)) {
+                        fileName = el.split('=')[1];
+                      }
+                    })
+                  }
+                  return reduceResult;
+                }, '');
+
+                fileName = fileName || fileNameTemp;
+
+                if (fileNameTemp === 'sPrintFormFileAsPDF') {
+                  fileName = fileName + '.pdf';
+                  sOutputFileType = 'pdf';
+                  if(templateResult.fileField.options.sPrintFormFileAsPDF){
+                    var printFormName = templateResult.fileField.options.sPrintFormFileAsPDF.split('/');
+                    var ind = printFormName.length - 1 < 0 ? 0 : printFormName.length - 1;
+                    if(printFormName[ind].match(/^_doc_/)&& task.processInstanceId.match(/^_doc_/)){
+                      formProperties.isSendAsDocument = true;
+                      formProperties.skipSendingPrintForm = true;
+                    } else {
+                      formProperties.isSendAsDocument = false;
+                    }
+                  }
+                }
+
+                if (fileNameTemp === 'sPrintFormFileAsIs') {
+                  fileName = fileName + '.html';
+                  sOutputFileType = 'html';
+                  formProperties.isSendAsDocument = false;
+                }
+
+                sFileFieldID = templateResult.fileField.id;
+              }
+              var description = templateResult.fileField.name.split(";")[0];
+            } else {
+              sOutputFileType = 'pdf';
+              fileName = 'form.pdf';
+              html = templateResult.template;
+            }
+
+            uploadPromises.push($timeout(function(){
+              if(!html){
+                html = '<html><head><meta charset="utf-8"></head><body>' + compiled.find('.print-modal-content').html() + '</body></html>';
+              }
+              var data = {
+                sDescription: description,
+                sFileNameAndExt: fileName || 'User form.html',
+                sID_Field: sFileFieldID,
+                sContent: html,
+                sOutputFileType: sOutputFileType,
+                sKey_Step: sKey_Step,
+                isSendAsDocument: formProperties.sendDefaultPrintForm || formProperties.isSendAsDocument,
+                skipSendingPrintForm: formProperties.skipSendingPrintForm
+              };
+
+              printDefer[key] = $q.defer();
+              printforms[key] = {html:html, data:data};
+              printPromises[key] = printDefer[key].promise;
+            }));
+
+          });
+
+          var resultsPdf = [];
+
+          var asyncPdfGenerate = function (i, print, defs) {
+            if (i < print.length) {
+              if(!print[i].data.sID_Field && print[i].data.skipSendingPrintForm){
+                defs[i].resolve();
+                return asyncPdfGenerate(i+1, print, defs);
+              } else {
+                var printContents = print[i].html;
+                return generationService.generatePDFFromHTML(printContents).then(function (pdfContent) {
+                  resultsPdf.push({
+                    sID_Field: print[i].data.sID_Field,
+                    content: pdfContent.base64
+                  });
+                  defs[i].resolve();
+                  return asyncPdfGenerate(i + 1, print, defs);
+                })
+              }
+            }
+          };
+
+          var first = $q.all(uploadPromises).then(function () {
+            return asyncPdfGenerate(counter, printforms, printDefer);
+          });
+
+          $q.all([first, printPromises]).then(function (uploadResults) {
+            deferred.resolve(resultsPdf);
+          });
+
+        });
+
+        return deferred.promise;
+      },
+
       /**
        * Ф-ция загрузки файлов из принт-диалога в виде аттачей к форме
        * @param formProperties
        * @param task
-       * @param taskId
        * @returns {deferred.promise|{then, always}}
        */
-      uploadTaskFiles: function (formProperties, task, taskId) {
+      uploadTaskFiles: function (formProperties, task) {
         // нужно найти все поля с тимом "file" и id, начинающимся с "PrintForm_"
         var filesFields = $filter('filter')(formProperties, function (prop) {
           return prop.type == 'file' && /^PrintForm_/.test(prop.id);
         });
-        // удалить после теста. пока что нет БП с таким полем и используем все поля с типом "файл".
-        //if (filesFields.length == 0)
-        //  filesFields = $filter('filter')(formProperties, {type:'file'});
-        //
+
         var self = this;
         var deferred = $q.defer();
         var filesDefers = [];
@@ -1006,7 +1214,7 @@ angular.module('dashboardJsApp')
               code : code
             }
           })
-        },
+      },
       delegateDocToUser : function (params) {
         if (params)
           return simpleHttpPromise({
@@ -1033,6 +1241,20 @@ angular.module('dashboardJsApp')
             snID_Process_Activiti: nID_Process
           }
         })
+      },
+      uploadFileHtml: function(name, content) {
+        var deferred = $q.defer();
+        var data = {
+          sFileNameAndExt: name + '.html',
+          sContent: content
+        } ;
+
+        var url = '/api/tasks/uploadFileHTML';
+
+        $http.post(url, data).then(function(uploadResult){
+          deferred.resolve(uploadResult.data);
+          });
+        return deferred.promise;
       }
     }
   });

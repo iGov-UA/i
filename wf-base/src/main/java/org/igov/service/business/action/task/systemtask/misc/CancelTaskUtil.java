@@ -13,7 +13,8 @@ import org.igov.service.controller.security.AccessContract;
 public class CancelTaskUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(CancelTaskUtil.class);
-    private static final String sURL_CancelTask = "/wf/service/action/task/cancelTask";
+    private static final String sURL_CancelTask = "/wf/service/action/task/cancelTaskNew";
+    //private static final String sURL_CancelTask_New = "/wf/service/action/task//cancelTaskNew";
     private static final String TAG_action = "[sURL_CancelTask]";
     private static final String cancelButtonHTML = new StringBuilder()
             .append("<form method=\"POST\" action=\"")
