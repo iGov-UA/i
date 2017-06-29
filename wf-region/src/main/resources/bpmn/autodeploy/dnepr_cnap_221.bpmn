@@ -178,9 +178,9 @@
         <activiti:formProperty id="country_applicant" name="Країна реєстрації заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="requisites_applicant" name="Реквізити заявника;(місцезнаходження, телефон, факс, E-mail, WWW)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="contract" name="Документ про повноваження заявника представляти виробника (власника);(договір, контракт, доручення)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string"></activiti:formProperty>
-        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka220" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance" name="Суть заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="substance_2" name="Суть заяви в лист; ;bVisible=false" type="string"></activiti:formProperty>
@@ -188,7 +188,7 @@
         <activiti:formProperty id="document" name="Назва документу; ;bVisible=false" type="string" default="висновок державної санітарно-епідеміологічної експертизи матеріалів, у яких обґрунтовується зменшення розмірів санітарно-захисної зони об’єкту IV, V класів небезпеки"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="list_documents" name="Список документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -199,6 +199,15 @@
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_2" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_3" name="Проектні матеріали, у яких обгрунтовується зменшення розмірів санітарно-захисної зони об'єктів IV, V класів небезпеки на паперовому та електронному носіях у відповідності до вимог п.5.7. Державних санітарних правил планування та забудови населених пунктів, затверджених наказом МОЗ України від 19.06.1996 №173 зі змінами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_4" name="Акт обстеження (інспектування) об'єкта отримання документу дозвільного характеру для потреб державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_5" name="Копії звіту (звітів) про результати робіт для потреб державної санітарно-епідеміологічної експертизи, або протоколів лабораторних досліджень проб атмосферного повітря населених місць, шумового навантаження на теріторії промислового майданчика, межі санітарно-захисної зони та на теріторії прилеглої житлової забудови;(виконані установами, організаціями, лабораторіями, що можуть залучатися до проведення державної санітарно-епідеміологічної експертизи згідно переліку, встановленому головним державним санітарним лікарем України у відповідності до вимог п.5.7. Державних санітарних правил планування та забудови населених пунктів, затверджених наказом МОЗ України від 19.06.1996 №173 зі змінами);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -246,7 +255,7 @@
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус висновку" type="enum">
+        <activiti:formProperty id="status2" name="Статус висновку" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Висновок (або рішення) готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
