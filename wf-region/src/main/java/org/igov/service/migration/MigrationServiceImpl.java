@@ -130,7 +130,6 @@ public class MigrationServiceImpl implements MigrationService {
         Config config = new Config();
         config.setName("dateLastBackup");
         config.setsValue("1900-01-01");
-        config.setId(2000L);
         return config;
     }
 
