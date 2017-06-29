@@ -382,7 +382,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
-        oStringBuilder_URL.append("&sAccessKey=".concat(AuthenticationTokenSelector.ACCESS_KEY));
+        oStringBuilder_URL.append("&sAccessKey=".concat(sAccessKey));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
         oStringBuilder_URL.append("&bCancel=".concat(bCancel.toString()));
         String sResultURL = oStringBuilder_URL.toString();
