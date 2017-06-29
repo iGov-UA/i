@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_265" name="Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності експорту товарів" isExecutable="true">
-    <documentation>https://github.com/e-government-ua/iBP/issues/265</documentation>
+    <documentation>https://github.com/e-government-ua/iBP/issues/265
+    Смоктий О.Д. рефакторинг 2017-06-29
+    </documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть область" type="enum" required="true">
-          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
-          <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+       
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
+                 
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -162,10 +163,8 @@
         <activiti:formProperty id="dogovor_date" name="Дата укладання зовнішньоекономічного договору (контракту)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="application_name" name="В цьому полі надайте перелік усіх додатків та специфікацій до договору у форматі: назва-номер-дата укладання; наприклад:специфікація №2 від 22.10.2015р." type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="visnovok" name="Експертний висновок з визначенням країни походження та коду товару відповідно до Української класифікації товарів зовнішньо-економічної діяльності; згідно з відповідними додатками до щорічної постанови Кабінету Міністрів України ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPost" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="адреса адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
+                      
+        
         <activiti:formProperty id="visnovok_js" name="назва документу 4; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers0" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers00" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
@@ -178,14 +177,20 @@
         <activiti:formProperty id="markers18" name="Якщо обрано базис поставки FAS,FOB" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;basis_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fаs'||[sClient] == 'fов'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers19" name="Якщо обрано базис поставки CFR,CIF,DES,DEQ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;basis_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'сfr'||[sClient] == 'сіf'||[sClient] == 'dеs'||[sClient] == 'dеq'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers20" name="Якщо обрано базис поставки DAF" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;basis_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dаf'&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPost" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka228" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>    
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="перевірка вхідних даних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
+    <userTask id="usertask1" name="перевірка вхідних даних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
-          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
-          <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -353,12 +358,9 @@
         
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
+    <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
-          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
-          <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -533,13 +535,13 @@
           <activiti:string><![CDATA[Нове  звернення. Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності експорту товарів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний колего!</b><br /><br />
 У черзі на обробку зареєстровано нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a><br />
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -555,17 +557,17 @@
           <activiti:string><![CDATA[Звернення на тему: Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності експорту товарів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Ваше звернення щодо отримання ліцензії на здійснення суб’єктами зовнішньоекономічної діяльності експорту товарів передано на розгляд в ${sNameUnit} і буде опрацьовано протягом 30 календарних днів (у режимі не автоматичного ліцензування).<br /><br />
 Реєстраційний номер заяви: ${reestr_numb};<br />
 До листа додається опис наданих Вами документів.<br />
 <br />
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameUnit}<br /> 
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -581,15 +583,15 @@ ${sNameUnit}<br />
           <activiti:string><![CDATA[Звернення на тему: Ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності експорту товарів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Ваше звернення щодо отримання ліцензії на здійснення суб’єктами зовнішньоекономічної діяльності експорту товарів відхилено через недостатню або неправильну інформацію.<br />
 ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameUnit}<br /> 
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -608,7 +610,7 @@ ${sNameUnit}<br />
           <activiti:expression><![CDATA[${rishen},${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Вам enum{[decision_2]}.<br />  <br />  
 Копія відповідного документу знаходиться у додатку до листа.<br />
@@ -622,11 +624,11 @@ ${sNameUnit}<br />
 6. Платіжний документ (квитанція) про оплату вартості послуги.<br />
 7. Експертний висновок з визначенням країни походження та коду товару.<br /><br />
 ${sWorkTime}<br /> 
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameUnit}<br /> 
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]   
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -638,14 +640,14 @@ var per3 = 'sAdress'
 var per4 = ' '
 var per6 = 'sWorkTime'
 var per7 = 'group'
-if (execution.getVariable('area') == 'dn'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'dn'){
 per1 = 'pilguj@gue.dp.ua'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
 per7 = 'dnepr'
 }
-if (execution.getVariable('area') == 'cs'){
+if (execution.getVariable('sID_Public_SubjectOrganJoin') == 'cs'){
 per1 = 'іnvest@drr-ck.gov.ua'
 per2 = 'Департамент регіонального розвитку Черкаської обласної державної адміністрації'
 per3 = 'м. Черкаси, бул. Шевченка 185, каб. 403.'
