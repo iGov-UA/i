@@ -334,7 +334,14 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNumberDep" name="№ отдела" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Департамент з моніторингу ринку запчастин до технологічного обладнання|ГТО"></activiti:value>
+          <activiti:value id="Enum2" name="Департамент тендерів з моніторінгу ринку сировини та матеріалів|ЗСМ"></activiti:value>
+          <activiti:value id="Enum3" name="Департамент з моніторингу ринку енергетичного обладнання|ГНО"></activiti:value>
+          <activiti:value id="Enum4" name="Департамент тендерів транспорту та логістики|ГАТ"></activiti:value>
+          <activiti:value id="Enum5" name="Департамент тендерів з технічної експертизи та ремонтів промислового обладнання|УОР"></activiti:value>
+          <activiti:value id="Enum6" name="Департамент тендерів з будівельних та спеціальних робіт|УРС"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" writable="false">
           <activiti:value id="Enum1" name="в работе"></activiti:value>
           <activiti:value id="Enum2" name="подписана"></activiti:value>
@@ -515,7 +522,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;asAttributeApplication::${asAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;sNumberDep::${sNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sID_UA_Currency::${sID_UA_Currency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID};;oDateBegin::${oDateBegin};;oDateEnd::${oDateEnd};;asSupplyMaterials::${asSupplyMaterials};;asServicemMachines::${asServicemMachines}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;asAttributeApplication::${asAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;asNumberDep::${asNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sID_UA_Currency::${sID_UA_Currency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID};;oDateBegin::${oDateBegin};;oDateEnd::${oDateEnd};;asSupplyMaterials::${asSupplyMaterials};;asServicemMachines::${asServicemMachines}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
@@ -536,7 +543,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" sourceRef="usertask4_red" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="exclusivegateway5" targetRef="servicetask2">
+    <sequenceFlow id="flow18" sourceRef="exclusivegateway5" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask != 'delegated'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" name="делегировать" sourceRef="exclusivegateway5" targetRef="usertask4_red">
@@ -564,7 +571,14 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNumberDep" name="№ отдела" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asNumberDep" name="№ отдела" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Департамент з моніторингу ринку запчастин до технологічного обладнання|ГТО"></activiti:value>
+          <activiti:value id="Enum2" name="Департамент тендерів з моніторінгу ринку сировини та матеріалів|ЗСМ"></activiti:value>
+          <activiti:value id="Enum3" name="Департамент з моніторингу ринку енергетичного обладнання|ГНО"></activiti:value>
+          <activiti:value id="Enum4" name="Департамент тендерів транспорту та логістики|ГАТ"></activiti:value>
+          <activiti:value id="Enum5" name="Департамент тендерів з технічної експертизи та ремонтів промислового обладнання|УОР"></activiti:value>
+          <activiti:value id="Enum6" name="Департамент тендерів з будівельних та спеціальних робіт|УРС"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Состояние рассмотрения" type="enum" writable="false">
           <activiti:value id="Enum1" name="в работе"></activiti:value>
           <activiti:value id="Enum2" name="подписана"></activiti:value>
@@ -742,7 +756,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;sAttributeApplication::${sAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;sNumberDep::${sNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sTable6::${sTable6};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sID_UA_Currency::${sID_UA_Currency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;sAttributeApplication::${sAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;asNumberDep::${asNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sTable6::${sTable6};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sID_UA_Currency::${sID_UA_Currency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
@@ -1208,7 +1222,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow40" sourceRef="servicetask2" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_btsol">
     <bpmndi:BPMNPlane bpmnElement="_task_btsol" id="BPMNPlane__task_btsol">
@@ -1294,7 +1307,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="652.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="526.0" y="422.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="526.0" y="368.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="105.0" y="150.0"></omgdi:waypoint>
@@ -1377,7 +1390,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="459.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="526.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="449.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="439.0" y="429.0"></omgdi:waypoint>
@@ -1472,10 +1485,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="645.0" y="679.0"></omgdi:waypoint>
         <omgdi:waypoint x="695.0" y="679.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="631.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="449.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
