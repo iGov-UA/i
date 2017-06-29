@@ -9,7 +9,7 @@
 <snap-drawers style="top: 61px; background-color: #E4E4E4;">
   <snap-drawer>
     <div class="col-xs-12" style="padding-left: 10px; padding-right: 10px">
-      <div class="btn-group menu-tabs" ng-if="!inUnassigned()">
+      <div class="btn-group menu-tabs" ng-if="!inUnassigned()" ng-show="ProjectRegion_MainPage_bTasksOnly=='FALSE'">
         <a ng-class="{'menu-tab-is-selected' : tabMenu === 'documents'}"
            class="btn btn-link"
            ng-click="tabMenuChange('documents')">Документи</a>
@@ -17,16 +17,18 @@
            class="btn btn-link"
            ng-click="tabMenuChange('tasks')">Звернення</a>
       </div>
-
+      <br>
       <div class="create-buttons">
         <button class="btn btn-default"
                 ng-if="tabMenu === 'documents'"
                 ui-sref="tasks.typeof.create({tab:'-doc'})"
-                ng-disabled="usersDocumentsBPs.length === 0">Створити документ</button>
+                ng-disabled="usersDocumentsBPs.length === 0">Створити документ
+        </button>
         <button class="btn btn-default"
                 ng-if="tabMenu === 'tasks'"
                 ui-sref="tasks.typeof.create({tab:'-task'})"
-                ng-disabled="userTasksBPs.length === 0">Створити завдання</button>
+                ng-disabled="userTasksBPs.length === 0">Створити завдання
+        </button>
       </div>
 
       <div style="margin-top: 20px">
@@ -71,7 +73,8 @@
       <img class="idoc-spinner" src="../../assets/images/idoc-spinner.gif" alt="Завантаження...">
     </div>
 
-    <div class="form-group col-md-5 search-box-idoc" ng-class="{'toRight': !isMenuOpened}" style="margin-right: 15px; margin-left: 15px;">
+    <div class="form-group col-md-5 search-box-idoc" ng-class="{'toRight': !isMenuOpened}"
+         style="margin-right: 15px; margin-left: 15px;">
       <search-box></search-box>
     </div>
 
@@ -82,7 +85,8 @@
       <div class="tasks">
         <div ng-if="sSelectedTask=='tickets'" class="tasks-tickets-list-header">
           <div class="tickets-date">
-            <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)" ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
+            <a href ng-repeat="mode in ticketsFilter.dateModeList" ng-click="setTicketsDateMode(mode.key)"
+               ng-class="{'selected':ticketsFilter.dateMode==mode.key}"
                class="tickets-date-mode">{{mode.title}}</a>
 
             <div style="position: relative">
@@ -93,12 +97,13 @@
                      options="{{ticketsFilter.options}}"
                      datetimepickerOptions="{format: 'YYYY-MM-DD'}"
                      ng-if="ticketsFilter.dateMode=='date'"
-                     ng-model="ticketsFilter.sDate" />
+                     ng-model="ticketsFilter.sDate"/>
             </div>
           </div>
 
           <div class="tickets-assign">
-            <input type="checkbox" ng-model="ticketsFilter.bEmployeeUnassigned" id="ticketsFilter_bEmployeeUnassigned" ng-change="applyTicketsFilter()"
+            <input type="checkbox" ng-model="ticketsFilter.bEmployeeUnassigned" id="ticketsFilter_bEmployeeUnassigned"
+                   ng-change="applyTicketsFilter()"
             />
             <label for="ticketsFilter_bEmployeeUnassigned">Тільки не взяті в обробку</label>
           </div>
@@ -116,28 +121,36 @@
                  ng-class="{'active': isTaskSelected(task)}"
                  igov-focus-if="tasksStateModel.taskId == task.id"
                  ui-sref="tasks.typeof.view({id:task.id})">
-                <span class="ticket-date-time">{{task.sDateStart|date:'yyyy-MM-dd HH:mm'}}</span>, №{{task.nID_Instance}}{{lunaService.getLunaValue(task.nID_Instance)}},
+                <span class="ticket-date-time">{{task.sDateStart|date:'yyyy-MM-dd HH:mm'}}</span>,
+                №{{task.nID_Instance}}{{lunaService.getLunaValue(task.nID_Instance)}},
                 (Тікет №{{task.nID}})
                 <br/> {{task.sNameBP}}. {{task.sUserTaskName}}.
               </a>
             </div>
 
             <div ng-if="sSelectedTask!='tickets'">
-              <a class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}" href=""
-                 ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
-                 title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
-                 ng-class="{'active': isTaskSelected(task)}"
-                 igov-focus-if="tasksStateModel.taskId == task.id"
-                 ui-sref="tasks.typeof.view({id:task.id})"
-                 date-divider>
+              <a
+                class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}"
+                href=""
+                ng-repeat="task in filteredTasks | orderBy:predicate:reverse"
+                title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
+                ng-class="{'active': isTaskSelected(task)}"
+                igov-focus-if="tasksStateModel.taskId == task.id"
+                ui-sref="tasks.typeof.view({id:task.id})"
+                date-divider>
 
                 <!-- Task can have multiple statuses, but show only one sorted by priority -->
-                <span class="badge badge-task badge-red" title="Ответ дан от гражданина" ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
-                <span class="badge badge-task badge-yellow" title="Комментарий от гражданина" ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
-                <span class="badge badge-task" title="Вопрос задан от госслужащего" ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
+                <span class="badge badge-task badge-red" title="Ответ дан от гражданина"
+                      ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
+                <span class="badge badge-task badge-yellow" title="Комментарий от гражданина"
+                      ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
+                <span class="badge badge-task" title="Вопрос задан от госслужащего"
+                      ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
 
-                <span class="ticket-date-time" style="color:black;font-size:13px" ng-bind="::getProcessName(task)"></span><br>
-                <span class="ticket-title" style="color: dimgrey;font-size: 11px;" ng-bind="::getTaskTitle(task)"></span>
+                <span class="ticket-date-time" style="color:black;font-size:13px"
+                      ng-bind="::getProcessName(task)"></span><br>
+                <span class="ticket-title" style="color: dimgrey;font-size: 11px;"
+                      ng-bind="::getTaskTitle(task)"></span>
               </a>
             </div>
 
