@@ -375,7 +375,8 @@ public class MigrationServiceImpl implements MigrationService {
                 else
                     throw new MigrationException("Attribute Type is missing; its id is " + 7L);
                 Attribute_File fileAttribute = new Attribute_File();
-                AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
+                //AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
+                AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, null, processId);
                 fileAttribute.setsContentType(file.getType());
                 fileAttribute.setoAttribute(attribute);
                 fileAttribute.setsFileName(file.getName());
