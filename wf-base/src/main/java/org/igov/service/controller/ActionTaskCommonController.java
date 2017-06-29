@@ -79,6 +79,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.engine.task.NativeTaskQuery;
+import org.apache.commons.io.IOUtils;
 import org.igov.io.fs.FileSystemData;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.action.vo.TaskDataResultVO;
@@ -362,7 +363,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("cancelTaskNew sAccessKey {}", sAccessKey);
         LOG.info("cancelTaskNew sAccessContract {}", sAccessContract);
         
-        LOG.info("selfHost {}", generalConfig.getSelfHost());
+        
         String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
         LOG.info("sID_Order {}", sID_Order);
         
@@ -370,7 +371,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     = new BufferedReader(new InputStreamReader(
                             ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
         
-        String sBody = oBufferedReader.toString();
+        StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost()); 
+        oStringBuilder_URL.append("/wf/service/action/task/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+        
+        if(sInfo != null){
+            oStringBuilder_URL.append("&sInfo=".concat(sInfo));
+        }
+        
+        oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
+        oStringBuilder_URL.append("&sAccessKey=".concat(sAccessKey));
+        oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
+        String sResultURL = oStringBuilder_URL.toString();
+                
+        String sBody =  org.apache.commons.io.IOUtils.toString(oBufferedReader);
         
         if (sID_Order != null) {
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
