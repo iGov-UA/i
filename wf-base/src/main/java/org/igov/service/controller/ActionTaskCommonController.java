@@ -732,7 +732,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
                 LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
                 LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
-                LOG.info("oHistoricVariableInstance.getValue() {}", (String)oHistoricVariableInstance.getValue());
+                
+                if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("long")){
+                    LOG.info("oHistoricVariableInstance.getValue() {}", ((Long)oHistoricVariableInstance.getValue()).toString());
+                }
+                
+                if(oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("double")){
+                    LOG.info("oHistoricVariableInstance.getValue() {}", ((Double)oHistoricVariableInstance.getValue()).toString());
+                }
             }
             
             return JsonRestUtils.toJsonResponse(response.put("mProcessHistoryVariable", mProcessHistoryVariable));
