@@ -30,10 +30,8 @@
         
         <activiti:formProperty id="markerDABI_ur_fiz" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABI_ur_fiz.json')}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
-          <activiti:value id="sEnamFiz" name="Фізична особа (особисто)"></activiti:value>
-          <activiti:value id="sEnamFizP" name="Фізична особа (представник)"></activiti:value>
+          <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
-          <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
         
         <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
@@ -45,20 +43,12 @@
           <activiti:value id="sEnam5" name="П'ять"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_D" name="Інформація про довірителя" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sDov_Name&quot;],&quot;sValue&quot;:&quot;Інформація про довірителя&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sDov_Name" name="Прізвище, ім'я, по батькові довірителя" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lDov_inn" name="ІПН довірителя" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDov_passport" name="Паспорт довірителя;(серія, номер, ким і коли видано)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDov_Adress" name="Адреса довірителя" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Dovirenist" name="Довіреність представника;(має бути обов'язково нотаріально посвідчена) ;bNew=true" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса;(індекс, місто, вулиця, будинок, офіс)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження;(завантажте сканкопію документа, що підтверджує ваше право подавати заяву від юридичної особи) ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника" type="string" required="true"></activiti:formProperty>
@@ -100,6 +90,8 @@
           <activiti:value id="sEnamZem1" name="Одна"></activiti:value>
           <activiti:value id="sEnamZem2" name="Дві"></activiti:value>
           <activiti:value id="sEnamZem3" name="Три"></activiti:value>
+          <activiti:value id="sEnamZem4" name="Чотири"></activiti:value>
+          <activiti:value id="sEnamZem5" name="П'ять"></activiti:value>
         </activiti:formProperty>
         
         <activiti:formProperty id="asZemVlasn" name="Документ, що посвідчує право на земельну ділянку" type="enum" required="true">
@@ -109,10 +101,10 @@
           <activiti:value id="sEnamVutiag" name="Витяг з реєстру прав на нерухомість"></activiti:value>
           <activiti:value id="sEnamInfDov" name="Інформаційна довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ZemNPV" name="Номер запису про право власності" type="string" required="true" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ZemSN" name="Серія і номер документу що посвідчує ваше право на ділянку" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ZemNPV" name="Номер запису про право власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemSN" name="Серія і номер документу що посвідчує ваше право на ділянку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ZemData" name="Дата документу" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ZemKadN" name="Кадастровий номер ділянки;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemKadN" name="Кадастровий номер ділянки;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true" default="1210100000:"></activiti:formProperty>
         <activiti:formProperty id="ZemPl" name="Площа ділянки (кв.м)" type="double" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asZemVlasn2" name="Документ, що посвідчує право на земельну ділянку №2" type="enum" required="true">
@@ -122,10 +114,10 @@
           <activiti:value id="sEnamVutiag2" name="Витяг з реєстру прав на нерухомість"></activiti:value>
           <activiti:value id="sEnamInfDov2" name="Інформаційна довідки"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="ZemNPV2" name="Номер запису про право власності на ділянку №2" type="string" required="true" default=" "></activiti:formProperty>
-        <activiti:formProperty id="ZemSN2" name="Серія і номер документу, що посвідчує ваше право на ділянку №2" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ZemNPV2" name="Номер запису про право власності на ділянку №2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemSN2" name="Серія і номер документу, що посвідчує ваше право на ділянку №2" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ZemData2" name="Дата видачі документу на ділянку №2" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ZemKadN2" name="Кадастровий номер ділянки №2;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemKadN2" name="Кадастровий номер ділянки №2;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true" default="1210100000:"></activiti:formProperty>
         <activiti:formProperty id="ZemPl2" name="Площа ділянки №2 (кв.м)" type="double" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asZemVlasn3" name="Документ, що посвідчує право на земельну ділянку №3" type="enum" required="true">
@@ -138,8 +130,34 @@
         <activiti:formProperty id="ZemNPV3" name="Номер запису про право власності на ділянку №3" type="string" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="ZemSN3" name="Серія і номер документу, що посвідчує ваше право на ділянку №3" type="string" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="ZemData3" name="Дата видачі документу на ділянку №3" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ZemKadN3" name="Кадастровий номер ділянки №3;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemKadN3" name="Кадастровий номер ділянки №3;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true" default="1210100000:"></activiti:formProperty>
         <activiti:formProperty id="ZemPl3" name="Площа ділянки №3 (кв.м)" type="double" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asZemVlasn4" name="Документ, що посвідчує право на земельну ділянку №4" type="enum" required="true">
+          <activiti:value id="sEnamDerAkt4" name="Державний акт"></activiti:value>
+          <activiti:value id="sEnamOrend4" name="Договір оренди"></activiti:value>
+          <activiti:value id="sEnamSvidPV4" name="Свідоцтво про право власності"></activiti:value>
+          <activiti:value id="sEnamVutiag4" name="Витяг з реєстру прав на нерухомість"></activiti:value>
+          <activiti:value id="sEnamInfDov4" name="Інформаційна довідки"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ZemNPV4" name="Номер запису про право власності на ділянку №4" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ZemSN4" name="Серія і номер документу, що посвідчує ваше право на ділянку №4" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ZemData4" name="Дата видачі документу на ділянку №4" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemKadN4" name="Кадастровий номер ділянки №4;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true" default="1210100000:"></activiti:formProperty>
+        <activiti:formProperty id="ZemPl4" name="Площа ділянки №4 (кв.м)" type="double" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asZemVlasn5" name="Документ, що посвідчує право на земельну ділянку №5" type="enum" required="true">
+          <activiti:value id="sEnamDerAkt5" name="Державний акт"></activiti:value>
+          <activiti:value id="sEnamOrend5" name="Договір оренди"></activiti:value>
+          <activiti:value id="sEnamSvidPV5" name="Свідоцтво про право власності"></activiti:value>
+          <activiti:value id="sEnamVutiag5" name="Витяг з реєстру прав на нерухомість"></activiti:value>
+          <activiti:value id="sEnamInfDov5" name="Інформаційна довідки"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="ZemNPV5" name="Номер запису про право власності на ділянку №5" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ZemSN5" name="Серія і номер документу, що посвідчує ваше право на ділянку №5" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ZemData5" name="Дата видачі документу на ділянку №5" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ZemKadN5" name="Кадастровий номер ділянки №5;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true" default="1210100000:"></activiti:formProperty>
+        <activiti:formProperty id="ZemPl5" name="Площа ділянки №5 (кв.м)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerZem" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIZem.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_5" name="Інформація про технічний паспорт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTP_Osoba&quot;],&quot;sValue&quot;:&quot;Інформація про технічний паспорт&quot;}}}"></activiti:formProperty>
