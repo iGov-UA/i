@@ -733,6 +733,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String sProcessDefinitionId = historyService.createHistoricProcessInstanceQuery()
                     .processInstanceId(nID_Process.toString()).singleResult().getProcessDefinitionId();
             LOG.info("sProcessDefinitionId {}", sProcessDefinitionId);
+            
+            String sTaskId = historyService.createHistoricTaskInstanceQuery().
+                    processInstanceId(nID_Process.toString()).singleResult().getId();
+            
+            LOG.info("sTaskId {}", sTaskId);
+            
             BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
             List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
             
@@ -744,14 +750,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for (Object oFlowElement :  aProcess.get(0).getFlowElements()){
                     if(oFlowElement instanceof UserTask) {
                         oUserTask = (UserTask)oFlowElement;
+                        LOG.info("oUserTask name {}", oUserTask.getName());
+                        LOG.info("oUserTask id {}", oUserTask.getId());
                     }
                 }
                 
             } else {
                 throw new RuntimeException("Can't find bpmn model for current process"); 
             }
-            
-            LOG.info("oUserTask name {}", oUserTask.getName());
             
             List<org.activiti.bpmn.model.FormProperty> aTaskFormProperty = null;
             if(oUserTask != null){
