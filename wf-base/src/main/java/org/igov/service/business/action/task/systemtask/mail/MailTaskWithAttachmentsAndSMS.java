@@ -38,12 +38,20 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
         
-        try{
-            if (sAttachmentsForSend.trim().equals("") || sAttachmentsForSend.equals(" ")) {
+        
+         try{
+            if (sAttachmentsForSend.trim().equals("") || sAttachmentsForSend.equals(" ") ||
+                    !sAttachmentsForSend.contains("sKey")) 
+            {
+                LOG.info("Sleeping started..");
                 Thread.sleep(2000);
+                LOG.info("Variables names {}", oExecution.getVariables() != null 
+                        ? oExecution.getVariables().keySet() : "null");
                 Object oAttachmentsForSendSelected = oExecution.getVariable("result");
+                LOG.info("oAttachmentsForSendSelected {}", oAttachmentsForSendSelected != null ? 
+                        (String) oAttachmentsForSendSelected : "null");
                 if (oAttachmentsForSendSelected != null && !((String) oAttachmentsForSendSelected).trim().equals("")) {
-                    LOG.info("some sleep always help! {}", oAttachmentsForSendSelected);
+                    LOG.info("some sleep always help! {}", oAttachmentsForSendSelected.toString());
                     sAttachmentsForSend = (String) oAttachmentsForSendSelected;
                 }
             }
