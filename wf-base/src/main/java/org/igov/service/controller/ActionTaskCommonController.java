@@ -724,6 +724,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
         Map<String, Object> response = new HashMap<>();
         
+        if(isHistory == null){
+                isHistory = Boolean.FALSE;
+        }
+        
         if(isHistory){
             
             LOG.info("getTaskData try to find history variables");
@@ -736,7 +740,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             
             Task oTaskActive = taskService.createTaskQuery().processInstanceId(nID_Process.toString()).active().singleResult();
             String sTaskDefinitionActive = oTaskActive != null ? oTaskActive.getTaskDefinitionKey() : null;
-            LOG.info("sTaskIdActive is {}", sTaskDefinitionActive);
+            LOG.info("sTaskDefinitionActive is {}", sTaskDefinitionActive);
             
             BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
             List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
@@ -748,9 +752,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 
                 for (Object oFlowElement :  aProcess.get(0).getFlowElements()){
                     if(oFlowElement instanceof UserTask) {
+                        
+                        UserTask oUserTask_Curr = (UserTask)oFlowElement;
+                        
+                        if(sTaskDefinitionActive != null && oUserTask_Curr.getId().equals(sTaskDefinitionActive) ){
+                            LOG.info("oUserTask before active is {}", oUserTask_Curr.getId());
+                            break;
+                        }
+                        
                         oUserTask = (UserTask)oFlowElement;
-                        LOG.info("oUserTask name {}", oUserTask.getName());
-                        LOG.info("oUserTask id {}", oUserTask.getId());
                     }
                 }
                 
@@ -758,14 +768,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 throw new RuntimeException("Can't find bpmn model for current process"); 
             }
             
+            if(oUserTask == null){
+                throw new RuntimeException("Can't find any userTask for current process"); 
+            }
+            
+            LOG.info("oUserTask name {}", oUserTask.getName());
+            
             List<org.activiti.bpmn.model.FormProperty> aTaskFormProperty = null;
-            if(oUserTask != null){
+            if(aTaskFormProperty != null){
                 aTaskFormProperty = oUserTask.getFormProperties();
                 
                 for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty){
                     LOG.info("oFormProperty id {}", oFormProperty.getId());
                     LOG.info("oFormProperty name {}", oFormProperty.getName());
-                    LOG.info("oFormProperty typr {}", oFormProperty.getType());
+                    LOG.info("oFormProperty type {}", oFormProperty.getType());
                 }
             }else{
                 throw new RuntimeException("Can't find any usertask in bpmn model for current process");    
@@ -774,9 +790,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(nID_Process.toString()).list();
             
-            if(isHistory == null){
-                isHistory = Boolean.FALSE;
-            }
+            
             
            
             for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
