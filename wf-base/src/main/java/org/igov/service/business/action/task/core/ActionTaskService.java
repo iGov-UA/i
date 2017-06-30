@@ -2615,21 +2615,22 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 Map<String, Object> mVariable = new HashMap<>();
                 List<HistoricTaskInstance> aoTask = ((TaskInfoQuery) taskQuery).list();
                 
-                Collections.sort(aoTask, new Comparator<HistoricTaskInstance>() {
-                    @Override
-                    public int compare(HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) {
-                        int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
-                        LOG.info("oTask1.getProcessInstanceId()={}", oTask1.getProcessInstanceId());
-                        if (nResult == 0) {
-                            LOG.info("Document closed task={}", oTask1);
-                            nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
-                            if (nResult == 0 || nResult == 1) {
-                                
-                            }
+                Collections.sort(aoTask, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
+                    int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
+                    LOG.info("oTask1.getProcessInstanceId()={}", oTask1.getProcessInstanceId());
+                    if (nResult == 0) {
+                        nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
+                        if (nResult == 0 || nResult == 1) {
+                            mVariable.put("endTime", oTask2);
+                        } else {
+                            mVariable.put("endTime", oTask1);
                         }
-                        return nResult;
                     }
+                    return nResult;
                 });
+                LOG.info("mVariable need to remove from query={}", mVariable);
+                mVariable.forEach(((TaskInfoQuery) taskQuery)::taskVariableValueNotEquals);
+                 LOG.info("Document closed after filtering count={}", ((TaskInfoQuery) taskQuery).count());
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
