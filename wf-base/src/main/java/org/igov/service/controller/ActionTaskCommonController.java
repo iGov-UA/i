@@ -805,6 +805,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 oHistoryVariableVO.setsType(oFormProperty.getType());
                                 oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
                                 aTableAndAttachement.add(oHistoryVariableVO);
+                                LOG.info("oHistoryVariableVO: file-type {}", oHistoryVariableVO);
                             }
                         }
                     }
