@@ -38,8 +38,10 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
         
+        LOG.info("sAttachmentsForSend after arriving in MailTaskWithAttachmentsAndSMS {}", sAttachmentsForSend);
+        LOG.info("Process id is {}", oExecution.getProcessInstanceId());
         
-         try{
+        try{
             if (sAttachmentsForSend.trim().equals("") || sAttachmentsForSend.equals(" ") ||
                     !sAttachmentsForSend.contains("sKey")) 
             {
