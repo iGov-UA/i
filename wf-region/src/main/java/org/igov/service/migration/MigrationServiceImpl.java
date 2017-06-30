@@ -109,7 +109,7 @@ public class MigrationServiceImpl implements MigrationService {
 
     private DateTime getStartTime(int counter) {
         Config config;
-        if(counter < 0)
+        if (counter < 0)
             throw new MigrationException("Data cannot be saved");
         if (configDao.findBy("name", "dateLastBackup").isPresent()) {
             LOG.info("DateTime getStartTime(int counter): {}", counter);
@@ -375,8 +375,7 @@ public class MigrationServiceImpl implements MigrationService {
                 else
                     throw new MigrationException("Attribute Type is missing; its id is " + 7L);
                 Attribute_File fileAttribute = new Attribute_File();
-                //AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
-                AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, null, processId);
+                AttachmentEntity file = (AttachmentEntity) actionTaskService.getAttachment(string, 0, processId);
                 fileAttribute.setsContentType(file.getType());
                 fileAttribute.setoAttribute(attribute);
                 fileAttribute.setsFileName(file.getName());
