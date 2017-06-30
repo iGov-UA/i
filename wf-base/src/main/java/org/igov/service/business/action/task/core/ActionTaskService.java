@@ -2611,8 +2611,25 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin)
                         .processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
                 LOG.info("Document closed count={}", ((TaskInfoQuery) taskQuery).count());
-                Map<String, Object> mVariable = new HashMap<>();
-                List<Task> aoTask = ((TaskInfoQuery) taskQuery).list();
+                
+                List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
+                List<HistoricTaskInstance> aoTask = ((TaskInfoQuery) taskQuery).list();
+                
+                Collections.sort(aoTask, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
+                    int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
+                    LOG.info("oTask1.getProcessInstanceId()={}", oTask1.getProcessInstanceId());
+                    if (nResult == 0) {
+                        nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
+                        if (nResult == 0 || nResult == 1) {
+                            aoTaskToRemove.add(oTask2);
+                        } else {
+                            aoTaskToRemove.add(oTask1);
+                        }
+                    }
+                    return nResult;
+                });
+                aoTask.removeAll(aoTaskToRemove);
+                LOG.info("Document closed after filtering count={}", aoTask.size());
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
