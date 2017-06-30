@@ -687,7 +687,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
                 if (oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())) 
                 {
-                    if (!oFormProperty.getName().contains("bVisible=false")) {
+                    if (oFormProperty.getName().contains("bVisible=false")) {
                         break;
                     }
                 
@@ -700,8 +700,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")) {
                         aTableAndAttachement.add(oHistoryVariableVO);        
                     }
-                    
-                    if(oFormProperty.getType().equals("enum")){
+                    else if(oFormProperty.getType().equals("enum")){
+                        
                         List<FormValue> aEnumFormProperty = oFormProperty.getFormValues();
                         
                         for(FormValue oEnumFormProperty : aEnumFormProperty){
