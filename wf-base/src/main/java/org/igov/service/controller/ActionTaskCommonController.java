@@ -78,6 +78,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.apache.commons.io.IOUtils;
 import org.igov.io.fs.FileSystemData;
@@ -723,7 +724,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
         
         if(isHistory){
+            
+            LOG.info("getTaskData try to find history variables");
+            
             Map<String, Object> mProcessHistoryVariable = null;
+            
+            String sProcessDefinitionId = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(nID_Process.toString()).singleResult().getProcessDefinitionId();
+            LOG.info("sProcessDefinitionId {}", sProcessDefinitionId);
+            BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
+            List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
+            
+            for(org.activiti.bpmn.model.Process oProcess : aProcess){
+                LOG.info("oProcess is {}", oProcess.getId());
+            }
+            
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(nID_Process.toString()).list();
             
@@ -731,7 +746,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 isHistory = Boolean.FALSE;
             }
             
-            LOG.info("getTaskData try to find history variables");
+           
             for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                 LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
                 LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
