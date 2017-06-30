@@ -79,6 +79,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.FormValue;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.apache.commons.io.IOUtils;
@@ -618,7 +619,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @RequestMapping(value = "/getHistoryTaskData", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> getHistoryTaskData(
-            @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process) 
+            @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process) 
     {
         Map<String, Object> response = new HashMap<>();
 
@@ -675,7 +676,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                 .processInstanceId(nID_Process.toString()).list();
 
-        List<HistoryVariableVO> aHistoryVariableVO_result = new ArrayList<>();
+        List<HistoryVariableVO> aResultField = new ArrayList<>();
         List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
 
         for (org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty) {
@@ -684,16 +685,28 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("oFormProperty type {}", oFormProperty.getType());
 
             for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
-                if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")) {
-                    if (oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())) {
-                        if (!oFormProperty.getName().contains("bVisible=false")) {
-                            HistoryVariableVO oHistoryVariableVO = new HistoryVariableVO();
-                            oHistoryVariableVO.setsId(oFormProperty.getId());
-                            oHistoryVariableVO.setsName(oFormProperty.getName().split(";")[0]);
-                            oHistoryVariableVO.setsType(oFormProperty.getType());
-                            oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
-                            aTableAndAttachement.add(oHistoryVariableVO);
-                            LOG.info("oHistoryVariableVO: file-type {}", oHistoryVariableVO);
+                if (oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())) 
+                {
+                    if (!oFormProperty.getName().contains("bVisible=false")) {
+                        break;
+                    }
+                
+                    HistoryVariableVO oHistoryVariableVO = new HistoryVariableVO();
+                    oHistoryVariableVO.setsId(oFormProperty.getId());
+                    oHistoryVariableVO.setsName(oFormProperty.getName().split(";")[0]);
+                    oHistoryVariableVO.setsType(oFormProperty.getType());
+                    oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
+                
+                    if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")) {
+                        aTableAndAttachement.add(oHistoryVariableVO);        
+                    }
+                    
+                    if(oFormProperty.getType().equals("enum")){
+                        List<FormValue> aEnumFormProperty = oFormProperty.getFormValues();
+                        
+                        for(FormValue oEnumFormProperty : aEnumFormProperty){
+                            LOG.info("oEnumFormProperty id {}", oEnumFormProperty.getId());
+                            LOG.info("oEnumFormProperty name {}", oEnumFormProperty.getName());
                         }
                     }
                 }
