@@ -734,11 +734,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     .processInstanceId(nID_Process.toString()).singleResult().getProcessDefinitionId();
             LOG.info("sProcessDefinitionId {}", sProcessDefinitionId);
             
-            String sTaskId = historyService.createHistoricTaskInstanceQuery().
-                    processInstanceId(nID_Process.toString()).singleResult().getId();
-            
-            LOG.info("sTaskId {}", sTaskId);
-            
             BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
             List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
             
