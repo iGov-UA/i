@@ -27,7 +27,7 @@ public class HistoryVariableVO {
         return sType;
     }
 
-    public Object getsValue() {
+    public Object getoValue() {
         return oValue;
     }
 
@@ -43,7 +43,7 @@ public class HistoryVariableVO {
         this.sType = sType;
     }
 
-    public void setsValue(Object sValue) {
+    public void setoValue(Object sValue) {
         this.oValue = sValue;
     }
     
