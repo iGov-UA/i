@@ -828,8 +828,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
                     
             }
-            response.put("aAttachment", aTableAndAttachement)
-            return JsonRestUtils.toJsonResponse();
+            response.put("aAttachment", aTableAndAttachement);
+            LOG.info("response is {}", response);
+            return JsonRestUtils.toJsonResponse(response);
             
         }
         
