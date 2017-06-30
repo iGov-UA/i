@@ -2611,8 +2611,24 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 taskQuery = oHistoryService.createHistoricTaskInstanceQuery().taskInvolvedUser(sLogin)
                         .processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
                 LOG.info("Document closed count={}", ((TaskInfoQuery) taskQuery).count());
+                
                 Map<String, Object> mVariable = new HashMap<>();
-                List<Task> aoTask = ((TaskInfoQuery) taskQuery).list();
+                List<HistoricTaskInstance> aoTask = ((TaskInfoQuery) taskQuery).list();
+                
+                Collections.sort(aoTask, new Comparator<HistoricTaskInstance>() {
+                    @Override
+                    public int compare(HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) {
+                        int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
+                        if (nResult == 0) {
+                            LOG.info("Document closed task={}", oTask1.getTaskLocalVariables());
+                            nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
+                            if (nResult == 0 || nResult == 1) {
+                                
+                            }
+                        }
+                        return nResult;
+                    }
+                });
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
