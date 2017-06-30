@@ -735,8 +735,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("sProcessDefinitionId {}", sProcessDefinitionId);
             
             Task oTaskActive = taskService.createTaskQuery().processInstanceId(nID_Process.toString()).active().singleResult();
-            String sTaskIdActive = oTaskActive != null ? oTaskActive.getId() : null;
-            LOG.info("sTaskIdActive is {}", sTaskIdActive);
+            String sTaskDefinitionActive = oTaskActive != null ? oTaskActive.getTaskDefinitionKey() : null;
+            LOG.info("sTaskIdActive is {}", sTaskDefinitionActive);
             
             BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
             List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
