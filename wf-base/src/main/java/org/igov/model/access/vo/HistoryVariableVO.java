@@ -13,7 +13,7 @@ public class HistoryVariableVO {
     private String sId;
     private String sName;
     private String sType;
-    private String sValue;
+    private Object oValue;
 
     public String getsId() {
         return sId;
@@ -27,8 +27,8 @@ public class HistoryVariableVO {
         return sType;
     }
 
-    public String getsValue() {
-        return sValue;
+    public Object getsValue() {
+        return oValue;
     }
 
     public void setsId(String sId) {
@@ -43,8 +43,8 @@ public class HistoryVariableVO {
         this.sType = sType;
     }
 
-    public void setsValue(String sValue) {
-        this.sValue = sValue;
+    public void setsValue(Object sValue) {
+        this.oValue = sValue;
     }
     
 }

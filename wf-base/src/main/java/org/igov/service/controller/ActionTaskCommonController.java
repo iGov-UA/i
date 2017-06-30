@@ -803,7 +803,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 oHistoryVariableVO.setsId(oFormProperty.getId());
                                 oHistoryVariableVO.setsName(oFormProperty.getName().split(";")[0]);
                                 oHistoryVariableVO.setsType(oFormProperty.getType());
-                                oHistoryVariableVO.setsValue(oHistoricVariableInstance.getValue());
+                                oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
                                 aTableAndAttachement.add(oHistoryVariableVO);
                             }
                         }
