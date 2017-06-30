@@ -2226,8 +2226,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         TaskDataResultVO aoResult = new TaskDataResultVO();
 
         try {
-            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument") || sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")
-                    || sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")) {
+            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument")
+                    || sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")
+                    || sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")
+                    || sFilterStatus.equals("DocumentClosed")) {
                 
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
                 
@@ -2316,27 +2318,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     } else {
                         oActionTaskService.populateResultSortedByTasksOrderNew(bFilterHasTicket, tasks, mapOfTickets, aoTaskData);
                     }
-
                     LOG.info("data size is {}", aoTaskData.size());
-
-                    //long documentListSize = 0;
-                    /*if (!"Documents".equals(sFilterStatus)) {
-                        for (Map<String, Object> dataElem : data) {
-                            if (!((String) dataElem.get("processDefinitionId")).startsWith("_doc")) {
-                                if (bIncludeVariablesProcess) {
-                                    dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
-                                }
-                                checkDocumentIncludesData.add(dataElem);
-                            }
-                        }
-                    } else {
-                        for (Map<String, Object> dataElem : data) {
-                            if (bIncludeVariablesProcess) {
-                                dataElem.put("globalVariables", runtimeService.getVariables((String) dataElem.get("processInstanceId")));
-                            }
-                            checkDocumentIncludesData.add(dataElem);
-                        }
-                    }*/
 
                     for (TaskDataVO oTaskData : aoTaskData) {
 
