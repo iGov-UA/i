@@ -738,6 +738,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
 
         }
+        response.put("aField", aResultField);
         response.put("aAttachment", aTableAndAttachement);
         LOG.info("response is {}", response);
         return response;
