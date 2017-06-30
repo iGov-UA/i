@@ -83,6 +83,7 @@ import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.apache.commons.io.IOUtils;
 import org.igov.io.fs.FileSystemData;
+import org.igov.model.access.vo.HistoryVariableVO;
 import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
@@ -785,8 +786,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(nID_Process.toString()).list();
 
-            List<HistoricVariableInstance> aHistoricVariableInstance_result = new ArrayList<>();
-            List<String> aTableAndAttachement = new ArrayList<>();
+            List<HistoryVariableVO> aHistoryVariableVO_result = new ArrayList<>();
+            List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
 
             for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty)
             {
@@ -797,7 +798,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                     if(oFormProperty.getType().equals("file")||oFormProperty.getType().equals("table")){
                         if(oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())){
-                            
+                            if(!oFormProperty.getName().contains("bVisible=false")){
+                                HistoryVariableVO oHistoryVariableVO = new HistoryVariableVO();
+                                oHistoryVariableVO.setsId(oFormProperty.getId());
+                                oHistoryVariableVO.setsName(oFormProperty.getName().split(";")[0]);
+                                oHistoryVariableVO.setsType(oFormProperty.getType());
+                                oHistoryVariableVO.setsValue(oHistoricVariableInstance.getValue());
+                                aTableAndAttachement.add(oHistoryVariableVO);
+                            }
                         }
                     }
                 }
@@ -821,7 +829,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     
             }
             
-            return JsonRestUtils.toJsonResponse(response.put("mProcessHistoryVariable", mProcessHistoryVariable));
+            return JsonRestUtils.toJsonResponse(response.put("aAttachment", aTableAndAttachement));
             
         }
         
