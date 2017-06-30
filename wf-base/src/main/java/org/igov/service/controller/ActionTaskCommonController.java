@@ -777,17 +777,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("oUserTask name {}", oUserTask.getName());
             
             List<org.activiti.bpmn.model.FormProperty> aTaskFormProperty = null;
-            if(aTaskFormProperty != null){
-                aTaskFormProperty = oUserTask.getFormProperties();
-                
-                for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty){
-                    LOG.info("oFormProperty id {}", oFormProperty.getId());
-                    LOG.info("oFormProperty name {}", oFormProperty.getName());
-                    LOG.info("oFormProperty type {}", oFormProperty.getType());
-                }
-            }else{
-                throw new RuntimeException("Can't find any usertask in bpmn model for current process");    
+            
+            aTaskFormProperty = oUserTask.getFormProperties();
+            
+            if(aTaskFormProperty == null){
+                throw new RuntimeException("Can't find any property for current usertask"); 
             }
+            
+            for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty)
+            {
+                LOG.info("oFormProperty id {}", oFormProperty.getId());
+                LOG.info("oFormProperty name {}", oFormProperty.getName());
+                LOG.info("oFormProperty type {}", oFormProperty.getType());
+            }
+            
             
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(nID_Process.toString()).list();
