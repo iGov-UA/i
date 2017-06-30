@@ -2612,7 +2612,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                         .processFinished().processDefinitionKeyLikeIgnoreCase("_doc_%");
                 LOG.info("Document closed count={}", ((TaskInfoQuery) taskQuery).count());
                 
-                Map<String, Object> mVariable = new HashMap<>();
+                List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
                 List<HistoricTaskInstance> aoTask = ((TaskInfoQuery) taskQuery).list();
                 
                 Collections.sort(aoTask, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
@@ -2621,16 +2621,15 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     if (nResult == 0) {
                         nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
                         if (nResult == 0 || nResult == 1) {
-                            mVariable.put("endTime", oTask2);
+                            aoTaskToRemove.add(oTask2);
                         } else {
-                            mVariable.put("endTime", oTask1);
+                            aoTaskToRemove.add(oTask1);
                         }
                     }
                     return nResult;
                 });
-                LOG.info("mVariable need to remove from query={}", mVariable);
-                mVariable.forEach(((TaskInfoQuery) taskQuery)::taskVariableValueNotEquals);
-                 LOG.info("Document closed after filtering count={}", ((TaskInfoQuery) taskQuery).count());
+                aoTask.removeAll(aoTaskToRemove);
+                LOG.info("Document closed after filtering count={}", aoTask.size());
             }
             
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
