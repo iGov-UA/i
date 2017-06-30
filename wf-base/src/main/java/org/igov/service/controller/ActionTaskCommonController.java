@@ -723,6 +723,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
             @ApiParam(value = "заглушка", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
+        
         Map<String, Object> response = new HashMap<>();
         
         if(isHistory == null){
@@ -732,8 +733,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if(isHistory){
             
             LOG.info("getTaskData try to find history variables");
-            
-            Map<String, Object> mProcessHistoryVariable = null;
             
             String sProcessDefinitionId = historyService.createHistoricProcessInstanceQuery()
                     .processInstanceId(nID_Process.toString()).singleResult().getProcessDefinitionId();
@@ -788,13 +787,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             List<HistoryVariableVO> aHistoryVariableVO_result = new ArrayList<>();
             List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
-
+            
             for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty)
             {
                 LOG.info("oFormProperty id {}", oFormProperty.getId());
                 LOG.info("oFormProperty name {}", oFormProperty.getName());
                 LOG.info("oFormProperty type {}", oFormProperty.getType());
-                
+                    
                 for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                     if(oFormProperty.getType().equals("file")||oFormProperty.getType().equals("table")){
                         if(oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())){
@@ -829,8 +828,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
                     
             }
-            
-            return JsonRestUtils.toJsonResponse(response.put("aAttachment", aTableAndAttachement));
+            response.put("aAttachment", aTableAndAttachement)
+            return JsonRestUtils.toJsonResponse();
             
         }
         

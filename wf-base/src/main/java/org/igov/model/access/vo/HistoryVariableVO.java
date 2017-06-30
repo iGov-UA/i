@@ -1,5 +1,7 @@
 package org.igov.model.access.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author Kovylin
@@ -10,9 +12,16 @@ public class HistoryVariableVO {
         
     }
     
+    @JsonProperty(value = "sId")
     private String sId;
+    
+    @JsonProperty(value = "sName")
     private String sName;
+    
+    @JsonProperty(value = "sType")
     private String sType;
+    
+    @JsonProperty(value = "oValue")
     private Object oValue;
 
     public String getsId() {
