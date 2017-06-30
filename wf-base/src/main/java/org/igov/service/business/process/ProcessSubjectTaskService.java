@@ -576,33 +576,50 @@ public class ProcessSubjectTaskService {
         LOG.info("snID_Process_Activiti {}, nDeepProcessSubjectTask {}", snID_Process_Activiti, nDeepProcessSubjectTask);
         
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
+        List<ProcessSubject> aAllProcessSubject = new ArrayList<>();
         
         try{
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+            aAllProcessSubject.addAll(aProcessSubject);
 
             for(ProcessSubject oProcessSubject : aProcessSubject){
                 oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
                 ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
                         getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
                 for(ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()){
+                    aAllProcessSubject.add(processSubject);
                     processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
                 }
                 oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
             }
             LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
+            LOG.info("aAllProcessSubject.size {}", aAllProcessSubject.size()); 
             
-            if (!aProcessSubject.isEmpty()) {
-                LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
-                ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getId());
-
-                oProcessSubjectTask.setaProcessSubject(aProcessSubject);
-                aListOfProcessSubjectTask.add(oProcessSubjectTask);
-            }
+            //По всем ProcessSubjectам ищем ProcessSubjectTaskи и сетим в них
+            //ProcessSubjectы, которые к ним относятся
+            aAllProcessSubject.forEach(oProcessSubject -> {
+                List<ProcessSubjectTask> aProcessSubjectTask = oProcessSubjectTaskDao.
+                        findAllBy("snID_Process_Activiti_Root", oProcessSubject.getSnID_Process_Activiti());
+                
+                aProcessSubjectTask.forEach(oProcessSubjectTask
+                        -> oProcessSubjectTask.setaProcessSubject(aAllProcessSubject));
+                
+                aListOfProcessSubjectTask.addAll(aProcessSubjectTask);
+            });
         }
         catch (Exception ex){
             LOG.error("Error in getProcessSubjectTask {}", ex);
         } 
-        /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
+        /*
+        if (!aProcessSubject.isEmpty()) {
+                LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
+                ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getSnID_Task_Activiti());
+
+                oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                aListOfProcessSubjectTask.add(oProcessSubjectTask);
+            }
+        ------------------------------------------------------------------------
+        if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
@@ -620,7 +637,7 @@ public class ProcessSubjectTaskService {
             }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
         }*/
-
+        LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
         return aListOfProcessSubjectTask;
     }
 
