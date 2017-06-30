@@ -2848,8 +2848,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         TaskDataResultVO oTaskDataResultVO = new TaskDataResultVO();
         List<TaskInfo> aoAllTasks = new LinkedList<>();
         long nTotalNumber;
-        
+        //вернуть последнюю юзертаску закрытого процесса-документа
         if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
+            //все закрытые документы, которые относятся к заданому логину
             HistoricTaskInstanceQuery oTaskQuery = oHistoryService.createHistoricTaskInstanceQuery()
                     .taskInvolvedUser(sLogin)
                     .processFinished()
@@ -2857,9 +2858,10 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             LOG.info("Document closed count={}", oTaskQuery.count());
 
             List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
-            List<HistoricTaskInstance> aoTask = oTaskQuery.list();
-
-            Collections.sort(aoTask, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
+            List<HistoricTaskInstance> aoTaskList = oTaskQuery.list();
+            //если таски емеют одинаковый ProcessInstanceId, сверяем дату закрытия
+            //таска которая была закрыта раньше добавляется в список для удаления
+            Collections.sort(aoTaskList, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
                 int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
                 if (nResult == 0) {
                     nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
@@ -2871,9 +2873,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 }
                 return nResult;
             });
-            aoTask.removeAll(aoTaskToRemove);
-            LOG.info("Document closed after filtering count={}", aoTask.size());
-            aoAllTasks.addAll(aoTask);
+            aoTaskList.removeAll(aoTaskToRemove);
+            LOG.info("Document closed after filtering count={}", aoTaskList.size());
+            aoAllTasks.addAll(aoTaskList);
             
         } else {
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
