@@ -2619,8 +2619,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     @Override
                     public int compare(HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) {
                         int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
+                        LOG.info("oTask1.getProcessInstanceId()={}", oTask1.getProcessInstanceId());
                         if (nResult == 0) {
-                            LOG.info("Document closed task={}", oTask1.getProcessVariables());
+                            LOG.info("Document closed task={}", oTask1);
                             nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
                             if (nResult == 0 || nResult == 1) {
                                 
