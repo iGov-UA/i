@@ -760,9 +760,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             break;
                         }
                         
-                        
                         oUserTask = oUserTask_Curr;
-                        
                     }
                 }
                 
@@ -784,16 +782,27 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 throw new RuntimeException("Can't find any property for current usertask"); 
             }
             
+            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                    .processInstanceId(nID_Process.toString()).list();
+
+            List<HistoricVariableInstance> aHistoricVariableInstance_result = new ArrayList<>();
+            List<String> aTableAndAttachement = new ArrayList<>();
+
             for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty)
             {
                 LOG.info("oFormProperty id {}", oFormProperty.getId());
                 LOG.info("oFormProperty name {}", oFormProperty.getName());
                 LOG.info("oFormProperty type {}", oFormProperty.getType());
+                
+                for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                    if(oFormProperty.getType().equals("file")||oFormProperty.getType().equals("table")){
+                        if(oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())){
+                            
+                        }
+                    }
+                }
             }
             
-            
-            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
-                    .processInstanceId(nID_Process.toString()).list();
             
             for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                 LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
