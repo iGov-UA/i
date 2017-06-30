@@ -760,11 +760,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             break;
                         }
                         
-                        if(oUserTask == null){
-                            oUserTask = oUserTask_Curr;
-                        }else{
-                            oUserTask = (UserTask)oFlowElement;
-                        }
+                        
+                        oUserTask = oUserTask_Curr;
                         
                     }
                 }
