@@ -589,14 +589,15 @@ public class ProcessSubjectTaskService {
                 }
                 oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
             }
-
-
             LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
-            LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
-            ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
+            
+            if (!aProcessSubject.isEmpty()) {
+                LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
+                ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
 
-            oProcessSubjectTask.setaProcessSubject(aProcessSubject);
-            aListOfProcessSubjectTask.add(oProcessSubjectTask);
+                oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                aListOfProcessSubjectTask.add(oProcessSubjectTask);
+            }
         }
         catch (Exception ex){
             LOG.error("Error in getProcessSubjectTask {}", ex);
