@@ -760,7 +760,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                             break;
                         }
                         
-                        oUserTask = (UserTask)oFlowElement;
+                        if(oUserTask == null){
+                            oUserTask = oUserTask_Curr;
+                        }else{
+                            oUserTask = (UserTask)oFlowElement;
+                        }
+                        
                     }
                 }
                 
@@ -790,9 +795,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                     .processInstanceId(nID_Process.toString()).list();
             
-            
-            
-           
             for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                 LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
                 LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
