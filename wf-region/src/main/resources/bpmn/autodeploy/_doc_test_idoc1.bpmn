@@ -81,8 +81,8 @@ execution.setVariable('sID_Order', sID_Order)
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_idoc','MJU_Dnipro_Top1_Dep1', 'step_2')</script>
     </scriptTask>
-    <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask1" name="testMailSend" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -94,6 +94,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[test]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA["  "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -119,7 +122,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="410.0" y="91.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="325.0" y="21.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="17.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="85.0" y="118.0"></omgdi:waypoint>
@@ -130,12 +133,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="250.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="355.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="410.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="72.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="515.0" y="118.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="592.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="645.0" y="118.0"></omgdi:waypoint>

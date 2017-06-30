@@ -79,6 +79,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.activiti.bpmn.model.BpmnModel;
+import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.apache.commons.io.IOUtils;
 import org.igov.io.fs.FileSystemData;
@@ -735,8 +736,34 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
             List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
             
-            for(org.activiti.bpmn.model.Process oProcess : aProcess){
-                LOG.info("oProcess is {}", oProcess.getId());
+            UserTask oUserTask = null;
+                    
+            if(aProcess != null){
+                LOG.info("oProcess is {}", aProcess.get(0).getId());
+                
+                for (Object oFlowElement :  aProcess.get(0).getFlowElements()){
+                    if(oFlowElement instanceof UserTask) {
+                        oUserTask = (UserTask)oFlowElement;
+                    }
+                }
+                
+            } else {
+                throw new RuntimeException("Can't find bpmn model for current process"); 
+            }
+            
+            LOG.info("oUserTask name {}", oUserTask.getName());
+            
+            List<org.activiti.bpmn.model.FormProperty> aTaskFormProperty = null;
+            if(oUserTask != null){
+                aTaskFormProperty = oUserTask.getFormProperties();
+                
+                for(org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty){
+                    LOG.info("oFormProperty id {}", oFormProperty.getId());
+                    LOG.info("oFormProperty name {}", oFormProperty.getName());
+                    LOG.info("oFormProperty typr {}", oFormProperty.getType());
+                }
+            }else{
+                throw new RuntimeException("Can't find any usertask in bpmn model for current process");    
             }
             
             List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
