@@ -14,7 +14,6 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import org.activiti.engine.ActivitiObjectNotFoundException;
 
 /**
  * Provide check access to service using AccessServiceLoginRight entities.
@@ -65,7 +64,7 @@ public class AccessServiceLoginRoleFilter extends GenericFilterBean {
                         "User [%s] has no [%s] access to service [%s] with parameters [%s]", userName, method, service,
                         parameters));
             }            
-        } catch (ActivitiObjectNotFoundException e) {
+        } catch (Exception e) {
             LOG.error("Can't find task exception: ", e);            
         }
     }
