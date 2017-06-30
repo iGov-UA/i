@@ -754,7 +754,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     if(oFlowElement instanceof UserTask) {
                         
                         UserTask oUserTask_Curr = (UserTask)oFlowElement;
-                        
+                        LOG.info("oUserTask_Curr is {}", oUserTask_Curr.getId());
                         if(sTaskDefinitionActive != null && oUserTask_Curr.getId().equals(sTaskDefinitionActive) ){
                             LOG.info("oUserTask before active is {}", oUserTask_Curr.getId());
                             break;
