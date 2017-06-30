@@ -56,8 +56,6 @@
         <activiti:formProperty id="nArea" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="загрузка файлов" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask7" name="Повідомлення службовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -266,8 +264,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="inn_scan" name="Завантажте копію довідки про присвоєння ІПН; індивідуальний податковий номер;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="birthdocument_scan" name="Завантажте скановану копію свідоцтва про народження Вашої дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку);bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Заява;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку);bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_2" name="Запит;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Заява;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку)" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_2" name="Запит;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку)" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Запит отримано від" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Заявник" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
@@ -501,7 +499,6 @@ ${sNameOrgan}.<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow26" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway1" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_step1=='attr1_ok'}]]></conditionExpression>
@@ -558,14 +555,12 @@ ${sNameOrgan}<br /><br />
     <sequenceFlow id="flow42" sourceRef="servicetask11" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow43" sourceRef="servicetask10" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow44" sourceRef="usertask4" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow45" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_upszn_0752">
     <bpmndi:BPMNPlane bpmnElement="upszn_0752" id="BPMNPlane_upszn_0752">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="6.0" y="206.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="56.0" y="196.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="172.0" y="196.0"></omgdc:Bounds>
@@ -624,10 +619,6 @@ ${sNameOrgan}<br /><br />
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
         <omgdc:Bounds height="55.0" width="105.0" x="1035.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="41.0" y="223.0"></omgdi:waypoint>
-        <omgdi:waypoint x="56.0" y="223.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="985.0" y="289.0"></omgdi:waypoint>
         <omgdi:waypoint x="998.0" y="289.0"></omgdi:waypoint>
@@ -658,10 +649,6 @@ ${sNameOrgan}<br /><br />
         <omgdi:waypoint x="542.0" y="243.0"></omgdi:waypoint>
         <omgdi:waypoint x="541.0" y="288.0"></omgdi:waypoint>
         <omgdi:waypoint x="507.0" y="289.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="161.0" y="223.0"></omgdi:waypoint>
-        <omgdi:waypoint x="172.0" y="223.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="277.0" y="223.0"></omgdi:waypoint>
@@ -723,6 +710,10 @@ ${sNameOrgan}<br /><br />
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
         <omgdi:waypoint x="905.0" y="149.0"></omgdi:waypoint>
         <omgdi:waypoint x="912.0" y="148.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="41.0" y="223.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="223.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

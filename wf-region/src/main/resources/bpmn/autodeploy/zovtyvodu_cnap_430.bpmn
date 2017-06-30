@@ -20,13 +20,13 @@
         <activiti:formProperty id="sNumberPassport" name="Реєстраційний номер паспорта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStartPassprot" name="Укажіть дату реєстрації паспорту" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dContine" name="Укажіть дату до якої бажаєте продовжити строк дії паспорту" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_sxem_rozm" name="Схема розміщення ТС" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж." type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_sxem_rozm" name="Схема розміщення ТС ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж. ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="название органа в подписи письма; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="график работы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
@@ -38,13 +38,6 @@
         <activiti:formProperty id="markerPassport" name="Continue Passprot" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow21" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист в цнап нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -89,8 +82,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -121,12 +113,15 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker2" name="marker for AfterSubmit" type="markers" default="${markerService.loadFromFile('architecture/archAfterSubmit.json')}"></activiti:formProperty>
+        <activiti:formProperty id="nFile_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_sxem_rozm" name="Схема розміщення ТС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж. ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow32" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -163,8 +158,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -200,8 +194,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -249,16 +242,20 @@
           <activiti:value id="dok_bad2" name="Заявка оформлена не вірно відмова."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по розгляду заявки;(Вкажіть корисні для ЦНАПу та заявника дані, в разі відмови поясніть причину відмови)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст1; ;bVisible=false" type="string" default="Якщо заявка опрацьовано вона буде передана до ЦНАП.Також вам необхідно як найшвидше передати в ЦНАП паспорт прив'язки тимчасової споруди. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFile_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_sxem_rozm" name="Схема розміщення ТС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж. ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -295,8 +292,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -329,8 +325,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -359,11 +354,8 @@
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_arhitectura}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="usertask3_green" targetRef="exclusivegateway3"></sequenceFlow>
@@ -400,8 +392,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -433,11 +424,15 @@
         <activiti:formProperty id="sShapkaGolova" name="шапка принтформы; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile_restr_svid},${nFile_kor_zeml},${nFile_sxem_rozm},${nFile_eskiz_fasad},${nFile_ustr_terit},${nFile_ingen_merez},${nFile_Passport}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFile_restr_svid" name="Копія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_kor_zeml" name="Копія документу, який посвідчує право користування або власності на земельну ділянку (з відповідним цільовим призначенням) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_sxem_rozm" name="Схема розміщення ТС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_eskiz_fasad" name="Ескізи фасадів  ТС  у кольорі М 1:50 (для стаціонарних ТС) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ustr_terit" name="Схема благоустрою  прилеглої  території ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення (за наявності), отримані  замовником  у  балансоутримувача  відповідних інженерних мереж. ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_arhitectura" name="Завантажте відповідь ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow27" sourceRef="usertask4_green" targetRef="exclusivegateway7"></sequenceFlow>
@@ -471,8 +466,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -507,8 +501,7 @@
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]]]>
-          </activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -516,6 +509,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow33" sourceRef="servicetask12" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="servicetask11" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
     <textAnnotation id="textannotation2">
       <text>Спрощений варіант</text>
     </textAnnotation>
@@ -527,12 +521,6 @@
     <bpmndi:BPMNPlane bpmnElement="zovtyvodu_cnap_430" id="BPMNPlane_zovtyvodu_cnap_430">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="93.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="188.0" y="100.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="278.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="328.0" y="100.0"></omgdc:Bounds>
@@ -603,18 +591,6 @@
       <bpmndi:BPMNShape bpmnElement="textannotation3" id="BPMNShape_textannotation3">
         <omgdc:Bounds height="50.0" width="101.0" x="450.0" y="307.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="128.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="188.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="293.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="293.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="328.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="433.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="468.0" y="127.0"></omgdi:waypoint>
@@ -631,7 +607,7 @@
         <omgdi:waypoint x="651.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="573.0" y="227.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="575.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="575.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -642,7 +618,7 @@
         <omgdi:waypoint x="691.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="784.0" y="227.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="33.0" x="701.0" y="227.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="33.0" x="701.0" y="227.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -654,7 +630,7 @@
         <omgdi:waypoint x="691.0" y="327.0"></omgdi:waypoint>
         <omgdi:waypoint x="691.0" y="500.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="604.0" y="347.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="604.0" y="347.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -670,7 +646,7 @@
         <omgdi:waypoint x="379.0" y="458.0"></omgdi:waypoint>
         <omgdi:waypoint x="315.0" y="458.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="352.0" y="440.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="60.0" x="352.0" y="440.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -683,7 +659,7 @@
         <omgdi:waypoint x="380.0" y="577.0"></omgdi:waypoint>
         <omgdi:waypoint x="315.0" y="581.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="363.0" y="589.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="54.0" x="363.0" y="589.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
@@ -700,14 +676,14 @@
         <omgdi:waypoint x="109.0" y="227.0"></omgdi:waypoint>
         <omgdi:waypoint x="363.0" y="227.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="42.0" x="111.0" y="228.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="42.0" x="111.0" y="228.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="131.0" y="376.0"></omgdi:waypoint>
         <omgdi:waypoint x="187.0" y="376.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="138.0" y="362.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="54.0" x="138.0" y="362.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -719,7 +695,7 @@
         <omgdi:waypoint x="836.0" y="347.0"></omgdi:waypoint>
         <omgdi:waypoint x="836.0" y="403.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="754.0" y="355.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="754.0" y="355.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -731,7 +707,7 @@
         <omgdi:waypoint x="989.0" y="347.0"></omgdi:waypoint>
         <omgdi:waypoint x="1102.0" y="347.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="80.0" x="1009.0" y="326.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="80.0" x="1009.0" y="326.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
@@ -739,7 +715,7 @@
         <omgdi:waypoint x="989.0" y="512.0"></omgdi:waypoint>
         <omgdi:waypoint x="1102.0" y="512.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="80.0" x="1000.0" y="520.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="80.0" x="1000.0" y="520.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
@@ -749,6 +725,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="1154.0" y="375.0"></omgdi:waypoint>
         <omgdi:waypoint x="1154.0" y="413.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="128.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

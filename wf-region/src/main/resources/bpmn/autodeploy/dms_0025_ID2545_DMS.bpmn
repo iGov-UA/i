@@ -26,7 +26,7 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -106,7 +106,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-		<li>паспорт, що підлягає обміну;</li>
+		<li>паспорт, що підлягає обміну (оригінал та копія);</li>
 		<li>оригінал та копію ІПН;</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 	</ul>

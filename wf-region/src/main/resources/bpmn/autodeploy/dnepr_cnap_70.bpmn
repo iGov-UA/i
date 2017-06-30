@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_70" name="Лист про прийняття рішення щодо видачі дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами суб`єкта господарювання (2 або 3 група)" isExecutable="true">
+  <process id="dnepr_cnap_70" name="Видача листа про прийняття рішення щодо можливості/неможливості видачі дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами суб`єкта господарювання (2 і 3 група)" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -38,9 +38,9 @@
         <activiti:formProperty id="pib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="telef" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sDocErdpou" name="Копія довідки ЄДРПОУ або копія виписки з ЄДР юридичних та фізичних осіб підприємців" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDocVikidi" name="Документи, у яких обґрунтовуються обсяги викидів для отримання дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами;завантажте єдиним архівом, у повному обсязі з ситуаційним та генеральним планами, розрахунками розсіювання забруднюючих речовин у атмосферному повітрі та ін." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doverennost" name="Копія довіреннності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDocErdpou" name="Копія довідки ЄДРПОУ або копія виписки з ЄДР юридичних та фізичних осіб підприємців ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocVikidi" name="Документи, у яких обґрунтовуються обсяги викидів для отримання дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами;завантажте єдиним архівом, у повному обсязі з ситуаційним та генеральним планами, розрахунками розсіювання забруднюючих речовин у атмосферному повітрі та ін. ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doverennost" name="Копія довіреннності ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;edrpo&quot;,&quot;pib_ur&quot;, &quot;adres_1&quot;,&quot;telef&quot;,&quot;doc_ur&quot;,&quot;statut&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;adres_0&quot;,&quot;pib_fiz&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="Якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;doverennost&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saSubektConfidant&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumConfidant'&quot;}}}"></activiti:formProperty>
@@ -100,12 +100,13 @@
         <activiti:formProperty id="markers20" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;comment_1&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_1&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'Дані заповнені невірно, відхилити звернення'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_70_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="sDocErdpou" name="Копія довідки ЄДРПОУ або копія виписки з ЄДР юридичних та фізичних осіб підприємців ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDocVikidi" name="Документи, у яких обґрунтовуються обсяги викидів для отримання дозволу на викиди забруднюючих речовин в атмосферне повітря стаціонарними джерелами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doverennost" name="Копія довіреннності ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocErdpou},${doverennost},${sDocVikidi}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Очікування рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -149,7 +150,7 @@
           <activiti:value id="accept" name="запросити заявника для отримання листа"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні листа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні листа внесіть, будь ласка, коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers22" name="якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;comment_2&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;decision_2&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'reject'||[sReason] == 'відмовлено у наданні листа'&quot;}}}"></activiti:formProperty>
@@ -162,7 +163,7 @@
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[darja.grek@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -313,11 +314,6 @@ execution.setVariable('sListDocumentsLetter', res)
 execution.setVariable('sListDocumentsPrint', res2)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow19" name="документи ок" sourceRef="exclusivegateway2" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
@@ -330,12 +326,10 @@ execution.setVariable('sListDocumentsPrint', res2)
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow57" sourceRef="servicetask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow66" sourceRef="servicetask10" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow67" sourceRef="usertask2" targetRef="servicetask10"></sequenceFlow>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow68" sourceRef="boundaryerror2" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow68" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_70">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_70" id="BPMNPlane_dnepr_cnap_70">
@@ -363,30 +357,17 @@ execution.setVariable('sListDocumentsPrint', res2)
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="150.0" x="121.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="151.0" x="120.0" y="159.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="121.0" y="186.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="349.0" y="241.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="538.0" y="166.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="118.0" y="231.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="85.0" y="186.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="186.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="558.0" y="206.0"></omgdi:waypoint>
         <omgdi:waypoint x="558.0" y="231.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="569.0" y="195.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="69.0" x="569.0" y="195.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
@@ -397,7 +378,7 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdi:waypoint x="538.0" y="186.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="186.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="453.0" y="169.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="57.0" x="453.0" y="169.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
@@ -412,10 +393,6 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdi:waypoint x="437.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="195.0" y="159.0"></omgdi:waypoint>
-        <omgdi:waypoint x="196.0" y="135.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
         <omgdi:waypoint x="271.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="296.0" y="107.0"></omgdi:waypoint>
@@ -429,8 +406,8 @@ execution.setVariable('sListDocumentsPrint', res2)
         <omgdi:waypoint x="437.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="136.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="135.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="67.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="196.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

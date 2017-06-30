@@ -144,14 +144,6 @@
         <activiti:formProperty id="markers2" name="validate" type="markers" default="${markerService.loadFromFile('infrastr/sea_passpValid.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Скрипт для печати 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var nat=execution.getVariable('sNationalityUkr')+" / "+execution.getVariable('sNationalityEn')
@@ -1421,20 +1413,12 @@ execution.setVariable('sMoz2', moz2)
     <sequenceFlow id="flow61" sourceRef="exclusivegateway5" targetRef="usertask6_green">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sNejav'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow72" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_infrastr_624">
     <bpmndi:BPMNPlane bpmnElement="infrastr_624" id="BPMNPlane_infrastr_624">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="8.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="115.0" x="56.0" y="107.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="50.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="74.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="134.0" y="41.0"></omgdc:Bounds>
@@ -1535,19 +1519,6 @@ execution.setVariable('sMoz2', moz2)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="470.0" y="807.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="43.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="56.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="65.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="91.0" y="220.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="113.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="113.0" y="68.0"></omgdi:waypoint>
-        <omgdi:waypoint x="134.0" y="68.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="239.0" y="68.0"></omgdi:waypoint>
         <omgdi:waypoint x="258.0" y="68.0"></omgdi:waypoint>
@@ -1670,6 +1641,12 @@ execution.setVariable('sMoz2', moz2)
         <omgdi:waypoint x="356.0" y="539.0"></omgdi:waypoint>
         <omgdi:waypoint x="356.0" y="590.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="211.0" y="637.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="677.0"></omgdi:waypoint>
+        <omgdi:waypoint x="18.0" y="635.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
         <omgdi:waypoint x="191.0" y="617.0"></omgdi:waypoint>
         <omgdi:waypoint x="166.0" y="617.0"></omgdi:waypoint>
@@ -1719,11 +1696,9 @@ execution.setVariable('sMoz2', moz2)
         <omgdi:waypoint x="510.0" y="827.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="827.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
-        <omgdi:waypoint x="211.0" y="637.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="677.0"></omgdi:waypoint>
-        <omgdi:waypoint x="18.0" y="677.0"></omgdi:waypoint>
-        <omgdi:waypoint x="18.0" y="635.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
+        <omgdi:waypoint x="25.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="186.0" y="96.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

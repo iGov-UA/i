@@ -1,0 +1,82 @@
+{
+  "motion": {
+    "ShowFieldsOnCondition_FlFal": {
+      "aField_ID": [
+        "bankIdlastName",
+        "bankIdfirstName",
+        "bankIdmiddleName",
+        "bankIdinn",
+        "bankIdPassport",
+        "email"
+      ],
+      "asID_Field": {
+        "sCondit1": "sFlag"
+      },
+      "sCondition": "[sCondit1]=='false'"
+    },
+    "ShowFieldsOnCondition_FlTrue": {
+      "aField_ID": [
+        "asStatus",
+        "sLabePasport",
+        "phone",
+        "bankIdlastName",
+        "bankIdfirstName",
+        "bankIdmiddleName",
+        "bankIdinn",
+        "bankIdPassport",
+        "email"
+      ],
+      "asID_Field": {
+        "sCondit1": "sFlag"
+      },
+      "sCondition": "[sCondit1]=='true'"
+    },
+    "ShowFieldsOnCondition_FlTrueFPasp": {
+      "aField_ID": [
+        "nFile_ZayPasp"
+      ],
+      "asID_Field": {
+        "sCondit1": "sFlag",
+        "sCondit2": "asRegistr",
+        "sCondit3": "asStatus"
+      },
+      "sCondition": "[sCondit1]=='true'&&([sCondit2]=='no'||([sCondit1]!='sVlasnDov'&&[sCondit1]!='sZareyDov'))"
+    },
+    "ShowFieldsOnCondition_sVlasnsZareyPrizv": {
+      "aField_ID": [
+        "asPrizv"
+      ],
+      "asID_Field": {
+        "sCondit1": "asStatus",
+        "sConditR": "sFlag"
+      },
+      "sCondition": "([sCondit1]=='sVlasn'||[sCondit1]=='sZarey')&&[sConditR]=='true'"
+    },
+    "ShowFieldsOnCondition_sVlasnsZareyPrizvF": {
+      "aField_ID": [
+        "nFile_ZminPrizv"
+      ],
+      "asID_Field": {
+        "sCondit1": "asStatus",
+        "sCondit2": "asPrizv",
+        "sConditR": "sFlag"
+      },
+      "sCondition": "([sCondit1]=='sVlasn'||[sCondit1]=='sZarey')&&[sCondit2]=='yes'&&[sConditR]=='true'"
+    },
+    "ShowFieldsOnCondition_sVlasnDovsZareyDovF": {
+      "aField_ID": [
+        "nFile_Dovirenist",
+        "DovirutLastName",
+        "DovirutFirstName",
+        "DovirutMiddleName",
+        "DovirutdInn",
+        "DovirutdPassport"
+      ],
+      "asID_Field": {
+        "sCondit1": "asStatus",
+        "sConditR": "sFlag"
+      },
+      "sCondition": "([sCondit1]=='sVlasnDov'||[sCondit1]=='sZareyDov')&&[sConditR]=='true'"
+    }
+  }
+}

@@ -41,60 +41,58 @@
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask3" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask4" name="повідомлення громадянина" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: відстрілювання вогнепальної зброї та огляд її технічного стану]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header_with_payment.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header_with_payment.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br /><br />
 
-Ви подали звернення на відстрілювання вогнепальної зброї та огляд її технічного стану.&lt;br/&gt;
-&lt;p&gt;
-&lt;b&gt;Далі Вам необхідно:&lt;/b&gt;&lt;br /&gt;
-1. Завантажити з додатку до листа бланк заяви, роздрукувати та підписати.&lt;br /&gt;
-2. Сплатити вартість послуги будь-яким зручним для Вас способом. Вартість послуги становить  84 грн 42 коп. з ПДВ.  &lt;br /&gt;
-3. Відвідати науково-дослідний експертно-криміналістичний &lt;a href="http://ndekcmvd.dp.ua/" target="_blank"&gt;центр&lt;/a&gt; при ГУМВС України. Окрім підписаної Вами заяви та квитанції про сплату при собі треба мати:&lt;br /&gt;
- - Дозвіл (постійний або тимчасовий) на володіння зброєю.&lt;br /&gt;
- - Зброю та 4 патрони для відстрілювання (для револьверів треба надати по 1 патрону на кожну камеру в барабані).&lt;br /&gt;
-&lt;/p&gt;
-&lt;p&gt;
-&lt;b&gt;Адреса: &lt;/b&gt;
-вул. Будівельний тупік, 1а &lt;a href="http://ndekcmvd.dp.ua/images/p004_0_01_01.jpg" target="_blank"&gt;(карта)&lt;/a&gt;.&lt;br/&gt;
-&lt;/p&gt;
-&lt;p&gt;
-&lt;b&gt;Графік роботи науково-дослідного експертно-криміналістичного центру:&lt;/b&gt;&lt;br /&gt;
-понеділок-п’ятниця с 9:30 до 17:30.&lt;br /&gt;
-Перерва с 13:00 до 14:00&lt;br /&gt;
-&lt;/p&gt;
-&lt;p&gt;
-&lt;b&gt;Реквізити для сплати:&lt;/b&gt; &lt;br/&gt;
-р/р: 31256284114278&lt;br/&gt;
+Ви подали звернення на відстрілювання вогнепальної зброї та огляд її технічного стану.<br/>
+<p>
+<b>Далі Вам необхідно:</b><br />
+1. Завантажити з додатку до листа бланк заяви, роздрукувати та підписати.<br />
+2. Сплатити вартість послуги будь-яким зручним для Вас способом. Вартість послуги становить  84 грн 42 коп. з ПДВ.  <br />
+3. Відвідати науково-дослідний експертно-криміналістичний <a href="http://ndekcmvd.dp.ua/" target="_blank">центр</a> при ГУМВС України. Окрім підписаної Вами заяви та квитанції про сплату при собі треба мати:<br />
+ - Дозвіл (постійний або тимчасовий) на володіння зброєю.<br />
+ - Зброю та 4 патрони для відстрілювання (для револьверів треба надати по 1 патрону на кожну камеру в барабані).<br />
+</p>
+<p>
+<b>Адреса: </b>
+вул. Будівельний тупік, 1а <a href="http://ndekcmvd.dp.ua/images/p004_0_01_01.jpg" target="_blank">(карта)</a>.<br/>
+</p>
+<p>
+<b>Графік роботи науково-дослідного експертно-криміналістичного центру:</b><br />
+понеділок-п’ятниця с 9:30 до 17:30.<br />
+Перерва с 13:00 до 14:00<br />
+</p>
+<p>
+<b>Реквізити для сплати:</b> <br/>
+р/р: 31256284114278<br/>
     
-              ЄДРПОУ: 25575055&lt;br/&gt;
-МФО: 820172&lt;br/&gt;
-Призначення: *;04000043;036032;1;* - відстрілюв. вогнеп. зброї та огляд її тех.стану: нарізної і комбінованої мисливської та спортивної, в т.ч. ПДВ &lt;br/&gt;
-&lt;/p&gt;
-[paymentButton_LiqPay]&lt;br/&gt;
-В разі онлайн сплати додатково утримується комісія в розмірі 1.8%&lt;br/&gt;
+              ЄДРПОУ: 25575055<br/>
+МФО: 820172<br/>
+Призначення: *;04000043;036032;1;* - відстрілюв. вогнеп. зброї та огляд її тех.стану: нарізної і комбінованої мисливської та спортивної, в т.ч. ПДВ <br/>
+</p>
+[paymentButton_LiqPay]<br/>
+В разі онлайн сплати додатково утримується комісія в розмірі 1.8%<br/>
 
 
 [pattern/mail/_common_signature_start.html]
- НДЕКЦ при ГУМВС України &lt;br /&gt;
+ НДЕКЦ при ГУМВС України <br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer_with_payment.html]</activiti:expression>
+[pattern/mail/_common_footer_with_payment.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -112,12 +110,12 @@
           <activiti:string><![CDATA[Нове звернення: Відстрілювання зброї]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvd_199">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvd_199" id="BPMNPlane_dnepr_mvd_199">
@@ -130,19 +128,12 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="164.0" y="170.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="55.0" width="105.0" x="320.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="145.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="170.0" y="67.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="216.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="210.0" y="280.0"></omgdi:waypoint>
@@ -151,13 +142,13 @@
         <omgdi:waypoint x="317.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="269.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="275.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="320.0" y="67.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="372.0" y="95.0"></omgdi:waypoint>
         <omgdi:waypoint x="369.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="145.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

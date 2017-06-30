@@ -76,14 +76,14 @@
           <activiti:value id="sDovir" name="довіреність"></activiti:value>
           <activiti:value id="sGarList" name="гарантійний лист"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nSvid" name="Документ, який підтверджує повноваження пред’явника;договір, довіреність, гарантійний лист" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nSvid" name="Документ, який підтверджує повноваження пред’явника;договір, довіреність, гарантійний лист ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asTypePay" name="Сплату за послуги буде здійснювати" type="enum" required="true">
           <activiti:value id="sShipOwner" name="Судновласник"></activiti:value>
           <activiti:value id="sOwner" name="Власник"></activiti:value>
           <activiti:value id="sManPay" name="Пред’явник судна"></activiti:value>
           <activiti:value id="sOtherPay" name="Інший"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nPayDoc" name="Документ із зазначенням платника послуги" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nPayDoc" name="Документ із зазначенням платника послуги ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA3" name="Прізвище платника послуги" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA3" name="Ім'я платника послуги" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA3" name="По батькові платника послуги" type="string" default=" " required="true"></activiti:formProperty>
@@ -289,7 +289,7 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
           <activiti:value id="reject" name="Повідомити громадянина про відмову в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nBill" name="Рахунок для сплати" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nBill" name="Рахунок для сплати ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/infr/registr_1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/infr/registr_1.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="param" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -313,12 +313,11 @@ if(execution.getVariable('asBrakeMash') == 'sYes3'){execution.setVariable('yes5'
         <activiti:formProperty id="zay2" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="zay3" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="zay4" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="nSvid" name="Документ, який підтверджує повноваження пред’явника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nPayDoc" name="Документ із зазначенням платника послуги ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nSvid},${nPayDoc}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>

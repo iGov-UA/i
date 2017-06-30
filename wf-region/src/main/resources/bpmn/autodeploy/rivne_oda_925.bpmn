@@ -5,131 +5,53 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="email" name="E-Mail адреса для зворотного зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-
-		<activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" required="true">
+        <activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" required="true">
           <activiti:value id="lic1" name="здобуття початкової загальної освіти"></activiti:value>
           <activiti:value id="lic2" name="базової загальної середньої освіти"></activiti:value>
           <activiti:value id="lic3" name="повної загальної середньої освіти"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="asGoal" name="Мета" type="enum" required="true">
           <activiti:value id="goal1" name="отриманная ліцензіх"></activiti:value>
           <activiti:value id="goal2" name="розширення провадження освітньої діяльності"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-
-
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код" type="file" required="true"></activiti:formProperty>
-
-
-		<activiti:formProperty id="sNameUr" name="Повне найменування закладу освіти" type="string" required="true"></activiti:formProperty>        
-
+        <activiti:formProperty id="sNameUr" name="Повне найменування закладу освіти" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nTeacher" name="Кількість вчителів" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sNamePostCompany" name="Посада керівника підприємства" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище керівника підприємства" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я керівника підприємства" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові керівника підприємства" type="string" required="true"></activiti:formProperty>
-
-
-		<activiti:formProperty id="sLegalForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sOwnership" name="Форма власності" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sGoverningBody" name="Орган управління" type="string" required="true"></activiti:formProperty>
-
-
-		<activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності" type="string" required="true"></activiti:formProperty>
-
-<!-- Реквізити -->
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sOwnership" name="Форма власності" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGoverningBody" name="Орган управління" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankName" name="Назва банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку в банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="mfo" name="МФО банку;шість цифр" type="string" required="true"></activiti:formProperty>
-
-
-<!-- Обладнання та персонал -->
-
-<!-- Атрибуты1
-        <activiti:formProperty id="line_File_Head" name="=================================================" type="label" default="================================================="></activiti:formProperty>
-        <activiti:formProperty id="info_Layer" name="Додайте додаткові дані згідно постанови № 276 від 10.08.2012р." type="label" default="&lt;a href=&quot;http://zakon5.rada.gov.ua/laws/show/z1466-12&quot; target=&quot;_blank&quot;&gt;ЛІЦЕНЗІЙНІ УМОВИ провадження господарської діяльності з виробництва теплової енергії &lt;/a&gt;"></activiti:formProperty>
-
-        <activiti:formProperty id="line_File_Equipment" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Equipment" name="Додаток" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/19Ks9YwRAuklb_VjHFCnPPKhEj2DkxQvMJh41D8416KI/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFileEquipment" name="копії установчих документів юридичної особи;крім розширення провадження освітньої діяльності в разі збільшення ліцензованого обсягу" type="file" required="true"></activiti:formProperty>
-
-        <activiti:formProperty id="line_File_Personal" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Personal" name="Додаток" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1wI5kxiED9_MQ16KZaQgwVVlKfLapKWsEP6x0xuLirTo/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonal" name="копії документів, що засвідчують право власності чи користування основними засобами для здійснення навчально-виховного процесу на строк, необхідний для завершення повного циклу освітньої діяльності" type="file" required="true"></activiti:formProperty>
-
-
-        <activiti:formProperty id="line_File_Personal" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Personal" name="Додаток" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1wI5kxiED9_MQ16KZaQgwVVlKfLapKWsEP6x0xuLirTo/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonal" name="копії документів про відповідність приміщень та матеріально-технічної бази санітарним нормам, вимогам правил пожежної безпеки, нормам з охорони праці" type="file" required="true"></activiti:formProperty>
-
-
-        <activiti:formProperty id="line_File_Personal" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Personal" name="додатки 29 і 30" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1wI5kxiED9_MQ16KZaQgwVVlKfLapKWsEP6x0xuLirTo/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonal" name="відомості про кількісні та якісні показники кадрового і матеріально-технічного забезпечення освітньої діяльності у сфері загальної середньої освіти, необхідного для виконання державного стандарту освіти відповідного рівня" type="file" required="true"></activiti:formProperty>
-
-
-        <activiti:formProperty id="line_File_Personal" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Personal" name="додаток 31" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1wI5kxiED9_MQ16KZaQgwVVlKfLapKWsEP6x0xuLirTo/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonal" name="відомості про навчально-методичне та інформаційне забезпечення освітньої діяльності у сфері загальної середньої освіти, необхідне для виконання державного стандарту освіти відповідного рівня;крім розширення провадження освітньої діяльності в разі збільшення ліцензованого обсягу" type="file" required="true"></activiti:formProperty>
-
-
-
-        <activiti:formProperty id="line_File_Personal" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Personal" name="додаток" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1wI5kxiED9_MQ16KZaQgwVVlKfLapKWsEP6x0xuLirTo/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonal" name="копія документа, що засвідчує рівень освіти і кваліфікації керівника закладу освіти (документа про вищу освіту);крім розширення провадження освітньої діяльності в разі збільшення ліцензованого обсягу" type="file" required="true"></activiti:formProperty>
-
-
-
-        <activiti:formProperty id="line_File_Personal" name="___________________________________________________" type="label" default="___________________________________________________"></activiti:formProperty>
-        <activiti:formProperty id="info_Personal" name="додатки 32 і 33" type="label" default="Заповніть &lt;a href=&quot;https://docs.google.com/document/d/1wI5kxiED9_MQ16KZaQgwVVlKfLapKWsEP6x0xuLirTo/edit?usp=sharing&quot; target=&quot;_blank&quot;&gt;бланк&lt;/a&gt; та додайте у наступному полі."></activiti:formProperty>
-        <activiti:formProperty id="nFilePersonal" name="опис документів, що подаються для отримання ліцензії (розширення провадження освітньої діяльності), у двох екземплярах" type="file" required="true"></activiti:formProperty>
-
-
-
- -->
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-<!-- Атрибуты2 -->
         <activiti:formProperty id="sMailClerk1" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-
         <activiti:formProperty id="sNameServise" name="Назва послуги; ;bVisible=false" type="string" default="Надання ліцензія на здійснення освітньої діяльності у сфері загальної середньої освіти"></activiti:formProperty>
-		<activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string" default="дійснення освітньої діяльності у сфері загальної середньої освіти"></activiti:formProperty>
-
+        <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string" default="дійснення освітньої діяльності у сфері загальної середньої освіти"></activiti:formProperty>
         <activiti:formProperty id="markersShowFill" name="отображать поля" type="markers" default="${markerService.loadFromFile('license/rivne_oda_860.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script><![CDATA[      
+      <script>      
       	var result = 'new value'      	
-      ]]></script>
+      </script>
     </scriptTask>
     <sequenceFlow id="flow18" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
-
-    
     <serviceTask id="servicetask2" name="Повідомлення для держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -190,67 +112,47 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу обслуговування" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотного зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" writable="false">
+        <activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" writable="false">
           <activiti:value id="lic1" name="здобуття початкової загальної освіти"></activiti:value>
           <activiti:value id="lic2" name="базової загальної середньої освіти"></activiti:value>
           <activiti:value id="lic3" name="повної загальної середньої освіти"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
-
-
-<!-- Юридична особа -->
         <activiti:formProperty id="sNameUr" name="Повне найменування закладу освіти; ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="nTeacher" name="Кількість вчителів; ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="sNamePostCompany" name="Посада керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
-
-		<activiti:formProperty id="sLegalForm" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sOwnership" name="Форма власності; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sGoverningBody" name="Орган управління; ;writable=false" type="string"></activiti:formProperty>
-
-		<activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності; ;writable=false" type="string"></activiti:formProperty>
-
-<!-- Реквізити -->
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOwnership" name="Форма власності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoverningBody" name="Орган управління; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankName" name="Назва банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку в банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="mfo" name="МФО банку;шість цифр; ;writable=false" type="string"></activiti:formProperty>
-        
-
-        
         <activiti:formProperty id="decide1" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Документи відповідають законодавству. Передати комісії по ліцензуванню"></activiti:value>
           <activiti:value id="reject" name="Відмовити. Документи не відповідають законодавству"></activiti:value>
-        </activiti:formProperty>        
+        </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea"></activiti:formProperty>
-        
-        
-<!-- Атрибуты -->
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_925_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
-
+        <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_inn}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_inn}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1_yellow" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-
     <sequenceFlow id="flow7" name="не відповідають" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1 == 'reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -302,7 +204,6 @@
     </serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-
     <sequenceFlow id="flow9" name="документи ОК" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide1 == 'accept'}]]></conditionExpression>
     </sequenceFlow>
@@ -351,67 +252,47 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу обслуговування" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотного зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" writable="false">
+        <activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" writable="false">
           <activiti:value id="lic1" name="здобуття початкової загальної освіти"></activiti:value>
           <activiti:value id="lic2" name="базової загальної середньої освіти"></activiti:value>
           <activiti:value id="lic3" name="повної загальної середньої освіти"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
-
-
-<!-- Юридична особа -->
         <activiti:formProperty id="sNameUr" name="Повне найменування закладу освіти; ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="nTeacher" name="Кількість вчителів; ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="sNamePostCompany" name="Посада керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
-
-		<activiti:formProperty id="sLegalForm" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sOwnership" name="Форма власності; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sGoverningBody" name="Орган управління; ;writable=false" type="string"></activiti:formProperty>
-
-		<activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності; ;writable=false" type="string"></activiti:formProperty>
-
-<!-- Реквізити -->
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOwnership" name="Форма власності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoverningBody" name="Орган управління; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankName" name="Назва банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку в банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="mfo" name="МФО банку;шість цифр; ;writable=false" type="string"></activiti:formProperty>
-        
-
-        
         <activiti:formProperty id="decide2" name="Рішення ліцензійної комісії" type="enum" required="true">
           <activiti:value id="accept" name="Надати ліцензію"></activiti:value>
           <activiti:value id="reject" name="Відмовити в видачі ліцензії"></activiti:value>
-        </activiti:formProperty>      
+        </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea"></activiti:formProperty>
-        
-        
-<!-- Атрибуты -->
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_925_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
-
+        <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_inn}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_inn}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-
     <sequenceFlow id="flow12" name="Негативне рішення" sourceRef="exclusivegateway2" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -463,7 +344,6 @@
     </serviceTask>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
-
     <sequenceFlow id="flow13" name="Позитивне" sourceRef="exclusivegateway2" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide2 == 'accept'}]]></conditionExpression>
     </sequenceFlow>
@@ -518,9 +398,9 @@
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
-		<activiti:field name="sText_SMS">
+        <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Nadatu licenziu pislja oplatu". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-		</activiti:field>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="usertask3_green"></sequenceFlow>
@@ -528,55 +408,37 @@
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Орган обслуговування" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу обслуговування" type="string" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотного зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" writable="false">
+        <activiti:formProperty id="asLicense" name="Видати ліцензію на" type="enum" writable="false">
           <activiti:value id="lic1" name="здобуття початкової загальної освіти"></activiti:value>
           <activiti:value id="lic2" name="базової загальної середньої освіти"></activiti:value>
           <activiti:value id="lic3" name="повної загальної середньої освіти"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
-
-
-<!-- Юридична особа -->
         <activiti:formProperty id="sNameUr" name="Повне найменування закладу освіти; ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="nTeacher" name="Кількість вчителів; ;writable=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="sNamePostCompany" name="Посада керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові керівника підприємства; ;writable=false" type="string"></activiti:formProperty>
-
-		<activiti:formProperty id="sLegalForm" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sOwnership" name="Форма власності; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sGoverningBody" name="Орган управління; ;writable=false" type="string"></activiti:formProperty>
-
-		<activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності; ;writable=false" type="string"></activiti:formProperty>
-
-<!-- Реквізити -->
+        <activiti:formProperty id="sLegalForm" name="Організаційно-правова форма; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOwnership" name="Форма власності; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sGoverningBody" name="Орган управління; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualUr" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFactualFiz" name="Місце провадження освітньої діяльності; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankName" name="Назва банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankAccount" name="Номер рахунку в банку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="mfo" name="МФО банку;шість цифр; ;writable=false" type="string"></activiti:formProperty>
-        
-  
         <activiti:formProperty id="comment" name="Коментар для відмови" type="textArea"></activiti:formProperty>
-        
-        
-<!-- Атрибуты -->
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_925_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
-
+        <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_inn}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_inn}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -623,8 +485,7 @@
     </serviceTask>
     <sequenceFlow id="flow17" sourceRef="servicetask8" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
-
-
+    <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Громадянин</text>
     </textAnnotation>
@@ -633,21 +494,11 @@
     </textAnnotation>
     <association id="association1" sourceRef="textannotation2" targetRef="servicetask2"></association>
     <association id="association2" sourceRef="textannotation1" targetRef="startevent1"></association>
-    
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rivne_oda_925">
     <bpmndi:BPMNPlane bpmnElement="rivne_oda_925" id="BPMNPlane_rivne_oda_925">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="114.0" y="109.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="63.0" width="117.0" x="174.0" y="96.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="262.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="259.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="218.0"></omgdc:Bounds>
@@ -703,18 +554,6 @@
       <bpmndi:BPMNShape bpmnElement="textannotation2" id="BPMNShape_textannotation2">
         <omgdc:Bounds height="128.0" width="161.0" x="1.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="149.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="174.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="277.0" y="80.0"></omgdi:waypoint>
-        <omgdi:waypoint x="276.0" y="55.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="232.0" y="159.0"></omgdi:waypoint>
-        <omgdi:waypoint x="232.0" y="218.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="285.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="245.0"></omgdi:waypoint>
@@ -792,6 +631,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="1313.0" y="97.0"></omgdi:waypoint>
         <omgdi:waypoint x="1313.0" y="56.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="131.0" y="144.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="218.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="162.0" y="246.0"></omgdi:waypoint>

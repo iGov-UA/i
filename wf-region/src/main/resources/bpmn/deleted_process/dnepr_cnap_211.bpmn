@@ -39,7 +39,7 @@
         <activiti:formProperty id="markerEnum" name="скрытие полей" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;dovidka&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sCond]=='orend'||[sCond]=='podatok'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;dilianka&quot;,&quot;nakaz&quot;,&quot;eDoc&quot;,&quot;pravo&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sCond]=='otr'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>

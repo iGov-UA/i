@@ -48,20 +48,10 @@
         <activiti:formProperty id="sNameOrgan" name="назва органу ; ;bVisible=false " type="string" default="Канцелярія Департаменту містобудування та архітектури, м. Київ"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false " type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false " type="string" default="Іванов Іван Іванович"></activiti:formProperty>
-        
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false " type="string" default=" "></activiti:formProperty>
-                
-		<activiti:formProperty id="dArrival" name="Дата прихода гражданина ; ;bVisible=false " type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="dArrival" name="Дата прихода гражданина ; ;bVisible=false " type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Отримання дати" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
@@ -151,14 +141,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="Status" name="Статус: " type="label" default="Зареєстрована"></activiti:formProperty>
         <activiti:formProperty id="ApplyECP3" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="заява направлена в роботу"></activiti:value>
           <activiti:value id="reject" name="заява відхилена через невідповідність вихідних даних та полігонів робіт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment3" name="Коментар" type="string"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -169,7 +157,7 @@
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask3_first" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask2" name="Отримання дати" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script><![CDATA[
+      <script>
 def dateArr = new GregorianCalendar()
 def dayWeek = dateArr.get(Calendar.DAY_OF_WEEK)
 def addDay = 2
@@ -181,12 +169,10 @@ if(dayWeek == 5 || dayWeek == 6){
 dateArr.add(Calendar.DATE, addDay)		
 execution.setVariable('dArrival', dateArr.getTime().format("dd.MM.yyyy").toString())
 execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
-      ]]></script>
+      </script>
     </scriptTask>
     <sequenceFlow id="flow8" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    
-    
     <sequenceFlow id="flow9" name="відмова" sourceRef="exclusivegateway1" targetRef="usertask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP3 == 'reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -227,9 +213,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Ввести коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
-
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -286,25 +270,18 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Status" name="Статус: " type="label" default="Відмова"></activiti:formProperty>
-
         <activiti:formProperty id="ApplyECP5" name="Результат опрацювання*" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="електронний документ «Лист–відмова» затверджено"></activiti:value>
         </activiti:formProperty>
-        
-        
         <activiti:formProperty id="erejectReason" name="Причина відмови*" type="enum" writable="false">
           <activiti:value id="erejectReason1" name="невідповідність полігонів топографо-геодезичних досліджень та вихідних даних"></activiti:value>
           <activiti:value id="erejectReason2" name="зауваження, помилки до схеми"></activiti:value>
           <activiti:value id="erejectReason3" name="помилки при проведенні топографо-геодезичних робіт"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sCommentreject" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
-
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -356,8 +333,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
     </serviceTask>
     <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    
-    
     <sequenceFlow id="flow22" name="позитивне рішення" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP3 == 'accept'}]]></conditionExpression>
     </sequenceFlow>
@@ -430,13 +405,10 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі"></activiti:formProperty>
-        
-        <activiti:formProperty id="ApplyECP8" name="Результат опрацювання" type="enum" default="accept" required="true">        
+        <activiti:formProperty id="ApplyECP8" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="відправити  керівнику для затвердження або відмови"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sComment8" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -492,16 +464,12 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="Status" name="Статус: " type="label" default="В роботі-Перевірка"></activiti:formProperty>
-
         <activiti:formProperty id="ApplyECP9" name="Результат опрацювання" type="enum" required="true">
           <activiti:value id="accept" name="Немає  зауважень, затверджено"></activiti:value>
           <activiti:value id="reject" name="Є зауваження, відмова через лист-відмову"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sComment10" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -512,8 +480,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
     </userTask>
     <sequenceFlow id="flow23" sourceRef="usertask9_red" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-
-        
     <sequenceFlow id="flow24" name="відмова" sourceRef="exclusivegateway3" targetRef="usertask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP9 == 'reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -545,23 +511,17 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="Status" name="Статус: " type="label" default="Відмова"></activiti:formProperty>
-
         <activiti:formProperty id="ApplyECP11" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="Лист–відмова сформований"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="erejectReason" name="Причина відмови" type="enum" required="true">
           <activiti:value id="erejectReason2" name="зауваження, помилки до схеми"></activiti:value>
           <activiti:value id="erejectReason3" name="помилки при проведенні топографо-геодезичних робіт"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="sComment11" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="ПІБ спеціаліста, який сформував та підписав лист-відмову. Формується автоматично ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -571,8 +531,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow31" sourceRef="usertask6" targetRef="servicetask4"></sequenceFlow>
-
-
     <sequenceFlow id="flow19" name="затверджено топооснову" sourceRef="exclusivegateway3" targetRef="usertask14_yellow">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${ApplyECP9 == 'accept'}]]></conditionExpression>
     </sequenceFlow>
@@ -605,28 +563,19 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Status" name="Статус: " type="label" default="На затвердженні"></activiti:formProperty>
-
-
-
         <activiti:formProperty id="eAppr_NachUpravl" name="Затвердження топооснови  ЕЦП Начальника Управління ІТІМ ДМА" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="eAppr_GolSpet" name="Затвердження топооснови  ЕЦП Головного спеціаліста" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="not" name="Ні"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="ApplyECP14" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="вдавлення топооснови  в мапу міста затверджено"></activiti:value>
         </activiti:formProperty>
-
-
-        <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>        
-        
+        <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileAppr" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -654,7 +603,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask10" targetRef="usertask15_green"></sequenceFlow>
-
     <userTask id="usertask15_green" name="Крок 15 – Підтвердження топооснови ЕЦП" activiti:candidateGroups="kiev_mda_arch_zam_nach">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="назва органу" type="string" writable="false"></activiti:formProperty>
@@ -683,16 +631,12 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="Status" name="Статус: " type="label" default="На затвердженні ЕЦП"></activiti:formProperty>
-
         <activiti:formProperty id="ApplyECP15" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="топооснову  затверджено"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileApprNach" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>		
-
+        <activiti:formProperty id="nFileApprNach" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -738,7 +682,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${nFileApprNach}]]></activiti:expression>
-        </activiti:field>        
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask9" targetRef="usertask16_green"></sequenceFlow>
@@ -771,12 +715,9 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         <activiti:formProperty id="GKANum" name="№ Витягу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="OutDocDate" name="Дата Витягу" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Status" name="Статус: " type="label" default="Виконано"></activiti:formProperty>
-
-
         <activiti:formProperty id="ApplyECP16" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="паперовий та електронний пакет документів видано заявнику"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sComment16" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
@@ -815,6 +756,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
     </serviceTask>
     <sequenceFlow id="flow29" sourceRef="servicetask11" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow32" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Громадянин</text>
     </textAnnotation>
@@ -834,15 +776,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
     <bpmndi:BPMNPlane bpmnElement="kiev_arch_828" id="BPMNPlane_kiev_arch_828">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="176.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="61.0" width="105.0" x="141.0" y="173.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="158.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="222.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="141.0" y="259.0"></omgdc:Bounds>
@@ -889,32 +822,32 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       <bpmndi:BPMNShape bpmnElement="usertask9_red" id="BPMNShape_usertask9_red">
         <omgdc:Bounds height="76.0" width="177.0" x="1134.0" y="394.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="1202.0" y="185.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
         <omgdc:Bounds height="108.0" width="125.0" x="1310.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask14_yellow" id="BPMNShape_usertask14_yellow">
         <omgdc:Bounds height="155.0" width="136.0" x="1450.0" y="127.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
-        <omgdc:Bounds height="75.0" width="157.0" x="1603.0" y="71.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="1202.0" y="185.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="61.0" width="105.0" x="1465.0" y="401.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask15_green" id="BPMNShape_usertask15_green">
         <omgdc:Bounds height="76.0" width="177.0" x="1593.0" y="393.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="61.0" width="105.0" x="1465.0" y="401.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="75.0" width="157.0" x="1603.0" y="71.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask16_green" id="BPMNShape_usertask16_green">
         <omgdc:Bounds height="79.0" width="146.0" x="1713.0" y="165.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="1860.0" y="11.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
         <omgdc:Bounds height="63.0" width="145.0" x="1805.0" y="76.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="1860.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="textannotation1" id="BPMNShape_textannotation1">
         <omgdc:Bounds height="73.0" width="100.0" x="20.0" y="72.0"></omgdc:Bounds>
@@ -928,18 +861,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       <bpmndi:BPMNShape bpmnElement="textannotation4" id="BPMNShape_textannotation4">
         <omgdc:Bounds height="63.0" width="173.0" x="20.0" y="400.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="193.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="193.0" y="173.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="240.0" y="158.0"></omgdi:waypoint>
-        <omgdi:waypoint x="239.0" y="46.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="193.0" y="234.0"></omgdi:waypoint>
-        <omgdi:waypoint x="193.0" y="259.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="246.0" y="286.0"></omgdi:waypoint>
         <omgdi:waypoint x="342.0" y="286.0"></omgdi:waypoint>
@@ -1007,6 +928,17 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         <omgdi:waypoint x="1105.0" y="431.0"></omgdi:waypoint>
         <omgdi:waypoint x="1134.0" y="432.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="1222.0" y="394.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1222.0" y="225.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="1242.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1310.0" y="204.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="42.0" x="1249.0" y="188.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="1372.0" y="258.0"></omgdi:waypoint>
         <omgdi:waypoint x="1372.0" y="482.0"></omgdi:waypoint>
@@ -1025,17 +957,6 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="1518.0" y="282.0"></omgdi:waypoint>
         <omgdi:waypoint x="1517.0" y="401.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="1222.0" y="394.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1222.0" y="225.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="1242.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1310.0" y="204.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1249.0" y="188.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="1570.0" y="431.0"></omgdi:waypoint>
@@ -1058,6 +979,10 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
         <omgdi:waypoint x="1877.0" y="76.0"></omgdi:waypoint>
         <omgdi:waypoint x="1877.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="193.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="193.0" y="259.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="1000.0" y="431.0"></omgdi:waypoint>

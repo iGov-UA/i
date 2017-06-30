@@ -42,7 +42,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" variable="unixdate" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberRegistration" name="Лист № (вихідний номер кореспондента)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateDoc" name="Дата (вихідна дата кореспондента)" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberDoc" name="Реєстраційний номер документа" type="string"></activiti:formProperty>
@@ -185,9 +185,9 @@
           <activiti:value id="sEnum35" name="м. Тернівка"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotUrgentDoc">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
@@ -208,7 +208,7 @@
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_MJU]]></activiti:string>
@@ -431,13 +431,13 @@
             <activiti:string><![CDATA[_task_justice]]></activiti:string>
           </activiti:field>
           <activiti:field name="sID_Attachment">
-            <activiti:expression><![CDATA[${sTable2}]]></activiti:expression>
+            <activiti:expression>${sTable2}</activiti:expression>
           </activiti:field>
           <activiti:field name="processDefinitionId">
-            <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
+            <activiti:expression>${processDefinitionId}</activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sDoc1::${sDoc1};;sLogin_AutorResolution::${sLogin_AutorResolution};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sName_AutorResolution};;asUrgently::${asUrgently};;asRegular::${asRegular};;sDateBegin::${sDateBegin};;asPeriodicity::${asPeriodicity};;sDateEnd::${sDateEnd};;asControl::${asControl};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution};;sTable1::${sTable1}]]></activiti:expression>
+            <activiti:expression>sDoc1::${sDoc1};;sLogin_AutorResolution::${sLogin_AutorResolution};;sTypeDoc::${sTypeDoc};;sNumberPrevious::${sNumberPrevious};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sDateRegistration::${sDateRegistration};;sNumberRegistration::${sNumberRegistration};;sDateDoc::${sDateDoc};;sNumberDoc::${sNumberDoc};;nCountSheets::${nCountSheets};;sContent::${sContent};;sApplicant::${sApplicant};;asTypeDelivery::${asTypeDelivery};;asTypeIncoming::${asTypeIncoming};;asTypeAppeal::${asTypeAppeal};;asKindAppeal::${asKindAppeal};;asFrom::${asFrom};;asPlace::${asPlace};;sAdress::${sAdress};;sDateExecution::${sDateExecution};;sNote::${sNote};;sAutorResolution::${sName_AutorResolution};;asUrgently::${asUrgently};;asJustified::${asJustified};;asTypeResolution::${asTypeResolution};;sTextResolution::${sTextResolution}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -628,7 +628,7 @@
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
@@ -841,7 +841,7 @@
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -875,7 +875,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
-            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+            <activiti:expression>${processInstanceId}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:string><![CDATA[unactual]]></activiti:string>
@@ -1062,7 +1062,7 @@
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="fileHTML" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -1104,7 +1104,7 @@
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTaskTreeAndCloseProcess}">
           <activiti:field name="snID_Process_Activiti">
-            <activiti:expression><![CDATA[${processInstanceId}]]></activiti:expression>
+            <activiti:expression>${processInstanceId}</activiti:expression>
           </activiti:field>
           <activiti:field name="sID_ProcessSubjectStatus">
             <activiti:string><![CDATA[unactual]]></activiti:string>
@@ -1131,7 +1131,7 @@ var m = updatedDate.getMonth() + 1;
 if (m &lt; 10) m = "0"+m;
 var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
 execution.setVariable('sDateExecution', sNewDate)
-var unixdate= Math.round((new Date()).getTime())
+
 //3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
@@ -1175,7 +1175,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
 </script>
     </scriptTask>
-    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask8"></sequenceFlow>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
       <extensionElements>
         <activiti:field name="sKey">
@@ -1239,6 +1239,10 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
     <sequenceFlow id="flow64" sourceRef="usertask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow65" sourceRef="usertask2_yellow" targetRef="scripttask6"></sequenceFlow>
     <sequenceFlow id="flow66" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
+    <scriptTask id="scripttask8" name="Сегодняшняя дата по умолчанию" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('sDateRegistration', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow67" sourceRef="scripttask8" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_83">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_83" id="BPMNPlane__doc_justice_83">
@@ -1290,9 +1294,12 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="28.0" y="324.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="248.0" y="196.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="351.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="164.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="196.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="63.0" y="122.0"></omgdi:waypoint>
@@ -1315,7 +1322,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
         <omgdi:waypoint x="443.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="541.0" y="237.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="81.0" x="480.0" y="291.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="81.0" x="480.0" y="291.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
@@ -1328,7 +1335,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
         <omgdi:waypoint x="445.0" y="52.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="80.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="484.0" y="16.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="484.0" y="16.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
@@ -1366,6 +1373,10 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="541.0" y="462.0"></omgdi:waypoint>
         <omgdi:waypoint x="510.0" y="462.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="300.0" y="196.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="164.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

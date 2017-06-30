@@ -13,38 +13,32 @@
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; Сторінки 1, 2, 10, 11. При наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву чи pdf-файлі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        
-		<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" required="true">
+        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>		
-		<activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
-        
+        </activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asReason" name="Оберіть категорію, під які цілі Вам потрібен кредит" type="enum" required="true">
           <activiti:value id="res1" name="будівництво житла"></activiti:value>
           <activiti:value id="res2" name="придбання будинку (квартири)"></activiti:value>
           <activiti:value id="res3" name="добудова та реконструкція житла"></activiti:value>
           <activiti:value id="res4" name="будівництво інженерних мереж"></activiti:value>
           <activiti:value id="res5" name="розвиток особистого селянського подвір’я"></activiti:value>
-        </activiti:formProperty>        
+        </activiti:formProperty>
         <activiti:formProperty id="aReason" name="Уточніть мету отримання кредиту" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту, грн.; цифрами" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту, грн.; ця ж сума прописом" type="string" required="true"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="asWork" name="Працюєте" type="enum" required="true">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Місце роботи та посада" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="nFilePetition" name="Копія клопотання з вашого населенного пункту" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAreaPetition" name="Клопотання якої ради;Укажіть назву населеного пунку наприклад:'Савинської'" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dPetition" name="Дата клопотання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPetition" name="Номер клопотання" type="string" required="true"></activiti:formProperty>
-
-		<activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
-		<activiti:formProperty id="markersStarTask" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersAdresStartTask" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('adress_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStarTask" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_start.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk1" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -54,13 +48,6 @@
         <activiti:formProperty id="sAreaAdjective" name="населений пункт ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow17" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
@@ -116,59 +103,47 @@
         <activiti:formProperty id="sClFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" default="yes" type="enum" writable="false">
+        <activiti:formProperty id="asAdress" name="Проживаєте за місцем реєстрації" type="enum" default="yes" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
-        </activiti:formProperty>		
-		<activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" writable="false"></activiti:formProperty>
-
+        </activiti:formProperty>
+        <activiti:formProperty id="sAddressFactual" name="Фактична адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail заявника" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="nPetition" name="Номер клопотання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dPetition" name="Дата клопотання" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAreaPetition" name="Клопотання якої ради" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="asReason" name="Оберіть категорію, під які цілі Вам потрібен кредит" type="enum" writable="false">
           <activiti:value id="res1" name="будівництво житла"></activiti:value>
           <activiti:value id="res2" name="придбання будинку (квартири)"></activiti:value>
           <activiti:value id="res3" name="добудова та реконструкція житла"></activiti:value>
           <activiti:value id="res4" name="будівництво інженерних мереж"></activiti:value>
           <activiti:value id="res5" name="розвиток особистого селянського подвір’я"></activiti:value>
-        </activiti:formProperty>        
+        </activiti:formProperty>
         <activiti:formProperty id="aReason" name="Уточніть мету отримання кредиту" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="dSumCredit" name="Бажана сума кредиту, цифрами" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSumCredit" name="Бажана сума кредиту, ця ж сума прописом" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="asWork" name="Працюєте" type="enum" writable="false">
           <activiti:value id="yes" name="Так"></activiti:value>
           <activiti:value id="no" name="Ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Місце роботи та посада" type="string" writable="false"></activiti:formProperty>
-
-
         <activiti:formProperty id="decide1" name="Рішення відповідність наданих даних" type="enum" required="true">
           <activiti:value id="accept" name="Дані відповідають вимогам"></activiti:value>
           <activiti:value id="reject" name="Послуга не може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги зазначте підставу для відмови" type="textArea"></activiti:formProperty>
-        
         <activiti:formProperty id="sShapka736" name="підпис в шапке; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAreaAdjective" name="населений пункт ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/golopristanskiy_736_print.html]; ;bVisible=false" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
-
-		<activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersAdresPrint" name="Маркер адреса принтформы" type="markers" default="${markerService.loadFromFile('adress_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersPrint1" name="Для прінтформи" type="markers" default="${markerService.loadFromFile('mvk/golopristanskiyRDA_736_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>
-				${bankId_scan_passport},
-            	${nFilePetition}
-            </activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},
+            	${nFilePetition}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -248,17 +223,12 @@
     </serviceTask>
     <sequenceFlow id="flow40" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow66" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_golopristanskiy_736">
     <bpmndi:BPMNPlane bpmnElement="golopristanskiy_736" id="BPMNPlane_golopristanskiy_736">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="37.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="69.0" width="132.0" x="120.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="110.0" y="76.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="69.0" width="137.0" x="303.0" y="20.0"></omgdc:Bounds>
@@ -281,18 +251,6 @@
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="107.0" y="144.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="85.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="54.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="125.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="124.0" y="144.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="252.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="54.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow56" id="BPMNEdge_flow56">
         <omgdi:waypoint x="440.0" y="54.0"></omgdi:waypoint>
         <omgdi:waypoint x="489.0" y="54.0"></omgdi:waypoint>
@@ -329,6 +287,10 @@
         <omgdi:waypoint x="210.0" y="236.0"></omgdi:waypoint>
         <omgdi:waypoint x="124.0" y="236.0"></omgdi:waypoint>
         <omgdi:waypoint x="124.0" y="179.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
+        <omgdi:waypoint x="85.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="303.0" y="54.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

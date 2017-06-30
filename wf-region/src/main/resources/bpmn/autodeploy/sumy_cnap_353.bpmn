@@ -22,53 +22,50 @@
         <activiti:formProperty id="nFile3" name="Документи на право проведення будівельних, ремонтних та інших робіт;(у разі необхідності)" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення співробітнику ЦНАПа про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>ms@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[ms@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення с приводу проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення с приводу проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянина про доставку звернення до ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення с приводу проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення с приводу проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:425:2]&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2]<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -101,7 +98,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -115,25 +112,25 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-&lt;/p&gt;
-&lt;p&gt;${sDecisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення було відхилено.</p>
+<p>Причина в наступному: 
+</p>
+<p>${sDecisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:425:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2],<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -148,23 +145,23 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - відправлене в департамент інфраструктури міста Сумської міської ради.&lt;br /&gt;
-Спеціалісти повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-Номер Вашого замовлення: ${sNumberCnap}&lt;br /&gt;
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt; 
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - відправлене в департамент інфраструктури міста Сумської міської ради.<br />
+Спеціалісти повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.<br /> 
+Номер Вашого замовлення: ${sNumberCnap}<br />
+</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]<br /> 
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:425:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2],<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -194,7 +191,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -206,24 +203,24 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;По Вашому зверненню щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - сформована комісія у складі: представників  департаменту інфраструктури міста Сумської міської ради, представника Державної екологічної інспекції.&lt;br /&gt;
-При подачі звернення Ви обрали: "Погоджуюсь брати участь у роботі комісії".&lt;br /&gt; 
-Дата та час обстеження місця розташування зелених насаджень комісією: &lt;b&gt;${sDateOutput}&lt;/b&gt;&lt;br /&gt;
-Адреса проведення обстеження зелених насаджень: &lt;i&gt;${sAdress2}&lt;/i&gt;&lt;br /&gt;
-&lt;/p&gt;
-Телефон для довідок: (0542) 70-05-90&lt;br /&gt; 
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>По Вашому зверненню щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - сформована комісія у складі: представників  департаменту інфраструктури міста Сумської міської ради, представника Державної екологічної інспекції.<br />
+При подачі звернення Ви обрали: "Погоджуюсь брати участь у роботі комісії".<br /> 
+Дата та час обстеження місця розташування зелених насаджень комісією: <b>${sDateOutput}</b><br />
+Адреса проведення обстеження зелених насаджень: <i>${sAdress2}</i><br />
+</p>
+Телефон для довідок: (0542) 70-05-90<br /> 
 [pattern/mail/_common_signature_start.html]
-Департамент інфраструктури міста Сумської міської ради,&lt;br /&gt;
+Департамент інфраструктури міста Сумської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -277,7 +274,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFileDoc}</activiti:expression>
+            <activiti:expression><![CDATA[${nFileDoc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -290,55 +287,45 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - опрацьовано. &lt;br /&gt;
-Копія акту (ордеру) у додатку до цього листа.&lt;br/&gt;
-Ви можете отримати акт (ордер) особисто за адресою:&lt;br/&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:425:3]&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо проведення обстежень зелених насаджень, оформлення і надання відповідних документів на їх видалення - опрацьовано. <br />
+Копія акту (ордеру) у додатку до цього листа.<br/>
+Ви можете отримати акт (ордер) особисто за адресою:<br/>
+[pattern_dictonary:dnepr_reg_cnap.csv:425:3]<br />
 При собі треба мати документ, що посвідчує особу.
-&lt;/p&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:425:5]&lt;br /&gt; 
-&lt;br /&gt;
-Графік роботи:&lt;br /&gt;
-[pattern_dictonary:dnepr_reg_cnap.csv:425:4]&lt;br /&gt;
+</p>
+[pattern_dictonary:dnepr_reg_cnap.csv:425:5]<br /> 
+<br />
+Графік роботи:<br />
+[pattern_dictonary:dnepr_reg_cnap.csv:425:4]<br />
 [pattern/mail/_common_signature_start.html]
-[pattern_dictonary:dnepr_reg_cnap.csv:425:2],&lt;br /&gt;
+[pattern_dictonary:dnepr_reg_cnap.csv:425:2],<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFileDoc}</activiti:expression>
+          <activiti:expression><![CDATA[${nFileDoc}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow15" sourceRef="usertask4" targetRef="servicetask7"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow16" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow17" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_sumy_cnap_353">
     <bpmndi:BPMNPlane bpmnElement="sumy_cnap_353" id="BPMNPlane_sumy_cnap_353">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="120.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="130.0" y="102.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="142.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="71.0" width="105.0" x="260.0" y="102.0"></omgdc:Bounds>
@@ -382,17 +369,6 @@
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="623.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="187.0" y="223.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="105.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="137.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="235.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="260.0" y="137.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="365.0" y="137.0"></omgdi:waypoint>
         <omgdi:waypoint x="390.0" y="137.0"></omgdi:waypoint>
@@ -463,8 +439,8 @@
         <omgdi:waypoint x="185.0" y="640.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="205.0" y="172.0"></omgdi:waypoint>
-        <omgdi:waypoint x="204.0" y="223.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="137.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

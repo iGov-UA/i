@@ -61,8 +61,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний колего!</strong><br /><br />
 У Вас в черзі на обробку нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
@@ -87,8 +86,7 @@
           <activiti:expression><![CDATA[${rishen},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
 На жаль, Ваше звернення щодо видачі довідки про адресу нерухомого майна відхилено через недостатню або неправильну інформацію.<br />
 ${comment_2}<br />
@@ -121,8 +119,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${rishen}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</strong><br /><br />
 Копія довідки про адресу нерухомого майна знаходиться у додатку до листа.<br />
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати довідку собисто.<br />
@@ -149,11 +146,6 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow33" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow34" name="+" sourceRef="exclusivegateway2" targetRef="servicetask8">
@@ -165,10 +157,8 @@ ${sNameOrgan}<br />
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow37" sourceRef="servicetask8" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
-    <endEvent id="endevent5" name="End"></endEvent>
-    <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent5"></sequenceFlow>
-    <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow43" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_lviv_mvk_268_dovidka">
     <bpmndi:BPMNPlane bpmnElement="lviv_mvk_268_dovidka" id="BPMNPlane_lviv_mvk_268_dovidka">
@@ -187,25 +177,12 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="69.0" width="129.0" x="391.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="66.0" width="131.0" x="90.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="59.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="436.0" y="117.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
         <omgdc:Bounds height="35.0" width="35.0" x="285.0" y="197.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="113.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="57.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="53.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="457.0" y="86.0"></omgdi:waypoint>
         <omgdi:waypoint x="456.0" y="117.0"></omgdi:waypoint>
@@ -232,17 +209,13 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="302.0" y="170.0"></omgdi:waypoint>
         <omgdi:waypoint x="302.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="105.0" y="89.0"></omgdi:waypoint>
-        <omgdi:waypoint x="104.0" y="113.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="221.0" y="53.0"></omgdi:waypoint>
-        <omgdi:waypoint x="237.0" y="54.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="366.0" y="54.0"></omgdi:waypoint>
         <omgdi:waypoint x="394.0" y="53.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="57.0" y="53.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="54.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

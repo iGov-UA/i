@@ -193,13 +193,7 @@
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Сповіщення про реєстрацію запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -212,8 +206,7 @@
           <activiti:string><![CDATA[Декларація про готовність об'єкта до експлуатації.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br><br>
 Ваше звернення зареєстроване, буде передано до департаменту містобудування та архітектури м.Києва.
 Опрацювання впродовж 30 календарних днів.<br>
@@ -235,7 +228,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Внесення інформації до системи звернень ЦНАП (присвоєння реєстраційного номеру)" activiti:candidateGroups="cnap_kiev">
       <extensionElements>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
@@ -1827,8 +1819,7 @@
           <activiti:string><![CDATA[Декларація про готовність об'єкта до експлуатації.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) було відхилено.</p>
 <p>Причина в наступному:</p>
@@ -2850,8 +2841,7 @@
           <activiti:string><![CDATA[Декларація про готовність об'єкта до експлуатації.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 <p>
 Ваше звернення щодо затвердження проекту відведення земельної ділянки та надання її у користування (оренду) - опрацьовано. <br>
@@ -2888,21 +2878,12 @@
     <scriptTask id="scripttask1" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kyiv_mda_928">
     <bpmndi:BPMNPlane bpmnElement="kyiv_mda_928" id="BPMNPlane_kyiv_mda_928">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="45.0" y="41.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="75.0" width="131.0" x="130.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="210.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="207.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="75.0" width="131.0" x="300.0" y="130.0"></omgdc:Bounds>
@@ -2967,14 +2948,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="62.0" y="76.0"></omgdi:waypoint>
         <omgdi:waypoint x="62.0" y="129.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="225.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="224.0" y="220.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="261.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="300.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="431.0" y="167.0"></omgdi:waypoint>
@@ -3058,7 +3031,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="115.0" y="165.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

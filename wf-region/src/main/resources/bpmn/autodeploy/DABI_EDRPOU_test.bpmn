@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="DABI_EDRPOU_test" name="Повідомлення про початок виконання будівельних робіт на об'єкті I-ІІ категорії" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім`я заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTextPost" name=" ; ;labelType=info" type="label" default="Для ЕДРПУО можна використовувати код 05393116"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_6" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asGPodrOsoba" name="Будівництво здійснює" type="enum" required="true">
+          <activiti:value id="sEnamGPodrFiz" name="Заявник особисто (Господарським способом)"></activiti:value>
+          <activiti:value id="sEnamGPodrUr" name="Генеральний підрядник - юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_011" name="Код ЄДРПОУ підрядника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_011" name="Повне найменування юридичної особи підрядника" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_011" name="Юридична адреса" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_011" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="markerPidr" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIGPidr.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/EDRPO_script_test.html"></activiti:formProperty>
+        
+      </extensionElements>
+    </startEvent>
+    
+    
+    <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="test_EDRPOU">
+      <extensionElements>
+        
+        <activiti:formProperty id="markersLine_6" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asGPodrOsoba" name="Будівництво здійснює" type="enum" writable="false">
+          <activiti:value id="sEnamGPodrFiz" name="Заявник особисто (Господарським способом)"></activiti:value>
+          <activiti:value id="sEnamGPodrUr" name="Генеральний підрядник - юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_011" name="Код ЄДРПОУ підрядника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_011" name="Повне найменування юридичної особи підрядника; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_011" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="Успіх! Заява оформлена вірно"></activiti:value>
+          <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Повідомлення з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/EDRPO_script_test.html] ; ;bVisible=false" type="string" default="Повідомлення про будівництво" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent7" name="End"></endEvent>
+    <sequenceFlow id="flow79" sourceRef="usertask1" targetRef="endevent7"></sequenceFlow>
+    <sequenceFlow id="flow80" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_DABI_EDRPOU_test">
+    <bpmndi:BPMNPlane bpmnElement="DABI_EDRPOU_test" id="BPMNPlane_DABI_EDRPOU_test">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="530.0" y="81.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="649.0" y="71.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
+        <omgdc:Bounds height="35.0" width="35.0" x="799.0" y="81.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
+        <omgdi:waypoint x="754.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="799.0" y="98.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow80" id="BPMNEdge_flow80">
+        <omgdi:waypoint x="565.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="649.0" y="98.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

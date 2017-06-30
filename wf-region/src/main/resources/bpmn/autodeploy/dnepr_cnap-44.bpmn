@@ -24,31 +24,22 @@
         <activiti:formProperty id="eventTime1" name="Час закінчення проведення заходу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="eventSize" name="Очікувана кількість присутніх" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="golovniy" name="Відповідальна особа за проведення релігійного масового заходу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="plan" name="План проведення релігійного заходу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oxr" name="Копія договору на охорону громадського порядку з Дніпропетровським міським управлінням ГУМВС України у Дніпропетровській області (у разі необхідності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="vrach" name="Копія договору з департаментом охорони здоров’я Дніпропетровської міської ради (у разі необхідності)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="stroi" name="Копія договору з департаментом комунального господарства та капітального будівництва Дніпропетровської міської ради (у разі необхідності)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="plan" name="План проведення релігійного заходу ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oxr" name="Копія договору на охорону громадського порядку з Дніпропетровським міським управлінням ГУМВС України у Дніпропетровській області (у разі необхідності) ; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="vrach" name="Копія договору з департаментом охорони здоров’я Дніпропетровської міської ради (у разі необхідності) ; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="stroi" name="Копія договору з департаментом комунального господарства та капітального будівництва Дніпропетровської міської ради (у разі необхідності) ; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="cnapChoose" name="Оберіть ЦНАП, в якому Вам буде зручно отримати відповідь" type="enum" required="true">
           <activiti:value id="prav" name="ЦНАП „Правобережний”, просп. Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, просп. Газети „Правда”, 42"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="text" name="Зверніть увагу" type="label" default="При замовлені послуги даю згоду відповідно до Закону України „Про захист персональних даних” на обробку моїх особистих персональних даних у картотеках та/або за допомогою інформаційно-телекомунікаційних систем з метою підготовки відповідно до вимог законодавства статистичної, адміністративної та іншої інформації."></activiti:formProperty>
-        <activiti:formProperty id="postlev" name="адреси e-mail ЦНАП Лівобережний" type="string" default="koffeek@iua" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="postprav" name="адреси e-mail ЦНАП Правобережний" type="string" default="koffeek1@yandex.ru" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="postlev" name="адреси e-mail ЦНАП Лівобережний" type="string" default="Luda17_@ukr.net, Lyla1710@ukr.net, Hellen5565@mail.ru, lntsu@ukr.net" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="postprav" name="адреси e-mail ЦНАП Правобережний" type="string" default="woobraja@mail.ru, 7751138@rambler.ru" readable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="mailtask1"></sequenceFlow>
     <serviceTask id="mailtask1" name="Повідомлення про успішне замовлення" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -60,11 +51,11 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
+          <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -80,7 +71,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
+        #mailer-body p > label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -88,51 +79,51 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-&lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-										&lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-										&lt;p&gt;
-											Ваше зверення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд було успішно зареєстроване.&lt;br /&gt;
+    </style>
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov.org.ua</b><br />портал державних послуг</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+<tr>
+                    <td align="center">
+                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 35px 120px;">
+										<h3>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+										<p>
+											Ваше зверення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд було успішно зареєстроване.<br />
 											Спеціалісти Центру надання адміністративних послуг Дніпропетровської міської ради повинні дати відповідь найближчім часом.
-										&lt;/p&gt;
- 										&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-										&lt;p&gt;
-										З повагою,&lt;br /&gt;
-										Центр надання адміністративних послуг&lt;br/&gt; 
-										Дніпропетровської міської ради,&lt;br/&gt;
-										Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
+										</p>
+ 										<hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
+										<p>
+										З повагою,<br />
+										Центр надання адміністративних послуг<br/> 
+										Дніпропетровської міської ради,<br/>
+										Команда Порталу державних послуг <a href="#current-page">iGov.org.ua</a>.
 
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-						&lt;/table&gt;
+                                </td>
+                            </tr>
+						</table>
                      
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+                    </td>
+                </tr>
+                <!--content end-->
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -142,7 +133,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${cnapChoose=='prav'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="mailtask4" name="Повідомлення ЦНАП про нове звернення ПРАВ" activiti:type="mail">
-     <extensionElements>
+      <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${postprav}]]></activiti:expression>
         </activiti:field>
@@ -159,11 +150,11 @@
           <activiti:string><![CDATA[zhigan.roman@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
+          <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -179,7 +170,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
+        #mailer-body p > label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -187,49 +178,49 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-&lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-										&lt;h3&gt;Шановний колего!&lt;/h3&gt;
-										&lt;p&gt;
-											У Вас в черзі на обробку зареєстровано нове звернення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд.&lt;br /&gt;
-											Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-											Опрацюйте, будь ласка, це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-										&lt;/p&gt;
-										&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-										&lt;p&gt;
-										З повагою,&lt;br /&gt;
-										Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-								&lt;/td&gt;
-                            &lt;/tr&gt;
-                        &lt;/table&gt;
+    </style>
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov.org.ua</b><br />портал державних послуг</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+<tr>
+                    <td align="center">
+                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 35px 120px;">
+										<h3>Шановний колего!</h3>
+										<p>
+											У Вас в черзі на обробку зареєстровано нове звернення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд.<br />
+											Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+											Опрацюйте, будь ласка, це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
+										</p>
+										<hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
+										<p>
+										З повагою,<br />
+										Команда Порталу державних послуг <a href="#current-page">iGov.org.ua</a>.
+								</td>
+                            </tr>
+                        </table>
                      
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+                    </td>
+                </tr>
+                <!--content end-->
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -255,11 +246,11 @@
           <activiti:string><![CDATA[zhigan.roman@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
+          <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -275,7 +266,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
+        #mailer-body p > label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -283,49 +274,49 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-&lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-										&lt;h3&gt;Шановний колего!&lt;/h3&gt;
-										&lt;p&gt;
-											У Вас в черзі на обробку зареєстровано нове звернення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд.&lt;br /&gt;
-											Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-											Опрацюйте, будь ласка, це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
-										&lt;/p&gt;
-										&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-										&lt;p&gt;
-										З повагою,&lt;br /&gt;
-										Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-								&lt;/td&gt;
-                            &lt;/tr&gt;
-                        &lt;/table&gt;
+    </style>
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov.org.ua</b><br />портал державних послуг</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+<tr>
+                    <td align="center">
+                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 35px 120px;">
+										<h3>Шановний колего!</h3>
+										<p>
+											У Вас в черзі на обробку зареєстровано нове звернення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд.<br />
+											Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+											Опрацюйте, будь ласка, це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
+										</p>
+										<hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
+										<p>
+										З повагою,<br />
+										Команда Порталу державних послуг <a href="#current-page">iGov.org.ua</a>.
+								</td>
+                            </tr>
+                        </table>
                      
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+                    </td>
+                </tr>
+                <!--content end-->
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -354,7 +345,7 @@
           <activiti:value id="prav" name="ЦНАП „Правобережний”, просп. Карла Маркса, 75"></activiti:value>
           <activiti:value id="lev" name="ЦНАП „Лівобережний”, просп. Газети „Правда”, 42"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення адміністратора" type="enum">
+        <activiti:formProperty id="decide" name="Рішення адміністратора" type="enum" required="true">
           <activiti:value id="accept" name="Взяти в роботу і відправити опис документів"></activiti:value>
           <activiti:value id="decline" name="Відмовити у реєстрації звернення"></activiti:value>
         </activiti:formProperty>
@@ -362,12 +353,18 @@
         <activiti:formProperty id="reestr_numb" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_reestr" name="Укажіть дату реєстрації зверення у форматі ДД/ММ/РРРР" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="pib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="opis" name="Опис прийнятих документів" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_44.html]; ;bVisible=false" type="string" default="Клопотання про проведення заходу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="opis" name="Опис прийнятих документів ; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_44.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Клопотання про проведення заходу" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="oxr" name="Копія договору на охорону громадського порядку з Дніпропетровським міським управлінням ГУМВС України у Дніпропетровській області (у разі необхідності) ; ;bNew=true" type="file" writable="false" default=" "></activiti:formProperty>
+        <activiti:formProperty id="vrach" name="Копія договору з департаментом охорони здоров’я Дніпропетровської міської ради (у разі необхідності) ; ;bNew=true" type="file" writable="false" default=" "></activiti:formProperty>
+        <activiti:formProperty id="stroi" name="Копія договору з департаментом комунального господарства та капітального будівництва Дніпропетровської міської ради (у разі необхідності) ; ;bNew=true" type="file" writable="false" default=" "></activiti:formProperty>
+        <activiti:formProperty id="plan" name="План проведення релігійного заходу ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${plan},${oxr},${vrach},${stroi},${dovir}</activiti:expression>
+            <activiti:expression><![CDATA[${plan},${oxr},${vrach},${stroi},${dovir}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -380,7 +377,7 @@
     <serviceTask id="mailtask2" name="Відмова у реєстрації звернення" activiti:type="mail">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -392,11 +389,11 @@
           <activiti:string><![CDATA[UTF-8]]></activiti:string>
         </activiti:field>
         <activiti:field name="html">
-          <activiti:expression>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head lang="ru"&gt;
-    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt;
-    &lt;style type="text/css"&gt;
+          <activiti:expression><![CDATA[<!DOCTYPE html>
+<html>
+<head lang="ru">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';}
         #mailer-body div,
@@ -412,7 +409,7 @@
         #mailer-body a {color: #2F70AF; text-decoration: none;}
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
+        #mailer-body p > label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -420,57 +417,57 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    &lt;tbody&gt;
-    &lt;tr&gt;
-        &lt;td align="center"&gt;
-            &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.org.ua&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-&lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, змушені Вам відмовити в реєстрації звернення.&lt;/p&gt;
-									&lt;p&gt;
+    </style>
+</head>
+<body>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    <tbody>
+    <tr>
+        <td align="center">
+            <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov.org.ua</b><br />портал державних послуг</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+<tr>
+                    <td align="center">
+                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 35px 120px;">
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        На жаль, змушені Вам відмовити в реєстрації звернення.</p>
+									<p>
 										Причина в тому, що документів недостатньо, або вони заповнені невірно.
-									&lt;/p&gt;
-                            		&lt;p&gt;
-                            		Коментар державного службовця:&lt;br/&gt; 
+									</p>
+                            		<p>
+                            		Коментар державного службовця:<br/> 
                             			${comment}
-                            		&lt;/p&gt;
-                                    &lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;
-                                    &lt;p&gt;
-                                        З повагою,&lt;br /&gt;
-										Центр надання адміністративних послуг&lt;br/&gt; 
+                            		</p>
+                                    <hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />
+                                    <p>
+                                        З повагою,<br />
+										Центр надання адміністративних послуг<br/> 
 										Дніпропетровської міської ради.
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
+                                </td>
+                            </tr>
                            
                           
 
-                        &lt;/table&gt;
+                        </table>
                      
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            &lt;/table&gt;
-        &lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/body&gt;
-&lt;/html&gt;</activiti:expression>
+                    </td>
+                </tr>
+                <!--content end-->
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -485,13 +482,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;style type="text/css"&gt;
+          <activiti:expression><![CDATA[<style type="text/css">
         body {margin: 0; padding: 0;}
         #mailer-body {font: 400 18px/20px 'Calibri';} 
         #mailer-body div, #mailer-body p, #mailer-body span, #mailer-body strong, #mailer-body b, #mailer-body em, #mailer-body i, #mailer-body a, #mailer-body li, #mailer-body td {-webkit-text-size-adjust: none;}
@@ -499,7 +496,7 @@
         #mailer-body a:hover {color: #2e5e9c; text-decoration: underline;}
         #mailer-body label {height: 20px; line-height: 20px; position: relative; 
 		cursor: pointer; display: inline-block;}
-        #mailer-body p &gt; label {width: 40px;}
+        #mailer-body p > label {width: 40px;}
         #mailer-body label input[type='radio'] {width: 16px; height: 16px; top: -1px; float: left; position: relative; opacity: 0;}
         #mailer-body label input[type='radio'] + span {position: absolute; margin: 0 15px 0 0; font-weight: 700; font-size: 16px;}
         #mailer-body label input[type='radio'] + span:before {content: " "; width: 22px; height: 20px; background: url(http://shots.jotform.com/elton/radio_flat.png) left -1px no-repeat; left: -25px; display: block; position: absolute;}
@@ -507,56 +504,56 @@
         #mailer-body textarea {width: 548px; padding: 5px; min-height: 65px; height: 65px; max-height: 100px; margin: 10px 0 0 0; border-radius: 3px; border: 1px solid #dddddd; resize: vertical;}
         #mailer-body textarea:focus {outline: 0;}
         #mailer-body button {height: 30px; padding: 0 25px; border: 0; border-radius: 3px; line-height: 30px; font-size: 14px; font-weight: 600; background: #2F70AF; cursor: pointer; color: white; display: inline-block;}
-    &lt;/style&gt;
-	&lt;table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body"&gt;
-    	&lt;tbody&gt;
-    		&lt;tr&gt;
-        		&lt;td align="center"&gt;
-            		&lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                &lt;!--header line statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"&gt;&lt;b style="font-size: 24px;"&gt;iGov.&lt;span&gt;org.&lt;span&gt;ua&lt;/span&gt;&lt;/span&gt;&lt;/b&gt;&lt;br /&gt;портал державних послуг&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--header line end--&gt;
-                &lt;!--content statrs--&gt;
-                &lt;tr&gt;
-                    &lt;td align="center"&gt;
-                        &lt;table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;"&gt;
-                            &lt;tr&gt;
-                                &lt;td style="padding: 35px 120px;"&gt;
-                                   &lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-								&lt;p&gt;
+    </style>
+	<table width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse;" id="mailer-body">
+    	<tbody>
+    		<tr>
+        		<td align="center">
+            		<table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                <!--header line statrs-->
+                <tr>
+                    <td bgcolor="#5CA3CB" style="padding: 35px 120px; color: white;"><b style="font-size: 24px;">iGov.<span>org.<span>ua</span></span></b><br />портал державних послуг</td>
+                </tr>
+                <!--header line end-->
+                <!--content statrs-->
+                <tr>
+                    <td align="center">
+                        <table width="800" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 35px 120px;">
+                                   <h3>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+								<p>
 									Ваше зверення щодо надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд було передано у роботу.
-								&lt;/p&gt;		
-								&lt;p&gt;
-									Спеціалісти державного Органу повинні дати відповідь найближчім часом:&lt;br /&gt; 
-									У разі надання погодження або заперечення – 10 календарних днів.&lt;br /&gt; 
+								</p>		
+								<p>
+									Спеціалісти державного Органу повинні дати відповідь найближчім часом:<br /> 
+									У разі надання погодження або заперечення – 10 календарних днів.<br /> 
 									У разі підготовки розпорядження міського голови – 30 календарних днів.
-								&lt;/p&gt;
-								&lt;hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" /&gt;	
-								&lt;p&gt;
+								</p>
+								<hr style="width: 100%; height: 0; margin: 30px 0 15px 0; background: #dddddd; border: 0; border-bottom: 1px solid #dddddd;" />	
+								<p>
 									Файл, що додається містить опис наданих Вами документів.
-								&lt;/p&gt;
-								&lt;p&gt;	
-										З повагою,&lt;br /&gt;
-										Центр надання адміністративних послуг&lt;br/&gt; 
-										Дніпропетровської міської ради,&lt;br/&gt;
-										Команда Порталу державних послуг &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;.
-								&lt;/p&gt;
-                                &lt;/td&gt;
-                            &lt;/tr&gt;
-                            &lt;/table&gt;
-                     &lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;!--content end--&gt;
-            	&lt;/table&gt;
-       		 &lt;/td&gt;
-    		&lt;/tr&gt;
-   		 &lt;/tbody&gt;
-	&lt;/table&gt;</activiti:expression>
+								</p>
+								<p>	
+										З повагою,<br />
+										Центр надання адміністративних послуг<br/> 
+										Дніпропетровської міської ради,<br/>
+										Команда Порталу державних послуг <a href="#current-page">iGov.org.ua</a>.
+								</p>
+                                </td>
+                            </tr>
+                            </table>
+                     </td>
+                </tr>
+                <!--content end-->
+            	</table>
+       		 </td>
+    		</tr>
+   		 </tbody>
+	</table>]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${opis}</activiti:expression>
+          <activiti:expression><![CDATA["${opis}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -584,7 +581,7 @@
           <activiti:value id="decline" name="Готове заперечення в проведенні заходу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment1" name="Коментар адміністратора у разі заперечення в проведенні заходу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow14" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -595,7 +592,7 @@
     <serviceTask id="servicetask3" name="Дозвіл готовий на правому" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -604,40 +601,39 @@
           <activiti:string><![CDATA[Звернення на тему: Надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ваш дозвіл для релігійних організацій на проведення релігійних заходів, які проводяться поза межами культових споруд готовий.&lt;br /&gt;
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл особисто під підпис у ЦНАП.&lt;br /&gt;
-									При собі треба мати:&lt;br /&gt;
-									1. Документ, що посвідчує особу.&lt;br /&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за &lt;a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing"&gt;посиланням&lt;/a&gt;.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ваш дозвіл для релігійних організацій на проведення релігійних заходів, які проводяться поза межами культових споруд готовий.<br />
+                              		</p>
+                              		<p>
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл особисто під підпис у ЦНАП.<br />
+									При собі треба мати:<br />
+									1. Документ, що посвідчує особу.<br />
+									2. Для уповоноваженої особи - довіренність.<br />
+									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за <a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing">посиланням</a>.<br />
 									4. План проведення релігійного заходу, а також інші документи, що були завантажені при подачі заяви на сайті.
-									&lt;/p&gt;
-									&lt;p&gt;
-                             		ЦНАП „Правобережний”, м. Дніпропетровськ, просп. Карла Маркса, 75 (1-й поверх)&lt;br /&gt;
-									Графік роботи ЦНАП „Правобережний”:&lt;br /&gt;
-									понеділок -  з 9.00 до 18.00;&lt;br /&gt;
-									вівторок – з 9.00 до 20.00;&lt;br /&gt;
-									середа  - з 9.00 до 18.00;&lt;br /&gt;
-									четвер – з 9.00 до 20.00;&lt;br /&gt;
-									п’ятниця – з 9.00 до 16.45;&lt;br /&gt;
-									субота – з 9.00 до 16.00,&lt;br /&gt;
+									</p>
+									<p>
+                             		ЦНАП „Правобережний”, м. Дніпропетровськ, просп. Карла Маркса, 75 (1-й поверх)<br />
+									Графік роботи ЦНАП „Правобережний”:<br />
+									понеділок -  з 9.00 до 18.00;<br />
+									вівторок – з 9.00 до 20.00;<br />
+									середа  - з 9.00 до 18.00;<br />
+									четвер – з 9.00 до 20.00;<br />
+									п’ятниця – з 9.00 до 16.45;<br />
+									субота – з 9.00 до 16.00,<br />
 									крім святкових днів.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг&lt;br/&gt; 
-										Дніпропетровської міської ради,&lt;br/&gt;
+										Центр надання адміністративних послуг<br/> 
+										Дніпропетровської міської ради,<br/>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]
-		  </activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}</activiti:expression>
+          <activiti:expression><![CDATA["${rishen}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -649,7 +645,7 @@
     <serviceTask id="servicetask4" name="Дозвіл готовий на лівому" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -658,39 +654,38 @@
           <activiti:string><![CDATA[Звернення на тему: Надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                              		Ваш дозвіл для релігійних організацій на проведення релігійних заходів, які проводяться поза межами культових споруд готовий.&lt;br /&gt;
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл особисто під підпис у ЦНАП.&lt;br /&gt;
-									При собі треба мати:&lt;br /&gt;
-									1. Документ, що посвідчує особу.&lt;br /&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за &lt;a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing"&gt;посиланням&lt;/a&gt;.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                              		Ваш дозвіл для релігійних організацій на проведення релігійних заходів, які проводяться поза межами культових споруд готовий.<br />
+                              		</p>
+                              		<p>
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати дозвіл особисто під підпис у ЦНАП.<br />
+									При собі треба мати:<br />
+									1. Документ, що посвідчує особу.<br />
+									2. Для уповоноваженої особи - довіренність.<br />
+									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за <a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing">посиланням</a>.<br />
 									4. План проведення релігійного заходу, а також інші документи, що були завантажені при подачі заяви на сайті.
-									&lt;/p&gt;
-									&lt;p&gt;
-									ЦНАП „Лівобережний”: м. Дніпропетровськ, просп. Газети „Правда”, 42 (1-й та 5-й поверхи)&lt;br/&gt;
-									Графік роботи ЦНАП „Лівобережний”:&lt;br/&gt;
-									понеділок -  з 9.00 до 18.00;&lt;br/&gt;
-									вівторок – з 9.00 до 18.00;&lt;br/&gt;
-									середа  - з 9.00 до 18.00;&lt;br/&gt;
-									четвер – з 9.00 до 18.00;&lt;br/&gt;
-									п’ятниця – з 9.00 до 16.45;&lt;br/&gt;
-									крім святкових днів.&lt;/p&gt;
+									</p>
+									<p>
+									ЦНАП „Лівобережний”: м. Дніпропетровськ, просп. Газети „Правда”, 42 (1-й та 5-й поверхи)<br/>
+									Графік роботи ЦНАП „Лівобережний”:<br/>
+									понеділок -  з 9.00 до 18.00;<br/>
+									вівторок – з 9.00 до 18.00;<br/>
+									середа  - з 9.00 до 18.00;<br/>
+									четвер – з 9.00 до 18.00;<br/>
+									п’ятниця – з 9.00 до 16.45;<br/>
+									крім святкових днів.</p>
                             
                                     [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг&lt;br/&gt; 
-										Дніпропетровської міської ради,&lt;br/&gt;
+										Центр надання адміністративних послуг<br/> 
+										Дніпропетровської міської ради,<br/>
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]
-		  </activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}</activiti:expression>
+          <activiti:expression><![CDATA["${rishen}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -701,7 +696,7 @@
     <serviceTask id="servicetask5" name="Відмова готова на правому" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -710,37 +705,36 @@
           <activiti:string><![CDATA[Звернення на тему: Надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, змушені Вам відмовити в наданні послуги.&lt;/p&gt;
-									&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати заперечення в проведенні заходу з вказаними причинами особисто під підпис у ЦНАП.&lt;br /&gt;
-									При собі треба мати:&lt;br /&gt;
-									1. Документ, що посвідчує особу.&lt;br /&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за &lt;a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing"&gt;посиланням&lt;/a&gt;.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        На жаль, змушені Вам відмовити в наданні послуги.</p>
+									<p>
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати заперечення в проведенні заходу з вказаними причинами особисто під підпис у ЦНАП.<br />
+									При собі треба мати:<br />
+									1. Документ, що посвідчує особу.<br />
+									2. Для уповоноваженої особи - довіренність.<br />
+									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за <a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing">посиланням</a>.<br />
 									4. План проведення релігійного заходу, а також інші документи, що були завантажені при подачі заяви на сайті.
-									&lt;/p&gt;
-									&lt;p&gt;
-										ЦНАП „Правобережний”, м. Дніпропетровськ, просп. Карла Маркса, 75 (1-й поверх)&lt;br/&gt;
-										Графік роботи ЦНАП „Правобережний”:&lt;br/&gt;
-										понеділок -  з 9.00 до 18.00;&lt;br/&gt;
-										вівторок – з 9.00 до 20.00;&lt;br/&gt;
-										середа  - з 9.00 до 18.00;&lt;br/&gt;
-										четвер – з 9.00 до 20.00;&lt;br/&gt;
-										п’ятниця – з 9.00 до 16.45;&lt;br/&gt;
-										субота – з 9.00 до 16.00,&lt;br/&gt;
-										крім святкових днів.&lt;/p&gt;
+									</p>
+									<p>
+										ЦНАП „Правобережний”, м. Дніпропетровськ, просп. Карла Маркса, 75 (1-й поверх)<br/>
+										Графік роботи ЦНАП „Правобережний”:<br/>
+										понеділок -  з 9.00 до 18.00;<br/>
+										вівторок – з 9.00 до 20.00;<br/>
+										середа  - з 9.00 до 18.00;<br/>
+										четвер – з 9.00 до 20.00;<br/>
+										п’ятниця – з 9.00 до 16.45;<br/>
+										субота – з 9.00 до 16.00,<br/>
+										крім святкових днів.</p>
                                     [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг&lt;br/&gt; 
-										Дніпропетровської міської ради,&lt;br/&gt;
+										Центр надання адміністративних послуг<br/> 
+										Дніпропетровської міської ради,<br/>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]
-		 </activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}</activiti:expression>
+          <activiti:expression><![CDATA["${rishen}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -751,7 +745,7 @@
     <serviceTask id="servicetask6" name="Відмова готова на лівому" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -760,58 +754,55 @@
           <activiti:string><![CDATA[Звернення на тему: Надання дозволу релігійним організаціям на проведення релігійних заходів, які проводяться поза межами культових споруд]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, змушені Вам відмовити в наданні послуги.&lt;/p&gt;
-									&lt;p&gt;
-                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати заперечення в проведенні заходу з вказаними причинами особисто під підпис у ЦНАП.&lt;br /&gt;
-									При собі треба мати:&lt;br /&gt;
-									1. Документ, що посвідчує особу.&lt;br /&gt;
-									2. Для уповоноваженої особи - довіренність.&lt;br /&gt;
-									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за &lt;a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing"&gt;посиланням&lt;/a&gt;.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        На жаль, змушені Вам відмовити в наданні послуги.</p>
+									<p>
+                              		Ви або уповноважена Вами особа (при наявності довіреності) можете отримати заперечення в проведенні заходу з вказаними причинами особисто під підпис у ЦНАП.<br />
+									При собі треба мати:<br />
+									1. Документ, що посвідчує особу.<br />
+									2. Для уповоноваженої особи - довіренність.<br />
+									3. Роздруковану заяву, яку ви подавали в електронному вигляді, засвідчену особистим підписом керівника юридичної особи, фізичної особи - підприємця або уповноваженої ними особи. Зразок заяви можно знайти за <a href="https://drive.google.com/file/d/0B68lQ-z45GpYVnM1X29menpoQVk/view?usp=sharing">посиланням</a>.<br />
 									4. План проведення релігійного заходу, а також інші документи, що були завантажені при подачі заяви на сайті.
-									&lt;/p&gt;
-									&lt;p&gt;
-										ЦНАП „Лівобережний”: м. Дніпропетровськ, просп. Газети „Правда”, 42 (1-й та 5-й поверхи)&lt;br/&gt;
-									Графік роботи ЦНАП „Лівобережний”:&lt;br/&gt;
-									понеділок -  з 9.00 до 18.00;&lt;br/&gt;
-									вівторок – з 9.00 до 18.00;&lt;br/&gt;
-									середа  - з 9.00 до 18.00;&lt;br/&gt;
-									четвер – з 9.00 до 18.00;&lt;br/&gt;
-									п’ятниця – з 9.00 до 16.45;&lt;br/&gt;
-									крім святкових днів.&lt;/p&gt;
+									</p>
+									<p>
+										ЦНАП „Лівобережний”: м. Дніпропетровськ, просп. Газети „Правда”, 42 (1-й та 5-й поверхи)<br/>
+									Графік роботи ЦНАП „Лівобережний”:<br/>
+									понеділок -  з 9.00 до 18.00;<br/>
+									вівторок – з 9.00 до 18.00;<br/>
+									середа  - з 9.00 до 18.00;<br/>
+									четвер – з 9.00 до 18.00;<br/>
+									п’ятниця – з 9.00 до 16.45;<br/>
+									крім святкових днів.</p>
 									
                                    [pattern/mail/_common_signature_start.html]
-										Центр надання адміністративних послуг&lt;br/&gt; 
-										Дніпропетровської міської ради,&lt;br/&gt;
+										Центр надання адміністративних послуг<br/> 
+										Дніпропетровської міської ради,<br/>
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]
-		 </activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${rishen}</activiti:expression>
+          <activiti:expression><![CDATA["${rishen}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow19" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
-    </process>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="mailtask1"></sequenceFlow>
+  </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap-44">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap-44" id="BPMNPlane_dnepr_cnap-44">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="66.0" y="162.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="141.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="181.0" y="96.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
         <omgdc:Bounds height="71.0" width="111.0" x="190.0" y="162.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="225.0" y="281.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
+        <omgdc:Bounds height="66.0" width="111.0" x="285.0" y="350.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask3" id="BPMNShape_mailtask3">
         <omgdc:Bounds height="72.0" width="116.0" x="283.0" y="266.0"></omgdc:Bounds>
@@ -852,27 +843,29 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="60.0" width="105.0" x="787.0" y="333.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="225.0" y="281.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="mailtask4" id="BPMNShape_mailtask4">
-        <omgdc:Bounds height="66.0" width="111.0" x="285.0" y="350.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="45.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="66.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="156.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="198.0" y="131.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="171.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="190.0" y="197.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="245.0" y="233.0"></omgdi:waypoint>
         <omgdi:waypoint x="245.0" y="281.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="245.0" y="321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="245.0" y="383.0"></omgdi:waypoint>
+        <omgdi:waypoint x="285.0" y="383.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="48.0" width="100.0" x="245.0" y="321.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="396.0" y="383.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="388.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="233.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="265.0" y="301.0"></omgdi:waypoint>
+        <omgdi:waypoint x="283.0" y="302.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="48.0" width="100.0" x="265.0" y="301.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="399.0" y="302.0"></omgdi:waypoint>
@@ -887,7 +880,7 @@
         <omgdi:waypoint x="510.0" y="177.0"></omgdi:waypoint>
         <omgdi:waypoint x="510.0" y="127.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="441.0" y="127.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="441.0" y="127.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -898,7 +891,7 @@
         <omgdi:waypoint x="530.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="601.0" y="197.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="519.0" y="199.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="519.0" y="199.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
@@ -915,7 +908,7 @@
         <omgdi:waypoint x="1145.0" y="288.0"></omgdi:waypoint>
         <omgdi:waypoint x="1145.0" y="331.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="1053.0" y="241.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="1053.0" y="241.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -928,7 +921,7 @@
         <omgdi:waypoint x="693.0" y="289.0"></omgdi:waypoint>
         <omgdi:waypoint x="694.0" y="332.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="691.0" y="240.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="691.0" y="240.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -940,7 +933,7 @@
         <omgdi:waypoint x="916.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="1002.0" y="333.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="940.0" y="283.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="940.0" y="283.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -951,26 +944,16 @@
         <omgdi:waypoint x="916.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="839.0" y="333.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="811.0" y="281.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="811.0" y="281.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="839.0" y="393.0"></omgdi:waypoint>
         <omgdi:waypoint x="916.0" y="409.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="245.0" y="321.0"></omgdi:waypoint>
-        <omgdi:waypoint x="245.0" y="383.0"></omgdi:waypoint>
-        <omgdi:waypoint x="285.0" y="383.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="265.0" y="301.0"></omgdi:waypoint>
-        <omgdi:waypoint x="283.0" y="302.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="396.0" y="383.0"></omgdi:waypoint>
-        <omgdi:waypoint x="405.0" y="388.0"></omgdi:waypoint>
-        <omgdi:waypoint x="405.0" y="233.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="45.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
