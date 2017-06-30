@@ -705,9 +705,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         List<FormValue> aEnumFormProperty = oFormProperty.getFormValues();
                         
                         for(FormValue oEnumFormProperty : aEnumFormProperty){
-                            LOG.info("oEnumFormProperty id {}", oEnumFormProperty.getId());
-                            LOG.info("oEnumFormProperty name {}", oEnumFormProperty.getName());
+                            
+                            if(oHistoricVariableInstance.getValue().equals(oEnumFormProperty.getId())){
+                                LOG.info("oEnumFormProperty id {}", oEnumFormProperty.getId());
+                                oHistoryVariableVO.setoValue(oEnumFormProperty.getName());
+                                break;
+                            }
                         }
+                        
+                        aResultField.add(oHistoryVariableVO);
+                    }
+                    else{
+                        aResultField.add(oHistoryVariableVO);
                     }
                 }
             }
