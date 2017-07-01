@@ -618,7 +618,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     
     @RequestMapping(value = "/getHistoryTaskData", method = RequestMethod.GET)
     public @ResponseBody
-    Map<String, Object> getHistoryTaskData(
+    ResponseEntity getHistoryTaskData(
             @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process) 
     {
         Map<String, Object> response = new HashMap<>();
@@ -741,7 +741,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("aField", aResultField);
         response.put("aAttachment", aTableAndAttachement);
         LOG.info("response is {}", response);
-        return response;
+        return JsonRestUtils.toJsonResponse(response);
         
     }
 
