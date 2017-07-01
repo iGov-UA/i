@@ -858,13 +858,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> response = new HashMap<>();
         
         if(isHistory == null){
-                isHistory = Boolean.FALSE;
-        }
-        
-        if(isHistory){
-            
-           
-            
+            isHistory = Boolean.FALSE;
         }
         
         if (nID_Task == null) {
@@ -906,13 +900,134 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info(message);
             throw new RecordNotFoundException(message);
         }
+        
+        List<HistoryVariableVO> aResultField = new ArrayList<>();
+        List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
+        
+        if(isHistory){
+            LOG.info("getTaskData try to find history variables");
 
+            String sProcessDefinitionId = historyService.createHistoricProcessInstanceQuery()
+                    .processInstanceId(nID_Process.toString()).singleResult().getProcessDefinitionId();
+            LOG.info("sProcessDefinitionId {}", sProcessDefinitionId);
+
+            Task oTaskActive = taskService.createTaskQuery().processInstanceId(nID_Process.toString()).active().singleResult();
+            String sTaskDefinitionActive = oTaskActive != null ? oTaskActive.getTaskDefinitionKey() : null;
+            LOG.info("sTaskDefinitionActive is {}", sTaskDefinitionActive);
+
+            BpmnModel model = repositoryService.getBpmnModel(sProcessDefinitionId);
+            List<org.activiti.bpmn.model.Process> aProcess = model.getProcesses();
+
+            UserTask oUserTask = null;
+
+            if (aProcess != null) {
+                LOG.info("oProcess is {}", aProcess.get(0).getId());
+
+                for (Object oFlowElement : aProcess.get(0).getFlowElements()) {
+                    if (oFlowElement instanceof UserTask) {
+
+                        UserTask oUserTask_Curr = (UserTask) oFlowElement;
+                        LOG.info("oUserTask_Curr is {}", oUserTask_Curr.getId());
+                        if (sTaskDefinitionActive != null && oUserTask_Curr.getId().equals(sTaskDefinitionActive)) {
+                            LOG.info("oUserTask before active is {}", oUserTask_Curr.getId());
+                            break;
+                        }
+
+                        oUserTask = oUserTask_Curr;
+                    }
+                }
+
+            } else {
+                throw new RuntimeException("Can't find bpmn model for current process");
+            }
+
+            if (oUserTask == null) {
+                throw new RuntimeException("Can't find any userTask for current process");
+            }
+
+            LOG.info("oUserTask name {}", oUserTask.getName());
+
+            List<org.activiti.bpmn.model.FormProperty> aTaskFormProperty = null;
+
+            aTaskFormProperty = oUserTask.getFormProperties();
+
+            if (aTaskFormProperty == null) {
+                throw new RuntimeException("Can't find any property for current usertask");
+            }
+
+            List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                    .processInstanceId(nID_Process.toString()).list();
+
+            for (org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty) {
+                LOG.info("oFormProperty id {}", oFormProperty.getId());
+                LOG.info("oFormProperty name {}", oFormProperty.getName());
+                LOG.info("oFormProperty type {}", oFormProperty.getType());
+
+                for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
+                    if (oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())) 
+                    {
+                        if (oFormProperty.getName().contains("bVisible=false")) {
+                            break;
+                        }
+
+                        HistoryVariableVO oHistoryVariableVO = new HistoryVariableVO();
+                        oHistoryVariableVO.setsId(oFormProperty.getId());
+                        oHistoryVariableVO.setsName(oFormProperty.getName().split(";")[0]);
+                        oHistoryVariableVO.setsType(oFormProperty.getType());
+                        oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
+
+                        if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")) {
+                            aTableAndAttachement.add(oHistoryVariableVO);        
+                        }
+                        else if(oFormProperty.getType().equals("enum")){
+
+                            List<FormValue> aEnumFormProperty = oFormProperty.getFormValues();
+
+                            for(FormValue oEnumFormProperty : aEnumFormProperty){
+
+                                if(oHistoricVariableInstance.getValue().equals(oEnumFormProperty.getId())){
+                                    LOG.info("oEnumFormProperty id {}", oEnumFormProperty.getId());
+                                    oHistoryVariableVO.setoValue(oEnumFormProperty.getName());
+                                    break;
+                                }
+                            }
+
+                            aResultField.add(oHistoryVariableVO);
+                        }
+                        else{
+                            aResultField.add(oHistoryVariableVO);
+                        }
+                    }
+                }
+            }
+
+            for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
+                LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
+                LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
+                LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
+
+                if (oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("long")) {
+                    LOG.info("oHistoricVariableInstance.getValue() {}", ((Long) oHistoricVariableInstance.getValue()).toString());
+                } else if (oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("double")) {
+                    LOG.info("oHistoricVariableInstance.getValue() {}", ((Double) oHistoricVariableInstance.getValue()).toString());
+                } else if (oHistoricVariableInstance.getVariableTypeName().equalsIgnoreCase("date")) {
+                    LOG.info("oHistoricVariableInstance.getValue() {}", new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSS").format(((Date) oHistoricVariableInstance.getValue())));
+                } else {
+                    LOG.info("oHistoricVariableInstance.getValue() {}", (String) oHistoricVariableInstance.getValue());
+                }
+
+            }
+        }
+        
         List<FormProperty> aField = null;
         try {
 //            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
 //            response.put("aField", aField);
-            response.put("aField", oActionTaskService.getFormPropertiesMapByTaskID(nID_Task));
-
+            if(isHistory){
+                response.put("aField", aResultField);
+            }else{
+                response.put("aField", oActionTaskService.getFormPropertiesMapByTaskID(nID_Task));
+            }
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info(String.format("Must search Task [id = '%s'] in history!!!", nID_Task));
             response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
@@ -929,7 +1044,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
             LOG.info("Attach is triggered!");
-            response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
+            
+            if(isHistory){
+                response.put("aAttachment", aTableAndAttachement);        
+            }
+            else{
+                response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));        
+            }
         } else {
             LOG.info("Attach is not triggered!");
         }
