@@ -576,36 +576,30 @@ public class ProcessSubjectTaskService {
         LOG.info("snID_Process_Activiti {}, nDeepProcessSubjectTask {}", snID_Process_Activiti, nDeepProcessSubjectTask);
         
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
-        List<ProcessSubject> aAllProcessSubject = new ArrayList<>();
         
         try{
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-            aAllProcessSubject.addAll(aProcessSubject);
 
-            for(ProcessSubject oProcessSubject : aProcessSubject){
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
                 oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
                 ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
                         getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
-                for(ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()){
-                    aAllProcessSubject.add(processSubject);
+                for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
                     processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
                 }
                 oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
             }
-            LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
-            LOG.info("aAllProcessSubject.size {}", aAllProcessSubject.size()); 
-            
-            //По всем ProcessSubjectам ищем ProcessSubjectTaskи и сетим в них
-            //ProcessSubjectы, которые к ним относятся
-            aAllProcessSubject.forEach(oProcessSubject -> {
-                List<ProcessSubjectTask> aProcessSubjectTask = oProcessSubjectTaskDao.
-                        findAllBy("snID_Process_Activiti_Root", oProcessSubject.getSnID_Process_Activiti());
-                
-                aProcessSubjectTask.forEach(oProcessSubjectTask
-                        -> oProcessSubjectTask.setaProcessSubject(aAllProcessSubject));
-                
-                aListOfProcessSubjectTask.addAll(aProcessSubjectTask);
-            });
+            LOG.info("aProcessSubject.size {}", aProcessSubject.size());
+            if (!aProcessSubject.isEmpty()) {
+                Long nID_ProcessSubjectTask = aProcessSubject.get(0).getnID_ProcessSubjectTask();
+                LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
+                if (nID_ProcessSubjectTask != null) {
+                    ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(nID_ProcessSubjectTask);
+
+                    oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                    aListOfProcessSubjectTask.add(oProcessSubjectTask);
+                }
+            }
         }
         catch (Exception ex){
             LOG.error("Error in getProcessSubjectTask {}", ex);
