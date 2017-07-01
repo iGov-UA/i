@@ -389,7 +389,7 @@
               </div>
             </div>
 
-            <div ng-if="!users.bWrite" class="col-xs-12" style="margin-bottom: 10px">
+            <div ng-if="!users.bWrite" ng-show="users.bWrite!==null"class="col-xs-12" style="margin-bottom: 10px">
               <div class="col-xs-12" ng-repeat="user in users.aUser">
 
                 <div class="col-xs-6">
@@ -483,7 +483,7 @@
             </div>
 
             <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || !documentRights">
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || documentRights.bWrite==null"
                       ng-click="submitTask(form)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
