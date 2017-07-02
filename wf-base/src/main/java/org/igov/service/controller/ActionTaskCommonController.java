@@ -680,9 +680,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
 
         for (org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty) {
-            LOG.info("oFormProperty id {}", oFormProperty.getId());
-            LOG.info("oFormProperty name {}", oFormProperty.getName());
-            LOG.info("oFormProperty type {}", oFormProperty.getType());
+            //LOG.info("oFormProperty id {}", oFormProperty.getId());
+            //LOG.info("oFormProperty name {}", oFormProperty.getName());
+            //LOG.info("oFormProperty type {}", oFormProperty.getType());
 
             for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
                 if (oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())) 
@@ -722,7 +722,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             }
         }
 
-        for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
+        /*for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
             LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
             LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
             LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
@@ -737,10 +737,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 LOG.info("oHistoricVariableInstance.getValue() {}", (String) oHistoricVariableInstance.getValue());
             }
 
-        }
+        }*/
         response.put("aField", aResultField);
         response.put("aAttachment", aTableAndAttachement);
-        LOG.info("response is {}", response);
+        //LOG.info("response is {}", response);
         return JsonRestUtils.toJsonResponse(response);
         
     }
@@ -845,7 +845,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "номер-ИД таски (обязательный)", required = false) @RequestParam(value = "nID_Task", required = false) Long nID_Task,
             @ApiParam(value = "номер-ИД процесса (опциональный, но обязательный если не задан nID_Task и sID_Order)", required = false) @RequestParam(value = "nID_Process", required = false) Long nID_Process,
             @ApiParam(value = "номер-ИД заявки (опциональный, но обязательный если не задан nID_Task и nID_Process)", required = false) @RequestParam(value = "sID_Order", required = false) String sID_Order,
-            @ApiParam(value = "искомая задача закрыта", required = false) @RequestParam(value = "isHistory", required = false, defaultValue = "false") Boolean isHistory,
+            @ApiParam(value = "искомая задача находится в истории", required = false) @RequestParam(value = "isHistory", required = false, defaultValue = "false") Boolean isHistory,
             @ApiParam(value = "(опциональный) логин, по которому проверяется вхождение пользователя в одну из групп, на которые распространяется данная задача", required = false) @RequestParam(value = "sLogin", required = false) String sLogin,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aGroup возвращается массив отождествленных групп, на которые распространяется данная задача", required = false) @RequestParam(value = "bIncludeGroups", required = false) Boolean bIncludeGroups,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
@@ -959,9 +959,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     .processInstanceId(nID_Process.toString()).list();
 
             for (org.activiti.bpmn.model.FormProperty oFormProperty : aTaskFormProperty) {
-                LOG.info("oFormProperty id {}", oFormProperty.getId());
-                LOG.info("oFormProperty name {}", oFormProperty.getName());
-                LOG.info("oFormProperty type {}", oFormProperty.getType());
+                //LOG.info("oFormProperty id {}", oFormProperty.getId());
+                //LOG.info("oFormProperty name {}", oFormProperty.getName());
+                //LOG.info("oFormProperty type {}", oFormProperty.getType());
 
                 for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
                     if (oFormProperty.getId().equals(oHistoricVariableInstance.getVariableName())) 
@@ -1001,7 +1001,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
             }
 
-            for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
+            /*for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
                 LOG.info("oHistoricVariableInstance.getId() {}", oHistoricVariableInstance.getId());
                 LOG.info("oHistoricVariableInstance.getVariableName() {}", oHistoricVariableInstance.getVariableName());
                 LOG.info("oHistoricVariableInstance.getVariableTypeName() {}", oHistoricVariableInstance.getVariableTypeName());
@@ -1016,7 +1016,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     LOG.info("oHistoricVariableInstance.getValue() {}", (String) oHistoricVariableInstance.getValue());
                 }
 
-            }
+            }*/
         }
         
         List<FormProperty> aField = null;
