@@ -22,11 +22,17 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sDateOfBirth" name="Дата рождения" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Електронная почта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" required="true">
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asPosition" name="Должность, которую занимает работник" type="enum" required="true">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asProbation" name="Готов ли принимаемый работник к испытательному сроку" type="enum">
+          <activiti:value id="Yes" name="да"></activiti:value>
+          <activiti:value id="No" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sProbation" name="если работник готов к испытательному сроку" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если работник согласен на исп срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asProbation&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Yes'||[sReason] == 'Да'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Family]]></activiti:string>
@@ -47,7 +53,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
 var sKey_GroupPostfix = '_default_Family'
-var sKey_GroupPostfix_New = 'svs_tg1'
+var sKey_GroupPostfix_New = 'Family_Program'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask2" name="СА, логин-пароль">
@@ -58,11 +64,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sDateOfBirth" name="Дата рождения" type="date" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false" required="true">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" required="true"></activiti:formProperty>
       </extensionElements>
@@ -76,7 +83,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
 var sKey_GroupPostfix = '_default_Family'
-var sKey_GroupPostfix_New = 'slk_tg1'
+var sKey_GroupPostfix_New = 'Family_Accounting'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask3" name="Бухгалтер, установка оклада">
@@ -87,11 +94,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sDateOfBirth" name="Дата рождения" type="date" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false" required="true">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="nSalary" name="Оклад" type="long" required="true"></activiti:formProperty>
@@ -106,7 +114,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
 var sKey_GroupPostfix = '_default_Family'
-var sKey_GroupPostfix_New = 'snv_tg1'
+var sKey_GroupPostfix_New = 'Family_Head'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask4" name="Директор, утверждение">
@@ -117,11 +125,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sDateOfBirth" name="Дата рождения" type="date" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false" required="true">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="nSalary" name="Оклад" type="long" required="true"></activiti:formProperty>
@@ -173,7 +182,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 // клонирование прав
 var sKey_GroupPostfix = '_default_Family'
-var sKey_GroupPostfix_New = 'san_tg1'
+var sKey_GroupPostfix_New = 'Family_HR'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="scripttask5">
