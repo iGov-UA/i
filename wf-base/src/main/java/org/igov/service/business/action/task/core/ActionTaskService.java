@@ -1985,6 +1985,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         Map<String, String> m = new HashMap();
         //String result;
         String snID_Task = nID_Task.toString();
+        LOG.info("ActionTaskService nID_Task = {}, snID_Task = {}", nID_Task, snID_Task);
         try {
             //result = oTaskService.createTaskQuery().taskId(snID_Task).singleResult().getName();
             //m.put("sDateEnd", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));

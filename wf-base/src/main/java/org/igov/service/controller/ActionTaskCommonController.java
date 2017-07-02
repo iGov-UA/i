@@ -856,7 +856,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
         
         Map<String, Object> response = new HashMap<>();
-        
+        LOG.info("ActionTaskCommonController nID_Task = {}", nID_Task);
         if(isHistory == null){
             isHistory = Boolean.FALSE;
         }
@@ -900,7 +900,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info(message);
             throw new RecordNotFoundException(message);
         }
-        
+        LOG.info("ActionTaskCommonController response after getProcessInfo = {}", response);
         List<HistoryVariableVO> aResultField = new ArrayList<>();
         List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
         
@@ -1086,7 +1086,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
         response.put("nID_Task", nID_Task);
+        LOG.info("ActionTaskCommonController response before getTaskData = {}", response);
         response.putAll(oActionTaskService.getTaskData(nID_Task));
+        LOG.info("ActionTaskCommonController response after getTaskData = {}", response);
 
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
