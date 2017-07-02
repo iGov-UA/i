@@ -1024,6 +1024,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 //            aField = oActionTaskService.getFormPropertiesByTaskID(nID_Task);
 //            response.put("aField", aField);
             if(isHistory){
+                LOG.info("aResultField size {}", aResultField);
                 response.put("aField", aResultField);
             }else{
                 response.put("aField", oActionTaskService.getFormPropertiesMapByTaskID(nID_Task));
@@ -1046,6 +1047,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Attach is triggered!");
             
             if(isHistory){
+                LOG.info("aTableAndAttachement size {}", aTableAndAttachement);
                 response.put("aAttachment", aTableAndAttachement);        
             }
             else{
