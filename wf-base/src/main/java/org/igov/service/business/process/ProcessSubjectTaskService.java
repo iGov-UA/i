@@ -580,28 +580,40 @@ public class ProcessSubjectTaskService {
         try{
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
 
-            for(ProcessSubject oProcessSubject : aProcessSubject){
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
                 oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
                 ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
                         getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
-                for(ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()){
+                for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
                     processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
                 }
                 oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
             }
+            LOG.info("aProcessSubject.size {}", aProcessSubject.size());
+            if (!aProcessSubject.isEmpty()) {
+                Long nID_ProcessSubjectTask = aProcessSubject.get(0).getnID_ProcessSubjectTask();
+                LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
+                if (nID_ProcessSubjectTask != null) {
+                    ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(nID_ProcessSubjectTask);
 
-
-            LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
-            LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
-            ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
-
-            oProcessSubjectTask.setaProcessSubject(aProcessSubject);
-            aListOfProcessSubjectTask.add(oProcessSubjectTask);
+                    oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                    aListOfProcessSubjectTask.add(oProcessSubjectTask);
+                }
+            }
         }
         catch (Exception ex){
             LOG.error("Error in getProcessSubjectTask {}", ex);
         } 
-        /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
+        /*
+        if (!aProcessSubject.isEmpty()) {
+                LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
+                ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getSnID_Task_Activiti());
+
+                oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                aListOfProcessSubjectTask.add(oProcessSubjectTask);
+            }
+        ------------------------------------------------------------------------
+        if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
@@ -619,7 +631,7 @@ public class ProcessSubjectTaskService {
             }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
         }*/
-
+        LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
         return aListOfProcessSubjectTask;
     }
 
