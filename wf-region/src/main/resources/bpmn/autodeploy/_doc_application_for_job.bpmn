@@ -31,6 +31,8 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="Yes" name="да"></activiti:value>
           <activiti:value id="No" name="нет"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sProbation" name="если работник готов к испытательному сроку" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если работник согласен на исп срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asProbation&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Yes'||[sReason] == 'Да'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Family]]></activiti:string>
