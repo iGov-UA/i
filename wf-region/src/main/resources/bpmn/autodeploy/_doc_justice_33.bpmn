@@ -51,6 +51,8 @@
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_kolegia.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart_Familiarize" name="id группы1 ; ;bVisible=false" type="string" default="MJU_Dnipro_All_Organ"></activiti:formProperty>
+        <activiti:formProperty id="sTableFamiliarize" name="Потребує повідомлення на емейл; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression>${sLoginAuthor}</activiti:expression>
@@ -180,7 +182,7 @@ var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Or
 execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
 	 </script>
     </scriptTask>
-    <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="scripttask2" targetRef="usertask5"></sequenceFlow>
     <scriptTask id="scripttask3" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
@@ -204,6 +206,35 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
       <script>execution.setVariable('sDateRegistration', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
+    <serviceTask id="servicetask2" name="рассылка нп емейл" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${sValue}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[рассылка на емейл]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+тело письма
+${sEmail}
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]   	 
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${PrintForm_7}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow67" sourceRef="servicetask2" targetRef="scripttask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_33">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_33" id="BPMNPlane__doc_justice_33">
@@ -237,6 +268,9 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="64.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
         <omgdi:waypoint x="86.0" y="93.0"></omgdi:waypoint>
@@ -250,8 +284,8 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
         <omgdi:waypoint x="301.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="521.0" y="202.0"></omgdi:waypoint>
@@ -283,6 +317,10 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
         <omgdi:waypoint x="301.0" y="160.0"></omgdi:waypoint>
         <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
+        <omgdi:waypoint x="620.0" y="119.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
