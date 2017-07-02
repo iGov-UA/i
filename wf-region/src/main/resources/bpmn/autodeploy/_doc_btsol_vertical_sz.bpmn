@@ -21,7 +21,7 @@
         <activiti:formProperty id="sCommentUT3" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_vertical_sz.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel_sec,sID_BP=_task_test_multi-instance" type="select"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression>${sLoginAuthor}</activiti:expression>
@@ -57,11 +57,9 @@
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Содержание" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNoteTitle" name="Название" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
@@ -79,11 +77,6 @@
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Содержание" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNoteTitle" name="Название" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Требуется"></activiti:value>
-          <activiti:value id="Enum2" name="Не требуется"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
@@ -288,83 +281,6 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCodeProduction" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
-          <activiti:value id="thing" name="штука|шт"></activiti:value>
-          <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
-          <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
-          <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
-          <activiti:value id="gram" name="грам|г"></activiti:value>
-          <activiti:value id="gram_izotop" name="грам подільних ізотопів|г поділ. Ізотоп"></activiti:value>
-          <activiti:value id="matrichnyi" name="карат метричний (= 200 мг)|кар"></activiti:value>
-          <activiti:value id="square" name="квадратний метр|кв.м"></activiti:value>
-          <activiti:value id="nitrogen" name="кілограм азоту|кг N"></activiti:value>
-          <activiti:value id="hydroxide_potassium" name="кілограм гідроокису калію|кг KOH"></activiti:value>
-          <activiti:value id="sodium" name="кілограм гідроокису натрію|кг NaOH"></activiti:value>
-          <activiti:value id="oxide_potassium" name="кілограм оксиду калію|кг K2O"></activiti:value>
-          <activiti:value id="peroxide" name="кілограм пероксиду водню|кг H2O2"></activiti:value>
-          <activiti:value id="phosphorus" name="кілограм п'ятиокису фосфору|кг P2O5"></activiti:value>
-          <activiti:value id="chloride_choline" name="кілограм хлорид холіну|кг C5H14ClNO"></activiti:value>
-          <activiti:value id="suha" name="кілограм сухої на 90 % речовини|кг сух. 90 % реч"></activiti:value>
-          <activiti:value id="uranium" name="кілограм урану|кг U"></activiti:value>
-          <activiti:value id="cub_meter" name="кубічний метр|куб.м"></activiti:value>
-          <activiti:value id="curi" name="кюрі|Ki кюрі"></activiti:value>
-          <activiti:value id="ltr" name="літр|л"></activiti:value>
-          <activiti:value id="spirt" name="літр чистого (100 %) спирту|л 100 % спирт"></activiti:value>
-          <activiti:value id="meter" name="метр|м метр"></activiti:value>
-          <activiti:value id="par" name="пара (2 шт.)|пар"></activiti:value>
-          <activiti:value id="hundred_thing" name="сто штук|100 шт"></activiti:value>
-          <activiti:value id="thousand_cub_meter" name="тисяча кубічних метрів|тис. куб.м"></activiti:value>
-          <activiti:value id="thousand_ltr" name="тисяча літрів|тис. л"></activiti:value>
-          <activiti:value id="thousand_pieces" name="тисяча штук|тис. шт"></activiti:value>
-          <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sQuantity" name="Количество" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPurposeSupply" name="Назначение поставки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sScheduleSupply" name="Срок поставки (график)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sProducer" name="Производитель (полное наименование)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDateBegin" name="Дата начала выполнения работ" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oDateEnd" name="Дата окончания выполнения работ" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSupplyMaterials" name="Поставка материалов" type="enum" writable="false">
-          <activiti:value id="Enum1" name="заказчика"></activiti:value>
-          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asServicemMachines" name="Услуги машин и механизмов" type="enum" writable="false">
-          <activiti:value id="Enum1" name="заказчика"></activiti:value>
-          <activiti:value id="Enum2" name="подрядчика"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sAddInformation" name="Доп.информация" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asPrefPay" name="Предпочтительные условия оплаты" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Аккредитив"></activiti:value>
-          <activiti:value id="Enum2" name="Оплата, исключающая предоплату"></activiti:value>
-          <activiti:value id="Enum3" name="По факту выполненных работ (оказанных услуг)"></activiti:value>
-          <activiti:value id="Enum4" name="По факту загрузки"></activiti:value>
-          <activiti:value id="Enum5" name="По факту поставки"></activiti:value>
-          <activiti:value id="Enum6" name="По факту уведомления о готовности"></activiti:value>
-          <activiti:value id="Enum7" name="Предоплата"></activiti:value>
-          <activiti:value id="Enum8" name="Другое"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asProgFin" name="Программа финансирования" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Текущие"></activiti:value>
-          <activiti:value id="Enum2" name="Инвестпрограмма"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Требуется"></activiti:value>
-          <activiti:value id="Enum2" name="Не требуется"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
