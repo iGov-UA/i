@@ -28,6 +28,7 @@ import org.igov.io.db.kv.analytic.impl.BytesMongoStorageAnalytic;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.migration.exception.MigrationException;
 import org.igov.util.VariableMultipartFile;
+import org.jboss.serial.util.StringUtil;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -369,7 +370,7 @@ public class MigrationServiceImpl implements MigrationService {
         Class<?> clazz = obj.getClass();
         if (clazz.getSimpleName().equalsIgnoreCase("string")) {
             String string = (String) obj;
-            if (StringUtils.isNumeric(string) && StringUtils.isNotEmpty(string)) {
+            if (StringUtils.isNumeric(string) && StringUtils.isNotEmpty(string) && StringUtils.length(string) >=10) {
                 if (attributeTypeDao.findById(7L).isPresent())
                     type = attributeTypeDao.findById(7L).get();
                 else
