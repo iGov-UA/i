@@ -34,6 +34,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sProbation" name="Если работник готов к испытательному сроку - с какого числа" type="date"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="если работник согласен на исп срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asProbation&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Yes'||[sReason] == 'Да'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="валидатор поля номер телефона" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_1&quot;:{&quot;aField_ID&quot;:[&quot;sTel&quot;],&quot;sFormat&quot;: &quot;############&quot;,&quot;sMessage&quot;: &quot;Введите номер в числовом формате - 9 цифр&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Скан паспорта; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Family]]></activiti:string>
@@ -73,7 +74,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="прикрепленный файл; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask3" name="права бухгалтерии, шаг 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -105,6 +108,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="nSalary" name="Оклад" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -141,6 +145,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="backToAutor" name="Отказать"></activiti:value>
           <activiti:value id="accept" name="Утвердить"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
