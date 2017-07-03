@@ -13,12 +13,7 @@ import javax.activation.DataSource;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
@@ -38,28 +33,6 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        
-        Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-        LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-        if (!mExecutionVaraibles.isEmpty()) {
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();       
-            // выбираем все переменные типа Date, приводим к нужному формату 
-            mExecutionVaraibles.forEach((sKey, oValue) -> {
-                if (oValue != null) {
-                    String sClassName = oValue.getClass().getName();
-                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
-                    if (sClassName.endsWith("Date")) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
-                        String sDate = sdf.format((Date) oValue);
-                        mOnlyDateVariables.put(sKey, sDate);
-                    } else if (sClassName.contains("queueData")) {
-                        LOG.info("queueData found");
-                    }
-                }
-            });
-            //сетим отформатированные переменные в екзекьюшен
-            oExecution.setVariables(mOnlyDateVariables);
-        }
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
