@@ -20,7 +20,7 @@ public class ArmDaoImpl implements ArmDao {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ArmDaoImpl.class);
 	
-/*	 @Value("${dbo_tk.getDboTkByOutNumber}")
+	 @Value("${dbo_tk.getDboTkByOutNumber}")
 	 private String getDboTkByOutNumber;
 	 
 	 @Value("${dbo_tk.createDboTk}")
@@ -48,37 +48,8 @@ public class ArmDaoImpl implements ArmDao {
 	 private String username;
 	 
 	 @Value("${arm.password}")
-	 private String password;*/
-	
-	 @Value("#{sqlProperties['dbo_tk.getDboTkByOutNumber']}")
-	 private String getDboTkByOutNumber;
-	 
-	 @Value("#{sqlProperties['dbo_tk.createDboTk']}")
-	 private String createDboTk;
-	 
-	 @Value("#{sqlProperties['dbo_tk.updateDboTk']}")
-	 private String updateDboTk;
-	 
-	 @Value("#{sqlProperties['dbo_tk.updateDboTkByExpert']}")
-	 private String updateDboTkByExpert;
-	 
-	 @Value("#{sqlProperties['dbo_tk.selectMaxNumber441']}")
-	 private String selectMaxNumber441;
-	 
-	 @Value("#{sqlProperties['dbo_tk.selectMaxNumber442']}")
-	 private String selectMaxNumber442;
-	 
-	 @Value("#{datasourceArm['arm.driverClassName']}")
-	 private String driverClassName;
-	 
-	 @Value("#{datasourceArm['arm.url']}")
-	 private String url;
-	 
-	 @Value("#{datasourceArm['arm.username']}")
-	 private String username;
-	 
-	 @Value("#{datasourceArm['arm.password']}")
 	 private String password;
+	
 
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
@@ -451,7 +422,7 @@ public class ArmDaoImpl implements ArmDao {
 		Integer dboTkModelMaxNum =null;
 		try {
 			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
+			preparedStatement = dbConnection.prepareStatement("SELECT max(Number_441) as Number_441 FROM \"dbo\".\"TK\"");
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
@@ -524,12 +495,27 @@ public class ArmDaoImpl implements ArmDao {
 		return dboTkModelMaxNum442;
 	}
 	
-	private Connection getDBConnection() {
+	/*private Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {
 			Class.forName(driverClassName);
 			dbConnection = DriverManager.getConnection(
 					url, username,password);
+			return dbConnection;
+		} catch (SQLException|ClassNotFoundException e) {
+			LOG.error("FAIL: {}", e.getMessage());
+		}
+
+		return dbConnection;
+
+	}*/
+	
+	private Connection getDBConnection() {
+		Connection dbConnection = null;
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			dbConnection = DriverManager.getConnection(
+					"jdbc:sqlserver://77.109.59.43:14033;DatabaseName=ARM", "activiti","2xm53DhqB8VD");
 			return dbConnection;
 		} catch (SQLException|ClassNotFoundException e) {
 			LOG.error("FAIL: {}", e.getMessage());
