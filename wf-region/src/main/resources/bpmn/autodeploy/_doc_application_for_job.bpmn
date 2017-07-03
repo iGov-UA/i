@@ -35,6 +35,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="markers1" name="если работник согласен на исп срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asProbation&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes'||[sReason] == 'Да'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="валидатор поля номер телефона" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_1&quot;:{&quot;aField_ID&quot;:[&quot;sTel&quot;],&quot;sFormat&quot;: &quot;############&quot;,&quot;sMessage&quot;: &quot;Введите номер в числовом формате - 9 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Скан паспорта; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="комментарий директора" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Family]]></activiti:string>
@@ -147,7 +148,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="backToAutor" name="Отказать"></activiti:value>
           <activiti:value id="accept" name="Утвердить"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="коментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Если вернуть автору" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNote&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sDecision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'backToAuthor'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -195,7 +198,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 </script>
     </scriptTask>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAvtor'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAutor'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="scripttask5" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
