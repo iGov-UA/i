@@ -875,7 +875,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
         if (nID_Process == null) {
-            nID_Process = Long.parseLong(oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString()));
+            try {
+                nID_Process = Long.parseLong(oActionTaskService.getProcessInstanceIDByTaskID(nID_Task.toString()));
+            } catch (Exception e) {
+                LOG.error("ActionTaskCommonController nID_Process exception: {}", e.getMessage());
+            }
+            
         }
 
         if (bIncludeGroups == null) {
