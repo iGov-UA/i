@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.activiti.engine.delegate.DelegateExecution;
+import org.activiti.engine.form.FormData;
+import org.activiti.engine.form.FormProperty;
 import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,26 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
+        try {
+            FormData oTaskFormData = oExecution.getEngineServices()
+                    .getFormService()
+                    .getStartFormData(oExecution.getProcessDefinitionId());
+            if (oTaskFormData != null
+                    && oTaskFormData.getFormProperties() != null) {
+                for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
+                    LOG.info("MailTaskWithoutAttachment property (Id={},Name={},Type={},Value={})",
+                            oFormProperty.getId(), oFormProperty.getName(),
+                            oFormProperty.getType().getName(),
+                            oFormProperty.getValue());
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(
+                    "Error: {}, occured while looking for a start form for a process.",
+                    e.getMessage());
+        }
+        
+        /*
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
         LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         if (!mExecutionVaraibles.isEmpty()) {
@@ -45,7 +67,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             });
             //сетим отформатированные переменные в екзекьюшен
             oExecution.setVariables(mOnlyDateVariables);
-        }
+        }*/
         	
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
