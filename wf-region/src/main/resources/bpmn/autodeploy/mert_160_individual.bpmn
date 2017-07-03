@@ -57,39 +57,7 @@
         <activiti:formProperty id="for_bank_name" name="Найменування банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="for_bank_adres" name="Місцезнаходження банку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="text10" name=" " type="label" default="&lt;b&gt;інформація про товар&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
-          <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
-          <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
-          <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
-          <activiti:value id="gram" name="грам|г"></activiti:value>
-          <activiti:value id="gram_izotop" name="грам подільних ізотопів|г поділ. Ізотоп"></activiti:value>
-          <activiti:value id="matrichnyi" name="карат метричний (= 200 мг)|кар"></activiti:value>
-          <activiti:value id="square" name="квадратний метр|кв.м"></activiti:value>
-          <activiti:value id="nitrogen" name="кілограм азоту|кг N"></activiti:value>
-          <activiti:value id="hydroxide_potassium" name="кілограм гідроокису калію|кг KOH"></activiti:value>
-          <activiti:value id="sodium" name="кілограм гідроокису натрію|кг NaOH"></activiti:value>
-          <activiti:value id="oxide_potassium" name="кілограм оксиду калію|кг K2O"></activiti:value>
-          <activiti:value id="peroxide" name="кілограм пероксиду водню|кг H2O2"></activiti:value>
-          <activiti:value id="phosphorus" name="кілограм п'ятиокису фосфору|кг P2O5"></activiti:value>
-          <activiti:value id="chloride_choline" name="кілограм хлорид холіну|кг C5H14ClNO"></activiti:value>
-          <activiti:value id="suha" name="кілограм сухої на 90 % речовини|кг сух. 90 % реч"></activiti:value>
-          <activiti:value id="uranium" name="кілограм урану|кг U"></activiti:value>
-          <activiti:value id="cub_meter" name="кубічний метр|куб.м"></activiti:value>
-          <activiti:value id="curi" name="кюрі|Ki кюрі"></activiti:value>
-          <activiti:value id="ltr" name="літр|л"></activiti:value>
-          <activiti:value id="spirt" name="літр чистого (100 %) спирту|л 100 % спирт"></activiti:value>
-          <activiti:value id="meter" name="метр|м метр"></activiti:value>
-          <activiti:value id="par" name="пара (2 шт.)|пар"></activiti:value>
-          <activiti:value id="hundred_thing" name="сто штук|100 шт"></activiti:value>
-          <activiti:value id="thousand_cub_meter" name="тисяча кубічних метрів|тис. куб.м"></activiti:value>
-          <activiti:value id="thousand_ltr" name="тисяча літрів|тис. л"></activiti:value>
-          <activiti:value id="thousand_pieces" name="тисяча штук|тис. шт"></activiti:value>
-          <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
-          <activiti:value id="thing" name="штука|шт"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="quantity" name="Кількість товару" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Table_Customs" name="Інформація про товар; ;nRowsLimit=10,bNew=true" type="table" default="${markerService.loadFromFile('table/mert/mert_160_individual_table.json')}" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару (тис.дол.США);дані потрібно подавати з точністю до 5 знаків після коми" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару (в тис.одиницях валюти контракту);дані потрібно подавати з точністю до 5 знаків після коми" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCountry_0" name="Країна призначення" type="select" required="true"></activiti:formProperty>
@@ -323,8 +291,8 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_160_individual_print.html]" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_160_individual_print2.html]" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документ (квитанція) про оплату вартості послуги; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -488,10 +456,10 @@
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/mert/mert_160_individual_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/mert/mert_160_individual_print2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_160_individual_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_160_individual_print2.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -506,13 +474,13 @@
           <activiti:string><![CDATA[Нове  звернення. Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний колего!</b><br /><br />
 У черзі на обробку зареєстровано нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
 Опрацюйте це звернення на <a href="http://region.igov.org.ua">порталі</a><br />
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -528,17 +496,17 @@
           <activiti:string><![CDATA[Звернення на тему: Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Ваше звернення щодо отримання індивідуальної ліцензії на enum{[type_lic]} передано на розгляд в ${sNameUnit} і буде опрацьовано протягом 30 календарних днів.<br /><br />
 Реєстраційний номер заяви: ${reestr_numb};<br />
 До листа додається опис наданих Вами документів.<br />
 <br />
 Ви отримаєте додаткове повідомлення за результатами розгляду зверення.<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameUnit}<br /> 
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -563,15 +531,15 @@ ${sNameUnit}<br />
           <activiti:string><![CDATA[Звернення на тему: Разова (індивідуальна) ліцензія на здійснення суб’єктами зовнішньоекономічної діяльності зовнішньоекономічних операцій]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 На жаль, Ваше звернення щодо отримання індивідуальної ліцензії enum{[type_lic]} відхилено через недостатню або неправильну інформацію.<br />
 ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameUnit}<br /> 
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -599,7 +567,7 @@ ${sNameUnit}<br />
           <activiti:expression><![CDATA[${rishen},${PrintForm_1},${PrintForm_2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
 Вам enum{[decision_2]}.<br />  <br />  
 Копія відповідного документу знаходиться у додатку до листа.<br />
@@ -607,11 +575,11 @@ ${sNameUnit}<br />
 При собі треба мати:<br />
 ${sListDocumentsLetter}
 ${sWorkTime}<br /> 
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameUnit}<br /> 
-[pattern/mail/_common_signature_end.html]   
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]   
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -870,12 +838,12 @@ execution.setVariable('sListDocumentsLetter', res2)
         <activiti:formProperty id="rishen" name="Завантажте копію ліцензії або лист з обгрунтуванням причин відмови ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік у принтформу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsLetter" name="перелік у лист; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_3" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_3_print.html]; ;bVisible=false" type="string" default="Бланк ліцензії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_267_2_print.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/mert/mert_160_individual_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/mert/mert_160_individual_print2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;pattern/print/mert/mert_160_individual_print3.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/mert/mert_160_individual_print3.html]; ;bVisible=false" type="string" default="Бланк ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_160_individual_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_160_individual_print2.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow62" sourceRef="exclusivegateway3" targetRef="usertask3">
