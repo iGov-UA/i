@@ -422,7 +422,7 @@ public class ArmDaoImpl implements ArmDao {
 		Integer dboTkModelMaxNum =null;
 		try {
 			dbConnection = getDBConnection();
-			preparedStatement = dbConnection.prepareStatement("SELECT max(Number_441) as Number_441 FROM \"dbo\".\"TK\"");
+			preparedStatement = dbConnection.prepareStatement(selectMaxNumber441);
 			// execute select SQL stetement
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
@@ -495,7 +495,7 @@ public class ArmDaoImpl implements ArmDao {
 		return dboTkModelMaxNum442;
 	}
 	
-	/*private Connection getDBConnection() {
+	private Connection getDBConnection() {
 		Connection dbConnection = null;
 		try {
 			Class.forName(driverClassName);
@@ -508,23 +508,5 @@ public class ArmDaoImpl implements ArmDao {
 
 		return dbConnection;
 
-	}*/
-	
-	private Connection getDBConnection() {
-		Connection dbConnection = null;
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			dbConnection = DriverManager.getConnection(
-					"jdbc:sqlserver://77.109.59.43:14033;DatabaseName=ARM", "activiti","2xm53DhqB8VD");
-			return dbConnection;
-		} catch (SQLException|ClassNotFoundException e) {
-			LOG.error("FAIL: {}", e.getMessage());
-		}
-
-		return dbConnection;
-
 	}
-
-	
-
 }
