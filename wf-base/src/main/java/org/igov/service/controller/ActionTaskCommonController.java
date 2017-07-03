@@ -855,9 +855,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "заглушка", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
         
-        Map<String, Object> response = new HashMap<>();
-        try {
-        LOG.info("ActionTaskCommonController nID_Task = {}", nID_Task);
+        Map<String, Object> response = new HashMap<>();        
         if(isHistory == null){
             isHistory = Boolean.FALSE;
         }
@@ -905,8 +903,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             String message = String.format("Incorrect Task ID [id = %s]. Record not found.", nID_Task);
             LOG.info(message);
             throw new RecordNotFoundException(message);
-        }
-        LOG.info("ActionTaskCommonController response after getProcessInfo = {}", response);
+        }        
         List<HistoryVariableVO> aResultField = new ArrayList<>();
         List<HistoryVariableVO> aTableAndAttachement = new ArrayList<>();
         
@@ -1091,11 +1088,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         response.put("sStatusName", oActionTaskService.getTaskName(nID_Task));
         response.put("sID_Status", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
-        response.put("nID_Task", nID_Task);
-        LOG.info("ActionTaskCommonController response before getTaskData = {}", response);
+        response.put("nID_Task", nID_Task);        
         response.putAll(oActionTaskService.getTaskData(nID_Task));
-        LOG.info("ActionTaskCommonController response after getTaskData = {}", response);
-
+        
         String sDateTimeCreate = JsonDateTimeSerializer.DATETIME_FORMATTER.print(
                 oActionTaskService.getTaskDateTimeCreate(nID_Task).getTime()
         );
@@ -1105,11 +1100,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aProcessSubjectTask", createStubOfProcessSubjectTask());
         } else {
             response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 0l));
-        }      
-    }
-        catch (Exception e){
-        LOG.error("getTaskData exception: {}", e.getMessage());
-        }
+        }  
+           
         return JsonRestUtils.toJsonResponse(response);
     }
     
