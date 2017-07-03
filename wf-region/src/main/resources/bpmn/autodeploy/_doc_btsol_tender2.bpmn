@@ -703,6 +703,12 @@
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable6&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumCreateTask'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_1pr" name="маркер принтформы ТМЦ" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1pr&quot;:{&quot;aElement_ID&quot;:[&quot;docCM&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_2pr" name="маркер принтформы услуги" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2pr&quot;:{&quot;aElement_ID&quot;:[&quot;docServices&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum2'&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_tenderPrint.html] ; ;bVisible=false" type="string" default="Служебная записка" writable="false"></activiti:formProperty>
+        
+        
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
