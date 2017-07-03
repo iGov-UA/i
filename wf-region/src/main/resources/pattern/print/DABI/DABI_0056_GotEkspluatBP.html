@@ -548,7 +548,7 @@
         <td style="width: 80%; text-align: left;font-size: 18px;padding-bottom: 10px;">Кількість квартир: [lKilkKvart]<br/>  
           Кількість кімнат: [lKilkKimnat]<br/>
           Матеріали зовнішніх стін: [sMZStinu]<br/>
-          Перелік інженерного обладнання: <div id="SCIngen"></div>.<br/>
+          <div id="SCIngen"></div><br/>
           <div id="dGospPlosh"></div><br/>
           Вартість основних засобів, які приймаються в експлуатацію [dFinanse] тис. гривень.<br/>
       </td>
@@ -825,9 +825,7 @@
 
   var ScrclFio = "[bankIdlastName] [bankIdfirstName] [bankIdmiddleName]";
   document.getElementById("clFio").innerHTML += ScrclFio;
-  document.getElementById("clFio2").innerHTML += ScrclFio;
   document.getElementById("clFio3").innerHTML += ScrclFio;
-  document.getElementById("clFio4").innerHTML += ScrclFio;
   document.getElementById("clFio5").innerHTML += ScrclFio;
 
   if(SCchekTexNag == 'yes'||SCchekTexNag == 'так'){
@@ -841,7 +839,7 @@
   var SCchekKanaliz = "[chekKanaliz]";
   var SCchekOpal = "[chekOpal]";
   var SCasOpal = "[asOpal]";
-  var SCIngen = " ";
+  var SCIngen = "Перелік інженерного обладнання: ";
 
   if(SCchekHVoda == 'yes'||SCchekHVoda == 'так'){
   SCIngen += "холодне водопостачання, ";}
@@ -859,7 +857,7 @@
   SCIngen += " ";
   }
   if(SCchekOpal == 'yes'||SCchekOpal == 'так'){
-  SCIngen += "Наявне "SCasOpal+;}
+  SCIngen += "Наявне " + SCasOpal + ".";}
   else {
   SCIngen += " ";
   }

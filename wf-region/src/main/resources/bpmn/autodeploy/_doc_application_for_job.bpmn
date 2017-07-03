@@ -36,6 +36,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="markers2" name="валидатор поля номер телефона" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_1&quot;:{&quot;aField_ID&quot;:[&quot;sTel&quot;],&quot;sFormat&quot;: &quot;############&quot;,&quot;sMessage&quot;: &quot;Введите номер в числовом формате - 9 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Скан паспорта; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="комментарий директора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/_doc_application_for_job.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Family]]></activiti:string>
@@ -76,6 +77,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленный файл; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/_doc_application_for_job.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -111,6 +113,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nSalary" name="Оклад" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPtobation" name="Если работник готов к испытательному сроку - с какого числа" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/_doc_application_for_job.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -151,6 +154,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Если вернуть автору" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNote&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sDecision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'backToAuthor'||&quot;[sReason] == 'Отказать'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="коментарий" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/_doc_application_for_job.json')}" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
