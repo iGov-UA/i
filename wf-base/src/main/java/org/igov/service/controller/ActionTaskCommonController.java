@@ -856,6 +856,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
         
         Map<String, Object> response = new HashMap<>();
+        try {
         LOG.info("ActionTaskCommonController nID_Task = {}", nID_Task);
         if(isHistory == null){
             isHistory = Boolean.FALSE;
@@ -1105,7 +1106,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         } else {
             response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process), 0l));
         }      
-        
+    }
+        catch (Exception e){
+        LOG.error("getTaskData exception: {}", e.getMessage());
+        }
         return JsonRestUtils.toJsonResponse(response);
     }
     
