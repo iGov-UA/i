@@ -56,11 +56,7 @@ public class AccessServiceLoginRoleFilter extends GenericFilterBean {
         }
 
         if (hasAccessToService) {
-            try {
                 filterChain.doFilter(servletRequest, servletResponse);
-            } catch (IOException | ServletException oException) {
-                LOG.error("Exception in doFilter {}", oException.getMessage());
-            }    
         }
         else {
             httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, String.format(
