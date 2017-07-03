@@ -148,9 +148,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="backToAutor" name="Отказать"></activiti:value>
           <activiti:value id="accept" name="Утвердить"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNote" name="коментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers" name="Если вернуть автору" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNote&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sDecision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'backToAuthor'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Если вернуть автору" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNote&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sDecision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'backToAuthor'||&quot;[sReason] == 'Отказать'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="коментарий" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
