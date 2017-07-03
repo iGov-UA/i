@@ -447,7 +447,8 @@
                       class="btn btn-info take-to-work-button"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
-                      ng-show="selectedTask.assignee == null && isDocument()">
+                      ng-show="selectedTask.assignee == null && isDocument()"
+                      ng-hide="documentRights.bWrite == null">
                 <span ng-if="documentRights.bWrite && isDocumentNotSigned()">
                   <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
