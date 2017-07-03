@@ -901,8 +901,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
-        JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-        String snID_Task = (String) omResponseBody.get("taskId");
+        String snID_Task = null;
+        if (sResponseBody != null) {
+            LOG.info("After calling sResponseBody={}", sResponseBody);
+            JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+            snID_Task = (String) omResponseBody.get("taskId");
+        }
         if (snID_Task == null && mRequestParam.containsKey("taskId")) {
             LOG.info("snID_Task is NULL, looking for it in mRequestParam");
             snID_Task = (String) mRequestParam.get("taskId");
