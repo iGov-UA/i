@@ -22,6 +22,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -52,6 +53,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +99,10 @@ public class ProcessSubjectTaskService {
 
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
+    
+    @Autowired
+    @Qualifier("durableBytesDataStorage")
+    private IBytesDataStorage oBytesDataStaticStorage;
 
     public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException, org.json.simple.parser.ParseException {
 
@@ -104,9 +110,9 @@ public class ProcessSubjectTaskService {
         LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
         LOG.info("sFilterLoginRole {}", sFilterLoginRole);
 
-        String sKeyRedis = (String) oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
+        String sKeyMongo = (String) oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
 
-        byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+        byte[] aByteTaskBody = oBytesDataStaticStorage.getData(sKeyMongo);
 
         List<Task> aTaskActive = oTaskService.createTaskQuery()
                 .processInstanceId(snID_Process_Activiti).active().list();
@@ -158,7 +164,7 @@ public class ProcessSubjectTaskService {
                 String sActionType = (String) ((JSONObject) oJsonProcessSubjectTask).get("sActionType");
                 JSONArray aJsonProcessSubject = (JSONArray) ((JSONObject) oJsonProcessSubjectTask).get("aProcessSubject");
                 //LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
-                String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject) oJsonProcessSubjectTask).toJSONString().getBytes());
+                String sKey = oBytesDataStaticStorage.saveData(((JSONObject) oJsonProcessSubjectTask).toJSONString().getBytes());
                 LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
                 if (sActionType.equals("set")) {
@@ -338,6 +344,7 @@ public class ProcessSubjectTaskService {
         oProcessSubjectTask.setSnID_Process_Activiti_Root((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
         oProcessSubjectTask.setsBody((String) ((JSONObject) oJsonProcessSubjectTask).get("sBody"));
         oProcessSubjectTask.setsHead((String) ((JSONObject) oJsonProcessSubjectTask).get("sHead"));
+        oProcessSubjectTask.setsKey(sKey);
         oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
         LOG.info("oProcessSubjectTask in synctProcessSubjectTask: {}", oProcessSubjectTask);
         Map<String, Object> mParamTask = new HashMap<>();
