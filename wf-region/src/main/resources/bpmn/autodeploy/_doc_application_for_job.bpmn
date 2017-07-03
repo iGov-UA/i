@@ -185,16 +185,14 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow9" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask5" name="права ок, шаг 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//переключение степа
+      <script>
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_1'
-var oResultSetDoc =
-documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')
 
-// клонирование прав
-var sKey_GroupPostfix = '_default_Family'
-var sKey_GroupPostfix_New = 'Family_HR'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Family', sKey_GroupPostfix_New, 'step_1')
+
+</script>
     </scriptTask>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAvtor'}]]></conditionExpression>
