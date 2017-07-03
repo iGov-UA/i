@@ -62,15 +62,15 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeName" name="ФИО работника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateOfBirth" name="Дата заполнения анкеты" type="date" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false">
+        <activiti:formProperty id="sDateOfBirth" name="Дата заполнения анкеты" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" readable="false" writable="false">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -92,11 +92,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeName" name="ФИО работника" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateOfBirth" name="Дата заполнения анкеты" type="date" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmployeeName" name="ФИО работника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateOfBirth" name="Дата заполнения анкеты" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false" required="true">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
@@ -124,19 +124,19 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sEmployeeName" name="ФИО работника" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateOfBirth" name="Дата заполнения анкеты" type="date" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380" required="false"></activiti:formProperty>
-        <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false" required="false">
+        <activiti:formProperty id="sEmployeeName" name="ФИО работника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateOfBirth" name="Дата заполнения анкеты" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdress" name="Адрес проживания" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="Електронная почта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTel" name="Номер телефона" type="long" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Должность, которую занимает работник" type="enum" writable="false">
           <activiti:value id="Economist" name="Экономист"></activiti:value>
           <activiti:value id="Cashier" name="Кассир"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asProbation" name="Длительность испытательного срока" type="enum" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" writable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nSalary" name="Оклад" type="long" required="false"></activiti:formProperty>
+        <activiti:formProperty id="nSalary" name="Оклад" type="long"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Принятое решение" type="enum" required="true">
           <activiti:value id="backToAutor" name="Отказать"></activiti:value>
           <activiti:value id="accept" name="Утвердить"></activiti:value>
