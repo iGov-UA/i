@@ -902,6 +902,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         Map<String, String> mParam = new HashMap<>();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         String snID_Task = (String) omResponseBody.get("taskId");
+        
         if (snID_Task == null && mRequestParam.containsKey("taskId")) {
             LOG.info("snID_Task is NULL, looking for it in mRequestParam");
             snID_Task = (String) mRequestParam.get("taskId");

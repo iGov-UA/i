@@ -220,7 +220,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <sequenceFlow id="flow65" name="false" sourceRef="exclusivegateway1" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="тесатове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="тесатове повідомлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression>${sValue}</activiti:expression>
@@ -232,19 +232,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
           <activiti:string><![CDATA[тест письма на несколько адресов сервистаска]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-тело письма
-${sEmail}
-
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_7}</activiti:expression>
+          <activiti:expression>тестовое письмо</activiti:expression>
         </activiti:field>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTableFamiliarize', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
