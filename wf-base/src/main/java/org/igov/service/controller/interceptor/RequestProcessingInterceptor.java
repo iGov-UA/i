@@ -735,6 +735,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("saveUpdatedTaskInfo block started");
                 LOG.info("oRequest URL: {}", oRequest.getRequestURL().toString());
                 LOG.info("oRequest mRequestParam: {}", mRequestParam);
+                LOG.info("Before calling sResponseBody {}", sResponseBody);
                 saveUpdatedTaskInfo(sResponseBody, mRequestParam);
                 LOG.info("saveUpdatedTaskInfo block finished");
             }
