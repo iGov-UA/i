@@ -113,16 +113,17 @@
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_03" name="Введіть код ЄДРПОУ проектувальника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_03" name="Повне найменування проектувальника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_03" name="Юридична адреса проектувальника;(індекс, місто, вулиця, будинок, офіс)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabelArcIngAvt" name=" ; ;labelType=info" type="label" default="Нижче вкажіть інформацію про головного архітектора, головного інженера та особу що здійснює авторський нагляд.&lt;br&gt; Якщо ви не можете вказати в якомусь з цих полів інформацію - поставте прочерк."></activiti:formProperty>
+        <activiti:formProperty id="sLabelArcIngAvt" name=" ; ;labelType=info" type="label" default="Нижче вкажіть інформацію про головного архітектора, про особу що здійснює авторський нагляд та про особу, що здійснює технічний нагляд.&lt;br&gt; Якщо ви не можете вказати в якомусь з цих полів інформацію - поставте прочерк."></activiti:formProperty>
         <activiti:formProperty id="sGArhitPIB" name="ПІБ головного архітектора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sGArhitSert" name="Серія та номер кваліфікаційного сертифіката головного архітектора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sGIngenPIB" name="ПІБ головного інженера" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sGIngenSert" name="Серія та номер кваліфікаційного сертифіката  головного інженера" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGIngenPIB" name="ПІБ особи, що здійснює технічний нагляд" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sGIngenSert" name="Серія та номер кваліфікаційного сертифіката особи, що здійснює тех. нагляд" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAvtNagPIB" name="ПІБ особи що здійснює авторський нагляд" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAvtNagSert" name="Серія та номер кваліфікаційного сертифіката особи, що здійснює авторський нагляд" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerGProektOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGproekt.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_6" name="Інформація про проектну документацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asProektDok&quot;],&quot;sValue&quot;:&quot;Інформація про проектну документацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asProektDok" name="Назва документа на підставі якого ведеться будівництво" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asProektDok" name="Назва документа яким затверджено проектну документацію;(вкажіть повну назву документа, що описує проект і узгоджений з державними органами)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="ProektData" name="Дата затвердження" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="ProektNom" name="Номер документа" type="string" required="true"></activiti:formProperty>
         
@@ -222,24 +223,16 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_10" name="Характеристика житлового будинку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_10&quot;:{&quot;aElement_ID&quot;:[&quot;asKilkPov&quot;],&quot;sValue&quot;:&quot;Характеристика житлового будинку&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asKilkPov" name="Кількість поверхів" type="enum" required="true">
-          <activiti:value id="sEnamOne" name="1"></activiti:value>
-          <activiti:value id="sEnamTwo" name="2"></activiti:value>
-          <activiti:value id="sEnamThree" name="3"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sStinu" name="Матеріали стін;(вкажіть всі матеріали що використовувались при будівництві стін)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_10" name="Характеристика житлового будинку" type="markers" default="{&quot;attributes&quot;:{&quot;Line_10&quot;:{&quot;aElement_ID&quot;:[&quot;lKilkPov&quot;],&quot;sValue&quot;:&quot;Характеристика житлового будинку&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="lKilkPov" name="Кількість поверхів" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lKvartkilk" name="Кількість квартир;(всього в будинку)" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPloshKvart" name="Загальна площа квартир(кв.метрів)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPloshNegut" name="Загальна площа нежитлових приміщень(кв.метрів);(позаквартирні коридори, сходи і т.д)" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStinu" name="Матеріали стін;(вкажіть всі матеріали що використовувались при будівництві стін)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerGutlovKvart" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGutlovKvart.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_IO" name="Інженерне обладнання" type="markers" default="{&quot;attributes&quot;:{&quot;Line_IO&quot;:{&quot;aElement_ID&quot;:[&quot;chekHVoda&quot;],&quot;sValue&quot;:&quot;Інженерне обладнання&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="chekHVoda" name="Чи є холодне водопостачання?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="chekGVoda" name="Чи є гаряче водопостачання?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
+        <activiti:formProperty id="chekHVoda" name="Чи є водопостачання?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
