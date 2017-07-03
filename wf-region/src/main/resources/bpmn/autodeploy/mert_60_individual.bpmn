@@ -4,10 +4,8 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть область" type="enum" required="true">
-          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
-          <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+      <activiti:formProperty id="sID_Place_UA" name="обраний населений пункт sID_Place_UA; ;bVisible=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати." type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1yiEIf6rFHUJ1Xv0qaTyvWOG_pDvHjyBN4O5W3SgILnA/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
@@ -67,38 +65,7 @@
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання " type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="text10" name=" " type="label" default="&lt;b&gt;інформація про товар&lt;/b&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="unit" name="Одиниця виміру" type="enum" default="kilogram" required="true">
-          <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
-          <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
-          <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
-          <activiti:value id="gram" name="грам|г"></activiti:value>
-          <activiti:value id="gram_izotop" name="грам подільних ізотопів|г поділ. Ізотоп"></activiti:value>
-          <activiti:value id="matrichnyi" name="карат метричний (= 200 мг)|кар"></activiti:value>
-          <activiti:value id="square" name="квадратний метр|кв.м"></activiti:value>
-          <activiti:value id="nitrogen" name="кілограм азоту|кг N"></activiti:value>
-          <activiti:value id="hydroxide_potassium" name="кілограм гідроокису калію|кг KOH"></activiti:value>
-          <activiti:value id="sodium" name="кілограм гідроокису натрію|кг NaOH"></activiti:value>
-          <activiti:value id="oxide_potassium" name="кілограм оксиду калію|кг K2O"></activiti:value>
-          <activiti:value id="peroxide" name="кілограм пероксиду водню|кг H2O2"></activiti:value>
-          <activiti:value id="phosphorus" name="кілограм п'ятиокису фосфору|кг P2O5"></activiti:value>
-          <activiti:value id="chloride_choline" name="кілограм хлорид холіну|кг C5H14ClNO"></activiti:value>
-          <activiti:value id="suha" name="кілограм сухої на 90 % речовини|кг сух. 90 % реч"></activiti:value>
-          <activiti:value id="uranium" name="кілограм урану|кг U"></activiti:value>
-          <activiti:value id="cub_meter" name="кубічний метр|куб.м"></activiti:value>
-          <activiti:value id="curi" name="кюрі|Ki кюрі"></activiti:value>
-          <activiti:value id="ltr" name="літр|л"></activiti:value>
-          <activiti:value id="spirt" name="літр чистого (100 %) спирту|л 100 % спирт"></activiti:value>
-          <activiti:value id="meter" name="метр|м метр"></activiti:value>
-          <activiti:value id="par" name="пара (2 шт.)|пар"></activiti:value>
-          <activiti:value id="hundred_thing" name="сто штук|100 шт"></activiti:value>
-          <activiti:value id="thousand_cub_meter" name="тисяча кубічних метрів|тис. куб.м"></activiti:value>
-          <activiti:value id="thousand_ltr" name="тисяча літрів|тис. л"></activiti:value>
-          <activiti:value id="thousand_pieces" name="тисяча штук|тис. шт"></activiti:value>
-          <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
-          <activiti:value id="thing" name="штука|шт"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="Table_Customs" name="Інформація про товар; ;nRowsLimit=10,bNew=true" type="table" default="${markerService.loadFromFile('table/mert/mert_60_individual_table.json')}" required="true"></activiti:formProperty>
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США);Дані потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (у валюті контракту);Дані потрібно подавати з точністю до 5 знаків після коми" type="long" required="true"></activiti:formProperty>
@@ -168,25 +135,12 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visnovok_js" name="назва документу 4; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="other_docs_js" name="назва документу 5; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers0" name="Якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_0&quot;:{&quot;aField_ID&quot;:[&quot;ur_name&quot;,&quot;ur_adres&quot;,&quot;ur_tel&quot;, &quot;ur_fax&quot;,&quot;ur_edrpou&quot;,&quot;ur_pib&quot;,&quot;ur_post&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers00" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_00&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name&quot;,&quot;fiz_adres&quot;,&quot;fiz_drfo&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо юридична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_1&quot;,&quot;ur_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Якщо фізична особа споживач" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_1&quot;,&quot;fiz_adres_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_1&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо юридична особа контрагент" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;ur_name_2&quot;,&quot;ur_adres_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur_2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers22" name="Якщо фізична особа контрагент" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_22&quot;:{&quot;aField_ID&quot;:[&quot;fiz_name_2&quot;,&quot;fiz_adres_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz_2'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="Якщо обрано базис поставки EXW" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;basis_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'exw'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers17" name="Якщо обрано базис поставки FCA,СРТ,СІР,DDU,DDP" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;basis_2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fса'||[sClient] == 'срт'||[sClient] == 'сір'||[sClient] == 'ddu'||[sClient] == 'ddр'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers18" name="Якщо обрано базис поставки FAS,FOB" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;basis_3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fаs'||[sClient] == 'fов'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers19" name="Якщо обрано базис поставки CFR,CIF,DES,DEQ" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;basis_4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'сfr'||[sClient] == 'сіf'||[sClient] == 'dеs'||[sClient] == 'dеq'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers20" name="Якщо обрано базис поставки DAF" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;basis_5&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;basis&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'dаf'&quot;}}}"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="markers0" name="m" type="markers" default="${markerService.loadFromFile('mert/mert_60_individual_ST.json')}"></activiti:formProperty>
+        </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка вхідних даних, прийняття рішення про надання послуги" activiti:candidateGroups="zed_${group}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
-          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
-          <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -238,38 +192,7 @@
         <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
-          <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
-          <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
-          <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
-          <activiti:value id="gram" name="грам|г"></activiti:value>
-          <activiti:value id="gram_izotop" name="грам подільних ізотопів|г поділ. Ізотоп"></activiti:value>
-          <activiti:value id="matrichnyi" name="карат метричний (= 200 мг)|кар"></activiti:value>
-          <activiti:value id="square" name="квадратний метр|кв.м"></activiti:value>
-          <activiti:value id="nitrogen" name="кілограм азоту|кг N"></activiti:value>
-          <activiti:value id="hydroxide_potassium" name="кілограм гідроокису калію|кг KOH"></activiti:value>
-          <activiti:value id="sodium" name="кілограм гідроокису натрію|кг NaOH"></activiti:value>
-          <activiti:value id="oxide_potassium" name="кілограм оксиду калію|кг K2O"></activiti:value>
-          <activiti:value id="peroxide" name="кілограм пероксиду водню|кг H2O2"></activiti:value>
-          <activiti:value id="phosphorus" name="кілограм п'ятиокису фосфору|кг P2O5"></activiti:value>
-          <activiti:value id="chloride_choline" name="кілограм хлорид холіну|кг C5H14ClNO"></activiti:value>
-          <activiti:value id="suha" name="кілограм сухої на 90 % речовини|кг сух. 90 % реч"></activiti:value>
-          <activiti:value id="uranium" name="кілограм урану|кг U"></activiti:value>
-          <activiti:value id="cub_meter" name="кубічний метр|куб.м"></activiti:value>
-          <activiti:value id="curi" name="кюрі|Ki кюрі"></activiti:value>
-          <activiti:value id="ltr" name="літр|л"></activiti:value>
-          <activiti:value id="spirt" name="літр чистого (100 %) спирту|л 100 % спирт"></activiti:value>
-          <activiti:value id="meter" name="метр|м метр"></activiti:value>
-          <activiti:value id="par" name="пара (2 шт.)|пар"></activiti:value>
-          <activiti:value id="hundred_thing" name="сто штук|100 шт"></activiti:value>
-          <activiti:value id="thousand_cub_meter" name="тисяча кубічних метрів|тис. куб.м"></activiti:value>
-          <activiti:value id="thousand_ltr" name="тисяча літрів|тис. л"></activiti:value>
-          <activiti:value id="thousand_pieces" name="тисяча штук|тис. шт"></activiti:value>
-          <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
-          <activiti:value id="thing" name="штука|шт"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="Table_Customs" name="Інформація про товар; ;nRowsLimit=10,bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="quantity" name="Кількість товару, що імпортується; ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США); ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (у валюті контракту); ;writable=false" type="long"></activiti:formProperty>
@@ -342,8 +265,8 @@
         <activiti:formProperty id="visnovok_js" name="назва документу 4; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="other_docs_js" name="назва документу 5; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_60_individual_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_60_individual_print2.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документ (квитанція) про оплату вартості послуги; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -357,10 +280,7 @@
     </userTask>
     <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
       <extensionElements>
-        <activiti:formProperty id="area" name="Оберіть область" type="enum" writable="false">
-          <activiti:value id="dn" name="Дніпропетровська"></activiti:value>
-          <activiti:value id="cs" name="Черкаська"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
@@ -412,39 +332,7 @@
         <activiti:formProperty id="fiz_name_2" name="Прізвище, ім'я, по батькові; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ur_adres_2" name="Місцезнаходження; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="fiz_adres_2" name="Місце проживання; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sObjectCustoms" name="Найменування товару; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_UA_ObjectCustoms" name="Код товару (УКТ ЗЕД); ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="unit" name="Одиниця виміру; ;writable=false" type="enum">
-          <activiti:value id="kilogram" name="кілограм|кг"></activiti:value>
-          <activiti:value id="bruttobetrags" name="бруттореєстрова тонна|бруттореєстр. Т"></activiti:value>
-          <activiti:value id="wantagate" name="вантажопідйомність у метричних тоннах|вантажпідйом. метрич. Т"></activiti:value>
-          <activiti:value id="gram" name="грам|г"></activiti:value>
-          <activiti:value id="gram_izotop" name="грам подільних ізотопів|г поділ. Ізотоп"></activiti:value>
-          <activiti:value id="matrichnyi" name="карат метричний (= 200 мг)|кар"></activiti:value>
-          <activiti:value id="square" name="квадратний метр|кв.м"></activiti:value>
-          <activiti:value id="nitrogen" name="кілограм азоту|кг N"></activiti:value>
-          <activiti:value id="hydroxide_potassium" name="кілограм гідроокису калію|кг KOH"></activiti:value>
-          <activiti:value id="sodium" name="кілограм гідроокису натрію|кг NaOH"></activiti:value>
-          <activiti:value id="oxide_potassium" name="кілограм оксиду калію|кг K2O"></activiti:value>
-          <activiti:value id="peroxide" name="кілограм пероксиду водню|кг H2O2"></activiti:value>
-          <activiti:value id="phosphorus" name="кілограм п'ятиокису фосфору|кг P2O5"></activiti:value>
-          <activiti:value id="chloride_choline" name="кілограм хлорид холіну|кг C5H14ClNO"></activiti:value>
-          <activiti:value id="suha" name="кілограм сухої на 90 % речовини|кг сух. 90 % реч"></activiti:value>
-          <activiti:value id="uranium" name="кілограм урану|кг U"></activiti:value>
-          <activiti:value id="cub_meter" name="кубічний метр|куб.м"></activiti:value>
-          <activiti:value id="curi" name="кюрі|Ki кюрі"></activiti:value>
-          <activiti:value id="ltr" name="літр|л"></activiti:value>
-          <activiti:value id="spirt" name="літр чистого (100 %) спирту|л 100 % спирт"></activiti:value>
-          <activiti:value id="meter" name="метр|м метр"></activiti:value>
-          <activiti:value id="par" name="пара (2 шт.)|пар"></activiti:value>
-          <activiti:value id="hundred_thing" name="сто штук|100 шт"></activiti:value>
-          <activiti:value id="thousand_cub_meter" name="тисяча кубічних метрів|тис. куб.м"></activiti:value>
-          <activiti:value id="thousand_ltr" name="тисяча літрів|тис. л"></activiti:value>
-          <activiti:value id="thousand_pieces" name="тисяча штук|тис. шт"></activiti:value>
-          <activiti:value id="thousand_kvt" name="тисяча кіловатгодин|тис. кВт·год"></activiti:value>
-          <activiti:value id="thing" name="штука|шт"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="quantity" name="Кількість товару, що імпортується; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="Table_Customs" name="Інформація про товар; ;nRowsLimit=10,bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="cost_usd" name="Вартість товару, що імпортується (тис.дол.США); ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="cost_currency" name="Вартість товару, що імпортується (у валюті контракту); ;writable=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="country_destination" name="Країна призначення; ;writable=false" type="select"></activiti:formProperty>
@@ -517,10 +405,10 @@
         <activiti:formProperty id="visnovok_js" name="назва документу 4; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="other_docs_js" name="назва документу 5; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPost" name="пошта посадовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_266_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dneprOblSnap/dnepr_cnap_266_2_print.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/mert/mert_60_individual_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/mert/mert_60_individual_print2.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_60_individual_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_60_individual_print2.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -642,14 +530,14 @@ var per4 = ' '
 var per5 = ' '
 var per6 = 'sWorkTime'
 var per7 = 'group'
-if (execution.getVariable('area') == 'dn'){
+if (execution.getVariable('sID_Place_UA') == '1200000000'){
 per1 = 'pilguj@gue.dp.ua'
 per2 = 'Департамент економічного розвитку Дніпропетровської обласної державної адміністрації'
 per3 = 'м. Дніпропетровськ, просп. Карла Маркса, 75'
 per6 = "Режим роботи: Понеділок, середа з 9.00 до 18.00&lt;br /&gt; Вівторок, четвер з 9.00 до 20.00&lt;br /&gt; П'ятниця з 9.00 до 16.45&lt;br /&gt; Субота з 10.00 до 16.00&lt;br /&gt; Вихідний - Неділя&lt;br /&gt;"
 per7 = 'dnepr'
 }
-if (execution.getVariable('area') == 'cs'){
+if (execution.getVariable('sID_Place_UA') == '7100000000'){
 per1 = 'іnvest@drr-ck.gov.ua'
 per2 = 'Департамент регіонального розвитку Черкаської обласної державної адміністрації'
 per3 = 'м. Черкаси, бул. Шевченка 185, каб. 403.'
