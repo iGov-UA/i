@@ -19,6 +19,7 @@
         <activiti:formProperty id="sContent" name="Содержание" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT3" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
@@ -323,7 +324,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
     <sequenceFlow id="flow109" sourceRef="scripttask18" targetRef="exclusivegateway4"></sequenceFlow>
     <scriptTask id="scripttask19" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId();
-var aLogin_Acceptor = processSubjectTaskService.startProcess(snID_Process_Activiti);   
+var aLogin_Acceptor = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable2', null);   
 var nCountAccept = aLogin_Acceptor.length;
 execution.setVariable('nCountAccept', nCountAccept)</script>
     </scriptTask>
@@ -336,6 +337,10 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
     <sequenceFlow id="flow113" sourceRef="exclusivegateway12" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept==0}]]></conditionExpression>
     </sequenceFlow>
+    <scriptTask id="scripttask20" name="для Егора" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId();  
+var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
+    </scriptTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_vertical_sz">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_vertical_sz" id="BPMNPlane__doc_btsol_vertical_sz">
@@ -422,6 +427,9 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway12" id="BPMNShape_exclusivegateway12">
         <omgdc:Bounds height="40.0" width="40.0" x="580.0" y="109.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask20" id="BPMNShape_scripttask20">
+        <omgdc:Bounds height="55.0" width="105.0" x="163.0" y="944.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
