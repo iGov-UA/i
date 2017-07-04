@@ -43,6 +43,9 @@
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sNoteTitle" name="Название" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Содержание" type="fileHTML" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
@@ -60,9 +63,9 @@
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sNoteTitle" name="Название" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Содержание" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
@@ -84,12 +87,9 @@
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
-          <activiti:value id="sEnumCreateTask" name="Сформировать задание"></activiti:value>
-          <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
-          <activiti:value id="sEnumRemark" name="Отказать"></activiti:value>
-          <activiti:value id="sEnumReply" name="Сформировать ответ"></activiti:value>
+          <activiti:value id="sEnumSign" name="Утвердить задание"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Отправить на редактирование"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -272,13 +272,6 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
     </userTask>
     <sequenceFlow id="flow104" sourceRef="scripttask17" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow105" sourceRef="usertask4" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Transfer_DocumentARM" activiti:delegateExpression="#{Transfer_ARM}">
-      <extensionElements>
-        <activiti:field name="soData">
-          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <scriptTask id="scripttask18" name="Create approval date" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateApprove', new Date().format("dd/MM/yyyy").toString())</script>
     </scriptTask>
@@ -296,16 +289,20 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept>0}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow113" sourceRef="exclusivegateway12" targetRef="scripttask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept==0}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept==null}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask20" name="для Егора" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId();  
 var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow114" sourceRef="exclusivegateway13" targetRef="scripttask16"></sequenceFlow>
+    <sequenceFlow id="flow114" sourceRef="exclusivegateway13" targetRef="scripttask16">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow115" sourceRef="exclusivegateway13" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow115" sourceRef="exclusivegateway13" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow116" sourceRef="usertask3" targetRef="exclusivegateway13"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_vertical_sz">
@@ -369,9 +366,6 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="105.0" x="36.0" y="1024.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="105.0" x="840.0" y="813.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
         <omgdc:Bounds height="55.0" width="105.0" x="525.0" y="574.0"></omgdc:Bounds>
