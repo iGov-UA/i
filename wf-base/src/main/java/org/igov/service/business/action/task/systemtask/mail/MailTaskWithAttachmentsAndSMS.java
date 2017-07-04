@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.igov.service.exception.RecordNotFoundException;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -33,7 +34,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * @author BW
@@ -53,39 +53,46 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
-        List<String> asnTaskId = oActionTaskService.
-                getTaskIdsByProcessInstanceId(oExecution.getProcessInstanceId());
-        Map<String, Object> mOnlyDateVariables = new HashMap<>();
-        asnTaskId.forEach(snTaskId -> {
-            FormData oFormData = oExecution.getEngineServices()
-                    .getFormService().getTaskFormData(snTaskId);
+        try {
+            List<String> asnTaskId = oActionTaskService.
+                    getTaskIdsByProcessInstanceId(oExecution.getProcessInstanceId());
+            Map<String, Object> mOnlyDateVariables = new HashMap<>();
+            asnTaskId.forEach(snTaskId -> {
+                FormData oFormData = oExecution.getEngineServices()
+                        .getFormService().getTaskFormData(snTaskId);
 
-            if (oFormData != null) {
-                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
-                aoFormProperties.forEach(oFormProperty -> {
-                    String sFormPropertyTypeName = oFormProperty.getType().getName();
-                    String sFormPropertyId = oFormProperty.getId();
-                    String sFormPropertyValue = oFormProperty.getValue();
+                if (oFormData != null) {
+                    List<FormProperty> aoFormProperties = oFormData.getFormProperties();
+                    aoFormProperties.forEach(oFormProperty -> {
+                        String sFormPropertyTypeName = oFormProperty.getType().getName();
+                        String sFormPropertyId = oFormProperty.getId();
+                        String sFormPropertyValue = oFormProperty.getValue();
 
-                    if (sFormPropertyTypeName.equals("date")) {
-                        LOG.info("Date catched. id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
+                        if (sFormPropertyTypeName.equals("date")) {
+                            LOG.info("Date catched. id={}, value={}",
+                                    sFormPropertyId, sFormPropertyValue);
 
-                        DateTime oDateTime = DateTime.parse(sFormPropertyValue,
-                                DateTimeFormat.forPattern("dd/MM/yyyy"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
-                        LOG.info("sDate formated={}", sDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
+                            DateTime oDateTime = DateTime.parse(sFormPropertyValue,
+                                    DateTimeFormat.forPattern("dd/MM/yyyy"));
+                            String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
+                            LOG.info("sDate formated={}", sDate);
+                            mOnlyDateVariables.put(sFormPropertyId, sDate);
 
-                    } else if (sFormPropertyTypeName.equals("queueData")) {
-                        LOG.info("queueData catched.id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                    }
-                });
-            }
-        });
-        LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
-        oExecution.setVariables(mOnlyDateVariables);
+                        } else if (sFormPropertyTypeName.equals("queueData")) {
+                            LOG.info("queueData catched.id={}, value={}",
+                                    sFormPropertyId, sFormPropertyValue);
+                        }
+                    });
+                }
+            });
+            LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
+            oExecution.setVariables(mOnlyDateVariables);
+        } catch (RecordNotFoundException oRNFException) {
+            LOG.error("Error: {}, occured while looking for a tasks ProcessInstanceId={}",
+                    oRNFException.getMessage(), oExecution.getProcessInstanceId());
+        } catch (Exception oException) {
+            LOG.error("Error: {}, date not formated", oException.getMessage());
+        }
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
