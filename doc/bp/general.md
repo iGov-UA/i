@@ -959,7 +959,21 @@ digit3 - переменная, куда присвоится результат 
 ```
 [детальней...](#_converthtmltopdf)
 
+###### ecp_printform2ut
+### Прикрепление принт-формы с ЭЦП на UserTask
+На первом UserTask необходимо добавить поля:
+```xml
+<activiti:formProperty id="fDoc1" name="Договір з EЦП; ;sID_Field_Printform_ForECP=sBody_1, bNew=true" type="file"></activiti:formProperty>
+<activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+```
+Кнопка "роздрукувати" - выбрать принтформу - "підписати та надіслати" - выбирать ключи ЕЦП и подписать
 
+На втором UserTask, если необходимо, чтоб подтянулась подписанная принт-форма, нужно добавить поля:
+```xml
+<activiti:formProperty id="fDoc1" name="Договір з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+<activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+```
+Подписанная принт-форма подкрепляется файлом.
 
 ###### electronicqueues
 # 13. Электронные очереди
