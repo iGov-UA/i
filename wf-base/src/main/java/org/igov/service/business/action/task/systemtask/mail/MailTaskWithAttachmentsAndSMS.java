@@ -46,7 +46,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                     !sAttachmentsForSend.contains("sKey")) 
             {
                 LOG.info("Sleeping started..");
-                Thread.sleep(2000);
+                //Thread.sleep(2000);
                 LOG.info("Variables names {}", oExecution.getVariables() != null 
                         ? oExecution.getVariables().keySet() : "null");
                 Object oAttachmentsForSendSelected = oExecution.getVariable("result");
