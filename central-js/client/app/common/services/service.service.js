@@ -1,4 +1,4 @@
-angular.module('app').service('ServiceService', function ($http, $q, FeedbackService, ErrorsFactory) {
+angular.module('app').service('ServiceService', function ($http, $q, $state, FeedbackService, ErrorsFactory) {
 
   var self = this;
 
@@ -206,6 +206,12 @@ angular.module('app').service('ServiceService', function ($http, $q, FeedbackSer
       data: data
     }).then(function (response) {
       return response.data;
+    }, function (error) {
+      if(error.status === 401){
+        $state.go('index.journal');
+      } else {
+        ErrorsFactory.logFail(error);
+      }
     });
   };
 
