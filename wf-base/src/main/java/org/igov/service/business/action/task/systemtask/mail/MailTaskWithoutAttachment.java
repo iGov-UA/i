@@ -55,8 +55,9 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                         
                         DateTime oDateTime = DateTime.parse(sFormPropertyValue,
                                 DateTimeFormat.forPattern("dd/MM/yyyy"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
+                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk","UA"));
                         LOG.info("sDate formated={}", sDate);
+                        mOnlyDateVariables.put(sFormPropertyId, sDate);
 
                     } else if (sFormPropertyTypeName.equals("queueData")) {
                         LOG.info("queueData catched.");
@@ -65,8 +66,8 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                 });
             }
         });
-
-
+        LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
+        oExecution.setVariables(mOnlyDateVariables);
         /*
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
         LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
