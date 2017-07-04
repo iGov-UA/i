@@ -76,11 +76,6 @@
         <activiti:formProperty id="sInfoBudBeg" name="Дата початку будівництва" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudEnd" name="Дата закінчення будівництва" type="date" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_3" name="Інформація про інженера з технічного нагляду" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;TexIngPIB&quot;],&quot;sValue&quot;:&quot;Інформація про інженера з технічного нагляду&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="TexIngPIB" name="Прізвище, ім’я та по батькові інженера" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="TexIngDoc" name="Назва, номер та дата документа що підтверджує повноваження інженера;(наприклад Наказ ТОВ Дельмар №Щ12345 від 01.01.2000)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="TexIngKvalSer" name="Серія і номер кваліфікаційного сертифіката;(наприклад ІТ 1111111)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabelTexIng" name=" ; ;labelType=info" type="label" default="посилання на &lt;a href=&quot;http://zakon2.rada.gov.ua/laws/show/903-2007-%D0%BF &quot; target=&quot;_blank&quot;&gt;Порядок здійснення технічного нагляду&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="markersLine_4" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asGPodrOsoba" name="Будівництво здійснює" type="enum" required="true">
           <activiti:value id="sEnamGPodrFiz" name="Заявник особисто (Господарським способом)"></activiti:value>
@@ -92,35 +87,33 @@
         <activiti:formProperty id="sDateActual_SubjectOrgan_04" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="GPodrphone" name="Контактний номер телефону генерального підрядника" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGpodr.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_5" name="Інформація про генерального проектувальника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;asGProektOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального проектувальника&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asGProektOsoba" name="Статус проектувальника" type="enum" required="true">
-          <activiti:value id="sEnamGProektFiz" name="Фізична особа підприємець"></activiti:value>
-          <activiti:value id="sEnamGProektUr" name="Юридична особа"></activiti:value>
+        
+        
+        <activiti:formProperty id="markersLine_5" name="Звіт технічного обстеження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTZvName&quot;],&quot;sValue&quot;:&quot;Звіт технічного обстеження&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTZvName" name="Назва звіту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dTZvDate" name="Дата звіту" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNumb" name="Номер звіту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNameOrgan" name="Найменування експертної організації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTZvEPIB" name="Прізвище, ім'я, по батькові експерта, що проводив обстеження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNKvalif" name="Серія і номер кваліфікаційного сертифікату експерта" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_6" name="Відповідність місця розташування ДБН" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sDBNorg&quot;],&quot;sValue&quot;:&quot;Відповідність місця розташування ДБН&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDBNorg" name="Назва органу, що надав інформацію про відповідність місця розташування об'єкта будівельним нормам;(орган містобудування надає про відповідність ДБН довідку або лист)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dDBNDate" name="Дата документа;(документа, який надано органом містобудування)" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDBNNumbDok" name="Реєстраційний номер документа;(документа, який надано органом містобудування)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_7" name="Інформація про рішення суду" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sPB_DokName&quot;],&quot;sValue&quot;:&quot;Інформація про рішення суду&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asSUDRish" name="Форма судового рішення" type="enum" required="true">
+          <activiti:value id="sEnamUhv" name="Ухвала"></activiti:value>
+          <activiti:value id="sEnamPost" name="Постанова"></activiti:value>
+          <activiti:value id="sEnamRish" name="Рішення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="GProektPIB" name="Прізвище, ім’я та по батькові проектувальника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="GProektAdress" name="Місце реєстрації проектувальника;(місто, вулиця, будинок, квартира)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="GProektPassport" name="Паспортні дані проектувальника;(серія, номер, ким і коли видано)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="GProektIdinn" name="ІПН проектувальника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_03" name="Введіть код ЄДРПОУ проектувальника" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_03" name="Повне найменування проектувальника" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_03" name="Юридична адреса проектувальника;(індекс, місто, вулиця, будинок, офіс)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabelArcIngAvt" name=" ; ;labelType=info" type="label" default="Нижче вкажіть інформацію про головного архітектора, особу що здійснює авторський нагляд та про особу, що здійснює технічний нагляд.&lt;br&gt; Якщо ви не можете вказати в якомусь з цих полів інформацію - поставте прочерк."></activiti:formProperty>
-        <activiti:formProperty id="sGArhitPIB" name="ПІБ головного архітектора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sGArhitSert" name="Серія та номер кваліфікаційного сертифікату головного архітектора" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sGIngenPIB" name="ПІБ особи, що здійснює технічний нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sGIngenSert" name="Серія та номер кваліфікаційного сертифікату особи, що здійснює тех. нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAvtNagPIB" name="ПІБ особи що здійснює авторський нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAvtNagSert" name="Серія та номер кваліфікаційного сертифікату особи, що здійснює авторський нагляд" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markerGProektOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGproekt.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_6" name="Інформація про проектну документацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asProektDok&quot;],&quot;sValue&quot;:&quot;Інформація про проектну документацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asProektDok" name="Назва документа яким затверджено проектну документацію;(вкажіть повну назву документа, що описує проект і узгоджений з державними органами)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ProektData" name="Дата затвердження" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="ProektNom" name="Номер документа" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_7" name="Право на виконання робіт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sPB_DokName&quot;],&quot;sValue&quot;:&quot;Право на виконання робіт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sPB_DokName" name="Назва документа;(наприклад: Повідомлення про початок виконання будівельних робіт)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPB_Organ" name="Найменування органу, до якого подано документ;(наприклад: Управління державного архітектурно-будівельного контролю Дніпровської міської ради)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="dPB_Date" name="Дата документу;(дата коли було зареєстровано повідомлення про будівництво)" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPB_ReestrN" name="Реєстраційний номер документу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSUDNumb" name="Номер судової справи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dSUDDateUhv" name="Дата прийняття рішення" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dSUDDateVstup" name="Дата набрання судовим рішенням законної сили" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSUDName" name="Назва суду, що прийняв рішення" type="string" required="true"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markersLine_8" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_8&quot;:{&quot;aElement_ID&quot;:[&quot;asZemKilk&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asZemKilk" name="Кількість окремих земельних ділянок, на яких збудовано об'єкт" type="enum" default="sEnamZem1" required="true">
           <activiti:value id="sEnamZem1" name="Одна"></activiti:value>
@@ -256,8 +249,10 @@
         <activiti:formProperty id="tPayUchPidt" name="Документи, що підтверджують сплату пайової участі;(назва, дата, номер)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="tPayUchZviln" name="Зазначте підставу звільнення від пайової участі" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerPayUch" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekPayUch.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_0054_GotEkspluat.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/DABI/DABI_0055_GotEkspluatSUD_ECP.html"></activiti:formProperty>
+        
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk_dabi" name="Пошта ДЗК; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -447,10 +442,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDK2000kode" name="Код об’єкта згідно з Державним класифікатором будівель та споруд ДК 018-2000" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudBeg" name="Дата початку будівництва" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudEnd" name="Дата закінчення будівництва" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="Інформація про інженера з технічного нагляду" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;TexIngPIB&quot;],&quot;sValue&quot;:&quot;Інформація про інженера з технічного нагляду&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="TexIngPIB" name="Прізвище, ім’я та по батькові інженера" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="TexIngDoc" name="Назва, номер та дата документа що підтверджує повноваження інженера" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="TexIngKvalSer" name="Серія і номер кваліфікаційного сертифіката" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_4" name="Інформація про генерального підрядника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asGPodrOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального підрядника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asGPodrOsoba" name="Будівництво здійснює" type="enum" writable="false">
           <activiti:value id="sEnamGPodrFiz" name="Заявник особисто (Господарським способом)"></activiti:value>
@@ -462,34 +454,31 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sDateActual_SubjectOrgan_04" name="Дата отримання інформації з ЄДРПОУ" type="label" writable="false"></activiti:formProperty>
         <activiti:formProperty id="GPodrphone" name="Контактний номер телефону генерального підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGpodr.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_5" name="Інформація про генерального проектувальника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;asGProektOsoba&quot;],&quot;sValue&quot;:&quot;Інформація про генерального проектувальника&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asGProektOsoba" name="Статус проектувальника" type="enum" writable="false">
-          <activiti:value id="sEnamGProektFiz" name="Фізична особа підприємець"></activiti:value>
-          <activiti:value id="sEnamGProektUr" name="Юридична особа"></activiti:value>
+        
+        <activiti:formProperty id="markersLine_5" name="Звіт технічного обстеження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTZvName&quot;],&quot;sValue&quot;:&quot;Звіт технічного обстеження&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTZvName" name="Назва звіту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dTZvDate" name="Дата звіту" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNumb" name="Номер звіту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNameOrgan" name="Найменування експертної організації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTZvEPIB" name="Прізвище, ім'я, по батькові експерта, що проводив обстеження" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNKvalif" name="Серія і номер кваліфікаційного сертифікату експерта" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_6" name="Відповідність місця розташування ДБН" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sDBNorg&quot;],&quot;sValue&quot;:&quot;Відповідність місця розташування ДБН&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDBNorg" name="Назва органу, що надав інформацію про відповідність місця розташування об'єкта будівельним нормам" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dDBNDate" name="Дата документа" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDBNNumbDok" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_7" name="Інформація про рішення суду" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sPB_DokName&quot;],&quot;sValue&quot;:&quot;Інформація про рішення суду&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asSUDRish" name="Форма судового рішення" type="enum" writable="false">
+          <activiti:value id="sEnamUhv" name="Ухвала"></activiti:value>
+          <activiti:value id="sEnamPost" name="Постанова"></activiti:value>
+          <activiti:value id="sEnamRish" name="Рішення"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="GProektPIB" name="Прізвище, ім’я та по батькові проектувальника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="GProektAdress" name="Місце реєстрації проектувальника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="GProektPassport" name="Паспортні дані проектувальника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="GProektIdinn" name="ІПН проектувальника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_03" name="Введіть код ЄДРПОУ проектувальника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_03" name="Повне найменування проектувальника" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_03" name="Юридична адреса проектувальника" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGArhitPIB" name="ПІБ головного архітектора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGArhitSert" name="Серія та номер кваліфікаційного сертифікату головного архітектора" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGIngenPIB" name="ПІБ особи, що здійснює технічний нагляд" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sGIngenSert" name="Серія та номер кваліфікаційного сертифікату особи, що здійснює тех. нагляд" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAvtNagPIB" name="ПІБ особи що здійснює авторський нагляд" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAvtNagSert" name="Серія та номер кваліфікаційного сертифікату особи, що здійснює авторський нагляд" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markerGProektOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGproekt.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_6" name="Інформація про проектну документацію" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;asProektDok&quot;],&quot;sValue&quot;:&quot;Інформація про проектну документацію&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asProektDok" name="Назва документа яким затверджено проектну документацію" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ProektData" name="Дата затвердження" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="ProektNom" name="Номер документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_7" name="Право на виконання робіт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sPB_DokName&quot;],&quot;sValue&quot;:&quot;Право на виконання робіт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sPB_DokName" name="Назва документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPB_Organ" name="Найменування органу, до якого подано документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="dPB_Date" name="Дата документу" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPB_ReestrN" name="Реєстраційний номер документу" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSUDNumb" name="Номер судової справи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dSUDDateUhv" name="Дата прийняття рішення" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dSUDDateVstup" name="Дата набрання судовим рішенням законної сили" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSUDName" name="Назва суду, що прийняв рішення" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_8" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_8&quot;:{&quot;aElement_ID&quot;:[&quot;asZemKilk&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asZemKilk" name="Кількість окремих земельних ділянок, на яких збудовано об'єкт" type="enum" default="sEnamZem1" writable="false">
           <activiti:value id="sEnamZem1" name="Одна"></activiti:value>
@@ -635,7 +624,7 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Декларація з ЕЦП;;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_0054_GotEkspluat.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/DABI/DABI_0055_GotEkspluatSUD_ECP.html] ; ;bVisible=false" type="string" default="Декларація" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan_dabi" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
