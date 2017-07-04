@@ -3,7 +3,7 @@
   <process id="DFS_F1301801" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sWarning0" name=" " type="label" default="Вам необхідно скористатися Вашим &lt;b&gt; персональним електронно-цифровим підписом або підписом підприємця&lt;/b&gt;. Ви не можете скористатися ЕЦП представника юридичної особи."></activiti:formProperty>
+        <activiti:formProperty id="sWarning0" name=" ; ;labelType=info" type="label" default="Вам необхідно скористатися Вашим &lt;b&gt; персональним електронно-цифровим підписом або підписом підприємця&lt;/b&gt;. Ви не можете скористатися ЕЦП представника юридичної особи."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище; ;writable=true,sID_Field_SWinEd=HLNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;writable=true,sID_Field_SWinEd=HPNAME" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;writable=true,sID_Field_SWinEd=HFNAME" type="string"></activiti:formProperty>
@@ -20,7 +20,10 @@
         <activiti:formProperty id="sHSHOT" name="Додаток до номеру будинку;за місцем реєстрації;writable=true,sID_Field_SWinEd=HSHOT" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asStartPeriod&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning1&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
+        
+         <activiti:formProperty id="sWarning1" name=" ; ;labelType=info" type="label" default="Дані про суми виплачених доходів та утриманих податків доступні з 1 кварталу 2014 року до 1 кварталу 2017 року включно. Відомості за 2 квартал 2017 року будуть доступні з 18 серпня 2017 року. Максимальный період для одного запиту - 12 кварталів. Просимо враховувати це при виборі періоду, за який бажаєте отримати інформацію"></activiti:formProperty>
+  
         <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
@@ -45,7 +48,7 @@
           <activiti:value id="2016" name="2016"></activiti:value>
           <activiti:value id="2017" name="2017"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markersStyle_1" name="Маркер стилю" type="markers" default="{&quot;attributes&quot;:{&quot;Style_1&quot;:{&quot;aSelectors&quot;:[&quot;#field-sWarning0&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;}},&quot;Style_2&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning0&quot;],&quot;oCommonStyle&quot;:{&quot;width&quot;:&quot;100%!important&quot;,&quot;padding&quot;:&quot;16px 20px&quot;,&quot;border-radius&quot;:&quot;5px&quot;,&quot;background-color&quot;:&quot;lightyellow&quot;,&quot;text-align&quot;:&quot;left&quot;}}}}"></activiti:formProperty>
+       
         <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
         <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
@@ -64,6 +67,7 @@
         <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1401801" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом."></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
