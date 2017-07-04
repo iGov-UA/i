@@ -3,6 +3,8 @@
   <process id="DABI_0055_GotEkspluatSUD" name="Декларація про готовність до експлуатації об’єкта, що належить за класом відповідальності до об’єктів з незначними наслідками (СС1)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sLabeECP" name=" ; ;labelType=warning" type="label" default="Увага!  Щоб скористатися цією послугою, потрібно використати власний &lt;a href=&quot;https://goo.gl/1OioXt &quot; target=&quot;_blank&quot;&gt;електронно-цифровий підпис (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що Вас обслуговує)"></activiti:formProperty>
+        
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, де Вам буде зручніше отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
@@ -72,7 +74,7 @@
         <activiti:formProperty id="sAdresBud" name="Адреса новозбудованого об'єкта;(нова адреса, яка присвоєна будинку після закінчення будівництва)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameBud" name="Найменування об'єкта;(назва відповідно проекту, наприклад Індивідуальний бунок, Дитячий садок, і т.д.)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDK2000kode" name="Код об’єкта згідно з Державним класифікатором будівель та споруд ДК 018-2000;(введіть у форматі ХХХХ.Х)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLabelDK2000" name=" " type="label" default="посилання на &lt;a href=&quot;http://zakon5.rada.gov.ua/rada/show/va507565-00 &quot; target=&quot;_blank&quot;&gt;класифікатор будівель та споруд ДК 018-2000&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sLabelDK2000" name=" ; ;labelType=info" type="label" default="посилання на &lt;a href=&quot;http://zakon5.rada.gov.ua/rada/show/va507565-00 &quot; target=&quot;_blank&quot;&gt;класифікатор будівель та споруд ДК 018-2000&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudBeg" name="Дата початку будівництва" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInfoBudEnd" name="Дата закінчення будівництва" type="date" required="true"></activiti:formProperty>
         
@@ -89,12 +91,12 @@
         <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGpodr.json')}"></activiti:formProperty>
         
         
-        <activiti:formProperty id="markersLine_5" name="Звіт технічного обстеження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTZvName&quot;],&quot;sValue&quot;:&quot;Звіт технічного обстеження&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTZvName" name="Назва звіту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_5" name="Звіт про технічне обстеження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTZvName&quot;],&quot;sValue&quot;:&quot;Звіт про технічне обстеження&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTZvName" name="Назва звіту;(документ що підтверджує надійну та безпечну експлуатацію об'єкта)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dTZvDate" name="Дата звіту" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTZvNumb" name="Номер звіту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTZvNameOrgan" name="Найменування експертної організації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTZvEPIB" name="Прізвище, ім'я, по батькові експерта, що проводив обстеження" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTZvNameOrgan" name="Найменування експертної організації;(яка проводила обстеження)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTZvEPIB" name="Прізвище, ім'я, по батькові експерта;(що проводив обстеження)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTZvNKvalif" name="Серія і номер кваліфікаційного сертифікату експерта" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_6" name="Відповідність місця розташування ДБН" type="markers" default="{&quot;attributes&quot;:{&quot;Line_6&quot;:{&quot;aElement_ID&quot;:[&quot;sDBNorg&quot;],&quot;sValue&quot;:&quot;Відповідність місця розташування ДБН&quot;}}}"></activiti:formProperty>
@@ -455,8 +457,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="GPodrphone" name="Контактний номер телефону генерального підрядника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekGpodr.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_5" name="Звіт технічного обстеження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTZvName&quot;],&quot;sValue&quot;:&quot;Звіт технічного обстеження&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTZvName" name="Назва звіту;(документ що підтверджує надійну та безпечну експлуатацію об'єкта)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_5" name="Звіт про технічне обстеження" type="markers" default="{&quot;attributes&quot;:{&quot;Line_5&quot;:{&quot;aElement_ID&quot;:[&quot;sTZvName&quot;],&quot;sValue&quot;:&quot;Звіт про технічне обстеження&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sTZvName" name="Назва звіту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dTZvDate" name="Дата звіту" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTZvNumb" name="Номер звіту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTZvNameOrgan" name="Найменування експертної організації" type="string" writable="false"></activiti:formProperty>
