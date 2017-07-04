@@ -54,6 +54,8 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
 
         try {
+            String sCurrentActivityId = oExecution.getCurrentActivityId();
+            LOG.info("sCurrentActivityId={}", sCurrentActivityId);
             List<String> asnTaskId = oActionTaskService
                     .findTaskIDsByActiveAndHistoryProcessInstanceID(
                             Long.valueOf(oExecution.getProcessInstanceId()));
