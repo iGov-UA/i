@@ -4,22 +4,36 @@ import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
+import org.activiti.engine.form.FormData;
+import org.activiti.engine.form.FormProperty;
+
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 import org.igov.io.mail.Mail;
 
 import javax.activation.DataSource;
 
 import static org.igov.util.ToolLuna.getProtectedNumber;
+import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * @author BW
@@ -31,41 +45,78 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
 
+    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
+
+    @Autowired
+    ActionTaskService oActionTaskService;
+
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
+
+        List<String> asnTaskId = oActionTaskService.
+                getTaskIdsByProcessInstanceId(oExecution.getProcessInstanceId());
+        Map<String, Object> mOnlyDateVariables = new HashMap<>();
+        asnTaskId.forEach(snTaskId -> {
+            FormData oFormData = oExecution.getEngineServices()
+                    .getFormService().getTaskFormData(snTaskId);
+
+            if (oFormData != null) {
+                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
+                aoFormProperties.forEach(oFormProperty -> {
+                    String sFormPropertyTypeName = oFormProperty.getType().getName();
+                    String sFormPropertyId = oFormProperty.getId();
+                    String sFormPropertyValue = oFormProperty.getValue();
+
+                    if (sFormPropertyTypeName.equals("date")) {
+                        LOG.info("Date catched. id={}, value={}",
+                                sFormPropertyId, sFormPropertyValue);
+
+                        DateTime oDateTime = DateTime.parse(sFormPropertyValue,
+                                DateTimeFormat.forPattern("dd/MM/yyyy"));
+                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
+                        LOG.info("sDate formated={}", sDate);
+                        mOnlyDateVariables.put(sFormPropertyId, sDate);
+
+                    } else if (sFormPropertyTypeName.equals("queueData")) {
+                        LOG.info("queueData catched.id={}, value={}",
+                                sFormPropertyId, sFormPropertyValue);
+                    }
+                });
+            }
+        });
+        LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
+        oExecution.setVariables(mOnlyDateVariables);
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-        
+
         LOG.info("sAttachmentsForSend after arriving in MailTaskWithAttachmentsAndSMS {}", sAttachmentsForSend);
         LOG.info("Process id is {}", oExecution.getProcessInstanceId());
-        
-        try{
-            if (sAttachmentsForSend.trim().equals("") || sAttachmentsForSend.equals(" ") ||
-                    !sAttachmentsForSend.contains("sKey")) 
-            {
+
+        try {
+            if (sAttachmentsForSend.trim().equals("") || sAttachmentsForSend.equals(" ")
+                    || !sAttachmentsForSend.contains("sKey")) {
                 LOG.info("Sleeping started..");
                 Thread.sleep(2000);
-                LOG.info("Variables names {}", oExecution.getVariables() != null 
+                LOG.info("Variables names {}", oExecution.getVariables() != null
                         ? oExecution.getVariables().keySet() : "null");
                 Object oAttachmentsForSendSelected = oExecution.getVariable("result");
-                LOG.info("oAttachmentsForSendSelected {}", oAttachmentsForSendSelected != null ? 
-                        (String) oAttachmentsForSendSelected : "null");
+                LOG.info("oAttachmentsForSendSelected {}", oAttachmentsForSendSelected != null
+                        ? (String) oAttachmentsForSendSelected : "null");
                 if (oAttachmentsForSendSelected != null && !((String) oAttachmentsForSendSelected).trim().equals("")) {
                     LOG.info("some sleep always help! {}", oAttachmentsForSendSelected.toString());
                     sAttachmentsForSend = (String) oAttachmentsForSendSelected;
                 }
             }
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             LOG.info("Error during sleeping thread in mail {}", ex);
         }
-        
+
         try {
 
             LOG.info("sOldAttachmentsForSend: in MailTaskWithAttachmentsAndSMS: " + sAttachmentsForSend.trim());
-            
+
             String sOldAttachmentsForSend = sAttachmentsForSend.replaceAll("\\{(.*?)\\}\\,", "").replaceAll("\\{(.*?)\\}", "")
                     .replaceAll("^\"|\"$", "").trim();
             LOG.info("MailTaskWithAttachmentsAndSMS: " + sOldAttachmentsForSend);

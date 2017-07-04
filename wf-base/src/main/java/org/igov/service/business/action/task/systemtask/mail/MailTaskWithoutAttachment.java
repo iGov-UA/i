@@ -52,16 +52,16 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                     if (sFormPropertyTypeName.equals("date")) {
                         LOG.info("Date catched. id={}, value={}",
                                 sFormPropertyId, sFormPropertyValue);
-                        
+
                         DateTime oDateTime = DateTime.parse(sFormPropertyValue,
                                 DateTimeFormat.forPattern("dd/MM/yyyy"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk","UA"));
+                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
                         LOG.info("sDate formated={}", sDate);
                         mOnlyDateVariables.put(sFormPropertyId, sDate);
 
                     } else if (sFormPropertyTypeName.equals("queueData")) {
-                        LOG.info("queueData catched.");
-
+                        LOG.info("queueData catched.id={}, value={}",
+                                sFormPropertyId, sFormPropertyValue);
                     }
                 });
             }
