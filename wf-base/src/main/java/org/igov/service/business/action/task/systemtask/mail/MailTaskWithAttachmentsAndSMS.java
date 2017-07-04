@@ -54,8 +54,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
 
         try {
-            List<String> asnTaskId = oActionTaskService.
-                    getTaskIdsByProcessInstanceId(oExecution.getProcessInstanceId());
+            List<String> asnTaskId = oActionTaskService
+                    .findTaskIDsByActiveAndHistoryProcessInstanceID(
+                            Long.valueOf(oExecution.getProcessInstanceId()));
             Map<String, Object> mOnlyDateVariables = new HashMap<>();
             asnTaskId.forEach(snTaskId -> {
                 FormData oFormData = oExecution.getEngineServices()
