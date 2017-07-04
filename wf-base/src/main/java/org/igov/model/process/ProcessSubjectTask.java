@@ -17,6 +17,10 @@ import org.igov.model.core.AbstractEntity;
 @javax.persistence.Entity
 public class ProcessSubjectTask extends AbstractEntity{
     
+    @JsonProperty(value = "sKey")
+    @Column
+    private String sKey;
+    
     @JsonProperty(value = "sHead")
     @Column
     private String sHead;
@@ -34,6 +38,14 @@ public class ProcessSubjectTask extends AbstractEntity{
     @Transient
     private List<ProcessSubject> aProcessSubject;
 
+    public String getsKey() {
+        return sKey;
+    }
+
+    public void setsKey(String sKey) {
+        this.sKey = sKey;
+    }
+    
     public String getsHead() {
         return sHead;
     }

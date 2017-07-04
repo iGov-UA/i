@@ -517,7 +517,6 @@
         <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_1pr" name="маркер принтформы ТМЦ" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1pr&quot;:{&quot;aElement_ID&quot;:[&quot;docCM&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_2pr" name="маркер принтформы услуги" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2pr&quot;:{&quot;aElement_ID&quot;:[&quot;docServices&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum2'&quot;}}}"></activiti:formProperty>
-        
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_tenderPrint.html] ; ;bVisible=false" type="string" default="Служебная записка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -703,6 +702,9 @@
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;asTypeReport&quot;,&quot;sDateExecution&quot;,&quot;sTextTask&quot;,&quot;sTable6&quot;,&quot;sName_Kontroler&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumCreateTask'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_1pr" name="маркер принтформы ТМЦ" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1pr&quot;:{&quot;aElement_ID&quot;:[&quot;docCM&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_2pr" name="маркер принтформы услуги" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2pr&quot;:{&quot;aElement_ID&quot;:[&quot;docServices&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_tenderPrint.html] ; ;bVisible=false" type="string" default="Служебная записка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
           <activiti:field name="sTaskProcessDefinition">
@@ -830,7 +832,7 @@ execution.setVariable('bSubmitedAll3', oCheckSubmitedAll3.bSubmitedAll.toString(
     </scriptTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask7">
+    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll3 == true}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask12" name="All Signes Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -850,7 +852,7 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == false}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway11" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="exclusivegateway11">
+    <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow100" name="надо генерить" sourceRef="exclusivegateway11" targetRef="callactivity1">
@@ -985,14 +987,14 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
     <serviceTask id="servicetask1" name="Transfer_DocumentARM" activiti:delegateExpression="#{Transfer_ARM}">
       <extensionElements>
         <activiti:field name="soData">
-          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
+          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask2" name=" Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
       <extensionElements>
         <activiti:field name="soData">
-          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
+          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1000,6 +1002,8 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <script>execution.setVariable('sDateApprove', new Date().format("dd/MM/yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow109" sourceRef="scripttask18" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow110" sourceRef="servicetask1" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow111" sourceRef="servicetask2" targetRef="exclusivegateway11"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1073,10 +1077,10 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <omgdc:Bounds height="55.0" width="105.0" x="36.0" y="1024.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="105.0" x="840.0" y="813.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="105.0" x="667.0" y="810.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="247.0" y="1104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="259.0" y="1191.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
         <omgdc:Bounds height="55.0" width="105.0" x="525.0" y="626.0"></omgdc:Bounds>
@@ -1154,7 +1158,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
         <omgdi:waypoint x="719.0" y="765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="944.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="810.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="74.0" x="719.0" y="765.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -1186,7 +1190,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
         <omgdi:waypoint x="453.0" y="1220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="225.0" y="1220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="364.0" y="1218.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="75.0" x="382.0" y="1206.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -1218,6 +1222,14 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
       <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
         <omgdi:waypoint x="525.0" y="653.0"></omgdi:waypoint>
         <omgdi:waypoint x="493.0" y="653.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
+        <omgdi:waypoint x="719.0" y="894.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="944.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
+        <omgdi:waypoint x="259.0" y="1218.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="1220.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

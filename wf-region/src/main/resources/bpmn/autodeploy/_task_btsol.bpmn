@@ -351,7 +351,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateApprove" name="Дата исход №" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
@@ -486,6 +486,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="executed" name="Выполнено"></activiti:value>
           <activiti:value id="notExecuted" name="Невыполнено"></activiti:value>
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
+          <activiti:value id="ansDoc" name="Создать ответный документ"></activiti:value>
           <activiti:value id="delegated" name="Делегировать другому исполнителю"></activiti:value>
           <activiti:value id="transfered" name="Прошу перенести срок"></activiti:value>
         </activiti:formProperty>
@@ -502,6 +503,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markers11" name="Если другой исполнитель" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sTable6&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Делегировать другому исполнителю'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Если перенос срока" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDateExecutionNew&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusTask&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'transfered'||[sClient] == 'Прошу перенести срок'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable6_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_1pr" name="маркер принтформы ТМЦ" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1pr&quot;:{&quot;aElement_ID&quot;:[&quot;docCM&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_2pr" name="маркер принтформы услуги" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2pr&quot;:{&quot;aElement_ID&quot;:[&quot;docServices&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_tenderPrint.html] ; ;bVisible=false" type="string" default="Служебная записка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -543,7 +547,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </scriptTask>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" sourceRef="usertask4_red" targetRef="exclusivegateway5"></sequenceFlow>
-    <sequenceFlow id="flow18" sourceRef="exclusivegateway5" targetRef="scripttask3">
+    <sequenceFlow id="flow18" sourceRef="exclusivegateway5" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask != 'delegated'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" name="делегировать" sourceRef="exclusivegateway5" targetRef="usertask4_red">
@@ -588,7 +592,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNumber_441" name="Вх №441" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateApprove" name="Дата исход №" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateApprove" name="Дата исход №" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Наименование объекта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameProduct" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
@@ -722,6 +726,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="executed" name="Выполнено"></activiti:value>
           <activiti:value id="notExecuted" name="Невыполнено"></activiti:value>
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
+          <activiti:value id="ansDoc" name="Создать ответный документ"></activiti:value>
           <activiti:value id="delegated" name="Делегировать другому исполнителю"></activiti:value>
           <activiti:value id="transfered" name="Прошу перенести срок"></activiti:value>
         </activiti:formProperty>
@@ -736,6 +741,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Комментарий - что необходимо доработать" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_1pr" name="маркер принтформы ТМЦ" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1pr&quot;:{&quot;aElement_ID&quot;:[&quot;docCM&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_2pr" name="маркер принтформы услуги" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2pr&quot;:{&quot;aElement_ID&quot;:[&quot;docServices&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_tenderPrint.html] ; ;bVisible=false" type="string" default="Служебная записка" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -756,7 +764,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
             <activiti:expression><![CDATA[${processDefinitionId}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="soData">
-            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;sAttributeApplication::${sAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDate_441};;asNumberDep::${asNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sTable6::${sTable6};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sID_UA_Currency::${sID_UA_Currency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
+            <activiti:expression><![CDATA[sTitleDoc::${sTitleDoc};;sNameProduct::${sNameProduct};;sCodeProduction::${sCodeProduction};;sTechCharacteristic::${sTechCharacteristic};;asUnit::${asUnit};;sQuantity::${sQuantity};;sPurposeSupply::${sPurposeSupply};;sScheduleSupply::${sScheduleSupply};;sProducer::${sProducer};;sAddInformation::${sAddInformation};;asPrefPay::${asPrefPay};;asProgFin::${asProgFin};;sContactPerson::${sContactPerson};;asBankGaranty::${asBankGaranty};;sBankGaranty::${sBankGaranty};;sBankProvider::${sBankProvider};;asPersonalResponse::${asPersonalResponse};;sTextTask::${sTextTask};;sDateExecution::${sDateExecution};;asTypeReport::${asTypeReport};;sLogin_Kontroler::${sLogin_Kontroler};;sName_Kontroler::${sName_Kontroler};;sTable5::${sTable5};;sTable1::${sTable1};;sID_ARM::${sID_ARM};;sEnterpriseCustomer::${sEnterpriseCustomer};;sAttributeApplication::${sAttributeApplication};;asPriorityApplication::${asPriorityApplication};;sNumberCard::${sNumberCard};;sDateApprove::${sDateApprove};;sNumber_441::${sNumber_441};;sDate_441::${sDateApprove};;asNumberDep::${asNumberDep};;asStatus::${asStatus};;sSubgroup::${sSubgroup};;sTable6::${sTable6};;sPlannedDateEZ::${sPlannedDateEZ};;sFactDateEZ::${sFactDateEZ};;sNotesHead::${sNotesHead};;sNumber_442::${sNumber_442};;sDate_442::${sDate_442};;sNumberResponseDoc::${sNumberResponseDoc};;sNumberProtocolMeetings::${sNumberProtocolMeetings};;sCorrectionDoc::${sCorrectionDoc};;asFormBargaining::${asFormBargaining};;sShortName_SubjectOrgan_01::${sShortName_SubjectOrgan_01};;sID_SubjectOrgan_OKPO_01::${sID_SubjectOrgan_OKPO_01};;phone::${phone};;sStartSum::${sStartSum};;sFinalSum::${sFinalSum};;sSaveSum::${sSaveSum};;sCurrency::${sCurrency};;sID_UA_Currency::${sID_UA_Currency};;sSpecialConditions::${sSpecialConditions};;sMeansFinancing::${sMeansFinancing};;sAgreedEstimates::${sAgreedEstimates};;sDateChange::${sDateChange};;sNotes::${sNotes};;sAcceptanceInformation::${sAcceptanceInformation};;sArchive::${sArchive};;sID_Enterprise::${sID_Enterprise};;sLongterm::${sLongterm};;sCreateDate::${sCreateDate};;sProckred::${sProckred};;sUpdOKBID::${sUpdOKBID}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${UpdateStatusTask}">
@@ -1204,7 +1212,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <serviceTask id="servicetask1" name=" Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
       <extensionElements>
         <activiti:field name="soData">
-          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::value{[sAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::value{[sNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
+          <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::value{[sAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::value{[sNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
         </activiti:field>
         <activiti:field name="name_isExecute">
           <activiti:expression><![CDATA[${sName_isExecute}]]></activiti:expression>
@@ -1222,6 +1230,17 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <callActivity id="callactivity1" name="ответный документ" calledElement="_doc_btsol_sz">
+      <extensionElements>
+        <activiti:in source="sGroupAddressee" target="sLoginAuthor"></activiti:in>
+        <activiti:in source="sTitleDoc" target="sDocAnswer"></activiti:in>
+      </extensionElements>
+    </callActivity>
+    <sequenceFlow id="flow40" sourceRef="exclusivegateway5" targetRef="callactivity1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusTask == 'ansDoc'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="callactivity1" targetRef="scripttask3"></sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask2" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_btsol">
     <bpmndi:BPMNPlane bpmnElement="_task_btsol" id="BPMNPlane__task_btsol">
@@ -1262,52 +1281,55 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="289.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4_red" id="BPMNShape_usertask4_red">
-        <omgdc:Bounds height="55.0" width="105.0" x="266.0" y="422.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="266.0" y="534.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="690.0" y="422.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="690.0" y="534.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="419.0" y="429.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="419.0" y="541.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="81.0" width="145.0" x="830.0" y="409.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="145.0" x="830.0" y="521.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
-        <omgdc:Bounds height="40.0" width="40.0" x="1010.0" y="429.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1010.0" y="541.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="266.0" y="521.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="266.0" y="633.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="1093.0" y="432.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1093.0" y="544.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask6_red" id="BPMNShape_usertask6_red">
-        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="753.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
-        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="659.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="760.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="695.0" y="652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="695.0" y="753.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="131.0" x="845.0" y="652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="131.0" x="845.0" y="753.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
-        <omgdc:Bounds height="40.0" width="40.0" x="1010.0" y="659.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1010.0" y="760.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="751.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="852.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="1093.0" y="662.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1093.0" y="763.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="753.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="526.0" y="368.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="514.0" y="534.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="callactivity1" id="BPMNShape_callactivity1">
+        <omgdc:Bounds height="55.0" width="105.0" x="526.0" y="380.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="105.0" y="150.0"></omgdi:waypoint>
@@ -1385,106 +1407,120 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="322.0" y="254.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="371.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="419.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="371.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="419.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="459.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="690.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="459.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="514.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="439.0" y="429.0"></omgdi:waypoint>
-        <omgdi:waypoint x="439.0" y="382.0"></omgdi:waypoint>
-        <omgdi:waypoint x="318.0" y="382.0"></omgdi:waypoint>
-        <omgdi:waypoint x="318.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="541.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="494.0"></omgdi:waypoint>
+        <omgdi:waypoint x="318.0" y="494.0"></omgdi:waypoint>
+        <omgdi:waypoint x="318.0" y="534.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="69.0" x="339.0" y="393.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="69.0" x="339.0" y="505.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="795.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="830.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="795.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="830.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="975.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="975.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1010.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="1030.0" y="469.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1029.0" y="548.0"></omgdi:waypoint>
-        <omgdi:waypoint x="371.0" y="548.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1030.0" y="581.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1029.0" y="660.0"></omgdi:waypoint>
+        <omgdi:waypoint x="371.0" y="660.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="705.0" y="533.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="705.0" y="645.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="1050.0" y="449.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1093.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1050.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1093.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="318.0" y="521.0"></omgdi:waypoint>
-        <omgdi:waypoint x="318.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="318.0" y="633.0"></omgdi:waypoint>
+        <omgdi:waypoint x="318.0" y="589.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="105.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="105.0" y="450.0"></omgdi:waypoint>
-        <omgdi:waypoint x="266.0" y="449.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="266.0" y="561.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="96.0" x="140.0" y="431.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="96.0" x="125.0" y="543.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="460.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="780.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="800.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="845.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="845.0" y="780.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="976.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1010.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="976.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1010.0" y="780.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="1030.0" y="699.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1030.0" y="778.0"></omgdi:waypoint>
-        <omgdi:waypoint x="375.0" y="778.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1030.0" y="800.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1030.0" y="879.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="879.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="699.0" y="763.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="699.0" y="864.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="1050.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1093.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1050.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1093.0" y="780.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="375.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="420.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="780.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="322.0" y="751.0"></omgdi:waypoint>
-        <omgdi:waypoint x="322.0" y="707.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="852.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="808.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="105.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="105.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="780.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="96.0" x="138.0" y="658.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="96.0" x="125.0" y="756.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="440.0" y="659.0"></omgdi:waypoint>
-        <omgdi:waypoint x="439.0" y="601.0"></omgdi:waypoint>
-        <omgdi:waypoint x="322.0" y="601.0"></omgdi:waypoint>
-        <omgdi:waypoint x="322.0" y="652.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="760.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="702.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="702.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="753.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="69.0" x="329.0" y="611.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="69.0" x="329.0" y="712.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="645.0" y="679.0"></omgdi:waypoint>
-        <omgdi:waypoint x="695.0" y="679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="645.0" y="780.0"></omgdi:waypoint>
+        <omgdi:waypoint x="695.0" y="780.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="439.0" y="541.0"></omgdi:waypoint>
+        <omgdi:waypoint x="439.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="407.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="631.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="742.0" y="407.0"></omgdi:waypoint>
+        <omgdi:waypoint x="742.0" y="534.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="619.0" y="561.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="561.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

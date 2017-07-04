@@ -49,6 +49,7 @@ public class ArmDaoImpl implements ArmDao {
 	 
 	 @Value("${arm.password}")
 	 private String password;
+	
 
 	@Override
 	public List<DboTkModel> getDboTkByOutNumber(String outNumber) {
@@ -508,7 +509,4 @@ public class ArmDaoImpl implements ArmDao {
 		return dbConnection;
 
 	}
-
-	
-
 }

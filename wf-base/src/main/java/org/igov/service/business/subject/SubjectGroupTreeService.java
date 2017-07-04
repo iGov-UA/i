@@ -654,10 +654,10 @@ public class SubjectGroupTreeService {
                     }
                 }
             } else{
-                throw new RuntimeException("Can't find any SubjectGroup for sID_Group_Activiti = " + sID_Group_Activiti);
+                LOG.info("Can't find any SubjectGroup for sID_Group_Activiti = " + sID_Group_Activiti);
+                return "";
             }
         } catch (Exception oException) {
-            LOG.error("ERROR:" + oException.getMessage() + " (sID_Group_Activiti=" + sID_Group_Activiti + ")");
             LOG.error("ERROR: ", oException);
             throw oException;
         }
