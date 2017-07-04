@@ -32,9 +32,11 @@ execution.setVariable('processInstanceId', processInstanceId)
           <activiti:value id="no" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sProbation" name="Если работник готов к испытательному сроку - с какого числа" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если работник согласен на исп срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asProbation&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Yes'||[sReason] == 'Да'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если работник согласен на исп срок" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sProbation&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asProbation&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'yes'||[sReason] == 'Да'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="валидатор поля номер телефона" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_1&quot;:{&quot;aField_ID&quot;:[&quot;sTel&quot;],&quot;sFormat&quot;: &quot;############&quot;,&quot;sMessage&quot;: &quot;Введите номер в числовом формате - 9 цифр&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Скан паспорта; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="комментарий директора" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/family/_doc_application_for_job.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Family]]></activiti:string>
@@ -75,6 +77,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sLoginForNewEmployee" name="логин для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sParolForNewEmployee" name="пароль для нового сотрудника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленный файл; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/family/_doc_application_for_job.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -110,6 +113,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="nSalary" name="Оклад" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPtobation" name="Если работник готов к испытательному сроку - с какого числа" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/family/_doc_application_for_job.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -148,6 +152,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="accept" name="Утвердить"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="прикрепленные файлы; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Если вернуть автору" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sNote&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sDecision&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'backToAuthor'||&quot;[sReason] == 'Отказать'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="коментарий" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Копии документов" type="table" default="${markerService.loadFromFile('table/family/_doc_application_for_job.json')}" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -185,19 +192,17 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow9" sourceRef="usertask4" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask5" name="права ок, шаг 1" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//переключение степа
+      <script>
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_1'
-var oResultSetDoc =
-documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')
 
-// клонирование прав
-var sKey_GroupPostfix = '_default_Family'
-var sKey_GroupPostfix_New = 'Family_HR'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Family', sKey_GroupPostfix_New, 'step_1')
+
+</script>
     </scriptTask>
     <sequenceFlow id="flow14" sourceRef="exclusivegateway1" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAvtor'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAutor'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="scripttask5" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="usertask2" targetRef="scripttask3"></sequenceFlow>
