@@ -19,7 +19,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер наказу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Назва наказу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
@@ -68,12 +68,8 @@
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_7" name="File label;File title;sPrintFormFileAsPDF=pattern/print/minust/_doc_justice_171_nakaz.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart_Familiarize" name="id группы1 ; ;bVisible=false" type="string" default="MJU_Dnipro_All_DVS"></activiti:formProperty>
-        <activiti:formProperty id="sTableFamiliarize" name="Потребує повідомлення на емейл ДВС; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_31.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart_Familiarize1" name="id группы2 ; ;bVisible=false" type="string" default="MJU_Dnipro_All_DNK"></activiti:formProperty>
-        <activiti:formProperty id="sTableFamiliarize1" name="Потребує повідомлення на емейл ДНК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable4_doc_justice_31.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart_Familiarize2" name="id группы3 ; ;bVisible=false" type="string" default="MJU_Dnipro_All_DRACS"></activiti:formProperty>
-        <activiti:formProperty id="sTableFamiliarize2" name="Потребує повідомлення на емейл ЗАГС; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable5_doc_justice_31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart_Familiarize" name="id группы1 ; ;bVisible=false" type="string" default="MJU_Dnipro_All_Organ"></activiti:formProperty>
+        <activiti:formProperty id="sTableFamiliarize" name="Потребує повідомлення на емейл; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression>${sLoginAuthor}</activiti:expression>
@@ -202,7 +198,7 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //отримання назви департамента
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
+var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ',null);
 execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel) 
 
 	 </script>
@@ -224,10 +220,10 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <sequenceFlow id="flow65" name="false" sourceRef="exclusivegateway1" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="тесатове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="тесатове повідомлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:string><![CDATA[darja.grek@gmail.com]]></activiti:string>
+          <activiti:expression>${sValue}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -236,22 +232,10 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
           <activiti:string><![CDATA[тест письма на несколько адресов сервистаска]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-тело письма
-${sEmail}
-
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]   	 
-[pattern/mail/new_design/_common_signature_start.html]
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_7}</activiti:expression>
+          <activiti:expression>тестовое письмо</activiti:expression>
         </activiti:field>
       </extensionElements>
-      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${usersService.getUsersLoginByGroup('GrekD')}" activiti:elementVariable="sEmail"></multiInstanceLoopCharacteristics>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTableFamiliarize', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
     </serviceTask>
     <serviceTask id="mailtask1" name="Mail Task" activiti:type="mail">
       <extensionElements>

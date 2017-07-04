@@ -37,6 +37,32 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
+        
+        LOG.info("sAttachmentsForSend after arriving in MailTaskWithAttachmentsAndSMS {}", sAttachmentsForSend);
+        LOG.info("Process id is {}", oExecution.getProcessInstanceId());
+        
+        try{
+            if (sAttachmentsForSend.trim().equals("") || sAttachmentsForSend.equals(" ") ||
+                    !sAttachmentsForSend.contains("sKey")) 
+            {
+                LOG.info("Sleeping started..");
+                //Thread.sleep(2000);
+                LOG.info("Variables names {}", oExecution.getVariables() != null 
+                        ? oExecution.getVariables().keySet() : "null");
+                Object oAttachmentsForSendSelected = oExecution.getVariable("result");
+                LOG.info("oAttachmentsForSendSelected {}", oAttachmentsForSendSelected != null ? 
+                        (String) oAttachmentsForSendSelected : "null");
+                if (oAttachmentsForSendSelected != null && !((String) oAttachmentsForSendSelected).trim().equals("")) {
+                    LOG.info("some sleep always help! {}", oAttachmentsForSendSelected.toString());
+                    sAttachmentsForSend = (String) oAttachmentsForSendSelected;
+                }
+            }
+        }
+        catch (Exception ex){
+            LOG.info("Error during sleeping thread in mail {}", ex);
+        }
+        
+        
         try {
 
             LOG.info("sOldAttachmentsForSend: in MailTaskWithAttachmentsAndSMS: " + sAttachmentsForSend.trim());

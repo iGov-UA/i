@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_240" name="Висновок державної санітарно-епідеміологічної експертизи на виробництво, зберігання, транспортування, використання, захоронення, знищення та утилізацію отруйних речовин, у тому числі продуктів біотехнологій та інших біологічних агентів" isExecutable="true">
-   <documentation>
-    Смоктій О.Д. 21.06.2017 рефакторінг (формат листів, формат файлів, маркери перенесено в json)
-    </documentation>
+    <documentation>Смоктій О.Д. 21.06.2017 рефакторінг (формат листів, формат файлів, маркери перенесено в json)</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
@@ -17,12 +15,12 @@
           <activiti:value id="restructuring" name="Переоформлення висновку"></activiti:value>
           <activiti:value id="duplicate" name="Видача дублікату висновку"></activiti:value>
           <activiti:value id="cansel" name="Анулювання висновку"></activiti:value>
-        </activiti:formProperty>  
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>     
+        </activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_today" name="Вкажіть сьогоднішню дату; ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="name_object" name="Об'єкт, на який видається документ" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об'єкта, на який видається документ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" required="true"></activiti:formProperty>
@@ -63,8 +61,7 @@
         <activiti:formProperty id="anVibor_performer" name="Техническая переменная, для работы sShapka220, не удалять!; ;bVisible=false" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="m1" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_240_ST1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="m2" type="markers" default="${markerService.loadFromFile('dpss/dnepr_cnap_240_ST2.json')}"></activiti:formProperty>
-        
-        </extensionElements>
+      </extensionElements>
     </startEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка вхідної документації ЦНАПом (1-й крок)" activiti:candidateGroups="dnepr_cnap_${sID_Public_SubjectOrganJoin}">
@@ -86,7 +83,7 @@
         <activiti:formProperty id="name_company" name="У давальному відмінку повне найменовання юридичної особи/П.І.Б. фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="edrpou_inn" name="Ідентифікаційний код згідно з ЄДРПОУ (для юридичних осіб) або ідентифікаційний номер фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="П.І.Б. керівника юридичної особи / фізичної особи - підприємця/уповноваженої особи" type="string" writable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="scope" name="Сфера застосування та реалізації об'єкта експертизи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="article" name="Код за ДКПП, код за УКТЗЕД, артикул" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="country_origin" name="Країна походження об'єкта експертизи" type="string" writable="false"></activiti:formProperty>
@@ -106,7 +103,7 @@
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу; ;bVisible=false" type="string" default="висновок державної санітарно-епідеміологічної експертизи на виробництво, зберігання, транспортування, використання, захоронення, знищення та утилізацію отруйних речовин, у тому числі продуктів біотехнологій та інших біологічних агентів"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Документи передані в держсанепідслужбу"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
@@ -117,9 +114,7 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print1.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 1" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/dnepr_cnap_220_print2.html]; ;bVisible=false" type="string" default="Форма заяви громадянина 2" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-         
-         <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_1" name="Документ, що підтверджує внесення плати за комплексне вивчення документів та підготовку проекту висновку державної санітарно-епідеміологічної експертизи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_2" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_3" name="Спеціфікація (довідка про повний склад об'єкта експертизи та показники його ідентифікації); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_4" name="Документ власника, що декларує відповідність об'єкта експертизи визначеним в Україні вимогам щодо їх безпеки для здоров'я людини;(документ, що підтверджує якість продукції, що містить дані про показники безпечності, склад, характеристику, терміни придатності, умови зберігання тощо);bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -133,7 +128,7 @@
         <activiti:formProperty id="nFile_7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -182,7 +177,7 @@
         <activiti:formProperty id="adminFio" name="П.І.Б. адміністратора ЦНАП, який прийняв заяву" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер у відповідності до внутрішньої програми ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="status2" name="Статус висновку" type="enum">
+        <activiti:formProperty id="status2" name="Статус висновку" type="enum" required="true">
           <activiti:value id="attr3_finish" name="Висновок (або рішення) готове, запросити громадянина"></activiti:value>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
@@ -373,12 +368,16 @@ ${substance_2}.<br />
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow13" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow15" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Cформировать date_today (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_240">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_240" id="BPMNPlane_dnepr_cnap_240">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="22.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="72.0" width="105.0" x="500.0" y="110.0"></omgdc:Bounds>
@@ -409,6 +408,9 @@ ${substance_2}.<br />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="890.0" y="128.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="74.0" width="105.0" x="81.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="335.0" y="145.0"></omgdi:waypoint>
@@ -467,7 +469,11 @@ ${substance_2}.<br />
         <omgdi:waypoint x="907.0" y="163.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="55.0" y="133.0"></omgdi:waypoint>
+        <omgdi:waypoint x="57.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="81.0" y="146.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="186.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="230.0" y="145.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
