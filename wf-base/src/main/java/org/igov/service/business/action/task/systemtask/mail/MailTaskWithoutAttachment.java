@@ -10,6 +10,9 @@ import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
 import org.igov.io.mail.Mail;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -41,14 +44,17 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                     
                     if (oFormProperty.getType().getName().equalsIgnoreCase("date")) {
                         LOG.info("Date catched");
+                        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd MMMM yyyy, kk:mm");
+                        DateTime dt = formatter.parseDateTime(oFormProperty.toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
                         String sDate = sdf.format((Date) oFormProperty);
+                        LOG.info("sDate={}", sDate);
                         mOnlyDateVariables.put(oFormProperty.getId(), sDate);
                     } else if (oFormProperty.getType().getName().equalsIgnoreCase("queueData")) {
                         LOG.info("queueData catched={}", oFormProperty) ;
-                    }
-                LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);        
+                    }        
                 }
+                LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
             }
         } catch (Exception e) {
             LOG.error("Error: {}, occured while looking for a start form for a process.",
