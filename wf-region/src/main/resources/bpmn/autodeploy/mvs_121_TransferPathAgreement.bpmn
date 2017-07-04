@@ -30,7 +30,7 @@
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="edrpou" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи (уповноваженої особи)" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" default=" "></activiti:formProperty>
@@ -52,8 +52,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka228" name="шапки принтформ ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;imya_ur&quot;,&quot;post_ur&quot;,&quot;phone_ur&quot;, &quot;edrpou&quot;,&quot;pib_ur&quot;,&quot;adres_ur&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers2" name="Якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;imya_fiz&quot;,&quot;adres_fiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="m" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_ST.json')}"></activiti:formProperty>
+      
       </extensionElements>
     </startEvent>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -94,7 +94,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sShapka228" name="шапки принтформ ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvs_121_TransferPathAgreement_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvs/mvs_121_TransferPathAgreement_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dopusk" name="Копія свідоцтва про допущення транспортного засобу до перевезення небезпечних вантажів ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dopnv" name="Копія ДОПНВ - свідоцтва про підготовку водіїв транспортних засобів, що перевозять небезпечні вантажі ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -143,8 +143,8 @@
           <activiti:value id="reject" name="відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/mvs_121_TransferPathAgreement_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvs_121_TransferPathAgreement_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/mvs/mvs_121_TransferPathAgreement_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvs/mvs_121_TransferPathAgreement_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
