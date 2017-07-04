@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.igov.service.exception.RecordNotFoundException;
 
 import org.joda.time.DateTime;
@@ -56,8 +57,10 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
         try {
             ExecutionEntity oExecutionEntity = (ExecutionEntity) oExecution;
-            String sTaskId = oExecutionEntity.getActivityId();
-            LOG.info("sCurrentActivityId={}", sTaskId);
+            List<TaskEntity> aoTaskEntityId = oExecutionEntity.getTasks();
+            aoTaskEntityId.forEach(oTaskEntity -> {
+                LOG.info("oTaskEntityId={}", oTaskEntity.getId());
+            });
             List<String> asnTaskId = oActionTaskService
                     .findTaskIDsByActiveAndHistoryProcessInstanceID(
                             Long.valueOf(oExecution.getProcessInstanceId()));
