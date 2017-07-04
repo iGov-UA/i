@@ -152,6 +152,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     private void documentHistoryPostProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse) {
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
         try {
             Map<String, String> mRequestParam = new HashMap<>();
             Enumeration<String> paramsName = oRequest.getParameterNames();
@@ -185,7 +186,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
             } catch (Exception ex) {
                 LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sRequestBody);
+                LOG.info("sRequestBody is: {}", sCut(nLen, sRequestBody));
             }
 
             try {
@@ -193,8 +194,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
                 }
             } catch (Exception ex) {
-                LOG.debug("Error parsing sRequestBody: {}", ex);
-                LOG.debug("sRequestBody is: {}", sResponseBody);
+                LOG.debug("Error parsing sResponseBody: {}", ex);
+                LOG.debug("sResponseBody is: {}", sCut(nLen, sResponseBody));
             }
 
             if (isCloseTask(oRequest, sResponseBody)) {
@@ -306,6 +307,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     private void documentHistoryPreProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse) {
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
         try {
 
             Map<String, String> mRequestParam = new HashMap<>();
@@ -327,12 +329,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
 
             String sRequestBody = osRequestBody.toString();
-            String sResponseBody = !bFinish ? "" : oResponse.toString();
+            //String sResponseBody = !bFinish ? "" : oResponse.toString();
 
             String sURL = oRequest.getRequestURL().toString();
 
             JSONObject omRequestBody = null;
-            JSONObject omResponseBody = null;
+            //JSONObject omResponseBody = null;
 
             try {
                 if (!sRequestBody.trim().equals("")) {
@@ -342,7 +344,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("Error parsing sRequestBody: {}", ex);
                 LOG.info("sRequestBody is: {}", sRequestBody);
             }
-
+            /*
             try {
                 if (!sResponseBody.trim().equals("")) {
                     omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
@@ -352,7 +354,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 LOG.info("sRequestBody is: {}", sResponseBody);
             }
 
-            /*if (isUpdateProcess(oRequest)){
+            if (isUpdateProcess(oRequest)){
 
             	LOG.info("--------------ALL PARAMS IN UPDATE PROCESS(REGION)--------------");
                 LOG.info("protocolize sURL is: " + sURL);
@@ -448,6 +450,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     private void processDocumentSubmit(Map<String, String> mRequestParam, JSONObject omRequestBody) throws Exception {
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
 
         if (omRequestBody != null && omRequestBody.containsKey("taskId") && mRequestParam.isEmpty()) {
             String sTaskId = (String) omRequestBody.get("taskId");
@@ -627,7 +630,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if (sURL.endsWith("/service/document/setDocumentFile")
                     || sURL.contains("/service/object/file/")) {
             } else {
-                LOG_BIG.debug("(sRequestBody={})", sRequestBody);
+                LOG_BIG.debug("(sRequestBody={})", sCut(nLen, sRequestBody));
             }
         }
 
@@ -658,7 +661,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     || sURL.contains(SERVICE_OBJECT_FILE)
                     || sURL.contains(SERVICE_DOCUMENT_GET_DOCUMENT_ABSTRACT)) {
             } else {
-                LOG_BIG.debug("(sResponseBody={})", sResponseBody);
+                LOG_BIG.debug("(sResponseBody={})", sCut(nLen, sResponseBody));
             }
         }
         String sType = "";
@@ -685,8 +688,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                                 ._Status(Log.LogStatus.ERROR)
                                 ._Head("Error hapened while start process!")
                                 ._Body(oResponse.toString())
-                                ._Param("sRequestBody", sRequestBody)
-                                ._Param("sResponseBody", sResponseBody)
+                                ._Param("sRequestBody", sCut(nLen, sRequestBody))
+                                ._Param("sResponseBody", sCut(nLen, sResponseBody))
                                 ._Param("mRequestParam", mRequestParam)
                                 .save();
                     } catch (Exception ex) {
@@ -749,8 +752,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         //                    ._Body(oException.getMessage())
                         ._Param("sURL", sURL)
                         ._Param("mRequestParam", mRequestParam)
-                        ._Param("sRequestBody", sRequestBody)
-                        ._Param("sResponseBody", sResponseBody)
+                        ._Param("sRequestBody", sCut(nLen, sRequestBody))
+                        ._Param("sResponseBody", sCut(nLen, sResponseBody))
                         ._LogTrace()
                         .save();
             } catch (Exception e) {
@@ -771,15 +774,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
-        
+
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
         
-        LOG.info("sRequestBody {}", sRequestBody);
-        LOG.info("sResponseBody {}", sResponseBody);
+        LOG.info("sRequestBody {}", sCut(nLen, sRequestBody));
+        LOG.info("sResponseBody {}", sCut(nLen, sResponseBody));
         LOG.info("mParamRequest {}", mParamRequest);
         
         if (sResponseBody == null) {
-            LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sRequestBody, mParamRequest);
+            LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sCut(nLen, sRequestBody), mParamRequest);
         }
         Map<String, String> mParam = new HashMap<>();
         JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
@@ -865,8 +869,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
         LOG.info("Method saveClosedTaskInfo started");
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
         
-        LOG.info("sRequestBody is {}", sRequestBody);
+        LOG.info("sRequestBody is {}", sCut(nLen, sRequestBody));
         LOG.info("snClosedTaskId is {}", snClosedTaskId);
         
         JSONObject omRequestBody = null;
@@ -946,6 +951,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     public void sendMailTo(JSONObject omRequestBody, String sID_Order, String snID_Subject, String snID_Service,
             ProcessDefinition oProcessDefinition) throws ParseException, EmailException {
+        
+        int nLen = generalConfig.isSelfTest() ? 300 : 200;
         String sMailTo = JsonRequestDataResolver.getEmail(omRequestBody);
         String sPhone = String.valueOf(JsonRequestDataResolver.getPhone(omRequestBody));
         String bankIdFirstName = JsonRequestDataResolver.getBankIdFirstName(omRequestBody);
@@ -979,7 +986,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 String sURL = generalConfig.getSelfHostCentral() + URI_SYNC_CONTACTS;
                 LOG.info("Подключаемся к центральному порталу by sURL: " + sURL);
                 String sResponse = httpRequester.getInside(sURL, mParamSync);
-                LOG.info("Подключение осуществлено.. sResponse is: " + sResponse);
+                LOG.info("Подключение осуществлено.. sResponse is: " + sCut(nLen, sResponse));
             } catch (Exception ex) {
                 LOG.warn("(isSaveTask exception {})", ex.getMessage());
             }
