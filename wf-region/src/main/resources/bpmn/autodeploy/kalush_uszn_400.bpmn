@@ -54,13 +54,7 @@
           <activiti:string><![CDATA[${sMailClerk}]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний колего!</strong><br /><br />
-У Вас в черзі на обробку нове звернення щодо видачі посвідчення учасника війни.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нова заява про отроимання посвідчення учасника війни]]></activiti:string>
@@ -76,19 +70,20 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Служба соціального захисту населення]]></activiti:string>
+          <activiti:string><![CDATA[Видача посівідчення учасника війни]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 <p> Ваше звернення щодо отримання посвідчення учасника війни зареєстроване в системі.
 Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
 <br />
 ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -161,17 +156,19 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[Висновок щодо надання посвідчення учасника війни]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 <p>
 На жаль, ми змушені відмовити вам в видачі посвідчення учасника війни<br/> 
 Причина: ${Komment_rishenia}.<br/> 
 ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
-[pattern/mail/_common_signature_end.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -196,21 +193,24 @@ ${sWorkTime}<br />
           <activiti:string><![CDATA[Висновок щодо можливості надання посвідчення учасника війни]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 <p>
-Посвідчення учасника війни Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис в УСЗН м. Калуша в будь який робочий день починаючи з ${Komment_rishenia}.<br/> 
+Посвідчення учасника війни Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис в ${sNameOrgan} в будь який робочий день починаючи з ${Komment_rishenia}.<br/> 
 При собі треба мати:<br/> 
 1. Документ, що посвідчує особу.<br/> 
 2. Для уповоноваженої особи - довіренність.<br/>
 3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
 4. Фото 3 на 4. Без фото посвідчення видане не буде!<br/>
 ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
-[pattern/mail/_common_signature_end.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
