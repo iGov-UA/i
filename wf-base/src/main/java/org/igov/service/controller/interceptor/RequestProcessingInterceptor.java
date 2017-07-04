@@ -584,6 +584,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
             throws IOException, TaskAlreadyUnboundException {
         LOG.info("Method 'protocolize' started");
+        
+        
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
 
         Map<String, String> mRequestParam = new HashMap<>();
@@ -592,7 +594,14 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sKey = (String) paramsName.nextElement();
             mRequestParam.put(sKey, oRequest.getParameter(sKey));
         }
-
+        
+        LOG.info("mRequestParam {}", mRequestParam);
+        LOG.info("oResponse is {}", oResponse.toString());
+        
+        if(mRequestParam.containsKey("taskId")){
+            LOG.info("Method 'protocolize' started for task {}", mRequestParam.get("taskId"));    
+        }
+        
         StringBuilder osRequestBody = new StringBuilder();
         BufferedReader oReader = oRequest.getReader();
         String line;
@@ -1037,6 +1046,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     }
 
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
+        
+        LOG.info("isSaveTask checking started...");
+        LOG.info("bFinish {}", bFinish);
+        LOG.info("sResponseBody {}", sResponseBody);
+        LOG.info("oRequest url {}", oRequest.getRequestURL().toString());
+        LOG.info("oRequest Method {}", oRequest.getMethod());
+        
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 //&& oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
                 && (oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
