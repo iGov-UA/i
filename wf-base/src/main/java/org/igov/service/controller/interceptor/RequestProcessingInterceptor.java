@@ -299,7 +299,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
 
         } catch (Exception ex) {
-            LOG.info("Error during document processing in interceptor: {} ", ex);
+            LOG.info("Error during document processing in interceptor: {} ", ex.getMessage());
         }
     }
 
@@ -338,8 +338,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
                 }
             } catch (Exception ex) {
-                LOG.info("Error parsing sRequestBody: {}", ex);
-                LOG.info("sRequestBody is: {}", sRequestBody);
+                LOG.info("Error parsing sRequestBody: {}", ex.getMessage());
+                //LOG.info("sRequestBody is: {}", sRequestBody);
             }
             /*
             try {
@@ -442,7 +442,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             }
 
         } catch (Exception ex) {
-            LOG.info("Error during document processing in interceptor: {} ", ex);
+            LOG.info("Error during document processing in interceptor: {} ", ex.getMessage());
         }
     }
 
@@ -592,8 +592,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             mRequestParam.put(sKey, oRequest.getParameter(sKey));
         }
         
-        LOG.info("mRequestParam {}", mRequestParam);
-        LOG.info("oResponse is {}", oResponse.toString());
+        //LOG.info("mRequestParam {}", mRequestParam);
+        //LOG.info("oResponse is {}", oResponse.toString());
         
         if(mRequestParam.containsKey("taskId")){
             LOG.info("Method 'protocolize' started for task {}", mRequestParam.get("taskId"));    
@@ -786,7 +786,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         LOG.info("sRequestBody {}", sCut(nLen, sRequestBody));
         LOG.info("sResponseBody {}", sCut(nLen, sResponseBody));
-        LOG.info("mParamRequest {}", mParamRequest);
+        //LOG.info("mParamRequest {}", mParamRequest);
         
         if (sResponseBody == null) {
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sCut(nLen, sRequestBody), mParamRequest);
@@ -1045,10 +1045,10 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody, boolean bFinish) {
         
         LOG.info("isSaveTask checking started...");
-        LOG.info("bFinish {}", bFinish);
-        LOG.info("sResponseBody {}", sResponseBody);
-        LOG.info("oRequest url {}", oRequest.getRequestURL().toString());
-        LOG.info("oRequest Method {}", oRequest.getMethod());
+        //LOG.info("bFinish {}", bFinish);
+        //LOG.info("sResponseBody {}", sResponseBody);
+        //LOG.info("oRequest url {}", oRequest.getRequestURL().toString());
+        //LOG.info("oRequest Method {}", oRequest.getMethod());
         
         return (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 //&& oRequest.getRequestURL().toString().indexOf(FORM_FORM_DATA) > 0
