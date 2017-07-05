@@ -67,6 +67,7 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             FormData oFormData = oExecution.getEngineServices()
                     .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
             Map<String, Object> mOnlyDateVariables = new HashMap<>();
+            LOG.info("oFormData size={}", oFormData.getFormProperties().size());
 
             if (oFormData != null) {
                 List<FormProperty> aoFormProperties = oFormData.getFormProperties();
