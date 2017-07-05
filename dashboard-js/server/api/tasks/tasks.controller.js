@@ -565,23 +565,7 @@ exports.upload_content_as_attachment = function (req, res) {
 
 };
 
-var Multipart = require('multi-part');
-
 exports.setDocumentImage = function (req, res) {
-  /**
-   * @ApiParam(value = "номер-ИД процесса", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
-   @ApiParam(value = "наложено или не наложено ЭЦП", required = false) @RequestParam(value = "bSigned", required = false, defaultValue = "false") Boolean bSigned,
-   @ApiParam(value = "cтрока-ИД типа хранилища Redis или Mongo", required = false) @RequestParam(value = "sID_StorageType", required = false, defaultValue = "Mongo") String sID_StorageType,
-   @ApiParam(value = "массив атрибутов в виде сериализованного обьекта JSON", required = false) @RequestParam(value = "aAttribute", required = false) List<Map<String, Object>> aAttribute,
-   @ApiParam(value = "название и расширение файла", required = true) @RequestParam(value = "sFileNameAndExt", required = true) String sFileNameAndExt,
-   @ApiParam(value = "ид поля", required = false) @RequestParam(value = "sID_Field", required = false) String sID_Field,
-   @ApiParam(value = "строка-MIME тип отправляемого файла (по умолчанию = \"text/html\")", required = false) @RequestParam(value = "sContentType", required = false, defaultValue = "text/html") String sContentType,
-   @ApiParam(value = "Логин подписанта", required = true) @RequestParam(required = true, value = "sLogin") String sLogin,
-   @ApiParam(value = "Ключ шага документа", required = true) @RequestParam(required = true, value = "sKey_Step") String sKey_Step,
-   @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
-   @ApiParam(value = "контент файла в виде строки", required = false) @RequestBody String sData)
-   */
- // debugger;
 
   var user = JSON.parse(req.cookies.user);
   var contentAndSignContainer = req.body.sContent;
@@ -602,7 +586,6 @@ exports.setDocumentImage = function (req, res) {
   var content = {buffer: new Buffer(new Buffer(contentAndSignContainer, 'base64').toString('binary'), 'binary')};
 
   activitiUpload.uploadContent('object/file/setDocumentImage', params, content, function (error, response, body) {
-    //debugger;
     error ? res.send(error) : res.status(response.statusCode).json(result);
   });
 
