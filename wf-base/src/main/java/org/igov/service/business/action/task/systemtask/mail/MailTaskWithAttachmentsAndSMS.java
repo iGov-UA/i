@@ -4,8 +4,6 @@ import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.form.FormProperty;
 
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.springframework.stereotype.Component;
@@ -17,20 +15,14 @@ import javax.activation.DataSource;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
-import org.igov.io.mail.Mail;
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.activiti.bpmn.model.FlowElement;
+import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -53,55 +45,13 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
-        try {
-            Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-            LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-
-            FormData oFormData = oExecution.getEngineServices()
-                    .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
-            //переменные, которые будем сетить обратно в екзекьюшен
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();
-            LOG.info("oFormData size={}", oFormData.getFormProperties().size());
-
-            if (oFormData != null) {
-                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
-                aoFormProperties.forEach(oFormProperty -> {
-                    String sFormPropertyTypeName = oFormProperty.getType().getName();
-                    String sFormPropertyId = oFormProperty.getId();
-                    String sFormPropertyValue = oFormProperty.getValue();
-
-                    if (sFormPropertyTypeName.equals("date")) {
-                        LOG.info("Date catched. id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                        Date oDate = (Date) mExecutionVaraibles.get(sFormPropertyId);
-                        LOG.info("Date got from execution and casted. {}", oDate);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        String sDate = sdf.format(oDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
-
-                    } else if (sFormPropertyTypeName.equals("queueData")) {
-                        LOG.info("queueData catched.id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                        Map<String, Object> mQueueData = QueueDataFormType
-                                .parseQueueData((String) mExecutionVaraibles.get(sFormPropertyId));
-                        LOG.info("QueueData got from execution {}", mQueueData);
-                        String sQueueDate = (String) mQueueData.get("queueData");
-                        LOG.info("Got Date from queueData {}", sQueueDate);
-                        DateTime oDateTime = DateTime.parse(sQueueDate,
-                                DateTimeFormat.forPattern("yyyy-MM-dd kk:mm:ss.SS"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        LOG.info("sDate formated={}", sDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
-                    }
-                });
-            }
-            LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
-            oExecution.setVariables(mOnlyDateVariables);
-        } catch (Exception oException) {
-            LOG.error("Error: date not formated {}", oException.getMessage());
-        }
-
+        
+        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
+                .getRepositoryService()
+                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
+                .getFlowElements();
+        LOG.info("aoFlowElement.size={}", aoFlowElement.size());
+        
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);

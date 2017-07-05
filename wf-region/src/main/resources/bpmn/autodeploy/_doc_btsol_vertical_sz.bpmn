@@ -187,7 +187,7 @@ execution.setVariable('bSubmitedAll3', oCheckSubmitedAll3.bSubmitedAll.toString(
     </scriptTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="usertask3">
+    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask22">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll3 == true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow86" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
@@ -228,7 +228,7 @@ execution.setVariable('nCountAccept', nCountAccept)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <scriptTask id="scripttask21" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask21" name="старт задания" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
 var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
     </scriptTask>
@@ -237,6 +237,29 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow120" sourceRef="scripttask21" targetRef="endevent2"></sequenceFlow>
+    <scriptTask id="scripttask22" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4','sLogin_Addressee')
+
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable3', 'step_4', true, 'sLogin_Approver')
+
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable2', 'step_4',true,'sLogin_isExecute')
+
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')
+
+//4. получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
+// Получение логина адресата
+
+var aGroupAddressee = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable4', null)
+execution.setVariable('sGroupAddressee', aGroupAddressee[0])</script>
+    </scriptTask>
+    <sequenceFlow id="flow121" sourceRef="scripttask22" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_vertical_sz">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_vertical_sz" id="BPMNPlane__doc_btsol_vertical_sz">
@@ -303,6 +326,9 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
       <bpmndi:BPMNShape bpmnElement="scripttask21" id="BPMNShape_scripttask21">
         <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="992.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask22" id="BPMNShape_scripttask22">
+        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="790.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="247.0" y="127.0"></omgdi:waypoint>
@@ -364,7 +390,7 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
         <omgdi:waypoint x="719.0" y="716.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="909.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="790.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="74.0" x="719.0" y="716.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -427,6 +453,10 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
       <bpmndi:BPMNEdge bpmnElement="flow120" id="BPMNEdge_flow120">
         <omgdi:waypoint x="472.0" y="1047.0"></omgdi:waypoint>
         <omgdi:waypoint x="473.0" y="1078.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow121" id="BPMNEdge_flow121">
+        <omgdi:waypoint x="719.0" y="845.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="909.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

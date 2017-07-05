@@ -1,11 +1,13 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.activiti.bpmn.model.FlowElement;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.form.FormData;
@@ -35,10 +37,16 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
-        try {
+        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
+                .getRepositoryService()
+                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
+                .getFlowElements();
+        LOG.info("aoFlowElement.size={}", aoFlowElement.size());
+        
+        /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-
+           
             FormData oFormData = oExecution.getEngineServices()
                     .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
             //переменные, которые будем сетить обратно в екзекьюшен
@@ -82,7 +90,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         } catch (Exception oException) {
             LOG.error("Error: date not formated {}", oException.getMessage());
         }
-        /*
+        ------------------------------------------------------------------------
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
         LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         if (!mExecutionVaraibles.isEmpty()) {
