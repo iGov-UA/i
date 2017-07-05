@@ -122,7 +122,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_Concord_]]></activiti:string>
+            <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -285,7 +285,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для HR
 var sKey_GroupPostfix = '_default_Conkord_manager_HR'
-var sKey_GroupPostfix_New ='Concord_head_profile_unit'
+var sKey_GroupPostfix_New ='Conkord_manager_HR'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
