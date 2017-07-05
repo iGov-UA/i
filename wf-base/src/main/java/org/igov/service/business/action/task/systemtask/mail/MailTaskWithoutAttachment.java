@@ -1,24 +1,14 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
+import org.activiti.bpmn.model.ServiceTask;
 
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.form.FormProperty;
 import org.igov.io.mail.Mail;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +36,14 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        List<UserTask> aoUserTask = new ArrayList<>();
+        List<ServiceTask> aoServiceTask = new ArrayList<>();
         aoFlowElement.forEach(oFlowElement -> {
-            if (oFlowElement instanceof UserTask) {
-                aoUserTask.add((UserTask) oFlowElement);
+            if (oFlowElement instanceof ServiceTask) {
+                aoServiceTask.add((ServiceTask) oFlowElement);
             }
         });
-        LOG.info("soUserTask.size={}", aoUserTask.size());
-        aoUserTask.forEach(oUserTask -> LOG.info("oUserTask={}", oUserTask.getId()));
+        LOG.info("soUserTask.size={}", aoServiceTask.size());
+        aoServiceTask.forEach(oServiceTask -> LOG.info("aoServiceTask={}", oServiceTask.getId()));
         /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);

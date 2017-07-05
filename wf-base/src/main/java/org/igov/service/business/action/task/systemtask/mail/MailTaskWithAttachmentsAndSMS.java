@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
+import org.activiti.bpmn.model.ServiceTask;
 import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -55,14 +55,14 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        List<UserTask> aoUserTask = new ArrayList<>();
+        List<ServiceTask> aoServiceTask = new ArrayList<>();
         aoFlowElement.forEach(oFlowElement -> {
-            if (oFlowElement instanceof UserTask) {
-                aoUserTask.add((UserTask) oFlowElement);
+            if (oFlowElement instanceof ServiceTask) {
+                aoServiceTask.add((ServiceTask) oFlowElement);
             }
         });
-        LOG.info("soUserTask.size={}", aoUserTask.size());
-        aoUserTask.forEach(oUserTask -> LOG.info("oUserTask={}", oUserTask.getId()));
+        LOG.info("soUserTask.size={}", aoServiceTask.size());
+        aoServiceTask.forEach(oServiceTask -> LOG.info("aoServiceTask={}", oServiceTask.getId()));
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
