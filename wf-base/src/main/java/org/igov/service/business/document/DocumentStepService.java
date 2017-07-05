@@ -912,7 +912,7 @@ public class DocumentStepService {
             String sValue = (String) runtimeService.getVariable(snID_Process_Activiti, sID_Field);
             // String soJSON=(String)
             // runtimeService.getVariable(snID_Process_Activiti, sID_Field);
-            if (sValue.startsWith("{")) {// TABLE
+            if (sValue != null && sValue.startsWith("{")) {// TABLE
                 JSONParser parser = new JSONParser();
 
                 org.json.simple.JSONObject oTableJSONObject = (org.json.simple.JSONObject) parser.parse(sValue);
@@ -964,7 +964,9 @@ public class DocumentStepService {
                     LOG.info("JSON array is null in cloneDocumentStepFromTable is null");
                 }
             } else {// Simple field with login
-                asLogin.add(sValue);
+                if (sValue != null) {
+                    asLogin.add(sValue);
+                }
             }
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""

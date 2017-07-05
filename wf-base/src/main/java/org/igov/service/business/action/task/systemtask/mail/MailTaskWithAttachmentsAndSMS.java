@@ -61,52 +61,41 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
 
         try {
-            List<String> saTask = getTaskId(oExecution);
-            saTask.forEach(snTaskId -> {
-                LOG.info("TaskID={}", snTaskId);
-            });
-            if (saTask.isEmpty()) {
-                LOG.info("saTask is empty");
-            }
-            List<String> asnTaskId = oActionTaskService
-                    .findTaskIDsByActiveAndHistoryProcessInstanceID(
-                            Long.valueOf(oExecution.getProcessInstanceId()));
+            Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+            LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+            
+            FormData oFormData = oExecution.getEngineServices()
+                    .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
             Map<String, Object> mOnlyDateVariables = new HashMap<>();
-            asnTaskId.forEach(snTaskId -> {
-                FormData oFormData = oExecution.getEngineServices()
-                        .getFormService().getTaskFormData(snTaskId);
+            LOG.info("oFormData size={}", oFormData.getFormProperties().size());
 
-                if (oFormData != null) {
-                    List<FormProperty> aoFormProperties = oFormData.getFormProperties();
-                    aoFormProperties.forEach(oFormProperty -> {
-                        String sFormPropertyTypeName = oFormProperty.getType().getName();
-                        String sFormPropertyId = oFormProperty.getId();
-                        String sFormPropertyValue = oFormProperty.getValue();
+            if (oFormData != null) {
+                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
+                aoFormProperties.forEach(oFormProperty -> {
+                    String sFormPropertyTypeName = oFormProperty.getType().getName();
+                    String sFormPropertyId = oFormProperty.getId();
+                    String sFormPropertyValue = oFormProperty.getValue();
 
-                        if (sFormPropertyTypeName.equals("date")) {
-                            LOG.info("Date catched. id={}, value={}",
-                                    sFormPropertyId, sFormPropertyValue);
+                    if (sFormPropertyTypeName.equals("date")) {
+                        LOG.info("Date catched. id={}, value={}",
+                                sFormPropertyId, sFormPropertyValue);
 
-                            DateTime oDateTime = DateTime.parse(sFormPropertyValue,
-                                    DateTimeFormat.forPattern("dd/MM/yyyy"));
-                            String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
-                            LOG.info("sDate formated={}", sDate);
-                            mOnlyDateVariables.put(sFormPropertyId, sDate);
+                        DateTime oDateTime = DateTime.parse(sFormPropertyValue,
+                                DateTimeFormat.forPattern("dd/MM/yyyy"));
+                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
+                        LOG.info("sDate formated={}", sDate);
+                        mOnlyDateVariables.put(sFormPropertyId, sDate);
 
-                        } else if (sFormPropertyTypeName.equals("queueData")) {
-                            LOG.info("queueData catched.id={}, value={}",
-                                    sFormPropertyId, sFormPropertyValue);
-                        }
-                    });
-                }
-            });
+                    } else if (sFormPropertyTypeName.equals("queueData")) {
+                        LOG.info("queueData catched.id={}, value={}",
+                                sFormPropertyId, sFormPropertyValue);
+                    }
+                });
+            }
             LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
             oExecution.setVariables(mOnlyDateVariables);
-        } catch (RecordNotFoundException oRNFException) {
-            LOG.error("Error: {}, occured while looking for a tasks ProcessInstanceId={}",
-                    oRNFException.getMessage(), oExecution.getProcessInstanceId());
         } catch (Exception oException) {
-            LOG.error("Error: {}, date not formated", oException.getMessage());
+            LOG.error("Error: date not formated {}", oException.getMessage());
         }
 
         Mail oMail = Mail_BaseFromTask(oExecution);
@@ -249,39 +238,5 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             LOG.error("Eror during sms sending in MailTaskWithAttachmentsAndSMS:", ex);
             throw ex;
         }
-    }
-    
-    private List<String> getTaskId(DelegateExecution execution) {
-        ExecutionEntity ee = (ExecutionEntity) execution;
-        
-        List<String> tasksRes = new LinkedList<>();
-        List<String> resIDs = new LinkedList<>();
-        
-        for (FlowElement flowElement : execution.getEngineServices()
-                .getRepositoryService()
-                .getBpmnModel(ee.getProcessDefinitionId()).getMainProcess()
-                .getFlowElements()) {
-            if (flowElement instanceof UserTask) {
-                UserTask userTask = (UserTask) flowElement;
-                resIDs.add(userTask.getId());
-                
-            }
-        }
-        
-        for (String taskIdInBPMN : resIDs) {
-            List<Task> tasks = execution.getEngineServices().getTaskService()
-                    .createTaskQuery().executionId(execution.getId())
-                    .taskDefinitionKey(taskIdInBPMN).list();
-            if (tasks != null) {
-                for (Task task : tasks) {
-                    LOG.info(
-                            "Task with (ID={}, name={}, taskDefinitionKey={})",
-                            task.getId(), task.getName(),
-                            task.getTaskDefinitionKey());
-                    tasksRes.add(task.getId());
-                }
-            }
-        }
-        return tasksRes;
     }
 }
