@@ -4,14 +4,11 @@ import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.form.FormProperty;
 
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
-import org.igov.io.mail.Mail;
 
 import javax.activation.DataSource;
 
@@ -20,23 +17,12 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
-import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
-import org.activiti.engine.impl.persistence.entity.TaskEntity;
-import org.activiti.engine.task.Task;
-import static org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom.LOG;
-import org.igov.service.exception.RecordNotFoundException;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -59,45 +45,13 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
-        try {
-            Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-            LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-            
-            FormData oFormData = oExecution.getEngineServices()
-                    .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();
-            LOG.info("oFormData size={}", oFormData.getFormProperties().size());
-
-            if (oFormData != null) {
-                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
-                aoFormProperties.forEach(oFormProperty -> {
-                    String sFormPropertyTypeName = oFormProperty.getType().getName();
-                    String sFormPropertyId = oFormProperty.getId();
-                    String sFormPropertyValue = oFormProperty.getValue();
-
-                    if (sFormPropertyTypeName.equals("date")) {
-                        LOG.info("Date catched. id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-
-                        DateTime oDateTime = DateTime.parse(sFormPropertyValue,
-                                DateTimeFormat.forPattern("dd/MM/yyyy"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
-                        LOG.info("sDate formated={}", sDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
-
-                    } else if (sFormPropertyTypeName.equals("queueData")) {
-                        LOG.info("queueData catched.id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                    }
-                });
-            }
-            LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
-            oExecution.setVariables(mOnlyDateVariables);
-        } catch (Exception oException) {
-            LOG.error("Error: date not formated {}", oException.getMessage());
-        }
-
+        
+        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
+                .getRepositoryService()
+                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
+                .getFlowElements();
+        LOG.info("aoFlowElement.size={}", aoFlowElement.size());
+        
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
