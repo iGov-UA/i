@@ -17,6 +17,7 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -51,6 +52,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
+        List<String> saFlowElementClassName = new ArrayList<>();
+        aoFlowElement.forEach(oFlowElement -> saFlowElementClassName.add(oFlowElement.getName()));
+        LOG.info("saFlowElementClassName={}", saFlowElementClassName);
         
         Mail oMail = Mail_BaseFromTask(oExecution);
 

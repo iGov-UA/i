@@ -1,6 +1,7 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,7 +43,9 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        
+        List<String> saFlowElementClassName = new ArrayList<>();
+        aoFlowElement.forEach(oFlowElement -> saFlowElementClassName.add(oFlowElement.getName()));
+        LOG.info("saFlowElementClassName={}", saFlowElementClassName);
         /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
