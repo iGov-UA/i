@@ -219,9 +219,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
+        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum" required="true">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита"></activiti:value>
-          <activiti:value id="Vacancy_is_Open" name="Пошук не дав результатів. Потрібно переглянути вимоги"></activiti:value>
+          <activiti:value id="Vacancy_is_Open" name="Пошук подовжено"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -352,7 +352,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="385.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="142.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="541.0" y="247.0"></omgdi:waypoint>
