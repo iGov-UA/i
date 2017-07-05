@@ -265,13 +265,20 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <sequenceFlow id="flow15" name="прийнято" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <scriptTask id="scripttask7" name="Step_1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1 получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
 //2 получение ИД БП
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
+
+//Клонування прав для HR
+var sKey_GroupPostfix = '_default_Conkord_manager_HR'
+var sKey_GroupPostfix_New ='Conkord_manager_HR'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
@@ -281,7 +288,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}
 ]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_Closed'}]]></conditionExpression>
     </sequenceFlow>
@@ -349,7 +356,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="385.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="662.0" y="175.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="660.0" y="254.0"></omgdi:waypoint>
