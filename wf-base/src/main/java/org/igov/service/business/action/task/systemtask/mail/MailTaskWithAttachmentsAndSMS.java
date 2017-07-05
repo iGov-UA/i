@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
 import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -47,14 +48,19 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
+Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
                 .getRepositoryService()
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        List<String> saFlowElementClassName = new ArrayList<>();
-        aoFlowElement.forEach(oFlowElement -> saFlowElementClassName.add(oFlowElement.getName()));
-        LOG.info("saFlowElementClassName={}", saFlowElementClassName);
+        List<UserTask> aoUserTask = new ArrayList<>();
+        aoFlowElement.forEach(oFlowElement -> {
+            if (oFlowElement instanceof UserTask) {
+                aoUserTask.add((UserTask) oFlowElement);
+            }
+        });
+        LOG.info("soUserTask.size={}", aoUserTask.size());
+        aoUserTask.forEach(oUserTask -> LOG.info("oUserTask={}", oUserTask.getId()));
         
         Mail oMail = Mail_BaseFromTask(oExecution);
 

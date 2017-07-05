@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.form.FormData;
@@ -43,9 +44,14 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        List<String> saFlowElementClassName = new ArrayList<>();
-        aoFlowElement.forEach(oFlowElement -> saFlowElementClassName.add(oFlowElement.getName()));
-        LOG.info("saFlowElementClassName={}", saFlowElementClassName);
+        List<UserTask> aoUserTask = new ArrayList<>();
+        aoFlowElement.forEach(oFlowElement -> {
+            if (oFlowElement instanceof UserTask) {
+                aoUserTask.add((UserTask) oFlowElement);
+            }
+        });
+        LOG.info("soUserTask.size={}", aoUserTask.size());
+        aoUserTask.forEach(oUserTask -> LOG.info("oUserTask={}", oUserTask.getId()));
         /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
