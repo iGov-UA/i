@@ -72,7 +72,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 	private static final String DNEPR_MVK_291_COMMON_BP = "dnepr_mvk_291_common|_test_UKR_DOC|dnepr_mvk_889|justice_incoming|_doc_justice_171";
     private static final Logger LOG = LoggerFactory.getLogger(RequestProcessingInterceptor.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("ControllerBig");
-    private boolean bFinish = false;
     private static final String FORM_FORM_DATA = "/form/form-data";
     private static final String START_PROCESS = "/startProcess";
     private static final String DOCUMENT_SERVICE = "/action/task/setDocument";
@@ -122,7 +121,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     public boolean preHandle(HttpServletRequest oRequest,
             HttpServletResponse response, Object handler) throws Exception {
 
-        bFinish = false;
         long startTime = System.currentTimeMillis();
         LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
@@ -142,16 +140,15 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     public void afterCompletion(HttpServletRequest oRequest,
             HttpServletResponse oResponse, Object handler, Exception ex)
             throws Exception {
-        bFinish = true;
         LOG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         LOG_BIG.info("(nElapsedMS={})", System.currentTimeMillis() - (Long) oRequest.getAttribute("startTime"));
         oResponse = ((MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") != null
                 ? (MultiReaderHttpServletResponse) oRequest.getAttribute("responseMultiRead") : oResponse);
         protocolize(oRequest, oResponse, true);
-        documentHistoryPostProcessing(oRequest, oResponse);
+        documentHistoryPostProcessing(oRequest, oResponse, true);
     }
 
-    private void documentHistoryPostProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse) {
+    private void documentHistoryPostProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bFinish) {
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
         try {
             Map<String, String> mRequestParam = new HashMap<>();
@@ -291,7 +288,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
                         if (!(oResponse.getStatus() < 200 || oResponse.getStatus() >= 300
                                 || (sResponseBody != null && sResponseBody.contains(SYSTEM_ERR)))) {
-                            if (isSetDocumentService(oRequest, sResponseBody)) {
+                            if (isSetDocumentService(oRequest, sResponseBody, bFinish)) {
                                 oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 11L);
                             }
                         }
@@ -581,7 +578,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         }
     }
 
-    private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bSaveHistory)
+    private void protocolize(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bFinish)
             throws IOException, TaskAlreadyUnboundException {
         LOG.info("Method 'protocolize' started");
         
@@ -677,16 +674,16 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         try {
             LOG.info("URL: {} method: {}", oRequest.getRequestURL(), oRequest.getMethod());
-            if (!bSaveHistory || !(oResponse.getStatus() >= HttpStatus.OK.value()
+            if (!bFinish || !(oResponse.getStatus() >= HttpStatus.OK.value()
                     && oResponse.getStatus() < HttpStatus.BAD_REQUEST.value())) {
-                LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bSaveHistory, oResponse.getStatus());
+                LOG.info("returning from protocolize block: bSaveHistory:{} oResponse.getStatus():{}", bFinish, oResponse.getStatus());
             }
 
             //LOG.info("isSaveTask(oRequest, sResponseBody): " + isSaveTask(oRequest, sResponseBody));
             //LOG.info("oRequest.getRequestURL: " + oRequest.getRequestURL().toString());
             //LOG.info("sResponseBody before SaveTask: " + sResponseBody);
 
-            if (isSaveTask(oRequest, sResponseBody)) {
+            if (isSaveTask(oRequest, sResponseBody, bFinish)) {
                 sType = "Save";
                 LOG.info("saveNewTaskInfo block started");
                 if (oResponse.getStatus() < 200 || oResponse.getStatus() >= 300
@@ -734,12 +731,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     String sID_Order = generalConfig.getOrderId_ByOrder(generalConfig.getSelfServerId(), Long.parseLong(nID_Order));
                     LOG.info("sID_Order for cancel flowslot {}", sID_Order);
                     mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
-                    closeTaskEvent.doWorkOnCloseTaskEvent(bSaveHistory,  aTaskId.get(aTaskId.size() - 1), null, true);
+                    closeTaskEvent.doWorkOnCloseTaskEvent(bFinish,  aTaskId.get(aTaskId.size() - 1), null, true);
                     //oActionEventHistoryService.addHistoryEvent(sID_Order, sUserTaskName, mParam, 19L);
                 }
                 sType = "Close";
                 if(aTaskId.isEmpty()){
-                    saveClosedTaskInfo(sRequestBody, snTaskId, bSaveHistory);
+                    saveClosedTaskInfo(sRequestBody, snTaskId, bFinish);
                 }
                 LOG.info("saveClosedTaskInfo block finished");
             } else if (isUpdateTask(oRequest)) {
@@ -1045,7 +1042,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 || (oRequest.getRequestURL().toString().indexOf(SERVICE_CANCELTASK) > 0));
     }
 
-    private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody) {
+    private boolean isSaveTask(HttpServletRequest oRequest, String sResponseBody, boolean bFinish) {
         
         LOG.info("isSaveTask checking started...");
         LOG.info("bFinish {}", bFinish);
@@ -1072,7 +1069,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && POST.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
 
-    private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody) {
+    private boolean isSetDocumentService(HttpServletRequest oRequest, String sResponseBody, boolean bFinish) {
         boolean isNewDocument = (bFinish && sResponseBody != null && !"".equals(sResponseBody))
                 && oRequest.getRequestURL().toString().indexOf(DOCUMENT_SERVICE) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim());
