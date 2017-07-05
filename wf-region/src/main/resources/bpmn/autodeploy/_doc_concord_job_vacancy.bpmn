@@ -98,11 +98,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRefundDeprec" name="Компенсація амортизації авто" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum" default="sEnumRefundOtherNo">
+        <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum">
           <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundOther" name="Компенсація інше" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRefundOther" name="Компенсація інше" type="string" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sRefundOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asRefundOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumRefundOtherYes' || [sReason] == 'є компенсація'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string"></activiti:formProperty>
         <activiti:formProperty id="sJobTime" name="Робочий час" type="string"></activiti:formProperty>
@@ -227,7 +227,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
+        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum" required="true">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита"></activiti:value>
           <activiti:value id="Vacancy_is_Open" name="Пошук не дав результатів. Потрібно переглянути вимоги"></activiti:value>
         </activiti:formProperty>
@@ -252,7 +252,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для HR
-var sKey_GroupPostfix = '_default_Conkord_manager_HR'
+var sKey_GroupPostfix = '_default_Concord_head_profile_unit'
 var sKey_GroupPostfix_New ='Conkord_manager_HR'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
@@ -265,13 +265,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <sequenceFlow id="flow15" name="прийнято" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <scriptTask id="scripttask7" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1 получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
 //2 получение ИД БП
 var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+
 
 //переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -285,12 +288,10 @@ var sKey_GroupPostfix_New ='Conkord_manager_HR'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
-execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 </script>
     </scriptTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask2">
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}
 ]]></conditionExpression>
     </sequenceFlow>
@@ -299,6 +300,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow25" sourceRef="scripttask7" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_job_vacancy">
     <bpmndi:BPMNPlane bpmnElement="_doc_concord_job_vacancy" id="BPMNPlane__doc_concord_job_vacancy">
@@ -312,10 +314,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <omgdc:Bounds height="55.0" width="131.0" x="320.0" y="35.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="64.0" width="141.0" x="650.0" y="90.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="141.0" x="477.0" y="135.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="488.0" y="35.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="495.0" y="35.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="1472.0" y="655.0"></omgdc:Bounds>
@@ -324,13 +326,13 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <omgdc:Bounds height="35.0" width="35.0" x="1544.0" y="658.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="640.0" y="214.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="527.0" y="232.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="333.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="333.0" y="225.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="643.0" y="290.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="530.0" y="340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="295.0" y="62.0"></omgdi:waypoint>
@@ -338,11 +340,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="451.0" y="62.0"></omgdi:waypoint>
-        <omgdi:waypoint x="488.0" y="62.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="62.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="593.0" y="62.0"></omgdi:waypoint>
-        <omgdi:waypoint x="720.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="1512.0" y="675.0"></omgdi:waypoint>
@@ -352,20 +354,25 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="720.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="214.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="232.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="660.0" y="214.0"></omgdi:waypoint>
-        <omgdi:waypoint x="540.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="527.0" y="252.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="252.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="660.0" y="254.0"></omgdi:waypoint>
-        <omgdi:waypoint x="660.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="272.0"></omgdi:waypoint>
+        <omgdi:waypoint x="547.0" y="340.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="155.0" y="62.0"></omgdi:waypoint>
         <omgdi:waypoint x="190.0" y="62.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="385.0" y="225.0"></omgdi:waypoint>
+        <omgdi:waypoint x="384.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="477.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
