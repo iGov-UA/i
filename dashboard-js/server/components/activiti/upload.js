@@ -27,7 +27,6 @@ function getConfigOptions() {
     username: activiti.username,
     password: activiti.password
   };
-  //debugger;
 
   return options;
 }
@@ -50,12 +49,10 @@ function buildGET(apiURL, params, sHost, isCustomAuth, buffer) {
   if (buffer) {
     reqObj.encoding = null;
   }
-  //debugger;
 
   if (!isCustomAuth) {
     _.extend(reqObj, {auth: activitiBase.getAuthHeaderValue()})
   }
-  //debugger;
 
   return reqObj;
 }
@@ -76,20 +73,20 @@ module.exports.uploadContent = function (apiURL, params, content, callback, sHos
 
   var uploadRequest;
 
+  if(!params.headers){
+    params.headers = {};
+  }
+
+  if(!params.headers.Authorization){
+    _.merge(params.headers, {
+      'Authorization': authBase
+    });
+  }
+
   if (params.qs || params.headers) {
     //params is object with query string and/or headers
-    //debugger;
-
-    if(!(params.headers && params.headers.Authorization)){
-      _.merge(params.headers, {
-        'Authorization': authBase
-      });
-    }
-
-    //debugger;
     var hasCustomAuth = params.headers && params.headers.Authorization ? true : false;
     var qs = params.qs ? params.qs : {};
-    //debugger;
     uploadRequest = buildGET(apiURL, qs, sHost, hasCustomAuth);
     if (params.headers) {
       if (!uploadRequest.headers) {
