@@ -964,10 +964,10 @@
 
             if($scope.issue && isAnyIssuesExist.length !== 0) {
               Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
-                signAndSubmitForm(!skipSign, res);
+                signAndSubmitForm(false, res);
               });
             } else {
-              signAndSubmitForm(!skipSign);
+              signAndSubmitForm(false);
             }
           }
 

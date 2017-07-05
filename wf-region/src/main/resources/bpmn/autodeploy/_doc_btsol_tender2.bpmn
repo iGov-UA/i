@@ -6,6 +6,7 @@
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Создание документа">
@@ -44,7 +45,7 @@
           <activiti:value id="Enum5" name="Департамент тендерів з технічної експертизи та ремонтів промислового обладнання|УОР"></activiti:value>
           <activiti:value id="Enum6" name="Департамент тендерів з будівельних та спеціальних робіт|УРС"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441; ;bVisible=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" default="${sID_Order}"></activiti:formProperty>
@@ -713,11 +714,17 @@
       <script>var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
 
-
+// получение sID_Order
 var processInstanceIdToLong = parseFloat(processInstanceId)
 var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong)
 execution.setVariable('sID_Order', sID_Order)
-</script>
+
+// получение предприятия заказчика
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var sSubjectType = "Organ"
+var nDeepLevel = 0
+var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor, sSubjectType, nDeepLevel)
+execution.setVariable('sEnterpriseCustomer', obj1[0].oSubject.sLabel)</script>
     </scriptTask>
     <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
