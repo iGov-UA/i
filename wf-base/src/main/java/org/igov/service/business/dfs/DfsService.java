@@ -78,7 +78,7 @@ public class DfsService {
         String sFile_XML_SWinEd_Value = (String) runtimeService.getVariable(snID_Process, "oFile_XML_SWinEd");
         String sFileName_XML_SWinEd_Answer_Value = (String) runtimeService.getVariable(snID_Process, "sFileName_XML_SWinEd_Answer");
         String saName_Attach_Dfs_Value = (String) runtimeService.getVariable(snID_Process, "saName_Attach_Dfs");
-        LOG.info("saName_Attach_Dfs: " + saName_Attach_Dfs_Value);
+        LOG.debug("saName_Attach_Dfs: " + saName_Attach_Dfs_Value);
         String saName_Attach_Dfs = "";
         boolean bExist_Attach_Dfs_Answer = false;
         try {
@@ -319,7 +319,7 @@ public class DfsService {
             for (int i = 0; i < length; i++) {
                 Node nodeId = nodeList.item(i);
                 result.add(nodeId.getTextContent());
-                LOG.info("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes().getLength()
+                LOG.debug("nodeId.value: " + nodeId.getNodeValue() + " nodeId.getAttributes: " + nodeId.getAttributes().getLength()
                         + " nodeId.getTextContent: " + nodeId.getTextContent() + " nodeId.getNodeName(): " + nodeId.getNodeName());
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
