@@ -35,10 +35,11 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
-        try {
+        
+        /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-
+           
             FormData oFormData = oExecution.getEngineServices()
                     .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
             //переменные, которые будем сетить обратно в екзекьюшен
@@ -82,7 +83,7 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         } catch (Exception oException) {
             LOG.error("Error: date not formated {}", oException.getMessage());
         }
-        /*
+        ------------------------------------------------------------------------
     	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
         LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         if (!mExecutionVaraibles.isEmpty()) {
