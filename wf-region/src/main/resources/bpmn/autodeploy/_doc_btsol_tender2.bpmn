@@ -14,6 +14,7 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" required="true">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
@@ -170,7 +171,8 @@
         <activiti:formProperty id="markers2" name="если зоны пресональной ответственности" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTable5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPersonalResponse&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_ogok.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -335,7 +337,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
@@ -750,6 +753,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',true,'sLogin_isExecute')
+
+var oSwitchStep22 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2_1', 'step_2',true,'sLogin_isExecute')
 
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')

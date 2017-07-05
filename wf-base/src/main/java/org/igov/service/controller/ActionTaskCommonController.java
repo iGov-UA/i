@@ -1,7 +1,6 @@
 package org.igov.service.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.io.Files;
 
 import io.swagger.annotations.*;
 import liquibase.util.csv.CSVWriter;
@@ -37,14 +36,12 @@ import org.igov.model.action.task.core.ProcessDefinitionCover;
 import org.igov.model.action.task.core.entity.*;
 import org.igov.model.action.task.core.entity.Process;
 import org.igov.model.flow.FlowSlotTicket;
-import org.igov.model.flow.FlowSlotTicketDao;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.igov.service.business.action.task.listener.doc.CreateDocument_UkrDoc;
 import org.igov.service.business.action.task.systemtask.DeleteProccess;
 import org.igov.service.business.action.task.systemtask.doc.handler.UkrDocEventHandler;
 import org.igov.service.business.dfs.DfsService;
 import org.igov.service.business.dfs.DfsService_New;
-import org.igov.service.business.document.DocumentStepService;
 import org.igov.service.business.subject.message.MessageService;
 import org.igov.service.business.process.ProcessSubjectTaskService;
 import org.igov.service.exception.*;
@@ -82,10 +79,7 @@ import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FormValue;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.task.NativeTaskQuery;
-import org.apache.commons.io.IOUtils;
-import org.igov.io.fs.FileSystemData;
 import org.igov.model.access.vo.HistoryVariableVO;
-import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
 import org.igov.model.process.ProcessSubject;
@@ -93,18 +87,15 @@ import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectStatusDao;
 import org.igov.model.process.ProcessSubjectTask;
 
-import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
-import org.igov.service.controller.security.AuthenticationTokenSelector;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
-import org.springframework.http.MediaType;
 
 /**
  * @author BW
@@ -161,16 +152,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private ActionTaskService oActionTaskService;
 
     @Autowired
-    private FlowSlotTicketDao flowSlotTicketDao;
-
-    @Autowired
     private ActionTaskLinkDao actionTaskLinkDao;
 
     @Autowired
     private MessageService oMessageService;
-
-    @Autowired
-    private SubjectAccountDao subjectAccountDao;
 
     @Autowired
     private Mail oMail;
