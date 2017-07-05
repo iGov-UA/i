@@ -169,23 +169,30 @@ exports.post = function (options, onResult, data, json) {
  * @param onResult
  */
 exports.uploadStream = function (options, onResult) {
-  var formData;
-  if(options.formData){
-    formData = options.formData;
-  } else {
-    formData = {
-      file: options.stream
-    };
-    for(var key in options) if (options.hasOwnProperty(key) && (key !== 'stream' || key !== 'formData')) {
-      if(key === 'sFileNameAndExt'){
-        formData.sFileNameAndExt = options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "");
-      } else {
-        formData[key] = options[key];
-      }
-    }
+  var formData = {
+    file: options.stream
+  };
+  if(options.nID_Process){
+    formData.nID_Process = options.nID_Process;
   }
-
-
+  if(options.sFileNameAndExt){
+    formData.sFileNameAndExt = options.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), "");
+  }
+  if(options.sID_StorageType){
+    formData.sID_StorageType = options.sID_StorageType;
+  }
+  if(options.sID_Field){
+    formData.sID_Field = options.sID_Field;
+  }
+  if(options.sLogin){
+    formData.sLogin = options.sLogin;
+  }
+  if(options.sKey_Step){
+    formData.sKey_Step = options.sKey_Step;
+  }
+  if(options.isMime){
+    formData.isMime = options.isMime;
+  }
   var content = {
     url: getRequestURL(options),
     formData: formData,
