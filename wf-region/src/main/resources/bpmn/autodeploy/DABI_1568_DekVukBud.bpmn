@@ -7,7 +7,7 @@
         
         <activiti:formProperty id="sLabePosDek" name=" ; ;labelType=warning" type="label" default="Якщо об'єкт будується на підставі будівельного паспорта, вам треба інша послуга - &lt;a href=&quot;https://igov.org.ua/service/1569/general &quot; target=&quot;_blank&quot;&gt;Повідомлення про початок будівництва&lt;/a&gt;"></activiti:formProperty>
         
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, де Вам буде зручніше отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
@@ -37,7 +37,7 @@
           <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistr" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asKilkFiz" name="Скільки власників у об'єкта будівництва" type="enum" required="true">
           <activiti:value id="sEnam1" name="Один"></activiti:value>
           <activiti:value id="sEnam2" name="Два"></activiti:value>
@@ -94,7 +94,7 @@
           <activiti:value id="sEnamPrFiz" name="Фізична особа підприємець"></activiti:value>
           <activiti:value id="sEnamRrUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekProgectO.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerProgectO" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekProgectO.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sProgectFIO" name="ПІБ проектувальника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sProgectPassport" name="Паспортні дані проектувальника" type="string" required="true"></activiti:formProperty>
@@ -407,7 +407,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
@@ -448,7 +447,7 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamPrFiz" name="Фізична особа підприємець"></activiti:value>
           <activiti:value id="sEnamRrUr" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markerGPodrOsoba" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekProgectO.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerProgectO" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DekProgectO.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sProgectFIO" name="ПІБ проектувальника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sProgectPassport" name="Паспортні дані проектувальника" type="string" writable="false"></activiti:formProperty>
@@ -737,7 +736,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
@@ -1060,7 +1058,6 @@ ${sNameOrgan}<br/>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
@@ -1122,7 +1119,6 @@ ${sNameOrgan}<br/>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
