@@ -20,8 +20,8 @@
         <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Resolution" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sCommentUT2" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentUT3" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -48,8 +48,8 @@
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCommentUT2" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT2&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sCommentAgreement" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentAgreement&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nCountAccept" name="тест" type="long"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -69,9 +69,8 @@
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCommentUT3" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT3&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="тест" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCommentApprove" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentApprove&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
