@@ -948,7 +948,7 @@ public class DocumentStepService {
                                                 || ((String) oId).equals("sLogin_Approver")
                                                 || ((String) oId).equals("sLogin_Addressee")) {
                                             Object oValue = oJsonMap.get("value");
-                                            if (oValue != null) {
+                                            if (oValue != null && !oValue.equals("")) {
                                                 LOG.info("oValue in cloneDocumentStepFromTable is {}", oValue);
                                                 asLogin.add((String) oValue);
                                             } else {
@@ -964,7 +964,7 @@ public class DocumentStepService {
                     LOG.info("JSON array is null in cloneDocumentStepFromTable is null");
                 }
             } else {// Simple field with login
-                if (sValue != null) {
+                if (sValue != null && !sValue.equals("")) {
                     asLogin.add(sValue);
                 }
             }

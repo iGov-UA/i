@@ -893,6 +893,8 @@
             }
           }
 
+
+
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
 
@@ -957,56 +959,59 @@
                 $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
               }
             }
-            /*
 
-            if($rootScope.checkboxForAutoECP.status){
+            var skipSign = !($rootScope.checkboxForAutoECP.status && $scope.documentRights.bWrite && $scope.isDocumentNotSigned());
+
+            if($scope.issue && isAnyIssuesExist.length !== 0) {
+              Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
+                signAndSubmitForm(!skipSign, res);
+              });
+            } else {
+              signAndSubmitForm(!skipSign);
+            }
+          }
+
+          function signAndSubmitForm(isDoingSign, oIssue) {
+            if (isDoingSign) {
               relinkPrintFormsIntoFileFields();
               tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
 
                 signDialog.signContentsArray(result,
                   function (signedContents) {
-                  var aSignedContents = signedContents;
+                    var aSignedContents = signedContents;
 
-                  angular.forEach(aSignedContents, function (content) {
-                    var aFiles = [];
-                    aFiles.push(generationService.getSignedFile(content.sign, content.id));
-                    content.aFiles = aFiles;
-                    $scope.upload(aFiles, content.id);
-                  });
+                    /*
+                    angular.forEach(aSignedContents, function (content) {
+                      var aFiles = [];
+                      aFiles.push(generationService.getSignedFile(content.sign, content.id));
+                      content.aFiles = aFiles;
+                      $scope.upload(aFiles, content.id);
+                    });
+                    */
 
-                  //debugger;
-
-                  tasks.setDocumentImages({
-                    signedContents: aSignedContents,
-                    sKey_Step: sKeyStepValue,
-                    taskId: $scope.selectedTask.id
-                  }).then(function (resp) {
-                    //debugger;
-
-                  }, function (error) {
-
-                  })
+                    tasks.setDocumentImages({
+                      signedContents: aSignedContents,
+                      sKey_Step: sKeyStepValue,
+                      taskId: $scope.selectedTask.id
+                    }).then(function (resp) {
+                      submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+                    }, function (error) {
+                      Modal.inform.error()(angular.toJson(error));
+                    })
 
                   }, function () {
                     console.log('Sign Dismissed');
                     //todo dissmiss sign
                   }, function (error) {
                     //todo react on error during sign
+                    Modal.inform.error()(angular.toJson(error));
                   }, 'ng-on-top-of-modal-dialog modal-info');
 
               }, function (err) {
-
+                Modal.inform.error()(angular.toJson(error));
               }).catch(defaultErrorHandler);
             } else {
-              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
-            }*/
-
-            if($scope.issue && isAnyIssuesExist.length !== 0) {
-              Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
-                submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, res);
-              });
-            } else {
-              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
             }
           }
 
