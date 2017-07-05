@@ -124,7 +124,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -135,7 +135,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="Family_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
@@ -143,11 +143,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asFilia" name="Відділ" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asFilia" name="Відділ" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
           <activiti:value id="sEnumFilia2" name="Відділ №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDepartment" name="Департамент" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asDepartment" name="Департамент" type="enum" writable="false">
           <activiti:value id="sEnumDepartment1" name="Департамент №1"></activiti:value>
           <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
         </activiti:formProperty>
@@ -165,7 +165,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_job_vacancy.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAge" name="Вік" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
           <activiti:value id="sEnumMale" name="Чоловік"></activiti:value>
           <activiti:value id="sEnumFemale" name="Жінка"></activiti:value>
           <activiti:value id="sEnumBoth" name="Чоловік або жінка"></activiti:value>
@@ -227,6 +227,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
+          <activiti:value id="Vacancy_Closed" name="Вакансія закрита"></activiti:value>
+          <activiti:value id="Vacancy_is_Open" name="Пошук не дав результатів. Потрібно переглянути вимоги"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -273,9 +277,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 </script>
     </scriptTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}
+]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_Closed'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
@@ -327,7 +336,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <omgdi:waypoint x="1512.0" y="675.0"></omgdi:waypoint>
         <omgdi:waypoint x="1544.0" y="675.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
