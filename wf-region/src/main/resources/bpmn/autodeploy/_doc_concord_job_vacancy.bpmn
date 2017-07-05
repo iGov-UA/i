@@ -87,22 +87,18 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumRefundMobileNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundMobile" name="Компенсація мобільного зв'язку" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRefundGas" name="Компенсація бензину; ;sID_CheckboxTrue=sEnumRefundGasYes" type="enum" default="sEnumRefundGasNo">
           <activiti:value id="sEnumRefundGasNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundGas" name="Компенсація бензину" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто; ;sID_CheckboxTrue=sEnumRefundDeprecYes" type="enum" default="sEnumRefundDeprecNo">
           <activiti:value id="sEnumRefundDeprecNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundDeprec" name="Компенсація амортизації авто" type="string"></activiti:formProperty>
         <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum" default="sEnumRefundOtherNo">
           <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundOther" name="Компенсація інше" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string"></activiti:formProperty>
         <activiti:formProperty id="sJobTime" name="Робочий час" type="string"></activiti:formProperty>
@@ -124,7 +120,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -143,16 +139,16 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asFilia" name="Відділ" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asFilia" name="Відділ" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
           <activiti:value id="sEnumFilia2" name="Відділ №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDepartment" name="Департамент" type="enum" writable="false" required="true">
+        <activiti:formProperty id="asDepartment" name="Департамент" type="enum" writable="false">
           <activiti:value id="sEnumDepartment1" name="Департамент №1"></activiti:value>
           <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubordination" name="Кому підпорядковується (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubordination" name="Кому підпорядковується (тут будет селект из дерева)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long" writable="false"></activiti:formProperty>
@@ -161,9 +157,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_job_vacancy.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_job_vacancy.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_job_vacancy.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_job_vacancy.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false" required="true">
           <activiti:value id="sEnumMale" name="Чоловік"></activiti:value>
@@ -175,7 +171,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumCarNo" name="відсутнє"></activiti:value>
           <activiti:value id="sEnumCarYes" name="є авто"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення; ;sID_CheckboxTrue=sEnumLicYes" type="enum" default="sEnumLicNo">
+        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення; ;sID_CheckboxTrue=sEnumLicYes" type="enum" default="sEnumLicNo" writable="false">
           <activiti:value id="sEnumLicNo" name="відсутнє"></activiti:value>
           <activiti:value id="sEnumLicYes" name="є посвідчення"></activiti:value>
         </activiti:formProperty>
@@ -183,40 +179,36 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTasks" name="Основні задачі" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" default="Нижня: , Середня: , Вища: ." writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBonus" name="Змінна складова (грн або %, періодичність виплати)" type="string" default="Премії: , Бонуси: "></activiti:formProperty>
-        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку; ;sID_CheckboxTrue=sEnumRefundMobileYes" type="enum" default="sEnumRefundMobileNo">
+        <activiti:formProperty id="sBonus" name="Змінна складова (грн або %, періодичність виплати)" type="string" default="Премії: , Бонуси: " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку; ;sID_CheckboxTrue=sEnumRefundMobileYes" type="enum" default="sEnumRefundMobileNo" writable="false">
           <activiti:value id="sEnumRefundMobileNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundMobile" name="Компенсація мобільного зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRefundGas" name="Компенсація бензину; ;sID_CheckboxTrue=sEnumRefundGasYes" type="enum" default="sEnumRefundGasNo">
+        <activiti:formProperty id="asRefundGas" name="Компенсація бензину; ;sID_CheckboxTrue=sEnumRefundGasYes" type="enum" default="sEnumRefundGasNo" writable="false">
           <activiti:value id="sEnumRefundGasNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundGas" name="Компенсація бензину" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто; ;sID_CheckboxTrue=sEnumRefundDeprecYes" type="enum" default="sEnumRefundDeprecNo">
+        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто; ;sID_CheckboxTrue=sEnumRefundDeprecYes" type="enum" default="sEnumRefundDeprecNo" writable="false">
           <activiti:value id="sEnumRefundDeprecNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundDeprec" name="Компенсація амортизації авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum" default="sEnumRefundOtherNo">
+        <activiti:formProperty id="asRefundOther" name="Компенсація інше; ;sID_CheckboxTrue=sEnumRefundOtherYes" type="enum" default="sEnumRefundOtherNo" writable="false">
           <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
           <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRefundOther" name="Компенсація інше" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sJobTime" name="Робочий час" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLunchTime" name="Перерва на обід" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOffTime" name="Вихідні дні" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTripTime" name="Процент відряджень (по відношенню до робочого часу)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asFind" name="Способи пошуку кандидатів" type="enum">
+        <activiti:formProperty id="asFind" name="Способи пошуку кандидатів" type="enum" writable="false">
           <activiti:value id="sEnumFindNo" name="відкритий"></activiti:value>
           <activiti:value id="sEnumFindYes" name="закритий"></activiti:value>
         </activiti:formProperty>
@@ -227,6 +219,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
+          <activiti:value id="Vacancy_Closed" name="Вакансія закрита"></activiti:value>
+          <activiti:value id="Vacancy_is_Open" name="Пошук не дав результатів. Потрібно переглянути вимоги"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -271,11 +267,27 @@ var executeProcessDefinitionId = execution.getProcessDefinitionId();
 var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
 execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
+//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_1'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для HR
+var sKey_GroupPostfix = '_default_Conkord_manager_HR'
+var sKey_GroupPostfix_New ='Conkord_manager_HR'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
 </script>
     </scriptTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_Closed'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
   </process>
@@ -327,7 +339,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <omgdi:waypoint x="1512.0" y="675.0"></omgdi:waypoint>
         <omgdi:waypoint x="1544.0" y="675.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
