@@ -39,6 +39,8 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
+        LOG.info("Activiti.id={}, activiti.name={}", oExecution.getCurrentActivityId(), oExecution.getCurrentActivityName());
+        
         Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
                 .getRepositoryService()
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()

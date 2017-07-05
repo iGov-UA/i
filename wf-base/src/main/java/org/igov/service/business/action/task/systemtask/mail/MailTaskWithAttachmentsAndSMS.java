@@ -48,7 +48,9 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
+        LOG.info("Activiti.id={}, activiti.name={}", oExecution.getCurrentActivityId(), oExecution.getCurrentActivityName());
+
+        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
                 .getRepositoryService()
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
@@ -61,7 +63,7 @@ Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
         });
         LOG.info("soUserTask.size={}", aoUserTask.size());
         aoUserTask.forEach(oUserTask -> LOG.info("oUserTask={}", oUserTask.getId()));
-        
+
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
