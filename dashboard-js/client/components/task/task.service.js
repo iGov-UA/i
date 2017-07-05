@@ -554,11 +554,10 @@ angular.module('dashboardJsApp')
           documentPromises[key] = docDefer[key].promise;
         });
 
-        //var uplaadingResult = [];
+        var uplaadingResult = [];
 
         var asyncDocumentUpload = function (i, docs, defs) {
           if (i < docs.length) {
-
 
             return $http.post('/api/tasks/' + properties.taskId + '/setDocumentImage', {
               bSigned: true,
@@ -568,12 +567,11 @@ angular.module('dashboardJsApp')
               sKey_Step: properties.sKey_Step,
               sContent: docs[i].data.sign
             }).then(function (resp) {
-              //debugger;
-              //uplaadingResult.push(resp);
+              uplaadingResult.push(resp);
               defs[i].resolve(resp);
               return asyncDocumentUpload(i + 1, docs, defs);
             }, function (err) {
-              //debugger;
+              uplaadingResult.push({error : err});
               defs[i].reject(err);
               return asyncDocumentUpload(i + 1, docs, defs);
             });
@@ -585,8 +583,8 @@ angular.module('dashboardJsApp')
           return asyncDocumentUpload(counter, contents, docDefer);
         });
 
-        $q.all([first, documentPromises]).then(function (uploadResults) {
-          deferred.resolve(uploadResults);
+        $q.all([first, documentPromises]).then(function () {
+          deferred.resolve(uplaadingResult);
         });
 
         return deferred.promise;
@@ -594,10 +592,28 @@ angular.module('dashboardJsApp')
       },
 
       generatePDFFromPrintForms: function (formProperties, task) {
+        var filesFields = [];
+
         // нужно найти все поля с тимом "file" и id, начинающимся с "PrintForm_"
-        var filesFields = $filter('filter')(formProperties, function (prop) {
+        var filesFieldsTemp = $filter('filter')(formProperties, function (prop) {
           return prop.type === 'file' && (prop.options.hasOwnProperty('sID_Field_Printform_ForECP') || /^PrintForm_/.test(prop.id));
         });
+
+        // отфильтровываем только те поля файлов, ПринтФормы связанные принтформы которых имеют опцию bThisOnlyECP=true
+        var printFormsTemplates = $filter('filter')(formProperties, function (prop) {
+          return prop.printFormLinkedToFileField && (prop.options && prop.options.bThisOnlyECP && prop.options.bThisOnlyECP === true);
+        });
+        if(printFormsTemplates && printFormsTemplates.length > 0){
+          angular.forEach(printFormsTemplates, function (pfField) {
+            angular.forEach(filesFieldsTemp, function (fField) {
+              if(pfField.printFormLinkedToFileField === fField.id){
+                filesFields.push(fField);
+              }
+            })
+          })
+        } else {
+          filesFields = filesFieldsTemp;
+        }
 
         var self = this;
         var deferred = $q.defer();
