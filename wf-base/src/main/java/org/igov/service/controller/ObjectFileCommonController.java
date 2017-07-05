@@ -775,7 +775,7 @@ public class ObjectFileCommonController {
         LOG.info("mField: " + mField);
         File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_XML, sID_Pattern + ".xml");
         String sContentReturn = Files.toString(oFile, Charset.defaultCharset());
-        LOG.info("Created document with customer info: {}", sContentReturn);
+        LOG.debug("Created document with customer info: {}", sContentReturn);
         String sRegex, sReplacement;
 
         for (Map.Entry<String, String> oField : mField.entrySet()) {
