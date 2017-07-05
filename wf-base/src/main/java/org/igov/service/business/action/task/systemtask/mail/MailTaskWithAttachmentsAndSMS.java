@@ -21,11 +21,18 @@ import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.activiti.bpmn.model.FlowElement;
+import org.activiti.bpmn.model.UserTask;
+import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.task.Task;
+import static org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom.LOG;
 import org.igov.service.exception.RecordNotFoundException;
 
 import org.joda.time.DateTime;
@@ -54,8 +61,16 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
 
         try {
-            List<String> asnTaskId = oActionTaskService.
-                    getTaskIdsByProcessInstanceId(oExecution.getProcessInstanceId());
+            List<String> saTask = getTaskId(oExecution);
+            saTask.forEach(snTaskId -> {
+                LOG.info("TaskID={}", snTaskId);
+            });
+            if (saTask.isEmpty()) {
+                LOG.info("saTask is empty");
+            }
+            List<String> asnTaskId = oActionTaskService
+                    .findTaskIDsByActiveAndHistoryProcessInstanceID(
+                            Long.valueOf(oExecution.getProcessInstanceId()));
             Map<String, Object> mOnlyDateVariables = new HashMap<>();
             asnTaskId.forEach(snTaskId -> {
                 FormData oFormData = oExecution.getEngineServices()
@@ -235,5 +250,38 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
             throw ex;
         }
     }
-
+    
+    private List<String> getTaskId(DelegateExecution execution) {
+        ExecutionEntity ee = (ExecutionEntity) execution;
+        
+        List<String> tasksRes = new LinkedList<>();
+        List<String> resIDs = new LinkedList<>();
+        
+        for (FlowElement flowElement : execution.getEngineServices()
+                .getRepositoryService()
+                .getBpmnModel(ee.getProcessDefinitionId()).getMainProcess()
+                .getFlowElements()) {
+            if (flowElement instanceof UserTask) {
+                UserTask userTask = (UserTask) flowElement;
+                resIDs.add(userTask.getId());
+                
+            }
+        }
+        
+        for (String taskIdInBPMN : resIDs) {
+            List<Task> tasks = execution.getEngineServices().getTaskService()
+                    .createTaskQuery().executionId(execution.getId())
+                    .taskDefinitionKey(taskIdInBPMN).list();
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    LOG.info(
+                            "Task with (ID={}, name={}, taskDefinitionKey={})",
+                            task.getId(), task.getName(),
+                            task.getTaskDefinitionKey());
+                    tasksRes.add(task.getId());
+                }
+            }
+        }
+        return tasksRes;
+    }
 }

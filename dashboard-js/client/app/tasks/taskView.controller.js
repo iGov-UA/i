@@ -9,13 +9,13 @@
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
       'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'DocumentsService', 'snapRemote', 'tasksSearchService',
-      'fieldsService', 'Issue',
+      'fieldsService', 'Issue', 'signDialog', 'generationService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
                 processSubject, $sce, eaTreeViewFactory, $location, DocumentsService, snapRemote, tasksSearchService,
-                fieldsService, Issue) {
+                fieldsService, Issue, signDialog, generationService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -947,18 +947,52 @@
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
             }
+            var sKeyStepValue = null;
             if($scope.taskData.oProcess && $scope.taskData.oProcess.sBP && $scope.taskData.oProcess.sBP.match(/^_doc_/)){
               var sKey_Step_field = $scope.taskForm.filter(function (item) {
                 return item.id === "sKey_Step_Document";
               })[0];
               if(sKey_Step_field){
+                sKeyStepValue = sKey_Step_field.value;
                 $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
               }
             }
             /*
+
             if($rootScope.checkboxForAutoECP.status){
               relinkPrintFormsIntoFileFields();
               tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
+
+                signDialog.signContentsArray(result,
+                  function (signedContents) {
+                  var aSignedContents = signedContents;
+
+                  angular.forEach(aSignedContents, function (content) {
+                    var aFiles = [];
+                    aFiles.push(generationService.getSignedFile(content.sign, content.id));
+                    content.aFiles = aFiles;
+                    $scope.upload(aFiles, content.id);
+                  });
+
+                  //debugger;
+
+                  tasks.setDocumentImages({
+                    signedContents: aSignedContents,
+                    sKey_Step: sKeyStepValue,
+                    taskId: $scope.selectedTask.id
+                  }).then(function (resp) {
+                    //debugger;
+
+                  }, function (error) {
+
+                  })
+
+                  }, function () {
+                    console.log('Sign Dismissed');
+                    //todo dissmiss sign
+                  }, function (error) {
+                    //todo react on error during sign
+                  }, 'ng-on-top-of-modal-dialog modal-info');
 
               }, function (err) {
 
