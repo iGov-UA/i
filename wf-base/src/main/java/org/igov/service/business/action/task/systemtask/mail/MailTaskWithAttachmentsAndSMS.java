@@ -4,8 +4,6 @@ import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.activiti.engine.task.Attachment;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.form.FormProperty;
 
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.springframework.stereotype.Component;
@@ -17,20 +15,14 @@ import javax.activation.DataSource;
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
-import org.igov.io.mail.Mail;
 
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
+import org.activiti.bpmn.model.FlowElement;
+import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
@@ -53,7 +45,13 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
+        
+        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
+                .getRepositoryService()
+                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
+                .getFlowElements();
+        LOG.info("aoFlowElement.size={}", aoFlowElement.size());
+        
         Mail oMail = Mail_BaseFromTask(oExecution);
 
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
