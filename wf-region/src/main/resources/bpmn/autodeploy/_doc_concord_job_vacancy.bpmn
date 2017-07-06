@@ -221,7 +221,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum" required="true">
+        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита"></activiti:value>
           <activiti:value id="Vacancy_is_Open" name="Пошук подовжено"></activiti:value>
         </activiti:formProperty>
@@ -291,7 +291,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     </sequenceFlow>
     <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow25" sourceRef="scripttask7" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="scripttask7" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_job_vacancy">
@@ -306,7 +306,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="55.0" width="131.0" x="320.0" y="35.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="64.0" width="141.0" x="557.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="141.0" x="470.0" y="121.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="488.0" y="35.0"></omgdc:Bounds>
@@ -336,7 +336,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="540.0" y="90.0"></omgdi:waypoint>
-        <omgdi:waypoint x="627.0" y="110.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="1512.0" y="675.0"></omgdi:waypoint>
@@ -360,11 +360,11 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
         <omgdi:waypoint x="385.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="134.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="152.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="153.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="627.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="185.0"></omgdi:waypoint>
         <omgdi:waypoint x="541.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
