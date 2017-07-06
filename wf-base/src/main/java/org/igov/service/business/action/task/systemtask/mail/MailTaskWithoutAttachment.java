@@ -1,10 +1,8 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.ServiceTask;
+import org.activiti.bpmn.model.UserTask;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.igov.io.mail.Mail;
@@ -25,25 +23,33 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Autowired
     ActionTaskService oActionTaskService;
-
+    
+    private static int i = 0;
+    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
-        LOG.info("Activiti.id={}, activiti.name={}", oExecution.getCurrentActivityId(), oExecution.getCurrentActivityName());
-        
+        String sCurrentTaskActivityId = oExecution.getCurrentActivityId();
+        LOG.info("sCurrentTaskActivityId={}", sCurrentTaskActivityId);
+
         Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
                 .getRepositoryService()
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        List<ServiceTask> aoServiceTask = new ArrayList<>();
-        aoFlowElement.forEach(oFlowElement -> {
-            if (oFlowElement instanceof ServiceTask) {
-                aoServiceTask.add((ServiceTask) oFlowElement);
+        UserTask oUserTask = null;
+        for (FlowElement oFlowElement : aoFlowElement) {   
+            i++;
+            LOG.info("{} oFlowElement id={}, name={}", i, oFlowElement.getId(), oFlowElement.getName());
+            /*if (oFlowElement.getId().equals(sCurrentTaskActivityId)){
+                break;
             }
-        });
-        LOG.info("soUserTask.size={}", aoServiceTask.size());
-        aoServiceTask.forEach(oServiceTask -> LOG.info("aoServiceTask={}", oServiceTask.getId()));
+            if (oFlowElement instanceof UserTask) {
+                oUserTask = ((UserTask) oFlowElement);
+            }*/
+
+        };
+        //LOG.info("oUserTask.id={}", oUserTask.getId());
         /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
