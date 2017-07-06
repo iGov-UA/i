@@ -17,13 +17,13 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.ServiceTask;
+import org.activiti.bpmn.model.UserTask;
+import org.apache.a.i;
 import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -44,25 +44,33 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Autowired
     ActionTaskService oActionTaskService;
+    
+    private static int i = 0;
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-        LOG.info("Activiti.id={}, activiti.name={}", oExecution.getCurrentActivityId(), oExecution.getCurrentActivityName());
+        String sCurrentTaskActivityId = oExecution.getCurrentActivityId();
+        LOG.info("sCurrentTaskActivityId={}", sCurrentTaskActivityId);
 
         Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
                 .getRepositoryService()
                 .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
                 .getFlowElements();
         LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        List<ServiceTask> aoServiceTask = new ArrayList<>();
-        aoFlowElement.forEach(oFlowElement -> {
-            if (oFlowElement instanceof ServiceTask) {
-                aoServiceTask.add((ServiceTask) oFlowElement);
+        UserTask oUserTask = null;
+        for (FlowElement oFlowElement : aoFlowElement) {   
+            i++;
+            LOG.info("{} oFlowElement id={}, name={}", i, oFlowElement.getId(), oFlowElement.getName());
+            /*if (oFlowElement.getId().equals(sCurrentTaskActivityId)){
+                break;
             }
-        });
-        LOG.info("soUserTask.size={}", aoServiceTask.size());
-        aoServiceTask.forEach(oServiceTask -> LOG.info("aoServiceTask={}", oServiceTask.getId()));
+            if (oFlowElement instanceof UserTask) {
+                oUserTask = ((UserTask) oFlowElement);
+            }*/
+
+        };
+        //LOG.info("oUserTask.id={}", oUserTask.getId());
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
