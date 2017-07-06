@@ -960,19 +960,28 @@
               }
             }
 
-            var skipSign = !($rootScope.checkboxForAutoECP.status && $scope.documentRights.bWrite && $scope.isDocumentNotSigned());
+            var isNeedSign = function () {
+              return ($rootScope.checkboxForAutoECP.status && ($scope.documentRights.bWrite && $scope.isDocumentNotSigned()) &&
+              ($scope.selectedTask.assignee == null && $scope.isDocument()) && !($scope.documentRights.bWrite == null) &&
+              !($scope.selectedTask.assignee != null || $scope.sSelectedTask == 'all') &&
+              (!$scope.clarify && $scope.inUnassigned()) || (!$scope.clarify && $scope.isDocument())) ||
+              ($rootScope.checkboxForAutoECP.status && ($scope.documentRights.bWrite && !$scope.isDocument() && $scope.isDocumentNotSigned) &&
+              !($scope.selectedTask.assignee == null || $scope.sSelectedTask == 'finished' || $scope.documentRights.bWrite==null) &&
+              !($scope.selectedTask.assignee == null || $scope.sSelectedTask == 'all' || !$scope.documentRights) &&
+              (!$scope.clarify && !$scope.inUnassigned()));
+            };
 
             if($scope.issue && isAnyIssuesExist.length !== 0) {
               Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
-                signAndSubmitForm(false, res);
+                signAndSubmitForm(isNeedSign(), res);
               });
             } else {
-              signAndSubmitForm(false);
+              signAndSubmitForm(isNeedSign());
             }
           }
 
-          function signAndSubmitForm(isDoingSign, oIssue) {
-            if (isDoingSign) {
+          function signAndSubmitForm(isNeedSign, oIssue) {
+            if (isNeedSign) {
               relinkPrintFormsIntoFileFields();
               tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
 
