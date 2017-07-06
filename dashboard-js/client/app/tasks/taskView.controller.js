@@ -848,7 +848,7 @@
           });
         }
 
-        $scope.submitTask = function (form, bNotShowSuccessModal) {
+        $scope.submitTask = function (form, bNotShowSuccessModal, isNeedEDS) {
           var isAnyIssuesExist = Issue.getIssues();
           $scope.validateForm(form);
           if(form.$invalid){
@@ -960,23 +960,12 @@
               }
             }
 
-            var isNeedSign = function () {
-              return ($rootScope.checkboxForAutoECP.status && ($scope.documentRights.bWrite && $scope.isDocumentNotSigned()) &&
-              ($scope.selectedTask.assignee == null && $scope.isDocument()) && !($scope.documentRights.bWrite == null) &&
-              !($scope.selectedTask.assignee != null || $scope.sSelectedTask == 'all') &&
-              (!$scope.clarify && $scope.inUnassigned()) || (!$scope.clarify && $scope.isDocument())) ||
-              ($rootScope.checkboxForAutoECP.status && ($scope.documentRights.bWrite && !$scope.isDocument() && $scope.isDocumentNotSigned) &&
-              !($scope.selectedTask.assignee == null || $scope.sSelectedTask == 'finished' || $scope.documentRights.bWrite==null) &&
-              !($scope.selectedTask.assignee == null || $scope.sSelectedTask == 'all' || !$scope.documentRights) &&
-              (!$scope.clarify && !$scope.inUnassigned()));
-            };
-
             if($scope.issue && isAnyIssuesExist.length !== 0) {
               Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
-                signAndSubmitForm(isNeedSign(), res);
+                signAndSubmitForm(isNeedEDS, res);
               });
             } else {
-              signAndSubmitForm(isNeedSign());
+              signAndSubmitForm(isNeedEDS);
             }
           }
 
@@ -1636,12 +1625,12 @@
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
 
-        $scope.assignAndSubmitDocument = function () {
+        $scope.assignAndSubmitDocument = function (documentForm, isNeedEDS) {
           $scope.taskForm.isInProcess = true;
 
           tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
             .then(function (result) {
-              $scope.submitTask(form, true);
+              $scope.submitTask(form, true, isNeedEDS);
             })
             .catch(defaultErrorHandler);
         };
