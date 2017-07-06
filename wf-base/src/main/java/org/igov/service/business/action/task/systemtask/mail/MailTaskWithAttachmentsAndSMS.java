@@ -17,13 +17,10 @@ import static org.igov.service.business.action.task.core.AbstractModelTask.getSt
 import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
-import org.apache.a.i;
+import org.activiti.engine.task.Task;
 import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -44,33 +41,25 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
 
     @Autowired
     ActionTaskService oActionTaskService;
-    
-    private static int i = 0;
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         
-        String sCurrentTaskActivityId = oExecution.getCurrentActivityId();
-        LOG.info("sCurrentTaskActivityId={}", sCurrentTaskActivityId);
-
-        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
-                .getRepositoryService()
-                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
-                .getFlowElements();
-        LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        UserTask oUserTask = null;
-        for (FlowElement oFlowElement : aoFlowElement) {   
-            i++;
-            LOG.info("{} oFlowElement id={}, name={}", i, oFlowElement.getId(), oFlowElement.getName());
-            /*if (oFlowElement.getId().equals(sCurrentTaskActivityId)){
-                break;
-            }
-            if (oFlowElement instanceof UserTask) {
-                oUserTask = ((UserTask) oFlowElement);
-            }*/
-
-        };
-        //LOG.info("oUserTask.id={}", oUserTask.getId());
+        Task oTaskActive = taskService.createTaskQuery().processInstanceId(oExecution.getProcessInstanceId()).active().singleResult();
+        if (oTaskActive != null) {
+        LOG.info("oTaskActive id={}, name={}, variables={}",
+                oTaskActive.getId(), oTaskActive.getName(), oTaskActive.getProcessVariables());
+        } else {
+            LOG.info("oTaskActive not found");
+        }
+        Task oTask = taskService.createTaskQuery().processInstanceId(oExecution.getProcessInstanceId()).singleResult();
+        if (oTask != null) {
+        LOG.info("oTaskActive id={}, name={}, variables={}",
+                oTask.getId(), oTask.getName(), oTask.getProcessVariables());
+        } else {
+            LOG.info("oTas not found");
+        }
+        
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
