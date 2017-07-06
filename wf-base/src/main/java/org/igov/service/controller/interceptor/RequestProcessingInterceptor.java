@@ -1227,8 +1227,11 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             if(isExistTaskID(oRequest)){  
                 String sURL = oRequest.getRequestURL().toString();
                 LOG.info("checkTaskAvailability sURL is: "+ sURL);
+                
                 String snTaskId = null;
-            
+                snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+                LOG.info("snTaskId: " + snTaskId);
+                
                 Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
             
                 if(task != null){
