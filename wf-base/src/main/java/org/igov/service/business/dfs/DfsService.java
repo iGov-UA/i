@@ -96,6 +96,7 @@ public class DfsService {
                             || (bExist_Attach_Dfs_Answer = sFileName.contains(sFileName_XML_SWinEd_Answer_Value))) { //"F1401801"
                         LOG.info("ToAttach-PROCESS Found sFileName=" + sFileName + " sAttachmentName_Document=" + sAttachmentName_Document);
                         LOG.info("ToAttach-PROCESS saName_Attach_Dfs_Value=" + saName_Attach_Dfs_Value + " saName_Attach_Dfs=" + saName_Attach_Dfs);
+                        LOG.info("bExist_Attach_Dfs_Answer=" + bExist_Attach_Dfs_Answer);
                         
                         if (saName_Attach_Dfs_Value == null || !saName_Attach_Dfs_Value.contains(sFileName)) {
                             LOG.info("sFile_XML_SWinEd_Filter is: {}", sFile_XML_SWinEd_Filter);
