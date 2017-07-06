@@ -146,6 +146,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
+        checkTaskAvailability(oRequest);
         processSubjectStatusHistoryWritingPreHandle(oRequest);
         return true;
     }
@@ -1215,6 +1216,31 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(SERVICE_SUBJECT_PROCESS_SET_PROCESS_SUBJECT_STATUS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
+    }
+    
+    private boolean isExistTaskID(HttpServletRequest oRequest) {
+        
+        boolean isExist = (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
+                && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
+        
+        if (isExist){
+            LOG.info("We catch TaskID in requestProcessingInterceptor!");
+        }
+        else{
+            LOG.info("We don't catch TaskID in requestProcessingInterceptor!");
+        }
+        
+        return isExist;
+    }
+    
+    private void checkTaskAvailability(HttpServletRequest oRequest) throws Exception {
+    
+        try {
+            isExistTaskID(oRequest);
+        } catch (Exception oException) {
+            LOG.info("checkTaskAvailability error in interceptor: {} ", oException.getMessage());
+        }
+        
     }
     
     private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
