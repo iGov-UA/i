@@ -5,10 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.form.FormProperty;
 import org.igov.io.mail.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,57 +23,32 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
-        try {
-            FormData oTaskFormData = oExecution.getEngineServices()
-                    .getFormService()
-                    .getStartFormData(oExecution.getProcessDefinitionId());
-            
-            if (oTaskFormData != null && oTaskFormData.getFormProperties() != null) {                
-                Map<String, Object> mOnlyDateVariables = new HashMap<>();              
-                for (FormProperty oFormProperty : oTaskFormData.getFormProperties()) {
-                    LOG.info("MailTaskWithoutAttachment property (Id={},Name={},Type={},Value={})",
-                            oFormProperty.getId(), oFormProperty.getName(),
-                            oFormProperty.getType().getName(),
-                            oFormProperty.getValue());
-                    
-                    if (oFormProperty.getType().getName().equalsIgnoreCase("date")) {
-                        LOG.info("Date catched");
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        String sDate = sdf.format((Date) oFormProperty);
-                        mOnlyDateVariables.put(oFormProperty.getId(), sDate);
-                    } else if (oFormProperty.getType().getName().equalsIgnoreCase("queueData")) {
-                        LOG.info("queueData catched={}", oFormProperty) ;
-                    }
-                LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);        
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("Error: {}, occured while looking for a start form for a process.",
-                    e.getMessage());
-        }
+        LOG.info("MailTaskWithoutAttachment listener started.");
 
-        /*
-    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+        Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
         LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         if (!mExecutionVaraibles.isEmpty()) {
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();       
+            Map<String, Object> mOnlyDateVariables = new HashMap<>();
             // выбираем все переменные типа Date, приводим к нужному формату 
             mExecutionVaraibles.forEach((sKey, oValue) -> {
                 if (oValue != null) {
+                    String soValue = oValue.toString();
+                    LOG.info("soValue={}", soValue);
                     String sClassName = oValue.getClass().getName();
                     LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
                     if (sClassName.endsWith("Date")) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
                         String sDate = sdf.format((Date) oValue);
                         mOnlyDateVariables.put(sKey, sDate);
-                    } else if (sClassName.contains("queueData")) {
+                    } else if (soValue.contains("sDate") && soValue.contains("nID_FlowSlotTicket")
+                            && soValue.contains("sID_Type")) {
                         LOG.info("queueData found");
                     }
                 }
             });
             //сетим отформатированные переменные в екзекьюшен
             oExecution.setVariables(mOnlyDateVariables);
-        }*/
+        }
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);

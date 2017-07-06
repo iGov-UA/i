@@ -449,12 +449,24 @@
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
                       ng-show="selectedTask.assignee == null && isDocument()"
                       ng-hide="documentRights.bWrite == null">
+                <!--
                 <span ng-if="documentRights.bWrite && isDocumentNotSigned()">
                   <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
                 </span>
+                -->
                 <span ng-if="!isDocumentNotSigned()">Підписано</span>
                 <span ng-if="!documentRights.bWrite && isDocumentNotSigned()">Ознайомлений</span>
+              </button>
+              <button ng-click="assignAndSubmitDocument(form, checkboxForAutoECP.status)"
+                      class="btn btn-info take-to-work-button"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
+                      ng-if="documentRights.bWrite && isDocumentNotSigned() && (selectedTask.assignee == null && isDocument()) && documentRights.bWrite != null">
+                <span>
+                  <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
+                  <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
+                </span>
               </button>
               <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
@@ -489,13 +501,25 @@
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()">
+                <!--
                 <span ng-if="documentRights.bWrite && !isDocument() && isDocumentNotSigned">
                   <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
                 </span>
+                -->
                 <span ng-if="!isDocumentNotSigned()">Підписано</span>
                 <span ng-if="!documentRights.bWrite && !isDocument()">Ознайомлений</span>
                 <span ng-if="isDocument() && isDocumentNotSigned()">Створити</span>
+              </button>
+              <button ng-click="submitTask(form, false, checkboxForAutoECP.status)"
+                      ng-if="documentRights.bWrite && !isDocument() && isDocumentNotSigned && !(selectedTask.assignee == null || sSelectedTask == 'finished' || documentRights.bWrite==null)"
+                      class="btn btn-info"
+                      style="background-color: #337ACF; outline: none; border: none"
+                      ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()">
+                <span>
+                  <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
+                  <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
+                </span>
               </button>
               <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
                       ng-click="saveChangesTask(form)"

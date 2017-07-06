@@ -12,6 +12,8 @@ var environment = require('../../config/environment');
 var request = require('request');
 var pdfConversion = require('phantom-html-to-pdf')();
 var Buffer = require('buffer').Buffer;
+var Base64 = require('base64-arraybuffer');
+var MultipartFormData = require('form-data');
 
 /*
  var nodeLocalStorage = require('node-localstorage').LocalStorage;
@@ -560,6 +562,32 @@ exports.upload_content_as_attachment = function (req, res) {
       error ? res.send(error) : res.status(statusCode).json(result);
     }, req.body.sContent, false);
   }
+
+};
+
+exports.setDocumentImage = function (req, res) {
+
+  var user = JSON.parse(req.cookies.user);
+  var contentAndSignContainer = req.body.sContent;
+  var params = {
+    qs: {
+      nID_Process: req.params.taskId,
+      bSigned: req.body.bSigned,
+      sFileNameAndExt: req.body.sFileNameAndExt.replace(new RegExp(/[*|\\:"<>?/]/g), ""),
+      sID_Field: req.body.sID_Field,
+      sKey_Step: req.body.sKey_Step,
+      sLogin: user.id,
+      sContentType: req.body.sContentType
+    },
+    headers: {
+      'Content-Type': 'application/pdf;charset=utf-8'
+    }
+  };
+  var content = {buffer: new Buffer(new Buffer(contentAndSignContainer, 'base64').toString('binary'), 'binary')};
+
+  activitiUpload.uploadContent('object/file/setDocumentImage', params, content, function (error, response, body) {
+    error ? res.send(error) : res.status(response.statusCode).json(result);
+  });
 
 };
 

@@ -22,6 +22,7 @@ router.get('/download/:keyOrProcessID/attachment/:typeOrAttachID/:sFileName', co
 router.get('/:taskId/attachments/:attachmentId/table', controller.getAttachmentContentTable);
 router.post('/:taskId/attachments/:field/upload',controller.uploadFile);
 router.post('/:taskId/form', controller.submitForm);
+router.post('/:taskId/setDocumentImage', controller.setDocumentImage);
 router.put('/:taskId', controller.updateTask);
 router.put('/:taskId/unassign', controller.unassign);
 router.get('/:taskId', controller.getTask);

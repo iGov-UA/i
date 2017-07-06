@@ -36,6 +36,10 @@ angular.module('dashboardJsApp')
         modalScope.contentData = contentData;
         var signModal = openModal(modalScope, modalClass);
         signModal.result.then(function (signedContent) {
+          angular.forEach(signedContent, function (el, key) {
+            el.id = contentData[key].id;
+            el.content = contentData[key].content;
+          });
 
           resultCallback(signedContent);
 

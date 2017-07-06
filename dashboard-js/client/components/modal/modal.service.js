@@ -172,7 +172,7 @@ angular.module('dashboardJsApp')
 
             warningModal = openModal({
               modal: {
-                dismissable: true,
+                dismissable: name.includes('Could not find a task with id')? false : true,
                 title: 'Помилка!',
                 html: '<strong>' + name + '</strong>',
                 buttons: [{
@@ -180,6 +180,12 @@ angular.module('dashboardJsApp')
                   text: 'Ok',
                   click: function(e) {
                     warningModal.close(e);
+                    if (name.includes('Could not find a task with id')) {
+                      var currentUrl = window.location.href;
+                      var regex = /(http(s)?:\/\/)+([a-zA-Z0-9:.]+)+(\/tasks)+(\/)+(myDrafts|documents|unassigned|selfAssigned|tickets|viewed)/g;
+                      var myArr = regex.exec(currentUrl);
+                      window.location = myArr[0] ? myArr[0] : currentUrl;
+                    }
                   }
                 }]
               }

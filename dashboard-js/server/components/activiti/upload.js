@@ -4,12 +4,19 @@ var _ = require('lodash')
 
 
 var options;
+var Buffer = require('buffer').Buffer;
+var config = require('../../config/environment');
+
+var authBase = 'Basic ' + new Buffer(
+    config.activiti.username +
+    ':' +
+    config.activiti.password)
+    .toString('base64');
 
 function getConfigOptions() {
   if (options)
     return options;
 
-  var config = require('../../config/environment');
   var activiti = config.activiti;
 
   options = {
@@ -66,6 +73,16 @@ module.exports.uploadContent = function (apiURL, params, content, callback, sHos
 
   var uploadRequest;
 
+  if(!params.headers){
+    params.headers = {};
+  }
+
+  if(!params.headers.Authorization){
+    _.merge(params.headers, {
+      'Authorization': authBase
+    });
+  }
+
   if (params.qs || params.headers) {
     //params is object with query string and/or headers
     var hasCustomAuth = params.headers && params.headers.Authorization ? true : false;
@@ -87,25 +104,40 @@ module.exports.uploadContent = function (apiURL, params, content, callback, sHos
   }
   _.merge(uploadRequest.headers, {'Accept': 'application/json'});
 
-  function formAppend(formData, content) {
-    content.forEach(function (formContent) {
-      var contentOptions;
-      if (formContent.options) {
-        contentOptions = formContent.options;
-      }
+  function formAppend(formData, content, name) {
+    if(_.isArray(content)){
+      content.forEach(function (formContent) {
+        addContent(formData, formContent, name);
+      });
+    } else {
+      addContent(formData, content, name);
+    }
 
-      if (formContent.request) {
-        formData.append(formContent.name, formContent.request, contentOptions);
-      } else if (formContent.file) {
-        formData.append(formContent.name, formContent.file, contentOptions);
-      } else if (formContent.text) {
-        formData.append(formContent.name, formContent.text, contentOptions);
-      } else if (formContent.buffer) {
-        formData.append(formContent.name, formContent.buffer, contentOptions);
-      }
-    });
   }
 
+  function addContent(formData, formContent, name) {
+    var contentOptions;
+    if (formContent.options) {
+      contentOptions = formContent.options;
+    }
+
+    if(name){
+      formContent.name = name;
+    }
+
+    if (formContent.request) {
+      formData.append(formContent.name, formContent.request, contentOptions);
+    } else if (formContent.file) {
+      formData.append(formContent.name, formContent.file, contentOptions);
+    } else if (formContent.text) {
+      formData.append(formContent.name, formContent.text, contentOptions);
+    } else if (formContent.buffer) {
+      formData.append(formContent.name, formContent.buffer, contentOptions);
+    }
+
+  }
+
+
   var r = request.post(uploadRequest, callback);
-  formAppend(r.form(), content);
+  formAppend(r.form(), content, params.qs && params.qs.sID_Field ? params.qs.sID_Field : undefined);
 };

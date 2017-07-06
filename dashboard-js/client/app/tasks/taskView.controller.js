@@ -9,13 +9,13 @@
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
       'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'DocumentsService', 'snapRemote', 'tasksSearchService',
-      'fieldsService', 'Issue',
+      'fieldsService', 'Issue', 'signDialog', 'generationService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
                 processSubject, $sce, eaTreeViewFactory, $location, DocumentsService, snapRemote, tasksSearchService,
-                fieldsService, Issue) {
+                fieldsService, Issue, signDialog, generationService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -848,7 +848,7 @@
           });
         }
 
-        $scope.submitTask = function (form, bNotShowSuccessModal) {
+        $scope.submitTask = function (form, bNotShowSuccessModal, isNeedEDS) {
           var isAnyIssuesExist = Issue.getIssues();
           $scope.validateForm(form);
           if(form.$invalid){
@@ -892,6 +892,8 @@
               $scope.$emit('task-submitted', $scope.selectedTask);
             }
           }
+
+
 
           if ($scope.selectedTask && $scope.taskForm) {
             $scope.taskForm.isSubmitted = true;
@@ -947,32 +949,67 @@
             if($scope.model.printTemplate){
               $scope.taskForm.sendDefaultPrintForm = false;
             }
+            var sKeyStepValue = null;
             if($scope.taskData.oProcess && $scope.taskData.oProcess.sBP && $scope.taskData.oProcess.sBP.match(/^_doc_/)){
               var sKey_Step_field = $scope.taskForm.filter(function (item) {
                 return item.id === "sKey_Step_Document";
               })[0];
               if(sKey_Step_field){
+                sKeyStepValue = sKey_Step_field.value;
                 $scope.taskForm.sendDefaultPrintForm = !!sKey_Step_field.value;
               }
             }
-            /*
-            if($rootScope.checkboxForAutoECP.status){
-              relinkPrintFormsIntoFileFields();
-              tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
-
-              }, function (err) {
-
-              }).catch(defaultErrorHandler);
-            } else {
-              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
-            }*/
 
             if($scope.issue && isAnyIssuesExist.length !== 0) {
               Issue.buildIssueObject($scope.issue, $scope.taskData).then(function (res) {
-                submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, res);
+                signAndSubmitForm(isNeedEDS, res);
               });
             } else {
-              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment);
+              signAndSubmitForm(isNeedEDS);
+            }
+          }
+
+          function signAndSubmitForm(isNeedSign, oIssue) {
+            if (isNeedSign) {
+              relinkPrintFormsIntoFileFields();
+              tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
+
+                signDialog.signContentsArray(result,
+                  function (signedContents) {
+                    var aSignedContents = signedContents;
+
+                    /*
+                    angular.forEach(aSignedContents, function (content) {
+                      var aFiles = [];
+                      aFiles.push(generationService.getSignedFile(content.sign, content.id));
+                      content.aFiles = aFiles;
+                      $scope.upload(aFiles, content.id);
+                    });
+                    */
+
+                    tasks.setDocumentImages({
+                      signedContents: aSignedContents,
+                      sKey_Step: sKeyStepValue,
+                      taskId: $scope.selectedTask.id
+                    }).then(function (resp) {
+                      submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+                    }, function (error) {
+                      Modal.inform.error()(angular.toJson(error));
+                    })
+
+                  }, function () {
+                    console.log('Sign Dismissed');
+                    //todo dissmiss sign
+                  }, function (error) {
+                    //todo react on error during sign
+                    Modal.inform.error()(angular.toJson(error));
+                  }, 'ng-on-top-of-modal-dialog modal-info');
+
+              }, function (err) {
+                Modal.inform.error()(angular.toJson(error));
+              }).catch(defaultErrorHandler);
+            } else {
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
             }
           }
 
@@ -1588,12 +1625,12 @@
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
 
-        $scope.assignAndSubmitDocument = function () {
+        $scope.assignAndSubmitDocument = function (documentForm, isNeedEDS) {
           $scope.taskForm.isInProcess = true;
 
           tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
             .then(function (result) {
-              $scope.submitTask(form, true);
+              $scope.submitTask(form, true, isNeedEDS);
             })
             .catch(defaultErrorHandler);
         };
