@@ -24,7 +24,6 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
     public void execute(DelegateExecution oExecution) throws Exception {
 
         LOG.info("MailTaskWithoutAttachment listener started.");
-
         Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
         LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
         if (!mExecutionVaraibles.isEmpty()) {
@@ -33,17 +32,12 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             mExecutionVaraibles.forEach((sKey, oValue) -> {
                 if (oValue != null) {
                     String soValue = oValue.toString();
-                    LOG.info("soValue={}", soValue);
                     String sClassName = oValue.getClass().getName();
-                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
                     if (sClassName.endsWith("Date")) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
                         String sDate = sdf.format((Date) oValue);
                         mOnlyDateVariables.put(sKey, sDate);
-                    } else if (soValue.contains("sDate") && soValue.contains("nID_FlowSlotTicket")
-                            && soValue.contains("sID_Type")) {
-                        LOG.info("queueData found");
-                    }
+                    } 
                 }
             });
             //сетим отформатированные переменные в екзекьюшен
