@@ -106,6 +106,7 @@ public class DfsService {
                                 saName_Attach_Dfs = saName_Attach_Dfs + sFileName + ",";
                                 Attachment oAttachment = taskService.createAttachment(sFileContentType,
                                         sID_Task, snID_Process, sFileName, oByteArrayMultipartFile.getName(), oByteArrayMultipartFile.getInputStream());
+                                LOG.info("oAttachment {}", oAttachment);
                                 if (oAttachment != null) {
                                     asID_Attach_Dfs.append(oAttachment.getId()).append(",");
                                     LOG.info("oAttachment.getId()=" + oAttachment.getId());
