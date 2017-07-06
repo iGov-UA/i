@@ -1216,27 +1216,32 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     
     private boolean isExistTaskID(HttpServletRequest oRequest) {
         
-        boolean isExist = (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
-        
-        if (isExist){
-            LOG.info("We catch TaskID in requestProcessingInterceptor!");
-        }
-        else{
-            LOG.info("We don't catch TaskID in requestProcessingInterceptor!");
-        }
-        
-        return isExist;
-    }
-    
-    private void checkTaskAvailability(HttpServletRequest oRequest) throws Exception {
-    
-        try {
-            isExistTaskID(oRequest);
-        } catch (Exception oException) {
-            LOG.info("checkTaskAvailability error in interceptor: {} ", oException.getMessage());
-        }
-        
+    }            
+
+    private void checkTaskAvailability(HttpServletRequest oRequest) {
+           
+            if(isExistTaskID(oRequest)){  
+                String sURL = oRequest.getRequestURL().toString();
+                LOG.info("checkTaskAvailability sURL is: "+ sURL);
+                
+                String snTaskId = null;
+                snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+                LOG.info("snTaskId: " + snTaskId);
+                
+                Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
+            
+                if(task != null){
+                LOG.info("checkTaskAvailability task: Name - {}, Id - {}, ProcessInstanceId - {}, "
+                        + "ProcessDefinitionId - {}", task.getName(), task.getId(), 
+                        task.getProcessInstanceId(), task.getProcessDefinitionId());
+                }
+                else {
+                    LOG.info("checkTaskAvailability task not found!");
+                    throw new RuntimeException("Can't find task");                   
+                }
+            }        
     }
     
     private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
