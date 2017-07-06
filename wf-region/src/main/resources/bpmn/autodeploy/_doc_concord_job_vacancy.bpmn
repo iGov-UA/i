@@ -115,6 +115,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
@@ -270,7 +271,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
 
 //переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_2'
+var sKey_Step= 'step_1'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -282,10 +283,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 </script>
     </scriptTask>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask7">
+    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="scripttask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow21" sourceRef="scripttask7" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_Closed'}]]></conditionExpression>
     </sequenceFlow>
@@ -319,7 +319,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="40.0" width="40.0" x="521.0" y="207.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="333.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="280.0"></omgdc:Bounds>
@@ -348,13 +348,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="541.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="521.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="438.0" y="227.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="385.0" y="200.0"></omgdi:waypoint>
-        <omgdi:waypoint x="385.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="470.0" y="142.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="668.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="63.0"></omgdi:waypoint>
+        <omgdi:waypoint x="593.0" y="62.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="541.0" y="247.0"></omgdi:waypoint>
