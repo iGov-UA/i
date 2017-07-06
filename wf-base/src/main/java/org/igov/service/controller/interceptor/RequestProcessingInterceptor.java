@@ -1216,27 +1216,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     
     private boolean isExistTaskID(HttpServletRequest oRequest) {
         
-        boolean isExist = (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
+        return (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
-        
-        if (isExist){
-            LOG.info("We catch TaskID in requestProcessingInterceptor!");
-        }
-        else{
-            LOG.info("We don't catch TaskID in requestProcessingInterceptor!");
-        }
-        
-        return isExist;
-    }
-    
+    }            
+
     private void checkTaskAvailability(HttpServletRequest oRequest) throws Exception {
     
-        try {
-            isExistTaskID(oRequest);
+        try {         
+            
+            if(isExistTaskID(oRequest)){  
+                String sURL = oRequest.getRequestURL().toString();
+                LOG.info("checkTaskAvailability sURL is: ", sURL);
+                String snTaskId = null;
+            
+                Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
+            
+                if(task != null){
+                LOG.info("checkTaskAvailability task: Name - {}, Id - {}, ProcessInstanceId - {}, "
+                        + "ProcessDefinitionId - {}", task.getName(), task.getId(), 
+                        task.getProcessInstanceId(), task.getProcessDefinitionId());
+                }
+                else {
+                    //throw new RuntimeException("Can't find task");
+                    LOG.info("checkTaskAvailability sURL is: ", sURL);
+                }
+            }
         } catch (Exception oException) {
             LOG.info("checkTaskAvailability error in interceptor: {} ", oException.getMessage());
         }
-        
     }
     
     private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
