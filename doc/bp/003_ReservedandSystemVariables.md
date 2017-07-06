@@ -18,13 +18,13 @@
 * **bankIdphone** - string -телефон гражданина
 * **bankIdsID_Country** - string - гражданство
 * **bankId_scan_inn** - file - Скан копия ИНН гражданина
-* ![3_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_0.JPG)
+* ![3_0](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_0.JPG)
 
 ## Зарезервированные переменные для электронных очередей
 * **date_of_visit** - invisible - автоматом принимает значение выбранное  из электронной очереди
 * **nID_Department_visitDay** - string/invisible/label - номер органа для электронной очереди, где visitDay это id  электронной очереди, к которой относится текущий департамент
 * **nSlots_visitDay** - string/invisible/label - количество слотов очереди , которые резервируются пользователем. (где visitDay это id  электронной очереди, к которой относится текущий размер слота)
-* ![3_5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_5.JPG)
+* ![3_5](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_5.JPG)
 
 ## Зарезервированные переменные атрибутов
 * **sNameOrgan** - string/invisible/label - название органа в подписи письма
@@ -35,13 +35,13 @@
 * **sArea** - string/invisible/label - yазвание нас.пункта/района куда подается заявка
 * **nArea** - string/invisible/label - yомер в справочнике нас.пункта/района куда подается заявка
 * **sShapka** - string/invisible/label - шапка принтформы
-* ![3_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_1.JPG)
+* ![3_1](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_1.JPG)
 
 
 ## Переменные принтформ
 * **[sID_Order]** - системный тег для принтформы, смс или емейла  для размещения ИД заявки. [Issue 1023](https://github.com/e-government-ua/i/issues/1023).  
 * **[sDateCreate]** - Системный тег даты. Возвращает значение системного времени на момент срабатывания таски. Можно использовать как время начала обработки обращения (взятия в работу чиновником).
-* ![3_6](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_6.JPG)
+* ![3_6](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_6.JPG)
 * **[sDateTimeCreateProcess]** - Возвращает значение системной даты-времени на момент сохранения\подачи заявки гражданином.
 * **[sDateCreateProcess]**- Возвращает значение системной даты на момент сохранения\подачи заявки гражданином.
 * **[sTimeCreateProcess]** - Возвращает значение системного времени на момент сохранения\подачи заявки гражданином.
@@ -54,16 +54,16 @@
 ## Валидируемые переменные
 * **vin_code, vin_code1, vin** - string - VIN-код авто.
 Набор из 17 символов. Разрешено использовать все арабские цифры и латинские буквы (А В C D F Е G Н J К L N М Р R S Т V W U X Y Z) , за исключением букв Q, O, I. Эти буквы запрещены для использования, поскольку O и Q похожи между собой, а I и O можно спутать с 0 и 1.
-* ![3_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_4.JPG)
+* ![3_4](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_4.JPG)
 * **privatePhone, workPhone, phone** - string - номер телефона.
 Первый символ “+”, остальные 12 цифр
 * **lastName_UA1,  firstName_UA1, middleName_UA1, lastName_UA2,  firstName_UA2, middleName_UA2**  - string - Название или ФИО с украинскими буквами. Разрешена только кириллица, дефис, апостроф.
 * **lastName_RU1,  firstName_RU1, middleName_RU1, lastName_RU2,  firstName_RU2, middleName_RU2** - string - Название или ФИО с русскими буквами. Разрешена только кириллица, дефис.
 * **date_of_birth** - date - дата рождения. Не разрешено выбирать дату больше текущей.
 * **kved** - string - вид экономической деятельности по КВЕД. Две цифры точка две цифры (первые две цифры не могут быть 04, 34, 40, 44, 48, 54, 57, 67, 76, 83, 89).
-* ![3_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_2.JPG)
+* ![3_2](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_2.JPG)
 * **edrpou** - string - восемь цифр.
-* ![3_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_3.JPG)
+* ![3_3](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_3.JPG)
 * **mfo** - string - шесть цифр.
 * **kids_Birth** - date - не разрешено выбирать дату больше текущей, разница между текущей датой и выбранной не должна превышать 14 лет.
 * **privateMail, email** - string - емейлы
@@ -75,15 +75,15 @@
 * **sNotifyEvent_AfterSubmit** - invisible - Отображение кастомного текста в дашборде после нажатия на кнопку “Опрацювати”. Текст  подсказки задаем в аттрибуте default. [Issue 1027](https://github.com/e-government-ua/i/issues/1027).
 * **bReferent** - invisible - признак заполнения заявки референтом (true/false).
 * **form_signed** - если объявлена эта переменная на стартовой форме, то при нажатии на кнопку "замовити послугу" заявитель будет перенаправлен на доп.страницу для наложения ЕЦП на заявку.
-* ![3_9](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_9.JPG)
+* ![3_9](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_9.JPG)
 * **form_signed_all** - при наложении ЕЦП на заявку, она так же будет наложена и на все прикрепленные файлы. При этом все файлы, которые прикрепил гражданин, должны иметь расширение *.pdf.
 
 ## Автокомплиты
 * **sObjectCustoms** - select - Товар 
 * **sID_UA_ObjectCustoms** - Код товара (заполнится автоматически после выбора в селекте sObjectCustoms)
-* ![3_8](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_8.JPG)
+* ![3_8](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_8.JPG)
 * **sCountry** - select - Страна 
-* ![3_7](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3_7.JPG)
+* ![3_7](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3_7.JPG)
 * **sID_UA_Country** - Код страны (заполнится автоматически после выбора в селекте sCountry)
 * **sCurrency** - select - Валюта 
 * **sID_UA_Currenc**y - Код валюти (заполнится автоматически после выбора в селекте sCurrency)

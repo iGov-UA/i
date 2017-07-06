@@ -9,9 +9,9 @@
 
 # разработка бизнес-процесса
 * создать новую диаграмму. Для Eclipse:New-Other-Activiti Diagram. Путь для размещения bpmn-файлов: \i\wf-egion\src\main\resources\bpmn\autodeploy.
-* ![1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/1bp.jpg)
-* ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/2bp.jpg)
-* ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/3bp.jpg)
+* ![1](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/1bp.jpg)
+* ![screenshot of sample2](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/2bp.jpg)
+* ![screenshot of sample3](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/3bp.jpg)
 * [Создание бизнес-процесса дополнительно](https://docs.google.com/document/d/1B3OIYjj3S2YLwUR-PVD3FAcErl_2ua0CYUB5vys6O4U/edit )
 * [Правила при именовании бизнес-процессов](https://github.com/e-government-ua/iBP/wiki/%D0%9E%D0%B1%D1%89%D0%B8%D0%B5-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0-%D0%BF%D1%80%D0%B8-%D0%B8%D0%BC%D0%B5%D0%BD%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B8:#%D0%B1%D0%B8%D0%B7%D0%BD%D0%B5%D1%81-%D0%BF%D1%80%D0%BE%D1%86%D0%B5c%D1%81%D1%8B).  
 * проработать инфокарты и бланки заявлений - составить перечень необходимых полей и условий
@@ -29,8 +29,8 @@
 
 # тестирование и проливка на бету и боевой
 * перед каждой проливкой на сервер проект необходимо собирать и запускать локально
-* ![4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/4.jpg)
-* ![5](https://github.com/e-government-ua/i/blob/test/doc/bp/img/5.jpg)
+* ![4](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/4.jpg)
+* ![5](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/5.jpg)
 * пройти процесс от начала до конца по всем возможным путям
 * выслать заказчику инструкцию, ссылки, логин и пароль.
 * в случае необходимости - вносить изменения в процесс. после внесения даже небольшого изменения - обязательное тестирование

@@ -28,7 +28,10 @@
 
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
-
+            
+            DELETE FROM "DocumentContentType";
+            DELETE FROM "DocumentType";
+            DELETE FROM "Document";
             DELETE FROM "SubjectGroupTree";
             DELETE FROM "SubjectGroup";
             DELETE FROM "SubjectOrganDepartment";
