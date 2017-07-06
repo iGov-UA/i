@@ -1226,7 +1226,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             
             if(isExistTaskID(oRequest)){  
                 String sURL = oRequest.getRequestURL().toString();
-                LOG.info("checkTaskAvailability sURL is: ", sURL);
+                LOG.info("checkTaskAvailability sURL is: "+ sURL);
                 String snTaskId = null;
             
                 Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
@@ -1238,7 +1238,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 }
                 else {
                     //throw new RuntimeException("Can't find task");
-                    LOG.info("checkTaskAvailability sURL is: ", sURL);
+                    LOG.info("checkTaskAvailability task not found!");
                 }
             }
         } catch (Exception oException) {
