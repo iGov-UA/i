@@ -1240,8 +1240,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                         task.getProcessInstanceId(), task.getProcessDefinitionId());
                 }
                 else {
-                    //throw new RuntimeException("Can't find task");
                     LOG.info("checkTaskAvailability task not found!");
+                    throw new RuntimeException("Can't find task");                   
                 }
             }
         } catch (Exception oException) {
