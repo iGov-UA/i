@@ -1220,10 +1220,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }            
 
-    private void checkTaskAvailability(HttpServletRequest oRequest) throws Exception {
-    
-        try {         
-            
+    private void checkTaskAvailability(HttpServletRequest oRequest) {
+           
             if(isExistTaskID(oRequest)){  
                 String sURL = oRequest.getRequestURL().toString();
                 LOG.info("checkTaskAvailability sURL is: "+ sURL);
@@ -1243,10 +1241,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     LOG.info("checkTaskAvailability task not found!");
                     throw new RuntimeException("Can't find task");                   
                 }
-            }
-        } catch (Exception oException) {
-            LOG.info("checkTaskAvailability error in interceptor: {} ", oException.getMessage());
-        }
+            }        
     }
     
     private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
