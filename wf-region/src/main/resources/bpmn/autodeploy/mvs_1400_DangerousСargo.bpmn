@@ -25,17 +25,25 @@
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+       
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_appl" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) " type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_appl" name="Найменування" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_appl" name="Коротке найменування" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_appl" name="Основний КВЕД" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_appl" name="" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_appl" name="Місцезнаходження" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="ur_tel" name="Телефон" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ur_fax" name="Факс" type="string" default=" "></activiti:formProperty>        
+        <activiti:formProperty id="sCEOName_SubjectOrgan_appl" name="ПІБ керівника" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ur_post" name="Посада керівника" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_appl" name="Дата отримання даних з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+               
         <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи (уповноваженої особи)" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
+       <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
+        
+         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" required="true">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -137,18 +145,29 @@ ${sNameOrgan}<br />
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
+        
+         <activiti:formProperty id="sID_SubjectOrgan_OKPO_appl" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) ; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_appl" name="Найменування; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_appl" name="Коротке найменування; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_appl" name="Основний КВЕД; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_appl" name="" type="label"  ></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_appl" name="Місцезнаходження; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="ur_tel" name="Телефон; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"  ></activiti:formProperty>        
+        <activiti:formProperty id="sCEOName_SubjectOrgan_appl" name="ПІБ керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_appl" name="Дата отримання даних з ЄДРПОУ" type="label"  ></activiti:formProperty>
+         
+        
         <activiti:formProperty id="sShapka228" name="шапки принтформ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи (уповноваженої особи)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
+        
+       <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юридичної особи" type="string" writable="false"></activiti:formProperty>
+        
+       <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
+        
+       
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -221,18 +240,27 @@ ${sNameOrgan}<br />
           <activiti:value id="personally" name="особисто"></activiti:value>
           <activiti:value id="confidant" name="довірена особа"></activiti:value>
         </activiti:formProperty>
+        
+         <activiti:formProperty id="sID_SubjectOrgan_OKPO_appl" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) ; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_appl" name="Найменування; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_appl" name="Коротке найменування; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_appl" name="Основний КВЕД; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_appl" name="" type="label"  ></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_appl" name="Місцезнаходження; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="ur_tel" name="Телефон; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_fax" name="Факс; ;writable=false" type="string"  ></activiti:formProperty>        
+        <activiti:formProperty id="sCEOName_SubjectOrgan_appl" name="ПІБ керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_appl" name="Дата отримання даних з ЄДРПОУ" type="label"  ></activiti:formProperty>
+         
+        
         <activiti:formProperty id="sShapka228" name="шапки принтформ; ;bVisible=false" type="string"></activiti:formProperty>
+       <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="imya_ur" name="У давальному відмінку повне найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="edrpo" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="pib_ur" name="П.І.Б. керівника юридичної особи (уповноваженої особи)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="post_ur" name="Посада керівника юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_ur" name="Адреса юридичної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone_ur" name="Контактний номер телефону юридичної особи" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
