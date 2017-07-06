@@ -95,7 +95,7 @@ http://download.eclipse.org/technology/m2e/releases
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_sNmZWMXF0ZV9YdTQ)  
 ![1](https://drive.google.com/uc?export=download&id=0B42BBpUHJK_say1QMElyNTlBdGM)  
 * Руками прописываем кодировку cp1251 на вкладке Общие (Common)
-* ![ecl1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/ecl1.JPG)
+* ![ecl1](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/ecl1.JPG)
 
 ## Ставим дополнительные утилиты для удобства редактирования JSON и HTML
 1. переходим в маркет  

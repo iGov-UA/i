@@ -32,13 +32,16 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
             // выбираем все переменные типа Date, приводим к нужному формату 
             mExecutionVaraibles.forEach((sKey, oValue) -> {
                 if (oValue != null) {
+                    String soValue = oValue.toString();
+                    LOG.info("soValue={}", soValue);
                     String sClassName = oValue.getClass().getName();
                     LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
                     if (sClassName.endsWith("Date")) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
                         String sDate = sdf.format((Date) oValue);
                         mOnlyDateVariables.put(sKey, sDate);
-                    } else if (oValue.toString().contains("queueData")) {
+                    } else if (soValue.contains("sDate") && soValue.contains("nID_FlowSlotTicket")
+                            && soValue.contains("sID_Type")) {
                         LOG.info("queueData found");
                     }
                 }
