@@ -221,7 +221,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
+        <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum" required="true">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита"></activiti:value>
           <activiti:value id="Vacancy_is_Open" name="Пошук подовжено"></activiti:value>
         </activiti:formProperty>
@@ -259,8 +259,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow15" name="прийнято" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <scriptTask id="scripttask7" name="Step_3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="Step_1" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1 получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId();
 execution.setVariable('processInstanceId', processInstanceId)
@@ -344,10 +343,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="540.0" y="174.0"></omgdi:waypoint>
-        <omgdi:waypoint x="541.0" y="207.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="521.0" y="227.0"></omgdi:waypoint>
