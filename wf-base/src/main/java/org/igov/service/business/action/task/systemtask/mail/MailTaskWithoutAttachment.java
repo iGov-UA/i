@@ -1,7 +1,9 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
+import java.util.List;
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.task.Task;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.io.mail.Mail;
 import org.igov.service.business.action.task.core.ActionTaskService;
 import org.slf4j.Logger;
@@ -20,25 +22,30 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
     @Autowired
     ActionTaskService oActionTaskService;
-    
+
+    @Autowired
+    private HistoryService oHistoryService;
+
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
 
-        Task oTaskActive = taskService.createTaskQuery().processInstanceId(oExecution.getProcessInstanceId()).active().singleResult();
-        if (oTaskActive != null) {
-        LOG.info("oTaskActive id={}, name={}, variables={}",
-                oTaskActive.getId(), oTaskActive.getName(), oTaskActive.getProcessVariables());
+        LOG.info("MailTaskWithoutAttachment listener started.");
+        String sProcessInstance = oExecution.getProcessInstanceId();
+        LOG.info("sProcessInstance={}", sProcessInstance);
+        String sActivityId = oExecution.getCurrentActivityId();
+        LOG.info("sActivityId={}", sActivityId);
+        List<HistoricTaskInstance> aHistoricTaskInstance = oHistoryService
+                .createHistoricTaskInstanceQuery()
+                .processInstanceId(sProcessInstance)
+                .list();
+        if (!aHistoricTaskInstance.isEmpty() && aHistoricTaskInstance != null) {
+            LOG.info("aHistoricTaskInstance.size={}", aHistoricTaskInstance.size());
+            aHistoricTaskInstance.forEach(HistoricTaskInstance -> {
+                LOG.info("Task.id={}", HistoricTaskInstance.getId());
+            });
         } else {
-            LOG.info("oTaskActive not found");
+            LOG.info("aHistoricTaskInstance is empty");
         }
-        Task oTask = taskService.createTaskQuery().processInstanceId(oExecution.getProcessInstanceId()).singleResult();
-        if (oTask != null) {
-        LOG.info("oTaskActive id={}, name={}, variables={}",
-                oTask.getId(), oTask.getName(), oTask.getProcessVariables());
-        } else {
-            LOG.info("oTas not found");
-        }
-        
         /*try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
