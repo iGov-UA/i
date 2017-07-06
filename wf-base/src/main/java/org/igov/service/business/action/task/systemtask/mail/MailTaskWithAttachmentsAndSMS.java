@@ -7,21 +7,22 @@ import org.activiti.engine.task.Attachment;
 
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.DataSource;
 
 import static org.igov.util.ToolLuna.getProtectedNumber;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getStringFromFieldExpression;
-import org.igov.service.business.action.task.core.ActionTaskService;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.activiti.engine.HistoryService;
-import org.activiti.engine.history.HistoricTaskInstance;
 import org.igov.io.mail.Mail;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -38,36 +39,34 @@ public class MailTaskWithAttachmentsAndSMS extends Abstract_MailTaskCustom {
     protected Expression sPhone_SMS;
     protected Expression sText_SMS;
 
-    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
-
-    @Autowired
-    ActionTaskService oActionTaskService;
-    
-    @Autowired
-    private HistoryService oHistoryService;
+    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithAttachmentsAndSMS.class);
 
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-        
+
         LOG.info("MailTaskWithAttachmentsAndSMS listener started.");
-        
-        String sProcessInstance = oExecution.getProcessInstanceId();
-        LOG.info("sProcessInstance={}", sProcessInstance);
-        String sActivityId = oExecution.getCurrentActivityId();
-        LOG.info("sActivityId={}", sActivityId);
-        List<HistoricTaskInstance> aHistoricTaskInstance = oHistoryService
-                .createHistoricTaskInstanceQuery()
-                .processInstanceId(sProcessInstance)
-                .list();
-        if (!aHistoricTaskInstance.isEmpty() && aHistoricTaskInstance != null) {
-            LOG.info("aHistoricTaskInstance.size={}", aHistoricTaskInstance.size());
-            aHistoricTaskInstance.forEach(HistoricTaskInstance -> {
-                LOG.info("Task.id={}", HistoricTaskInstance.getId());
+
+        Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
+        LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
+        if (!mExecutionVaraibles.isEmpty()) {
+            Map<String, Object> mOnlyDateVariables = new HashMap<>();
+            // выбираем все переменные типа Date, приводим к нужному формату 
+            mExecutionVaraibles.forEach((sKey, oValue) -> {
+                if (oValue != null) {
+                    String sClassName = oValue.getClass().getName();
+                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
+                    if (sClassName.endsWith("Date")) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
+                        String sDate = sdf.format((Date) oValue);
+                        mOnlyDateVariables.put(sKey, sDate);
+                    } else if (oValue.toString().contains("queueData")) {
+                        LOG.info("queueData found");
+                    }
+                }
             });
-        } else {
-            LOG.info("aHistoricTaskInstance is empty");
+            //сетим отформатированные переменные в екзекьюшен
+            oExecution.setVariables(mOnlyDateVariables);
         }
-        
 
         Mail oMail = Mail_BaseFromTask(oExecution);
 
