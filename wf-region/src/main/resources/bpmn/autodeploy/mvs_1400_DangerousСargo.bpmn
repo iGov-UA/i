@@ -41,9 +41,21 @@
         <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
        <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
         
-         <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" required="true"></activiti:formProperty>
+         <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Організація, що виконує перевезення&lt;/b&gt;"></activiti:formProperty>
         
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_transfer" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) " type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_transfer" name="Найменування" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_transfer" name="Коротке найменування" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_transfer" name="Основний КВЕД" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_transfer" name="" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_transfer" name="Місцезнаходження" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="ur_tel_transfer" name="Телефон" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ur_fax_transfer" name="Факс" type="string" default=" "></activiti:formProperty>        
+        <activiti:formProperty id="sCEOName_SubjectOrgan_transfer" name="ПІБ керівника" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="ur_post_transfer" name="Посада керівника" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_transfer" name="Дата отримання даних з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+        
+         
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" required="true">
           <activiti:value id="trailer" name="причеп"></activiti:value>
           <activiti:value id="semitrailer" name="напівпричеп"></activiti:value>
@@ -67,7 +79,11 @@
         <activiti:formProperty id="position_instructor" name="Посада відповідального за інструктаж" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="instructor_license_number" name="№ свідоцтва відповідального за інструктаж" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="instructor_license_term" name="Термін дії свідоцтва" type="date" default=" "></activiti:formProperty>
-        <activiti:formProperty id="route" name="Маршрут руху перевезення небезпечного вантажу (перелік вулиць)" type="textArea" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="text01" name=" " type="label" default="&lt;b&gt;Маршрут руху перевезення небезпечного вантажу&lt;/b&gt;"></activiti:formProperty>
+                
+        <activiti:formProperty id="Table_route" name="Маршрут руху; ;nRowsLimit=20,bNew=true" type="table" default="${markerService.loadFromFile('table/mvs/mvs_1400_DangerousCargo_table2.json')}" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="Table_points" name="Позиції небезпечного вантажу; ;nRowsLimit=10,bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDangerous_name&quot;,&quot;name&quot;:&quot;Транспортна назва вантажу&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sPacking_group&quot;,&quot;name&quot;:&quot;Група пакування&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDangerous_inn&quot;,&quot;name&quot;:&quot;Ідентифікаційний номер безпеки&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumber_oon&quot;,&quot;name&quot;:&quot;№ речовини за переліком ООН&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sNumber_dangerous&quot;,&quot;name&quot;:&quot;Номери зразків знаків небезпеки&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sFirst_dangerous&quot;,&quot;name&quot;:&quot;Підклас та група сумісності (1 клас небезпеки)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;false&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDangerous_cargo&quot;,&quot;name&quot;:&quot;Маса небезпечного вантажу (т.)&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sDangerous_previous&quot;,&quot;name&quot;:&quot;Попередній номер погодження  виданого УДАІ&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;false&quot;,&quot;writable&quot;:&quot;true&quot;}]}" required="true"></activiti:formProperty>
         <activiti:formProperty id="strah_name" name="Назва страхового товариства, де був укладений типовий договір" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="strah_adres" name="Адреса страхового товариства" type="string" required="true"></activiti:formProperty>
@@ -164,9 +180,20 @@ ${sNameOrgan}<br />
        <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         
-       <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Організація, що виконує перевезення&lt;/b&gt;"></activiti:formProperty>
         
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_transfer" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) ; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_transfer" name="Найменування; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_transfer" name="Коротке найменування; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_transfer" name="Основний КВЕД; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_transfer" name="" type="label"  ></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_transfer" name="Місцезнаходження; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="ur_tel_transfer" name="Телефон; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_fax_transfer" name="Факс; ;writable=false" type="string"  ></activiti:formProperty>        
+        <activiti:formProperty id="sCEOName_SubjectOrgan_transfer" name="ПІБ керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_post_transfer" name="Посада керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_transfer" name="Дата отримання даних з ЄДРПОУ" type="label"  ></activiti:formProperty>
+              
        
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
@@ -220,6 +247,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="instruction" name="Письмові інструкції у разі аварії чи надзвичайної ситуації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pidgotovka" name="Копія свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dodatkovo" name="У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу; ;bNew=true" type="file"></activiti:formProperty>
+         <activiti:formProperty id="Table_route" name="Маршрут руху; ;nRowsLimit=20,bNew=true" type="table" writable="fale"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -258,8 +287,20 @@ ${sNameOrgan}<br />
        <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
        <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="obect" name="Організація, що виконує перевезення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adres_2" name="Адреса організації" type="string" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Організація, що виконує перевезення&lt;/b&gt;"></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_transfer" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) ; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_transfer" name="Найменування; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_transfer" name="Коротке найменування; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_transfer" name="Основний КВЕД; ;writable=false" type="string"    ></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_transfer" name="" type="label"  ></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_transfer" name="Місцезнаходження; ;writable=false" type="textArea"    ></activiti:formProperty>
+        <activiti:formProperty id="ur_tel_transfer" name="Телефон; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_fax_transfer" name="Факс; ;writable=false" type="string"  ></activiti:formProperty>        
+        <activiti:formProperty id="sCEOName_SubjectOrgan_transfer" name="ПІБ керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="ur_post_transfer" name="Посада керівника; ;writable=false" type="string"  ></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_transfer" name="Дата отримання даних з ЄДРПОУ" type="label"  ></activiti:formProperty>
+              
         
         <activiti:formProperty id="trailer_name" name="При перевезенні небезпечного вантажу буде використовуватись" type="enum" writable="false">
           <activiti:value id="trailer" name="причеп"></activiti:value>
@@ -317,6 +358,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="pidgotovka" name="Копія свідоцтва про підготовку уповноваженого з питань безпеки перевезення небезпечних вантажів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dodatkovo" name="У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документи (квитанція) про оплату вартості послуги; можна завантажити електронну квітанцію, сформовану в інтернет-банку;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Table_route" name="Маршрут руху; ;nRowsLimit=20,bNew=true" type="table" writable="fale"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
