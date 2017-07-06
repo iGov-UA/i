@@ -28,7 +28,10 @@
 
         <sql splitStatements="true" dbms="postgresql"><![CDATA[
             SET CONSTRAINTS ALL DEFERRED;
-
+            
+            DELETE FROM "DocumentContentType";
+            DELETE FROM "DocumentType";
+            DELETE FROM "Document";
             DELETE FROM "SubjectGroupTree";
             DELETE FROM "SubjectGroup";
             DELETE FROM "SubjectOrganDepartment";
@@ -64,7 +67,6 @@
             DELETE FROM "AccessServiceRoleRight";
             DELETE FROM "AccessServiceRole";
             DELETE FROM "AccessServiceRight";
-            DELETE FROM "SubjectRightBP";
             
         ]]></sql>
 
@@ -557,7 +559,7 @@
             <column name="sSubjectInfo" type="STRING"/>
         </loadUpdateData>
         
-        <loadData encoding="UTF-8" file="data/SubjectRightBP.csv" tableName="SubjectRightBP" separator=";">
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectRightBP.csv" tableName="SubjectRightBP" separator=";">
             <column name="nID" type="NUMERIC"/>
             <column name="sID_BP" type="STRING"/>
             <column name="sID_Place_UA" type="STRING"/>
@@ -565,7 +567,7 @@
             <column name="asID_Group_Export" type="STRING"/>
             <column name="sFormulaFilter_Export" type="STRING"/>
             <column name="sNote" type="STRING"/>
-        </loadData>  
+        </loadUpdateData>  
         
         <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/DocumentStepType.csv" tableName="DocumentStepType" separator=";">
             <column name="nID" type="NUMERIC"/>

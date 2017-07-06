@@ -537,11 +537,83 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
+      setDocumentImages: function (properties) {
+        var deferred = $q.defer();
+
+        var uploadPromises = [],
+          contents = [],
+          documentPromises = [],
+          docDefer = [],
+          counter = 0;
+
+        angular.forEach(properties.signedContents, function (oContent, key) {
+          docDefer[key] = $q.defer();
+          contents[key] = {
+            data : oContent
+          };
+          documentPromises[key] = docDefer[key].promise;
+        });
+
+        var uplaadingResult = [];
+
+        var asyncDocumentUpload = function (i, docs, defs) {
+          if (i < docs.length) {
+
+            return $http.post('/api/tasks/' + properties.taskId + '/setDocumentImage', {
+              bSigned: true,
+              sFileNameAndExt: docs[i].data.id + '.pdf',
+              sID_Field: docs[i].data.id,
+              sContentType: 'application/pdf',
+              sKey_Step: properties.sKey_Step,
+              sContent: docs[i].data.sign
+            }).then(function (resp) {
+              uplaadingResult.push(resp);
+              defs[i].resolve(resp);
+              return asyncDocumentUpload(i + 1, docs, defs);
+            }, function (err) {
+              uplaadingResult.push({error : err});
+              defs[i].reject(err);
+              return asyncDocumentUpload(i + 1, docs, defs);
+            });
+
+          }
+        };
+
+        var first = $q.all(uploadPromises).then(function () {
+          return asyncDocumentUpload(counter, contents, docDefer);
+        });
+
+        $q.all([first, documentPromises]).then(function () {
+          deferred.resolve(uplaadingResult);
+        });
+
+        return deferred.promise;
+
+      },
+
       generatePDFFromPrintForms: function (formProperties, task) {
+        var filesFields = [];
+
         // нужно найти все поля с тимом "file" и id, начинающимся с "PrintForm_"
-        var filesFields = $filter('filter')(formProperties, function (prop) {
+        var filesFieldsTemp = $filter('filter')(formProperties, function (prop) {
           return prop.type === 'file' && (prop.options.hasOwnProperty('sID_Field_Printform_ForECP') || /^PrintForm_/.test(prop.id));
         });
+
+        // отфильтровываем только те поля файлов, ПринтФормы связанные принтформы которых имеют опцию bThisOnlyECP=true
+        var printFormsTemplates = $filter('filter')(formProperties, function (prop) {
+          return prop.printFormLinkedToFileField && (prop.options && prop.options.bThisOnlyECP && prop.options.bThisOnlyECP === true);
+        });
+        if(printFormsTemplates && printFormsTemplates.length > 0){
+          angular.forEach(printFormsTemplates, function (pfField) {
+            angular.forEach(filesFieldsTemp, function (fField) {
+              if(pfField.printFormLinkedToFileField === fField.id){
+                filesFields.push(fField);
+              }
+            })
+          })
+        } else {
+          filesFields = filesFieldsTemp;
+        }
 
         var self = this;
         var deferred = $q.defer();
@@ -575,7 +647,7 @@ angular.module('dashboardJsApp')
             }
           }
         });
-        if(formProperties.sendDefaultPrintForm && !isDocPrintFormPresent){
+        if(formProperties.sendDefaultPrintForm && !isDocPrintFormPresent && filesDefers.length === 0){
           filesDefers.push($q.resolve({
             fileField: null,
             template: '<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="style.css" /></head><body">' + $(".ng-modal-dialog-content")[0].innerHTML + '</html>'
@@ -722,7 +794,7 @@ angular.module('dashboardJsApp')
                 var printContents = print[i].html;
                 return generationService.generatePDFFromHTML(printContents).then(function (pdfContent) {
                   resultsPdf.push({
-                    sID_Field: print[i].data.sID_Field,
+                    id: print[i].data.sID_Field,
                     content: pdfContent.base64
                   });
                   defs[i].resolve();

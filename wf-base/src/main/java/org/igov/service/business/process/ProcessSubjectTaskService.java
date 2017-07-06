@@ -22,6 +22,7 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.igov.io.GeneralConfig;
+import org.igov.io.db.kv.statical.IBytesDataStorage;
 import org.igov.io.db.kv.temp.IBytesDataInmemoryStorage;
 import org.igov.io.db.kv.temp.exception.RecordInmemoryException;
 import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
@@ -52,6 +53,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -97,6 +99,10 @@ public class ProcessSubjectTaskService {
 
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
+    
+    @Autowired
+    @Qualifier("durableBytesDataStorage")
+    private IBytesDataStorage oBytesDataStaticStorage;
 
     public List<String> getProcessSubjectLoginsWithoutTask(String snID_Process_Activiti, String sFilterLoginRole) throws RecordInmemoryException, org.json.simple.parser.ParseException {
 
@@ -104,9 +110,9 @@ public class ProcessSubjectTaskService {
         LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
         LOG.info("sFilterLoginRole {}", sFilterLoginRole);
 
-        String sKeyRedis = (String) oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
+        String sKeyMongo = (String) oRuntimeService.getVariable(snID_Process_Activiti, "sID_File_StorateTemp");
 
-        byte[] aByteTaskBody = oBytesDataInmemoryStorage.getBytes(sKeyRedis);
+        byte[] aByteTaskBody = oBytesDataStaticStorage.getData(sKeyMongo);
 
         List<Task> aTaskActive = oTaskService.createTaskQuery()
                 .processInstanceId(snID_Process_Activiti).active().list();
@@ -118,7 +124,7 @@ public class ProcessSubjectTaskService {
         }
 
         JSONParser parser = new JSONParser();
-
+        
         List<String> aResultLogins = new ArrayList<>();
 
         if (aByteTaskBody != null) {
@@ -158,7 +164,7 @@ public class ProcessSubjectTaskService {
                 String sActionType = (String) ((JSONObject) oJsonProcessSubjectTask).get("sActionType");
                 JSONArray aJsonProcessSubject = (JSONArray) ((JSONObject) oJsonProcessSubjectTask).get("aProcessSubject");
                 //LOG.info("oJsonProcessSubjectTask in oJsonProcessSubjectTask: {}", oJsonProcessSubjectTask);
-                String sKey = oBytesDataInmemoryStorage.putBytes(((JSONObject) oJsonProcessSubjectTask).toJSONString().getBytes());
+                String sKey = oBytesDataStaticStorage.saveData(((JSONObject) oJsonProcessSubjectTask).toJSONString().getBytes());
                 LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
                 if (sActionType.equals("set")) {
@@ -331,26 +337,57 @@ public class ProcessSubjectTaskService {
                 "sID_File_StorateTemp", sKey);
 
     }
-
+    
+    public Long startProcess(String snID_Process_Activiti_Root) throws org.json.simple.parser.ParseException{
+        
+        LOG.info("startProcess started...");
+        Map<String, Object> mParamTask = new HashMap<>();
+        ProcessSubjectTask oProcessSubjectTask =  
+                oProcessSubjectTaskDao.findByExpected("snID_Process_Activiti_Root", snID_Process_Activiti_Root);
+        LOG.info("ProcessSubjectTask with id {} was founded {}", oProcessSubjectTask.getId());
+        byte[] aByteTaskBody = oBytesDataStaticStorage.getData(oProcessSubjectTask.getsKey());
+        
+        LOG.info("aByteTaskBody size {}", aByteTaskBody.length);
+        
+        JSONParser parser = new JSONParser();
+        
+        mParamTask.put("sID_File_StorateTemp", oProcessSubjectTask.getsKey());
+        mParamTask.put("sID_Order_Document", oGeneralConfig.
+                getOrderId_ByProcess((String) (((JSONObject) parser.parse(new String(aByteTaskBody))).get("snID_Process_Activiti_Root"))));
+        
+        LOG.info("mParamTask {}", mParamTask);
+        ProcessInstance oProcessInstance = oRuntimeService
+                .startProcessInstanceByKey((String) (((JSONObject) parser.parse(new String(aByteTaskBody)))).get("sID_BP"), mParamTask);
+        
+        LOG.info("Process {} was started", oProcessInstance.getId());
+        
+        List<ProcessSubject> aProcessSubject = 
+                oProcessSubjectDao.findAllBy("nID_ProcessSubjectTask", oProcessSubjectTask.getId());
+        
+        LOG.info("aProcessSubject size is {}", aProcessSubject.size());
+        
+        for(ProcessSubject oProcessSubject : aProcessSubject){
+            oProcessSubject.setSnID_Process_Activiti(oProcessInstance.getId());
+        }
+        
+        oProcessSubjectDao.saveOrUpdate(aProcessSubject);
+        
+        return oProcessSubjectTask.getId();
+    }
+    
     private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey) throws Exception {
 
         ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
         oProcessSubjectTask.setSnID_Process_Activiti_Root((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
         oProcessSubjectTask.setsBody((String) ((JSONObject) oJsonProcessSubjectTask).get("sBody"));
         oProcessSubjectTask.setsHead((String) ((JSONObject) oJsonProcessSubjectTask).get("sHead"));
+        oProcessSubjectTask.setsKey(sKey);
         oProcessSubjectTaskDao.saveOrUpdate(oProcessSubjectTask);
         LOG.info("oProcessSubjectTask in synctProcessSubjectTask: {}", oProcessSubjectTask);
-        Map<String, Object> mParamTask = new HashMap<>();
-
-        mParamTask.put("sID_File_StorateTemp", sKey);
-        mParamTask.put("sID_Order_Document", oGeneralConfig.
-                getOrderId_ByProcess((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
-
-        ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject) oJsonProcessSubjectTask).get("sID_BP"), mParamTask);
-
+        
         List<ProcessSubject> aProcessSubject
                 = setProcessSubjectList(aJsonProcessSubject,
-                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, oProcessInstance.getId(), null, 0L);
+                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, (String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), null, 0L);
         LOG.info("aProcessSubject in synctProcessSubjectTask: {}", aProcessSubject);
     }
 
@@ -580,28 +617,40 @@ public class ProcessSubjectTaskService {
         try{
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
 
-            for(ProcessSubject oProcessSubject : aProcessSubject){
+            for (ProcessSubject oProcessSubject : aProcessSubject) {
                 oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
                 ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
                         getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
-                for(ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()){
+                for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
                     processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
                 }
                 oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
             }
+            LOG.info("aProcessSubject.size {}", aProcessSubject.size());
+            if (!aProcessSubject.isEmpty()) {
+                Long nID_ProcessSubjectTask = aProcessSubject.get(0).getnID_ProcessSubjectTask();
+                LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
+                if (nID_ProcessSubjectTask != null) {
+                    ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(nID_ProcessSubjectTask);
 
-
-            LOG.info("aProcessSubject.size {}", aProcessSubject.size()); 
-            LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
-            ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getnID_ProcessSubjectTask());
-
-            oProcessSubjectTask.setaProcessSubject(aProcessSubject);
-            aListOfProcessSubjectTask.add(oProcessSubjectTask);
+                    oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                    aListOfProcessSubjectTask.add(oProcessSubjectTask);
+                }
+            }
         }
         catch (Exception ex){
             LOG.error("Error in getProcessSubjectTask {}", ex);
         } 
-        /*if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
+        /*
+        if (!aProcessSubject.isEmpty()) {
+                LOG.info("aProcessSubject.get(0).getnID_ProcessSubjectTask {}", aProcessSubject.get(0).getnID_ProcessSubjectTask());
+                ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(aProcessSubject.get(0).getSnID_Task_Activiti());
+
+                oProcessSubjectTask.setaProcessSubject(aProcessSubject);
+                aListOfProcessSubjectTask.add(oProcessSubjectTask);
+            }
+        ------------------------------------------------------------------------
+        if (nDeepProcessSubjectTask == null || nDeepProcessSubjectTask == 1) {
         	
             aListOfProcessSubjectTask.addAll(oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti));
         	
@@ -619,7 +668,7 @@ public class ProcessSubjectTaskService {
             }        
             LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
         }*/
-
+        LOG.info("aListOfProcessSubjectTask={}", aListOfProcessSubjectTask);
         return aListOfProcessSubjectTask;
     }
 

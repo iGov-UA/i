@@ -297,4 +297,18 @@ public class DocumentCommonController {
         return oDocumentStepService.getDocumentStep(snID_Process_Activiti, sKey_Step);
     }
 
+    @ApiOperation(value = "/getLoginsFromField", notes = "Получение логинов по полю")
+    @RequestMapping(value = "/getLoginsFromField", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getLoginsFromField(
+            @ApiParam(value = "snID_Process_Activiti", required = true)
+            @RequestParam(value = "snID_Process_Activiti", required = true) String snID_Process_Activiti,
+            @ApiParam(value = "sID_Field", required = true)
+            @RequestParam(value = "sID_Field", required = true) String sID_Field,
+            @ApiParam(value = "sID_FieldTable", required = false)
+            @RequestParam(value = "sID_FieldTable", required = false) String sID_FieldTable
+    ) throws Exception {
+        return oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field, sID_FieldTable);
+    }
+
 }

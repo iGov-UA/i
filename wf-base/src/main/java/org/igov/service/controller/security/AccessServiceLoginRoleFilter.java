@@ -62,6 +62,6 @@ public class AccessServiceLoginRoleFilter extends GenericFilterBean {
             httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN, String.format(
                     "User [%s] has no [%s] access to service [%s] with parameters [%s]", userName, method, service,
                     parameters));
-        }
+        }          
     }
 }

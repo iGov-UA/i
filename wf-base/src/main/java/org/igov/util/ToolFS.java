@@ -69,14 +69,12 @@ public class ToolFS {
     }
 
     public static Path oFullPathFile(String sSubPath, String... asSubPathFile) throws IOException, URISyntaxException {
-        LOG.info("sSubPath: " + sSubPath + " asSubPathFile: " + asSubPathFile);
         Path osSubPathFile = Paths.get(sSubPath, asSubPathFile);
         return oFullPathFile(osSubPathFile);
     }
 
     public static Path oFullPathFile(Path osSubPathFile) throws IOException, URISyntaxException {
         String sSubPathFile = osSubPathFile.toString();
-        LOG.info("sSubPathFile: " + sSubPathFile);
         URL oURL = Tool.class.getClassLoader().getResource(sSubPathFile);
         if (oURL == null) {
             LOG.error("\"oURL == null sSubPathFile: " + sSubPathFile);

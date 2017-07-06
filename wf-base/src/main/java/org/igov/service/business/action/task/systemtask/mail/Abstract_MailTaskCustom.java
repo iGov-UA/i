@@ -660,7 +660,6 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         String sHead = getStringFromFieldExpression(subject, oExecution);
         LOG.info("sHead {}", sHead);
         String sBodySource = getStringFromFieldExpression(text, oExecution);
-        LOG.info("sBodySource {}", sBodySource);
         String sBody = replaceTags(sBodySource, oExecution);
         LOG.info("sBody {}", sBody);
         Multipart oMultiparts = new MimeMultipart();

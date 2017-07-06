@@ -18,19 +18,28 @@ angular.module('dashboardJsApp')
         modalScope.contentData = contentData;
         var signModal = openModal(modalScope, modalClass);
         signModal.result.then(function (signedContent) {
-          resultCallback(signedContent);
+          resultCallback({
+            id: contentData.id,
+            content: contentData.content,
+            certificate: signedContent.certBase64,
+            sign: signedContent.sign
+          });
         }, function () {
           dismissCallback();
         });
       }).catch(errorCallback);
     }
 
-    function signContents(contentDataOrLoader, resultCallback, dismissCallback, errorCallback, modalClass) {
+    function signContentsArray(contentDataOrLoader, resultCallback, dismissCallback, errorCallback, modalClass) {
       $q.when(contentDataOrLoader).then(function (contentData) {
         var modalScope = $rootScope.$new();
         modalScope.contentData = contentData;
         var signModal = openModal(modalScope, modalClass);
         signModal.result.then(function (signedContent) {
+          angular.forEach(signedContent, function (el, key) {
+            el.id = contentData[key].id;
+            el.content = contentData[key].content;
+          });
 
           resultCallback(signedContent);
 
@@ -79,7 +88,7 @@ angular.module('dashboardJsApp')
        *  }
        */
       signContent: signContent,
-      signContents: signContents,
+      signContentsArray: signContentsArray,
       signManuallySelectedFile: signManuallySelectedFile
     }
   });
@@ -172,15 +181,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
 
         return signService.signCMS($scope.contentData, !$scope.contentData.base64encoded)
           .then(function (signResult) {
-            var sign = signResult.sign;
-            var certBase64 = signResult.certificate;
-
-            $modalInstance.close({
-              id: $scope.contentData.id,
-              content: $scope.contentData.content,
-              certificate: certBase64,
-              sign: sign
-            });
+            $modalInstance.close(signResult);
           });
       }).catch(catchLastError);
     } else {

@@ -108,6 +108,7 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
     private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED = "DocumentClosed";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -1983,7 +1984,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         SimpleDateFormat oDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         Map<String, String> m = new HashMap();
         //String result;
-        String snID_Task = nID_Task.toString();
+        String snID_Task = nID_Task.toString();        
         try {
             //result = oTaskService.createTaskQuery().taskId(snID_Task).singleResult().getName();
             //m.put("sDateEnd", oActionTaskService.getsIDUserTaskByTaskId(nID_Task));
@@ -2607,12 +2608,12 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
                 
             }
-            
             LOG.info("time: " + sFilterStatus + ": " + (System.currentTimeMillis() - startTime));
+            
             if ("taskCreateTime".equalsIgnoreCase(sOrderBy)) {
-                ((TaskQuery) taskQuery).orderByTaskCreateTime();
+                ((TaskInfoQuery) taskQuery).orderByTaskCreateTime();
             } else {
-                ((TaskQuery) taskQuery).orderByTaskId();
+                ((TaskInfoQuery) taskQuery).orderByTaskId();
             }
 
             if (!StringUtils.isEmpty(soaFilterField)) {
@@ -2629,7 +2630,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 }
                 LOG.info("Converted filter fields to the map mFilterField={}", mFilterField);
             }
-            ((TaskQuery) taskQuery).asc();
+            ((TaskInfoQuery) taskQuery).asc();
         }
 
         return taskQuery;
@@ -2845,12 +2846,39 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         
         LOG.info("getTasksByLoginAndFilterStatus started");
         TaskDataResultVO oTaskDataResultVO = new TaskDataResultVO();
+        List<TaskInfo> aoAllTasks = new LinkedList<>();
         long nTotalNumber;
-        
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
-                
-            List<Task> aAllTasks = new LinkedList<>();
-                
+        //вернуть последнюю юзертаску закрытого процесса-документа
+        if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
+            //все закрытые документы, которые относятся к заданому логину
+            HistoricTaskInstanceQuery oTaskQuery = oHistoryService.createHistoricTaskInstanceQuery()
+                    .taskInvolvedUser(sLogin)
+                    .processFinished()
+                    .processDefinitionKeyLikeIgnoreCase("_doc_%");
+            LOG.info("Document closed count={}", oTaskQuery.count());
+
+            List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
+            List<HistoricTaskInstance> aoTaskList = oTaskQuery.list();
+            //если таски емеют одинаковый ProcessInstanceId, сверяем дату закрытия
+            //таска которая была закрыта раньше добавляется в список для удаления
+            Collections.sort(aoTaskList, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
+                int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
+                if (nResult == 0) {
+                    nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
+                    if (nResult == 0 || nResult == 1) {
+                        aoTaskToRemove.add(oTask2);
+                    } else {
+                        aoTaskToRemove.add(oTask1);
+                    }
+                }
+                return nResult;
+            });
+            aoTaskList.removeAll(aoTaskToRemove);
+            LOG.info("Document closed after filtering count={}", aoTaskList.size());
+            aoAllTasks.addAll(aoTaskList);
+            
+        } else {
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao.findAllBy("sLogin", sLogin);
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
                 DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
@@ -2874,10 +2902,12 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
 
                     List<Task> aTaskOfDocumentStepSubjectRight = oTaskService.createTaskQuery()
-                                    .processInstanceId(snID_Process_Activiti).active().list();
+                            .processInstanceId(snID_Process_Activiti)
+                            .active()
+                            .list();
 
-                    aAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
-                    
+                    aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
+
                 } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT) 
                         && sDate == null && (bWrite == true || bWrite == false)) {
 
@@ -2886,9 +2916,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
 
                     List<Task> aTaskOfDocumentStepSubjectRight = oTaskService.createTaskQuery()
-                                .processInstanceId(snID_Process_Activiti).active().list();
+                            .processInstanceId(snID_Process_Activiti)
+                            .active()
+                            .list();
 
-                    aAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
+                    aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
 
                 } else  if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)
                         && (sDate != null || bWrite == null)) {
@@ -2898,46 +2930,49 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
 
                     List<Task> aTaskOfDocumentStepSubjectRight = oTaskService.createTaskQuery()
-                                .processInstanceId(snID_Process_Activiti).active().list();
+                            .processInstanceId(snID_Process_Activiti)
+                            .active()
+                            .list();
 
-                    aAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
+                    aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
             }
-            nTotalNumber = aAllTasks.size();
-            //Сортировка коллекции по дате создания таски, для реализации паджинации
-            Collections.sort(aAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
-            
-            SimpleDateFormat oFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-            
-            List<TaskDataVO> aTaskDataVO = new ArrayList<>();
-            //паджинация: из отсортированной коллекции берем nSize тасок,
-            //брать начинаем из nStart
-            for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
-                
-                if (nIndex < nTotalNumber) {
-                    
-                    Task oTask = aAllTasks.get(nIndex);  
-                    
-                    TaskDataVO oTaskDataVO = new TaskDataVO();
-                    oTaskDataVO.setsProcessDefinitionId(oTask.getProcessDefinitionId());
-                    oTaskDataVO.setsCreateTime(oFormatter.format(oTask.getCreateTime()));
-                    oTaskDataVO.setsName(oTask.getName());
-                    oTaskDataVO.setsId(oTask.getId());
-                    oTaskDataVO.setsProcessInstanceId(oTask.getProcessInstanceId());
+        }
+        nTotalNumber = aoAllTasks.size();
+        //Сортировка коллекции по дате создания таски, для реализации паджинации
+        Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
 
-                    aTaskDataVO.add(oTaskDataVO);
-                } else {
-                    break;
-                }
+        SimpleDateFormat oFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+        List<TaskDataVO> aTaskDataVO = new ArrayList<>();
+        //паджинация: из отсортированной коллекции берем nSize тасок,
+        //брать начинаем из nStart
+        for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
+
+            if (nIndex < nTotalNumber) {
+
+                TaskInfo oTaskInfo = aoAllTasks.get(nIndex);  
+
+                TaskDataVO oTaskDataVO = new TaskDataVO();
+                oTaskDataVO.setsProcessDefinitionId(oTaskInfo.getProcessDefinitionId());
+                oTaskDataVO.setsCreateTime(oFormatter.format(oTaskInfo.getCreateTime()));
+                oTaskDataVO.setsName(oTaskInfo.getName());
+                oTaskDataVO.setsId(oTaskInfo.getId());
+                oTaskDataVO.setsProcessInstanceId(oTaskInfo.getProcessInstanceId());
+
+                aTaskDataVO.add(oTaskDataVO);
+            } else {
+                break;
             }
-            
-            oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);
-            oTaskDataResultVO.setnSize(nSize);
-            oTaskDataResultVO.setnStart(nStart);
-            oTaskDataResultVO.setsOrder("asc");
-            oTaskDataResultVO.setsSort("id");
-            oTaskDataResultVO.setnTotal(nTotalNumber);
-        
+        }
+
+        oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);
+        oTaskDataResultVO.setnSize(nSize);
+        oTaskDataResultVO.setnStart(nStart);
+        oTaskDataResultVO.setsOrder("asc");
+        oTaskDataResultVO.setsSort("id");
+        oTaskDataResultVO.setnTotal(nTotalNumber);
+
         return oTaskDataResultVO;
     }
 }
