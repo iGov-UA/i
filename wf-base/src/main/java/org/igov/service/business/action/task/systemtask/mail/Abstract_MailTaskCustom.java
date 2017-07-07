@@ -716,7 +716,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
             throws Exception {
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
-        convertStartFormFieldValue(oExecution);
+        convertExecutionVariableValue(oExecution);
         Mail oMail = mail_BaseFromTask(oExecution);
         if (sAttachmentsForSend != null && !"".equals(sAttachmentsForSend.trim())) {
             sendAttachOldChema(oMail, oExecution, sAttachmentsForSend);
@@ -809,7 +809,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 mParam);
     }
 
-    protected void convertStartFormFieldValue(DelegateExecution oExecution) {
+    protected void convertExecutionVariableValue(DelegateExecution oExecution) {
         try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={} " + mExecutionVaraibles);
