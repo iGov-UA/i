@@ -817,8 +817,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 // выбираем все переменные типа Date, приводим к нужному формату 
                 mExecutionVaraibles.forEach((sKey, oValue) -> {
                     if (oValue != null) {
-                        String soValue = oValue.toString();
                         String sClassName = oValue.getClass().getName();
+                        LOG.info("mExecutionVaraibles info sKey={}, sClassName={}", sKey, sClassName);
                         if (sClassName.endsWith("Date")) {
                             SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", new Locale("uk", "UA"));
                             String sDate = sdf.format((Date) oValue);
