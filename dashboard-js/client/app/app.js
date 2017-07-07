@@ -36,11 +36,11 @@ angular.module('dashboardJsApp', [
 }).run(function(amMoment, $rootScope, Modal) {
   amMoment.changeLocale('uk');
   $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-    var message;
+    /*var message;
     if (error.status == 403)
       message = error.data.message;
     Modal.inform.error()(message || 'Виникла помилка. Зверніться будь ласка у технічну підтримку.');
-    console.warn('Виникла помилка. Інформація для технічної підтримки: ', arguments);
+    console.warn('Виникла помилка. Інформація для технічної підтримки: ', arguments);*/
   })
 }).config([
   'datetimepickerProvider',
