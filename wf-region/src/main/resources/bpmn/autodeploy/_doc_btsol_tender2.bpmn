@@ -750,6 +750,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <extensionElements>
         <activiti:in source="sGroupAddressee" target="sLoginAuthor"></activiti:in>
         <activiti:in source="sTitleDoc" target="sDocAnswer"></activiti:in>
+        <activiti:in source="sNumberCard" target="sNumberCard"></activiti:in>
       </extensionElements>
     </callActivity>
     <sequenceFlow id="flow64" sourceRef="callactivity1" targetRef="scripttask17"></sequenceFlow>
@@ -1044,13 +1045,6 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <boundaryEvent id="escalationTimer1" name="Timer" attachedToRef="usertask2_yellow" cancelActivity="true">
-      <timerEventDefinition>
-        <timeDuration>PT1M</timeDuration>
-      </timerEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow119" sourceRef="escalationTimer1" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow120" sourceRef="servicetask3" targetRef="usertask2_yellow"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1065,9 +1059,6 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2_yellow" id="BPMNShape_usertask2_yellow">
         <omgdc:Bounds height="84.0" width="131.0" x="654.0" y="670.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="755.0" y="720.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="84.0" width="130.0" x="655.0" y="1307.0"></omgdc:Bounds>
@@ -1313,14 +1304,6 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
       <bpmndi:BPMNEdge bpmnElement="flow118" id="BPMNEdge_flow118">
         <omgdi:waypoint x="719.0" y="985.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="1030.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow119" id="BPMNEdge_flow119">
-        <omgdi:waypoint x="785.0" y="735.0"></omgdi:waypoint>
-        <omgdi:waypoint x="900.0" y="711.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow120" id="BPMNEdge_flow120">
-        <omgdi:waypoint x="900.0" y="711.0"></omgdi:waypoint>
-        <omgdi:waypoint x="785.0" y="712.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
