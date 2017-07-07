@@ -390,7 +390,7 @@ public class ActionTaskService {
                         Mail oMail = context.getBean(Mail.class);
                         oMail._To(oSubjectContact.getsValue())
                         ._Head("Ви скасували Ваш візит")
-                        ._Body("Ви скасували Ваш візит. Деталі: " + FlowSlot.getFlow().getName() + " " + oFlowSlot.getsDate());
+                        ._Body("Ви скасували Ваш візит. Деталі: " + oFlowSlot.getFlow().getName() + " " + oFlowSlot.getsDate())
                         ._oMultiparts(new MimeMultipart());
                         oMail.send();
                     }
