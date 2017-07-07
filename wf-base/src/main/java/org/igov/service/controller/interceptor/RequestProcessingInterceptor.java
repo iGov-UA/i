@@ -140,9 +140,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         LOG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         LOG_BIG.info("(getMethod()={}, getRequestURL()={})", oRequest.getMethod().trim(), oRequest.getRequestURL().toString());
         oRequest.setAttribute("startTime", startTime);
+        checkTaskAvailability(oRequest);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
-        checkTaskAvailability(oRequest);
         processSubjectStatusHistoryWritingPreHandle(oRequest);
         return true;
     }
