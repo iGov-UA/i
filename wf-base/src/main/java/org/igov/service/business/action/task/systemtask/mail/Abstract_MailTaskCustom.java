@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -715,7 +716,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
             throws Exception {
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
-        convertStartFormFieldValue(oExecution);
+        convertExecutionVariableValue(oExecution);
         Mail oMail = mail_BaseFromTask(oExecution);
         if (sAttachmentsForSend != null && !"".equals(sAttachmentsForSend.trim())) {
             sendAttachOldChema(oMail, oExecution, sAttachmentsForSend);
@@ -808,7 +809,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 mParam);
     }
 
-    protected void convertStartFormFieldValue(DelegateExecution oExecution) {
+    protected void convertExecutionVariableValue(DelegateExecution oExecution) {
         try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
             LOG.info("mExecutionVaraibles={} " + mExecutionVaraibles);
@@ -817,18 +818,20 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 // выбираем все переменные типа Date, приводим к нужному формату 
                 mExecutionVaraibles.forEach((sKey, oValue) -> {
                     if (oValue != null) {
-                        String sClassName = oValue.getClass().getName();
-                        LOG.info("mExecutionVaraibles info sKey={}, sClassName={}", sKey, sClassName);
-                        if (sClassName.endsWith("Date")) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", new Locale("uk", "UA"));
-                            String sDate = sdf.format((Date) oValue);
-                            mOnlyDateVariables.put(sKey, sDate);
+                        String soValue = oValue.toString();
+                        if (isValidDate(soValue, "dd/MM/yyyy")) {
+                            DateTime oDateTime = DateTime.parse(soValue,
+                                    DateTimeFormat.forPattern("dd/MM/yyyy"));
+                            LOG.info("Parsing success. Begin formating");
+                            String sDateFromated = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
+                            mOnlyDateVariables.put(sKey, sDateFromated);
                         }
                     }
                 });
                 LOG.info("mOnlyDateVariables={} " + mOnlyDateVariables);
                 //сетим отформатированные переменные в екзекьюшен
                 oExecution.setVariables(mOnlyDateVariables);
+                mExecutionVaraibles = oExecution.getVariables();
                 LOG.info("mExecutionVaraibles aftet formating={} " + mExecutionVaraibles);
             }
         } catch (Exception oException) {
@@ -932,7 +935,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             LOG.info("Error during old file mail processing ", ex);
         }
     }
-    
+
     protected void sendSms(DelegateExecution oExecution, Expression sPhone_SMS, Expression sText_SMS) throws Exception {
         try {
             //System.setProperty("mail.mime.address.strict", "false");
@@ -954,4 +957,21 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
     }
 
+    //Проверка является ли стринга датой, согласно заданного патерна
+    private boolean isValidDate(String sDateIn, String sDatePattern) {
+        if (sDateIn == null) {
+            return false;
+        }
+        SimpleDateFormat dateFormat = new SimpleDateFormat(sDatePattern);
+
+        if (sDateIn.trim().length() != dateFormat.toPattern().length()) {
+            return false;
+        }
+        try {
+            dateFormat.parse(sDateIn.trim());
+        } catch (ParseException ParseException) {
+            return false;
+        }
+        return true;
+    }
 }
