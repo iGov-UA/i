@@ -822,6 +822,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                         if (isValidDate(soValue, "dd/MM/yyyy")) {
                             DateTime oDateTime = DateTime.parse(soValue,
                                     DateTimeFormat.forPattern("dd/MM/yyyy"));
+                            LOG.info("Parsing success. Begin formating");
                             String sDateFromated = oDateTime.toString("dd MMMM yyyy", new Locale("uk", "UA"));
                             mOnlyDateVariables.put(sKey, sDateFromated);
                         }
@@ -830,6 +831,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                 LOG.info("mOnlyDateVariables={} " + mOnlyDateVariables);
                 //сетим отформатированные переменные в екзекьюшен
                 oExecution.setVariables(mOnlyDateVariables);
+                mExecutionVaraibles = oExecution.getVariables();
                 LOG.info("mExecutionVaraibles aftet formating={} " + mExecutionVaraibles);
             }
         } catch (Exception oException) {
