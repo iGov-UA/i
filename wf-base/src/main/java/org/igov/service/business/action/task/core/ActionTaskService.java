@@ -68,13 +68,19 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.mail.internet.MimeMultipart;
+import org.apache.commons.mail.EmailException;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
+import org.igov.model.core.GenericEntityDao;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.flow.FlowSlot;
+import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
+import org.igov.model.subject.SubjectOrganDepartment;
 
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -83,6 +89,9 @@ import org.igov.service.business.subject.SubjectRightBPVO;
 import static org.igov.util.Tool.sO;
 
 import org.json.simple.JSONValue;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 
 //import org.igov.service.business.access.BankIDConfig;
 /**
@@ -144,8 +153,13 @@ public class ActionTaskService {
     private SubjectRightBPService oSubjectRightBPService;    
     @Autowired
     private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
-    
-
+    @Autowired
+    @Qualifier("subjectOrganDepartmentDao")
+    private GenericEntityDao<Long, SubjectOrganDepartment> subjectOrganDepartmentDao;
+    @Autowired
+    private ApplicationContext context;
+    @Autowired
+    private SubjectContactDao oSubjectContactDao; 
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
         String res = StringUtils.defaultString(sEnumName);
@@ -368,8 +382,24 @@ public class ActionTaskService {
                 for(FlowSlot oFlowSlot : aFlowSlot){
                     LOG.info("oFlowSlot name: {}", oFlowSlot.getFlow().getName());
                     LOG.info("oFlowSlot date: {}", oFlowSlot.getsDate());
+                    SubjectOrganDepartment oSubjectOrganDepartment = subjectOrganDepartmentDao
+                            .findByIdExpected(oFlowSlot.getFlow().getnID_SubjectOrganDepartment());
+                    SubjectContact oSubjectContact = oSubjectContactDao.findByIdExpected(flowSlotTicket.getnID_Subject());
+                    LOG.info("oSubjectContact email {}", oSubjectContact.getsValue());
+                    try{
+                        Mail oMail = context.getBean(Mail.class);
+                        oMail._To(oSubjectContact.getsValue())
+                        ._Head("Ви скасували Ваш візит")
+                        ._Body("Ви скасували Ваш візит. Деталі: " + oFlowSlot.getFlow().getName() + " " + oFlowSlot.getsDate())
+                        ._oMultiparts(new MimeMultipart());
+                        oMail.send();
+                    }
+                    catch(EmailException | BeansException ex){
+                        LOG.info("Error during mail sending: {}", ex.getMessage());
+                    }
+                    break;
                 }
-                
+
                 LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
                 if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                     throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
