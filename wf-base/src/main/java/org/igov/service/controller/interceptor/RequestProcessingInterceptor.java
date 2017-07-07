@@ -143,7 +143,6 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
-        checkTaskAvailability(oRequest);
         processSubjectStatusHistoryWritingPreHandle(oRequest);
         return true;
     }
@@ -154,6 +153,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             ModelAndView modelAndView) throws Exception {
         
         processSubjectStatusHistoryWritingPostHandle(oRequest);
+        checkTaskAvailability(oRequest);
     }
 
     @Override
