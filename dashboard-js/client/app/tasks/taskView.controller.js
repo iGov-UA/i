@@ -1096,10 +1096,15 @@
         };
 
         $scope.upload = function (files, propertyID) {
-          $rootScope.switchProcessUploadingState();
-          tasks.uploadAttachToTaskForm(files, propertyID, $scope.taskData.oProcess.nID, $scope.taskId, $scope.taskForm).then(function (result) {
+          var content = {
+            fieldId: propertyID,
+            files: files
+          };
 
-            $rootScope.switchProcessUploadingState();
+          $rootScope.switchProcessUploadingState();
+          tasks.uploadAttachToTaskForm(content, $scope.taskForm, $scope.taskData.oProcess.nID, $scope.taskId)
+            .then(function (result) {
+              $rootScope.switchProcessUploadingState();
           });
         };
 

@@ -537,7 +537,7 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      uploadAttachToTaskForm: function (files, propertyID, processId, taskId, taskForm) {
+      uploadAttachToTaskForm: function (content, taskForm, processId, taskId) {
         var deferred = $q.defer();
 
         var isNewAttachmentService = false;
@@ -545,7 +545,7 @@ angular.module('dashboardJsApp')
         for (var i = 0; i < taskForm.length; i++) {
           var item = taskForm[i];
           var splitNameForOptions = item.name.split(';');
-          if (item.type !== 'table' && item.id === propertyID && splitNameForOptions.length === 3) {
+          if (item.type !== 'table' && item.id === content.fieldId && splitNameForOptions.length === 3) {
             if (splitNameForOptions[2].indexOf('bNew=true') !== -1) {
               isNewAttachmentService = true;
               taskID = processId;
@@ -558,7 +558,7 @@ angular.module('dashboardJsApp')
                 for (var f = 0; f < row.aField.length; f++) {
                   var field = row.aField[f];
                   var fieldOptions = field.name.split(';');
-                  if (field.id === propertyID && fieldOptions.length === 3) {
+                  if (field.id === content.fieldId && fieldOptions.length === 3) {
                     if (fieldOptions[2].indexOf('bNew=true') !== -1) {
                       isNewAttachmentService = true;
                       taskID = processId;
@@ -570,9 +570,9 @@ angular.module('dashboardJsApp')
             }
           }
         }
-        this.upload(files, taskID, propertyID, isNewAttachmentService).then(function (result) {
+        this.upload(content.files, taskID, content.fieldId, isNewAttachmentService).then(function (result) {
           var filterResult = taskForm.filter(function (property) {
-            return property.id === propertyID;
+            return property.id === content.fieldId;
           });
 
           // if filterResult === 0 => check file in table
@@ -582,7 +582,7 @@ angular.module('dashboardJsApp')
                 for (var c = 0; c < taskForm[j].aRow.length; c++) {
                   var row = taskForm[j].aRow[c];
                   for (var i = 0; i < row.aField.length; i++) {
-                    if (row.aField[i].id === propertyID) {
+                    if (row.aField[i].id === content.fieldId) {
                       filterResult.push(row.aField[i]);
                       break
                     }
@@ -611,6 +611,12 @@ angular.module('dashboardJsApp')
         });
 
         return deferred.promise;
+      },
+
+      multiUploudAttachToTaskForm: function () {
+        var defered = $q.defer;
+
+        return defered.promise;
       },
 
       setDocumentImages: function (properties) {
