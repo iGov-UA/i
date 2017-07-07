@@ -613,10 +613,49 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
-      multiUploudAttachToTaskForm: function () {
-        var defered = $q.defer;
+      uploadAttachmentsToTaskForm: function (aContents, taskForm, processId, taskId) {
+        var deferred = $q.defer();
+        var self = this;
 
-        return defered.promise;
+        var uploadPromises = [],
+          contents = [],
+          documentPromises = [],
+          docDefer = [],
+          counter = 0;
+
+        angular.forEach(aContents, function (oContent, key) {
+          docDefer[key] = $q.defer();
+          contents[key] = oContent;
+          documentPromises[key] = docDefer[key].promise;
+        });
+
+        var uplaadingResult = [];
+
+        var asyncUpload = function (i, docs, defs) {
+          if (i < docs.length) {
+
+            return self.uploadAttachToTaskForm(docs[i], taskForm, processId, taskId).then(function (resp) {
+              uplaadingResult.push(resp);
+              defs[i].resolve(resp);
+              return asyncUpload(i + 1, docs, defs);
+            }, function (err) {
+              uplaadingResult.push({error : err});
+              defs[i].reject(err);
+              return asyncUpload(i + 1, docs, defs);
+            });
+
+          }
+        };
+
+        var first = $q.all(uploadPromises).then(function () {
+          return asyncUpload(counter, contents, docDefer);
+        });
+
+        $q.all([first, documentPromises]).then(function () {
+          deferred.resolve(uplaadingResult);
+        });
+
+        return deferred.promise;
       },
 
       setDocumentImages: function (properties) {

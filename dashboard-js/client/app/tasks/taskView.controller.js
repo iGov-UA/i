@@ -976,26 +976,38 @@
 
                 signDialog.signContentsArray(result,
                   function (signedContents) {
+                    $rootScope.switchProcessUploadingState();
+
                     var aSignedContents = signedContents;
 
-                    /*
+                    var contentsForUploadAsAttach = [];
                     angular.forEach(aSignedContents, function (content) {
                       var aFiles = [];
                       aFiles.push(generationService.getSignedFile(content.sign, content.id));
                       content.aFiles = aFiles;
-                      $scope.upload(aFiles, content.id);
+                      contentsForUploadAsAttach.push({
+                        fieldId: content.id,
+                        files: aFiles
+                      })
                     });
-                    */
 
-                    tasks.setDocumentImages({
-                      signedContents: aSignedContents,
-                      sKey_Step: sKeyStepValue,
-                      taskId: $scope.selectedTask.id
-                    }).then(function (resp) {
-                      submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
-                    }, function (error) {
-                      Modal.inform.error()(angular.toJson(error));
-                    })
+                    tasks.uploadAttachmentsToTaskForm(contentsForUploadAsAttach, $scope.taskForm, $scope.taskData.oProcess.nID, $scope.taskId)
+                      .then(function () {
+                        $rootScope.switchProcessUploadingState();
+
+                        tasks.setDocumentImages({
+                          signedContents: aSignedContents,
+                          sKey_Step: sKeyStepValue,
+                          taskId: $scope.selectedTask.id
+                        }).then(function (resp) {
+                          submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+                        }, function (error) {
+                          Modal.inform.error()(angular.toJson(error));
+                        })
+
+                      }, function (error) {
+                        Modal.inform.error()(angular.toJson(error));
+                      });
 
                   }, function () {
                     console.log('Sign Dismissed');
