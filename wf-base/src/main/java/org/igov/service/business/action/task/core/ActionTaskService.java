@@ -378,7 +378,7 @@ public class ActionTaskService {
             if (nID_FlowSlotTicket != null) {
                 FlowSlotTicket flowSlotTicket = oFlowSlotTicketDao.findByIdExpected(nID_FlowSlotTicket);
                 List<FlowSlot> aFlowSlot = flowSlotTicket.getaFlowSlot();
-                
+                DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
                 for(FlowSlot oFlowSlot : aFlowSlot){
                     LOG.info("oFlowSlot name: {}", oFlowSlot.getFlow().getName());
                     LOG.info("oFlowSlot date: {}", oFlowSlot.getsDate());
@@ -391,7 +391,7 @@ public class ActionTaskService {
                         Mail oMail = context.getBean(Mail.class);
                         oMail._To((String)historicVariableInstance.getValue())
                         ._Head("Ви скасували Ваш візит")
-                        ._Body("Ви скасували Ваш візит. Деталі: " + oFlowSlot.getFlow().getName() + " " + oFlowSlot.getsDate())
+                        ._Body("Ви скасували Ваш візит. Деталі: " + oFlowSlot.getFlow().getName() + " " + dtf.print(oFlowSlot.getsDate()))
                         ._oMultiparts(new MimeMultipart());
                         oMail.send();
                     }
