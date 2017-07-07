@@ -6,12 +6,11 @@
     
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
-        <script>
+        <script type="text/javascript" language="javascript">
         //When the page has loaded.
         $(document).ready(function(){
             //Perform Ajax request.
-            
-		if (confirm('Ви впевнені, що бажаєте скасувати Ваш візит?')) {
+            if (confirm('Ви впевнені, що бажаєте скасувати Ваш візит?')) {
 			$.ajax({
 				url: '[sURL]',
 				type: 'GET',
@@ -19,10 +18,13 @@
                                     xhr.setRequestHeader('Authorization', 'Basic a2VybWl0Omtlcm1pdA==');
                                 }
 			});
+                        $("#p0").append('Шановний клієнт!');
+                        $("#p1").append('Ваша заявка <a href="https://igov.org.ua/search?sID_Order=[sID_Order]" style="color:#449DCD;font:15px Arial, sans-serif">[sID_Order]</a> відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.');
 		}
 		else{
-                    window.top.close();	
-                    window.close();	
+                    $("#p0").append('<b>Шановний клієнт!</b>');
+                    $("#p1").append('Ви відмінили скасування заявки <a href="https://igov.org.ua/search?sID_Order=[sID_Order]" style="color:#449DCD;font:15px Arial, sans-serif">[sID_Order]</a>.');
+                    
                 }
 		});
     </script>
@@ -121,16 +123,14 @@
 
                                             <tr>					
     <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
-        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
-           <b>Шановний клієнт!</b><br><br></p>
+        <p id="p0" style="font:24px Arial, sans-serif!important;&#10; overflow: hidden;&#10;    color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+           <br><br></p>
 		   
-		   <p style="color:#797979;font:16px Arial, sans-serif">
-		   Ваша заявка <a href="https://igov.org.ua/search?sID_Order=[sID_Order]" style="color:#449DCD;font:15px Arial, sans-serif">[sID_Order]</a> відмінена. 
-                                                                Ви можете подати нову на Порталі державних послуг iGov.org.ua.
-                        </p>
-                                                                
-
+		   <p id="p1" style="color:#797979;font:16px Arial, sans-serif">
+		   
+                    </p>
         
+                            
     </td>
 </tr>
 
