@@ -811,48 +811,26 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
     protected void convertStartFormFieldValue(DelegateExecution oExecution) {
         try {
             Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-            LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-
-            FormData oFormData = oExecution.getEngineServices()
-                    .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
-            //переменные, которые будем сетить обратно в екзекьюшен
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();
-            LOG.info("oFormData size={}", oFormData.getFormProperties().size());
-
-            if (oFormData != null) {
-                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
-                aoFormProperties.forEach(oFormProperty -> {
-                    String sFormPropertyTypeName = oFormProperty.getType().getName();
-                    String sFormPropertyId = oFormProperty.getId();
-                    String sFormPropertyValue = oFormProperty.getValue();
-
-                    if (sFormPropertyTypeName.equals("date")) {
-                        LOG.info("Date catched. id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                        Date oDate = (Date) mExecutionVaraibles.get(sFormPropertyId);
-                        LOG.info("Date got from execution and casted. {}", oDate);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        String sDate = sdf.format(oDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
-
-                    } else if (sFormPropertyTypeName.equals("queueData")) {
-                        LOG.info("queueData catched.id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                        Map<String, Object> mQueueData = QueueDataFormType
-                                .parseQueueData((String) mExecutionVaraibles.get(sFormPropertyId));
-                        LOG.info("QueueData got from execution {}", mQueueData);
-                        String sQueueDate = (String) mQueueData.get("queueData");
-                        LOG.info("Got Date from queueData {}", sQueueDate);
-                        DateTime oDateTime = DateTime.parse(sQueueDate,
-                                DateTimeFormat.forPattern("yyyy-MM-dd kk:mm:ss.SS"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        LOG.info("sDate formated={}", sDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
+            LOG.info("mExecutionVaraibles={} " + mExecutionVaraibles);
+            if (!mExecutionVaraibles.isEmpty()) {
+                Map<String, Object> mOnlyDateVariables = new HashMap<>();
+                // выбираем все переменные типа Date, приводим к нужному формату 
+                mExecutionVaraibles.forEach((sKey, oValue) -> {
+                    if (oValue != null) {
+                        String sClassName = oValue.getClass().getName();
+                        LOG.info("mExecutionVaraibles info sKey={}, sClassName={}", sKey, sClassName);
+                        if (sClassName.endsWith("Date")) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy", new Locale("uk", "UA"));
+                            String sDate = sdf.format((Date) oValue);
+                            mOnlyDateVariables.put(sKey, sDate);
+                        }
                     }
                 });
+                LOG.info("mOnlyDateVariables={} " + mOnlyDateVariables);
+                //сетим отформатированные переменные в екзекьюшен
+                oExecution.setVariables(mOnlyDateVariables);
+                LOG.info("mExecutionVaraibles aftet formating={} " + mExecutionVaraibles);
             }
-            LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
-            oExecution.setVariables(mOnlyDateVariables);
         } catch (Exception oException) {
             LOG.error("Error: date not formated {}", oException.getMessage());
         }

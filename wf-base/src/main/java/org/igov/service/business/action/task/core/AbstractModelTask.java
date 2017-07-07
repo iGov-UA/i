@@ -754,6 +754,7 @@ public abstract class AbstractModelTask {
                             String sDateFromated = oDateTime.toString("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
                             LOG.info("sDate formated={}", sDateFromated);
                             oExecution.setVariable("date_of_visit", sDate);
+                            oExecution.setVariable("formated_date_of_visit", sDateFromated);
                             LOG.info("(date_of_visit={})", sDate);
                         }
                     } catch (Exception oException) {
