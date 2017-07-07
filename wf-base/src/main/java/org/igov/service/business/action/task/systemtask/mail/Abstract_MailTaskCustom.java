@@ -826,8 +826,10 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
                         }
                     }
                 });
+                LOG.info("mOnlyDateVariables={} " + mOnlyDateVariables);
                 //сетим отформатированные переменные в екзекьюшен
                 oExecution.setVariables(mOnlyDateVariables);
+                LOG.info("mExecutionVaraibles aftet formating={} " + mExecutionVaraibles);
             }
         } catch (Exception oException) {
             LOG.error("Error: date not formated {}", oException.getMessage());
