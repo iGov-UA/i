@@ -3,6 +3,30 @@
     <meta content="width=600" name="viewport" />
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
     <title> </title>
+    
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+    <script>
+        //When the page has loaded.
+        $(document).ready(function(){
+            //Perform Ajax request.
+            
+		if (confirm('Ви впевнені, що бажаєте скасувати Ваш візит?')) {
+			$.ajax({
+				url: '[sURL]',
+				type: 'GET',
+                                beforeSend: function (xhr) {
+                                    xhr.setRequestHeader('Authorization', 'Basic a2VybWl0Omtlcm1pdA==');
+                                }
+			});
+		}
+		else{
+                    window.top.close();	
+                    window.close();	
+                }
+		});
+    </script>
+    
     <style type="text/css">
 
         body {
@@ -38,28 +62,8 @@
 
 <body style= "background: #C2C2C2; -webkit-font-smoothing:antialiased; width:100% !important;&#10; -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    
 
-        <script>
-        //When the page has loaded.
-        $(document).ready(function(){
-            //Perform Ajax request.
-            
-		if (confirm('Ви впевнені, що бажаєте скасувати Ваш візит?')) {
-			$.ajax({
-				url: '[sURL]',
-				type: 'GET',
-                                beforeSend: function (xhr) {
-                                    xhr.setRequestHeader('Authorization', 'Basic a2VybWl0Omtlcm1pdA==');
-                                }
-			});
-		}
-		else{
-                    window.top.close();	
-                    window.close();	
-                }
-		});
-        </script>
 
 <!-- internal padding -->
 <!-- ПРЕДТЕКСТ -->
