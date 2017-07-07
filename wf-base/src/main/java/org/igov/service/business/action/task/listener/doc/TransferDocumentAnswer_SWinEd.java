@@ -35,6 +35,7 @@ public class TransferDocumentAnswer_SWinEd implements TaskListener {
 
     @Override
     public void notify(DelegateTask delegateTask) {
+        LOG.info("TransferDocumentAnswer_SWinEd {}", delegateTask.getName());
         LOG.info("!!! delegateTask.getId(): " + delegateTask.getId());
         String sINN_Value = getStringFromFieldExpression(this.sINN, delegateTask.getExecution());
         String snCountYear_Value = getStringFromFieldExpression(this.snCountYear, delegateTask.getExecution());
