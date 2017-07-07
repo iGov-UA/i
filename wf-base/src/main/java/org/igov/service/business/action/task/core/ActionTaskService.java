@@ -382,13 +382,14 @@ public class ActionTaskService {
                 for(FlowSlot oFlowSlot : aFlowSlot){
                     LOG.info("oFlowSlot name: {}", oFlowSlot.getFlow().getName());
                     LOG.info("oFlowSlot date: {}", oFlowSlot.getsDate());
-                    SubjectOrganDepartment oSubjectOrganDepartment = subjectOrganDepartmentDao
-                            .findByIdExpected(oFlowSlot.getFlow().getnID_SubjectOrganDepartment());
-                    SubjectContact oSubjectContact = oSubjectContactDao.findByIdExpected(flowSlotTicket.getnID_Subject());
-                    LOG.info("oSubjectContact email {}", oSubjectContact.getsValue());
+                    HistoricVariableInstance historicVariableInstance = oHistoryService
+                            .createHistoricVariableInstanceQuery()
+                            .processInstanceId(nID_Process)
+                            .variableName("email").singleResult();
+                    LOG.info("email {}", historicVariableInstance.getValue());
                     try{
                         Mail oMail = context.getBean(Mail.class);
-                        oMail._To(oSubjectContact.getsValue())
+                        oMail._To((String)historicVariableInstance.getValue())
                         ._Head("Ви скасували Ваш візит")
                         ._Body("Ви скасували Ваш візит. Деталі: " + oFlowSlot.getFlow().getName() + " " + oFlowSlot.getsDate())
                         ._oMultiparts(new MimeMultipart());
