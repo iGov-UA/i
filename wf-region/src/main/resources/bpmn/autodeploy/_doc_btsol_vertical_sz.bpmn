@@ -127,6 +127,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable_Agreement', 'step_2',true,'sLogin_isExecute')
 
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
+
 
 
 // Присвоение названия докумнту
@@ -831,7 +834,8 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="719.0" y="519.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow138" id="BPMNEdge_flow138">
-        <omgdi:waypoint x="1142.0" y="680.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1162.0" y="700.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1309.0" y="700.0"></omgdi:waypoint>
         <omgdi:waypoint x="1310.0" y="630.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow140" id="BPMNEdge_flow140">
