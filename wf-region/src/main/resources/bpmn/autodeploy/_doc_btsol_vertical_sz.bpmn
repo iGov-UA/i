@@ -469,9 +469,26 @@ var sKeyGroup = execution.getVariable('sLoginAuthor')
 var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_4', sKeyGroup)</script>
     </scriptTask>
     <sequenceFlow id="flow161" sourceRef="scripttask34" targetRef="scripttask4"></sequenceFlow>
-    <scriptTask id="scripttask35" name="снести подписи 3,2" scriptFormat="javascript" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask35" name="снести подписи 3,2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_2', sKeyGroup)
+
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_3', sKeyGroup)
+
+</script>
+    </scriptTask>
     <sequenceFlow id="flow162" sourceRef="scripttask35" targetRef="scripttask19"></sequenceFlow>
-    <scriptTask id="scripttask36" name="снести подпись 3" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask36" name="снести подпись 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_3', sKeyGroup)
+
+</script>
+    </scriptTask>
     <sequenceFlow id="flow163" sourceRef="scripttask36" targetRef="scripttask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_vertical_sz">
