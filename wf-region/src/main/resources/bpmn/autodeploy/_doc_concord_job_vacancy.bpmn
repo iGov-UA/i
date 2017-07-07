@@ -33,7 +33,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Відділ" type="enum" required="true">
           <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
@@ -44,7 +43,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubordination" name="Кому підпорядковується (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubordination" name="Кому підпорядковується" type="string"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long"></activiti:formProperty>
@@ -124,7 +124,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="кандидати на вакансію ${sVacancy}">
@@ -138,7 +137,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Відділ" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
@@ -149,7 +147,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubordination" name="Кому підпорядковується (тут будет селект из дерева)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubordination" name="Кому підпорядковується" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long" writable="false"></activiti:formProperty>
@@ -226,7 +225,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sEmailOfHead" name="имейл заказывающего поиск кандидата" type="string" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
