@@ -21,9 +21,7 @@
         <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning1&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
-        
-         <activiti:formProperty id="sWarning1" name=" ; ;labelType=info" type="label" default="Дані про суми виплачених доходів та утриманих податків доступні з 1 кварталу 2014 року до 1 кварталу 2017 року включно. Відомості за 2 квартал 2017 року будуть доступні з 18 серпня 2017 року. Просимо враховувати це при виборі періоду, за який бажаєте отримати інформацію"></activiti:formProperty>
-  
+        <activiti:formProperty id="sWarning1" name=" ; ;labelType=info" type="label" default="Дані про суми виплачених доходів та утриманих податків доступні з 1 кварталу 2014 року до 1 кварталу 2017 року включно. Відомості за 2 квартал 2017 року будуть доступні з 18 серпня 2017 року. Просимо враховувати це при виборі періоду, за який бажаєте отримати інформацію"></activiti:formProperty>
         <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
@@ -31,7 +29,6 @@
           <activiti:value id="4" name="4"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asStartYear" name="Рік;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G02" type="enum" required="true">
-          
           <activiti:value id="2015" name="2015"></activiti:value>
           <activiti:value id="2016" name="2016"></activiti:value>
           <activiti:value id="2017" name="2017"></activiti:value>
@@ -43,12 +40,10 @@
           <activiti:value id="4" name="4"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asEndYear" name="Рік;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G02" type="enum" required="true">
-          
           <activiti:value id="2015" name="2015"></activiti:value>
           <activiti:value id="2016" name="2016"></activiti:value>
           <activiti:value id="2017" name="2017"></activiti:value>
         </activiti:formProperty>
-       
         <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field_SWinEd=C_REG" type="string" default="04"></activiti:formProperty>
         <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field_SWinEd=C_RAJ" type="string" default="63"></activiti:formProperty>
         <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field_SWinEd=TIN" type="string"></activiti:formProperty>
@@ -70,7 +65,6 @@
         <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом."></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
@@ -90,7 +84,6 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -230,7 +223,7 @@ src=(+src + +1)
 execution.setVariable('sCounter', src)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 1}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -282,7 +275,7 @@ execution.setVariable('sCounter', src)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 1}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
       <extensionElements>
@@ -303,6 +296,9 @@ execution.setVariable('sCounter', src)</script>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
+          </activiti:field>
+          <activiti:field name="sFile_XML_SWinEd_Filter">
+            <activiti:expression><![CDATA[" "]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
