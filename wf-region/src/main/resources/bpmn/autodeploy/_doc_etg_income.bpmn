@@ -17,7 +17,7 @@
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ETG_Head_ComDir"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="3"></activiti:formProperty>
         <activiti:formProperty id="sLogin_AutorResolution" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
@@ -46,8 +46,8 @@
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty><activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
@@ -78,7 +78,6 @@
         <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
