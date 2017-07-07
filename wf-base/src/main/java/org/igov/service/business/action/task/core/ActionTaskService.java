@@ -74,6 +74,7 @@ import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
 import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.model.flow.FlowSlot;
 
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -338,6 +339,7 @@ public class ActionTaskService {
     }
 
     public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+        LOG.info("cancelTasksInternal started...");
         String nID_Process = getOriginalProcessInstanceId(nID_Order);
         getTasksByProcessInstanceId(nID_Process);
         LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
@@ -360,6 +362,14 @@ public class ActionTaskService {
                 LOG.info("QueueDataFormType throw an error: " + ex);
             }
             if (nID_FlowSlotTicket != null) {
+                FlowSlotTicket flowSlotTicket = oFlowSlotTicketDao.findByIdExpected(nID_FlowSlotTicket);
+                List<FlowSlot> aFlowSlot = flowSlotTicket.getaFlowSlot();
+                
+                for(FlowSlot oFlowSlot : aFlowSlot){
+                    LOG.info("oFlowSlot name: {}", oFlowSlot.getFlow().getName());
+                    LOG.info("oFlowSlot date: {}", oFlowSlot.getsDate());
+                }
+                
                 LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
                 if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                     throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");
