@@ -953,8 +953,8 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         }
     }
 
+    //Проверка является ли стринга датой, согласно заданного патерна
     private boolean isValidDate(String sDateIn, String sDatePattern) {
-
         if (sDateIn == null) {
             return false;
         }
@@ -963,14 +963,11 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         if (sDateIn.trim().length() != dateFormat.toPattern().length()) {
             return false;
         }
-
         try {
-            //parse the inDate parameter
             dateFormat.parse(sDateIn.trim());
         } catch (ParseException ParseException) {
             return false;
         }
         return true;
     }
-
 }
