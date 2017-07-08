@@ -238,28 +238,6 @@
         function searchSelectSubject() {
           angular.forEach(taskForm, function (item) {
             var isExecutorSelect = item.name ? item.name.split(';')[2] : null;
-
-            var isNameRelation = (/(sName_Relation_)+(.*)/g).exec(item.id);
-            console.log(isNameRelation);
-
-            if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_Relation') > -1 && isNameRelation){
-              if (isExecutorSelect){
-                var props1 = isExecutorSelect.split(','), role1;
-                item.type = 'select';
-                item.selectType = 'autocomplete';
-                for (var i = 0; i < props1.length; i++) {
-                  if (props1[i].indexOf('sID_Relation') > -1) {
-                    role1 = props1[i];
-                    break;
-                  }
-                }
-                var roleValue = role1 ? role1.split('=')[1] : null;
-                if (roleValue && roleValue === 'sID_Relation') item.autocompleteName = 'ProductList';
-                item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
-
-              }
-            }
-
             if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
               var match;
               if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
