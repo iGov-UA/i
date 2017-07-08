@@ -1,15 +1,7 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
-import java.util.Collection;
-import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
-
 import org.activiti.engine.delegate.DelegateExecution;
-import org.igov.io.mail.Mail;
-import org.igov.service.business.action.task.core.ActionTaskService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom.LOG;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,106 +11,14 @@ import org.springframework.stereotype.Component;
 @Component("MailTaskWithoutAttachment")
 public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
-
-    @Autowired
-    ActionTaskService oActionTaskService;
-    
-    private static int i = 0;
-    
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
-        String sCurrentTaskActivityId = oExecution.getCurrentActivityId();
-        LOG.info("sCurrentTaskActivityId={}", sCurrentTaskActivityId);
-
-        Collection<FlowElement> aoFlowElement = oExecution.getEngineServices()
-                .getRepositoryService()
-                .getBpmnModel(oExecution.getProcessDefinitionId()).getMainProcess()
-                .getFlowElements();
-        LOG.info("aoFlowElement.size={}", aoFlowElement.size());
-        UserTask oUserTask = null;
-        for (FlowElement oFlowElement : aoFlowElement) {   
-            i++;
-            LOG.info("{} oFlowElement id={}, name={}", i, oFlowElement.getId(), oFlowElement.getName());
-            /*if (oFlowElement.getId().equals(sCurrentTaskActivityId)){
-                break;
-            }
-            if (oFlowElement instanceof UserTask) {
-                oUserTask = ((UserTask) oFlowElement);
-            }*/
-
-        };
-        //LOG.info("oUserTask.id={}", oUserTask.getId());
-        /*try {
-            Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-            LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-           
-            FormData oFormData = oExecution.getEngineServices()
-                    .getFormService().getStartFormData(oExecution.getProcessDefinitionId());
-            //переменные, которые будем сетить обратно в екзекьюшен
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();
-            LOG.info("oFormData size={}", oFormData.getFormProperties().size());
-
-            if (oFormData != null) {
-                List<FormProperty> aoFormProperties = oFormData.getFormProperties();
-                aoFormProperties.forEach(oFormProperty -> {
-                    String sFormPropertyTypeName = oFormProperty.getType().getName();
-                    String sFormPropertyId = oFormProperty.getId();
-                    String sFormPropertyValue = oFormProperty.getValue();
-
-                    if (sFormPropertyTypeName.equals("date")) {
-                        LOG.info("Date catched. id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                        Date oDate = (Date) mExecutionVaraibles.get(sFormPropertyId);
-                        LOG.info("Date got from execution and casted. {}", oDate);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        String sDate = sdf.format(oDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
-
-                    } else if (sFormPropertyTypeName.equals("queueData")) {
-                        LOG.info("queueData catched.id={}, value={}",
-                                sFormPropertyId, sFormPropertyValue);
-                        Map<String, Object> mQueueData = QueueDataFormType
-                                .parseQueueData((String) mExecutionVaraibles.get(sFormPropertyId));
-                        LOG.info("QueueData got from execution {}", mQueueData);
-                        String sQueueDate = (String) mQueueData.get("queueData");
-                        LOG.info("Got Date from queueData {}", sQueueDate);
-                        DateTime oDateTime = DateTime.parse(sQueueDate,
-                                DateTimeFormat.forPattern("yyyy-MM-dd kk:mm:ss.SS"));
-                        String sDate = oDateTime.toString("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        LOG.info("sDate formated={}", sDate);
-                        mOnlyDateVariables.put(sFormPropertyId, sDate);
-                    }
-                });
-            }
-            LOG.info("mOnlyDateVariables={}", mOnlyDateVariables);
-            oExecution.setVariables(mOnlyDateVariables);
-        } catch (Exception oException) {
-            LOG.error("Error: date not formated {}", oException.getMessage());
-        }
-        ------------------------------------------------------------------------
-    	Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-        LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-        if (!mExecutionVaraibles.isEmpty()) {
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();       
-            // выбираем все переменные типа Date, приводим к нужному формату 
-            mExecutionVaraibles.forEach((sKey, oValue) -> {
-                if (oValue != null) {
-                    String sClassName = oValue.getClass().getName();
-                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
-                    if (sClassName.endsWith("Date")) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk","UA"));
-                        String sDate = sdf.format((Date) oValue);
-                        mOnlyDateVariables.put(sKey, sDate);
-                    } else if (sClassName.contains("queueData")) {
-                        LOG.info("queueData found");
-                    }
-                }
-            });
-            //сетим отформатированные переменные в екзекьюшен
-            oExecution.setVariables(mOnlyDateVariables);
-        }*/
+        LOG.info("Process id is {} in MailTaskWithoutAttachment {}",
+                oExecution.getProcessInstanceId());
+        sendMail(oExecution, null);
+        LOG.info("MailTaskWithoutAttachment ok!");
+    }
+    /*private void reWriteCode(DelegateExecution oExecution) throws Exception { //отправка в тексте письма содержимого первого поля на форме типа файлХтмл
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);
@@ -126,20 +26,46 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         LOG.info("sBodyFromMongoResult: {}", sBodyFromMongoResult);
         if (sBodyFromMongoResult != null) {
             try {
-                oMail = sendToMailFromMongo(oExecution);
+                oMail = sendToMail_FileHtml(oExecution);
             } catch (Exception ex) {
                 LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         } else {
             try {
-                oMail = Mail_BaseFromTask(oExecution);
+                oMail = mail_BaseFromTask(oExecution);
             } catch (Exception ex) {
                 LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         }
+    }*/
+    /**
+     * Метод получения из монго текст письма
+     *
+     * @param sJsonHtml
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     * @throws RecordInmemoryException
+     * @throws ClassNotFoundException
+     * @throws CRCInvalidException
+     * @throws RecordNotFoundException
+     */
+    /*public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
+            ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+        String sBodyFromMongo = null;
+        JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
+        LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
+        try {
+            InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+                    sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
+                    .getInputStream();
 
-        sendMailOfTask(oMail, oExecution);
-        LOG.info("MailTaskWithoutAttachment ok!");
-    }
+            sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+        } catch (JSONException e) {
+            LOG.error("JSONException: {}", e.getMessage());
+            return null;
+        }
+        return sBodyFromMongo;
 
+    }*/
 }

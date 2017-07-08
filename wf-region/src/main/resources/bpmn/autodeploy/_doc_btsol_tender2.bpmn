@@ -750,6 +750,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <extensionElements>
         <activiti:in source="sGroupAddressee" target="sLoginAuthor"></activiti:in>
         <activiti:in source="sTitleDoc" target="sDocAnswer"></activiti:in>
+        <activiti:in source="sNumberCard" target="sNumberCard"></activiti:in>
       </extensionElements>
     </callActivity>
     <sequenceFlow id="flow64" sourceRef="callactivity1" targetRef="scripttask17"></sequenceFlow>
@@ -1019,6 +1020,31 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' || asActionDocUT4 == 'sEnumRemark'|| asActionDocUT4 == 'sEnumReply'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow118" sourceRef="scripttask11" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Эскалация. Документ не утвержден]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[У Вас не отработан документ]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Status zavis [sID_Order] .]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1108,6 +1134,9 @@ execution.setVariable('nCountAccept', nCountAccept)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway13" id="BPMNShape_exclusivegateway13">
         <omgdc:Bounds height="40.0" width="40.0" x="602.0" y="1504.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="900.0" y="684.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>

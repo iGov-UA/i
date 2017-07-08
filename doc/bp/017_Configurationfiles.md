@@ -42,7 +42,7 @@
 * 40;Повідомлення про проведення зборів, мітингів, маніфестацій і демонстрацій, спортивних, видовищних та інших масових заходів;100;2;;;;0;Сільська рада
 
 * 1038;40;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
-* ![17_1](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_1.JPG)
+* ![17_1](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/17_1.JPG)
 
 ### ServiceData
 * nID - идентификатор процесса. Всегда новый (смотрим максимальный в конце файла и добавляем +1) 
@@ -66,7 +66,7 @@
 * 1;1;2;2;NULL;1;{};https://null.igov.org.ua;true;1;true;Перейдя на этот сайт Вы сможете получить услугу;BankID,EDS,KK;0
 * 1032;788;467;467;NULL;4;{"processDefinitionId":"znes_bud_393:1:1"};;false;1;true;;BankID,EDS;0
 * 038;1471;467;467;NULL;4;{"processDefinitionId":"spend_meeting_404:1:1"};;false;1;true;;BankID,EDS;0
-* ![17_0](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_0.JPG)
+* ![17_0](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/17_0.JPG)
 
 ### ServiceOperator_SubjectOrgan
 ### ServiceTag
@@ -82,7 +82,7 @@
 **sID** - оставляем пустым  
 **sLabel** - имя чиновника или название органа, название органа должно начинаться с нижнего подчеркивания  
 **sLabelShort** - оставляем пустым 
-* ![17_2](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_2.JPG)
+* ![17_2](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/17_2.JPG)
 ***
 ### SubjectAccount
 **nID** - номер по порядку  ## 
@@ -91,7 +91,7 @@
 **nID_SubjectAccountType** - ставим всегда 1  
 **nID_Server** - ставим всегда 0
 **nID_Subject** - номер строки из файла Subject - связка с конкретным чиновником или органом 
-* ![17_3](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_3.JPG)
+* ![17_3](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/17_3.JPG)
 ***
 
 ### SubjectAccountType
@@ -122,7 +122,7 @@
 **nID_Region**  
 **nID_City**  
 **sID_UA**  
-* ![17_4](https://github.com/e-government-ua/i/blob/test/doc/bp/img/17_4.JPG)
+* ![17_4](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/img/17_4.JPG)
 ### SubjectOrganJoinAttribute
 ### SubjectOrganJoinTax
 
