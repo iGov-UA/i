@@ -188,7 +188,52 @@ angular.module('autocompleteService')
                 if(queryValue) {
                     queryParams.params.sFind = queryValue;
                 }
-            } else {
+            } else if(ps && ps.indexOf('sID_Relation') > -1) {
+                var param = ps.split(',');
+                angular.forEach(param, function (p) {
+                    if(p.indexOf('sID_Relation') > -1) {
+                        var role = p.split('=');
+                        queryParams.params[role[0]] = role[1];
+                    }
+
+                    angular.forEach($scope.taskForm, function (field, key) {
+                        if('aRow' in field && field.value) {
+                            angular.forEach(field.aRow, function (row, rkey) {
+                                angular.forEach(row.aField, function (f, fkey) {
+                                    if(p.split('=')[1] === f.id) {
+                                        setParams(f, key, rkey, fkey);
+                                    }
+                                })
+                            })
+                        }
+                        if(p.split('=')[1] === field.id) {
+                            setParams(field, key);
+                        }
+                    })
+                });
+                function setParams(field, key, rowKey, fieldKey) {
+                    if (field.id.indexOf('sID_Relation') === 0) {
+                        queryParams.params['sID_Relation'] = field.value;
+                    } else if (field.id.indexOf('nID_Parent ') === 0) {
+                        queryParams.params['nID_Parent '] = field.value;
+                    } else {
+                        queryParams.params[field.id] = field.value;
+                    }
+                    if(key && rowKey && fieldKey) {
+                        $scope.$watch('taskForm['+ key +'].aRow['+ rowKey + '].aField[' + fieldKey + '].value', function (newValue) {
+                            $scope.refreshList(field.id, newValue);
+                        })
+                    } else {
+                        $scope.$watch('taskForm['+ key +'].value', function (newValue) {
+                            $scope.refreshList($scope.taskForm[key].id, newValue);
+                        })
+                    }
+                }
+                if(queryValue) {
+                    queryParams.params.sFindChild = queryValue;
+                }
+            }
+            else {
                 queryParams.params[queryKey] = queryValue
             }
             $scope.requestMoreItems([]).then(function (items) {
@@ -235,6 +280,15 @@ angular.module('autocompleteService')
                             if(isNaN(parseInt(nameWithPostFix[1])) && nameWithPostFix[1] === postfix) {
                                 obj[key].value = item[anotherPart];
                             }
+
+                            if(!isNaN(parseInt(postfix)) && selectPostfix === postfix || (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1])) {
+                                if (anotherPart == 'nID_Relation'){
+                                    obj[key].value = item[splited[0]].toString();
+                                }
+                                else {
+                                    obj[key].value = item[splited[0]];
+                                }
+                            }
                         }
                     });
                 }
@@ -250,8 +304,13 @@ angular.module('autocompleteService')
                         var splited = f.id.split(/_/),
                             postfix = splited.pop(),
                             anotherPart =  splited.join('_');
-                        if(isNaN(parseInt(postfix)) && selectPostfix === postfix || (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1])) {
-                            obj[key].value = item[splited[0]];
+                        if(!isNaN(parseInt(postfix)) && selectPostfix === postfix || (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1])) {
+                            if (anotherPart == 'nID_Relation'){
+                                obj[key].value = item[splited[0]].toString();
+                            }
+                            else {
+                                obj[key].value = item[splited[0]];
+                            }
                         }
                     }
                 })
