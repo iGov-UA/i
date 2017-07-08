@@ -50,6 +50,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentAgreement" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentAgreement&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLoginAuthor" name="логин автор" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_LastSubmited" name="посл подписант" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -244,11 +246,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <sequenceFlow id="flow121" sourceRef="scripttask22" targetRef="usertask3"></sequenceFlow>
     <scriptTask id="scripttask23" name="проверить кто подписал" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
-var sLogin_LastSubmited= execution.getVariable('sLogin_LastSubmited')</script>
+var sLogin_LastSubmited= execution.getVariable('sLogin_LastSubmited')
+execution.setVariable('sLogin_LastSubmited', sLogin_LastSubmited)
+
+</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway14" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow123" sourceRef="exclusivegateway14" targetRef="exclusivegateway3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLoginAuthor!=sLogin_LastSubmited}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLoginAuthor != 'sLogin_LastSubmited'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask4" name="автору на редактир">
       <extensionElements>
@@ -274,10 +279,11 @@ var sLogin_LastSubmited= execution.getVariable('sLogin_LastSubmited')</script>
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow124" sourceRef="exclusivegateway14" targetRef="scripttask25">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLoginAuthor==sLogin_LastSubmited}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLoginAuthor=='sLogin_LastSubmited'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask24" name="снести подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
@@ -342,6 +348,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow133" sourceRef="scripttask27" targetRef="usertask5"></sequenceFlow>
@@ -408,6 +415,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow146" sourceRef="scripttask30" targetRef="usertask6"></sequenceFlow>
@@ -436,7 +444,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow156" sourceRef="exclusivegateway23" targetRef="scripttask33">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sReturnDocument=='sAddressee'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow157" sourceRef="scripttask23" targetRef="exclusivegateway14"></sequenceFlow>
     <scriptTask id="scripttask32" name="снести подписи все" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKeyGroup = execution.getVariable('sLoginAuthor')
@@ -493,6 +500,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
 </script>
     </scriptTask>
     <sequenceFlow id="flow163" sourceRef="scripttask36" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow164" sourceRef="scripttask23" targetRef="exclusivegateway14"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_vertical_sz">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_vertical_sz" id="BPMNPlane__doc_btsol_vertical_sz">
@@ -905,10 +913,6 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1310.0" y="1026.0"></omgdi:waypoint>
         <omgdi:waypoint x="1252.0" y="845.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow157" id="BPMNEdge_flow157">
-        <omgdi:waypoint x="952.0" y="281.0"></omgdi:waypoint>
-        <omgdi:waypoint x="952.0" y="247.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow158" id="BPMNEdge_flow158">
         <omgdi:waypoint x="1310.0" y="1026.0"></omgdi:waypoint>
         <omgdi:waypoint x="1452.0" y="983.0"></omgdi:waypoint>
@@ -944,6 +948,10 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1157.0" y="426.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="427.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="464.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow164" id="BPMNEdge_flow164">
+        <omgdi:waypoint x="952.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="952.0" y="247.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
