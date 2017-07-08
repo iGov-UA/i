@@ -50,8 +50,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentAgreement" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentAgreement&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sLoginAuthor" name="логин автор" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_LastSubmited" name="посл подписант" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -326,7 +324,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sAgreement" name="На согласование"></activiti:value>
           <activiti:value id="sApproval" name="На утверждение"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDeleteCaption" name="Снести подписи?; ;sID_CheckboxTrue=sEnumYes" type="enum" required="true">
+        <activiti:formProperty id="sDeleteCaption" name="Снести подписи?; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
@@ -388,7 +386,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sApproval" name="На утверждение"></activiti:value>
           <activiti:value id="sAddressee" name="Направить адресату"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDeleteCaption" name="Снести подписи?; ;sID_CheckboxTrue=sEnumYes" type="enum" required="true">
+        <activiti:formProperty id="sDeleteCaption" name="Снести подписи?; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
