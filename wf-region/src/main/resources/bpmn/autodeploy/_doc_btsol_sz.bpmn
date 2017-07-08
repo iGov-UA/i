@@ -19,7 +19,7 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Рекомендация тендерного комитета" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocAnswer" name="Ответ на документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Номер документа, на который формируется ответ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberCard" name="Номер документа, на который ответ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст служебной записки" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT2" name="замечание согласующего" type="string" writable="false"></activiti:formProperty>
@@ -28,8 +28,11 @@
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_tender_isExecute.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_sz_isExecute.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ; bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
@@ -52,22 +55,12 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocAnswer" name="Ответ на документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Номер документа, на который формируется ответ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст служебной записки" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT3" name="отказ утверждающего" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Текст задания" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeReport" name="Тип отчета" type="enum" writable="false">
-          <activiti:value id="sEnumReport" name="отчет"></activiti:value>
-          <activiti:value id="sEnumDoc" name="документ"></activiti:value>
-          <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
@@ -88,14 +81,11 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocAnswer" name="Ответ на документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Номер документа, на который формируется ответ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст служебной записки" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
           <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
@@ -116,21 +106,11 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocAnswer" name="Ответ на документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Номер документа, на который формируется ответ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст служебной записки" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Текст задания" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeReport" name="Тип отчета" type="enum" writable="false">
-          <activiti:value id="sEnumReport" name="отчет"></activiti:value>
-          <activiti:value id="sEnumDoc" name="документ"></activiti:value>
-          <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
           <activiti:value id="sEnumRemark" name="Отказать"></activiti:value>
@@ -152,14 +132,11 @@
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocAnswer" name="Ответ на документ" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberCard" name="Номер документа, на который формируется ответ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextContrtact" name="Текст служебной записки" type="fileHTML" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" writable="false">
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
           <activiti:value id="sEnumRemark" name="Отказать"></activiti:value>
@@ -371,7 +348,7 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
         <omgdc:Bounds height="56.0" width="105.0" x="299.0" y="922.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
-        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="99.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="421.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
@@ -387,7 +364,7 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="377.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="421.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="421.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="473.0" y="328.0"></omgdi:waypoint>
@@ -492,7 +469,7 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
         <omgdi:waypoint x="260.0" y="950.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow106" id="BPMNEdge_flow106">
-        <omgdi:waypoint x="526.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="526.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="580.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
