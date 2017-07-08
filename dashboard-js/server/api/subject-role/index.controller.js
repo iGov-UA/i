@@ -22,5 +22,5 @@ module.exports.getSubjectGroups = function (req, res) {
     path: 'subject/group/getSubjectGroupsTree',
     query: updatedQuery
   };
-  activiti.get(options, callback);
+  activiti.get(options, callback)
 };
