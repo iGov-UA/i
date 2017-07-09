@@ -180,7 +180,7 @@
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -1010,14 +1010,10 @@ var nCountAcceptBT = aLogin_AcceptorBT.length;
 
 var aLogin_AcceptorCustomer = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable2_1', null);   
 var nCountAccepCustomer = aLogin_AcceptorCustomer.length;
-
-if((nCountAcceptBT &gt; 0 &amp;&amp; nCountAccepCustomer &gt; 0) || (nCountAcceptBT &gt; 0 &amp;&amp; nCountAccepCustomer == 0) || (nCountAcceptBT == 0 &amp;&amp; nCountAccepCustomer &gt; 0)){
+var bAccept = false;
+if(nCountAcceptBT &gt; 0 || nCountAccepCustomer &gt; 0){
 	var bAccept = true;
 }
-if(nCountAcceptBT == 0 &amp;&amp; nCountAccepCustomer == 0){
-	var bAccept = false;
-}
-
 execution.setVariable('bAccept', bAccept)</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
@@ -1042,22 +1038,22 @@ execution.setVariable('bAccept', bAccept)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Эскалация. Документ не утвержден]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[У Вас не отработан документ]]></activiti:expression>
+          <activiti:expression>У Вас не отработан документ</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Status zavis [sID_Order] .]]></activiti:expression>
+          <activiti:expression>Status zavis [sID_Order] .</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1262,11 +1258,17 @@ execution.setVariable('bAccept', bAccept)</script>
           <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::value{[sAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDate_441]};;Dep_number::value{[sNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[sCodeProduction]};;Gruppa::value{[sNameProduct]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
         </activiti:field>
         <activiti:field name="name_isExecute">
-          <activiti:expression><![CDATA[${sName_isExecute}]]></activiti:expression>
+          <activiti:expression>${sName_isExecute}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow125" sourceRef="servicetask4" targetRef="exclusivegateway11"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDate>2017-07-09T19:45:00</timeDate>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow126" sourceRef="boundarytimer1" targetRef="scripttask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1372,6 +1374,9 @@ execution.setVariable('bAccept', bAccept)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="55.0" width="105.0" x="201.0" y="1498.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="1010.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="476.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="508.0" y="127.0"></omgdi:waypoint>
@@ -1413,7 +1418,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <omgdi:waypoint x="572.0" y="357.0"></omgdi:waypoint>
         <omgdi:waypoint x="572.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="55.0" x="904.0" y="345.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="55.0" x="904.0" y="345.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -1421,14 +1426,14 @@ execution.setVariable('bAccept', bAccept)</script>
         <omgdi:waypoint x="572.0" y="869.0"></omgdi:waypoint>
         <omgdi:waypoint x="572.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="27.0" x="884.0" y="851.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="27.0" x="884.0" y="851.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="980.0" y="524.0"></omgdi:waypoint>
         <omgdi:waypoint x="980.0" y="577.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="982.0" y="530.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="982.0" y="530.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -1467,7 +1472,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <omgdi:waypoint x="960.0" y="1525.0"></omgdi:waypoint>
         <omgdi:waypoint x="903.0" y="1524.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="919.0" y="1534.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="919.0" y="1534.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
@@ -1550,7 +1555,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <omgdi:waypoint x="53.0" y="1605.0"></omgdi:waypoint>
         <omgdi:waypoint x="53.0" y="1553.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="321.0" y="1589.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="321.0" y="1589.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
@@ -1558,7 +1563,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <omgdi:waypoint x="510.0" y="1287.0"></omgdi:waypoint>
         <omgdi:waypoint x="106.0" y="1289.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="34.0" x="323.0" y="1267.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="30.0" x="323.0" y="1267.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
@@ -1573,6 +1578,12 @@ execution.setVariable('bAccept', bAccept)</script>
       <bpmndi:BPMNEdge bpmnElement="flow125" id="BPMNEdge_flow125">
         <omgdi:waypoint x="201.0" y="1525.0"></omgdi:waypoint>
         <omgdi:waypoint x="171.0" y="1525.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
+        <omgdi:waypoint x="1040.0" y="255.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="254.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1068.0" y="596.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1033.0" y="604.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
