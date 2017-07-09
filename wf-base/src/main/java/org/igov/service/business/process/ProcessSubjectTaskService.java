@@ -338,7 +338,7 @@ public class ProcessSubjectTaskService {
 
     }
 
-    public long startProcess(String snID_Process_Activiti_Root) throws org.json.simple.parser.ParseException {
+    public Long startProcess(String snID_Process_Activiti_Root) throws org.json.simple.parser.ParseException {
 
         LOG.info("startProcess started...");
         Map<String, Object> mParamTask = new HashMap<>();
@@ -375,7 +375,7 @@ public class ProcessSubjectTaskService {
             oProcessSubjectDao.saveOrUpdate(aProcessSubject);
         }
 
-        return 1;
+        return 1L;
     }
 
     private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey) throws Exception {
