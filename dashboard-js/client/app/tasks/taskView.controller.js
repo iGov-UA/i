@@ -28,6 +28,7 @@
           for (var i = 0; i < as.length; i++) {
             if (as[i].indexOf(part) >= 0) {
               return as[i];
+              return as[i];
             }
           }
           return null;
@@ -238,7 +239,7 @@
         function searchSelectSubject() {
           angular.forEach(taskForm, function (item) {
             var isExecutorSelect = item.name ? item.name.split(';')[2] : null;
-            if (item.type === 'select' || item.type === 'string' || isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) {
+            if (item.type === 'select' || item.type === 'string' || (isExecutorSelect && isExecutorSelect.indexOf('sID_SubjectRole=Executor') > -1) || (isExecutorSelect && isExecutorSelect.indexOf('sID_Relation') > -1)) {
               var match;
               if (((match = item.id ? item.id.match(/^s(Currency|ObjectCustoms|SubjectOrganJoinTax|ObjectEarthTarget|Country|ID_SubjectActionKVED|ID_ObjectPlace_UA)(_(\d+))?/) : false))
                 ||(item.type == 'select' && (match = item.id ? item.id.match(/^s(Country)(_(\d+))?/) : false)) || isExecutorSelect) {
@@ -262,6 +263,20 @@
                   var roleValue = role ? role.split('=')[1] : null;
                   if(roleValue && roleValue === 'Executor') item.autocompleteName = 'SubjectRole';
                   if(roleValue && roleValue === 'ExecutorDepart') item.autocompleteName = 'SubjectRoleDept';
+                  item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
+                } else if (!match && isExecutorSelect.indexOf('Relation') > -1) {
+                  var prodProps = isExecutorSelect.split(','), prodValue;
+                  item.type= 'select';
+                  item.selectType = 'autocomplete';
+                  for(var j = 0; j < prodProps.length; j++){
+                    if (prodProps[j].indexOf('sID_Relation') > -1){
+                      prodValue = prodProps[j];
+                      break;
+                    }
+                  }
+                  if ((prodValue ? prodValue.split('=')[1] : null)==='sID_Relation'){
+                    item.autocompleteName = 'ProductList';
+                  }
                   item.autocompleteData = autocompletesDataFactory[item.autocompleteName];
                 }
               }

@@ -96,6 +96,12 @@ angular.module('autocompleteService', [])
             titleProperty: 'sFind',
             orderBy: 'nID',
             apiUrl: './api/object-place'
-        }
+        },
+        ProductList: {
+            apiUrl: './api/product-list',
+            orderBy: 'nID',
+            prefixAssociatedField: 'sID_Relation',
+            titleProperty: 'sName',
+        },
     }
 });
