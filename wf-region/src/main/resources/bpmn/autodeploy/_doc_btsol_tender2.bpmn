@@ -17,7 +17,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" required="true">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
@@ -194,7 +194,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
@@ -361,7 +361,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
@@ -537,7 +537,7 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="nCountAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
@@ -1004,17 +1004,29 @@ var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</scri
     <sequenceFlow id="flow112" sourceRef="scripttask19" targetRef="servicetask2"></sequenceFlow>
     <scriptTask id="scripttask20" name="Пропуск согласующих" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId();
-var aLogin_Acceptor = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable2', null);   
-var nCountAccept = aLogin_Acceptor.length;
-execution.setVariable('nCountAccept', nCountAccept)</script>
+
+var aLogin_AcceptorBT = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable2', null);   
+var nCountAcceptBT = aLogin_AcceptorBT.length;
+
+var aLogin_AcceptorCustomer = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable2_1', null);   
+var nCountAccepCustomer = aLogin_AcceptorCustomer.length;
+
+if((nCountAcceptBT &gt; 0 &amp;&amp; nCountAccepCustomer &gt; 0) || (nCountAcceptBT &gt; 0 &amp;&amp; nCountAccepCustomer == 0) || (nCountAcceptBT == 0 &amp;&amp; nCountAccepCustomer &gt; 0)){
+	var bAccept = true;
+}
+if(nCountAcceptBT == 0 &amp;&amp; nCountAccepCustomer == 0){
+	var bAccept = false;
+}
+
+execution.setVariable('bAccept', bAccept)</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow113" sourceRef="scripttask20" targetRef="exclusivegateway12"></sequenceFlow>
     <sequenceFlow id="flow114" sourceRef="exclusivegateway12" targetRef="scripttask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept > 0}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bAccept == true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow115" sourceRef="exclusivegateway12" targetRef="scripttask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept <= 0}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bAccept == false}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow116" sourceRef="exclusivegateway13" targetRef="scripttask19">
