@@ -285,7 +285,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow125" sourceRef="scripttask25" targetRef="usertask4"></sequenceFlow>
     <sequenceFlow id="flow126" sourceRef="usertask4" targetRef="exclusivegateway15"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow127" sourceRef="exclusivegateway15" targetRef="scripttask19">
+    <sequenceFlow id="flow127" sourceRef="exclusivegateway15" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumNo'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow128" sourceRef="exclusivegateway15" targetRef="scripttask24">
@@ -320,7 +320,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sReturnDocument" name="Вернуть документ" type="enum" required="true">
+        <activiti:formProperty id="sReturnDocument" name="Вернуть документ" type="enum">
           <activiti:value id="sAgreement" name="На согласование"></activiti:value>
           <activiti:value id="sApproval" name="На утверждение"></activiti:value>
         </activiti:formProperty>
@@ -328,19 +328,15 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если снести подписи" type="markers" default="${markerService.loadFromFile('_doc_btsol_vertical_sz.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow133" sourceRef="scripttask27" targetRef="usertask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway17" name="Exclusive Gateway"></exclusiveGateway>
-    <exclusiveGateway id="exclusivegateway18" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow134" sourceRef="usertask5" targetRef="exclusivegateway17"></sequenceFlow>
-    <sequenceFlow id="flow135" sourceRef="exclusivegateway17" targetRef="exclusivegateway18">
+    <sequenceFlow id="flow135" sourceRef="exclusivegateway17" targetRef="usertask2_yellow">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumNo'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow136" sourceRef="exclusivegateway18" targetRef="scripttask19"></sequenceFlow>
-    <sequenceFlow id="flow137" sourceRef="exclusivegateway18" targetRef="scripttask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sReturnDocument=='sApproval'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow138" sourceRef="exclusivegateway17" targetRef="exclusivegateway19">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumYes'}]]></conditionExpression>
@@ -381,7 +377,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sReturnDocument" name="Вернуть документ" type="enum" required="true">
+        <activiti:formProperty id="sReturnDocument" name="Вернуть документ" type="enum">
           <activiti:value id="sAgreement" name="На согласование"></activiti:value>
           <activiti:value id="sApproval" name="На утверждение"></activiti:value>
           <activiti:value id="sAddressee" name="Направить адресату"></activiti:value>
@@ -390,24 +386,15 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="sEnumYes" name="да"></activiti:value>
           <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если снести подписи" type="markers" default="${markerService.loadFromFile('_doc_btsol_vertical_sz.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow146" sourceRef="scripttask30" targetRef="usertask6"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway21" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow147" sourceRef="usertask6" targetRef="exclusivegateway21"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway22" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow148" sourceRef="exclusivegateway21" targetRef="exclusivegateway22">
+    <sequenceFlow id="flow148" sourceRef="exclusivegateway21" targetRef="usertask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumNo'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow149" sourceRef="exclusivegateway22" targetRef="scripttask19">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sReturnDocument=='sAgreement'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow150" sourceRef="exclusivegateway22" targetRef="scripttask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sReturnDocument=='sApproval'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow151" sourceRef="exclusivegateway22" targetRef="scripttask22">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sReturnDocument=='sAddressee'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow152" sourceRef="exclusivegateway21" targetRef="exclusivegateway23">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumYes'}]]></conditionExpression>
@@ -571,9 +558,6 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       <bpmndi:BPMNShape bpmnElement="exclusivegateway17" id="BPMNShape_exclusivegateway17">
         <omgdc:Bounds height="40.0" width="40.0" x="1122.0" y="680.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway18" id="BPMNShape_exclusivegateway18">
-        <omgdc:Bounds height="40.0" width="40.0" x="1000.0" y="680.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway19" id="BPMNShape_exclusivegateway19">
         <omgdc:Bounds height="40.0" width="40.0" x="1290.0" y="590.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -588,9 +572,6 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway21" id="BPMNShape_exclusivegateway21">
         <omgdc:Bounds height="40.0" width="40.0" x="1112.0" y="1027.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway22" id="BPMNShape_exclusivegateway22">
-        <omgdc:Bounds height="40.0" width="40.0" x="1029.0" y="1027.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway23" id="BPMNShape_exclusivegateway23">
         <omgdc:Bounds height="40.0" width="40.0" x="1290.0" y="1026.0"></omgdc:Bounds>
@@ -757,9 +738,9 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
         <omgdi:waypoint x="1152.0" y="386.0"></omgdi:waypoint>
         <omgdi:waypoint x="1221.0" y="385.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1221.0" y="19.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="19.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1221.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="825.0" y="159.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="267.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow128" id="BPMNEdge_flow128">
         <omgdi:waypoint x="1112.0" y="386.0"></omgdi:waypoint>
@@ -791,18 +772,8 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow135" id="BPMNEdge_flow135">
         <omgdi:waypoint x="1122.0" y="700.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1040.0" y="700.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow136" id="BPMNEdge_flow136">
-        <omgdi:waypoint x="1020.0" y="680.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1019.0" y="43.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="43.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow137" id="BPMNEdge_flow137">
-        <omgdi:waypoint x="1000.0" y="700.0"></omgdi:waypoint>
-        <omgdi:waypoint x="962.0" y="699.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="519.0"></omgdi:waypoint>
+        <omgdi:waypoint x="974.0" y="700.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="644.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow138" id="BPMNEdge_flow138">
         <omgdi:waypoint x="1162.0" y="700.0"></omgdi:waypoint>
@@ -841,25 +812,9 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow148" id="BPMNEdge_flow148">
         <omgdi:waypoint x="1112.0" y="1047.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1069.0" y="1047.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow149" id="BPMNEdge_flow149">
-        <omgdi:waypoint x="1049.0" y="1027.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1049.0" y="44.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="44.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow150" id="BPMNEdge_flow150">
-        <omgdi:waypoint x="1049.0" y="1027.0"></omgdi:waypoint>
-        <omgdi:waypoint x="877.0" y="644.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="519.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow151" id="BPMNEdge_flow151">
-        <omgdi:waypoint x="1029.0" y="1047.0"></omgdi:waypoint>
-        <omgdi:waypoint x="577.0" y="1046.0"></omgdi:waypoint>
-        <omgdi:waypoint x="577.0" y="916.0"></omgdi:waypoint>
-        <omgdi:waypoint x="577.0" y="817.0"></omgdi:waypoint>
-        <omgdi:waypoint x="667.0" y="817.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="1046.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="950.0"></omgdi:waypoint>
+        <omgdi:waypoint x="655.0" y="951.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow152" id="BPMNEdge_flow152">
         <omgdi:waypoint x="1152.0" y="1047.0"></omgdi:waypoint>
