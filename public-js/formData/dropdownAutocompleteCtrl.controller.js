@@ -143,16 +143,13 @@ angular.module('autocompleteService')
             $scope.isRequestMoreItems = false;
             hasNextChunk = true;
             var ps = params ? params.split(';')[2] : null;
-            if(ps && (ps.indexOf('sID_SubjectRole') > -1 || ps.indexOf('sID_Relation') > -1)) {
+            if(ps && ps.indexOf('sID_SubjectRole') > -1) {
                 var param = ps.split(',');
                 angular.forEach(param, function (p) {
 
                     if(p.indexOf('sID_SubjectRole') > -1) {
                         var role = p.split('=');
                         queryParams.params[role[0]] = role[1];
-                    } else if(p.indexOf('sID_Relation') > -1) {
-                        var prodValue = p.split('=');
-                        queryParams.params[prodValue[0]] = prodValue[1];
                     }
 
                     angular.forEach($scope.taskForm, function (field, key) {
@@ -175,10 +172,6 @@ angular.module('autocompleteService')
                         queryParams.params['sID_Group_Activiti'] = field.value;
                     } else if (field.id.indexOf('nDeepLevel') === 0) {
                         queryParams.params['nDeepLevel'] = field.value;
-                    }else if (field.id.indexOf('sID_Relation') === 0) {
-                        queryParams.params['sID_Relation'] = field.value;
-                    } else if (field.id.indexOf('nID_Parent ') === 0) {
-                        queryParams.params['nID_Parent'] = field.value;
                     } else {
                         queryParams.params[field.id] = field.value;
                     }
@@ -192,10 +185,8 @@ angular.module('autocompleteService')
                         })
                     }
                 }
-                if(ps && (ps.indexOf('sID_SubjectRole') > -1) && queryValue) {
+                if(queryValue) {
                     queryParams.params.sFind = queryValue;
-                } else if (ps && (ps.indexOf('sID_Relation') > -1)) {
-                    queryParams.params.sFindChild = queryValue;
                 }
             } else {
                 queryParams.params[queryKey] = queryValue
@@ -259,10 +250,9 @@ angular.module('autocompleteService')
                         var splited = f.id.split(/_/),
                             postfix = splited.pop(),
                             anotherPart =  splited.join('_');
-                        if(!isNaN(parseInt(postfix)) && selectPostfix === postfix || (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1])) {
-                            obj[key].value = item[splited[0]].toString();
+                        if(isNaN(parseInt(postfix)) && selectPostfix === postfix || (anotherPart.indexOf(additionalPropertyName) === 0 && postfix === nameWithPostFix[nameWithPostFix.length - 1])) {
+                            obj[key].value = item[splited[0]];
                         }
-
                     }
                 })
             } else if (!$scope.taskForm && $scope.formData && !$scope.formData.params[additionalPropertyName]) {

@@ -32,13 +32,6 @@ angular.module('autocompleteService', [])
             valueProperty: 'sID_Group_Activiti',
             additionalValueProperty: 'sName'
         },
-        ProductList: {
-            apiUrl: './api/product-list',
-            orderBy: 'sID_Relation',
-            prefixAssociatedField: 'sID_Relation',
-            titleProperty: 'sName',
-            orderBy: 'nID'
-        },
         SubjectOrganJoinTax: {
             valueProperty: 'sName_UA',
             titleProperty: 'sName_UA',
