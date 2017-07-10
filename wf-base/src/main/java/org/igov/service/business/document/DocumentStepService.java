@@ -461,8 +461,25 @@ public class DocumentStepService {
         Boolean bRemoved = false;
 
         try {
-
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
+
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+                    .findAllBy("documentStep", oDocumentStep);
+
+            if (!aDocumentStepSubjectRight.isEmpty()) {
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
+                    LOG.info("aDocumentStepSubjectRight is {}", oDocumentStepSubjectRight);
+                    if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
+                        oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
+                        bRemoved = true;
+
+                        break;
+                    }
+                }
+            } else {
+                LOG.warn("Not found DocumentStepSubjectRight for oDocumentStep={}", oDocumentStep);
+            }
+            /*
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.aDocumentStepSubjectRight();
             LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
@@ -473,7 +490,7 @@ public class DocumentStepService {
                     //aDocumentStepSubjectRight_New.add(o);
                     break;
                 }
-            }
+            }*/
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_Step=" + sKey_Step + "" + ",sKey_GroupPostfix=" + sKey_Group + "" + ")");
