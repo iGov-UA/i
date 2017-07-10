@@ -1,7 +1,8 @@
 'use strict';
 
 var activiti = require('../../components/activiti'),
-    NodeCache = require("node-cache");
+    NodeCache = require("node-cache"),
+    config = require('../../config/environment');
 
 
 var cache = new NodeCache();
@@ -53,25 +54,44 @@ exports.getProcessSubject = function (req, res) {
 };
 
 exports.getBPs_ForReferent = function (req, res) {
-  cache.get(buildKey(req.query), function (error, value) {
-    if (value) {
-      res.send(value);
+  var isTestServer = config.bTest;
+
+  var callbackTestServer = function (error, statusCode, result) {
+    if (!error) {
+      res.statusCode = statusCode;
+      res.send(result);
     } else {
-      var callback = function (error, statusCode, result) {
-        if (!error) {
-          cache.set(buildKey(req.query), result, cacheTtl);
-          res.statusCode = statusCode;
-          res.send(result);
-        } else {
-          console.error(error);
-        }
-      };
-      activiti.get({
-        path: 'subject/group/getBPs_ForReferent',
-        query: req.query
-      }, callback)
+      console.error(error);
     }
-  })
+  };
+
+  var callback = function (error, statusCode, result) {
+    if (!error) {
+      cache.set(buildKey(req.query), result, cacheTtl);
+      res.statusCode = statusCode;
+      res.send(result);
+    } else {
+      console.error(error);
+    }
+  };
+
+  if(isTestServer) {
+    activiti.get({
+      path: 'subject/group/getBPs_ForReferent',
+      query: req.query
+    }, callbackTestServer)
+  } else {
+    cache.get(buildKey(req.query), function (error, value) {
+      if (value) {
+        res.send(value);
+      } else {
+        activiti.get({
+          path: 'subject/group/getBPs_ForReferent',
+          query: req.query
+        }, callback)
+      }
+    })
+  }
 };
 
 exports.setDocument = function (req, res) {
