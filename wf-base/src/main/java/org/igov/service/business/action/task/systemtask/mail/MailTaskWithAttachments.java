@@ -21,12 +21,10 @@ public class MailTaskWithAttachments extends Abstract_MailTaskCustom {
 
     protected void sendMailWithAttachments(DelegateExecution oExecution) throws Exception {
         String sAttachmentsForSend = getStringFromFieldExpression(this.saAttachmentsForSend, oExecution);
-        LOG.info("sendMailWithAttachments processDefinitionId {}", oExecution.getProcessDefinitionId());
-        LOG.info("sendMailWithAttachments ProcessBusinessKey {}", oExecution.getProcessBusinessKey());
-
-        /*if (sAttachmentsForSend == null || "".equals(sAttachmentsForSend.trim())) {
+        
+        if (oExecution.getProcessDefinitionId().split(":")[0].equals("subsidies_Ukr_result") && (sAttachmentsForSend == null || "".equals(sAttachmentsForSend.trim()))) {
             throw new RuntimeException("Не найден файл фля отправки в письме! Он обязателен!!!Can't find any attach!!!");
-        }*/
+        }
         LOG.info("Process id is {} sAttachmentsForSend after arriving in MailTaskWithAttachments {}",
                 oExecution.getProcessInstanceId(), sAttachmentsForSend);
         sendMail(oExecution, sAttachmentsForSend);
