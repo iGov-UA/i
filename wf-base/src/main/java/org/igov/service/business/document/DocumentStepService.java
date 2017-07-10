@@ -610,7 +610,7 @@ public class DocumentStepService {
                             oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
 
                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
-
+ 
                             LOG.info("oDocumentStepSubjectRightDao in addAcceptor is {}", oDocumentStepSubjectRight_New.getId());
 
                             for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
