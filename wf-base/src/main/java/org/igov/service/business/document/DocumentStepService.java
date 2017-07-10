@@ -464,7 +464,7 @@ public class DocumentStepService {
 
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.aDocumentStepSubjectRight();
-            //LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                 if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
                     //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
