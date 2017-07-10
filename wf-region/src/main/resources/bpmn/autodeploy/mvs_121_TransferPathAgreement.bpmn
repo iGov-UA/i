@@ -38,12 +38,8 @@
         <activiti:formProperty id="ur_post" name="Посада керівника" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_appl" name="Дата отримання даних з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
         
-        
-        
         <activiti:formProperty id="imya_fiz" name="У давальному відмінку П.І.Б.фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
          <activiti:formProperty id="adres_fiz" name="Місце проживання фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
-        
-        <activiti:formProperty id="text0" name=" " type="label" default="Організація, що виконує перевезення"></activiti:formProperty>
         
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_transfer" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) " type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_transfer" name="Найменування" type="textArea" default=" " required="true"></activiti:formProperty>
@@ -74,7 +70,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka228" name="шапки принтформ ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="m" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_ST.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="m1" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_ST.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="m2" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_Lines.json')}"></activiti:formProperty>
       
       </extensionElements>
     </startEvent>
@@ -108,7 +105,7 @@
         <activiti:formProperty id="sCEOName_SubjectOrgan_appl" name="ПІБ керівника; ;writable=false" type="string"  ></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"  ></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_appl" name="Дата отримання даних з ЄДРПОУ" type="label"  ></activiti:formProperty>
-           <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Організація, що виконує перевезення&lt;/b&gt;"></activiti:formProperty>
+        <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Організація, що виконує перевезення&lt;/b&gt;"></activiti:formProperty>
         
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_transfer" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) ; ;writable=false" type="string"    ></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_transfer" name="Найменування; ;writable=false" type="textArea"    ></activiti:formProperty>
@@ -143,6 +140,7 @@
         <activiti:formProperty id="dodatkovo" name="У разі перевезення небезпечних речовин або виробів, на перевезення яких необхідне додаткове погодження або дозвіл інших компетентних органів, відповідні копії цього погодження або дозволу ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Платіжний документи (квитанція) про оплату вартості послуги; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="markers2" name="m2" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_Lines.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -177,8 +175,7 @@
         <activiti:formProperty id="sCEOName_SubjectOrgan_appl" name="ПІБ керівника; ;writable=false" type="string"  ></activiti:formProperty>
         <activiti:formProperty id="ur_post" name="Посада керівника; ;writable=false" type="string"  ></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_appl" name="Дата отримання даних з ЄДРПОУ" type="label"  ></activiti:formProperty>
-           <activiti:formProperty id="text0" name=" " type="label" default="&lt;b&gt;Організація, що виконує перевезення&lt;/b&gt;"></activiti:formProperty>
-        
+         
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_transfer" name="Ідентифікаційний код згідно з Єдиним державним реєстром підприємств та організацій України (ЄДРПОУ) ; ;writable=false" type="string"    ></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_transfer" name="Найменування; ;writable=false" type="textArea"    ></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_transfer" name="Коротке найменування; ;writable=false" type="string"  ></activiti:formProperty>
@@ -203,6 +200,8 @@
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/mvs/mvs_121_TransferPathAgreement_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mvs/mvs_121_TransferPathAgreement_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява (ЗУ «Про дозвільну систему у сфері господарської діяльності»)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="m2" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_Lines.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="m3" type="markers" default="${markerService.loadFromFile('mvs/mvs_121_TransferPathAgreement_UT2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
