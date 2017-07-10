@@ -90,10 +90,14 @@ angular.module('dashboardJsApp').service('Issue', ['tasks', '$q', function (task
           }
         }
         this.issues.push(copy);
+        return true;
       } else {
         this.issues.push({task: 1, taskName: '', taskContents: '', taskTerm: {property: 'calendar', value: ''},
           taskForm: '', taskController: '', taskExecutor: [{value: '', isMain: true}]});
+        return true;
       }
+    } else {
+      return false;
     }
   };
 
@@ -102,8 +106,13 @@ angular.module('dashboardJsApp').service('Issue', ['tasks', '$q', function (task
 
     for(var i=0; i<this.issues.length; i++) {
       for(var elem in this.issues[i]) {
-        if(this.issues[i].hasOwnProperty(elem) && !this.issues[i][elem]) {
+        if(this.issues[i].hasOwnProperty(elem) && elem !== 'taskTerm' && !this.issues[i][elem]) {
           isValid = false;
+        } else if(this.issues[i].hasOwnProperty(elem) && elem === 'taskTerm') {
+          angular.forEach(this.issues[i][elem], function (param) {
+            if(!param)
+              isValid = false;
+          })
         }
       }
     }
@@ -204,7 +213,7 @@ angular.module('dashboardJsApp').service('Issue', ['tasks', '$q', function (task
         })
       });
     } else {
-      deferred.resolve();
+      deferred.resolve(false);
     }
 
     return deferred.promise;

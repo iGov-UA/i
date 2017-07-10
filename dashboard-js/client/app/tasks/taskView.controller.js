@@ -868,9 +868,13 @@
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
+            if(isAnyIssuesExist)
+              $scope.issueValid = false;
             return;
           } else {
             $scope.isFormInvalid = false;
+            if(isAnyIssuesExist)
+              $scope.issueValid = true;
           }
 
           function submitCallback(result) {
@@ -1832,7 +1836,7 @@
           $scope.issue = answ;
         });
         $scope.addIssue = function () {
-          Issue.addIssue();
+          $scope.issueValid = Issue.addIssue();
         };
 
       }
