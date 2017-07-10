@@ -696,17 +696,15 @@
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
-          <activiti:value id="sEnumCreateTask" name="Сформировать задание"></activiti:value>
           <activiti:value id="sEnumSign" name="Разрешаю"></activiti:value>
           <activiti:value id="sEnumRemark" name="Отказать"></activiti:value>
           <activiti:value id="sEnumReply" name="Сформировать ответ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_tender_isExecute.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable6_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers10" name="если задание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;oProcessSubject_Executor_1&quot;,&quot;oProcessSubject_Controller_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumCreateTask'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="если разрешаю" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sTable6&quot;,&quot;oProcessSubject_Controller_1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumSign'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_1pr" name="маркер принтформы ТМЦ" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1pr&quot;:{&quot;aElement_ID&quot;:[&quot;docCM&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_2pr" name="маркер принтформы услуги" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2pr&quot;:{&quot;aElement_ID&quot;:[&quot;docServices&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asAttributeApplication&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/btsol/_doc_btsol_tenderPrint.html] ; ;bVisible=false" type="string" default="Служебная записка" writable="false"></activiti:formProperty>
@@ -1237,13 +1235,13 @@ execution.setVariable('bAccept', bAccept)</script>
     <sequenceFlow id="flow119" sourceRef="usertask5" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway14" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow120" sourceRef="exclusivegateway14" targetRef="scripttask21">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumCreateTask'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow121" name="Ответный документ" sourceRef="exclusivegateway14" targetRef="callactivity1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumReply' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow122" name="Отказ" sourceRef="exclusivegateway14" targetRef="scripttask17">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' || asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="usertask5">
@@ -1266,7 +1264,7 @@ execution.setVariable('bAccept', bAccept)</script>
     <scriptTask id="scripttask21" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'oProcessSubject_Executor_1', 'step_5', true, 'sLogin_isExecute')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_5', true, 'sLogin_isExecute')</script>
     </scriptTask>
     <sequenceFlow id="flow126" sourceRef="scripttask21" targetRef="usertask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway16" name="Exclusive Gateway"></exclusiveGateway>
@@ -2023,7 +2021,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="601.0" y="1457.0"></omgdi:waypoint>
         <omgdi:waypoint x="106.0" y="1457.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="30.0" x="414.0" y="1437.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="414.0" y="1437.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
