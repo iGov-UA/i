@@ -54,14 +54,8 @@
         <activiti:formProperty id="sDateApprove" name="Дата исход №; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Предмет заявки; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Подгруппа товаров/услуг" type="string"></activiti:formProperty>
-        
-        
-        
-        
         <activiti:formProperty id="sName_Relation_1" name="Наименование продукции; ;sID_Relation=sID_Relation,nID_Parent=nID_Parent" type="select"></activiti:formProperty>
-        <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string"></activiti:formProperty> 
-        
-        
+        <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -999,6 +993,9 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <activiti:field name="soData">
           <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[nID_Relation_1]};;Gruppa::value{[sName_Relation_1]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
         </activiti:field>
+        <activiti:field name="name_isExecute">
+          <activiti:expression><![CDATA[${sName_isExecute}]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <scriptTask id="scripttask18" name="Create approval date" scriptFormat="groovy" activiti:autoStoreVariables="false">
@@ -1890,7 +1887,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="663.0" y="449.0"></omgdi:waypoint>
         <omgdi:waypoint x="663.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="55.0" x="995.0" y="437.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="55.0" x="995.0" y="437.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -1898,14 +1895,14 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="663.0" y="1119.0"></omgdi:waypoint>
         <omgdi:waypoint x="663.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="27.0" x="975.0" y="1101.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="27.0" x="975.0" y="1101.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="1071.0" y="630.0"></omgdi:waypoint>
         <omgdi:waypoint x="1071.0" y="662.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="1009.0" y="629.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="75.0" x="1009.0" y="629.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -1944,7 +1941,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1051.0" y="1695.0"></omgdi:waypoint>
         <omgdi:waypoint x="994.0" y="1694.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="1010.0" y="1704.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="75.0" x="1010.0" y="1704.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
@@ -2027,7 +2024,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="53.0" y="1775.0"></omgdi:waypoint>
         <omgdi:waypoint x="53.0" y="1721.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="412.0" y="1759.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="412.0" y="1759.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
@@ -2035,7 +2032,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="601.0" y="1457.0"></omgdi:waypoint>
         <omgdi:waypoint x="106.0" y="1457.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="34.0" x="414.0" y="1437.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="30.0" x="414.0" y="1437.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">

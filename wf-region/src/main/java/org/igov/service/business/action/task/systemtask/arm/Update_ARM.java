@@ -58,6 +58,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		List<DboTkModel> listOfModels = armService
 				.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
 		dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
+		LOG.info("listOfModels in update arm>>>>>>>>>>>>>>>+=={}", listOfModels);
 		
 				
 		// ветка - когда назначаются исполнители
@@ -77,6 +78,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 						if (asExecutorsFromsoData.size() > 1) {
 							for (int i = 1; i < asExecutorsFromsoData.size(); i++) {
 								dataWithExecutorForTransferToArm.setExpert(asExecutorsFromsoData.get(i));
+								LOG.info("dataBEFOREgetEXEC cлед>>>>>>>> исполнитель = {}", dataWithExecutorForTransferToArm);
 								armService.createDboTk(dataWithExecutorForTransferToArm);
 							}
 						}
@@ -94,6 +96,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			Integer maxNum442 = armService.getMaxValue442();
 			dataWithExecutorForTransferToArm.setExpert(expert);
 			dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
+			
 			armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 		}
 
