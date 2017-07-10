@@ -143,7 +143,7 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
         if (isMPService) {
           angular.forEach(form, function (i) {
             if (i.id.indexOf('sSum_MasterPass') === 0) checkoutData.invoice = i.value.toString();
-            else if (i.id.indexOf('sID_Merchant_MasterPass') === 0) checkoutData.pmt_info = i.value;
+            else if (i.id.indexOf('sID_Merchant_MasterPass') === 0) checkoutData.pmt_info = JSON.parse(i.value);
             else if (i.id.indexOf('sDescription_MasterPass') === 0) checkoutData.pmt_desc = i.value;
           });
           break;
