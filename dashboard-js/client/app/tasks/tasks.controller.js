@@ -545,14 +545,15 @@
     };
 
     (function selectedTab() {
-      var tab = localStorage.getItem('currentTab');
-      if (tab) $scope.tabMenu = tab;
-      else $scope.tabMenu = 'tasks';
+      if(('selfAssigned | tickets | unassigned | all | finished').indexOf($stateParams.type) > -1) {
+        $scope.tabMenu = 'tasks';
+      } else {
+        $scope.tabMenu = 'documents';
+      }
     })();
 
     $scope.tabMenuChange = function (param) {
       $scope.tabMenu = param;
-      localStorage.setItem('currentTab', param);
     };
 
     $scope.isVisible = function (menuType) {

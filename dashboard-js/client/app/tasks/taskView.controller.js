@@ -1777,11 +1777,11 @@
               $scope.isMenuOpened = false;
               snapRemote.close();
             }
-            localStorage.setItem('menu-status', JSON.stringify(status));
+            sessionStorage.setItem('menu-status', JSON.stringify(status));
           }
         }
 
-        var menuStatus = localStorage.getItem('menu-status');
+        var menuStatus = sessionStorage.getItem('menu-status');
         if(menuStatus) {
           var status = JSON.parse(menuStatus);
           toggleMenu(status);
@@ -1791,9 +1791,11 @@
         }
 
         (function selectedTab() {
-          var tab = localStorage.getItem('currentTab');
-          if(tab) $scope.tabMenu = tab;
-          else $scope.tabMenu = 'tasks';
+          if(('selfAssigned | tickets | unassigned | all | finished').indexOf($stateParams.type) > -1) {
+            $scope.tabMenu = 'tasks';
+          } else {
+            $scope.tabMenu = 'documents';
+          }
         })();
 
         $rootScope.$broadcast("update-search-counter");
