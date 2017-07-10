@@ -93,13 +93,15 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		} else {
 			// ветка, когда исполнители уже есть и они отрабатывают свое задание
+			if(dataWithExecutorForTransferToArm.getExpert().equals(expert)){
 			Integer maxNum442 = armService.getMaxValue442();
-			dataWithExecutorForTransferToArm.setExpert(expert);
+			//dataWithExecutorForTransferToArm.setExpert(expert);
 			dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
 			
 			armService.updateDboTkByExpert(dataWithExecutorForTransferToArm);
 		}
 
+	}
 	}
 
 }
