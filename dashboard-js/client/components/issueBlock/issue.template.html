@@ -18,10 +18,10 @@
         <div class="col-md-5 right-side">
           <input type="text"
                  class="form-control"
-                 name="taskName"
+                 name="{{'taskName' + $index}}"
                  ng-model="issue.taskName"
                  required
-                 ng-class="{'submitted': issueForm['taskName'].$invalid && !issueValid}">
+                 ng-class="{'submitted': issueForm['taskName' + $index].$invalid && !issueValid}">
         </div>
       </div>
 
@@ -32,7 +32,11 @@
         </div>
         <div class="col-md-5 right-side">
           <div class="col-md-6" style="padding-right: 0;padding-left: 0">
-            <select class="form-control" name="taskTerm" ng-model="issue.taskTerm.property" ng-class="{'submitted': issueForm['taskTerm'].$invalid && !issueValid}" required>
+            <select class="form-control"
+                    name="{{'taskTerm' + $index}}"
+                    ng-model="issue.taskTerm.property"
+                    ng-class="{'submitted': issueForm['taskTerm' + $index].$invalid && !issueValid}"
+                    required>
               <option value="calendar">Календарна дата</option>
               <!--<option value="days">Кiлькiсть днiв пiсля</option>-->
             </select>
@@ -44,8 +48,8 @@
                      separator='/'
                      datetimepicker
                      ng-model="issue.taskTerm.value"
-                     name="taskDate"
-                     ng-class="{'submitted': issueForm['taskDate'].$invalid && !issueValid}"
+                     name="{{'taskDate' + $index}}"
+                     ng-class="{'submitted': issueForm['taskDate' + $index].$invalid && !issueValid}"
                      required>
             </div>
             <!--<div ng-if="issue.taskTerm.property === 'days'">
@@ -62,7 +66,11 @@
           <span class="red-star">*</span>
         </div>
         <div class="col-md-5 right-side">
-          <select class="form-control" ng-model="issue.taskForm" name="taskForm" ng-class="{'submitted': issueForm['taskForm'].$invalid && !issueValid}" required>
+          <select class="form-control"
+                  ng-model="issue.taskForm"
+                  name="{{'taskForm' + $index}}"
+                  ng-class="{'submitted': issueForm['taskForm' + $index].$invalid && !issueValid}"
+                  required>
             <option value="fileHTML">Документ</option>
             <option value="file">Файл</option>
             <option value="textArea">Текстове повiдомлення</option>
@@ -90,8 +98,8 @@
             <ui-select ng-model="issue.taskController"
                        theme="bootstrap"
                        on-select="onSelectUser($item)"
-                       name="taskController"
-                       ng-class="{'submitted': issueForm['taskController'].$invalid && !issueValid}"
+                       name="{{'taskController' + $index}}"
+                       ng-class="{'submitted': issueForm['taskController' + $index].$invalid && !issueValid}"
                        required>
 
               <ui-select-match>
@@ -116,8 +124,8 @@
                 <ui-select ng-model="executor.value"
                            theme="bootstrap"
                            on-select="onSelectUser($item)"
-                           name="taskExecutor"
-                           ng-class="{'submitted': issueForm['taskExecutor'].$invalid && !issueValid}"
+                           name="{{'taskExecutor' + $index}}"
+                           ng-class="{'submitted': issueForm['taskExecutor' + $index].$invalid && !issueValid}"
                            required>
 
                   <ui-select-match>
@@ -157,7 +165,7 @@
           <span class="red-star">*</span>
         </div>
         <div class="col-md-12 fileHTML">
-          <span ng-if="issueForm['taskContents'].$invalid && !issueValid" style="color: #a94442">
+          <span ng-if="issueForm['taskContents' + $index].$invalid && !issueValid" style="color: #a94442">
             Необхiдно заповнити
           </span>
           <text-angular ta-toolbar="[['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
@@ -165,7 +173,7 @@
                                  ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
                         ng-model="issue.taskContents"
                         style="width:100%;"
-                        name="taskContents"
+                        name="{{'taskContents' + $index}}"
                         required>
           </text-angular>
         </div>
