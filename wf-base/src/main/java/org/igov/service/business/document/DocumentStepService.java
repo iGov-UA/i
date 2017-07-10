@@ -462,9 +462,11 @@ public class DocumentStepService {
 
         try {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
+            LOG.info("oDocumentStep is {}", oDocumentStep);
 
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("documentStep", oDocumentStep);
+            LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
 
             if (!aDocumentStepSubjectRight.isEmpty()) {
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
