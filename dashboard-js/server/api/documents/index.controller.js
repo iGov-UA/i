@@ -1,7 +1,8 @@
 'use strict';
 
 var activiti = require('../../components/activiti'),
-    NodeCache = require("node-cache");
+    NodeCache = require("node-cache"),
+    config = require('../../config/environment');
 
 
 var cache = new NodeCache();
