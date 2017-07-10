@@ -318,6 +318,7 @@
         <activiti:formProperty id="dogovor" name="Копія зовнішньоекономічного договору (контракту), усі додатки та специфікації до нього, завірені в установленому законодавством порядку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="visnovok" name="Експертний висновок з визначенням країни походження та коду товару відповідно до Української класифікації товарів зовнішньо-економічної діяльності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="markers2" name="m2" type="markers" default="${markerService.loadFromFile('mert/mert_59_export_UT1.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
@@ -474,6 +475,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_59_export_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії на експорт" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_59_export_print2.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Table_Customs" name="Інформація про товар; ;nRowsLimit=10,bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="m3" type="markers" default="${markerService.loadFromFile('mert/mert_59_export_UT2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

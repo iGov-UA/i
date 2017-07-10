@@ -293,6 +293,7 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення звернення внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameUnit" name="назва адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="адреса адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи адміністартивного органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -307,6 +308,8 @@
         <activiti:formProperty id="visnovok" name="Висновок експертної організації про відповідність контрактної ціни рівню цін кон'юнктури ринку на товари (роботи, послуги), що поставляються (виконуються, надаються) за конкретною зовнішньоекономічною операцією ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="pogodgennya" name="Погодження відповідного уповноваженого органу виконавчої влади (у випадках, визначених Кабінетом Міністрів України ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        
+         <activiti:formProperty id="markers1" name="m1" type="markers" default="${markerService.loadFromFile('mert/mert_60_import_UT1.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="рішення" activiti:candidateGroups="zed_${group}">
@@ -455,6 +458,8 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/mert/mert_60_import_print2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/mert/mert_60_import_print.html]; ;bVisible=false" type="string" default="Заявка на одержання ліцензії на імпорт" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/mert/mert_60_import_print2.html]; ;bVisible=false" type="string" default="Лист-звернення щодо оформлення ліцензії в довільній формі" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markers2" name="m2" type="markers" default="${markerService.loadFromFile('mert/mert_60_import_UT2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення посадовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
