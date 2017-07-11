@@ -158,7 +158,7 @@ public class ProcessSubjectTaskService {
 
         try {
             //LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
-
+            int processSubjectTask_Counter = 0;
             for (Object oJsonProcessSubjectTask : oaProcessSubjectTask) {
 
                 String sActionType = (String) ((JSONObject) oJsonProcessSubjectTask).get("sActionType");
@@ -168,7 +168,7 @@ public class ProcessSubjectTaskService {
                 LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
                 if (sActionType.equals("set")) {
-                    setProcessSubjectTask(oJsonProcessSubjectTask, aJsonProcessSubject, sKey);
+                    setProcessSubjectTask(oJsonProcessSubjectTask, aJsonProcessSubject, sKey, processSubjectTask_Counter);
                 } else if (sActionType.equals("edit")) {
                     editProcessSubject(oJsonProcessSubjectTask, aJsonProcessSubject, sKey, snId_Task);
                 } else if (sActionType.equals("delegate")) {
@@ -197,6 +197,8 @@ public class ProcessSubjectTaskService {
                 } else {
                     throw new RuntimeException("There is wrong sActionType");
                 }
+                
+                processSubjectTask_Counter++;
             }
         } catch (Exception ex) {
             throw new RuntimeException("Error task setting: " + ex.getMessage());
@@ -342,10 +344,10 @@ public class ProcessSubjectTaskService {
 
         LOG.info("startProcess started...");
         Map<String, Object> mParamTask = new HashMap<>();
-        Optional<ProcessSubjectTask> oOptionalProcessSubjectTask
-                = oProcessSubjectTaskDao.findBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root);
-        if (oOptionalProcessSubjectTask.isPresent()) {
-            ProcessSubjectTask oProcessSubjectTask = oOptionalProcessSubjectTask.get();
+        List<ProcessSubjectTask> aProcessSubjectTask
+                = oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root);
+        for(ProcessSubjectTask oProcessSubjectTask : aProcessSubjectTask){
+            //ProcessSubjectTask oProcessSubjectTask = oOptionalProcessSubjectTask.get();
             LOG.info("ProcessSubjectTask with id {} was founded {}", oProcessSubjectTask.getId());
             byte[] aByteTaskBody = oBytesDataStaticStorage.getData(oProcessSubjectTask.getsKey());
 
@@ -378,7 +380,7 @@ public class ProcessSubjectTaskService {
         return 1L;
     }
 
-    private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey) throws Exception {
+    private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey, Integer processSubjectTask_Counter) throws Exception {
 
         ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
         oProcessSubjectTask.setSnID_Process_Activiti_Root((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
@@ -390,7 +392,7 @@ public class ProcessSubjectTaskService {
 
         List<ProcessSubject> aProcessSubject
                 = setProcessSubjectList(aJsonProcessSubject,
-                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, (String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), null, 0L);
+                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, ((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")).concat(processSubjectTask_Counter.toString()), null, 0L);
         LOG.info("aProcessSubject in synctProcessSubjectTask: {}", aProcessSubject);
     }
 
