@@ -1621,6 +1621,7 @@ public class DocumentStepService {
         DocumentStep oDocumentStep_Common = getDocumentStep(delegateTask.getProcessInstanceId(), "_");
         
         for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()){
+            LOG.info("oDocumentStepSubjectRight group in candidate adding is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
             if(!asGroup_Old.isEmpty() && !oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_") &&
                     !asGroup_Old.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix())){
                 LOG.info("Group added to candidate is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
