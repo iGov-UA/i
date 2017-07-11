@@ -537,6 +537,127 @@ angular.module('dashboardJsApp')
         return deferred.promise;
       },
 
+      uploadAttachToTaskForm: function (content, taskForm, processId, taskId) {
+        var deferred = $q.defer();
+
+        var isNewAttachmentService = false;
+        var taskID = taskId;
+        for (var i = 0; i < taskForm.length; i++) {
+          var item = taskForm[i];
+          var splitNameForOptions = item.name.split(';');
+          if (item.type !== 'table' && item.id === content.fieldId && splitNameForOptions.length === 3) {
+            if (splitNameForOptions[2].indexOf('bNew=true') !== -1) {
+              isNewAttachmentService = true;
+              taskID = processId;
+              break
+            }
+          } else if (item.type === 'table') {
+            if (item.aRow.length !== 0) {
+              for (var t = 0; t < item.aRow.length; t++) {
+                var row = item.aRow[t];
+                for (var f = 0; f < row.aField.length; f++) {
+                  var field = row.aField[f];
+                  var fieldOptions = field.name.split(';');
+                  if (field.id === content.fieldId && fieldOptions.length === 3) {
+                    if (fieldOptions[2].indexOf('bNew=true') !== -1) {
+                      isNewAttachmentService = true;
+                      taskID = processId;
+                      break
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        this.upload(content.files, taskID, content.fieldId, isNewAttachmentService).then(function (result) {
+          var filterResult = taskForm.filter(function (property) {
+            return property.id === content.fieldId;
+          });
+
+          // if filterResult === 0 => check file in table
+          if (filterResult.length === 0) {
+            for (var j = 0; j < taskForm.length; j++) {
+              if (taskForm[j].type === 'table') {
+                for (var c = 0; c < taskForm[j].aRow.length; c++) {
+                  var row = taskForm[j].aRow[c];
+                  for (var i = 0; i < row.aField.length; i++) {
+                    if (row.aField[i].id === content.fieldId) {
+                      filterResult.push(row.aField[i]);
+                      break
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          if (filterResult && filterResult.length === 1) {
+            if (result.response.sKey) {
+              filterResult[0].value = JSON.stringify(result.response);
+              filterResult[0].fileName = result.response.sFileNameAndExt;
+              filterResult[0].signInfo = result.signInfo;
+            } else {
+              filterResult[0].value = result.response.id;
+              filterResult[0].fileName = result.response.name;
+              filterResult[0].signInfo = result.signInfo;
+            }
+          }
+
+          deferred.resolve(result);
+        }, function (err) {
+
+          deferred.reject(err);
+        });
+
+        return deferred.promise;
+      },
+
+      uploadAttachmentsToTaskForm: function (aContents, taskForm, processId, taskId) {
+        var deferred = $q.defer();
+        var self = this;
+
+        var uploadPromises = [],
+          contents = [],
+          documentPromises = [],
+          docDefer = [],
+          counter = 0;
+
+        angular.forEach(aContents, function (oContent, key) {
+          docDefer[key] = $q.defer();
+          contents[key] = oContent;
+          documentPromises[key] = docDefer[key].promise;
+        });
+
+        var uplaadingResult = [];
+
+        var asyncUpload = function (i, docs, defs) {
+          if (i < docs.length) {
+
+            return self.uploadAttachToTaskForm(docs[i], taskForm, processId, taskId).then(function (resp) {
+              uplaadingResult.push(resp);
+              defs[i].resolve(resp);
+              return asyncUpload(i + 1, docs, defs);
+            }, function (err) {
+              uplaadingResult.push({error : err});
+              defs[i].reject(err);
+              return asyncUpload(i + 1, docs, defs);
+            });
+
+          }
+        };
+
+        var first = $q.all(uploadPromises).then(function () {
+          return asyncUpload(counter, contents, docDefer);
+        });
+
+        $q.all([first, documentPromises]).then(function () {
+          deferred.resolve(uplaadingResult);
+        });
+
+        return deferred.promise;
+      },
+
       setDocumentImages: function (properties) {
         var deferred = $q.defer();
 

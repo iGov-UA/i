@@ -32,11 +32,9 @@ angular.module('dashboardJsApp').directive('dateDivider', [function() {
             currentYear = correctC.getFullYear();
 
         if( prevDay !== currentDay ){
-          setTimeout(function () {
-            var x = angular.element('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">вiд '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>').slideDown("slow");
-            angular.element(elem).before(x);
-          }, 2000)
-      }}
+          angular.element(elem).append('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">до '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>')
+        }
+      }
     };
   }
 ]);
