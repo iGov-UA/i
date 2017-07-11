@@ -19,7 +19,7 @@
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" default="msvidran@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" required="true">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -550,7 +550,7 @@
         <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sID_Order" name="sID_Order; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGroupAddressee" name="sGroupAddressee; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="sName_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" writable="false">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
@@ -703,7 +703,6 @@
           <activiti:value id="sEnumReply" name="Сформировать ответ"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTable6" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable6_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCommentUT4" name="Внесите комментарий" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sCommentUT4&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT4&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
@@ -1081,7 +1080,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sID_Order" name="sID_Order; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGroupAddressee" name="sGroupAddressee; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="sName_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" writable="false">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
@@ -1254,7 +1253,7 @@ execution.setVariable('bAccept', bAccept)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="scripttask21">
+    <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="scripttask30">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYes' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow124" sourceRef="exclusivegateway15" targetRef="scripttask17">
@@ -1270,10 +1269,10 @@ execution.setVariable('bAccept', bAccept)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask21" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask21" name="Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_5', true, 'sLogin_isExecute')</script>
+var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_8')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_8', true, 'sLogin_isExecute')</script>
     </scriptTask>
     <sequenceFlow id="flow126" sourceRef="scripttask21" targetRef="usertask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway16" name="Exclusive Gateway"></exclusiveGateway>
@@ -1710,6 +1709,12 @@ var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLogin_LastSubmi
 execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
     </scriptTask>
     <sequenceFlow id="flow147" sourceRef="scripttask29" targetRef="servicetask4"></sequenceFlow>
+    <scriptTask id="scripttask30" name="убрать подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_5', sKeyGroup)</script>
+    </scriptTask>
+    <sequenceFlow id="flow148" sourceRef="scripttask30" targetRef="usertask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1856,6 +1861,9 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask29" id="BPMNShape_scripttask29">
         <omgdc:Bounds height="72.0" width="105.0" x="868.0" y="1646.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask30" id="BPMNShape_scripttask30">
+        <omgdc:Bounds height="55.0" width="105.0" x="700.0" y="1544.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="1256.0" y="117.0"></omgdi:waypoint>
@@ -2048,8 +2056,7 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
         <omgdi:waypoint x="591.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1203.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1203.0" y="1653.0"></omgdi:waypoint>
+        <omgdi:waypoint x="700.0" y="1571.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow124" id="BPMNEdge_flow124">
         <omgdi:waypoint x="571.0" y="1551.0"></omgdi:waypoint>
@@ -2140,6 +2147,11 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
       <bpmndi:BPMNEdge bpmnElement="flow147" id="BPMNEdge_flow147">
         <omgdi:waypoint x="868.0" y="1682.0"></omgdi:waypoint>
         <omgdi:waypoint x="819.0" y="1679.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow148" id="BPMNEdge_flow148">
+        <omgdi:waypoint x="805.0" y="1571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
