@@ -1272,7 +1272,11 @@ execution.setVariable('bAccept', bAccept)</script>
     <scriptTask id="scripttask21" name="Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_8')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_8', true, 'sLogin_isExecute')</script>
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_8', true, 'sLogin_isExecute')
+
+// получение группы исполнителя
+var aGroupAddressee = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable6', null)
+execution.setVariable('sGroupAddressee', aGroupAddressee[0])</script>
     </scriptTask>
     <sequenceFlow id="flow126" sourceRef="scripttask21" targetRef="usertask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway16" name="Exclusive Gateway"></exclusiveGateway>
