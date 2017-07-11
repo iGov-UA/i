@@ -41,7 +41,7 @@
         <activiti:formProperty id="markers3" name="Якщо анулювання, то непотрібні аттачменти" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;placePhoto&quot;,&quot;advertFile&quot;,&quot;advertLicenseFile&quot;],&quot;asID_Field&quot;:{&quot;sPerson&quot;:&quot;purpose&quot;},&quot;sCondition&quot;:&quot;[sPerson] == 'second_permission' || [sPerson] == 'first_permission'|| [sPerson] == 'continuation'|| [sPerson] == 'restructuring'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_dndzT">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>

@@ -19,7 +19,7 @@
           <activiti:value id="sEnumRepression" name="повідомлення державного архіву або органів Служби безпеки України"></activiti:value>
           <activiti:value id="sEnumPrison" name="повідомлення установи виконання покарань або слідчого ізолятору"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -60,18 +60,14 @@
           <activiti:value id="reject" name="заявник не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sShapka" name="шапка у принтформу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDocReason" name="Завантажте вищевказаний документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${sDocReason}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Лист-запрошення до візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
@@ -80,27 +76,27 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!</strong><br /><br />
-Ваше звернення передано у ${sNameOrgan}.<br />
-Приходьте ${date_of_visit} за адресою ${sAddress}<br />
-При собі треба мати:<br />
-1. Документ, що посвідчує особу.<br />
-2. Документ, який є підставою для державної реєстрації смерті (enum{[saReasonDeathRegistration]}).<br />
-3. Військово-облікові та пільгові документи померлої людини (якщо є).<br />
-4. Оригінал паспорту або паспортного документу померлої людини. Зверніть увагу - цей документ у ДРАЦСі буде вилучено.<br />
-<br />
-<br />
-<p>[cancelTask]</p>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення передано у ${sNameOrgan}.&lt;br /&gt;
+Приходьте ${date_of_visit} за адресою ${sAddress}&lt;br /&gt;
+При собі треба мати:&lt;br /&gt;
+1. Документ, що посвідчує особу.&lt;br /&gt;
+2. Документ, який є підставою для державної реєстрації смерті (enum{[saReasonDeathRegistration]}).&lt;br /&gt;
+3. Військово-облікові та пільгові документи померлої людини (якщо є).&lt;br /&gt;
+4. Оригінал паспорту або паспортного документу померлої людини. Зверніть увагу - цей документ у ДРАЦСі буде вилучено.&lt;br /&gt;
+&lt;br /&gt;
+&lt;br /&gt;
+&lt;p&gt;[cancelTask]&lt;/p&gt;
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression>${sMailClerk}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
@@ -109,20 +105,20 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний колего!</strong><br /><br />
-У Вас в черзі на обробку нове звернення.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.<br />
-У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+У Вас в черзі на обробку нове звернення.&lt;br /&gt;
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName} обрав дату та час візиту: ${date_of_visit}.&lt;br /&gt;
+У призначену дату та час запросіть, будь ласка, громадянина до кабінету для реєстрації.&lt;br /&gt;
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask6" name="послуга не була надана " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -131,14 +127,14 @@
           <activiti:string><![CDATA[Звернення на тему: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
-На жаль, Ваше звернення щодо державної реєстрації смерті відхилено (або Ви самостійно скасували заявку).<br />
-Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a>
-Телефон для довідок: ${sPhoneOrgan}<br />
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}&lt;/strong&gt;&lt;br /&gt;
+На жаль, Ваше звернення щодо державної реєстрації смерті відхилено (або Ви самостійно скасували заявку).&lt;br /&gt;
+Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;
+Телефон для довідок: ${sPhoneOrgan}&lt;br /&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />	   
-[pattern/mail/_common_signature_end.html]]]></activiti:expression>
+${sNameOrgan}&lt;br /&gt;	   
+[pattern/mail/_common_signature_end.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -148,22 +144,22 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Попередній запис на прийом щодо державної реєстрації смерті]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</strong><br /><br />
-Ваше звернення щодо державної реєстрації смерті опрацьовано.<br />
-<br />
-[pattern/mail/_common_feedback.html]<br>
-Дякуємо!<br>
+          <activiti:expression>[pattern/mail/_common_header.html]
+&lt;strong&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
+Ваше звернення щодо державної реєстрації смерті опрацьовано.&lt;br /&gt;
+&lt;br /&gt;
+[pattern/mail/_common_feedback.html]&lt;br&gt;
+Дякуємо!&lt;br&gt;
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}<br />	   
+${sNameOrgan}&lt;br /&gt;	   
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -180,18 +176,19 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow34" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
-    <serviceTask id="servicetask8" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow38" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="servicetask8" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Для черги" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
+    <sequenceFlow id="flow42" sourceRef="servicetask8" targetRef="servicetask2"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask8">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
-    <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
+    <endEvent id="endevent4" name="End"></endEvent>
+    <sequenceFlow id="flow43" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_zags_death">
     <bpmndi:BPMNPlane bpmnElement="common_zags_death" id="BPMNPlane_common_zags_death">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="29.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="27.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="69.0" width="148.0" x="397.0" y="166.0"></omgdc:Bounds>
@@ -215,10 +212,13 @@ ${sNameOrgan}<br />
         <omgdc:Bounds height="40.0" width="40.0" x="330.0" y="183.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="137.0" x="163.0" y="19.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="17.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="47.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="250.0" y="57.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
+        <omgdc:Bounds height="35.0" width="35.0" x="310.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="397.0" y="200.0"></omgdi:waypoint>
@@ -252,18 +252,17 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="471.0" y="72.0"></omgdi:waypoint>
         <omgdi:waypoint x="471.0" y="89.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="122.0" y="46.0"></omgdi:waypoint>
-        <omgdi:waypoint x="163.0" y="46.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="135.0" y="44.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="44.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="300.0" y="46.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="335.0" y="44.0"></omgdi:waypoint>
         <omgdi:waypoint x="401.0" y="44.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="165.0" y="77.0"></omgdi:waypoint>
-        <omgdi:waypoint x="104.0" y="120.0"></omgdi:waypoint>
-        <omgdi:waypoint x="104.0" y="183.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="280.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="327.0" y="90.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

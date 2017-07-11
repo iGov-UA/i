@@ -27,14 +27,14 @@
           <activiti:value id="seven" name="7"></activiti:value>
           <activiti:value id="eight" name="8"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника;(або свідоцтво про смерть)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника;(або свідоцтво про смерть) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="один власник" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'one'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="два власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_2&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'two'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="три власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_3&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'three'&quot;}}}"></activiti:formProperty>
@@ -45,7 +45,6 @@
         <activiti:formProperty id="markers8" name="вісім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_8&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanPassportOwner7&quot;,&quot;scanPassportOwner8&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'eight'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновнику про новий запит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -58,13 +57,13 @@
           <activiti:string><![CDATA[Нове звернення. Отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -74,22 +73,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Реєстрація звернення на отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу зареєстроване у системі.&lt;br/&gt;
-Повідомлення про результат розгляду звернення буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Телефон для довідок: (061) 224-87-04&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу зареєстроване у системі.<br/>
+Повідомлення про результат розгляду звернення буде спрямоване на Ваш e-mail.</p>
+<br />
+Телефон для довідок: (061) 224-87-04<br />
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -122,23 +121,23 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/zaporozhye_rda_249_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner4" name="Копія паспорта 4-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner5" name="Копія паспорта 5-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${scanPassportOwner2},${scanPassportOwner3},${scanPassportOwner4},${scanPassportOwner5},${scanPassportOwner6},${scanPassportOwner7},${scanPassportOwner8}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення громадянина про передачу інформації в архів" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -147,23 +146,23 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу - прийнято в роботу.&lt;br /&gt;
-Відповідь Ви отримаєте протягом десяти робочих днів.&lt;br /&gt; 
-&lt;/p&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу - прийнято в роботу.<br />
+Відповідь Ви отримаєте протягом десяти робочих днів.<br /> 
+</p>
+<br />
 Телефон для довідок: (061) 224-87-04
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -176,25 +175,25 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-                                    &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу було відхилено.</p>
+<p>Причина в наступному: 
+                                    </p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
 Телефон для довідок: (061) 224-87-04
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -234,53 +233,48 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
 
-&lt;/p&gt;
-&lt;p&gt;
-Ваша копія свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу готова.&lt;br/&gt; 
-Ви зможете її отримати за адресою:&lt;br/&gt; 
-м. Запоріжжя, вул. Бородінська, 1а&lt;br/&gt;
-Кабінет №314&lt;br/&gt;
-Часи прийому:&lt;br/&gt;
-Понеділок з 14.00 до 17.00&lt;br/&gt;
-Вівторок з 9.00 до 11.40&lt;br/&gt;
-Середа з 9.00 до 11.00&lt;br/&gt;
-&lt;br/&gt;
+</p>
+<p>
+Ваша копія свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу готова.<br/> 
+Ви зможете її отримати за адресою:<br/> 
+м. Запоріжжя, вул. Бородінська, 1а<br/>
+Кабінет №314<br/>
+Часи прийому:<br/>
+Понеділок з 14.00 до 17.00<br/>
+Вівторок з 9.00 до 11.40<br/>
+Середа з 9.00 до 11.00<br/>
+<br/>
 При собі треба мати оригінал паспорту.
-&lt;/p&gt;
+</p>
 Телефон для довідок: (061) 224-87-04
-&lt;br /&gt;
-&lt;br /&gt;
+<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zaporozhye_rda_249">
     <bpmndi:BPMNPlane bpmnElement="zaporozhye_rda_249" id="BPMNPlane_zaporozhye_rda_249">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="26.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="105.0" x="86.0" y="87.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="147.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="105.0" x="238.0" y="87.0"></omgdc:Bounds>
@@ -309,14 +303,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="82.0" width="105.0" x="238.0" y="285.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="61.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="86.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="191.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="238.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="343.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="127.0"></omgdi:waypoint>
@@ -324,10 +310,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="485.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="520.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="162.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="161.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="572.0" y="168.0"></omgdi:waypoint>
@@ -337,14 +319,14 @@
         <omgdi:waypoint x="572.0" y="242.0"></omgdi:waypoint>
         <omgdi:waypoint x="572.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="581.0" y="238.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="581.0" y="238.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="552.0" y="222.0"></omgdi:waypoint>
         <omgdi:waypoint x="485.0" y="222.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="497.0" y="181.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="497.0" y="181.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -363,6 +345,10 @@
         <omgdi:waypoint x="238.0" y="326.0"></omgdi:waypoint>
         <omgdi:waypoint x="161.0" y="326.0"></omgdi:waypoint>
         <omgdi:waypoint x="161.0" y="240.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="61.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="238.0" y="127.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

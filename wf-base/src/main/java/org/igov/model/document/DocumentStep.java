@@ -26,7 +26,7 @@ public class DocumentStep extends AbstractEntity {
     private String snID_Process_Activiti;
 
     @JsonProperty(value = "aDocumentStepSubjectRight") //Todo переименовать
-    @OneToMany(targetEntity = DocumentStepSubjectRight.class, mappedBy = "documentStep")
+    @OneToMany(targetEntity = DocumentStepSubjectRight.class, mappedBy = "documentStep", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<DocumentStepSubjectRight> aDocumentStepSubjectRight;
     

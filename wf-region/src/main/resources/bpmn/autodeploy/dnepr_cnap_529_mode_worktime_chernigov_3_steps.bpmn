@@ -553,7 +553,6 @@
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov_start.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="[Етап I] Прийняття рішення ЦНАП щодо розгляду повідомлення (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
@@ -644,10 +643,9 @@
         <activiti:formProperty id="sPRN7E" name="Інформація щодо закінчення роботи в відповідний день; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_mvk529">
@@ -739,7 +737,7 @@
         <activiti:formProperty id="sPRN7E" name="Інформація щодо закінчення роботи в відповідний день; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -837,7 +835,7 @@
         <activiti:formProperty id="sPRN7E" name="Інформація щодо закінчення роботи в відповідний день; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print_chernigov.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява;Інформаційний лист-заява;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_print_chernigov.html,sFileName=Zayava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з наложеною ЕЦП; ;bNew=true,bPrintFormFileAsPDF=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileVidpovid" name="Копiя повідомлення про встановлення режиму роботи здійснено з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -848,42 +846,41 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відхилено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.&lt;br /&gt;
-					Коментар: ${sDecisionComment_Citizen}.&lt;br /&gt;
-					Відповідь наведено в додатку до листа &lt;br /&gt;
-					&lt;br /&gt;
-					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					На жаль, Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг відхилено.<br />
+					Коментар: ${sDecisionComment_Citizen}.<br />
+					Відповідь наведено в додатку до листа <br />
+					<br />
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nFile_Report}"</activiti:expression>
+          <activiti:expression><![CDATA["${nFile_Report}"]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -895,40 +892,39 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення опрацьовано: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - опрацьовано.&lt;br /&gt;
-					Реєстраційні дані щодо встановлення режиму роботи об’єкта надані у документі, що вкладено в цій email, та який може бути підписано електроним цифровим підписом.&lt;br /&gt;
-					Для підтвердження електроного цифрового підпису Ви можете скористуватися &lt;a href="https://igov.org.ua/ecp" target="_blank"&gt; посиланням &lt;/a&gt;&lt;br /&gt; або отримати рішення у ЦНАПі. 
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг - опрацьовано.<br />
+					Реєстраційні дані щодо встановлення режиму роботи об’єкта надані у документі, що вкладено в цій email, та який може бути підписано електроним цифровим підписом.<br />
+					Для підтвердження електроного цифрового підпису Ви можете скористуватися <a href="https://igov.org.ua/ecp" target="_blank"> посиланням </a><br /> або отримати рішення у ЦНАПі. 
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nFile_Report}"</activiti:expression>
+          <activiti:expression><![CDATA["${nFile_Report}"]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, rezim pogodzeno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, rezim pogodzeno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -949,13 +945,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -965,39 +961,38 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Зареєстровано звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          [pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
           [pattern/mail/new_design/_common_content_start.html]
-			&lt;p&gt;
-				Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-				&lt;br /&gt;
-				Ви отримаєте додаткове повідомлення за результатами розгляду звернення на Ваш e-mail.&lt;br /&gt;
-				&lt;br /&gt;
-				${sNameOrgan},&lt;br /&gt;
-				${sAddress}&lt;br /&gt;
-				${sWorkTime}&lt;br /&gt;
-				${sPhoneOrgan}&lt;br /&gt;
-			&lt;/p&gt;	
+			<p>
+				Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.<br />
+				<br />
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення на Ваш e-mail.<br />
+				<br />
+				${sNameOrgan},<br />
+				${sAddress}<br />
+				${sWorkTime}<br />
+				${sPhoneOrgan}<br />
+			</p>	
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br /&gt;
+				${sNameOrgan},<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1007,41 +1002,40 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відхилено звернення на тему: погодження режиму роботи об’єктів торгівлі та сфери послуг.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Ваше звернення [sID_Order] про надання інформації щодо видачи довідки про встановлення режиму роботи об’єкта відхилено. &lt;br /&gt;
-					Причина в наступному: &lt;br /&gt;
-					${sDecisionComment_1} &lt;br /&gt;
-					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt; &lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					На жаль, Ваше звернення [sID_Order] про надання інформації щодо видачи довідки про встановлення режиму роботи об’єкта відхилено. <br />
+					Причина в наступному: <br />
+					${sDecisionComment_1} <br />
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a> <br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1051,39 +1045,38 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення прийнятто на розгляд: погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-  			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-					Вхідний реєстраційний номер Вашого замовлення: ${sExtension_Number_In} від ${sDate_Registrastion_In}.&lt;br /&gt;
-					Ви отримаєте додаткове повідомлення за результатами розгляду звернення на цю email-адресу.&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.<br />
+					Вхідний реєстраційний номер Вашого замовлення: ${sExtension_Number_In} від ${sDate_Registrastion_In}.<br />
+					Ви отримаєте додаткове повідомлення за результатами розгляду звернення на цю email-адресу.<br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1093,13 +1086,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerkStep2}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerkStep2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Погодження режиму роботи об’єктів торгівлі та сфери послуг]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1232,14 +1225,7 @@ execution.setVariable('sInfo_7', per7)
    	 </script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask4" targetRef="servicetask5"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow7" name="Reject" sourceRef="exclusivegateway1" targetRef="servicetask6">
@@ -1256,17 +1242,12 @@ execution.setVariable('sInfo_7', per7)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_3=='return'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="scripttask2" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_529_mode_worktime_3_steps">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_529_mode_worktime_3_steps" id="BPMNPlane_dnepr_cnap_529_mode_worktime_3_steps">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_529_mode_worktime_chernigov_3_steps">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_529_mode_worktime_chernigov_3_steps" id="BPMNPlane_dnepr_cnap_529_mode_worktime_chernigov_3_steps">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="120.0" y="142.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="196.0" y="178.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="71.0" width="151.0" x="550.0" y="142.0"></omgdc:Bounds>
@@ -1307,17 +1288,14 @@ execution.setVariable('sInfo_7', per7)
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="71.0" width="154.0" x="849.0" y="245.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="193.0" y="227.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="769.0" y="157.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="120.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="268.0" y="68.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="769.0" y="157.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="440.0" y="280.0"></omgdi:waypoint>
@@ -1327,14 +1305,14 @@ execution.setVariable('sInfo_7', per7)
         <omgdi:waypoint x="333.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="407.0" y="335.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="30.0" x="353.0" y="300.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="30.0" x="353.0" y="300.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="333.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="229.0" y="330.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="35.0" x="275.0" y="302.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="35.0" x="275.0" y="302.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -1353,21 +1331,9 @@ execution.setVariable('sInfo_7', per7)
         <omgdi:waypoint x="530.0" y="177.0"></omgdi:waypoint>
         <omgdi:waypoint x="550.0" y="177.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="75.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="177.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="172.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="172.0" y="125.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="381.0" y="177.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="177.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="211.0" y="208.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="227.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="701.0" y="177.0"></omgdi:waypoint>
@@ -1377,14 +1343,14 @@ execution.setVariable('sInfo_7', per7)
         <omgdi:waypoint x="789.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="789.0" y="135.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="30.0" x="748.0" y="143.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="30.0" x="748.0" y="143.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="809.0" y="177.0"></omgdi:waypoint>
         <omgdi:waypoint x="870.0" y="177.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="35.0" x="804.0" y="186.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="35.0" x="804.0" y="186.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -1410,12 +1376,16 @@ execution.setVariable('sInfo_7', per7)
         <omgdi:waypoint x="738.0" y="226.0"></omgdi:waypoint>
         <omgdi:waypoint x="740.0" y="240.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="88.0" x="448.0" y="228.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="88.0" x="448.0" y="228.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="320.0" y="123.0"></omgdi:waypoint>
         <omgdi:waypoint x="320.0" y="142.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="57.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

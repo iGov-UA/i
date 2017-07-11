@@ -45,8 +45,6 @@
         <activiti:formProperty id="nArea" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="загрузка файлов" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask7" name="Повідомлення службовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -126,7 +124,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="bank_mfo" name="МФО банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_okpo" name="ЄДРПОУ банку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bank_account" name="Номер рахунку перерахування коштів" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="comment1" name="Коментар до заявки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="decision_step1" name="Рішення етап 1" type="enum" required="true">
           <activiti:value id="attr1_ok" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
@@ -140,9 +137,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="inn_scan" name="Копія довідки про присвоєння ІПН; індивідуальний податковий номер;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="birthdocument_scan" name="Сканована копія свідоцтва про народження Вашої дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку) ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -270,8 +266,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="inn_scan" name="Копія довідки про присвоєння ІПН; індивідуальний податковий номер;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="birthdocument_scan" name="Сканована копія свідоцтва про народження Вашої дитини; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankticket" name="Довідка з банку з реквізитами рахунку;  якщо Ви вже відкрили картку для соціальних виплат, завантажте сюди довідку про її відкриття (на ній вказані повні реквізити Вашого рахунку) ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -410,7 +405,6 @@ ${sNameOrgan}.<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow26" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="servicetask7" targetRef="servicetask5"></sequenceFlow>
     <sequenceFlow id="flow28" sourceRef="exclusivegateway1" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_step1=='attr1_ok'}]]></conditionExpression>
@@ -422,14 +416,12 @@ ${sNameOrgan}.<br />
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_step1=='sign'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_socialhelp_kidsUkraine">
     <bpmndi:BPMNPlane bpmnElement="socialhelp_kidsUkraine" id="BPMNPlane_socialhelp_kidsUkraine">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="4.0" y="85.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="54.0" y="75.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="170.0" y="75.0"></omgdc:Bounds>
@@ -473,10 +465,6 @@ ${sNameOrgan}.<br />
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="400.0" y="141.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="39.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="54.0" y="102.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="826.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="840.0" y="102.0"></omgdi:waypoint>
@@ -508,10 +496,6 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="539.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="505.0" y="168.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
-        <omgdi:waypoint x="159.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="170.0" y="102.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="275.0" y="102.0"></omgdi:waypoint>
         <omgdi:waypoint x="281.0" y="102.0"></omgdi:waypoint>
@@ -541,6 +525,10 @@ ${sNameOrgan}.<br />
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="929.0" y="56.0"></omgdi:waypoint>
         <omgdi:waypoint x="1017.0" y="85.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="39.0" y="102.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="102.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

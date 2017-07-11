@@ -86,14 +86,6 @@
         <activiti:formProperty id="sMailClerk" name="Електронна пошта ПРМТУ" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask5"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask5">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow46" sourceRef="boundaryerror1" targetRef="endevent7"></sequenceFlow>
-    <endEvent id="endevent7" name="End"></endEvent>
-    <sequenceFlow id="flow45" sourceRef="servicetask5" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -209,7 +201,7 @@
         <activiti:formProperty id="sFinishCount" name="Дата закінчення формування заборгованності" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSummCountAll" name="Загальна сума заборгованності перед екіпажем" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMoneyCount" name="Розмір виплат з початку контракту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLawyer" name="Дані довіреної особи або адвоката на місці" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLawyer" name="Дані довіреної особи або адвоката на місці" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEmbassy" name="Чи потрібно повідомити відповідне дипломатичне представництво або МЗС України про цей випадок?" type="enum" writable="false">
           <activiti:value id="sEmbassyYes" name="так"></activiti:value>
           <activiti:value id="sEmbassyNo" name="ні"></activiti:value>
@@ -353,20 +345,12 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow50" sourceRef="servicetask6" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_prmtu_1134">
     <bpmndi:BPMNPlane bpmnElement="prmtu_1134" id="BPMNPlane_prmtu_1134">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="71.0" width="105.0" x="51.0" y="122.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="51.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent7" id="BPMNShape_endevent7">
-        <omgdc:Bounds height="35.0" width="35.0" x="101.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="71.0" width="105.0" x="171.0" y="122.0"></omgdc:Bounds>
@@ -392,18 +376,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="105.0" x="652.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="51.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="66.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="118.0" y="230.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="156.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="276.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="301.0" y="157.0"></omgdi:waypoint>
@@ -447,6 +419,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
         <omgdi:waypoint x="704.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="704.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="36.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
