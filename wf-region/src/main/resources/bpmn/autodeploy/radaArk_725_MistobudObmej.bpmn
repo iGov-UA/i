@@ -40,7 +40,6 @@
         <activiti:formProperty id="doc4" name="Фотофіксація земельної ділянки;у довільній формі" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc5" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc7" name="Копія сертифіката організації, що надала розрахунок" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
@@ -54,7 +53,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
         <activiti:formProperty id="markerRegion" name="Region" type="markers" default="${markerService.loadFromFile('radaArk/radaArk_725_Region.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;bFlag&quot;,&quot;FlagPost&quot;,&quot;sAddress&quot;,&quot;sArchShapka&quot;,&quot;sShapka&quot;,&quot;sArkhPost&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів; ;bVisible=false" type="string" default="easy"></activiti:formProperty>
         <activiti:formProperty id="FlagPost" name="Флаг способу отримання; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -77,11 +75,6 @@
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="надання містобудівних умов та обмежень забудови земельної ділянки"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow5" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var sum = 18.01;
 if ((execution.getVariable('asLust')) === 'sEnamLustKur') {
@@ -105,8 +98,6 @@ per6 = num2[i];}}
 execution.setVariable('assignment', per6);
 </script>
     </scriptTask>
-    <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow31" name="БЕЗ ПОШТИ" sourceRef="exclusivegateway3" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVidpovid != 'sEnamPost'}]]></conditionExpression>
     </sequenceFlow>
@@ -119,78 +110,78 @@ execution.setVariable('assignment', per6);
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;
-Ваше звернення [sID_Order] про ${sPosluga_nameZV} успішно зареєстроване.&lt;br /&gt;
+<p>
+Ваше звернення [sID_Order] про ${sPosluga_nameZV} успішно зареєстроване.<br />
 Ви отримаєте відповідь протягом десяти робочих днів.
-&lt;/p&gt;
+</p>
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask12" name="Привітання з поштою" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення зареєстроване. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення зареєстроване. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.&lt;br /&gt;
-Ви отримаєте відповідь протягом 10 робочих днів.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.<br />
+Ви отримаєте відповідь протягом 10 робочих днів.<br /><br />
 
-Ви обрали доставку відповіді поштою. Після обробки звернення вам надійде лист з посиланням для оплати.&lt;br /&gt;&lt;br /&gt;
+Ви обрали доставку відповіді поштою. Після обробки звернення вам надійде лист з посиланням для оплати.<br /><br />
 
-Порядок обробки:&lt;br&gt;
-Спочатку вашу заяву перевірить ЦНАП.&lt;br /&gt;
-Потім, звернення надійде до Міської ради і буде нею оброблене.&lt;br /&gt;
-Якщо помилки будуть критичні, в наданні послуги буде відмовлено.&lt;br /&gt;&lt;br /&gt;
-Після обробки в раді, відповідь буде передана до ЦНАПу. Про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.&lt;br /&gt;&lt;br /&gt;
-У випадку позитивного результату обробки, в листі буде посилання для оплати доставки поштою.&lt;br /&gt;
-На оплату буде надано 48 годин.&lt;br /&gt;
-У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно в ЦНАПі.&lt;br /&gt; 
+Порядок обробки:<br>
+Спочатку вашу заяву перевірить ЦНАП.<br />
+Потім, звернення надійде до Міської ради і буде нею оброблене.<br />
+Якщо помилки будуть критичні, в наданні послуги буде відмовлено.<br /><br />
+Після обробки в раді, відповідь буде передана до ЦНАПу. Про результат вас буде сповіщено СМС повідомленням та листом на електронну пошту.<br /><br />
+У випадку позитивного результату обробки, в листі буде посилання для оплати доставки поштою.<br />
+На оплату буде надано 48 годин.<br />
+У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно в ЦНАПі.<br /> 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -201,13 +192,13 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -252,7 +243,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc1},${doc2},${doc3},${doc4},${doc5},${doc6},${doc7}</activiti:expression>
+            <activiti:expression><![CDATA[${doc1},${doc2},${doc3},${doc4},${doc5},${doc6},${doc7}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -269,32 +260,32 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;Ваше звернення про ${sPosluga_nameZV} пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі.&lt;br&gt;
-За кілька днів ви отримаєте результат опрацювання на цей email.&lt;br /&gt;
+<p>Ваше звернення про ${sPosluga_nameZV} пройшло попередню перевірку адміністратором ЦНАП і передано для опрацювання відповідальній особі.<br>
+За кілька днів ви отримаєте результат опрацювання на цей email.<br />
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -304,39 +295,38 @@ ${sPhoneOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-По вашому зверненню №[sID_Order] винесено відмову.&lt;br /&gt;
-Заява не пройшла перевірку в ЦНАПі.&lt;br /&gt;
-&lt;p&gt;Причина відмови: ${comment}&lt;/p&gt;
-Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
+По вашому зверненню №[sID_Order] винесено відмову.<br />
+Заява не пройшла перевірку в ЦНАПі.<br />
+<p>Причина відмови: ${comment}</p>
+Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow20" name="ЦНАП-ЦНАП" sourceRef="exclusivegateway5" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag!='hard'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow23" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow24" name="ЦНАП-Архітура-ЦНАП" sourceRef="exclusivegateway5" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bFlag=='hard'}]]></conditionExpression>
     </sequenceFlow>
@@ -382,7 +372,6 @@ ${sNameOrgan}&lt;br /&gt;
         </activiti:formProperty>
         <activiti:formProperty id="commentDGK" name="Вкажіть підставу відмови у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Відповідь" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markerVidmovaDGK" name="VidmovaDGK" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/VidmovaDGK.json')}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
@@ -390,7 +379,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${oplata}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${oplata}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -401,13 +390,13 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -451,14 +440,12 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
-        
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html] ; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${oplata}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${oplata}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -469,13 +456,13 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>ДГК обробив заяву. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[ДГК обробив заяву. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify_afteDGK.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify_afteDGK.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -496,7 +483,7 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${result}</activiti:expression>
+            <activiti:expression><![CDATA[${result}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -525,36 +512,36 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;Ваше звернення [sID_Order] про ${sPosluga_nameZV} опрацьоване.&lt;/p&gt;
-Заявка задоволена, відповідь готова.&lt;br/&gt;
-Ви можете завантажити її з додатку до цього листа, та отримати оригінал за адресою:&lt;br/&gt;
-${sAddress}&lt;br/&gt;
-${sWorkTime}&lt;br/&gt;
-${sPhoneOrgan}&lt;br/&gt;
+<p>Ваше звернення [sID_Order] про ${sPosluga_nameZV} опрацьоване.</p>
+Заявка задоволена, відповідь готова.<br/>
+Ви можете завантажити її з додатку до цього листа, та отримати оригінал за адресою:<br/>
+${sAddress}<br/>
+${sWorkTime}<br/>
+${sPhoneOrgan}<br/>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
+${sNameOrgan}<br/>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -564,35 +551,35 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-&lt;p&gt;На жаль, виконати ваш запит [sID_Order] не можливо.&lt;/p&gt;
-Причина відмови:&lt;br&gt;
-&lt;p&gt;${commentDGK}&lt;/p&gt;
-За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;
+<p>На жаль, виконати ваш запит [sID_Order] не можливо.</p>
+Причина відмови:<br>
+<p>${commentDGK}</p>
+За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a>
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+${sNameOrgan}<br/>
+${sPhoneOrgan}.<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -606,41 +593,41 @@ ${sPhoneOrgan}.&lt;br /&gt;
     <serviceTask id="servicetask13" name="Оплата пошти" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Оплата листа. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Оплата листа. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-По вашому зверненню №[sID_Order] винесено позитивне рішення.&lt;br /&gt;
-Відповідь готова і знаходиться в ЦНАПі.&lt;br /&gt;&lt;br /&gt;
-При замовленні послуги, заповнюючи форму ви обрали доставку поштою.&lt;br /&gt; 
+По вашому зверненню №[sID_Order] винесено позитивне рішення.<br />
+Відповідь готова і знаходиться в ЦНАПі.<br /><br />
+При замовленні послуги, заповнюючи форму ви обрали доставку поштою.<br /> 
 Для того щоб закінчити процедуру, необхідно протягом 48 годин(2х діб) сплатити послуги Укрпошти (до вартості послуги буде додана комісія 1,8%)
 [paymentButton_LiqPay]
 
-Після оплати, відповідь буде надано Укрпошті для доставки, про що вас повідомлять додатково.&lt;br /&gt;&lt;br /&gt;  
+Після оплати, відповідь буде надано Укрпошті для доставки, про що вас повідомлять додатково.<br /><br />  
 
-&lt;b&gt;На оплату надано 48 годин.&lt;/b&gt;&lt;br /&gt;
-У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно у ЦНАПі.&lt;br /&gt; 
+<b>На оплату надано 48 годин.</b><br />
+У випадку не сплати, доставка поштою буде скасована і ви зможете отримати відповідь нарочно у ЦНАПі.<br /> 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
+${sNameOrgan}<br/>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Oplatit` dostavky. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Oplatit` dostavky. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -674,26 +661,26 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нема оплати. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Нема оплати. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Ви не оплатили поштову доставку відповіді протягом 48ми годин.&lt;br /&gt; 
-Поштова доставка скасована.&lt;br /&gt;&lt;br /&gt;
-Ви можете отримати відповідь в ЦНАПі.&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
+Ви не оплатили поштову доставку відповіді протягом 48ми годин.<br /> 
+Поштова доставка скасована.<br /><br />
+Ви можете отримати відповідь в ЦНАПі.<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html] 
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
+${sNameOrgan}<br/>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -703,19 +690,19 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>akylish88@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[akylish88@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Доставка не оплачена. Документи буде отримано нарочно. ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}</activiti:expression>
+          <activiti:expression><![CDATA[Доставка не оплачена. Документи буде отримано нарочно. ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) колего.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Заявник ${bankIdfirstName} ${bankIdmiddleName} не сплатив доставку поштою по заявці №[sID_Order] про ${sPosluga_nameZV}.&lt;br /&gt;
-Доставка поштою по цій заявці скасована, документ буде отримано нарочно &lt;br /&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) колего.</b><br /><br />
+<p>Заявник ${bankIdfirstName} ${bankIdmiddleName} не сплатив доставку поштою по заявці №[sID_Order] про ${sPosluga_nameZV}.<br />
+Доставка поштою по цій заявці скасована, документ буде отримано нарочно <br />
+<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -726,20 +713,20 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Оплата доставки поштою підтверджена. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Оплата доставки поштою підтверджена. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Оплату прийнято, вас буде повідомлено додатково про відправлення відповіді поштою.&lt;br/&gt;
+Оплату прийнято, вас буде повідомлено додатково про відправлення відповіді поштою.<br/>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
+${sNameOrgan}<br/>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -801,21 +788,21 @@ ${sNameOrgan}&lt;br/&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Пошта отримала документи. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Пошта отримала документи. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-ЦНАП передав документи Укрпошті для відправлення.&lt;br/&gt;
-Через кілька днів ви отримаєте відповідь листом.&lt;br/&gt;
+ЦНАП передав документи Укрпошті для відправлення.<br/>
+Через кілька днів ви отримаєте відповідь листом.<br/>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br/&gt;
+${sNameOrgan}<br/>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -831,37 +818,37 @@ ${sNameOrgan}&lt;br/&gt;
     <serviceTask id="servicetask18" name="Лист відправлено" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
-          <activiti:expression>noreply@igov.org.ua</activiti:expression>
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Відповідь надіслано. ${sPosluga_name}</activiti:expression>
+          <activiti:expression><![CDATA[Відповідь надіслано. ${sPosluga_name}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Відповідь надіслано листом. Укрпошта підтверджує відправлення.&lt;br /&gt;
+Відповідь надіслано листом. Укрпошта підтверджує відправлення.<br />
 
-&lt;p&gt;Ідентифікатор внутрішнього поштового відправлення: ${sPostIdentif}&lt;/p&gt;
-Відстежити доставку тут: &lt;a href="http://services.ukrposhta.ua/bardcodesingle/" target="_blank"&gt;services.ukrposhta.ua&lt;/a&gt;
+<p>Ідентифікатор внутрішнього поштового відправлення: ${sPostIdentif}</p>
+Відстежити доставку тут: <a href="http://services.ukrposhta.ua/bardcodesingle/" target="_blank">services.ukrposhta.ua</a>
 			
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vidpovid na vashe zvernennya [sID_Order] vidpravleno poshtoyu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vidpovid na vashe zvernennya [sID_Order] vidpravleno poshtoyu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -872,23 +859,15 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow52" sourceRef="servicetask15" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow53" sourceRef="servicetask7" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow55" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_radaArk_725_MistobudObmej">
     <bpmndi:BPMNPlane bpmnElement="radaArk_725_MistobudObmej" id="BPMNPlane_radaArk_725_MistobudObmej">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="82.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="235.0" y="64.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="232.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="57.0" width="105.0" x="518.0" y="79.0"></omgdc:Bounds>
@@ -992,14 +971,6 @@ ${sNameOrgan}&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="753.0" y="333.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="117.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="250.0" y="64.0"></omgdi:waypoint>
-        <omgdi:waypoint x="249.0" y="45.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="480.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="518.0" y="107.0"></omgdi:waypoint>
@@ -1039,10 +1010,6 @@ ${sNameOrgan}&lt;br /&gt;
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="62.0" x="588.0" y="401.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="265.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="310.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="793.0" y="353.0"></omgdi:waypoint>
@@ -1205,6 +1172,10 @@ ${sNameOrgan}&lt;br /&gt;
         <omgdi:waypoint x="883.0" y="295.0"></omgdi:waypoint>
         <omgdi:waypoint x="773.0" y="295.0"></omgdi:waypoint>
         <omgdi:waypoint x="773.0" y="333.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
+        <omgdi:waypoint x="117.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

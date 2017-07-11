@@ -30,14 +30,6 @@
         <activiti:formProperty id="marker1" name="назва підприємства" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;orgName&quot;],&quot;asID_Field&quot;:{&quot;sService&quot;:&quot;whoIs&quot;},&quot;sCondition&quot;:&quot;[sService]=='ur'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var per1 = 'Obl'
@@ -62,12 +54,6 @@ per2 = 'Чернігівська обласна держана адмініст�
 var per3 = 'svyrydenko.yulia@gmail.com'
 var per4 = 'vvsparrow@gmail.com'
 }
-if (execution.getVariable('sID_UA') == '6800000000'){
-per1 = 'Хмельницької обласної державної адміністрації'
-per2 = 'Хмельницька обласна держана адміністрація, м. Хмельницький, майдан Незалежності, Будинок Рад'
-var per3 = 'zhigan.roman@gmail.com'
-var per4 = 'zhigan.roman@gmail.com'
-}
 execution.setVariable('obl', per1)
 execution.setVariable('rekv', per2)
 execution.setVariable('postV1', per3)
@@ -78,7 +64,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask5" name="Повідомлення ОДА про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${postV1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -87,7 +73,7 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[Нове звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -95,7 +81,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask8" name="Повідомлення ОДА про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${postV2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -104,7 +90,7 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[Нове звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -112,7 +98,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask4" name="Повідомлення про успішне замовлення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -121,21 +107,21 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[Звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-									&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш запит був успішно зареєстрований у нашій системі.&lt;br /&gt; 	
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+									<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										Ваш запит був успішно зареєстрований у нашій системі.<br /> 	
 										Спеціалісти ОДА повинні дати відповідь найближчим часом.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
 									[pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3]
                                     [pattern/mail/_common_signature_end.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Перевірка документів операціоністом" activiti:candidateGroups="${sID_UA}_oda_5">
+    <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="${sID_UA}_oda_5">
       <extensionElements>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -164,7 +150,7 @@ execution.setVariable('postV2', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${doc}</activiti:expression>
+            <activiti:expression><![CDATA[${doc}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -177,7 +163,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask6" name="Email - відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -186,19 +172,19 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[Звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
 				На жаль, ми змушені відмовити Вам у реєстрації звернення. 
-			&lt;/p&gt;
-			&lt;p&gt;
-			Коментар державного службовця:&lt;br&gt;
+			</p>
+			<p>
+			Коментар державного службовця:<br>
 			${decisionComment}
-			&lt;/p&gt;
-			За необхідності Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
+			</p>
+			За необхідності Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
 			[pattern/mail/_common_signature_start.html]
-            [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3]&lt;/p&gt;
-			[pattern/mail/_common_footer.html]</activiti:expression>
+            [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3]</p>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -210,7 +196,7 @@ execution.setVariable('postV2', per4)
     <serviceTask id="servicetask7" name="Звернення передане на розгляд" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -219,16 +205,16 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[Звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										Ваш звернення було передане на розгляд Департаменту економічного розвитку, інвестиційної діяльності та міжнародного співробітництва облдержадміністрації щодо проблемних питань ведення бізнесу.&lt;br /&gt; 	
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										Ваш звернення було передане на розгляд Департаменту економічного розвитку, інвестиційної діяльності та міжнародного співробітництва облдержадміністрації щодо проблемних питань ведення бізнесу.<br /> 	
 										Ви отримаєте відповідь у найближчій час.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
                                     [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3]
                                     [pattern/mail/_common_signature_end.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -267,29 +253,29 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${docFile}"</activiti:expression>
+          <activiti:expression><![CDATA["${docFile}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення щодо полегшення ведення бізнесу розглянуте.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Ваше звернення щодо полегшення ведення бізнесу розглянуте.<br />
 										Скан-копія рішення знаходиться у додатках до цього листа.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
+                                    </p>
+                                    <p>
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
-                                    &lt;/p&gt;
+                                    </p>
                                     [pattern/mail/_common_signature_start.html]
                                     [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3]
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -304,50 +290,45 @@ execution.setVariable('postV2', per4)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення на тему: Захисти свій бізнес]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${docFile}"</activiti:expression>
+          <activiti:expression><![CDATA["${docFile}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення щодо полегшення ведення бізнесу розглянуте.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Ваше звернення щодо полегшення ведення бізнесу розглянуте.<br />
 										Скан-копія рішення знаходиться у додатках до цього листа.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
+                                    </p>
+                                    <p>
                                         Фізична копія буде надіслана Вам за адресою ${orgAddress}.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;
+                                    </p>
+                                    <p>
 									Будь ласка, оцініть якість надання послуги за допомогою форми нижче.
-                                    &lt;/p&gt;
+                                    </p>
                                     [pattern/mail/_common_signature_start.html]
                                     [pattern_dictonary:ternopol_oda_209_mailer.csv:value{[sID_UA]}:3]
                                     [pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="servicetask3" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_oda_207">
     <bpmndi:BPMNPlane bpmnElement="ternopol_oda_207" id="BPMNPlane_ternopol_oda_207">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="66.0" width="117.0" x="83.0" y="93.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="92.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="52.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="159.0" y="32.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="65.0" width="105.0" x="220.0" y="93.0"></omgdc:Bounds>
@@ -388,21 +369,10 @@ execution.setVariable('postV2', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="72.0" width="105.0" x="960.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="159.0" y="32.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="45.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="83.0" y="126.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="150.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="117.0" y="87.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="141.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="142.0" y="60.0"></omgdi:waypoint>
-        <omgdi:waypoint x="159.0" y="59.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="264.0" y="59.0"></omgdi:waypoint>
+        <omgdi:waypoint x="274.0" y="61.0"></omgdi:waypoint>
+        <omgdi:waypoint x="272.0" y="93.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="272.0" y="158.0"></omgdi:waypoint>
@@ -474,10 +444,9 @@ execution.setVariable('postV2', per4)
         <omgdi:waypoint x="1013.0" y="327.0"></omgdi:waypoint>
         <omgdi:waypoint x="967.0" y="327.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="264.0" y="59.0"></omgdi:waypoint>
-        <omgdi:waypoint x="274.0" y="61.0"></omgdi:waypoint>
-        <omgdi:waypoint x="272.0" y="93.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="27.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="211.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

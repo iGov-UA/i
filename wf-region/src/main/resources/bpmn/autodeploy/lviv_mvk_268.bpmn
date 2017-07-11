@@ -86,8 +86,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний колего!</strong><br /><br />
 У Вас в черзі на обробку нове звернення.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
@@ -109,8 +108,7 @@
           <activiti:string><![CDATA[Звернення на тему: Присвоєння поштової адреси об’єкту нерухомого майна]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br /><br />
 Ваше звернення щодо присвоєння поштової адреси об’єкту нерухомого майна, який розташовано:${sAdressObject}, отримано і буде розглянуто впродовж 30 календарних днів.<br />
 <br />
@@ -143,8 +141,7 @@ ${sNameOrgan}<br />
           <activiti:string><![CDATA[Звернення на тему: Присвоєння поштової адреси об’єкту нерухомого майна]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}</strong><br />
 На жаль, Ваше звернення щодо присвоєння поштової адреси об’єкту нерухомого майна, який розташовано:${sAdressObject} відхилено через недостатню або неправильну інформацію.<br />
 ${comment_1}<br />
@@ -180,8 +177,7 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${rishen},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</strong><br /><br />
 Вам відмовлено у присвоєнні поштової адреси об’єкту нерухомого майна, який розташовано:${sAdressObject}.
 ${comment_2}<br />
@@ -254,11 +250,6 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="отримання додаткових документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask2">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow23" name="+" sourceRef="exclusivegateway1" targetRef="servicetask5">
@@ -281,8 +272,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow39" sourceRef="servicetask6" targetRef="endevent5"></sequenceFlow>
-    <sequenceFlow id="flow40" sourceRef="boundaryerror1" targetRef="endevent5"></sequenceFlow>
-    <sequenceFlow id="flow41" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_lviv_mvk_268">
     <bpmndi:BPMNPlane bpmnElement="lviv_mvk_268" id="BPMNPlane_lviv_mvk_268">
@@ -313,12 +303,6 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="69.0" width="129.0" x="393.0" y="272.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="58.0" width="131.0" x="90.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="51.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="283.0" y="286.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -328,10 +312,6 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
         <omgdc:Bounds height="35.0" width="35.0" x="87.0" y="113.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="56.0" y="49.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="49.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="457.0" y="80.0"></omgdi:waypoint>
         <omgdi:waypoint x="456.0" y="110.0"></omgdi:waypoint>
@@ -390,12 +370,8 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="240.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="122.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="105.0" y="81.0"></omgdi:waypoint>
-        <omgdi:waypoint x="104.0" y="113.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="221.0" y="49.0"></omgdi:waypoint>
+        <omgdi:waypoint x="56.0" y="49.0"></omgdi:waypoint>
         <omgdi:waypoint x="237.0" y="50.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

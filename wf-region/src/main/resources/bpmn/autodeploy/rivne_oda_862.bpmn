@@ -196,13 +196,6 @@
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('rivne_oda/rivne_oda_862_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -215,8 +208,7 @@
           <activiti:string><![CDATA[Нове звернення. Видача Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <strong>Шановний колего!</strong><br /><br />
 У Вас в черзі на обробку нове звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств.<br />
 Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
@@ -226,7 +218,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянина про реєстрацію у системі" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -473,8 +464,7 @@
           <activiti:string><![CDATA[Видача Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 На жаль, Ваше звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств було відхилено.</p>
 <p>Причина в наступному:</p>
@@ -514,8 +504,7 @@ ${sNameOrgan}.<br>
           <activiti:string><![CDATA[Видача Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br><br>
 Ваше звернення щодо видачи Акта обстеження приймальних пунктів спеціалізованих металургійних переробних підприємств зареєстровано.<br>
 Робоча група призначена на ${sDateCommitteeOut}.<br> 
@@ -767,20 +756,12 @@ ${sNameOrgan},<br>
     </serviceTask>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rivne_oda_862">
     <bpmndi:BPMNPlane bpmnElement="rivne_oda_862" id="BPMNPlane_rivne_oda_862">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="65.0" width="121.0" x="110.0" y="185.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="217.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="187.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="65.0" width="121.0" x="280.0" y="185.0"></omgdc:Bounds>
@@ -812,18 +793,6 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="488.0" y="418.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="75.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="110.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="205.0" y="247.0"></omgdi:waypoint>
-        <omgdi:waypoint x="204.0" y="270.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="231.0" y="217.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="217.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="401.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="218.0"></omgdi:waypoint>
@@ -859,6 +828,10 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="560.0" y="435.0"></omgdi:waypoint>
         <omgdi:waypoint x="523.0" y="435.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="75.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="217.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

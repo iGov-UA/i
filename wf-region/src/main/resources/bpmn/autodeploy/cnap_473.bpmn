@@ -27,15 +27,15 @@
         <activiti:formProperty id="sDateBirth2" name="Рік народження померлого" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateDeath2" name="Рік смерті" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCauseDeath2" name="Причина смерті" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Копія свідоцтва про смерть, виданого відділом державної реєстрації управління юстиції" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Копія лікарського свідоцтва про смерть або довідки про причину смерті, виданих бюро судово-медичної експертизи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Копія протоколу (постанови) слідчих органів про визнання померлої особи" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Копія листа бюро судово-медичної експертизи про підтвердження факту смерті та дати поховання загиблого" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Копія дозволу або довідки виконавчого органу відповідної сільської, селищної, міської ради на перепоховання загиблого на іншому кладовищі (за місцем, куди вивозяться загибла особа для поховання)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile6" name="Копія лікарського свідоцтва про смерть, виданого лікувально-профілактичним закладом за місцем смерті" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile7" name="Копія довідки з лікувально-профілактичного закладу про відсутність у тілі та навколо нього сторонніх предметів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile8" name="Копія довідки від органів прокуратури чи міліції про можливість вивезення трупу за кордон;(у випадку насильницької смерті)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Копія свідоцтва про смерть, виданого відділом державної реєстрації управління юстиції ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Копія лікарського свідоцтва про смерть або довідки про причину смерті, виданих бюро судово-медичної експертизи ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Копія протоколу (постанови) слідчих органів про визнання померлої особи ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Копія листа бюро судово-медичної експертизи про підтвердження факту смерті та дати поховання загиблого ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Копія дозволу або довідки виконавчого органу відповідної сільської, селищної, міської ради на перепоховання загиблого на іншому кладовищі (за місцем, куди вивозяться загибла особа для поховання) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Копія лікарського свідоцтва про смерть, виданого лікувально-профілактичним закладом за місцем смерті ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Копія довідки з лікувально-профілактичного закладу про відсутність у тілі та навколо нього сторонніх предметів ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Копія довідки від органів прокуратури чи міліції про можливість вивезення трупу за кордон;(у випадку насильницької смерті) ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_473.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -45,28 +45,26 @@
         <activiti:formProperty id="sShapka220" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого).&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Номер звернення: [sID_Order]&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого).<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Номер звернення: [sID_Order]<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -76,37 +74,34 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого, у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка ЦНАП (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -144,20 +139,22 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoice&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumSt'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprOblSnap/cnap_473_print1.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви при перезахороненні загиблого в зоні АТО" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody2" name="[pattern/print/dneprOblSnap/cnap_473_print2.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви при перезахороненні померлого" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Копія свідоцтва про смерть, виданого відділом державної реєстрації управління юстиції ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Копія лікарського свідоцтва про смерть або довідки про причину смерті, виданих бюро судово-медичної експертизи ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Копія протоколу (постанови) слідчих органів про визнання померлої особи ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Копія листа бюро судово-медичної експертизи про підтвердження факту смерті та дати поховання загиблого ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Копія дозволу або довідки виконавчого органу відповідної сільської, селищної, міської ради на перепоховання загиблого на іншому кладовищі (за місцем, куди вивозяться загибла особа для поховання) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Копія лікарського свідоцтва про смерть, виданого лікувально-профілактичним закладом за місцем смерті ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Копія довідки з лікувально-профілактичного закладу про відсутність у тілі та навколо нього сторонніх предметів ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Копія довідки від органів прокуратури чи міліції про можливість вивезення трупу за кордон; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8},${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -166,34 +163,33 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${comment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) було відхилено.</p>
+<p>Причина в наступному:</p>
+<p>${comment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -206,32 +202,31 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відправлене в головне управління Держсанепідслужби.&lt;br /&gt;
-Спеціалісти з головного управління Держсанепідслужби повинні дати відповідь протягом 3-х календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${sExtensionNumber}&lt;/p&gt;&lt;br /&gt; 
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відправлене в головне управління Держсанепідслужби.<br />
+Спеціалісти з головного управління Держсанепідслужби повинні дати відповідь протягом 3-х календарних днів з дня реєстрації заяви.<br /> 
+<p>Номер Вашого замовлення: ${sExtensionNumber}</p><br /> 
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] naprvleno do vidpovidnoho viddilu. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] naprvleno do vidpovidnoho viddilu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -281,40 +276,39 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати лист-довідку особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - опрацьовано. <br />
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати лист-довідку особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+</p>
+<br />
+${sAddress}.<br />
+${sWorkTime}.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nReference}"</activiti:expression>
+          <activiti:expression><![CDATA["${nReference}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -324,34 +318,33 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Видача листа-довідки на перевезення (перезахоронення) померлого (загиблого), у тому числі в он-лайн сервісі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-              [pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відхилено.&lt;br /&gt;
-Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+На жаль, Ваше звернення щодо видачи листа-довідки на перевезення (перезахоронення) померлого (загиблого) - відхилено.<br />
+Вам надіслано в прикріпленому файлі рішення з вказаною причиною. <br />
+</p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nReference}"</activiti:expression>
+          <activiti:expression><![CDATA["${nReference}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -365,17 +358,12 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow14" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow15" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_473">
     <bpmndi:BPMNPlane bpmnElement="cnap_473" id="BPMNPlane_cnap_473">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="168.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="210.0" y="150.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="280.0" y="186.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="71.0" width="105.0" x="350.0" y="150.0"></omgdc:Bounds>
@@ -416,14 +404,6 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="277.0" y="565.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="175.0" y="185.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="185.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="315.0" y="185.0"></omgdi:waypoint>
-        <omgdi:waypoint x="350.0" y="185.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="455.0" y="185.0"></omgdi:waypoint>
         <omgdi:waypoint x="490.0" y="185.0"></omgdi:waypoint>
@@ -431,10 +411,6 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="595.0" y="185.0"></omgdi:waypoint>
         <omgdi:waypoint x="630.0" y="185.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="295.0" y="216.0"></omgdi:waypoint>
-        <omgdi:waypoint x="294.0" y="289.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="682.0" y="221.0"></omgdi:waypoint>
@@ -444,7 +420,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="662.0" y="306.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="307.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="75.0" x="595.0" y="286.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="75.0" x="595.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -455,7 +431,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="682.0" y="326.0"></omgdi:waypoint>
         <omgdi:waypoint x="682.0" y="390.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="81.0" x="643.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="81.0" x="643.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -471,7 +447,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="573.0" y="483.0"></omgdi:waypoint>
         <omgdi:waypoint x="465.0" y="483.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="471.0" y="463.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="471.0" y="463.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -479,7 +455,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="574.0" y="583.0"></omgdi:waypoint>
         <omgdi:waypoint x="467.0" y="582.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="480.0" y="561.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="480.0" y="561.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -489,6 +465,10 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="362.0" y="582.0"></omgdi:waypoint>
         <omgdi:waypoint x="312.0" y="582.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="175.0" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="350.0" y="185.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

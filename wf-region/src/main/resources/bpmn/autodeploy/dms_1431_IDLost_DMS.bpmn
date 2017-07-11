@@ -26,7 +26,7 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -101,13 +101,17 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
 </p>
 <p>
-
+<b>Вам необхідно зробити два платежу (реквізити для сплати адмінсбору доступні за <a href="http://dmsu.gov.ua/invoice/" target="_blank">посиланням</a>):</b> 
+	<ul>
+		<li>адмінзбір за оформлення ID-картки. </li>
+		<li>у разі втрати паспорта держмито за втрату паспорта. </li>
+	</ul>
 	<b>Зверніть увагу:</b> В квитанції дані платника повинні бути написані українською мовою, а також бути присутній код підрозділу ДМС (знаходиться у реквізитах платежу). В іншому випадку Ваші документи можуть бути не прийняті в підрозділі ДМС.
 </p>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС:</b>
 	<ul>
-		<li>довідка про реєстрацію місця проживання (Її можна отримати особисто у органах реєстрації  місця проживання або замовити через <a href="https://igov.org.ua/service/24/general" target="_blank">iGov</a> (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів;</li>
+<li>довідка про реєстрацію місця проживання (Її можна отримати особисто у органах реєстрації  місця проживання або замовити через <a href="https://igov.org.ua/service/24/general" target="_blank">iGov</a> (працює не для всіх регіонів). Строк надання послуги через iGov - 10 календарних днів;</li>
 		<li>оригінал та копію ІПН;</li>
 		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
 	</ul>

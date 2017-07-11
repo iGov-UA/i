@@ -581,12 +581,6 @@ execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sTypeCustodypf', per3)
 	  </script>
     </scriptTask>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow45" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow46" sourceRef="scripttask1" targetRef="servicetask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -597,9 +591,7 @@ execution.setVariable('sTypeCustodypf', per3)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow53" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow65" sourceRef="servicetask5" targetRef="servicetask9"></sequenceFlow>
-    <sequenceFlow id="flow72" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow79" sourceRef="usertask2" targetRef="exclusivegateway6"></sequenceFlow>
@@ -614,6 +606,7 @@ execution.setVariable('sTypeCustodypf', per3)
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow85" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
     <sequenceFlow id="flow86" sourceRef="servicetask9" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow87" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopol_rcnap_264">
     <bpmndi:BPMNPlane bpmnElement="ternopol_rcnap_264" id="BPMNPlane_ternopol_rcnap_264">
@@ -647,17 +640,8 @@ execution.setVariable('sTypeCustodypf', per3)
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="71.0" width="117.0" x="60.0" y="62.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="115.0" x="218.0" y="62.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="304.0" y="98.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="255.0" y="406.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="370.0" y="95.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="258.0" y="762.0"></omgdc:Bounds>
@@ -668,14 +652,6 @@ execution.setVariable('sTypeCustodypf', per3)
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="412.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="62.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="218.0" y="97.0"></omgdi:waypoint>
-        <omgdi:waypoint x="177.0" y="97.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
         <omgdi:waypoint x="118.0" y="133.0"></omgdi:waypoint>
         <omgdi:waypoint x="118.0" y="151.0"></omgdi:waypoint>
@@ -699,10 +675,6 @@ execution.setVariable('sTypeCustodypf', per3)
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="180.0" y="186.0"></omgdi:waypoint>
         <omgdi:waypoint x="217.0" y="186.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
-        <omgdi:waypoint x="334.0" y="113.0"></omgdi:waypoint>
-        <omgdi:waypoint x="370.0" y="112.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow79" id="BPMNEdge_flow79">
         <omgdi:waypoint x="275.0" y="617.0"></omgdi:waypoint>
@@ -731,6 +703,10 @@ execution.setVariable('sTypeCustodypf', per3)
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
         <omgdi:waypoint x="275.0" y="222.0"></omgdi:waypoint>
         <omgdi:waypoint x="275.0" y="282.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow87" id="BPMNEdge_flow87">
+        <omgdi:waypoint x="275.0" y="36.0"></omgdi:waypoint>
+        <omgdi:waypoint x="118.0" y="62.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

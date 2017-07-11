@@ -27,18 +27,18 @@
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nDoc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot;" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDoc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDoc3" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову;з ЕЦП нотаріуса" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDoc4" name="Викопіювання з схеми землекористування сільської/селищної ради з позначенням – земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDoc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot; ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів. ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDoc3" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову;з ЕЦП нотаріуса ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDoc4" name="Викопіювання з схеми землекористування сільської/селищної ради з позначенням – земельної ділянки ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0455_buildingPassp_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -48,7 +48,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[msvidran@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення: Видача будівельного паспорту забудови земельної ділянки. Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
@@ -87,15 +87,15 @@
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0455_buildingPassp.html] ; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0455_buildingPassp.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -216,24 +216,25 @@ ${sNameOrgan},<br>
           <activiti:value id="sEnumYes" name="Будівельний паспорт готов. Запросити громадянина"></activiti:value>
           <activiti:value id="sEnumNo" name="Відмова в видачи паспорта. Відправити відповідь"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nAnswerYes" name="Завантажте скан-копію паспорта" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswerNo" name="Завантажте скан-копию відповіді з відмовою" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0455_buildingPassp.html] ; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchShapka" name="Шапка заяви ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nAnswerYes" name="Завантажте скан-копію паспорта ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswerNo" name="Завантажте скан-копию відповіді з відмовою ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0455_buildingPassp.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArchName" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0455_buildingPassp_2.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDoc1},${nDoc2},${nDoc3},${nDoc4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
-      </extensionElements>
+        
+        <activiti:formProperty id="nDoc1" name="Засвідчена в установленому порядку копія документа про право власності або користування земельною ділянкою;згідно з роз`ясненням МінЮсту від 02.2013, на засвідченому документі проставляється прізвище і ініціали того, хто посвідчує, особистий підпис, дата і відмітка &quot;Згідно з оригіналом&quot; ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc2" name="Ескізні наміри забудови;місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів. ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc3" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nDoc4" name="Викопіювання з схеми землекористування сільської/селищної ради з позначенням – земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+              </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>

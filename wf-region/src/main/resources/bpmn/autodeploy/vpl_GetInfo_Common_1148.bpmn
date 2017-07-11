@@ -36,7 +36,6 @@
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/vpl_GetInfo_Common_1148_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="[Етап I] Прийняття рішення щодо розгляду звернення (1-й крок)" activiti:candidateGroups="vpl_upszn${nArea}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання послуги" type="string" writable="false"></activiti:formProperty>
@@ -62,7 +61,7 @@
           <activiti:value id="reject" name="Відмовити у розгляді звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_1" name="Внесіть, будь ласка, відповідь щодо запиту, яку буде надіслано громадянину" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину; ;bNew=true" type="file" default=" " ></activiti:formProperty>
+        <activiti:formProperty id="nFile_Answer" name="Завантажте файл з відповіддю, що надійде громадянину; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -85,13 +84,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -101,37 +100,36 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Зареєстровано звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;br /&gt;
-				Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
-				&lt;br /&gt;
-				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-				${sNameOrgan}&lt;br /&gt;
-				${sAddress}&lt;br /&gt;
-				${sWorkTime}&lt;br /&gt;
-				${sPhoneOrgan}&lt;br /&gt;
+				<br />
+				Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.<br />
+				<br />
+				Ви отримаєте додаткове повідомлення за результатами розгляду звернення.<br />
+				${sNameOrgan}<br />
+				${sAddress}<br />
+				${sWorkTime}<br />
+				${sPhoneOrgan}<br />
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br&gt;
+				${sNameOrgan},<br>
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -141,39 +139,38 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відхилено звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;br /&gt;
-				На жаль, Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, відхилено.&lt;/p&gt;
-				&lt;p&gt;Причина в наступному:&lt;/p&gt;
-				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-				${sNameOrgan}&lt;br /&gt;
-				${sAddress}&lt;br /&gt;
-				${sWorkTime}&lt;br /&gt;
-				${sPhoneOrgan}&lt;br /&gt;
+				<br />
+				На жаль, Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, відхилено.</p>
+				<p>Причина в наступному:</p>
+				<p>${sDecisionComment_1}</p>
+				Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+				${sNameOrgan}<br />
+				${sAddress}<br />
+				${sWorkTime}<br />
+				${sPhoneOrgan}<br />
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan},&lt;br/&gt;
+                ${sNameOrgan},<br/>
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Answer}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Answer}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -183,52 +180,45 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Перевірено звернення на тему: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;br /&gt;
-				Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно перевірено.&lt;br /&gt;
-				&lt;br /&gt;
-				&lt;p&gt;Коментар чиновника:&lt;/p&gt;
-				&lt;p&gt;${sDecisionComment_1}&lt;/p&gt;
-				&lt;br /&gt;
-				${sNameOrgan}&lt;br /&gt;
-				${sAddress}&lt;br /&gt;
-				${sWorkTime}&lt;br /&gt;
-				${sPhoneOrgan}&lt;br /&gt;
+				<br />
+				Ваше звернення [sID_Order] щодо надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб, успішно перевірено.<br />
+				<br />
+				<p>Коментар чиновника:</p>
+				<p>${sDecisionComment_1}</p>
+				<br />
+				${sNameOrgan}<br />
+				${sAddress}<br />
+				${sWorkTime}<br />
+				${sPhoneOrgan}<br />
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan},&lt;br/&gt;
+                ${sNameOrgan},<br/>
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Answer}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Answer}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="servicetask4" targetRef="servicetask5"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow5" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow7" name="asEnum_decision_1=='reject'" sourceRef="exclusivegateway1" targetRef="servicetask6">
@@ -264,22 +254,22 @@ execution.setVariable('sAdd_SpisokDocs', per1)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>smoktii.igov@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[smoktii.igov@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Подано звернення референтом: Надання консультації Управлінням соціального захисту населення, що стосується внутрішньо переміщених осіб]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>&lt;b&gt;Подано на громадянина: ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Звернення № [sID_Order].&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-&lt;br /&gt;
-&lt;br /&gt;</activiti:expression>
+          <activiti:expression><![CDATA[<b>Подано на громадянина: ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Звернення № [sID_Order].<br />
+<br />
+<br />
+${sNameOrgan}<br />
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
+<br />
+<br />]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -291,17 +281,12 @@ ${sPhoneOrgan}&lt;br /&gt;
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bReferent=='true'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_vpl_GetInfo_Why_Block_1144">
-    <bpmndi:BPMNPlane bpmnElement="vpl_GetInfo_Why_Block_1144" id="BPMNPlane_vpl_GetInfo_Why_Block_1144">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_vpl_GetInfo_Common_1148">
+    <bpmndi:BPMNPlane bpmnElement="vpl_GetInfo_Common_1148" id="BPMNPlane_vpl_GetInfo_Common_1148">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="120.0" y="142.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="196.0" y="178.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="71.0" width="131.0" x="550.0" y="360.0"></omgdc:Bounds>
@@ -347,21 +332,9 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdi:waypoint x="615.0" y="339.0"></omgdi:waypoint>
         <omgdi:waypoint x="615.0" y="360.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="75.0" y="177.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="177.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="172.0" y="142.0"></omgdi:waypoint>
-        <omgdi:waypoint x="172.0" y="116.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="615.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="615.0" y="264.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="211.0" y="208.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="615.0" y="431.0"></omgdi:waypoint>
@@ -371,14 +344,14 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdi:waypoint x="635.0" y="485.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="485.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="92.0" x="624.0" y="486.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="92.0" x="624.0" y="486.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="595.0" y="485.0"></omgdi:waypoint>
         <omgdi:waypoint x="541.0" y="485.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="95.0" x="551.0" y="445.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="95.0" x="551.0" y="445.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -399,7 +372,7 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdi:waypoint x="615.0" y="134.0"></omgdi:waypoint>
         <omgdi:waypoint x="615.0" y="174.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="519.0" y="116.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="89.0" x="519.0" y="116.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -407,13 +380,17 @@ ${sPhoneOrgan}&lt;br /&gt;
         <omgdi:waypoint x="385.0" y="134.0"></omgdi:waypoint>
         <omgdi:waypoint x="385.0" y="174.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="394.0" y="116.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="98.0" x="394.0" y="116.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="385.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="384.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="228.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="57.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="116.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

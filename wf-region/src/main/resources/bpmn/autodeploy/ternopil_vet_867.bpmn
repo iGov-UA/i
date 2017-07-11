@@ -136,7 +136,7 @@
         <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameService" type="string" default="Державна реєстрація створення юридичної особи"></activiti:formProperty>
+        <activiti:formProperty id="sNameService" name="sNameService; ;bVisible=false" type="string" default="Державна реєстрація створення юридичної особи"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для ЕЦП; ;bVisible=false" type="string" default="pattern/print/ternopil/ternopil_vet_867.html"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/ternopil_vet_867.json')}"></activiti:formProperty>
@@ -176,14 +176,13 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="servicetask7" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення держслужбовців" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[middayka@yandex.ru]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Державна реєстрація потужностей операторів ринку.]]></activiti:string>
@@ -326,9 +325,9 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sBody1" name="[pattern/print/ternopil/ternopil_vet_867.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-        <activiti:field name="aFieldInheritedAttachmentID">
-        <activiti:expression>${fAppWithECP}</activiti:expression>
-        </activiti:field>
+          <activiti:field name="aFieldInheritedAttachmentID">
+            <activiti:expression><![CDATA[${fAppWithECP}]]></activiti:expression>
+          </activiti:field>
         </activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -641,14 +640,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask7" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask7">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow16" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ternopil_vet_867">
     <bpmndi:BPMNPlane bpmnElement="ternopil_vet_867" id="BPMNPlane_ternopil_vet_867">
@@ -688,19 +682,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="632.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="30.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="210.0" y="58.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="125.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="262.0" y="85.0"></omgdi:waypoint>
-        <omgdi:waypoint x="262.0" y="134.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="435.0" y="161.0"></omgdi:waypoint>
         <omgdi:waypoint x="382.0" y="200.0"></omgdi:waypoint>
@@ -757,17 +741,13 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="142.0" y="293.0"></omgdi:waypoint>
         <omgdi:waypoint x="142.0" y="228.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="225.0" y="88.0"></omgdi:waypoint>
-        <omgdi:waypoint x="142.0" y="193.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="75.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
         <omgdi:waypoint x="315.0" y="161.0"></omgdi:waypoint>
         <omgdi:waypoint x="330.0" y="161.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="57.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="134.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

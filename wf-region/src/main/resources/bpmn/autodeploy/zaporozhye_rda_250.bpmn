@@ -97,7 +97,6 @@
         <activiti:formProperty id="markers4" name="hideShowFields4" type="markers" default="${markerService.loadFromFile('zaporozhye/zaporozhye_rda_250_4.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення співробітника РДА про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -110,13 +109,13 @@
           <activiti:string><![CDATA[Нове звернення. Приватизація житлових приміщень у гуртожитках.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо приватизації житлових приміщень у гуртожитках.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо приватизації житлових приміщень у гуртожитках.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -126,27 +125,25 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Приватизація житлових приміщень у гуртожитках.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення щодо приватизації житлових приміщень у гуртожитках зареєстроване у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Телефон для довідок: (061) 224-87-04&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення щодо приватизації житлових приміщень у гуртожитках зареєстроване у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+Телефон для довідок: (061) 224-87-04<br />
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка заяви у РА на вихід Комісії" activiti:candidateGroups="zaporozhye_rda_1">
       <extensionElements>
@@ -193,7 +190,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${bankId_scan_inn},${referenceReregistration1},${referenceTB1},${referenceWork1},{scanPassportOwner2},${scanIpnOwner2},${referenceReregistration2},${referenceTB2},${referenceWork2},{scanPassportOwner3},${scanIpnOwner3},${referenceReregistration3},${referenceTB3},${referenceWork3},{scanPassportOwner4},${scanIpnOwner4},${referenceReregistration4},${referenceTB4},${referenceWork4},{scanPassportOwner5},${scanIpnOwner5},${referenceReregistration5},${referenceTB5},${referenceWork5},{scanPassportOwner6},${scanIpnOwner6},${referenceReregistration6},${referenceTB6},${referenceWork6},{scanPassportOwner7},${scanIpnOwner7},${referenceReregistration7},${referenceTB7},${referenceWork7},{scanPassportOwner8},${scanIpnOwner8},${referenceReregistration8},${referenceTB8},${referenceWork8},${doverenost},${order_copy},${sklad_semii},${application}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${referenceReregistration1},${referenceTB1},${referenceWork1},{scanPassportOwner2},${scanIpnOwner2},${referenceReregistration2},${referenceTB2},${referenceWork2},{scanPassportOwner3},${scanIpnOwner3},${referenceReregistration3},${referenceTB3},${referenceWork3},{scanPassportOwner4},${scanIpnOwner4},${referenceReregistration4},${referenceTB4},${referenceWork4},{scanPassportOwner5},${scanIpnOwner5},${referenceReregistration5},${referenceTB5},${referenceWork5},{scanPassportOwner6},${scanIpnOwner6},${referenceReregistration6},${referenceTB6},${referenceWork6},{scanPassportOwner7},${scanIpnOwner7},${referenceReregistration7},${referenceTB7},${referenceWork7},{scanPassportOwner8},${scanIpnOwner8},${referenceReregistration8},${referenceTB8},${referenceWork8},${doverenost},${order_copy},${sklad_semii},${application}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -201,34 +198,30 @@
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow6" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Лист про дату візита комісії" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Приватизація житлових приміщень у гуртожитках.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо приватизації житлових приміщень у гуртожитках взято в роботу.&lt;br /&gt;
-Комісія для встановлення фактичного проживання в гуртожитку призначена на &lt;b&gt;${dateTime}&lt;/b&gt;.&lt;br /&gt;
-&lt;/p&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо приватизації житлових приміщень у гуртожитках взято в роботу.<br />
+Комісія для встановлення фактичного проживання в гуртожитку призначена на <b>${dateTime}</b>.<br />
+</p>
+<br />
 Телефон для довідок: (061) 224-87-04
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -238,25 +231,25 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Приватизація житлових приміщень у гуртожитках.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо приватизації житлових приміщень у гуртожитках було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному: 
-                                    &lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо приватизації житлових приміщень у гуртожитках було відхилено.</p>
+<p>Причина в наступному: 
+                                    </p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+<br />
 Телефон для довідок: (061) 224-87-04
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -322,33 +315,33 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Приватизація житлових приміщень у гуртожитках.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
 Акт обстеження житлового приміщення та Акт фактичного проживання - готовий.
-&lt;/p&gt;
-&lt;p&gt;
-Вам необхідно роздрукувати заяви (вони знаходяться в прикріплених файлах).&lt;br/&gt; 
-Всім повнолітним членам сім'ї звернутися з роздрукованою заявою до центру обслуговування абонентів МКП “Основаніє” №8, 9 або 13 та засвідчити підписи всіх членів сім'ї.&lt;br/&gt;
- Після цього звернутися до РА Запорізької міської ради по Ленінському району за адресою м. Запоріжжя, вул. Бородінська, 1а&lt;br /&gt;
-З собою треба мати:&lt;br /&gt;
-1. Паспорта та ІПН (всіх майбутніх власників).&lt;br /&gt;
-2. Всі оригінали документів, які були подані в електронному вигляді.&lt;br /&gt;
-3. Квітанції, які сплачували за послуги приватизації, держмито за операцію з цінними паперами, за послуги БТІ.&lt;br /&gt;
-&lt;/p&gt;
-Телефон для довідок: (061) 224-87-04&lt;br /&gt;
-&lt;br /&gt;
+</p>
+<p>
+Вам необхідно роздрукувати заяви (вони знаходяться в прикріплених файлах).<br/> 
+Всім повнолітним членам сім'ї звернутися з роздрукованою заявою до центру обслуговування абонентів МКП “Основаніє” №8, 9 або 13 та засвідчити підписи всіх членів сім'ї.<br/>
+ Після цього звернутися до РА Запорізької міської ради по Ленінському району за адресою м. Запоріжжя, вул. Бородінська, 1а<br />
+З собою треба мати:<br />
+1. Паспорта та ІПН (всіх майбутніх власників).<br />
+2. Всі оригінали документів, які були подані в електронному вигляді.<br />
+3. Квітанції, які сплачували за послуги приватизації, держмито за операцію з цінними паперами, за послуги БТІ.<br />
+</p>
+Телефон для довідок: (061) 224-87-04<br />
+<br />
 [pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,&lt;br /&gt;
+Районна адміністрація Запорізької міської ради по Ленінському району,<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -356,17 +349,12 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status2 == 'attr3_wait'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zaporozhye_rda_250">
     <bpmndi:BPMNPlane bpmnElement="zaporozhye_rda_250" id="BPMNPlane_zaporozhye_rda_250">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="113.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="105.0" x="90.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="81.0" width="105.0" x="230.0" y="90.0"></omgdc:Bounds>
@@ -398,14 +386,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="61.0" width="105.0" x="260.0" y="374.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="55.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="130.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="195.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="230.0" y="130.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="335.0" y="130.0"></omgdi:waypoint>
         <omgdi:waypoint x="370.0" y="130.0"></omgdi:waypoint>
@@ -417,10 +397,6 @@
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="552.0" y="171.0"></omgdi:waypoint>
         <omgdi:waypoint x="552.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="165.0" y="170.0"></omgdi:waypoint>
-        <omgdi:waypoint x="164.0" y="203.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="532.0" y="220.0"></omgdi:waypoint>
@@ -466,6 +442,10 @@
         <omgdi:waypoint x="260.0" y="404.0"></omgdi:waypoint>
         <omgdi:waypoint x="164.0" y="404.0"></omgdi:waypoint>
         <omgdi:waypoint x="164.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="55.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="130.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

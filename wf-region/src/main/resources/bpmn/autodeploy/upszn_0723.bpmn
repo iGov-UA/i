@@ -18,11 +18,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="sPrich" name="Причина заміни посвідчення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;ScanPassport&quot;],&quot;sValue&quot;:&quot;Документи&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія картки платника податків (довідки про присвоєння індивідуального податкового номеру ІПН)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nMsek" name="Довідка МСЕК про інвалідність" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFamily" name="Довідка про склад сім'ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nRVK" name="Довідка з військкомату" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія картки платника податків (довідки про присвоєння індивідуального податкового номеру ІПН) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nMsek" name="Довідка МСЕК про інвалідність ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFamily" name="Довідка про склад сім'ї ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nRVK" name="Довідка з військкомату ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubstance" name="&quot;Інвалід війни&quot; ; ;bVisible=false" type="string" default="&quot;Інвалід війни&quot;"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -33,13 +33,7 @@
         <activiti:formProperty id="markers1" name="Вибір категорії" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sPrich&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asType&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumChange'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення держслужбовця про звернення" activiti:async="true" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -113,12 +107,15 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sSubstance" name="«Інвалід війни» ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/UPSZN/kalush_soczah_401_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/UPSZN/kalush_soczah_401_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="ScanPassport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія картки платника податків (довідки про присвоєння індивідуального податкового номеру ІПН) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nMsek" name="Довідка МСЕК про інвалідність ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFamily" name="Довідка про склад сім'ї ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nRVK" name="Довідка з військкомату ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${ScanPassport},${bankId_scan_inn},${nMsek},${nFamily},${nRVK}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -214,18 +211,12 @@ ${sNameOrgan}<br />
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_upszn_0723">
     <bpmndi:BPMNPlane bpmnElement="upszn_0723" id="BPMNPlane_upszn_0723">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="76.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="75.0" width="105.0" x="90.0" y="56.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="130.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="407.0" y="251.0"></omgdc:Bounds>
@@ -248,15 +239,6 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
         <omgdc:Bounds height="72.0" width="141.0" x="495.0" y="233.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="65.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="90.0" y="93.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="145.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="144.0" y="268.0"></omgdi:waypoint>
-        <omgdi:waypoint x="407.0" y="268.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="355.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="372.0" y="93.0"></omgdi:waypoint>
@@ -292,7 +274,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="442.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="195.0" y="93.0"></omgdi:waypoint>
+        <omgdi:waypoint x="65.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="240.0" y="93.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
