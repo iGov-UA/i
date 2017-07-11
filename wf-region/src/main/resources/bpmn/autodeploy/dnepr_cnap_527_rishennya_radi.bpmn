@@ -55,6 +55,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHideSign_iGov" name="Признак приховання підпису порталу в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPrintSign_iGov" name="Змінна для друку в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта оргструктури (району)" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_1.json')}"></activiti:formProperty>
       </extensionElements>
@@ -118,6 +120,8 @@
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHideSign_iGov" name="Признак приховання підпису порталу в заяві" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPrintSign_iGov" name="Змінна для друку в заяві" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -181,6 +185,8 @@
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHideSign_iGov" name="Признак приховання підпису порталу в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPrintSign_iGov" name="Змінна для друку в заяві ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -444,6 +450,8 @@
       <script>
     var per1 = 1
     var per6 = ' '
+    var perSign = ' '
+    
     if (execution.getVariable('nFile_CopyRishennya') != null)
 	{ 
 		per6 = per6 + per1.toString()+". Копія рішення "+execution.getVariable('sShapka527_rishennyaOrgan')+", до якого необхідно внести зміни. &lt;br&gt;"
@@ -480,6 +488,13 @@
 		per1 = per1 + 1
 	}	
     execution.setVariable('sAddPrintSpisok', per6)
+ 
+    if (execution.getVariable('sHideSign_iGov') != 'True')
+	{ 
+		perSign = 'Заявника авторизовано через портал igov.org.ua, заявка [sID_Order]'
+	}	
+    execution.setVariable('sPrintSign_iGov', perSign)   
+    
       </script>
     </scriptTask>
     <sequenceFlow id="flow47" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
