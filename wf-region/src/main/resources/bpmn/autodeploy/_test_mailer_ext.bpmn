@@ -7,7 +7,7 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="filetosend" name="file" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="filetosend" name="file; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email2" name="email2" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="sNameOrgan - название органа"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="sPhoneOrgan - телефон органа"></activiti:formProperty>
@@ -18,9 +18,8 @@
     <serviceTask id="servicetask0" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <userTask id="usertask1" name="рассмотрение и загрузка" activiti:candidateGroups="sales">
       <extensionElements>
-        <activiti:formProperty id="file" name="file" type="file"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="file" name="file; ;bNew=true" type="file"></activiti:formProperty>
+       <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="оповещение заявителя" activiti:delegateExpression="#{MailTaskWithAttachments}">
