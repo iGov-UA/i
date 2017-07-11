@@ -1,14 +1,7 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import org.activiti.engine.delegate.DelegateExecution;
-import org.igov.io.mail.Mail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom.LOG;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,37 +11,14 @@ import org.springframework.stereotype.Component;
 @Component("MailTaskWithoutAttachment")
 public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MailTaskWithoutAttachment.class);
-
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
-
-        LOG.info("MailTaskWithoutAttachment listener started.");
-
-        Map<String, Object> mExecutionVaraibles = oExecution.getVariables();
-        LOG.info("mExecutionVaraibles={}", mExecutionVaraibles);
-        if (!mExecutionVaraibles.isEmpty()) {
-            Map<String, Object> mOnlyDateVariables = new HashMap<>();
-            // выбираем все переменные типа Date, приводим к нужному формату 
-            mExecutionVaraibles.forEach((sKey, oValue) -> {
-                if (oValue != null) {
-                    String soValue = oValue.toString();
-                    LOG.info("soValue={}", soValue);
-                    String sClassName = oValue.getClass().getName();
-                    LOG.info("Variables: sClassName={} sKey={} oValue={}", sClassName, sKey, oValue);
-                    if (sClassName.endsWith("Date")) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy, kk:mm", new Locale("uk", "UA"));
-                        String sDate = sdf.format((Date) oValue);
-                        mOnlyDateVariables.put(sKey, sDate);
-                    } else if (soValue.contains("sDate") && soValue.contains("nID_FlowSlotTicket")
-                            && soValue.contains("sID_Type")) {
-                        LOG.info("queueData found");
-                    }
-                }
-            });
-            //сетим отформатированные переменные в екзекьюшен
-            oExecution.setVariables(mOnlyDateVariables);
-        }
+        LOG.info("Process id is {} in MailTaskWithoutAttachment {}",
+                oExecution.getProcessInstanceId());
+        sendMail(oExecution, null);
+        LOG.info("MailTaskWithoutAttachment ok!");
+    }
+    /*private void reWriteCode(DelegateExecution oExecution) throws Exception { //отправка в тексте письма содержимого первого поля на форме типа файлХтмл
         Mail oMail = null;
         String sJsonMongo = loadFormPropertyFromTaskHTMLText(oExecution);
         LOG.info("sJsonMongo: {}", sJsonMongo);
@@ -56,20 +26,46 @@ public class MailTaskWithoutAttachment extends Abstract_MailTaskCustom {
         LOG.info("sBodyFromMongoResult: {}", sBodyFromMongoResult);
         if (sBodyFromMongoResult != null) {
             try {
-                oMail = sendToMailFromMongo(oExecution);
+                oMail = sendToMail_FileHtml(oExecution);
             } catch (Exception ex) {
                 LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         } else {
             try {
-                oMail = Mail_BaseFromTask(oExecution);
+                oMail = mail_BaseFromTask(oExecution);
             } catch (Exception ex) {
                 LOG.error("MailTaskWithoutAttachment: ", ex);
             }
         }
+    }*/
+    /**
+     * Метод получения из монго текст письма
+     *
+     * @param sJsonHtml
+     * @return
+     * @throws IOException
+     * @throws ParseException
+     * @throws RecordInmemoryException
+     * @throws ClassNotFoundException
+     * @throws CRCInvalidException
+     * @throws RecordNotFoundException
+     */
+    /*public String getHtmlTextFromMongo(String sJsonHtml) throws IOException, ParseException, RecordInmemoryException,
+            ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
+        String sBodyFromMongo = null;
+        JSONObject sJsonHtmlInFormatMongo = new JSONObject(sJsonHtml);
+        LOG.info("sJsonHtmlInFormatMongo: {}", sJsonHtmlInFormatMongo);
+        try {
+            InputStream oAttachmet_InputStream = oAttachmetService.getAttachment(null, null,
+                    sJsonHtmlInFormatMongo.getString("sKey"), sJsonHtmlInFormatMongo.getString("sID_StorageType"))
+                    .getInputStream();
 
-        sendMailOfTask(oMail, oExecution);
-        LOG.info("MailTaskWithoutAttachment ok!");
-    }
+            sBodyFromMongo = IOUtils.toString(oAttachmet_InputStream, "UTF-8");
+        } catch (JSONException e) {
+            LOG.error("JSONException: {}", e.getMessage());
+            return null;
+        }
+        return sBodyFromMongo;
 
+    }*/
 }

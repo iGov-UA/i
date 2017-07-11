@@ -1278,14 +1278,17 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           MasterPassService.createPayment(phoneNumber, $scope.checkoutData).then(function (res) {
             if(res.pmt_status == 4) {
               $scope.paymentStatus = 4;
+              $scope.isSending = false;
             } else if(res.pmt_status == 0) {
               if (res.secure && res.secure === '3ds') {
-                var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + $location.path();
-                var callbackUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/masterpass/verify3DSCallback' + '?id=' + res.pmt_id + '&url=' + url;
-                var temp = JSON.stringify({form: $scope.data.formData.params, activiti: $scope.activitiForm.formProperties});
-                localStorage.setItem('temporaryForm', temp);
+                MasterPassService.getUserId().then(function (id) {
+                  var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + $location.path();
+                  var callbackUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/masterpass/verify3DSCallback' + '?id=' + res.pmt_id + '&msisdn=' + phoneNumber + '&user=' + id + '&url=' + url;
+                  var temp = JSON.stringify({form: $scope.data.formData.params, activiti: $scope.activitiForm.formProperties});
+                  localStorage.setItem('temporaryForm', temp);
 
-                openUrl(res.ascUrl, {pareq: res.pareq, md: res.md, TermUrl: callbackUrl}, '_self');
+                  openUrl(res.ascUrl, {pareq: res.pareq, md: res.md, TermUrl: callbackUrl}, '_self');
+                });
               } else if(res.secure && res.secure === 'otp') {
                 $scope.phoneVerify.otpIsConfirmed = true;
                 $scope.otpErrorMsg = null;

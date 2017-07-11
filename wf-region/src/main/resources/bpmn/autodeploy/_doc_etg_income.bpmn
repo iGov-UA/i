@@ -24,7 +24,6 @@
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
-          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
           <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
           <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
@@ -46,7 +45,8 @@
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">  
+        <activiti:formProperty id="sTable_Executor" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
@@ -80,7 +80,6 @@
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" required="true">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
-          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
           <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
           <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
@@ -90,8 +89,6 @@
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -115,7 +112,6 @@
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
-          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
           <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
           <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
@@ -127,12 +123,11 @@
         <activiti:formProperty id="sDoc2" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
-          <activiti:value id="sEnum2" name="нарочно"></activiti:value>
+          <activiti:value id="sEnum2" name="відправка не потрібна"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
           <activiti:value id="sEnum4" name="електронною поштою та поштою"></activiti:value>
           <activiti:value id="sEnum5" name="електронною поштою"></activiti:value>
           <activiti:value id="sEnum6" name="замовленою кореспонденцією"></activiti:value>
-          <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asDecisionNoText" name="Коментарій основному виконавцю - що саме треба доробити" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMainExecutor" name="Основний виконавець логін ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -161,7 +156,6 @@
         <activiti:formProperty id="asTypeResolution" name="Резолюція" type="enum" writable="false">
           <activiti:value id="sEnumToReview" name="До розгляду"></activiti:value>
           <activiti:value id="sEnumPleaseReport" name="Прошу доповісти"></activiti:value>
-          <activiti:value id="sEnumAccordingTolaw" name="Згідно з законодавством"></activiti:value>
           <activiti:value id="sEnumToAttention" name="До відома"></activiti:value>
           <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
@@ -171,12 +165,11 @@
         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
-          <activiti:value id="sEnum2" name="нарочно"></activiti:value>
+          <activiti:value id="sEnum2" name="відправка не потрібна"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
           <activiti:value id="sEnum4" name="електронною поштою та поштою"></activiti:value>
           <activiti:value id="sEnum5" name="електронною поштою"></activiti:value>
           <activiti:value id="sEnum6" name="замовленою кореспонденцією"></activiti:value>
-          <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc2" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -240,7 +233,7 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 
 //Клонування прав для основного виконавця
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_ETG', 'ETG_Fin_Main', 'step_3')</script>
+var oCloneRightsExec = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_ETG', 'sTable_Executor', 'step_3', true, 'sLogin_isExecute')</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask8"></sequenceFlow>
     <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
