@@ -659,10 +659,14 @@ public class DocumentStepService {
         LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
         LOG.info("sKey_Step {}", sKey_Step);
         
+        if(sKey_Group.startsWith("_default_")){
+           sKey_Step = "_"; 
+        }
+        
         DocumentStep oDocumentStep_From = getDocumentStep(snID_Process_Activiti, sKey_Step);
         LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_From.getId(), oDocumentStep_From.getsKey_Step());
         DocumentStep oDocumentStep_Common = getDocumentStep(snID_Process_Activiti, "_");
-        LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
+        LOG.info("oDocumentStep_Common id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
         
         for(DocumentStepSubjectRight oDocumentStepSubjectRight :  oDocumentStep_Common.aDocumentStepSubjectRight()){
             if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group_Delegate)){
