@@ -47,7 +47,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		 * Достаем имя исполнителя
 		 */
 		String expert = getStringFromFieldExpression(this.name_isExecute, execution);
-		LOG.info("expert>>>>>>>>>>>> = {}", expert);
+		
 
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
 		LOG.info("dataWithExecutorForTransferToArm in update arm before somethings change=={}", dataWithExecutorForTransferToArm);
@@ -60,6 +60,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 				.getDboTkByOutNumber(dataWithExecutorForTransferToArm.getOut_number());
 		dataWithExecutorForTransferToArm.setNumber_441(listOfModels.get(0).getNumber_441());
 		LOG.info("listOfModels in update arm>>>>>>>>>>>>>>>+=={}", listOfModels);
+		LOG.info("expert>>>>>>>>>>>> = {}", expert);
 		
 				
 		// ветка - когда назначаются исполнители
@@ -94,8 +95,9 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 			}
 		} else {
 			// ветка, когда исполнители уже есть и они отрабатывают свое задание
-			for(DboTkModel model: listOfModels){
-			if(dataWithExecutorForTransferToArm.getExpert().equals(expert)){
+			/*for(DboTkModel model: listOfModels){
+			if(dataWithExecutorForTransferToArm.getExpert().equals(expert)){*/
+			
 			Integer maxNum442 = armService.getMaxValue442();
 			dataWithExecutorForTransferToArm.setExpert(expert);
 			dataWithExecutorForTransferToArm.setNumber_442(maxNum442+1);
@@ -104,7 +106,6 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		}
 
 	}
-		}
-	}
+	
 
 }
