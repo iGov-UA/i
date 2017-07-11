@@ -13,7 +13,7 @@
           <activiti:value id="sEnum3" name="копія розпорядження міського голови"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="docDate" name="Дата прийняття документа; в форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="docNumber" name="Номер документа" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="docNumber" name="Номер документа" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="docName" name="Назва документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="goal" name="Мета отримання документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
@@ -46,7 +46,7 @@
       <extensionElements>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clPassport" name="Паспортні дані" type="string" default="${bankIdPassport}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asDocType" name="Тип документа" type="enum" writable="false">
+         <activiti:formProperty id="asDocType" name="Тип документа" type="enum" writable="false">
           <activiti:value id="sEnum1" name="копія рішення виконавчого комітету міської ради"></activiti:value>
           <activiti:value id="sEnum2" name="копія рішення міської ради"></activiti:value>
           <activiti:value id="sEnum3" name="копія розпорядження міського голови"></activiti:value>
@@ -104,7 +104,7 @@
           <activiti:value id="found" name="Документ знайдено"></activiti:value>
           <activiti:value id="notFound" name="Документ не знайдено"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="docToSend" name="Завантажте  копію документа для відправлення заявнику" type="file"></activiti:formProperty>
+        <activiti:formProperty id="docToSend" name="Завантажте  копію документа для відправлення заявнику ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="footer" name="footerToPrint; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -162,13 +162,16 @@
           <activiti:expression>Звернення на тему: ${asDocType}</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}!
-Щодо Вашого запиту на отримання ${asDocType} №${docNumber} від  ${docDate}
-Документ знаходиться у додатку до цього листа.
-
-З повагою,
-Міська рада міста Дніпропетровськ,
-Команда Порталу державних послу iGov.org.ua</activiti:expression>
+          <activiti:expression>[pattern/mail/_common_header.html]
+			&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
+			&lt;p&gt;Щодо Вашого запиту на отримання ${asDocType} №${docNumber} від  ${docDate}&lt;br/&gt;
+Документ знаходиться у додатку до цього листа.&lt;br /&gt;
+			
+			[pattern/mail/_common_signature_start.html]
+			Міська рада міста Дніпропетровськ,&lt;br /&gt;
+			[pattern/mail/_common_signature_end.html]
+			[pattern/mail/_common_feedback.html]
+			[pattern/mail/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression>"${docToSend}"</activiti:expression>

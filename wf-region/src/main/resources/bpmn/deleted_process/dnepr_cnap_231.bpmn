@@ -46,7 +46,7 @@
         <activiti:formProperty id="marker_validate" name="Валидация" type="markers" default="{&quot;validate&quot;:{&quot;CustomFormat_NumberKadastr&quot;:{&quot;aField_ID&quot;:[&quot;landAddress&quot;],&quot;sFormat&quot;:&quot;х:х&quot;,&quot;sMessage&quot;:&quot;Невірний кадастровий номер, введіть кадастровий номер у форматі хххххххххх:хх:ххх:хххх&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>

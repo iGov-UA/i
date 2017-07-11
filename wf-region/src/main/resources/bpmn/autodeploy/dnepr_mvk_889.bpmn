@@ -276,9 +276,7 @@
         <activiti:formProperty id="bOrganization" name="Юридична особа ; ;bVisible=false" type="string" default="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask4"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про реєстрацію звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -307,11 +305,6 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення бек-офіс (оператор)" activiti:candidateGroups="dmr_${asStatusSuper}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Особа, яка заповнила форму ; ;bVisible=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
@@ -1861,7 +1854,6 @@ execution.setVariable('sChannelApp', per1)</script>
     <scriptTask id="scripttask4" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow76" sourceRef="scripttask4" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway10" name="Exclusive Gateway"></exclusiveGateway>
     <userTask id="usertask10" name="Перевірка запита юристом" activiti:candidateGroups="dmr_lawyer">
       <extensionElements>
@@ -2218,23 +2210,15 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow82" sourceRef="servicetask8" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow83" sourceRef="scripttask4" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_889">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_889" id="BPMNPlane_dnepr_mvk_889">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="139.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="131.0" x="275.0" y="121.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="381.0" y="162.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="91.0" width="105.0" x="870.0" y="22.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="412.0" y="217.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="92.0" width="105.0" x="1031.0" y="405.0"></omgdc:Bounds>
@@ -2308,14 +2292,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="95.0" y="156.0"></omgdi:waypoint>
         <omgdi:waypoint x="140.0" y="156.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="406.0" y="156.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="396.0" y="192.0"></omgdi:waypoint>
-        <omgdi:waypoint x="429.0" y="217.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="975.0" y="67.0"></omgdi:waypoint>
@@ -2428,10 +2404,6 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="1450.0" y="609.0"></omgdi:waypoint>
         <omgdi:waypoint x="1451.0" y="649.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
-        <omgdi:waypoint x="245.0" y="156.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="156.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
         <omgdi:waypoint x="1083.0" y="270.0"></omgdi:waypoint>
         <omgdi:waypoint x="1083.0" y="302.0"></omgdi:waypoint>
@@ -2465,6 +2437,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         <omgdi:waypoint x="745.0" y="56.0"></omgdi:waypoint>
         <omgdi:waypoint x="760.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="760.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
+        <omgdi:waypoint x="245.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

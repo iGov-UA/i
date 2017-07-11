@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="bti_request_1" name="Запит інформації про власність згідно матеріалів інвентаризаційної справи" isExecutable="true">
-    <documentation></documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -40,7 +39,6 @@
         <activiti:formProperty id="sJurAddress" name="Зазначте Вашу юридичну адресу" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Зазначте адресу Вашої реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="warningMessage2" name=" ; ;labelType=warning" type="label" default="В якості приватної особі Ви маєте право на отримання информації тільки щодо свого майна"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default="Очікує сплати"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="назначение платежа; поле відображено для тестування сплати;bVisible=false" type="label" default=" "></activiti:formProperty>
@@ -66,13 +64,6 @@
         <activiti:formProperty id="sStatus" name="sStatus;  ;bVisible=false" type="string" default="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow17" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
     <serviceTask id="servicetask2" name="Оповещение заявителя" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -89,7 +80,6 @@
 [pattern/mail/new_design/_common_content_start.html]
 
 Ваш запит успішно зареєстровано. <br/> <br/>
-Подаючи запит Ви дієте як enum{[saQuestion2]} <br/>
 Тип запиту: enum{[saQuestion1]} стосовно власності за наступними адресами:<br/>
 
  ${sAskedAddress1} <br/>
@@ -102,7 +92,13 @@
 Сплачуючи вартість послуги, Ви надаєте свою згоду з актом виконаних робіт, що буде створено після надання послуги.<br/>
 
 [paymentButton_LiqPay]
-<br/>
+<br/><br/>
+
+<b>
+Зверніть увагу:<br/>
+Термін надання відповіді на запит складає до 5 робочих днів з моменту сплати вартості послуги<br/><br/>
+</b>
+
 Якщо Ваш запит вже не актуальний або містить хибні дані, натисніть на цю кнопку:
 [cancelTaskSimple]
 <br/>
@@ -122,7 +118,6 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow18" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="Початкова перевірка запиту" activiti:candidateGroups="bti_request1_1">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
@@ -159,8 +154,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:formProperty>
         <activiti:formProperty id="sJurAddress" name="Юридична адреса автора запиту" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPhisAddress" name="Адреса реєстрації автора запиту" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
-        
+        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default="Очікує сплати"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="назначение платежа;буде заповнено автоматічно після сплати;writable=false, bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа;буде заповнено автоматічно після сплати;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSumWithoutPDV" name="сумма платежа без ПДВ;  поле відображено для тестування сплати" type="label"></activiti:formProperty>
@@ -194,13 +188,15 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 [pattern/mail/new_design/_common_content_start.html]
 
 Ваш запит було оброблено спеціалистом.<br/><br/>
+Результат Ви можете знайти в додатку цього листа. <br/><br/>
 
 <b>Коментар спеціаліста:</b><br/>
 ${comment}
 
 <br/>
 
-[pattern/mail/new_design/_common_content_end.html]    
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]     
 [pattern/mail/new_design/_common_signature.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -211,7 +207,7 @@ ${comment}
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vash zapyt [sID_Order] obrobleno.
+          <activiti:expression><![CDATA[Na Vash zapyt [sID_Order] pidhotovleno vidpovid.
 Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -387,7 +383,7 @@ execution.setVariable('sTime', temp)
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zapytom  [sID_Order]  vyneseno vidmovu v nadanni poslugy. 
+          <activiti:expression><![CDATA[Na zhal Za Vashym zapytom  [sID_Order]  vyneseno vidmovu v nadanni poslugy. 
 Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
@@ -414,20 +410,12 @@ execution.setVariable('sStatus', status)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatus == 'false'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow41" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_bti_request_1">
     <bpmndi:BPMNPlane bpmnElement="bti_request_1" id="BPMNPlane_bti_request_1">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="171.0" x="200.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="342.0" y="70.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="342.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="172.0" x="550.0" y="181.0"></omgdc:Bounds>
@@ -480,18 +468,6 @@ execution.setVariable('sStatus', status)
       <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
         <omgdc:Bounds height="40.0" width="40.0" x="925.0" y="510.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="155.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="200.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="357.0" y="70.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="45.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="285.0" y="135.0"></omgdi:waypoint>
-        <omgdi:waypoint x="286.0" y="181.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="945.0" y="715.0"></omgdi:waypoint>
         <omgdi:waypoint x="945.0" y="760.0"></omgdi:waypoint>
@@ -508,7 +484,7 @@ execution.setVariable('sStatus', status)
         <omgdi:waypoint x="450.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="550.0" y="208.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="58.0" x="450.0" y="208.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="58.0" x="450.0" y="208.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
@@ -520,7 +496,7 @@ execution.setVariable('sStatus', status)
         <omgdi:waypoint x="430.0" y="306.0"></omgdi:waypoint>
         <omgdi:waypoint x="550.0" y="305.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="440.0" y="314.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="440.0" y="314.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
@@ -536,14 +512,14 @@ execution.setVariable('sStatus', status)
         <omgdi:waypoint x="945.0" y="327.0"></omgdi:waypoint>
         <omgdi:waypoint x="945.0" y="391.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="44.0" x="950.0" y="369.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="44.0" x="950.0" y="369.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
         <omgdi:waypoint x="965.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="1010.0" y="305.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="57.0" x="949.0" y="279.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="57.0" x="949.0" y="279.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
@@ -555,14 +531,14 @@ execution.setVariable('sStatus', status)
         <omgdi:waypoint x="1179.0" y="208.0"></omgdi:waypoint>
         <omgdi:waypoint x="1022.0" y="208.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="56.0" x="1180.0" y="254.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="56.0" x="1180.0" y="254.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="1179.0" y="325.0"></omgdi:waypoint>
         <omgdi:waypoint x="1180.0" y="391.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="79.0" x="1179.0" y="349.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="76.0" x="1179.0" y="349.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
@@ -577,7 +553,7 @@ execution.setVariable('sStatus', status)
         <omgdi:waypoint x="945.0" y="550.0"></omgdi:waypoint>
         <omgdi:waypoint x="946.0" y="580.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="45.0" x="945.0" y="550.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="44.0" x="945.0" y="550.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -585,12 +561,16 @@ execution.setVariable('sStatus', status)
         <omgdi:waypoint x="1062.0" y="530.0"></omgdi:waypoint>
         <omgdi:waypoint x="1062.0" y="351.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="83.0" x="964.0" y="510.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="82.0" x="964.0" y="510.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="936.0" y="236.0"></omgdi:waypoint>
         <omgdi:waypoint x="945.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="137.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="286.0" y="181.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

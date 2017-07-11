@@ -27,8 +27,6 @@
         <activiti:formProperty id="marker_fiz" name="фіз особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;bankIdPassport&quot;,&quot;bankIdinn&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sOsoba2&quot;:&quot;asOsoba&quot;},&quot;sCondition&quot;:&quot;[sOsoba2] == 'asFiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -41,39 +39,38 @@
           <activiti:string><![CDATA[Нове звернення про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення про надання рішення про продаж земельної ділянки комунальної власності&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Опрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення про надання рішення про продаж земельної ділянки комунальної власності<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Опрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Лист Заявнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності.
-Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-Тел 06463 2-18-40 &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності.
+Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.</p>
+<br />
+Тел 06463 2-18-40 <br />
 [pattern/mail/_common_signature_start.html]
-Новопсковська селищна рада&lt;br /&gt;
+Новопсковська селищна рада<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -105,7 +102,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport},${file_reestr},${file_ocinka},${file_zemkad}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport},${file_reestr},${file_ocinka},${file_zemkad}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -119,22 +116,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, в задоволенні заяви відмовлено.
-Причина відмови: ${Komment_rishenia}.&lt;/p&gt;
-&lt;br /&gt;
-Тел 06463 2-18-40 &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, в задоволенні заяви відмовлено.
+Причина відмови: ${Komment_rishenia}.</p>
+<br />
+Тел 06463 2-18-40 <br />
 [pattern/mail/_common_signature_start.html]
-Новопсковська селищна рада&lt;br /&gt;
+Новопсковська селищна рада<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -147,22 +144,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, заяву задоволено. 
-Рішення прийнято, ви можете отримати його у секретаря сілищної ради. &lt;/p&gt;
-&lt;br /&gt;
-Тел 06463 2-18-40 &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення про надання рішення про продаж земельної ділянки комунальної власності розглянуто, заяву задоволено. 
+Рішення прийнято, ви можете отримати його у секретаря сілищної ради. </p>
+<br />
+Тел 06463 2-18-40 <br />
 [pattern/mail/_common_signature_start.html]
-Новопсковська селищна рада&lt;br /&gt;
+Новопсковська селищна рада<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -202,22 +199,22 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sEmail}</activiti:expression>
+          <activiti:expression><![CDATA[${sEmail}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Про надання рішення про продаж земельної ділянки комунальної власності]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Дякуємо що скористались нашою послугою онлайн.&lt;br /&gt;
-Будь ласка оцініть якість наданої вам послуги. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Дякуємо що скористались нашою послугою онлайн.<br />
+Будь ласка оцініть якість наданої вам послуги. <br />
 [pattern/mail/_common_feedback.html]
-Тел 06463 2-18-40 &lt;br /&gt;
+Тел 06463 2-18-40 <br />
 [pattern/mail/_common_signature_start.html]
-Новопсковська селищна рада&lt;br /&gt;
+Новопсковська селищна рада<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -229,23 +226,14 @@
     <sequenceFlow id="flow14" name="${variants2 == 'dok_bad2'}" sourceRef="exclusivegateway2" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${variants2 == 'dok_bad2'}]]></conditionExpression>
     </sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow15" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow16" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_novopscov_silrada_455">
     <bpmndi:BPMNPlane bpmnElement="novopscov_silrada_455" id="BPMNPlane_novopscov_silrada_455">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="40.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="30.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="30.0"></omgdc:Bounds>
@@ -277,14 +265,6 @@
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="340.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="85.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="130.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="235.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="280.0" y="57.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="385.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="430.0" y="57.0"></omgdi:waypoint>
@@ -336,12 +316,6 @@
           <omgdc:Bounds height="42.0" width="100.0" x="260.0" y="226.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="235.0" y="100.0"></omgdi:waypoint>
-        <omgdi:waypoint x="234.0" y="141.0"></omgdi:waypoint>
-        <omgdi:waypoint x="357.0" y="141.0"></omgdi:waypoint>
-        <omgdi:waypoint x="357.0" y="200.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="430.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="375.0" y="217.0"></omgdi:waypoint>
@@ -349,6 +323,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="584.0" y="329.0"></omgdi:waypoint>
         <omgdi:waypoint x="501.0" y="329.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="85.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

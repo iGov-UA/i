@@ -107,14 +107,6 @@
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string" default="Іванов Іван Іванович"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документiв" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Отримання дати" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
@@ -270,7 +262,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="string"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -373,7 +364,7 @@
         <activiti:formProperty id="splanshets" name="Планшети ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="ApplyECP4" name="Результат опрацювання" type="enum" default="reject"  required="true">
+        <activiti:formProperty id="ApplyECP4" name="Результат опрацювання" type="enum" default="reject" required="true">
           <activiti:value id="reject" name="Лист–відмова сформований"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="erejectReason4" name="Причина відмови" type="enum" required="true">
@@ -383,8 +374,6 @@
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileReject4" name="Лист відмови ЕЦП" type="file" required="true"></activiti:formProperty>
-        
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -497,20 +486,16 @@
         <activiti:formProperty id="splanshets" name="Планшети ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="erejectReason4" name="Результат опрацювання" type="enum" writable="false">
           <activiti:value id="reject1" name="неповний пакет документів"></activiti:value>
           <activiti:value id="reject2" name="неправильні правоустановчі документи"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="ApplyECP5" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="Затверджую"></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="sCommentReject" name="Коментар до рішення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileReject5" name="Лист відмови ЕЦП" type="file" required="true"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -686,18 +671,16 @@
         <activiti:formProperty id="etopografeScale4" name="Масштаб робіт 4" type="enum" writable="false">
           <activiti:value id="tScale1" name="1:500"></activiti:value>
           <activiti:value id="tScale2" name="1:1000"></activiti:value>
-          <activiti:value id="tScale3" name="1:2000"></activiti:value> 
+          <activiti:value id="tScale3" name="1:2000"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Darea4" name="Обсяг робіт 4, га ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStreet" name="Місцезнаходження об’єкту- Вулиця" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tobjectFor" name="Призначення об’єкту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="splanshets" name="Планшети ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="ApplyECP8" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="електронний документ «Витяг» сформовано "></activiti:value>
         </activiti:formProperty>
-
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" required="true"></activiti:formProperty>
@@ -707,7 +690,6 @@
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment8" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileTopograf" name="Топографо-геодезичні вихідні дані (якщо файлів декілька - запакуйте в архів)" type="file" required="true"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -751,7 +733,7 @@
         <activiti:formProperty id="date" name="Дата заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса зворотнього зв’язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string" ></activiti:formProperty>
+        <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="surosobaOrudniyname" name="В орудному відмінку повне найменування юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sedrpou" name="Ідентифікаційний код згідно ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи; ;writable=false" type="string"></activiti:formProperty>
@@ -818,22 +800,18 @@
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tobjectFor" name="Призначення об’єкту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="splanshets" name="Планшети ; ;bVisible=false" type="string"></activiti:formProperty>
-
-
-        <activiti:formProperty id="ApplyECP9" name="Результат опрацювання" default="accept" type="enum" required="true">
+        <activiti:formProperty id="ApplyECP9" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="електронний документ «Витяг» затверджено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sreposLog" name="Логін" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sreposPass" name="Пароль" type="string"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sreposLog" name="Логін" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sreposPass" name="Пароль" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
-
         <activiti:formProperty id="sComment9" name="Коментар" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFileVutjag" name="Витяг підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
-
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -926,19 +904,16 @@
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="tobjectFor" name="Призначення об’єкту" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="splanshets" name="Планшети ; ;bVisible=false" type="string"></activiti:formProperty>
-
-        <activiti:formProperty id="ApplyECP10" name="Результат опрацювання" default="accept" type="enum" required="true">
+        <activiti:formProperty id="ApplyECP10" name="Результат опрацювання" type="enum" default="accept" required="true">
           <activiti:value id="accept" name="електронний документ «Витяг» затверджено"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sreposLog" name="Логін" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sreposPass" name="Пароль" type="string"  writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>        
-        
+        <activiti:formProperty id="tElectronic_docsAttach" name="Перелік електронних документів Витягу" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sreposLinks" name="Посилання на сховище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sreposLog" name="Логін" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sreposPass" name="Пароль" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
@@ -995,6 +970,7 @@
     </serviceTask>
     <sequenceFlow id="flow21" sourceRef="servicetask9" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <textAnnotation id="textannotation1">
       <text>Громадянин</text>
     </textAnnotation>
@@ -1014,15 +990,6 @@
     <bpmndi:BPMNPlane bpmnElement="kiev_arch_827" id="BPMNPlane_kiev_arch_827">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="176.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="61.0" width="105.0" x="141.0" y="173.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="225.0" y="158.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="222.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="141.0" y="259.0"></omgdc:Bounds>
@@ -1090,18 +1057,6 @@
       <bpmndi:BPMNShape bpmnElement="textannotation4" id="BPMNShape_textannotation4">
         <omgdc:Bounds height="63.0" width="173.0" x="20.0" y="400.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="193.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="193.0" y="173.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="240.0" y="158.0"></omgdi:waypoint>
-        <omgdi:waypoint x="239.0" y="46.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="193.0" y="234.0"></omgdi:waypoint>
-        <omgdi:waypoint x="193.0" y="259.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="246.0" y="286.0"></omgdi:waypoint>
         <omgdi:waypoint x="342.0" y="286.0"></omgdi:waypoint>
@@ -1181,6 +1136,10 @@
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="1183.0" y="79.0"></omgdi:waypoint>
         <omgdi:waypoint x="1183.0" y="46.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="193.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="193.0" y="259.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="association1" id="BPMNEdge_association1">
         <omgdi:waypoint x="972.0" y="431.0"></omgdi:waypoint>

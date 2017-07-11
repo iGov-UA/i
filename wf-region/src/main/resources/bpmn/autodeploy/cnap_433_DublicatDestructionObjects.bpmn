@@ -14,7 +14,7 @@
         <activiti:formProperty id="bankIdAddress" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта для зворотнього звя'язку" type="string" required="true"></activiti:formProperty>
-		<activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою щодо якого потрібно видати дублікат" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_DestructionObjects" name="Номер дозволу на порушення об’єкту благоустрою щодо якого потрібно видати дублікат" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_DestructionObjects" name="Дата видачі дозволу на порушення об’єкту благоустрою щодо якого потрібно видати дублікат" type="date" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dozvol_DestructionObjects" name="Копія дозволу на порушення об’єкту благоустрою (непридатного для використання); ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressObject" name="Місцезнаходження (адреса) об'єкта, на який видається дозвіл" type="string" default=" " required="true"></activiti:formProperty>
@@ -160,63 +160,59 @@
         <activiti:formProperty id="nFile_DovirenistConfidant" name="Скан-копія довіреності на уповноважену особу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомленя адміністратора ЦНАПу" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: видача дублікату дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення про доставку замовлення до ЦНАПу + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Додано звернення на тему: видача дублікату дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          [pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
           [pattern/mail/new_design/_common_content_start.html]
-			&lt;p&gt;
-				Ваше звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.&lt;br /&gt;
-				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.&lt;br /&gt;
-				&lt;br /&gt;
-				${sNameOrgan},&lt;br /&gt;
-				${sAddress}&lt;br /&gt;
-				${sWorkTime}&lt;br /&gt;
-				${sPhoneOrgan}&lt;br /&gt;
-			&lt;/p&gt;	
+			<p>
+				Ваше звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою успішно зареєстровано і буде опрацьовано впродовж визначеного Законом терміну.<br />
+				Повідомлення про результат розгляду буде спрямоване на Ваш e-mail.<br />
+				<br />
+				${sNameOrgan},<br />
+				${sAddress}<br />
+				${sWorkTime}<br />
+				${sPhoneOrgan}<br />
+			</p>	
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br /&gt;
+				${sNameOrgan},<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -230,40 +226,39 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відхилено звернення на тему: видача дублікату дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Ваше звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою не прийнято в роботу. &lt;br /&gt;
-					Причина відмови: ${sDecision_1_Comment} &lt;br /&gt;
-					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					На жаль, Ваше звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою не прийнято в роботу. <br />
+					Причина відмови: ${sDecision_1_Comment} <br />
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -273,40 +268,39 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Перевірено звернення на тему: видача дублікату дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-  			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Ви подавали звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою.&lt;br /&gt;
-					Звернення перевірено та успішно зареєстровано.&lt;br /&gt;
-					Номер Вашого звернення: ${sReestr_numb} від ${sDate_Reestr}. &lt;br /&gt;
-					Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					Ви подавали звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою.<br />
+					Звернення перевірено та успішно зареєстровано.<br />
+					Номер Вашого звернення: ${sReestr_numb} від ${sDate_Reestr}. <br />
+					Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.<br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -318,11 +312,7 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow9" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
@@ -332,40 +322,39 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Звернення опрацьовано: видача дублікату дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishennya}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Rishennya}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Ви подавали звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою. &lt;br /&gt;
-					Документи оформлено, звернення оброблено. &lt;br /&gt;
-					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					Ви подавали звернення [sID_Order] щодо видачі дублікату дозволу на порушення об’єктів благоустрою. <br />
+					Документи оформлено, звернення оброблено. <br />
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, dublicat dozvilu oformleno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, dublicat dozvilu oformleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -378,40 +367,39 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відмова в видачі рішення на тему: видача дублікату дозволу на порушення об’єктів благоустрою]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Вам відмовлено в видачі дублікату дозволу на порушення об’єктів благоустрою (звернення [sID_Order]). &lt;br /&gt;
-					Причина відмови: ${sDecision_2_Comment} &lt;br /&gt;
-					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					На жаль, Вам відмовлено в видачі дублікату дозволу на порушення об’єктів благоустрою (звернення [sID_Order]). <br />
+					Причина відмови: ${sDecision_2_Comment} <br />
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishennya}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Rishennya}]]></activiti:expression>
         </activiti:field>
-	    <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -436,9 +424,10 @@ execution.setVariable('sAddDoc', per1)
    	 </script>
     </scriptTask>
     <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_433_DozvilDestructionObjects">
-    <bpmndi:BPMNPlane bpmnElement="cnap_433_DozvilDestructionObjects" id="BPMNPlane_cnap_433_DozvilDestructionObjects">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_433_DublicatDestructionObjects">
+    <bpmndi:BPMNPlane bpmnElement="cnap_433_DublicatDestructionObjects" id="BPMNPlane_cnap_433_DublicatDestructionObjects">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="188.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -447,12 +436,6 @@ execution.setVariable('sAddDoc', per1)
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="103.0" width="150.0" x="685.0" y="368.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="91.0" width="105.0" x="120.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="190.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="91.0" width="105.0" x="270.0" y="160.0"></omgdc:Bounds>
@@ -490,14 +473,6 @@ execution.setVariable('sAddDoc', per1)
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="65.0" width="105.0" x="270.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="85.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="205.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="172.0" y="160.0"></omgdi:waypoint>
-        <omgdi:waypoint x="172.0" y="135.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="375.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="205.0"></omgdi:waypoint>
@@ -514,23 +489,19 @@ execution.setVariable('sAddDoc', per1)
         <omgdi:waypoint x="780.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="885.0" y="206.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="779.0" y="161.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="779.0" y="161.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="760.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="759.0" y="259.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="89.0" x="721.0" y="227.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="89.0" x="721.0" y="227.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="937.0" y="251.0"></omgdi:waypoint>
         <omgdi:waypoint x="937.0" y="338.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="205.0" y="250.0"></omgdi:waypoint>
-        <omgdi:waypoint x="204.0" y="280.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="759.0" y="350.0"></omgdi:waypoint>
@@ -544,14 +515,14 @@ execution.setVariable('sAddDoc', per1)
         <omgdi:waypoint x="739.0" y="520.0"></omgdi:waypoint>
         <omgdi:waypoint x="595.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="622.0" y="527.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="93.0" x="622.0" y="527.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="779.0" y="520.0"></omgdi:waypoint>
         <omgdi:waypoint x="885.0" y="520.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="60.0" x="780.0" y="529.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="60.0" x="780.0" y="529.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -569,6 +540,10 @@ execution.setVariable('sAddDoc', per1)
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
         <omgdi:waypoint x="322.0" y="135.0"></omgdi:waypoint>
         <omgdi:waypoint x="322.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="67.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="172.0" y="135.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

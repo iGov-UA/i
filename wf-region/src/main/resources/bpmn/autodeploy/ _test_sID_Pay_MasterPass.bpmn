@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_sID_Pay_MasterPass" name="Тестування поля sID_Pay_MasterPass для роботи з  платіжною системою MasterCard" isExecutable="true">
+    <documentation>
+		AGVersion: 2017.05.15
+	</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках" type="string" default="100"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="textArea" default="{&quot;p2r&quot;: [{&quot;amount&quot;: &quot;100&quot;,&quot;fio&quot;: &quot;айгов&quot;,&quot;edrpou&quot;: &quot;00000000&quot;,&quot;mfo&quot;: &quot;380418&quot;,&quot;rr&quot;: &quot;123456789012&quot;,&quot;comment&quot;: &quot;этот платеж тестовый&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків" type="string" default="Призначення_платежу_у_форматі_текст_до_100_знаків"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна адреса" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sSum_MasterPass" name="Сума платежу, у копійках; ;bVisible=False" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=False" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=False" type="string"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_sID_Pay_MasterPass">
+    <bpmndi:BPMNPlane bpmnElement="_test_sID_Pay_MasterPass" id="BPMNPlane__test_sID_Pay_MasterPass">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="300.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="265.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

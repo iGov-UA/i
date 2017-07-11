@@ -21,7 +21,7 @@
         <activiti:formProperty id="work" name="Перелік робіт (послуг), що виконуватимуться (надаватимуться), а також виробів, що виготовлятимуться" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="strahovka" name=" Інформація про наявність договору страхування цивільної відповідальності перед третіми особами стосовно відшкодування наслідків можливої шкоди;найменування страхової компанії, строк дії страхового полісу, номер і дата видачі" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
@@ -29,25 +29,19 @@
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow2" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="mailtask6" name="Лист посадовцю про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>tanyazol@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення. Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення. Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -58,20 +52,20 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" успішно зареєстроване.&lt;/p&gt;
-&lt;p&gt;Ви отримаєте відповідь протягом п'яти робочих днів. &lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />
+<p>Ваше звернення щодо "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" успішно зареєстроване.</p>
+<p>Ви отримаєте відповідь протягом п'яти робочих днів. </p>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br /&gt;
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -99,12 +93,11 @@ ${sNameOrgan}&lt;br /&gt;
         <activiti:formProperty id="comPer1" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="admin" name="Введіть прізвище адміністратора, якщо документи прийнято" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="reestr" name="Введіть номер реєстрації, якщо документи прийнято" type="string" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Підготовка відповіді після рішення держсанепідслужби (2-й крок) " activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -130,14 +123,13 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="no" name="Заяву відхилено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар: Якщо позивачу відмовлено, вкажіть причину." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="result" name="Додайте файл з результатом подання (позитивним або негативним)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Додайте файл з результатом подання (позитивним або негативним) ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_59_print.html]; ;bVisible=false" type="string" default="Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист з результатом" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -146,32 +138,32 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
- &lt;p&gt;Надану Вами "Декларацію відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" зареєстровано. Ви можете отримати її з відміткою про реєстрацію у  ${sNameOrgan}&lt;br /&gt;
-&lt;/p&gt;
-${sPhoneOrgan}&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-&lt;br /&gt;
-&lt;p&gt;Для отримання зареєстрованої Декларації потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт).&lt;br/&gt;
-Звертаємо увагу на те, що Ви власноруч підписуєте зареєстровану Декларацію та проставляєте на ній печатку (у разі наявності) в присутності адміністратора в приміщенні ЦНАП &lt;/p&gt;
-&lt;br /&gt;
-&lt;br /&gt;
- [pattern/mail/_common_signature_start.html]&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а), ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+ <p>Надану Вами "Декларацію відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства" зареєстровано. Ви можете отримати її з відміткою про реєстрацію у  ${sNameOrgan}<br />
+</p>
+${sPhoneOrgan}<br />
+${sWorkTime}<br />
+${sAddress}<br />
+<br />
+<p>Для отримання зареєстрованої Декларації потрібно особисто звернутися до адміністратора ЦНАП з документом, що посвідчує особу (паспорт).<br/>
+Звертаємо увагу на те, що Ви власноруч підписуєте зареєстровану Декларацію та проставляєте на ній печатку (у разі наявності) в присутності адміністратора в приміщенні ЦНАП </p>
+<br />
+<br />
+ [pattern/mail/_common_signature_start.html]<br />
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]   
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -181,28 +173,27 @@ ${sNameOrgan}&lt;br /&gt;
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${proverka=='yes'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow24" sourceRef="servicetask1" targetRef="mailtask6"></sequenceFlow>
     <serviceTask id="servicetask5" name="Лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо реєстрації декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства опрацьоване адміністратором ЦНАП і відправлене на розгляд в санепідемслужбу.&lt;br/&gt;
-За декілька днів Ви отримаєте результат розгляду Вашого звернення.&lt;br/&gt;
-&lt;/p&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />
+<p>Ваше звернення щодо реєстрації декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства опрацьоване адміністратором ЦНАП і відправлене на розгляд в санепідемслужбу.<br/>
+За декілька днів Ви отримаєте результат розгляду Вашого звернення.<br/>
+</p>
+[pattern/mail/_common_signature_start.html]<br />
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -218,27 +209,27 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;&lt;br /&gt;
-&lt;p&gt;Щодо Вашого запиту на реєстрацію "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства".
-На жаль, вашу заяву відхилено.&lt;br&gt;
-${comPer1} &lt;br&gt;
-Ви можете подати ще одну заяву на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;igov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}&lt;br /&gt;
-${sPhoneOrgan}&lt;br /&gt;
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3><br />
+<p>Щодо Вашого запиту на реєстрацію "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства".
+На жаль, вашу заяву відхилено.<br>
+${comPer1} <br>
+Ви можете подати ще одну заяву на порталі <a href="https://igov.org.ua/" target="_blank">igov.org.ua</a></p>
+<p>Якщо у Вас з`явились питання, Ви можете звернутись до ${sNameOrgan}<br />
+${sPhoneOrgan}<br />
+<br />
+${sWorkTime}<br />
+${sAddress}<br />
+[pattern/mail/_common_signature_start.html]<br />
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -256,145 +247,130 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Декларація відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                   &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-&lt;p&gt;Щодо Вашого запиту на реєстрацію "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства".&lt;br&gt;
-На жаль, вашу заяву відхилено.&lt;br&gt;
-${comment} &lt;br&gt;
-Ви можете забрати оригінал документа про відмову у  ${sNameOrgan}&lt;br /&gt;
-&lt;p&gt;
-${sPhoneOrgan}&lt;br /&gt;
-&lt;br /&gt;
-${sWorkTime}&lt;br /&gt;
-${sAddress}&lt;br /&gt;
-[pattern/mail/_common_signature_start.html]&lt;br /&gt;
-${sNameOrgan}&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                   <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+<p>Щодо Вашого запиту на реєстрацію "Декларації відповідності матеріально-технічної бази суб’єкта господарювання вимогам законодавства".<br>
+На жаль, вашу заяву відхилено.<br>
+${comment} <br>
+Ви можете забрати оригінал документа про відмову у  ${sNameOrgan}<br />
+<p>
+${sPhoneOrgan}<br />
+<br />
+${sWorkTime}<br />
+${sAddress}<br />
+[pattern/mail/_common_signature_start.html]<br />
+${sNameOrgan}<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${result}</activiti:expression>
+          <activiti:expression><![CDATA[${result}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow34" sourceRef="mailtask6" targetRef="mailtask2"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="mailtask2" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="startevent1" targetRef="mailtask6"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_59">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_59" id="BPMNPlane_dnepr_cnap_59">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="7.0" y="38.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="-28.0" y="92.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="47.0" y="90.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="36.0" y="38.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask6" id="BPMNShape_mailtask6">
-        <omgdc:Bounds height="71.0" width="105.0" x="-28.0" y="153.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="1.0" y="153.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask2" id="BPMNShape_mailtask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="-28.0" y="231.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1.0" y="231.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="101.0" y="232.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="232.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="90.0" width="105.0" x="343.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="90.0" width="105.0" x="372.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="56.0" width="105.0" x="531.0" y="177.0"></omgdc:Bounds>
+        <omgdc:Bounds height="56.0" width="105.0" x="560.0" y="177.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="670.0" y="155.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="699.0" y="155.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="455.0" y="152.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="484.0" y="152.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="90.0" width="105.0" x="226.0" y="110.0"></omgdc:Bounds>
+        <omgdc:Bounds height="90.0" width="105.0" x="255.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="258.0" y="239.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="287.0" y="239.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask3" id="BPMNShape_mailtask3">
-        <omgdc:Bounds height="99.0" width="105.0" x="343.0" y="209.0"></omgdc:Bounds>
+        <omgdc:Bounds height="99.0" width="105.0" x="372.0" y="209.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="531.0" y="121.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="560.0" y="121.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="24.0" y="73.0"></omgdi:waypoint>
-        <omgdi:waypoint x="24.0" y="92.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="62.0" y="90.0"></omgdi:waypoint>
-        <omgdi:waypoint x="61.0" y="64.0"></omgdi:waypoint>
-        <omgdi:waypoint x="687.0" y="70.0"></omgdi:waypoint>
-        <omgdi:waypoint x="687.0" y="155.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="636.0" y="205.0"></omgdi:waypoint>
-        <omgdi:waypoint x="687.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="665.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="448.0" y="155.0"></omgdi:waypoint>
-        <omgdi:waypoint x="455.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="477.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="484.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="495.0" y="172.0"></omgdi:waypoint>
-        <omgdi:waypoint x="531.0" y="205.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="77.0" y="119.0"></omgdi:waypoint>
-        <omgdi:waypoint x="24.0" y="153.0"></omgdi:waypoint>
+        <omgdi:waypoint x="524.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="205.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="331.0" y="155.0"></omgdi:waypoint>
-        <omgdi:waypoint x="343.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="155.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="206.0" y="259.0"></omgdi:waypoint>
-        <omgdi:waypoint x="258.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="287.0" y="259.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="278.0" y="239.0"></omgdi:waypoint>
-        <omgdi:waypoint x="278.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.0" y="239.0"></omgdi:waypoint>
+        <omgdi:waypoint x="307.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="298.0" y="259.0"></omgdi:waypoint>
-        <omgdi:waypoint x="343.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="327.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="258.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="448.0" y="258.0"></omgdi:waypoint>
-        <omgdi:waypoint x="437.0" y="259.0"></omgdi:waypoint>
-        <omgdi:waypoint x="499.0" y="259.0"></omgdi:waypoint>
-        <omgdi:waypoint x="687.0" y="259.0"></omgdi:waypoint>
-        <omgdi:waypoint x="687.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="477.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="466.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="528.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="190.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
-        <omgdi:waypoint x="495.0" y="172.0"></omgdi:waypoint>
-        <omgdi:waypoint x="530.0" y="154.0"></omgdi:waypoint>
-        <omgdi:waypoint x="531.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="524.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="154.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="148.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="636.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="670.0" y="172.0"></omgdi:waypoint>
+        <omgdi:waypoint x="665.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="699.0" y="172.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="77.0" y="188.0"></omgdi:waypoint>
-        <omgdi:waypoint x="24.0" y="231.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="53.0" y="231.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
-        <omgdi:waypoint x="77.0" y="258.0"></omgdi:waypoint>
-        <omgdi:waypoint x="101.0" y="259.0"></omgdi:waypoint>
+        <omgdi:waypoint x="106.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="259.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="53.0" y="73.0"></omgdi:waypoint>
+        <omgdi:waypoint x="53.0" y="153.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

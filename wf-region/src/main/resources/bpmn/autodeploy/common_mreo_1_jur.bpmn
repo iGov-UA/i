@@ -41,22 +41,22 @@
     <serviceTask id="servicetask2" name="e-mail для автора" activiti:delegateExpression="#{MailTaskWithoutAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>mail</activiti:expression>
+          <activiti:expression><![CDATA[mail]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[тема письма]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>loren ipsum
+          <activiti:expression><![CDATA[loren ipsum
 
-Результат обробки звернення:&lt;br&gt;
-${decide}&lt;br&gt;&lt;br&gt;
+Результат обробки звернення:<br>
+${decide}<br><br>
 
-Примітка:&lt;br&gt;
-${comment}&lt;br&gt;</activiti:expression>
+Примітка:<br>
+${comment}<br>]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -66,23 +66,21 @@ ${comment}&lt;br&gt;</activiti:expression>
     <serviceTask id="servicetask3" name="e-mail для співробітника" activiti:delegateExpression="#{MailTaskWithoutAttachments}">
       <extensionElements>
         <activiti:field name="from">
-          <activiti:expression>mail</activiti:expression>
+          <activiti:expression><![CDATA[mail]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[тема письма]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>loren ipsum</activiti:expression>
+          <activiti:expression><![CDATA[loren ipsum]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask4" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow7" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
-    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_1_jur">
     <bpmndi:BPMNPlane bpmnElement="common_mreo_1_jur" id="BPMNPlane_common_mreo_1_jur">
@@ -101,9 +99,6 @@ ${comment}&lt;br&gt;</activiti:expression>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="55.0" width="125.0" x="290.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="146.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="601.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="646.0" y="107.0"></omgdi:waypoint>
@@ -118,10 +113,6 @@ ${comment}&lt;br&gt;</activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="95.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="146.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="251.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="290.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

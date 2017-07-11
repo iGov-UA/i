@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_cnap_256" name="Експлуатаційний дозвіл для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків" isExecutable="true">
+  <process id="dnepr_cnap_256" name="Експлуатаційний дозвіл для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків" isExecutable="true">
     <documentation>https://github.com/e-government-ua/iBP/issues/224</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати" type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://goo.gl/whpfM6&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
+        <activiti:formProperty id="info" name="Зверніть увагу: ця послуга є платною, при заповненні полів треба буде завантажити документ, що засвідчує внесення плати" type="label" default="Ви можете здійснити оплату зручним для Вас способом за  &lt;a href=&quot;https://docs.google.com/document/d/1y0vCs37mAahhAsvUzRNFC_yP0KtjIoSf0ujiXqmARW8/edit&quot; target=&quot;_blank&quot;&gt;реквізитами&lt;/a&gt; "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
@@ -32,26 +32,23 @@
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default=" +380"></activiti:formProperty>
-        <activiti:formProperty id="sFile1" name="Документ, що підтверджує внесення плати за видачу та поновлення експлуатаційного дозволу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFood" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameOrgan" name="район; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerk" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="Адреса; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління Держпродспоживслужби в ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDozvil" name="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків; ;bVisible=false" type="string" default="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="Список документов; ;bVisible=false" type="string" default="&lt;ol&gt;&lt;li&gt;Перелік харчових продуктів, що виробляються, переробляються, або реалізуються&lt;/li&gt;&lt;/ol&gt;"></activiti:formProperty>
-        <activiti:formProperty id="nFlag" name="регионы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFile1" name="Документ, що підтверджує внесення плати за видачу та поновлення експлуатаційного дозволу ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFood" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBuild_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва ; ;bNew=true " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sProtocols" name="Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="район ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="пошта району ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в  ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків ; ;bVisible=false" type="string" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="Список документов ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nFlag" name="регионы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers" name="markers" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_256.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent2" name="End"></endEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -82,9 +79,9 @@
         <activiti:formProperty id="nReestr" name="Реєстраційний номер" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sReestrDate" name="Вкажіть дату реєстрації звернення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора" type="string" default=" " required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління Держпродспоживслужби в ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDozvil" name="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків; ;bVisible=false" type="string" default="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в  ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків ; ;bVisible=false" type="string" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="decision_1" name="Прийняття рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заповнені дані вірні, інформація направлена на розгляд, очікується рішення"></activiti:value>
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
@@ -92,13 +89,16 @@
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sImya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpou_pf&quot;,&quot;sPib_ur_pf&quot;,&quot;sAdres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;sAdres_2_pf&quot;,&quot;sPib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sAdres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html] ; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFile1" name="Документ, що підтверджує внесення плати за видачу та поновлення експлуатаційного дозволу ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFood" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuild_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва ; ;bNew=true " type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sProtocols" name="Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом ;bNew=true" type="file" writable="false"></activiti:formProperty>
+                       
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${sFood},${sBuild_doc},${sProtocols},${sFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -134,19 +134,19 @@
           <activiti:value id="accept" name="надано експлуатаційний дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні експлуатаційного дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління Держпродспоживслужби в ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDozvil" name="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків; ;bVisible=false" type="string" default="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string" default="&lt;ol&gt;&lt;li&gt;Перелік харчових продуктів, що виробляються, переробляються, або реалізуються&lt;/li&gt;&lt;li&gt;Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва&lt;/li&gt;&lt;li&gt;Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями&lt;/li&gt;&lt;/ol&gt;"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в  ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків ; ;bVisible=false" type="string" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів ; ;bVisible=false" type="string" default="&lt;ol&gt;&lt;li&gt;Перелік харчових продуктів, що виробляються, переробляються, або реалізуються&lt;/li&gt;&lt;li&gt;Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва&lt;/li&gt;&lt;li&gt;Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями&lt;/li&gt;&lt;/ol&gt;"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html] ; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -183,7 +183,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Ваше звернення  №[sID_Order] щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків успішно зареєстровано і буде опрацьовано управлінням Держпродспоживслужби впродовж 30 календарних днів.<br /><br />
+Ваше звернення  №[sID_Order] щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків успішно зареєстровано і буде опрацьовано управлінням ветеринарної медицини впродовж 30 календарних днів.<br /><br />
 Реєстраційний номер заяви: ${nReestr};<br />
 <br />
 <br />
@@ -220,7 +220,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-На жаль, Ваше звернення щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків відхилено через недостатню або неправильну інформацію.<br />
+На жаль, Ваше звернення щодо надання експлуатаційного дозволу для провадження діяльності на потужностях (об’єктах) що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків відхилено через недостатню або неправильну інформацію.<br />
 ${comment_1}<br />
 Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
 <br />
@@ -255,7 +255,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-Вам enum{[decision_2]} для провадження діяльності на потужностях (об’єктах) що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків.<br /> 
+Вам enum{[decision_2]} для провадження діяльності на потужностях (об’єктах) що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків.<br /> 
 ${comment_2} <br /> 
 Копія рішення знаходиться у додатку до листа.<br />
 Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br /><br />
@@ -329,13 +329,11 @@ execution.setVariable('sNameOrgan', per4)
     <sequenceFlow id="flow50" sourceRef="usertask2" targetRef="servicetask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow54" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow55" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flow58" sourceRef="servicetask1" targetRef="servicetask7"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <serviceTask id="servicetask10" name="Лист до ветеринарної" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerkVet}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -388,35 +386,38 @@ execution.setVariable('sNameOrgan', per4)
         <activiti:formProperty id="sDozvDate" name="Дата видачі Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string"></activiti:formProperty>
         <activiti:formProperty id="nReestrVet" name="Реєстраційний номер потужності" type="string"></activiti:formProperty>
         <activiti:formProperty id="sReestrDateVet" name="Дата державної реєстрації потужності " type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника Держпродспоживслужби" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління Держпродспоживслужби в ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDozvil" name="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків; ;bVisible=false" type="string" default="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_256_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_256_print.html]; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в  ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків ; ;bVisible=false" type="string" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_256_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_256_print.html] ; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html] ; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_inn" name="показать инн" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_14&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdinn&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_edrpo" name="показать едрпо" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_15&quot;:{&quot;aElement_ID&quot;:[&quot;edrpou&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asSubekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumUr'&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Cканована копія паспорту ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFile1" name="Документ, що підтверджує внесення плати за видачу та поновлення експлуатаційного дозволу ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFood" name="Перелік харчових продуктів, що виробляються, переробляються, або реалізуються, за підписом заявника ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBuild_doc" name="Копія документу, який підтверджує прийняття в експлуатацію закінченого об’єкта будівництва ; ;bNew=true " type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sProtocols" name="Протоколи досліджень харчових продуктів, проведених акредитованими лабораторіями;завантажте єдиним архівом ;bNew=true" type="file" writable="false"></activiti:formProperty>
+                
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${sFood},${sBuild_doc},${sProtocols},${sFile1},${Printform_1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask11" name="Лист про повернення до ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[tanyazol@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Заява повернена із Держпродспоживслужби. Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
+          <activiti:string><![CDATA[Заява повернена із Ветеринарної служби. Експлуатаційний дозвіл для провадження діяльності на потужностях (об’єктах)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
@@ -452,7 +453,7 @@ execution.setVariable('sNameOrgan', per4)
         <activiti:formProperty id="sReestrDate" name="Дата реєстрації звернення ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPib_admin" name="Прізвище та ініціали адміністратора ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decision_2" name="Рішення Держпродспоживслужби" type="enum" writable="false">
+        <activiti:formProperty id="decision_2" name="Рішення ветеринарної служби" type="enum" writable="false">
           <activiti:value id="accept" name="надано експлуатаційний дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні експлуатаційного дозволу"></activiti:value>
         </activiti:formProperty>
@@ -462,21 +463,20 @@ execution.setVariable('sNameOrgan', per4)
         <activiti:formProperty id="sDozvDate" name="Дата видачі Експлуатаційного дозволу (у форматі ДД місяць РРРР)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nReestrVet" name="Реєстраційний номер потужності" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReestrDateVet" name="Дата державної реєстрації потужності " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника Держпродспоживслужби" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sShapkaVet" name="Начальнику управління Держпродспоживслужби в ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asDozvil" name="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків; ;bVisible=false" type="string" default="що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, та для агропродовольчих ринків"></activiti:formProperty>
-        <activiti:formProperty id="rdozvil" name="назви документів; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_256_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_256_print.html]; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPibVet" name="Прізвище та ініціали працівника ветеринарної служби" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в  ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків ; ;bVisible=false" type="string" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
+        <activiti:formProperty id="rdozvil" name="назви документів ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="kved_text" name="Впишіть види діяльності, відповідно до вказаних кодів КВЕД ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;pattern/print/dnepr_cnap_256_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_55_print.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_256_print.html] ; ;bVisible=false" type="string" default="Експлуатаційний дозвіл" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_55_print.html] ; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${PrintForm_1},${rishen},${Printform_2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow61" name="${sID_Public_SubjectOrganJoin == 'tern_tern'}" sourceRef="exclusivegateway3" targetRef="servicetask10">
@@ -550,12 +550,12 @@ ${sNameOrgan}<br />
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Експлуатаційний дозвіл для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних Держпродспоживслужбі.]]></activiti:string>
+          <activiti:string><![CDATA[Експлуатаційний дозвіл для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення №[sID_Order] щодо Експлуатаційного дозволу для потужностей (об’єктів), що провадять діяльність з виробництва та/або зберігання харчових продуктів тваринного походження, підконтрольних Держпродспоживслужбі, зареєстроване у системі.<br/>
+<p> Ваше звернення №[sID_Order] щодо Експлуатаційного дозволу для потужностей (об’єктів), що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, зареєстроване у системі.<br/>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 <br />
 ${sPhoneOrgan}<br />
@@ -568,17 +568,12 @@ ${sNameOrgan}<br />
     </serviceTask>
     <sequenceFlow id="flow71" sourceRef="servicetask7" targetRef="servicetask13"></sequenceFlow>
     <sequenceFlow id="flow72" sourceRef="servicetask13" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow73" sourceRef="startevent1" targetRef="servicetask7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_256">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_256" id="BPMNPlane_dnepr_cnap_256">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="91.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="119.0" y="81.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="108.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="170.0"></omgdc:Bounds>
@@ -628,10 +623,6 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNShape bpmnElement="servicetask13" id="BPMNShape_servicetask13">
         <omgdc:Bounds height="55.0" width="123.0" x="402.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="105.0" y="108.0"></omgdi:waypoint>
-        <omgdi:waypoint x="119.0" y="108.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="87.0" y="264.0"></omgdi:waypoint>
         <omgdi:waypoint x="87.0" y="205.0"></omgdi:waypoint>
@@ -640,7 +631,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="589.0" y="187.0"></omgdi:waypoint>
         <omgdi:waypoint x="437.0" y="187.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="57.0" x="504.0" y="170.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="57.0" x="504.0" y="170.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
@@ -655,19 +646,11 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="609.0" y="136.0"></omgdi:waypoint>
         <omgdi:waypoint x="609.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow55" id="BPMNEdge_flow55">
-        <omgdi:waypoint x="135.0" y="138.0"></omgdi:waypoint>
-        <omgdi:waypoint x="87.0" y="170.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow58" id="BPMNEdge_flow58">
-        <omgdi:waypoint x="224.0" y="108.0"></omgdi:waypoint>
-        <omgdi:waypoint x="261.0" y="108.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
         <omgdi:waypoint x="609.0" y="311.0"></omgdi:waypoint>
         <omgdi:waypoint x="609.0" y="375.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="619.0" y="311.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="619.0" y="311.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
@@ -709,6 +692,10 @@ ${sNameOrgan}<br />
       <bpmndi:BPMNEdge bpmnElement="flow72" id="BPMNEdge_flow72">
         <omgdi:waypoint x="525.0" y="108.0"></omgdi:waypoint>
         <omgdi:waypoint x="549.0" y="108.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow73" id="BPMNEdge_flow73">
+        <omgdi:waypoint x="105.0" y="108.0"></omgdi:waypoint>
+        <omgdi:waypoint x="261.0" y="108.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

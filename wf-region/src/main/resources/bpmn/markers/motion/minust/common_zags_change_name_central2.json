@@ -1,0 +1,92 @@
+{
+  "motion": {
+  
+    "ValuesFieldsOnCondition_11": {
+     "sNote": ["если повторно меняет имя"],
+      "aField_ID": [
+        "sSum",
+        "sDescription"
+      ],
+      "asID_Field_sValue": [
+        "51.92",
+        "державне мито за повторну державну реєстрацію зміни імені фізичної особи"
+      ],
+      "asID_Field": {
+        "sClient": "saChangeName"
+      },
+      "sCondition": "[sClient] == 'yes'||[sClient] == 'так'"
+    },
+    "ShowFieldsOnCondition_12": {
+     "sNote": ["если меняет и имя и фамилию"],
+      "aField_ID": [
+        "sNewName",
+        "sNewSurname"
+      ],
+      "asID_Field": {
+        "sClient": "asFullName"
+      },
+      "sCondition": "[sClient] == 'namesurname'||[sClient] == 'прізвище та імя'"
+    },
+    "ShowFieldsOnCondition_13": {
+     "sNote": ["если меняет все имя полностью"],
+      "aField_ID": [
+        "sNewName",
+        "sNewSurname",
+        "infoSecondname",
+        "sNewSecondname"
+      ],
+      "asID_Field": {
+        "sClient": "asFullName"
+      },
+      "sCondition": "[sClient] == 'pib'||[sClient] == 'прізвище, імя та по батькові'"
+    },
+    "ShowFieldsOnCondition_14": {
+     "sNote": ["если оплата онлайн"],
+      "aField_ID": [
+        "sText88"
+      ],
+      "asID_Field": {
+        "sClient": "asPaymentMethod"
+      },
+      "sCondition": "[sClient] == 'online'||[sClient] == 'сплатити онлайн'"
+    },
+    "ShowFieldsOnCondition_15": {
+     "sNote": ["если оффлайн оплата"],
+      "aField_ID": [
+        "sBankDetails1",
+        "sDocPay"
+      ],
+      "asID_Field": {
+        "sClient": "asPaymentMethod"
+      },
+      "sCondition": "[sClient] == 'offline'||[sClient] == 'отримати реквізити для сплати'"
+    },
+    "ShowFieldsOnCondition_16": {
+     "sNote": ["если уже менял имя"],
+      "aField_ID": [
+        "sNameOrganPrevious",
+        "sDatePrevious",
+        "sDocPrevious"
+      ],
+      "asID_Field": {
+        "sClient": "saChangeName"
+      },
+      "sCondition": "[sClient] == 'yes'||[sClient] == 'так'"
+    },
+    "ValuesFieldsOnCondition_17": {
+     "sNote": ["сумма если не менял раньше"],
+      "aField_ID": [
+        "sSum",
+        "sDescription"
+      ],
+      "asID_Field_sValue": [
+        "5.2",
+        "державне мито за державну реєстрацію зміни імені фізичної особи"
+      ],
+      "asID_Field": {
+        "sClient": "saChangeName"
+      },
+      "sCondition": "[sClient] == 'no'||[sClient] == 'ні'"
+    }
+  }
+}

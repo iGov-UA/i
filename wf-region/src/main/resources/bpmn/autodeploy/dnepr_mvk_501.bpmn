@@ -3,7 +3,7 @@
   <process id="dnepr_mvk_501" name="Затвердження проекту землеустрою щодо відведення земельної ділянки" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-      	<activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -27,10 +27,10 @@
         <activiti:formProperty id="sNameCorpor" name="Назва організації, що розробляла проект відведення земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nNumberPages" name="Кількість аркушів в проекті землеустрою" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name="Зверніть увагу" type="label" default="&lt;strong&gt;Скан копії документів повині бути завірені належним чином&lt;/strong&gt;"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Проект землеустрою щодо відведення земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Витяг з Державного земельного кадастру про  земельну ділянку" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Проект землеустрою щодо відведення земельної ділянки ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Витяг з Державного земельного кадастру про  земельну ділянку ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel3" name="Увага!" type="label" default="У разі спільної чи часткової власності на нерухоме майно, &lt;br&gt; що розташоване на зазначеній в заяві земельній ділянці,&lt;br&gt; необхідно письмова згода співввласника(оформлена згідно чинного законодавства)."></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Згода співвласників" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Згода співвласників ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса установи; ;bVisible=false" type="string"></activiti:formProperty>
@@ -42,20 +42,19 @@
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dnepr_mvk_501.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Затвердження проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -65,42 +64,35 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Затвердження проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення [sID_Order] щодо затвердження проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-${sPhoneOrgan}&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення [sID_Order] щодо затвердження проекту землеустрою щодо відведення земельної ділянки було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+${sPhoneOrgan}<br>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
+${sNameOrgan}<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow4" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка звернення чиновником" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="adminFio" name="П.І.Б. співробітника, який прийняв заяву" type="string" required="true"></activiti:formProperty>
@@ -134,12 +126,11 @@ ${sNameOrgan}&lt;br&gt;
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;ur_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_501_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Проект землеустрою щодо відведення земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Витяг з Державного земельного кадастру про  земельну ділянку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+         <activiti:formProperty id="nFile3" name="Згода співвласників ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -151,32 +142,32 @@ ${sNameOrgan}&lt;br&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Затвердження проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${decisionComment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/ target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-${sPhoneOrgan}&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки було відхилено.</p>
+<p>Причина в наступному:</p>
+<p>${decisionComment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
+${sPhoneOrgan}<br>
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
+${sNameOrgan}<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -214,7 +205,7 @@ ${sNameOrgan}&lt;br&gt;
           <activiti:value id="dec_ok" name="Рішення прийнято"></activiti:value>
           <activiti:value id="dec_no" name="Відповідь надано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте рішення сесії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте рішення сесії ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -225,35 +216,35 @@ ${sNameOrgan}&lt;br&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Затвердження проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки - опрацьовано. &lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки - опрацьовано. <br />
 Рішення в додатку до цього листа.
-&lt;/p&gt;
-${sPhoneOrgan}&lt;br&gt;
-&lt;br /&gt;
+</p>
+${sPhoneOrgan}<br>
+<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
+${sNameOrgan}<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno.
-Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFileDecision}</activiti:expression>
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -266,33 +257,33 @@ Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Затвердження проекту землеустрою щодо відведення земельної ділянки.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки - опрацьовано.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо затвердження проекту землеустрою щодо відведення земельної ділянки - опрацьовано.<br />
 Відповідь в додатку до цього листа.
-&lt;/p&gt;
-${sPhoneOrgan}&lt;br&gt;
-&lt;br /&gt;
+</p>
+${sPhoneOrgan}<br>
+<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}&lt;br&gt;
+${sNameOrgan}<br>
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFileDecision}</activiti:expression>
+          <activiti:expression><![CDATA[${nFileDecision}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -311,17 +302,12 @@ res = 'від учасника АТО'
 execution.setVariable('sSato', res)</script>
     </scriptTask>
     <sequenceFlow id="flow16" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_mvk_501">
     <bpmndi:BPMNPlane bpmnElement="dnepr_mvk_501" id="BPMNPlane_dnepr_mvk_501">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="170.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="140.0" y="152.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="210.0" y="192.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="72.0" width="105.0" x="270.0" y="152.0"></omgdc:Bounds>
@@ -362,22 +348,9 @@ execution.setVariable('sSato', res)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="71.0" width="105.0" x="270.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="115.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="140.0" y="187.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="192.0" y="152.0"></omgdi:waypoint>
-        <omgdi:waypoint x="192.0" y="95.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="95.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="375.0" y="188.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="188.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="225.0" y="222.0"></omgdi:waypoint>
-        <omgdi:waypoint x="224.0" y="263.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="505.0" y="188.0"></omgdi:waypoint>
@@ -391,7 +364,7 @@ execution.setVariable('sSato', res)</script>
         <omgdi:waypoint x="562.0" y="280.0"></omgdi:waypoint>
         <omgdi:waypoint x="505.0" y="281.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="516.0" y="238.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="516.0" y="238.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -402,7 +375,7 @@ execution.setVariable('sSato', res)</script>
         <omgdi:waypoint x="582.0" y="300.0"></omgdi:waypoint>
         <omgdi:waypoint x="582.0" y="450.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="97.0" x="534.0" y="329.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="97.0" x="534.0" y="329.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -414,7 +387,7 @@ execution.setVariable('sSato', res)</script>
         <omgdi:waypoint x="451.0" y="405.0"></omgdi:waypoint>
         <omgdi:waypoint x="375.0" y="404.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="404.0" y="410.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="404.0" y="410.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -422,7 +395,7 @@ execution.setVariable('sSato', res)</script>
         <omgdi:waypoint x="451.0" y="540.0"></omgdi:waypoint>
         <omgdi:waypoint x="375.0" y="540.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="401.0" y="519.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="401.0" y="519.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -436,6 +409,10 @@ execution.setVariable('sSato', res)</script>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="322.0" y="131.0"></omgdi:waypoint>
         <omgdi:waypoint x="322.0" y="152.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="97.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="322.0" y="131.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

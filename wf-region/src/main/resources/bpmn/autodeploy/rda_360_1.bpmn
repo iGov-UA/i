@@ -67,16 +67,16 @@
           <activiti:value id="sSecond" name="повторне звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="dCreate" name="Дата подання заяви ; ;bVisible=false" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте їх у pdf-файл або zip архів" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile" name="Додати документ;Якщо декілька сторінок об'єднайте їх у pdf-файл або zip архів ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMoreFiles" name="Чи потрібні ще поля для завантаження файлів" type="enum" default="no">
           <activiti:value id="no" name="Ні"></activiti:value>
           <activiti:value id="yes1" name="одне"></activiti:value>
           <activiti:value id="yes2" name="два"></activiti:value>
           <activiti:value id="yes3" name="три"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Додати документ" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Додати документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Додати документ ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Додати документ ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Додати документ ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('newField.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hide fields from Bogoduhiv" type="markers" default="${markerService.loadFromFile('bogoduhov/zvernenja_do_golovu.json')}"></activiti:formProperty>
         <activiti:formProperty id="sOrgan" name="назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -93,16 +93,16 @@
     <serviceTask id="servicetask3" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Нове звернення громадян на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Нове звернення громадян на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -110,30 +110,28 @@
     <serviceTask id="servicetask2" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-                        
-                        [pattern/mail/_common_header.html]
-                        &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;Ваш запит був успішно зареєстрований у нашій системі.&lt;/p&gt;
-			&lt;p&gt;Спеціалісти відповідального органу опрацюють Вашу заявку та нададуть відповідь найближчим часом. &lt;/p&gt;
-			&lt;br&gt;
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
-			${sAddress}&lt;br&gt;
-			${sWorkTime}&lt;br&gt;
-			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                        <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>Ваш запит був успішно зареєстрований у нашій системі.</p>
+			<p>Спеціалісти відповідального органу опрацюють Вашу заявку та нададуть відповідь найближчим часом. </p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.&lt;br&gt;
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -205,12 +203,14 @@
         <activiti:formProperty id="sOrgan" name="назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/rda_360.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile" name="Додати документ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow13" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -224,31 +224,31 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-		    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-			&lt;p&gt;
-	            Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+		    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+			<p>
+	            Ваше звернення на тему: ${sTopic} розглянуте.<br>
 	            На жаль, змушені відмовити Вам у реєстрації звернення.
-		    &lt;/p&gt;
-			&lt;p&gt;
-				Коментар державного службовця: &lt;br&gt;
-				&lt;i&gt;${decisionComment}&lt;/i&gt;
-			&lt;/p&gt;
-			&lt;br&gt;
-			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:&lt;br&gt;
-			${sAddress}&lt;br&gt;
-			${sWorkTime}&lt;br&gt;
-			${sPhoneOrgan}&lt;br&gt;&lt;br&gt;
+		    </p>
+			<p>
+				Коментар державного службовця: <br>
+				<i>${decisionComment}</i>
+			</p>
+			<br>
+			Якщо у Вас є додаткові питання, Ви можете звернутись за наступними контактами:<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}<br><br>
 			[pattern/mail/_common_signature_start.html]
-			${sNameOrgan}.&lt;br&gt;
+			${sNameOrgan}.<br>
 			[pattern/mail/_common_signature_end.html]
-			[pattern/mail/_common_footer.html]</activiti:expression>
+			[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -316,14 +316,16 @@
           <activiti:value id="physcial" name="Фізична копія"></activiti:value>
           <activiti:value id="digital" name="Електронна версія"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nDocFile" name="Додайте сканований результат відповіді" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocFile" name="Додайте сканований результат відповіді ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile" name="Додати документ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Додати документ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile},${nFile1},${nFile2},${nFile3}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow40" sourceRef="usertask2" targetRef="servicetask7"></sequenceFlow>
@@ -333,46 +335,39 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression>Звернення на тему: ${sTopic}</activiti:expression>
+          <activiti:expression><![CDATA[Звернення на тему: ${sTopic}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nDocFile}"</activiti:expression>
+          <activiti:expression><![CDATA["${nDocFile}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Ваше звернення на тему: ${sTopic} розглянуте.&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Ваше звернення на тему: ${sTopic} розглянуте.<br>
                                         Скан-копія рішення знаходиться у додатках до цього листа.
-                                    &lt;/p&gt;
-                                    &lt;p&gt;Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.&lt;/p&gt;
-                                    &lt;p&gt;
-                                        ${sPhoneOrgan},&lt;br&gt;
-                                        ${sAddress},&lt;br&gt;
-					${sWorkTime},&lt;br&gt;
-                                        ${sPhoneOrgan} &lt;br&gt;
-				    &lt;/p&gt;
-                                    &lt;p&gt; &lt;i&gt;${decisionComment}&lt;/i&gt; &lt;/p&gt;
+                                    </p>
+                                    <p>Якщо Ви бажаєте отримати фізичну копію цього документа - зверніться до відповідального органу.</p>
+                                    <p>
+                                        ${sPhoneOrgan},<br>
+                                        ${sAddress},<br>
+					${sWorkTime},<br>
+                                        ${sPhoneOrgan} <br>
+				    </p>
+                                    <p> <i>${decisionComment}</i> </p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br&gt;
+									${sNameOrgan},<br>
 									[pattern/mail/_common_signature_end.html]
 									[pattern/mail/_common_feedback.html]
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow43" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flow62" sourceRef="startevent1" targetRef="servicetask8"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Service Task" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow63" sourceRef="servicetask8" targetRef="servicetask3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask8">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow64" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow62" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_rda_360_1">
     <bpmndi:BPMNPlane bpmnElement="rda_360_1" id="BPMNPlane_rda_360_1">
@@ -403,15 +398,6 @@
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="61.0" width="105.0" x="746.0" y="307.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="150.0" y="110.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="154.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="355.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="118.0"></omgdi:waypoint>
@@ -428,7 +414,7 @@
         <omgdi:waypoint x="818.0" y="116.0"></omgdi:waypoint>
         <omgdi:waypoint x="920.0" y="117.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="89.0" x="810.0" y="96.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="89.0" x="810.0" y="96.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -439,7 +425,7 @@
         <omgdi:waypoint x="798.0" y="136.0"></omgdi:waypoint>
         <omgdi:waypoint x="798.0" y="202.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="808.0" y="164.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="95.0" x="808.0" y="164.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
@@ -452,15 +438,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="41.0" y="116.0"></omgdi:waypoint>
-        <omgdi:waypoint x="100.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow63" id="BPMNEdge_flow63">
-        <omgdi:waypoint x="205.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="250.0" y="117.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="165.0" y="140.0"></omgdi:waypoint>
-        <omgdi:waypoint x="167.0" y="154.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -40,7 +40,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст отчета" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusDecision" name="Решение" type="enum" default="notExecuted">
-          <activiti:value id="executed" name="Пройти процесс дальше (задание выполнено)"></activiti:value>
+          <activiti:value id="executed" name="Задание выполнено"></activiti:value>
           <activiti:value id="notExecuted" name="Закрыть задание"></activiti:value>
           <activiti:value id="delegated" name="Отправить исполнителю на доработку (отклонить отчет)"></activiti:value>
         </activiti:formProperty>
@@ -61,7 +61,6 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина! ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
@@ -91,11 +90,6 @@
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask1" name="ID Process" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>// получение ID текущего процесса
-    var processInstanceId = execution.getProcessInstanceId();
-execution.setVariable('processInstanceId', processInstanceId)</script>
-    </scriptTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_btsol_multiInstance">
     <bpmndi:BPMNPlane bpmnElement="_task_btsol_multiInstance" id="BPMNPlane__task_btsol_multiInstance">
@@ -122,9 +116,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="744.0" y="90.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="345.0" y="257.0"></omgdi:waypoint>

@@ -31,14 +31,14 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow23" sourceRef="boundaryerror1" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Формировка даты" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay')
 var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
 var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);

@@ -86,7 +86,7 @@
         <activiti:formProperty id="marker24" name="Малинської міськради" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_27&quot;:{&quot;aField_ID&quot;:[&quot;region&quot;],&quot;sValue&quot;:&quot;27&quot;,&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;area&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'malinT'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
