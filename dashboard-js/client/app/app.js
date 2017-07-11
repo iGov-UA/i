@@ -66,4 +66,12 @@ angular.module('dashboardJsApp', [
       }
     });
   }
-]);
+]).config(['snapRemoteProvider',
+  function (snapRemoteProvider) {
+    if(window.innerWidth >= 992) {
+      snapRemoteProvider.globalOptions = { touchToDrag: false, tapToClose: false }
+    } else {
+      snapRemoteProvider.globalOptions = { touchToDrag: true, tapToClose: true }
+    }
+
+  }]);

@@ -3,6 +3,8 @@ angular.module('dashboardJsApp').directive('issueBlock', ['Issue', '$http', func
     restrict: 'EA',
     templateUrl: 'components/issueBlock/issue.template.html',
     link: function (scope) {
+      Issue.clearIssues();
+
       scope.issues = Issue.getIssues();
       scope.selectExe = {params: {sSubjectType: 'Human', sID_Group_Activiti: scope.issue.selectExecutors.activiti, nDeepLevel: scope.issue.selectExecutors.deep}};
       scope.selectCtrl = {params: {sSubjectType: 'Human', sID_Group_Activiti: scope.issue.controllerSelect.activiti, nDeepLevel: scope.issue.controllerSelect.deep}};

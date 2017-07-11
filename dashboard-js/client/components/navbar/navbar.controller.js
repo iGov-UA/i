@@ -302,7 +302,6 @@
     };
 
     $scope.backToTasks = function () {
-      localStorage.setItem('currentTab', 'tasks');
       $state.go('tasks.typeof', {type:'unassigned'});
     }
 
