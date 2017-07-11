@@ -629,12 +629,12 @@ public class DocumentStepService {
 
             if (sOperationType.equals("AddAcceptor")) {
                 addAcceptor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
-                addRightsToCommonStep(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step);
+                //addRightsToCommonStep(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step);
             }
 
             if (sOperationType.equals("AddVisor")) {
                 addVisor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
-                addRightsToCommonStep(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step);
+                //addRightsToCommonStep(snID_Process_Activiti, sKey_Group, sKey_Group_Delegate, sKey_Step);
             }
             
             
@@ -919,7 +919,7 @@ public class DocumentStepService {
                 }
             }
         
-            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
+           // addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
             
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
