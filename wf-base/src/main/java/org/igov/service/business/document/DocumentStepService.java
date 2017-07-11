@@ -464,35 +464,15 @@ public class DocumentStepService {
             DocumentStep oDocumentStep = getDocumentStep(snID_Process_Activiti, sKey_Step);
             LOG.info("oDocumentStep is {}", oDocumentStep);
 
-            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
-                    .findAllBy("documentStep", oDocumentStep);
-            LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
-
-            if (!aDocumentStepSubjectRight.isEmpty()) {
-                for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-                    LOG.info("aDocumentStepSubjectRight is {}", oDocumentStepSubjectRight);
-                    if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
-                        oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
-                        bRemoved = true;
-
-                        break;
-                    }
-                }
-            } else {
-                LOG.warn("Not found DocumentStepSubjectRight for oDocumentStep={}", oDocumentStep);
-            }
-            /*
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep.aDocumentStepSubjectRight();
-            LOG.info("aDocumentStepSubjectRight is {}", aDocumentStepSubjectRight);
+
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                 if (sKey_Group.equals(oDocumentStepSubjectRight.getsKey_GroupPostfix())) {
-                    //oDocumentStepSubjectRight = oDocumentStepSubjectRight;
                     oDocumentStepSubjectRightDao.delete(oDocumentStepSubjectRight);
                     bRemoved = true;
-                    //aDocumentStepSubjectRight_New.add(o);
                     break;
                 }
-            }*/
+            }
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_Step=" + sKey_Step + "" + ",sKey_GroupPostfix=" + sKey_Group + "" + ")");
