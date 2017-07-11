@@ -34,7 +34,7 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	private static final transient Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "nID_DocumentStep")
 	private DocumentStep documentStep;
 
