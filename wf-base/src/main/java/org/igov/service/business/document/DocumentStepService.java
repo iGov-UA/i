@@ -653,11 +653,20 @@ public class DocumentStepService {
     private void addRightsToCommonStep(String snID_Process_Activiti, String sKey_Group, 
             String sKey_Group_Delegate, String sKey_Step){
         
+        LOG.info("addRightsToCommonStep started...");
+        LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
+        LOG.info("sKey_Group {}", sKey_Group);
+        LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
+        LOG.info("sKey_Step {}", sKey_Step);
+        
         DocumentStep oDocumentStep_From = getDocumentStep(snID_Process_Activiti, sKey_Step);
+        LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_From.getId(), oDocumentStep_From.getsKey_Step());
         DocumentStep oDocumentStep_Common = getDocumentStep(snID_Process_Activiti, "_");
+        LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
         
         for(DocumentStepSubjectRight oDocumentStepSubjectRight :  oDocumentStep_Common.aDocumentStepSubjectRight()){
             if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group_Delegate)){
+                LOG.info("Group contains in common step");
                 return;
             }
         }
@@ -919,7 +928,7 @@ public class DocumentStepService {
                 }
             }
         
-           // addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
+            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
             
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
