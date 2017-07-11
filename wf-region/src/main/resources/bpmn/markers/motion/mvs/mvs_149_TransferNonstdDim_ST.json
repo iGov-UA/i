@@ -1,0 +1,74 @@
+{
+    "attributes": 
+    {
+    "Line_1": 
+      {
+       "aElement_ID": [ "sID_SubjectOrgan_OKPO_transfer"  ],
+      "sValue": "Організація, що виконує перевезення"        
+      },
+      
+     "Line_2": 
+      {
+       "aElement_ID": [ "size"  ],
+      "sValue": "Параметри вантажу"        
+      },
+      "Line_3": 
+      {
+       "aElement_ID": [ "subekt"  ],
+      "sValue": "Дані заявника"        
+      }
+    
+     },
+     
+	"motion": 
+	{
+  	   "ShowFieldsOnCondition_1": 
+  	   {
+  	         "aField_ID": ["sFullName_SubjectOrgan_appl", "sShortName_SubjectOrgan_appl","sID_SubjectActionKVED_SubjectOrgan_appl", "sNote_ID_SubjectActionKVED_SubjectOrgan_appl", "sDateActual_SubjectOrgan_appl", "sLocation_SubjectOrgan_appl", "ur_tel", "ur_fax","sID_SubjectOrgan_OKPO_appl","sCEOName_SubjectOrgan_appl","ur_post"],
+            "asID_Field": { "sClient": "subekt" },
+            "sCondition": "[sClient] == 'ur'"
+       },
+    
+     "ShowFieldsOnCondition_2": 
+     {
+        "aField_ID": ["imya_fiz", "adres_fiz"],
+        "asID_Field": {  "sClient": "subekt"},
+        "sCondition": "[sClient] == 'fiz'"
+     },
+    
+     "ShowFieldsOnCondition_7": 
+     {
+      "aField_ID": [  "sDocConfidant" ],
+      "asID_Field": { "sClient": "subekt_2" },
+      "sCondition": "[sClient] == 'confidant'"
+    },
+    
+    "ShowFieldsOnCondition_10": 
+    {
+      "aField_ID": [ "sDocRailway"],
+      "asID_Field": {"sClient": "size"},
+      "sCondition": "[sClient] == 'yes'"
+    },
+    
+    "ShowFieldsOnCondition_11": 
+    {
+      "aField_ID": ["sDocRailway"],
+      "asID_Field": { "sClient": "total_weight" },
+      "sCondition": "[sClient] == '52_60' || [sClient] == '60'"
+    },
+    
+     "ShowFieldsOnCondition_12": 
+     {
+      "aField_ID": [ "sDocBuild" ],
+      "asID_Field": { "sClient": "total_weight"},
+      "sCondition": "[sClient] == '60'"
+    },
+    
+    "ShowFieldsOnCondition_13": 
+    {
+      "aField_ID": [ "sDocBuild" ],
+      "asID_Field": { "sClient": "load_axle"},
+      "sCondition": "[sClient] == 'yes'"
+    }
+  	}
+}

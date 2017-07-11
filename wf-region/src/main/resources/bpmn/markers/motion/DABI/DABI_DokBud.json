@@ -1,17 +1,6 @@
 {
   "motion": {
-    "ShowFieldsOnCondition_DABI_BP": {
-      "aField_ID": [
-        "sPaspN",
-        "sPaspOrg",
-        "PaspData"
-      ],
-      "asID_Field": {
-        "sCond": "asBudDok"
-      },
-      "sCondition": "[sCond]=='sEnamPasport'"
-    },
-    "ShowFieldsOnCondition_DABI_PR": {
+    "ShowFieldsOnCondition_DABI_BPProj": {
       "aField_ID": [
         "sID_SubjectOrgan_OKPO_02",
         "sFullName_SubjectOrgan_02",
@@ -19,30 +8,15 @@
         "sProgOsPos",
         "sProgOsPIB",
         "sProgOsKvalS",
-        "chekTexNag",
         "chekPrEksp",
-        "markersLine_4",
-        "lPov",
-        "dZagPlosh",
-        "dZtPlosh",
-        "dNZtPlosh"
+        "asBudTip"
       ],
       "asID_Field": {
-        "sCond": "asBudDok"
+        "sCond": "chekBudDok"
       },
-      "sCondition": "[sCond]=='sEnamProekt'"
+      "sCondition": "[sCond]=='yes'||[sCond]=='так'"
     },
-    "ShowFieldsOnCondition_DABI_Av": {
-      "aField_ID": [
-        "sAvtNagPIB"
-      ],
-      "asID_Field": {
-        "sCond": "asBudDok",
-        "sCond2": "chekTexNag"
-      },
-      "sCondition": "[sCond]=='sEnamProekt'&&[sCond2]=='no'"
-    },
-    "ShowFieldsOnCondition_DABI_Ek": {
+    "ShowFieldsOnCondition_DABI_Exp": {
       "aField_ID": [
         "sID_SubjectOrgan_OKPO_03",
         "sFullName_SubjectOrgan_03",
@@ -50,10 +24,34 @@
         "sEkspPIB"
       ],
       "asID_Field": {
-        "sCond": "asBudDok",
+        "sCond": "chekBudDok",
         "sCond2": "chekPrEksp"
       },
-      "sCondition": "[sCond]=='sEnamProekt'&&[sCond2]=='yes'"
+      "sCondition": "([sCond]=='yes'||[sCond]=='так')&&([sCond2]=='yes'||[sCond2]=='так')"
+    },
+    "ShowFieldsOnCondition_DABI_HarBudJut": {
+      "aField_ID": [
+        "lPov",
+        "dZagPlosh",
+        "dZtPlosh",
+        "dNZtPlosh"
+      ],
+      "asID_Field": {
+        "sCond": "chekBudDok",
+        "sCond2": "asBudTip"
+      },
+      "sCondition": "([sCond]=='yes'||[sCond]=='так')&&([sCond2]=='sEnamGutl'||[sCond2]=='Житловий')"
+    },
+    "ShowFieldsOnCondition_DABI_HarBudNeJut": {
+      "aField_ID": [
+        "lPov",
+        "dNZtPloshBud"
+      ],
+      "asID_Field": {
+        "sCond": "chekBudDok",
+        "sCond2": "asBudTip"
+      },
+      "sCondition": "([sCond]=='yes'||[sCond]=='так')&&([sCond2]=='sEnamNeGutl'||[sCond2]=='Не житловий')"
     }
   }
 }

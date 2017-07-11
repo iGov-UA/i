@@ -1,0 +1,118 @@
+{
+
+    "attributes": 
+    {
+    "Line_1": 
+      {
+       "aElement_ID": [ "subekt"  ],
+      "sValue": "Дані заявника"        
+      },
+      
+     "Line_2": 
+      {
+       "aElement_ID": [ "applicant_account_uah"  ],
+      "sValue": "Дані про поточний рахунок у національній валюті"        
+      },
+      
+      "Line_3": 
+      {
+       "aElement_ID": [ "applicant_account_currency"  ],
+      "sValue": "Дані про поточний рахунок у іноземній валюті"        
+      },    
+      
+      "Line_4": 
+      {
+       "aElement_ID": [ "subekt_1"  ],
+      "sValue": "Дані іноземного суб'єкту зовнішньоекономічної діяльності"        
+      },
+      
+      "Line_5": 
+      {
+       "aElement_ID": [ "Table_Customs"  ],
+      "sValue": "Інформація про товар"        
+      },    
+      
+      "Line_6": 
+      {
+       "aElement_ID": [ "Table_additions"  ],
+      "sValue": "Надайте перелік усіх додатків та специфікацій до договору (контракту)"        
+      }
+    
+     },
+
+	"motion": 
+	{
+	 
+  	 
+  	 "ShowFieldsOnCondition_1": 
+  	 {
+  	   "aField_ID": ["sFullName_SubjectOrgan_appl", "sShortName_SubjectOrgan_appl","sID_SubjectActionKVED_SubjectOrgan_appl", "sNote_ID_SubjectActionKVED_SubjectOrgan_appl", "sDateActual_SubjectOrgan_appl", "sLocation_SubjectOrgan_appl", "ur_tel", "ur_fax","sID_SubjectOrgan_OKPO_appl","sCEOName_SubjectOrgan_appl","ur_post"],
+       "asID_Field": { "sClient": "subekt" },
+       "sCondition": "[sClient] == 'ur'"
+     },
+    
+    "ShowFieldsOnCondition_2": 
+    {
+       "aField_ID": [ "fiz_name", "fiz_adres", "fiz_drfo"  ],
+       "asID_Field": { "sClient": "subekt"  },
+       "sCondition": "[sClient] == 'fiz'"
+    },
+    
+    "ShowFieldsOnCondition_3": 
+    {
+       "aField_ID": ["sID_SubjectOrgan_OKPO_foreign", "sFullName_SubjectOrgan_foreign", "sShortName_SubjectOrgan_foreign","sID_SubjectActionKVED_SubjectOrgan_foreign", "sNote_ID_SubjectActionKVED_SubjectOrgan_foreign", "sDateActual_SubjectOrgan_foreign", "sLocation_SubjectOrgan_foreign"],
+       "asID_Field": {"sClient": "subekt_1" },
+       "sCondition": "[sClient] == 'ur_1'"
+    },
+    
+    "ShowFieldsOnCondition_4": 
+    {
+      "aField_ID": ["fiz_name_1", "fiz_adres_1" ],
+      "asID_Field": { "sClient": "subekt_1"},
+      "sCondition": "[sClient] == 'fiz_1'"
+    },
+    
+    "ShowFieldsOnCondition_5": 
+    {
+      "aField_ID": [ "basis_1" ],
+      "asID_Field": { "sClient": "basis" },
+      "sCondition": "[sClient] == 'exw'"
+    },
+    
+     "ShowFieldsOnCondition_6": 
+     {
+       "aField_ID": [ "basis_2" ],
+        "asID_Field": { "sClient": "basis" },
+        "sCondition": "[sClient] == 'fса'||[sClient] == 'срт'||[sClient] == 'сір'||[sClient] == 'ddu'||[sClient] == 'ddр'"
+     },
+    
+    "ShowFieldsOnCondition_7": 
+    {
+      "aField_ID": [ "basis_3"],
+      "asID_Field": { "sClient": "basis"},
+      "sCondition": "[sClient] == 'fаs'||[sClient] == 'fов'"
+    },
+    
+    "ShowFieldsOnCondition_8": 
+    {
+       "aField_ID": ["basis_4"],
+       "asID_Field": { "sClient": "basis" },
+       "sCondition": "[sClient] == 'сfr'||[sClient] == 'сіf'||[sClient] == 'dеs'||[sClient] == 'dеq'"
+    },
+    
+    "ShowFieldsOnCondition_9": 
+    {
+       "aField_ID": [ "basis_5"],
+       "asID_Field": { "sClient": "basis"},
+       "sCondition": "[sClient] == 'dаf'"
+    },
+    
+     "ShowFieldsOnCondition_10": 
+     {
+       "aField_ID": ["pogodgennya"],
+       "asID_Field": {  "sClient": "type_lic" },
+       "sCondition": "[sClient] == 'export'"
+     }
+     
+  	}
+}
