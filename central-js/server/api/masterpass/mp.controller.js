@@ -116,7 +116,13 @@ module.exports.checkUser = function (req, res) {
 
 module.exports.verify3DSCallback = function (req, res) {
   var auth = masterPassAuth.getUserAuth(),
-      params = {"pmt_id": req.query.id, "md": req.body.MD, "pares": req.body.PaRes},
+      params = {
+        "pmt_id": req.query.id,
+        "user_id": req.query.user,
+        "msisdn": req.query.msisdn,
+        "md": req.body.MD,
+        "pares": req.body.PaRes
+      },
       callbackUrl = req.query.url;
 
   async.waterfall([
