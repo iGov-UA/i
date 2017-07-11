@@ -50,6 +50,7 @@ public class Update_ARM extends Abstract_MailTaskCustom implements JavaDelegate 
 		LOG.info("expert>>>>>>>>>>>> = {}", expert);
 
 		DboTkModel dataWithExecutorForTransferToArm = ValidationARM.fillModel(soData_Value_Result);
+		LOG.info("dataWithExecutorForTransferToArm in update arm before somethings change=={}", dataWithExecutorForTransferToArm);
 
 		String prilog = ValidationARM.getPrilog(dataWithExecutorForTransferToArm.getPrilog(), oAttachmetService);
 
