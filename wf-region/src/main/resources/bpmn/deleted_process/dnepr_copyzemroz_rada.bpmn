@@ -40,7 +40,7 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="mailtask2" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Завантаження документів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="mailtask1"></sequenceFlow>
     <serviceTask id="mailtask1" name="Підтвердження відправленних документів" activiti:type="mail">
       <extensionElements>

@@ -261,21 +261,12 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sDeleteCaption" name="Снести подписи?; ;sID_CheckboxTrue=sEnumYes" type="enum">
-          <activiti:value id="sEnumYes" name="да"></activiti:value>
-          <activiti:value id="sEnumNo" name="нет"></activiti:value>
-        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow124" sourceRef="exclusivegateway14" targetRef="scripttask25">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLoginAuthor==sLogin_LastSubmited}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask24" name="снести подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable('sLoginAuthor')
-var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_2', sKeyGroup)</script>
-    </scriptTask>
     <scriptTask id="scripttask25" name="права автору, степ5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
@@ -283,15 +274,7 @@ var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_5')</script>
     </scriptTask>
     <sequenceFlow id="flow125" sourceRef="scripttask25" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow126" sourceRef="usertask4" targetRef="exclusivegateway15"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow127" sourceRef="exclusivegateway15" targetRef="scripttask38">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumNo'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow128" sourceRef="exclusivegateway15" targetRef="scripttask24">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDeleteCaption=='sEnumYes'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow129" sourceRef="scripttask24" targetRef="scripttask19"></sequenceFlow>
+    <sequenceFlow id="flow126" sourceRef="usertask4" targetRef="scripttask40"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway16" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow131" sourceRef="exclusivegateway16" targetRef="scripttask18">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sLoginAuthor!=sLogin_LastSubmited}]]></conditionExpression>
@@ -471,12 +454,6 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
 </script>
     </scriptTask>
     <sequenceFlow id="flow164" sourceRef="scripttask37" targetRef="scripttask4"></sequenceFlow>
-    <scriptTask id="scripttask38" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable('sLoginAuthor')
-var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_2', sKeyGroup)</script>
-    </scriptTask>
-    <sequenceFlow id="flow165" sourceRef="scripttask38" targetRef="scripttask19"></sequenceFlow>
     <scriptTask id="scripttask39" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var nID_Process = execution.getProcessInstanceId()
@@ -484,6 +461,12 @@ var sKeyGroup = execution.getVariable('sLoginAuthor')
 var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_4', sKeyGroup)</script>
     </scriptTask>
     <sequenceFlow id="flow166" sourceRef="scripttask39" targetRef="scripttask22"></sequenceFlow>
+    <scriptTask id="scripttask40" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_2', sKeyGroup)</script>
+    </scriptTask>
+    <sequenceFlow id="flow167" sourceRef="scripttask40" targetRef="scripttask19"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_vertical_sz">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_vertical_sz" id="BPMNPlane__doc_btsol_vertical_sz">
@@ -559,14 +542,8 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="105.0" x="1080.0" y="281.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask24" id="BPMNShape_scripttask24">
-        <omgdc:Bounds height="55.0" width="105.0" x="900.0" y="359.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask25" id="BPMNShape_scripttask25">
         <omgdc:Bounds height="55.0" width="105.0" x="1080.0" y="201.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway15" id="BPMNShape_exclusivegateway15">
-        <omgdc:Bounds height="40.0" width="40.0" x="1112.0" y="366.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway16" id="BPMNShape_exclusivegateway16">
         <omgdc:Bounds height="40.0" width="40.0" x="930.0" y="510.0"></omgdc:Bounds>
@@ -616,11 +593,11 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
       <bpmndi:BPMNShape bpmnElement="scripttask37" id="BPMNShape_scripttask37">
         <omgdc:Bounds height="55.0" width="105.0" x="828.0" y="673.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask38" id="BPMNShape_scripttask38">
-        <omgdc:Bounds height="55.0" width="105.0" x="938.0" y="95.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask39" id="BPMNShape_scripttask39">
         <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="1019.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask40" id="BPMNShape_scripttask40">
+        <omgdc:Bounds height="55.0" width="105.0" x="1250.0" y="281.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
@@ -763,27 +740,10 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1132.0" y="281.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
-        <omgdi:waypoint x="1132.0" y="336.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1132.0" y="366.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
-        <omgdi:waypoint x="1152.0" y="386.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1221.0" y="385.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1221.0" y="159.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1221.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1120.0" y="122.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1043.0" y="122.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow128" id="BPMNEdge_flow128">
-        <omgdi:waypoint x="1112.0" y="386.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1005.0" y="386.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow129" id="BPMNEdge_flow129">
-        <omgdi:waypoint x="900.0" y="386.0"></omgdi:waypoint>
-        <omgdi:waypoint x="864.0" y="387.0"></omgdi:waypoint>
-        <omgdi:waypoint x="864.0" y="7.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="7.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1185.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1230.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1192.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1250.0" y="308.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow131" id="BPMNEdge_flow131">
         <omgdi:waypoint x="930.0" y="530.0"></omgdi:waypoint>
@@ -898,17 +858,18 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="882.0" y="489.0"></omgdi:waypoint>
         <omgdi:waypoint x="772.0" y="491.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow165" id="BPMNEdge_flow165">
-        <omgdi:waypoint x="990.0" y="95.0"></omgdi:waypoint>
-        <omgdi:waypoint x="989.0" y="33.0"></omgdi:waypoint>
-        <omgdi:waypoint x="475.0" y="33.0"></omgdi:waypoint>
-        <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow166" id="BPMNEdge_flow166">
         <omgdi:waypoint x="667.0" y="1046.0"></omgdi:waypoint>
         <omgdi:waypoint x="542.0" y="1048.0"></omgdi:waypoint>
         <omgdi:waypoint x="542.0" y="817.0"></omgdi:waypoint>
         <omgdi:waypoint x="667.0" y="817.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow167" id="BPMNEdge_flow167">
+        <omgdi:waypoint x="1302.0" y="281.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1303.0" y="38.0"></omgdi:waypoint>
+        <omgdi:waypoint x="773.0" y="38.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="38.0"></omgdi:waypoint>
+        <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

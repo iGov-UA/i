@@ -52,14 +52,6 @@
         <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон" type="string" default="(044) 1551 (зі стаціонарного)"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow16" sourceRef="startevent2" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлу" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Помилка при завантаженні файлу" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow10" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
@@ -93,8 +85,7 @@
           <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p> Ваш запит про перейменування вулиць було зареєстровано у системі.<br>
 Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
@@ -470,8 +461,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p> Ваш запит про перейменування вулиць оброблено.<br>
 Електронний документ –відповідь знаходиться у вкладенні.</p>
@@ -508,8 +498,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p> Ваш запит про перейменування вулиць оброблено.<br>
 Результат надання послуги Ви можете отримати у Відділі звернень громадян Департаменту містобудування та архітектури м.Києва.
@@ -678,8 +667,7 @@ ${sNameOrgan}<br>
           <activiti:string><![CDATA[Запит про перейменування вулиць]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-[pattern/mail/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
 <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
 <p> Ваш запит про перейменування вулиць оброблено.<br>
 Результат надання послуги Ви отримаєте на поштову адресу: ${address}.</p>
@@ -704,20 +692,12 @@ ${sNameOrgan}<br>
     <sequenceFlow id="flow31" sourceRef="servicetask7" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow34" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="startevent2" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_kiev_mda_826">
     <bpmndi:BPMNPlane bpmnElement="kiev_mda_826" id="BPMNPlane_kiev_mda_826">
       <bpmndi:BPMNShape bpmnElement="startevent2" id="BPMNShape_startevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="126.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="84.0" width="151.0" x="198.0" y="102.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="205.0" y="157.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="82.0" y="231.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="121.0" x="340.0" y="1.0"></omgdc:Bounds>
@@ -773,19 +753,6 @@ ${sNameOrgan}<br>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="491.0" y="1000.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="55.0" y="143.0"></omgdi:waypoint>
-        <omgdi:waypoint x="198.0" y="144.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="220.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="99.0" y="231.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="273.0" y="102.0"></omgdi:waypoint>
-        <omgdi:waypoint x="273.0" y="28.0"></omgdi:waypoint>
-        <omgdi:waypoint x="340.0" y="28.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="461.0" y="28.0"></omgdi:waypoint>
         <omgdi:waypoint x="513.0" y="28.0"></omgdi:waypoint>
@@ -893,6 +860,10 @@ ${sNameOrgan}<br>
         <omgdi:waypoint x="973.0" y="1038.0"></omgdi:waypoint>
         <omgdi:waypoint x="508.0" y="1038.0"></omgdi:waypoint>
         <omgdi:waypoint x="526.0" y="1017.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="37.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

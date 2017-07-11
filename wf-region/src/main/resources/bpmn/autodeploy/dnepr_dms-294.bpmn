@@ -26,14 +26,6 @@
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <sequenceFlow id="flow1" sourceRef="boundaryerror1" targetRef="endevent2"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var post = ['1210@dmsu.gov.ua', 'dms_dn_babysh@ukr.net', '1212@dmsu.gov.ua', '1213@dmsu.gov.ua', '1214@dmsu.gov.ua', '1215@dmsu.gov.ua', '1216@dmsu.gov.ua', '1217@dmsu.gov.ua', '1220@dmsu.gov.ua', '1221@dmsu.gov.ua', '1222@dmsu.gov.ua', 'cnap.vilnogirsk@gmail.com']
@@ -59,7 +51,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -68,7 +60,7 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Нове звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -76,7 +68,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -85,18 +77,18 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
 										Ваш запит був успішно зареєстрований у нашій системі. 
-								    &lt;/p&gt;
-									&lt;p&gt;
+								    </p>
+									<p>
 										Спеціалісти ${sOrganType} оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									${sNameOrgan},<br />
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -120,7 +112,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -133,7 +125,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -142,23 +134,23 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.&lt;br /&gt;
-                                        При необхідності видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
-											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+										На жаль, Вам відмовлено у надані послуги.<br />
+                                        При необхідності видачі довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Коментар Державного службовця:<br />
+											<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br />
 										${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
 									[pattern/mail/_common_signature_start.html]
-                                    ${sNameOrgan}.&lt;/p&gt;
-                                    [pattern/mail/_common_footer.html]</activiti:expression>
+                                    ${sNameOrgan}.</p>
+                                    [pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -172,7 +164,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -181,33 +173,33 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br /&gt;
-										Для отримання довідки про реєстрацію місця проживання/перебування особи необхідно:&lt;br /&gt;
-										&lt;ul&gt;
-										&lt;li&gt;Прийти протягом 10 робочіх днів до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання/перебування особи:&lt;/b&gt;&lt;br/&gt;
-										&lt;ul&gt;
-										&lt;li&gt;паспорт громадянина України;&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br /&gt;
-										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br />
+										Для отримання довідки про реєстрацію місця проживання/перебування особи необхідно:<br />
+										<ul>
+										<li>Прийти протягом 10 робочіх днів до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
+										</ul>
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести до ${sOrganType} для отримання довідки про реєстрацію місця проживання/перебування особи:</b><br/>
+										<ul>
+										<li>паспорт громадянина України;</li>
+										</ul>
+									</p>
+									<p>
+										Коментар Державного службовця:<br />
+										<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br />
 										${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									${sNameOrgan},<br />
 									[pattern/mail/_common_signature_end.html]   
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -235,7 +227,7 @@ execution.setVariable('Registrationservice', per4)
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${bankId_scan_passport}</activiti:expression>
+            <activiti:expression><![CDATA[${bankId_scan_passport}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -251,7 +243,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -260,19 +252,19 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-                                    &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
-                                        На жаль, Ви не з'явились до ${sOrganType} протягом 10 робочіх днів.&lt;br /&gt;
-                                        При необхідності отримання довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися до чергового:&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+                                    <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
+                                        На жаль, Ви не з'явились до ${sOrganType} протягом 10 робочіх днів.<br />
+                                        При необхідності отримання довідки про реєстрацію місця проживання/перебування особи Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися до чергового:<br />
 										${sPhoneOrgan}
-                                    &lt;/p&gt;
+                                    </p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan}.&lt;/p&gt;
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									${sNameOrgan}.</p>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -283,7 +275,7 @@ execution.setVariable('Registrationservice', per4)
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -292,38 +284,30 @@ execution.setVariable('Registrationservice', per4)
           <activiti:string><![CDATA[Звернення на тему: Видача довідки про реєстрацію місця проживання/перебування особи]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-								  &lt;h3&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/h3&gt;
-                                    &lt;p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+								  <h3>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</h3>
+                                    <p>
                               		Ви отримали послугу "Видача довідки про реєстрацію місця проживання/перебування особи".
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
-                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.&lt;br /&gt;
+                              		</p>
+                              		<p>
+                              		Будь ласка, оцініть якість надання послуги за допомогою форми нижче.<br />
                               		Дякуємо.
-									&lt;/p&gt;
+									</p>
                                     [pattern/mail/_common_signature_start.html]
-									${sNameOrgan},&lt;br /&gt;
+									${sNameOrgan},<br />
 									[pattern/mail/_common_signature_end.html]   
 									[pattern/mail/_common_feedback.html]
-									[pattern/mail/_common_footer.html]</activiti:expression>
+									[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-294">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-294" id="BPMNPlane_dnepr_dms-294">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="81.0" width="115.0" x="96.0" y="107.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="90.0" y="160.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="150.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="40.0"></omgdc:Bounds>
@@ -370,18 +354,6 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="783.0" y="409.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="96.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="105.0" y="190.0"></omgdi:waypoint>
-        <omgdi:waypoint x="167.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="211.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="250.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="285.0" y="67.0"></omgdi:waypoint>
         <omgdi:waypoint x="303.0" y="68.0"></omgdi:waypoint>
@@ -455,6 +427,10 @@ execution.setVariable('Registrationservice', per4)
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="835.0" y="464.0"></omgdi:waypoint>
         <omgdi:waypoint x="834.0" y="477.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="75.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

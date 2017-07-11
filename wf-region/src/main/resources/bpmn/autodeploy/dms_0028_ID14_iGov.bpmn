@@ -35,7 +35,7 @@
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>
     </boundaryEvent>
@@ -167,7 +167,7 @@ ${sNameOrgan},<br>
 	для оформлення паспорта громадянина України формі ID-картки.
 </p>
 <p>
-	Дата та час візиту: ${formated_date_of_visit}.
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
@@ -222,8 +222,6 @@ ${sNameOrgan},<br>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
-        <activiti:formProperty id="sEndDay" name="sEndDay" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNotification_day" name="sNotification_day" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -380,7 +378,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 </p>
 <p>
 									<b>Деталі зустрічі:</b><br>
-									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${formated_date_of_visit}. 
+									Номер талону - ${sTicketNumber}, орієнтовна дата та час візиту - ${sNotification_day}. 
 								</p>
 <p>
 										<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку у формі ID-картки:</b>

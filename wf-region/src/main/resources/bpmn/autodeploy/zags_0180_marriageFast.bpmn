@@ -4,9 +4,6 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sText16" name=" ; ;labelType=info" type="label" default="Також Ви можете скористатися послугою &lt;a href=&quot;https://igov.org.ua/service/703/general&quot; target=&quot;_blank&quot;&gt;заява про реєстрацію шлюбу за стандартною процедурою (30 днів)&lt;/a&gt;"></activiti:formProperty>
-        
-        
-        
         <activiti:formProperty id="bankIdinn" name="ІПН референта" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
@@ -15,7 +12,7 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="youthDnipro"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sText6" name=" ; ;labelType=info" type="label" default="Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором"></activiti:formProperty>
-       <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгу? ; Якщо Ви маєте пільгу, оплата держ. мита не потрібна" type="enum" required="true">
+        <activiti:formProperty id="asEnjoyingPrivileges" name="Маєте пільгу? ; Якщо Ви маєте пільгу, оплата держ. мита не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Не маю пільгу"></activiti:value>
         </activiti:formProperty>
@@ -119,7 +116,6 @@
         <activiti:formProperty id="sWeddingDay" name="Дата церемонии ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask22"></sequenceFlow>
     <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string" variable="asEnjoyingDRACS"></activiti:formProperty>
@@ -228,8 +224,8 @@
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -331,8 +327,8 @@
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -446,8 +442,8 @@
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-	<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
@@ -589,11 +585,7 @@ ${sBankDetails2}<br>
 
 
 <b>Реквізити для сплати послуги організатора:</b><br>
-Отримувач: <b>МКЗК «ВХА «Юність Дніпра» ДМР</b><br>
-Банк отримувача: <b>ПАТ Приватбанк</b><br>
-МФО: <b>305299</b><br>
-Код ЄДРПОУ: <b>34733424</b><br>
-Розрахунковий рахунок: <b>26003050249899</b><br>
+${sBankDetails1}
 Вартість послуги: <b> ${sSumOrganizer} грн </b><br>
 <br>
 
@@ -741,7 +733,7 @@ execution.setVariable('sShapka', per2)</script>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[+380676346772]]></activiti:expression>
+          <activiti:expression><![CDATA[+380675670302]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[Shanovnyi kolego! Nadiishlo nove zvernennya [sID_Order] Shlub za doby. Opracuite na https://region.igov.org.ua/.]]></activiti:expression>
@@ -752,11 +744,12 @@ execution.setVariable('sShapka', per2)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow88" sourceRef="servicetask22" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow89" sourceRef="startevent1" targetRef="servicetask22"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zags_0180_marriageFast">
     <bpmndi:BPMNPlane bpmnElement="zags_0180_marriageFast" id="BPMNPlane_zags_0180_marriageFast">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="288.0" y="104.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="104.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="185.0" x="569.0" y="280.0"></omgdc:Bounds>
@@ -806,10 +799,6 @@ execution.setVariable('sShapka', per2)</script>
       <bpmndi:BPMNShape bpmnElement="servicetask22" id="BPMNShape_servicetask22">
         <omgdc:Bounds height="55.0" width="161.0" x="360.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="323.0" y="121.0"></omgdi:waypoint>
-        <omgdi:waypoint x="360.0" y="121.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="661.0" y="590.0"></omgdi:waypoint>
         <omgdi:waypoint x="661.0" y="655.0"></omgdi:waypoint>
@@ -886,6 +875,10 @@ execution.setVariable('sShapka', per2)</script>
       <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
         <omgdi:waypoint x="521.0" y="121.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="121.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
+        <omgdi:waypoint x="85.0" y="121.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="121.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

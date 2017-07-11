@@ -55,7 +55,7 @@ if(execution.getVariable('aDocErr') == 'enum2'){execution.setVariable('iTemp2', 
 if(execution.getVariable('aDocErr') == 'enum3'){execution.setVariable('iTemp3', gal)}
 </script>
     </scriptTask>
-    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
+    <serviceTask id="servicetask1" name="Загрузка файлів" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
     <sequenceFlow id="flow5" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
     <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
       <errorEventDefinition></errorEventDefinition>

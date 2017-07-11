@@ -661,11 +661,6 @@ execution.setVariable('sListDocumentsPrint', res)
 execution.setVariable('sListDocumentsLetter', res2)
 </script>
     </scriptTask>
-    <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <boundaryEvent id="boundaryerror2" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <sequenceFlow id="flow19" name="документи ок" sourceRef="exclusivegateway2" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
     </sequenceFlow>
@@ -673,7 +668,6 @@ execution.setVariable('sListDocumentsLetter', res2)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow59" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow62" name="Тернопіль" sourceRef="exclusivegateway3" targetRef="usertask4">
@@ -688,7 +682,6 @@ execution.setVariable('sListDocumentsLetter', res2)
     <sequenceFlow id="flow92" sourceRef="usertask1" targetRef="usertask5"></sequenceFlow>
     <sequenceFlow id="flow93" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow95" sourceRef="boundaryerror2" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow100" sourceRef="exclusivegateway4" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_5=='accept'  || decision_5=='reject' }]]></conditionExpression>
@@ -810,6 +803,7 @@ execution.setVariable('sListDocumentsLetter', res2)
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow116" sourceRef="escalationTimer1" targetRef="endevent5"></sequenceFlow>
+    <sequenceFlow id="flow117" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_mert_0160_RazLic">
     <bpmndi:BPMNPlane bpmnElement="mert_0160_RazLic" id="BPMNPlane_mert_0160_RazLic">
@@ -855,12 +849,6 @@ execution.setVariable('sListDocumentsLetter', res2)
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="68.0" width="140.0" x="370.0" y="20.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="68.0" width="138.0" x="199.0" y="20.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror2" id="BPMNShape_boundaryerror2">
-        <omgdc:Bounds height="30.0" width="30.0" x="200.0" y="60.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="459.0" y="239.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -891,10 +879,6 @@ execution.setVariable('sListDocumentsLetter', res2)
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
         <omgdc:Bounds height="35.0" width="35.0" x="344.0" y="523.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="133.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="199.0" y="54.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
         <omgdi:waypoint x="479.0" y="279.0"></omgdi:waypoint>
         <omgdi:waypoint x="478.0" y="309.0"></omgdi:waypoint>
@@ -910,10 +894,6 @@ execution.setVariable('sListDocumentsLetter', res2)
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="93.0" x="440.0" y="189.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="337.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="370.0" y="54.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
         <omgdi:waypoint x="510.0" y="54.0"></omgdi:waypoint>
@@ -955,10 +935,6 @@ execution.setVariable('sListDocumentsLetter', res2)
       <bpmndi:BPMNEdge bpmnElement="flow93" id="BPMNEdge_flow93">
         <omgdi:waypoint x="620.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="620.0" y="120.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow95" id="BPMNEdge_flow95">
-        <omgdi:waypoint x="215.0" y="90.0"></omgdi:waypoint>
-        <omgdi:waypoint x="214.0" y="120.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
         <omgdi:waypoint x="361.0" y="823.0"></omgdi:waypoint>
@@ -1035,6 +1011,10 @@ execution.setVariable('sListDocumentsLetter', res2)
       <bpmndi:BPMNEdge bpmnElement="flow116" id="BPMNEdge_flow116">
         <omgdi:waypoint x="305.0" y="760.0"></omgdi:waypoint>
         <omgdi:waypoint x="304.0" y="786.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow117" id="BPMNEdge_flow117">
+        <omgdi:waypoint x="133.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="54.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

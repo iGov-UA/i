@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_sID_Field_Printfotm_ForECP" name="Тестування _sID_Field_Printfotm_ForECP" isExecutable="true">
+    <documentation>AGVersion: 2017.05.01</documentation>
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги; ;bVisible=false" type="string" default="Тестування _sID_Field_Printfotm_ForECP"></activiti:formProperty>
+
+		</extensionElements>
+    </startEvent>
+    <userTask id="usertask1" name="Опрацювання" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="sNameService" name="Найменування замовленої послуги" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sClientFIO" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;sID_Field_Printfotm_ForECP=sBody_1, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/justice/justice_0087_FOPclose_print.html]; ;bVisible=false" type="string" default="Прінтформа" writable="false"></activiti:formProperty>
+
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <serviceTask id="servicetask9" name="Е-mail повідомлення (з аттачем)" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано.
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow37" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="usertask1" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="servicetask9" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_sID_Field_Printfotm_ForECP">
+    <bpmndi:BPMNPlane bpmnElement="_test_sID_Field_Printfotm_ForECP" id="BPMNPlane__test_sID_Field_Printfotm_ForECP">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="99.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="420.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask9" id="BPMNShape_servicetask9">
+        <omgdc:Bounds height="55.0" width="161.0" x="230.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="65.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="99.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="204.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="391.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

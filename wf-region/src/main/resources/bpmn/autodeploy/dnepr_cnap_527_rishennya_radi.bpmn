@@ -59,7 +59,6 @@
         <activiti:formProperty id="markers11" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Підтягування додаткових документів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <userTask id="usertask1" name="[Етап I] Реєстрація звернення, результат обробки вхідних даних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Центр надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
@@ -110,7 +109,7 @@
         <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Форма заяви;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Форма заяви;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html,sFileName=Zayava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -119,8 +118,7 @@
         <activiti:formProperty id="nFile_CopyRishennya" name="Копія рішення міської ради (в яке необхідно внести зміни); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ConfirmDocum" name="Документи, що підтверджують необхідність внесення змін до рішення; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddPrintSpisok" name="перелік додатків ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="[Етап II] Прийняття рішення щодо звернення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -174,7 +172,7 @@
         <activiti:formProperty id="sShapka527_rishennyaOrgan" name="Рішення якого робочого органу треба змінити ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers31" name="Настроювання принтформи " type="markers" default="${markerService.loadFromFile('dnepr_cnap_527_2_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Форма заяви;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Форма заяви;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_527_rishennya_radi_print.html,sFileName=Zayava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Скан-копія ідентифікаційного номеру фізичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -188,7 +186,7 @@
     <serviceTask id="servicetask5" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
@@ -197,58 +195,56 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення громадянина про успішне подання зверенння + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Перевірено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-  			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.&lt;br /&gt;
-					Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};&lt;br /&gt;
-					&lt;br /&gt;
-					Ви отримаєте додаткове повідомлення за результатами розгляду звернення.&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					Ваше звернення [sID_Order] щодо enum{[asTypeAction]} успішно зареєстровано і буде опрацьовано впродовж визначений Законом термін.<br />
+					Реєстраційний номер заяви: ${sReestr_numb} від ${sDate_Reestr};<br />
+					<br />
+					Ви отримаєте додаткове повідомлення за результатами розгляду звернення.<br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Perevireno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask6" name="повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -257,35 +253,34 @@
           <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.&lt;br /&gt;
-					&lt;br /&gt;
-					${sComment_1}&lt;br /&gt;
-					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					На жаль, Ваше звернення [sID_Order] щодо enum{[asTypeAction]} відхилено через недостатню або неправильну інформацію.<br />
+					<br />
+					${sComment_1}<br />
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -295,46 +290,45 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Опрацьовано звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Rishen},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					${sComment_2}&lt;br /&gt;
-					Ваше звернення [sID_Order] щодо рішення про внесення змін або продовження терміну дії рішення міської ради - опрацьовано. &lt;br /&gt;
-					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.&lt;br/&gt; 
-					&lt;br/&gt;
-					При собі треба мати:&lt;br/&gt; 
-					1. Документ, що посвідчує особу.&lt;br/&gt; 
-					2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-					3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи або уповноваженої особи.&lt;br /&gt;
-					4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб (для юридичних осіб).&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					${sComment_2}<br />
+					Ваше звернення [sID_Order] щодо рішення про внесення змін або продовження терміну дії рішення міської ради - опрацьовано. <br />
+					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.<br/> 
+					<br/>
+					При собі треба мати:<br/> 
+					1. Документ, що посвідчує особу.<br/> 
+					2. Для уповоноваженої особи - довіренність.<br/>
+					3. Роздруковану заяву (знаходиться у додатку до листа), яку ви подавали в електронному вигляді, засвідчену особистим  підписом  керівника  юридичної  особи, фізичної особи або уповноваженої особи.<br />
+					4. Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб (для юридичних осіб).<br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, rishennya otrimano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, rishennya otrimano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -344,20 +338,16 @@
     <sequenceFlow id="flow28" sourceRef="servicetask5" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow12" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
     <sequenceFlow id="flow6" name="відхилення звернення" sourceRef="exclusivegateway1" targetRef="servicetask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnum_decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow29" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow30" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow31" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask7" name=" Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -366,38 +356,36 @@
           <activiti:string><![CDATA[Нове звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
-          [pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
           [pattern/mail/new_design/_common_content_start.html]
-			&lt;p&gt;
-				Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. &lt;br /&gt; 
-				Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.&lt;br /&gt;
-				&lt;br /&gt;
-				${sNameOrgan},&lt;br /&gt;
-				${sAddress}&lt;br /&gt;
-				${sWorkTime}&lt;br /&gt;
-				${sPhoneOrgan}&lt;br /&gt;
-			&lt;/p&gt;	
+			<p>
+				Ваше звернення [sID_Order] успішно зареєстровано та буде розглянуто. <br /> 
+				Ви отримаєте відповідь у визначений Законом термін на цю email-адресу.<br />
+				<br />
+				${sNameOrgan},<br />
+				${sAddress}<br />
+				${sWorkTime}<br />
+				${sPhoneOrgan}<br />
+			</p>	
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
-				${sNameOrgan},&lt;br /&gt;
+				${sNameOrgan},<br />
 			[pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow37" sourceRef="servicetask7" targetRef="servicetask5"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow38" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow42" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <serviceTask id="servicetask8" name="повідомлення громадянина про відхилення рішення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -405,42 +393,41 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>"${email}"</activiti:expression>
+          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відхилено звернення на тему: рішення про внесення змін або продовження терміну дії рішення міської ради]]></activiti:string>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${nFile_Rishen},${PrintForm_1}</activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Rishen},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>
- 			[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
-				&lt;p&gt;
-					На жаль, Ваше звернення [sID_Order] щодо внесення змін або продовження терміну дії рішення міської ради було відхилено.&lt;br /&gt;
-					Причина в наступному:&lt;br /&gt;
-					${sComment_2}&lt;br /&gt;
-					&lt;br /&gt;
-					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="https://igov.org.ua/" target="_blank"&gt;iGov.org.ua&lt;/a&gt;&lt;br /&gt;
-					&lt;br /&gt;
-					${sNameOrgan}&lt;br /&gt;
-					${sAddress}&lt;br /&gt;
-					${sWorkTime}&lt;br /&gt;
-					${sPhoneOrgan}&lt;br /&gt;
-				&lt;/p&gt;
+				<p>
+					На жаль, Ваше звернення [sID_Order] щодо внесення змін або продовження терміну дії рішення міської ради було відхилено.<br />
+					Причина в наступному:<br />
+					${sComment_2}<br />
+					<br />
+					Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/" target="_blank">iGov.org.ua</a><br />
+					<br />
+					${sNameOrgan}<br />
+					${sAddress}<br />
+					${sWorkTime}<br />
+					${sPhoneOrgan}<br />
+				</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_feedback.html]   	 
 			[pattern/mail/new_design/_common_signature_start.html]
-                ${sNameOrgan}&lt;br /&gt;
+                ${sNameOrgan}<br />
             [pattern/mail/new_design/_common_signature_end.html]
-			[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Status Vashoho zvernennya [sID_Order] zmineno na "Vidhileno". Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -496,135 +483,122 @@
       </script>
     </scriptTask>
     <sequenceFlow id="flow47" sourceRef="scripttask1" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_527_rishennya_radi">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_527_rishennya_radi" id="BPMNPlane_dnepr_cnap_527_rishennya_radi">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="54.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="58.0" width="129.0" x="73.0" y="42.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="106.0" y="79.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="82.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="59.0" width="105.0" x="607.0" y="42.0"></omgdc:Bounds>
+        <omgdc:Bounds height="59.0" width="105.0" x="607.0" y="70.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="62.0" width="185.0" x="504.0" y="199.0"></omgdc:Bounds>
+        <omgdc:Bounds height="62.0" width="185.0" x="504.0" y="227.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="61.0" width="160.0" x="425.0" y="41.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="160.0" x="425.0" y="69.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="58.0" width="111.0" x="695.0" y="143.0"></omgdc:Bounds>
+        <omgdc:Bounds height="58.0" width="111.0" x="695.0" y="171.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="148.0" x="730.0" y="-27.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="148.0" x="730.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="61.0" width="211.0" x="170.0" y="152.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="211.0" x="170.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="730.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="730.0" y="78.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="103.0" y="212.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="103.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="67.0" width="194.0" x="213.0" y="37.0"></omgdc:Bounds>
+        <omgdc:Bounds height="67.0" width="194.0" x="213.0" y="65.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="910.0" y="-17.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="910.0" y="11.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="61.0" width="211.0" x="170.0" y="250.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="211.0" x="170.0" y="278.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="209.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="425.0" y="237.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="131.0" x="148.0" y="-27.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="131.0" x="148.0" y="1.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
-        <omgdi:waypoint x="55.0" y="71.0"></omgdi:waypoint>
-        <omgdi:waypoint x="73.0" y="71.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
-        <omgdi:waypoint x="750.0" y="90.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="143.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="171.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="760.0" y="109.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="69.0" x="760.0" y="137.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
-        <omgdi:waypoint x="585.0" y="71.0"></omgdi:waypoint>
-        <omgdi:waypoint x="607.0" y="71.0"></omgdi:waypoint>
+        <omgdi:waypoint x="585.0" y="99.0"></omgdi:waypoint>
+        <omgdi:waypoint x="607.0" y="99.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="712.0" y="71.0"></omgdi:waypoint>
-        <omgdi:waypoint x="730.0" y="70.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="99.0"></omgdi:waypoint>
+        <omgdi:waypoint x="730.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="750.0" y="50.0"></omgdi:waypoint>
-        <omgdi:waypoint x="804.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="78.0"></omgdi:waypoint>
+        <omgdi:waypoint x="804.0" y="56.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="766.0" y="43.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="766.0" y="71.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
-        <omgdi:waypoint x="121.0" y="109.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="212.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="170.0" y="182.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="212.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="240.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="878.0" y="0.0"></omgdi:waypoint>
-        <omgdi:waypoint x="910.0" y="0.0"></omgdi:waypoint>
+        <omgdi:waypoint x="878.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="910.0" y="28.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="407.0" y="70.0"></omgdi:waypoint>
-        <omgdi:waypoint x="425.0" y="71.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="137.0" y="42.0"></omgdi:waypoint>
-        <omgdi:waypoint x="213.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="407.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="425.0" y="99.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="750.0" y="201.0"></omgdi:waypoint>
-        <omgdi:waypoint x="749.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="689.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="749.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="689.0" y="258.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="445.0" y="209.0"></omgdi:waypoint>
-        <omgdi:waypoint x="444.0" y="181.0"></omgdi:waypoint>
-        <omgdi:waypoint x="381.0" y="182.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="444.0" y="209.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="210.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="37.0" x="397.0" y="165.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="37.0" x="397.0" y="193.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="445.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="445.0" y="279.0"></omgdi:waypoint>
-        <omgdi:waypoint x="381.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="445.0" y="307.0"></omgdi:waypoint>
+        <omgdi:waypoint x="381.0" y="308.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="396.0" y="258.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="396.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
-        <omgdi:waypoint x="170.0" y="280.0"></omgdi:waypoint>
-        <omgdi:waypoint x="120.0" y="247.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="308.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="275.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
-        <omgdi:waypoint x="504.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="465.0" y="229.0"></omgdi:waypoint>
+        <omgdi:waypoint x="504.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="257.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
-        <omgdi:waypoint x="279.0" y="0.0"></omgdi:waypoint>
-        <omgdi:waypoint x="310.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="279.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="65.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="37.0" y="82.0"></omgdi:waypoint>
+        <omgdi:waypoint x="213.0" y="56.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

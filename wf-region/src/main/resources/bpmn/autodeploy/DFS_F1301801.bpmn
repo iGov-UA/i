@@ -31,9 +31,8 @@
           <activiti:value id="2014" name="2014"></activiti:value>
           <activiti:value id="2015" name="2015"></activiti:value>
           <activiti:value id="2016" name="2016"></activiti:value>
+          <activiti:value id="2017" name="2017"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="lInfoError47" name=" " type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="lInfoErrorPeriod" name=" " type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="asEndPeriod" name="Квартал;кінець періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R02G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
@@ -65,7 +64,6 @@
         <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1401801" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/DFS_F1301801_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Обробка звернення " activiti:candidateGroups="sales">
@@ -226,7 +224,7 @@ src=(+src + +1)
 execution.setVariable('sCounter', src)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -278,7 +276,7 @@ execution.setVariable('sCounter', src)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter > 1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
       <extensionElements>

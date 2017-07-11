@@ -63,54 +63,51 @@
         <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;strong&gt;Шановний колего!&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;
-У Вас в черзі на обробку нове звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.&lt;br /&gt;
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}&lt;br /&gt;
-Номер звернення: [sID_Order]&lt;br /&gt;
-Відпрацюйте це звернення на &lt;a href="https://region.igov.org.ua" target="_blank"&gt;порталі&lt;/a&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<strong>Шановний колего!</strong><br /><br />
+У Вас в черзі на обробку нове звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.<br />
+Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
+Номер звернення: [sID_Order]<br />
+Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
 [pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask3" name="Повідомлення громадянину" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -169,7 +166,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
           <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8}</activiti:expression>
+            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -183,24 +180,24 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-На жаль, Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування було відхилено.&lt;/p&gt;
-&lt;p&gt;Причина в наступному:&lt;/p&gt;
-&lt;p&gt;${comment}&lt;/p&gt;
-&lt;p&gt;Звертаємо увагу, Ви можете заповнити заявку повторно на порталі &lt;a href="#current-page"&gt;iGov.org.ua&lt;/a&gt;&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+На жаль, Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування було відхилено.</p>
+<p>Причина в наступному:</p>
+<p>${comment}</p>
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -215,22 +212,22 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування - відправлене в Управління Держпраці.&lt;br /&gt;
-Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.&lt;br /&gt; 
-&lt;p&gt;Номер Вашого замовлення: ${sExtensionNumber}&lt;/p&gt;&lt;br /&gt; 
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування - відправлене в Управління Держпраці.<br />
+Спеціалісти з органу місцевого самоврядування повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви.<br /> 
+<p>Номер Вашого замовлення: ${sExtensionNumber}</p><br /> 
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -297,31 +294,31 @@ ${sNameOrgan}.&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування - опрацьовано. &lt;br /&gt;
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.&lt;br/&gt; 
-При собі треба мати:&lt;br/&gt; 
-1. Документ, що посвідчує особу.&lt;br/&gt; 
-2. Для уповоноваженої особи - довіренність.&lt;br/&gt;
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.&lt;br/&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sAddress}.&lt;br /&gt;
-${sWorkTime}.&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+Ваше звернення щодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування - опрацьовано. <br />
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
+</p>
+<br />
+${sAddress}.<br />
+${sWorkTime}.<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan},&lt;br /&gt;
+${sNameOrgan},<br />
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -334,27 +331,27 @@ ${sNameOrgan},&lt;br /&gt;
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Відомча реєстрація великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt;
-На жаль, Ваше зверненнящодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування - відхилено Головним управлінням Держпраці.&lt;br /&gt;
-Вам надіслано в прикріпленому файлі рішення з вказаною причиною. &lt;br /&gt;
-&lt;/p&gt;
-&lt;br /&gt;
-${sPhoneOrgan}.&lt;br /&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p>
+На жаль, Ваше зверненнящодо реєстрації великотоннажних та інших технологічних транспортних засобів, що не підлягають експлуатації на вулично-дорожній мережі загального користування - відхилено Головним управлінням Держпраці.<br />
+Вам надіслано в прикріпленому файлі рішення з вказаною причиною. <br />
+</p>
+<br />
+${sPhoneOrgan}.<br />
 [pattern/mail/_common_signature_start.html]
-${sNameOrgan}.&lt;br /&gt;
+${sNameOrgan}.<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>"${nFileAnswer}"</activiti:expression>
+          <activiti:expression><![CDATA["${nFileAnswer}"]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -365,22 +362,12 @@ ${sNameOrgan}.&lt;br /&gt;
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent3"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent4" name="End"></endEvent>
-    <sequenceFlow id="flow15" sourceRef="boundaryerror1" targetRef="endevent4"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_42">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_42" id="BPMNPlane_dnepr_cnap_42">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="130.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="80.0" y="112.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="140.0" y="152.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="69.0" width="105.0" x="210.0" y="113.0"></omgdc:Bounds>
@@ -421,17 +408,6 @@ ${sNameOrgan}.&lt;br /&gt;
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="498.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent4" id="BPMNShape_endevent4">
-        <omgdc:Bounds height="35.0" width="35.0" x="137.0" y="210.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="55.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="80.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="185.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="147.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="315.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="340.0" y="147.0"></omgdi:waypoint>
@@ -448,7 +424,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="502.0" y="240.0"></omgdi:waypoint>
         <omgdi:waypoint x="445.0" y="240.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="431.0" y="221.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="431.0" y="221.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -459,7 +435,7 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="522.0" y="260.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="300.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="483.0" y="269.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="81.0" x="483.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -495,8 +471,8 @@ ${sNameOrgan}.&lt;br /&gt;
         <omgdi:waypoint x="175.0" y="515.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="155.0" y="182.0"></omgdi:waypoint>
-        <omgdi:waypoint x="154.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="55.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="210.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
