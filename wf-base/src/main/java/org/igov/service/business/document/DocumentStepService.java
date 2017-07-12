@@ -1178,7 +1178,7 @@ public class DocumentStepService {
     private List<DocumentStepSubjectRightField> mapToFields(JSONObject group, DocumentStepSubjectRight rightForGroup) {
         List<DocumentStepSubjectRightField> resultFields = new ArrayList<>();
         String[] fieldNames = JSONObject.getNames(group);
-        LOG.info("fields for right: {}", Arrays.toString(fieldNames));
+        //LOG.info("fields for right: {}", Arrays.toString(fieldNames));
         for (String fieldName : fieldNames) {
             if (fieldName == null || fieldName.equals("bWrite")) {
                 continue;
