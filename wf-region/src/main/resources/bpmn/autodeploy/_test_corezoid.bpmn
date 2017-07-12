@@ -526,41 +526,33 @@
         <activiti:formProperty id="sAnswerStatus" name="Статус ответа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bReferent" name="Referent; ;bVisible=false" type="string" writable="true" default="false"></activiti:formProperty>
+        <activiti:formProperty id="bReferent" name="Referent; ;bVisible=false" type="string" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="Referent; ;bVisible=false" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_4&quot;: {&quot;aField_ID&quot;: [&quot;asConsultTr&quot;],&quot;asID_Field&quot; : {&quot;bClient&quot;: &quot;bReferent&quot;}, &quot;sCondition&quot; : &quot;[bClient] == 'true'&quot; }}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Завантаження файлів" activiti:delegateExpression="#{fileTaskUpload}"></serviceTask>
     <serviceTask id="servicetask2" name="Письмо" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Тест корезоид]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-&lt;p&gt; Ваше звернення до міської ради було зареєстровано у системі.&lt;br/&gt;
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.&lt;/p&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p> Ваше звернення до міської ради було зареєстровано у системі.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
 [pattern/mail/_common_signature_start.html]
-Канцелярія Дніпропетровської міської ради,&lt;br /&gt;
+Канцелярія Дніпропетровської міської ради,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <boundaryEvent id="boundaryerror1" name="Error" attachedToRef="servicetask1">
-      <errorEventDefinition></errorEventDefinition>
-    </boundaryEvent>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow3" sourceRef="boundaryerror1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" writable="false"></activiti:formProperty>
@@ -1080,10 +1072,10 @@
         <activiti:formProperty id="sEnumTop" name="Енам Подтемитіка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendObject_Corezoid}">
           <activiti:field name="soJSON">
-            <activiti:expression>{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sAnswer_UkrDoc]}"}</activiti:expression>
+            <activiti:expression><![CDATA[{"sFIO_Subject_Client":"value{[clFio]}","sPhonePrivate_SubjectContact_Client":"value{[sPhone]}","sPhoneCall_SubjectContact_Client":"value{[sPhoneCall_SubjectContact_Client]}","sID_Order":"[sID_Order]","sDate_Order":"[sDateCreate]","sAddress":"value{[sAdressProbl]}","sCategory":"enum{[asKindTr]}","sType":"enum{[asTypeTr]}","sHead":"enum{[asTopHead]}","sHeadSub":"value{[sEnumTop]}","sBody":"value{[sReason]}","nDaysRemain":"value{[nDaysRemain]}","sAnswer_UkrDoc":"value{[sAnswer_UkrDoc]}"}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sID_Conveyour">
-            <activiti:expression>93682</activiti:expression>
+            <activiti:expression><![CDATA[93682]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -1105,45 +1097,37 @@ execution.setVariable('sEnumTop', t)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Тест "КОРЕЗОИД" (ответ)]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/_common_header.html]
-&lt;b&gt;Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;
-Тестовое письмо.&lt;br&gt;
-&lt;b&gt;Ответ Корезоида.&lt;/b&gt;
-Параметр sAnswer: ${sAnswer} &lt;br&gt; 
-Параметр sAnswerStatus: ${sAnswerStatus} &lt;br&gt;
-&lt;br&gt;
+          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+Тестовое письмо.<br>
+<b>Ответ Корезоида.</b>
+Параметр sAnswer: ${sAnswer} <br> 
+Параметр sAnswerStatus: ${sAnswerStatus} <br>
+<br>
 [pattern/mail/_common_signature_start.html]
-Корезоид,&lt;br /&gt;
+Корезоид,<br />
 [pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]</activiti:expression>
+[pattern/mail/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__test_corezoid">
     <bpmndi:BPMNPlane bpmnElement="_test_corezoid" id="BPMNPlane__test_corezoid">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="61.0" width="105.0" x="150.0" y="127.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundaryerror1" id="BPMNShape_boundaryerror1">
-        <omgdc:Bounds height="30.0" width="30.0" x="220.0" y="157.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="61.0" width="105.0" x="450.0" y="127.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="217.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="130.0"></omgdc:Bounds>
@@ -1157,18 +1141,6 @@ execution.setVariable('sEnumTop', t)</script>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="920.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="115.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="150.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="255.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="290.0" y="157.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="235.0" y="187.0"></omgdi:waypoint>
-        <omgdi:waypoint x="234.0" y="210.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="555.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="600.0" y="157.0"></omgdi:waypoint>
@@ -1184,6 +1156,10 @@ execution.setVariable('sEnumTop', t)</script>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="895.0" y="157.0"></omgdi:waypoint>
         <omgdi:waypoint x="920.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="115.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="157.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
