@@ -75,6 +75,7 @@
         <activiti:formProperty id="sFlag" name="Флаг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFioClerk_SignDovidka" name="Посада та П.І.Б. посадової особи, яка підписує довідку ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_TextEmail" name="Документи, що потрібно приносити; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_11.json')}"></activiti:formProperty>
       </extensionElements>
@@ -311,7 +312,7 @@
 					<ul>
 						<li>оригінал та копію паспорта громадянина України;</li>
 						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
-						<li>оригінал та копію картки реєстрації особи або будинкової книги;</li>
+						${sAdd_TextEmail}
 						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
 					</ul>
 				</p>
@@ -381,7 +382,7 @@
 						<li>заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші); </li>
 						<li>оригінал та копію паспорта громадянина України;</li>
 						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
-						<li>оригінал та копію картки реєстрації особи або будинкової книги;</li>
+						${sAdd_TextEmail}
 						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
 					</ul>
 				</p>
@@ -537,6 +538,7 @@ var per1 = ''
 var per11 = ''
 var per2 = 0
 var per21 = 0
+var tmpTextEmail = ''
 
 if (execution.getVariable('nFile_CopyPassportZ') != null ) {
 	per2 = per2 + 1
@@ -595,6 +597,13 @@ if (execution.getVariable('asTargetGetDovidka') == 'sEnum_AnotheReason') {
 }
 
 execution.setVariable('sStringInZayava', per3)
+
+
+tmpTextEmail = ''
+if (execution.getVariable('sID_Public_SubjectOrganJoin') != 'don_mariupolR'  &amp;&amp; execution.getVariable('sID_Public_SubjectOrganJoin') != 'don_mariupol_LevR') {
+	tmpTextEmail = "&lt;li&gt; оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;" 
+}
+execution.setVariable('sAdd_TextEmail', tmpTextEmail)
 
 var d1 = new Date();
 d1.setDate(d1.getDate() + 10);
