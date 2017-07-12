@@ -2752,30 +2752,30 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         
         TaskDataVO oTaskData = new TaskDataVO();
         
-        oTaskData.setsId(task.getId());
+        oTaskData.setId(task.getId());
         oTaskData.setsUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
-        oTaskData.setsOwner(task.getOwner());
-        oTaskData.setsAssignee(task.getAssignee());
-        oTaskData.setoDelegationState((task instanceof Task) ? ((Task) task).getDelegationState() : null);
-        oTaskData.setsName(sPlace + task.getName());
-        oTaskData.setsDescription(task.getDescription());
-        oTaskData.setsCreateTime(sdf.format(task.getCreateTime()));
-        oTaskData.setsDueDate(task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
-        oTaskData.setnPriority(task.getPriority());
-        oTaskData.setbSuspended((task instanceof Task) ? ((Task) task).isSuspended() : null);
-        oTaskData.setsTaskDefinitionKey(task.getTaskDefinitionKey());
-        oTaskData.setsTenantId(task.getTenantId());
-        oTaskData.setsCategory(task.getCategory());
-        oTaskData.setsFormKey(task.getFormKey());
-        oTaskData.setsParentTaskId(task.getParentTaskId());
-        oTaskData.setsParentTaskUrl("");
-        oTaskData.setsExecutionId(task.getExecutionId());
-        oTaskData.setsExecutionUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
-        oTaskData.setsProcessInstanceId(task.getProcessInstanceId());
-        oTaskData.setsProcessInstanceUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
-        oTaskData.setsProcessDefinitionId(task.getProcessDefinitionId());
-        oTaskData.setsProcessDefinitionUrl(oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
-        oTaskData.setaVariables(new LinkedList());
+        oTaskData.setOwner(task.getOwner());
+        oTaskData.setAssignee(task.getAssignee());
+        oTaskData.setDelegationState((task instanceof Task) ? ((Task) task).getDelegationState() : null);
+        oTaskData.setName(sPlace + task.getName());
+        oTaskData.setDescription(task.getDescription());
+        oTaskData.setCreateTime(sdf.format(task.getCreateTime()));
+        oTaskData.setDueDate(task.getDueDate() != null ? sdf.format(task.getDueDate()) : null);
+        oTaskData.setPriority(task.getPriority());
+        oTaskData.setSuspended((task instanceof Task) ? ((Task) task).isSuspended() : null);
+        oTaskData.setTaskDefinitionKey(task.getTaskDefinitionKey());
+        oTaskData.setTenantId(task.getTenantId());
+        oTaskData.setCategory(task.getCategory());
+        oTaskData.setFormKey(task.getFormKey());
+        oTaskData.setParentTaskId(task.getParentTaskId());
+        oTaskData.setParentTaskUrl("");
+        oTaskData.setExecutionId(task.getExecutionId());
+        oTaskData.setExecutionUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
+        oTaskData.setProcessInstanceId(task.getProcessInstanceId());
+        oTaskData.setProcessInstanceUrl(oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
+        oTaskData.setProcessDefinitionId(task.getProcessDefinitionId());
+        oTaskData.setProcessDefinitionUrl(oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+        oTaskData.setVariables(new LinkedList());
 
         if (flowSlotTicket != null) {
             LOG.info("Populating flow slot ticket");
@@ -2788,7 +2788,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
             flowSlotTicketData.put("sDateStart", flowSlotTicket.getsDateStart() != null ? dtf.print(flowSlotTicket.getsDateStart()) : null);
             flowSlotTicketData.put("sDateFinish", flowSlotTicket.getsDateFinish() != null ? dtf.print(flowSlotTicket.getsDateFinish()) : null);
 
-            oTaskData.setmFlowSlotTicketData(flowSlotTicketData);
+            oTaskData.setFlowSlotTicketData(flowSlotTicketData);
         }
         
         return oTaskData;
@@ -2995,11 +2995,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 TaskInfo oTaskInfo = aoAllTasks.get(nIndex);  
 
                 TaskDataVO oTaskDataVO = new TaskDataVO();
-                oTaskDataVO.setsProcessDefinitionId(oTaskInfo.getProcessDefinitionId());
-                oTaskDataVO.setsCreateTime(oFormatter.format(oTaskInfo.getCreateTime()));
-                oTaskDataVO.setsName(oTaskInfo.getName());
-                oTaskDataVO.setsId(oTaskInfo.getId());
-                oTaskDataVO.setsProcessInstanceId(oTaskInfo.getProcessInstanceId());
+                oTaskDataVO.setProcessDefinitionId(oTaskInfo.getProcessDefinitionId());
+                oTaskDataVO.setCreateTime(oFormatter.format(oTaskInfo.getCreateTime()));
+                oTaskDataVO.setName(oTaskInfo.getName());
+                oTaskDataVO.setId(oTaskInfo.getId());
+                oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
 
                 aTaskDataVO.add(oTaskDataVO);
             } else {
@@ -3008,11 +3008,11 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         }
 
         oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);
-        oTaskDataResultVO.setnSize(nSize);
-        oTaskDataResultVO.setnStart(nStart);
-        oTaskDataResultVO.setsOrder("asc");
-        oTaskDataResultVO.setsSort("id");
-        oTaskDataResultVO.setnTotal(nTotalNumber);
+        oTaskDataResultVO.setSize(nSize);
+        oTaskDataResultVO.setStart(nStart);
+        oTaskDataResultVO.setOrder("asc");
+        oTaskDataResultVO.setSort("id");
+        oTaskDataResultVO.setTotal(nTotalNumber);
 
         return oTaskDataResultVO;
     }
