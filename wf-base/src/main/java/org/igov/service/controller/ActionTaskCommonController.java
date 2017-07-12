@@ -2456,6 +2456,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     || sFilterStatus.equals("OpenedUnassignedWithoutECPDocument")
                     || sFilterStatus.equals("DocumentClosed")) {
                 
+                LOG.info("getTasks sFilterStatus={}", sFilterStatus);
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
                 
             } else {
