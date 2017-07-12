@@ -2,6 +2,19 @@ angular.module('popUp').controller('PopUpController',
   ['$scope', '$modal', '$http', '$modalStack', '$window', '$location',
     function ($scope, $modal, $http, $modalStack) {
 
+      $scope.saveFAQDataToLocal = function () {
+        localStorage.setItem("sNameCitizen", $scope.sNameCitizen);
+        localStorage.setItem("email", $scope.email);
+        localStorage.setItem("phone", $scope.phone);
+        localStorage.setItem("sProblemDescription", $scope.sProblemDescription);
+        localStorage.setItem("pageReloadAfterAuth", "afterReload");
+      };
+
+      $scope.getRedirectUrlOnFAQ = function () {
+        var URL = document.URL;
+        return URL;
+      };
+
       $scope.dropDown = 'sEnumExistentRequest_yes';
       var isOrder = false;
       var oTaskData;
@@ -34,9 +47,7 @@ angular.module('popUp').controller('PopUpController',
           sID_Order = URL.match(orderIdExpr);
           sID_Order = sID_Order[0].toString();
           $scope.sRequestNumber = sID_Order;
-
           $scope.getOrderData(sID_Order);
-
         }
       };
 
@@ -46,6 +57,18 @@ angular.module('popUp').controller('PopUpController',
           scope: $scope,
           templateUrl: 'app/feedform/feedform.html'
         });
+        if (localStorage.getItem("email") !== null && localStorage.getItem("email") !== "undefined"){
+          $scope.email = localStorage.getItem("email");
+        }
+        if (localStorage.getItem("phone") !== null && localStorage.getItem("phone") !== "undefined"){
+          $scope.phone = localStorage.getItem("phone");
+        }
+        if (localStorage.getItem("sNameCitizen") !== null && localStorage.getItem("sNameCitizen") !== "undefined"){
+          $scope.sNameCitizen = localStorage.getItem("sNameCitizen");
+        }
+        if(localStorage.getItem("sProblemDescription") !== null && localStorage.getItem("sProblemDescription") !== "undefined"){
+          $scope.sProblemDescription = localStorage.getItem("sProblemDescription");
+        }
       };
 
       $scope.close = function () {
@@ -109,20 +132,11 @@ angular.module('popUp').controller('PopUpController',
             }
           }
 
-
           $scope.oTask = renamed;
-
-          //console.log($scope.oTask);
-
           $scope.email = response.data.aFieldStartForm.email || response.data.aField[4].sValue;
           $scope.phone = response.data.aFieldStartForm.phone || response.data.aField[5].sValue;
-
           $scope.sServiceName = response.data.oProcess.sName;
-
-          console.log(response);
-
         }, function errorCallback(response) {
-
         });
       };
 
@@ -162,7 +176,16 @@ angular.module('popUp').controller('PopUpController',
             templateUrl: 'app/feedform/feederror.html'
           });
         });
+        localStorage.clear();
       };
+
+      function checkOnPageReload() {
+        if (localStorage.getItem("pageReloadAfterAuth") === "afterReload"){
+          $scope.open();
+          localStorage.setItem("pageReloadAfterAuth", "notafterReload");
+        }
+      }
+      checkOnPageReload();
     }
   ]
 );
