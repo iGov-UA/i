@@ -17,39 +17,27 @@
         <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Протокол оперативного совещания" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Протокол оперативного совещания" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDurationMeeting" name="Длительность совещания" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sPresent" name="Присутствовали" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sHearken" name="Слушали" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTask" name="Задание" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_meeting.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asActionDocUT1" name="Действие с документом" type="enum" default="sEnumEditing">
-          <activiti:value id="sEnumEditing" name="не отправлять"></activiti:value>
-          <activiti:value id="sEnumSighting" name="отправить в работу"></activiti:value>
-          <activiti:value id="sEnumEnd" name="удалить"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_vertical_sz.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Resolution" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -598,7 +586,7 @@ false}]]></conditionExpression>
         <omgdi:waypoint x="311.0" y="308.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="55.0" x="397.0" y="295.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -606,14 +594,14 @@ false}]]></conditionExpression>
         <omgdi:waypoint x="311.0" y="601.0"></omgdi:waypoint>
         <omgdi:waypoint x="311.0" y="256.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="27.0" x="376.0" y="582.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="27.0" x="376.0" y="582.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="719.0" y="420.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="464.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="75.0" x="721.0" y="426.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="75.0" x="721.0" y="426.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -632,7 +620,7 @@ false}]]></conditionExpression>
         <omgdi:waypoint x="719.0" y="716.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="790.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="74.0" x="719.0" y="716.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="74.0" x="719.0" y="716.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
