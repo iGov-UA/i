@@ -114,10 +114,10 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
     private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssignedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassignedProcessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassignedUnprocessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassignedWithoutECPDocument";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED = "DocumentClosed";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
