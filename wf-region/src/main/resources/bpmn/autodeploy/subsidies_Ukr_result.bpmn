@@ -109,7 +109,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="result" name="ОБОВ'ЯЗКОВО додайте файл з розрахунком, якщо субсидію призначено; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nScan_passport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;},&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker22" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -154,7 +154,7 @@
     <sequenceFlow id="flow4" name="Заявка прийнята " sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${goal=='Enum1'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="В процесі обробці" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="В процесі обробці" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -192,16 +192,13 @@
     <sequenceFlow id="flow5" name="Заявка в процесі обробки" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${goal=='Enum2'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["  "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
