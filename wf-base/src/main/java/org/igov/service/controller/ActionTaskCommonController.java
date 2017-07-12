@@ -2549,20 +2549,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                         if (bIncludeVariablesProcess) {
 
-                            oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessInstanceId()));
+                            oTaskData.setGlobalVariables(runtimeService.getVariables(oTaskData.getProcessInstanceId()));
                         }
                     }
 
                     aoResult.setAoTaskDataVO(aoTaskData);
-                    aoResult.setnSize(nSize);
-                    aoResult.setnStart(nStart);
-                    aoResult.setsOrder("asc");
-                    aoResult.setsSort("id");
+                    aoResult.setSize(nSize);
+                    aoResult.setStart(nStart);
+                    aoResult.setOrder("asc");
+                    aoResult.setSort("id");
 
                     if ("Documents".equalsIgnoreCase(sFilterStatus)) {
-                        aoResult.setnTotal(totalNumber);
+                        aoResult.setTotal(totalNumber);
                     } else {
-                        aoResult.setnTotal(totalCountServices);
+                        aoResult.setTotal(totalCountServices);
                     }
                 }
             }
