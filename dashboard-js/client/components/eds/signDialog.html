@@ -17,7 +17,7 @@
                type="file" accept="application/pdf" required readonly/>
       </div>
     </div>
-    <div class="col-sm-12 form-field">
+    <div class="col-sm-12 form-field" ng-disabled="isPluginActivated">
       <div class="col-sm-4 task-form-title">
         <label>Файл сховища ЕЦП <span style="color: red">*</span></label>
       </div>
@@ -28,7 +28,7 @@
         <button type="button" class="btn" ng-click="chooseEDSFile()">Обрати файл</button>
       </div>
     </div>
-    <div class="col-sm-12 form-field">
+    <div class="col-sm-12 form-field" ng-disabled="isPluginActivated">
       <div class="col-sm-4 task-form-title">
         <label>Пароль до сховища <span style="color: red">*</span></label>
       </div>
@@ -39,7 +39,7 @@
         <button type="button" class="btn" ng-click="findKeys()">Отримати ключі</button>
       </div>
     </div>
-    <div class="col-sm-12 form-field" ng-hide="isNoChoice()">
+    <div class="col-sm-12 form-field" ng-disabled="isPluginActivated" ng-hide="isNoChoice()">
       <div class="col-sm-4 task-form-title">
         <label>Ключ для підпису <span style="color: red">*</span></label>
       </div>
@@ -50,7 +50,7 @@
                 ng-model="edsContext.selectedKey.key" required></select>
       </div>
     </div>
-    <div ng-if="edsContext.selectedKey.key && edsContext.selectedKey.key.needPassword" class="col-sm-12 form-field">
+    <div ng-if="edsContext.selectedKey.key && edsContext.selectedKey.key.needPassword" ng-disabled="isPluginActivated" class="col-sm-12 form-field">
       <div class="col-sm-4 task-form-title">
         <label>Пароль до ключа <span style="color: red">*</span></label>
       </div>

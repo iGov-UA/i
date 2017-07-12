@@ -105,6 +105,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
   var isInitialized = signService.init();
 
   $scope.isInitialized = isInitialized;
+  $scope.isPluginActivated = false;
 
   $scope.signedContent = {};
 
@@ -122,6 +123,23 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
     },
     lastError: undefined
   };
+
+  var pingCount = 0;
+  var maxPings = 120;
+
+  var ping = setInterval(avtivatePlugin, 1000);
+
+  function avtivatePlugin() {
+    if(pingCount > maxPings) {
+      clearInterval(ping);
+    } else {
+      pingCount++;
+      signService.activate().then(function () {
+        clearInterval(ping);
+        $scope.isPluginActivated = true;
+      }).catch(catchLastError);
+    }
+  }
 
   $scope.isManuallySelectedFile = function () {
     return $scope._isManuallySelectedFile;
@@ -143,12 +161,10 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
   $scope.chooseEDSFile = function () {
     removeLastError();
     var edsContext = $scope.edsContext;
-    signService.activate().then(function () {
-      return signService.selectFile().then(function (edsStorage) {
-        edsContext.edsStorage.file = edsStorage;
-        var filePath = edsStorage.filePath;
-        edsContext.edsStorage.name = filePath.substr(filePath.lastIndexOf("/") + 1)
-      });
+    return signService.selectFile().then(function (edsStorage) {
+      edsContext.edsStorage.file = edsStorage;
+      var filePath = edsStorage.filePath;
+      edsContext.edsStorage.name = filePath.substr(filePath.lastIndexOf("/") + 1)
     }).catch(catchLastError);
   };
 
