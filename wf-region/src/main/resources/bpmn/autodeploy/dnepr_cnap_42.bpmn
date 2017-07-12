@@ -34,14 +34,14 @@
         <activiti:formProperty id="sCountryManufacture" name="Виробник (держава)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sIdentificationNumber" name="Ідентифікаційні номери (заводський, шасі/рами)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEngineNumber" name="Номер двигуна;(Також у дужках зазначається латинська літера V, знак рівності та об'єм двигуна ТТЗ)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Копія паспорта (для повнолітніх фізичних осіб та осіб віком від 16 до 18 років) або свідоцтво про народження (для осіб віком до 16 років)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Акт технічного огляду" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Позитивний висновок експертизи, проведеної фахівцями експертно-технічного центру, на відповідність технологічного транспортного засобу нормативно-правовим актам з охорони праці України;(для технологічних транспортних засобів, виготовлених за межами України чи переобладнаних або самостійно зібраних)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Копія наказу про призначення посадової особи, відповідальної за безпечну експлуатацію та технічний стан ТТЗ" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Копія експлуатаційної документації;(паспорт на транспортний засіб та інструкція з експлуатації)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile6" name="Копії документів, що підтверджують оплату вартості бланків, номерних знаків, виданих під час  реєстрації, та послуг за проведення технічного огляду (з відміткою банку)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile7" name="Копія сертифікату відповідності, свідоцтва про визнання відповідності, декларації про відповідність для технологічного транспортного засобу, на який розповсюджуються відповідні вимоги" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile8" name="Одного будь-якого з наведених документів що підтверджують правомірність придбання ТТЗ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Копія паспорта (для повнолітніх фізичних осіб та осіб віком від 16 до 18 років) або свідоцтво про народження (для осіб віком до 16 років); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Акт технічного огляду; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Позитивний висновок експертизи, проведеної фахівцями експертно-технічного центру, на відповідність технологічного транспортного засобу нормативно-правовим актам з охорони праці України;(для технологічних транспортних засобів, виготовлених за межами України чи переобладнаних або самостійно зібраних); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Копія наказу про призначення посадової особи, відповідальної за безпечну експлуатацію та технічний стан ТТЗ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Копія експлуатаційної документації;(паспорт на транспортний засіб та інструкція з експлуатації);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Копії документів, що підтверджують оплату вартості бланків, номерних знаків, виданих під час  реєстрації, та послуг за проведення технічного огляду (з відміткою банку); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Копія сертифікату відповідності, свідоцтва про визнання відповідності, декларації про відповідність для технологічного транспортного засобу, на який розповсюджуються відповідні вимоги; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Одного будь-якого з наведених документів що підтверджують правомірність придбання ТТЗ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDocument" name="Оберіть назву завантаженного документу що підтверджує правомірність придбання ТТЗ" type="enum" required="true">
           <activiti:value id="sEnumDoc1" name="Довідка-рахунок, який видан підприємством-виготовлювачем або іншим суб'єктом господарювання, що реалізує технологічний транспортний засіб"></activiti:value>
           <activiti:value id="sEnumDoc2" name="Акт приймання-передачі, виданий підприємством-виготовлювачем ТТЗ чи його вузлів і агрегатів"></activiti:value>
@@ -164,11 +164,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sShapkaGolova" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/cnap_503_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -282,7 +278,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnumAccept" name="Рішення позитивне. Запросити заявника"></activiti:value>
           <activiti:value id="sEnumReject" name="Рішення з відмовою. Надіслати рішення на Email"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nReference" name="В разі відмови обов'язково завантажте сканкопію рішення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nReference" name="В разі відмови обов'язково завантажте сканкопію рішення; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
