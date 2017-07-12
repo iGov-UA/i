@@ -2950,7 +2950,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
 
                 } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT) 
-                        && sDate == null && (bWrite == true || bWrite == false)) {
+                        && sDate == null && bWrite != null) {
 
                     String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
                             .getSnID_Process_Activiti();
