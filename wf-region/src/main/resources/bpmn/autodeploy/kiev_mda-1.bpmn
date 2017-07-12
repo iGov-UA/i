@@ -12,13 +12,13 @@
         <activiti:formProperty id="objName" name="назва об’єкту для присвоєння поштової адреси" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objAddress" name="місцезнаходження об’єкта для присвоєння поштової адреси" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="objActivity" name="вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Копія документа, що посвідчує право власності на земельну ділянку чи право користування земельною ділянкою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Копія правовстановлюючого документа на об'єкт нерухомого майна; для новозбудованих об'єктів – зареєстрована декларація про готовність об’єкта до експлуатації або сертифікат, що засвідчує відповідність закінченого будівництвом об’єкта проектній документації та підтверджує його готовність до експлуатації" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="Копія технічного паспорта об'єкта нерухомого майна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Копія виконавчого знімання (топографо-геодезичного вишукування масштабу М1:500), зареєстрованого в містобудівному кадастрі міста Києва" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Копія паспортаця або документу, що його заміняє ;  тільки для физичних осіб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file6" name="Копія копія виписки з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців; тількт для юридичної особи та фізичної особи-підприємця" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file7" name="Копія довідки Департаменту економіки та інвестицій про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури м. Києва або рішенню Київради про звільнення від сплати пайової участі у створені соціальної та інженерно-транспортної інфраструктури м. Києва " type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія документа, що посвідчує право власності на земельну ділянку чи право користування земельною ділянкою; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Копія правовстановлюючого документа на об'єкт нерухомого майна; для новозбудованих об'єктів – зареєстрована декларація про готовність об’єкта до експлуатації або сертифікат, що засвідчує відповідність закінченого будівництвом об’єкта проектній документації та підтверджує його готовність до експлуатації;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Копія технічного паспорта об'єкта нерухомого майна; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Копія виконавчого знімання (топографо-геодезичного вишукування масштабу М1:500), зареєстрованого в містобудівному кадастрі міста Києва; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Копія паспортаця або документу, що його заміняє ;  тільки для физичних осіб;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Копія копія виписки з Єдиного державного реєстру юридичних осіб та фізичних осіб-підприємців; тількт для юридичної особи та фізичної особи-підприємця;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file7" name="Копія довідки Департаменту економіки та інвестицій про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури м. Києва або рішенню Київради про звільнення від сплати пайової участі у створені соціальної та інженерно-транспортної інфраструктури м. Києва ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -39,11 +39,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="В разі відмови в наданні послуги, вкажіть пдставу для відмови" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5},${file6},${file7}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>

@@ -30,17 +30,17 @@
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено;(індивідуальний житловий будинок, господарські будівлі і споруди, які належать мені на праві власності)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки;(обслуговування жилого будинку господарських будівель і споруд, тощо)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name="Зверніть увагу" type="label" default="&lt;strong&gt;Скан копії документів повині бути завірені належним чином&lt;/strong&gt;"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Проект додаткової угоди до договору оренди" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Правовстановлюючи документи на нерухоме майно або дозвільних документів на проектування чи будівництво" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна;(у разі наявності на ділянці об’єктів нерухомого майна)" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Документи про підтвердження відсутності заборгованості з орендної плати за земельну ділянку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Рішення міської ради про передачу (надання) земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile6" name="Договір оренди землі, строк якого спливає з актом приймання-передачі, актом та планом встановлення меж земельної ділянки та іншими додатками до нього" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile7" name="Кадастровий план земельної ділянки (картографічний документ) виконаний в масштабі, що забезпечує чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile8" name="Акт встановлення та узгодження зовнішніх меж земельної ділянки в натурі" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile9" name="Витяг із Державного земельного кадастру" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Проект додаткової угоди до договору оренди; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Правовстановлюючи документи на нерухоме майно або дозвільних документів на проектування чи будівництво; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна;(у разі наявності на ділянці об’єктів нерухомого майна);bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Документи про підтвердження відсутності заборгованості з орендної плати за земельну ділянку; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Рішення міської ради про передачу (надання) земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Договір оренди землі, строк якого спливає з актом приймання-передачі, актом та планом встановлення меж земельної ділянки та іншими додатками до нього; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile7" name="Кадастровий план земельної ділянки (картографічний документ) виконаний в масштабі, що забезпечує чітке відображення всіх елементів та написів, що містить графічне зображення земельної ділянки із зазначенням місця розташування її меж, контурів об'єктів нерухомого майна, розташованих на земельній ділянці, із зазначенням кадастрового номера земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile8" name="Акт встановлення та узгодження зовнішніх меж земельної ділянки в натурі; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile9" name="Витяг із Державного земельного кадастру; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -125,11 +125,7 @@
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_350_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFile7},${nFile8},${nFile9}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -199,7 +195,7 @@
           <activiti:value id="dec_ok" name="Рішення прийнято"></activiti:value>
           <activiti:value id="dec_no" name="Відповідь надано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте рішення сесії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте рішення сесії; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
