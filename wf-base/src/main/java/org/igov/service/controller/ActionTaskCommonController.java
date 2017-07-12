@@ -2451,11 +2451,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         TaskDataResultVO aoResult = new TaskDataResultVO();
 
         try {
-            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument")
-                    || sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")
-                    || sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")
+            if (sFilterStatus.equals("OpenedUnassignedProcessedDocument")
+                    || sFilterStatus.equals("OpenedUnassignedUnprocessedDocument")
+                    || sFilterStatus.equals("OpenedUnassignedWithoutECPDocument")
                     || sFilterStatus.equals("DocumentClosed")) {
                 
+                LOG.info("getTasks sFilterStatus={}", sFilterStatus);
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
                 
             } else {
