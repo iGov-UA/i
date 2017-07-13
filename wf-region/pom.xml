@@ -34,7 +34,7 @@
 			</filesets>
 		</configuration>
 	</plugin>
-	<plugin>
+	<!--plugin>
 		<groupId>org.codehaus.mojo</groupId>
 		<artifactId>exec-maven-plugin</artifactId>
 		<version>1.6.0</version>
@@ -59,7 +59,7 @@
 				</configuration>
 			</execution>
 		</executions>
-	    </plugin>
+	    </plugin-->
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
@@ -73,6 +73,7 @@
             <plugin>
                 <groupId>org.zeroturnaround</groupId>
                 <artifactId>jrebel-maven-plugin</artifactId>
+		        <version>1.1.7</version>
                 <executions>
                     <execution>
                         <id>generate-rebel-xml</id>
@@ -82,14 +83,6 @@
                         </goals>
                     </execution>
                 </executions>
-		    <dependencies>
-<dependency>
-<groupId>org.codehaus.plexus</groupId>
-<artifactId>plexus-utils</artifactId>
-<version>1.4.1</version>
-<scope>runtime</scope>
-</dependency>
-</dependencies>
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -137,7 +130,7 @@
             <plugins>
                 <!--This plugin's configuration is used to store Eclipse m2e settings 
                 only. It has no influence on the Maven build itself. -->
-                <!--plugin>
+                <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
                     <version>1.0.0</version>
@@ -181,13 +174,13 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore>true</ignore>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
-                </plugin-->
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -196,7 +189,7 @@
         <profile>
             <id>compile-widgetset</id>
             <build>
-                <plugins >
+                <plugins>
                     <!-- Compile custom GWT components or widget dependencies with the GWT 
                     compiler -->
                     <plugin>
@@ -205,7 +198,7 @@
                         <version>2.3.0</version>
                         <configuration>
                             <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                            <extraJvmArgs>-Xmx4G -Xss512M</extraJvmArgs>
+                            <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
                             <runTarget>clean</runTarget>
                             <soyc>false</soyc>
                         </configuration>
@@ -478,7 +471,5 @@
             <artifactId>spring-test</artifactId>
             <type>jar</type>
         </dependency>
-
     </dependencies>
-
 </project>
