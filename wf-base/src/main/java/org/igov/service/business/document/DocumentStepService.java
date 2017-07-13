@@ -1399,10 +1399,17 @@ public class DocumentStepService {
         startTime = System.nanoTime();
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
+        
         if (oDocumentStep_Common != null) {
+            aDocumentStepSubjectRight_Common = oDocumentStep_Common.aDocumentStepSubjectRight();
+        }
+        
+        LOG.info("aDocumentStepSubjectRight_Common {}", aDocumentStepSubjectRight_Common);
+        
+        /*if (oDocumentStep_Common != null) {
             aDocumentStepSubjectRight_Common = oDocumentStep_Common.aDocumentStepSubjectRight().stream()
                     .filter(oRight -> asID_Group.contains(oRight.getsKey_GroupPostfix())).collect(Collectors.toList());
-        }
+        }*/
 
         //LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active.aDocumentStepSubjectRight().stream()
@@ -1423,8 +1430,14 @@ public class DocumentStepService {
                 break;
             }
         }
-
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
+        
+        
+        /*for(){
+            
+        }*/
+        
+        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Active;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
