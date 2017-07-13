@@ -84,6 +84,12 @@
       count: 0,
       showCount: true,
       tab: 'viewed'
+    }, {
+      title: 'Історія',
+      type: tasks.filterTypes.docHistory,
+      count: 0,
+      showCount: true,
+      tab: 'docHistory'
     }];
 
     service.instrumentsMenus = [

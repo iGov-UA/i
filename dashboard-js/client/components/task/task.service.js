@@ -25,6 +25,7 @@ angular.module('dashboardJsApp')
         unassigned: 'unassigned',
         documents: 'documents',
         myDrafts: 'myDrafts',
+        docHistory: 'docHistory',
         viewed: 'viewed',
         ecp: 'ecp',
         finished: 'finished',

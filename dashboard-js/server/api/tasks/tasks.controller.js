@@ -156,6 +156,11 @@ exports.index = function (req, res) {
       query.sLogin = user.id;
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
+    } else if (req.query.filterType === 'docHistory') {
+      query.sFilterStatus = 'DocumentClosed';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
       query.sLogin = user.id;
