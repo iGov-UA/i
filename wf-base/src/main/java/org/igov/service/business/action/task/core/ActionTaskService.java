@@ -3053,8 +3053,6 @@ public class ActionTaskService {
             aHistoricVariableInstance.forEach(oHistoricVariableInstance -> {
                 String sVariableName = oHistoricVariableInstance.getVariableName();
                 Object oVariableValue = oHistoricVariableInstance.getValue();
-                LOG.info("Historic variable sVariableName={}, oVariableValue={}",
-                        sVariableName, oVariableValue);
                 mHistoryVariables.put(sVariableName, oVariableValue);
             });
         } else {
