@@ -2451,12 +2451,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         TaskDataResultVO aoResult = new TaskDataResultVO();
 
         try {
-            if (sFilterStatus.equals("OpenedUnassigneProcessedDocument")
-                    || sFilterStatus.equals("OpenedUnassigneUnprocessedDocument")
-                    || sFilterStatus.equals("OpenedUnassigneWithoutECPDocument")
+            if (sFilterStatus.equals("OpenedUnassignedProcessedDocument")
+                    || sFilterStatus.equals("OpenedUnassignedUnprocessedDocument")
+                    || sFilterStatus.equals("OpenedUnassignedWithoutECPDocument")
                     || sFilterStatus.equals("DocumentClosed")) {
                 
-                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
+                LOG.info("getTasks sFilterStatus={}", sFilterStatus);
+                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
+                        sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
+                );
                 
             } else {
 
@@ -2549,20 +2552,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                         if (bIncludeVariablesProcess) {
 
-                            oTaskData.setmGlobalVariables(runtimeService.getVariables(oTaskData.getsProcessInstanceId()));
+                            oTaskData.setGlobalVariables(runtimeService.getVariables(oTaskData.getExecutionId()));
                         }
                     }
 
                     aoResult.setAoTaskDataVO(aoTaskData);
-                    aoResult.setnSize(nSize);
-                    aoResult.setnStart(nStart);
-                    aoResult.setsOrder("asc");
-                    aoResult.setsSort("id");
+                    aoResult.setSize(nSize);
+                    aoResult.setStart(nStart);
+                    aoResult.setOrder("asc");
+                    aoResult.setSort("id");
 
                     if ("Documents".equalsIgnoreCase(sFilterStatus)) {
-                        aoResult.setnTotal(totalNumber);
+                        aoResult.setTotal(totalNumber);
                     } else {
-                        aoResult.setnTotal(totalCountServices);
+                        aoResult.setTotal(totalCountServices);
                     }
                 }
             }

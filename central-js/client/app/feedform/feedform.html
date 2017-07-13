@@ -7,6 +7,20 @@
     <div ng-show="!isAuth">
       <p style="color: red">* Якщо ви маєте питання стосовно існуючого звернення, вам необхідно авторизуватися на
         порталі, тоді ви будете мати можливість додати номер звернення. </p>
+      <div service-auth-block class="list-group-item"
+           ng-if="!profile.isKyivCity"
+           redirect-uri="{{getRedirectUrlOnFAQ()}}"
+           auth-methods="{{getAuthMethods()}}"
+           ng-click="saveFAQDataToLocal()">Увійдіть в систему через
+        <br>
+      </div>
+      <div service-auth-block class="list-group-item"
+           ng-if="profile.isKyivCity"
+           redirect-uri="{{getRedirectUrlOnFAQ()}}"
+           auth-methods="{{getAuthMethods()}}"
+           ng-click="saveFAQDataToLocal()">Увійдіть в систему через
+        <br>
+      </div>
     </div>
     <p>Це питання буде надіслано в команду волонтерів порталу iGov і ми
       обов'язково
