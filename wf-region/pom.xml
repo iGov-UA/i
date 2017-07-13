@@ -197,13 +197,13 @@
                         <configuration>
                             <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
                             <extraJvmArgs>-Xmx2G -Xss512M</extraJvmArgs>
-                            <runTarget>clean</runTarget>
-                            <soyc>false</soyc>
+                            <runTarget></runTarget>
+                            <!--soyc>false</soyc-->
                         </configuration>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>resources</goal>
+                                    <!--goal>resources</goal-->
                                     <goal>compile</goal>
                                 </goals>
                             </execution>
@@ -267,8 +267,15 @@
             <artifactId>activiti-engine</artifactId>
             <version>${activity.version}</version>
 
-        </dependency>
+
+	    
+	    </dependency>
         <dependency>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.6.1</version>
+</dependency>
+	    <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring</artifactId>
             <version>${activity.version}</version>
