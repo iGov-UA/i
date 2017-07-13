@@ -12,7 +12,7 @@ import org.activiti.engine.task.DelegationState;
  */
 public class TaskDataVO {
     //для инициализации у всех инстансов TaskDataVO поля variables пустым массивом
-    private static final List aForVariables = new ArrayList<>();
+    private static final List FOR_VARIABLES = new ArrayList<>();
     
     private String id;
     private String sUrl;
@@ -37,7 +37,7 @@ public class TaskDataVO {
     private String processInstanceUrl;
     private String processDefinitionId;
     private String processDefinitionUrl;
-    private List variables = aForVariables;
+    private List variables = FOR_VARIABLES;
     private Map<String, Object> flowSlotTicketData;
     private Map<String, Object> globalVariables;
        

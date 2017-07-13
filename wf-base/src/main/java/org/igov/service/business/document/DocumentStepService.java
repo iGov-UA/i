@@ -930,7 +930,7 @@ public class DocumentStepService {
                 }
             }
 
-            //addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
+            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_GroupPostfix=" + sKey_GroupPostfix + "" + ",sKey_GroupPostfix_New=" + sKey_GroupPostfix_New
@@ -1333,7 +1333,7 @@ public class DocumentStepService {
     public Map<String, Object> getDocumentStepRights(String sLogin, String snID_Process_Activiti) {// JSONObject
         // assume that we can have only one active task per process at the same
         // time
-
+        LOG.info("getDocumentStepRights started for process {}", snID_Process_Activiti);
         long startTime = System.nanoTime();
 
         LOG.info("sLogin={}, snID_Process_Activiti={}", sLogin, snID_Process_Activiti);
@@ -1399,10 +1399,17 @@ public class DocumentStepService {
         startTime = System.nanoTime();
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = new LinkedList();
+        
         if (oDocumentStep_Common != null) {
+            aDocumentStepSubjectRight_Common = oDocumentStep_Common.aDocumentStepSubjectRight();
+        }
+        
+        LOG.info("aDocumentStepSubjectRight_Common {}", aDocumentStepSubjectRight_Common);
+        
+        /*if (oDocumentStep_Common != null) {
             aDocumentStepSubjectRight_Common = oDocumentStep_Common.aDocumentStepSubjectRight().stream()
                     .filter(oRight -> asID_Group.contains(oRight.getsKey_GroupPostfix())).collect(Collectors.toList());
-        }
+        }*/
 
         //LOG.info("aDocumentStepSubjectRight_Common={}", aDocumentStepSubjectRight_Common);
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active.aDocumentStepSubjectRight().stream()
@@ -1423,10 +1430,16 @@ public class DocumentStepService {
                 break;
             }
         }
-
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
+        
+        
+        /*for(){
+            
+        }*/
+        
+        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Active;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
-        //LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
+        LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
         Map<String, Object> mReturn = new HashMap();
 
