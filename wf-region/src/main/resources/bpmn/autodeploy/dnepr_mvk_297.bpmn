@@ -16,11 +16,11 @@
         <activiti:formProperty id="position" name="Посада заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adress2" name="Адреса об’єкта житлового фонду" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="appeal" name="Додатковий текст звернення" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Технічні і правовстановлюючі документи на гуртожиток;(технічний паспорт, документи про введення в експлуатацію, реєстраційне свідоцтво КП ДМБТІ)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Бухгалтерська документація для складання передавального фінансового плану на подальше утримання, експлуатацію та капітальний ремонт гуртожитку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file3" name="АВІЗО на передачу всіх зовнішніх інженерних мереж на баланс відповідних комунальних служб міста" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file4" name="Лист або протокол засідання власника житлового фонду, що передається щодо згоди на передачу об’єкту у комунальну власність територіальної громади міста" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file5" name="Рішення суду;(у разі прийняття об’єкту житлового фонду від підприємства-банкрута)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Технічні і правовстановлюючі документи на гуртожиток;(технічний паспорт, документи про введення в експлуатацію, реєстраційне свідоцтво КП ДМБТІ);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Бухгалтерська документація для складання передавального фінансового плану на подальше утримання, експлуатацію та капітальний ремонт гуртожитку; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="АВІЗО на передачу всіх зовнішніх інженерних мереж на баланс відповідних комунальних служб міста; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file4" name="Лист або протокол засідання власника житлового фонду, що передається щодо згоди на передачу об’єкту у комунальну власність територіальної громади міста; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file5" name="Рішення суду;(у разі прийняття об’єкту житлового фонду від підприємства-банкрута);bNew=true" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення держслужбовця про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -91,11 +91,7 @@
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprMVK/dnepr_mvk_297_print.html] ; ;bVisible=false" type="string" default="Форма звернення" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1},${file2},${file3},${file4},${file5}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -185,7 +181,7 @@
         <activiti:formProperty id="adress2" name="Адреса об’єкта житлового фонду" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="appeal" name="Додатковий текст звернення" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="info_1" name="Після рішення сесії - завантажте відскановане рішення" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="scan_decision" name="Сканована копія рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="scan_decision" name="Сканована копія рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask6" name="Повідомлення про відправку документів на сесію" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

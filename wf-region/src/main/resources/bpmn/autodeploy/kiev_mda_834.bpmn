@@ -18,7 +18,7 @@
         <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="LocationEntity" name="Місцезнаходження юрособи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="AddressRegistration" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_01_01" name="показать строки если юрособа " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_01&quot;:{&quot;aField_ID&quot;:[&quot;EntityName&quot;,&quot;Entity&quot;,&quot;HeadEntityName&quot;,&quot;LocationEntity&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;entrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_001'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_01_02" name="показать строки если фізособа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;AddressRegistration&quot;,&quot;bankId_scan_passport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;entrepreneur&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_002'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -35,8 +35,8 @@
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date" name="Дата заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Maplabel" name="Ситуаційний план (схема) щодо місцезнаходження земельної ділянки" type="label" default="&lt;a href=&quot;http://mkk.kga.gov.ua/&quot; target=&quot;_blank&quot;&gt;Перехід у систему Містобудівного кадастру.&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="Document1" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об'єкта будівництва;(файл у форматі PDF, загальний розмір не більше 5 МБ)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Document2" name="Фотофіксація земельної ділянки (з оточенням);(одним файлом, загальний розмір не більше 5 МБ)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Document1" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об'єкта будівництва;(файл у форматі PDF, загальний розмір не більше 5 МБ);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Document2" name="Фотофіксація земельної ділянки (з оточенням);(одним файлом, загальний розмір не більше 5 МБ);bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -96,11 +96,7 @@
           <activiti:value id="s_001" name="Зауваження відсутні, передати пакет документів до ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -181,11 +177,7 @@
           <activiti:value id="s_001" name="Нанесені межі земельної ділянки перевірені"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
@@ -279,11 +271,7 @@
         <activiti:formProperty id="markers_Hide_05_01" name="показать строки если отказ " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_05_01&quot;:{&quot;aField_ID&quot;:[&quot;Causes&quot;,&quot;Comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_102'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Req_05_01" name="обязательные поля если отказ" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_05_01&quot;:{&quot;aField_ID&quot;:[&quot;Causes&quot;,&quot;Comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;Decision5&quot;},&quot;sCondition&quot;:&quot;[sClient] == 's_102'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="usertask3"></sequenceFlow>
@@ -325,16 +313,12 @@
         <activiti:formProperty id="Map" name="Ситуаційний план (схема) щодо місцезнаходження земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Document3" name="Черговий кадастровий план" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Map1" name="Витяг з містобудівного кадастру" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Document4" name="Проект містобудівних умов та обмежень" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Document4" name="Проект містобудівних умов та обмежень; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Decision11" name="Результат опрацювання" type="enum" default=" " required="true">
           <activiti:value id="s_001" name="Проект містобудівних умов та обмежень створений"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="Крок 6 – Підготовка проекту листа-відмови (відділ підготовки документів щодо містобудівних ініціатив ДМА)" activiti:candidateGroups="kiev_834_pdoc">
@@ -382,13 +366,9 @@
         <activiti:formProperty id="Decision6" name="Результат опрацювання" type="enum" default=" " required="true">
           <activiti:value id="s_001" name="Проект листа-відмови підготовлений та переданий на підписання."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="DocumentRejectMail_0" name="Проект листа-відмови без підпису" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="DocumentRejectMail_0" name="Проект листа-відмови без підпису; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow15" name="Є зауваження, підготувати лист-відмову" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
@@ -437,13 +417,9 @@
           <activiti:value id="s_001" name="Проект листа-відмови підготовлений та переданий на підписання."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Comment1" name="Коментар" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="DocumentRejectMail_1" name="Проект листа-відмови з ЕЦП начальника відділу підготовки документів щодо містобудівних ініціатив ДМА" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="DocumentRejectMail_1" name="Проект листа-відмови з ЕЦП начальника відділу підготовки документів щодо містобудівних ініціатив ДМА; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${DocumentRejectMail_0}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="usertask5" targetRef="usertask6"></sequenceFlow>
@@ -494,13 +470,9 @@
           <activiti:value id="s_001" name="Проект листа-відмови підготовлений та переданий на підписання."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Comment2" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="DocumentRejectMail_2" name="Проект листа-відмови з ЕЦП Відділу правового забезпечення ДМА" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="DocumentRejectMail_2" name="Проект листа-відмови з ЕЦП Відділу правового забезпечення ДМА; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${DocumentRejectMail_1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask8" name="Крок 9 – Підписання листа-відмови ЕЦП у заступника Директора ДМА (заступник Директора ДМА)" activiti:candidateGroups="kiev_834_zast">
@@ -549,13 +521,9 @@
           <activiti:value id="s_002" name="До листа-відмови зауважень немає"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Comment3" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="DocumentRejectMail_3" name="Листа-відмови з усіма ЕЦП" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="DocumentRejectMail_3" name="Листа-відмови з усіма ЕЦП; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${DocumentRejectMail_2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow22" sourceRef="usertask7" targetRef="usertask8"></sequenceFlow>
@@ -604,11 +572,7 @@
           <activiti:value id="s_001" name="Документи отримані від ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask8" name="Е-mail Заявнику про можливість отримати результат у ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -668,11 +632,7 @@
           <activiti:value id="s_001" name="Документи отримані заявником"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow29" sourceRef="servicetask8" targetRef="usertask10"></sequenceFlow>
@@ -741,11 +701,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Comment12" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask12" name="Крок 13 – Розгляд проекту містобудівних умов та обмежень (Управління регулювання забудовою міста ДМА)" activiti:candidateGroups="kiev_834_regbud">
@@ -786,11 +742,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Comment13" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <userTask id="usertask13" name="Крок 14 – Розгляд проекту містобудівних умов та обмежень (Сектор реабілітації історичної забудови міста ДМА)" activiti:candidateGroups="kiev_834_istor">
@@ -831,11 +783,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Comment14" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <userTask id="usertask14" name="Крок 15 – Розгляд проекту містобудівних умов та обмежень (Управління інженерно-транспортної інфраструктури ДМА)" activiti:candidateGroups="kiev_834_transp">
@@ -876,11 +824,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Comment15" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow33" sourceRef="parallelgateway1" targetRef="usertask11"></sequenceFlow>
@@ -934,11 +878,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="Comment16" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow41" sourceRef="parallelgateway2" targetRef="usertask15"></sequenceFlow>
@@ -986,16 +926,12 @@
         <activiti:formProperty id="Comment14" name="Коментар Сектору реабілітації історичної забудови міста" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Comment15" name="Коментар Управління інженерно-транспортної інфраструктури" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Comment16" name="Коментар заступника Директора ДМА" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Document5" name="Проект містобудівних умов та обмежень (остаточний)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Document5" name="Проект містобудівних умов та обмежень (остаточний); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Decision17" name="Результат опрацювання" type="enum" default=" " required="true">
           <activiti:value id="s_001" name="Містобудівні умови та обмеження підготовлені та передані на підпис Директору ДМА"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow44" name="Зауваження відсутні. Підготувати містобудівні умови та обмеження" sourceRef="exclusivegateway7" targetRef="usertask16">
@@ -1039,18 +975,14 @@
         <activiti:formProperty id="Comment14" name="Коментар Сектору реабілітації історичної забудови міста" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Comment15" name="Коментар Управління інженерно-транспортної інфраструктури" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Comment16" name="Коментар заступника Директора ДМА" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Document6" name="Містобудівні умови та обмеження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Document6" name="Містобудівні умови та обмеження; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Decision18" name="Результат опрацювання" type="enum" default=" " required="true">
           <activiti:value id="s_001" name="Є зауваження"></activiti:value>
           <activiti:value id="s_002" name="Зауваження відсутні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Comment17" name="Коментар" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4},${Document5}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow45" sourceRef="usertask16" targetRef="usertask17"></sequenceFlow>
@@ -1099,11 +1031,7 @@
           <activiti:value id="s_001" name="Містобудівні умови та обмеження підписані та передані до ЦНАПу"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${Document2},${Document4},${Document5},${Document6}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow49" sourceRef="usertask18" targetRef="exclusivegateway9"></sequenceFlow>

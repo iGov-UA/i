@@ -14,7 +14,7 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи; Вишукувальна організація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surosobaDavalniyname" name="У давальному відмінку повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
@@ -34,10 +34,10 @@
           <activiti:value id="s3" name="3"></activiti:value>
           <activiti:value id="s4" name="4"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="fsurveyScheme1" name="Схема робіт 1 (топографо-геодезичних вишукувань Dwg-формату)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fsurveyScheme2" name="Схема робіт 2 (топографо-геодезичних вишукувань Dwg-формату)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="fsurveyScheme3" name="Схема робіт 3 (топографо-геодезичних вишукувань Dwg-формату)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="fsurveyScheme4" name="Схема робіт 4 (топографо-геодезичних вишукувань Dwg-формату)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fsurveyScheme1" name="Схема робіт 1 (топографо-геодезичних вишукувань Dwg-формату); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fsurveyScheme2" name="Схема робіт 2 (топографо-геодезичних вишукувань Dwg-формату); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fsurveyScheme3" name="Схема робіт 3 (топографо-геодезичних вишукувань Dwg-формату); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fsurveyScheme4" name="Схема робіт 4 (топографо-геодезичних вишукувань Dwg-формату); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="date" name="Дата заяви ; ;bVisible=false " type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Вибір отримання коштів" type="markers" default="${markerService.loadFromFile('architecture/kiev_arch_828.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ; ;bVisible=false " type="string" default=" "></activiti:formProperty>
@@ -148,11 +148,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment3" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask3_first" targetRef="scripttask2"></sequenceFlow>
@@ -212,14 +208,10 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
           <activiti:value id="erejectReason1" name="невідповідність полігонів топографо-геодезичних досліджень та вихідних даних"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Ввести коментар до опрацьованого документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow30" sourceRef="usertask4" targetRef="servicetask4"></sequenceFlow>
@@ -279,15 +271,11 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
           <activiti:value id="erejectReason3" name="помилки при проведенні топографо-геодезичних робіт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentreject" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject5" name="Лист-відмова, підписана ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="outdocNum" name="№ вихідного документу ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="outdocDate" name="Дата вихідного документу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nFileReject4},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask5" targetRef="servicetask5"></sequenceFlow>
@@ -410,11 +398,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="sComment8" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow14" sourceRef="usertask8_red" targetRef="servicetask8"></sequenceFlow>
@@ -471,11 +455,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="sComment10" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="usertask9_red" targetRef="exclusivegateway3"></sequenceFlow>
@@ -520,14 +500,10 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
           <activiti:value id="erejectReason3" name="помилки при проведенні топографо-геодезичних робіт"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment11" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject4" name="Лист-відмова, підписана ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="ПІБ спеціаліста, який сформував та підписав лист-відмову. Формується автоматично ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow31" sourceRef="usertask6" targetRef="servicetask4"></sequenceFlow>
@@ -575,13 +551,9 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
           <activiti:value id="accept" name="вдавлення топооснови  в мапу міста затверджено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileAppr" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileAppr" name="Файл топооснови, підписаний ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow20" sourceRef="usertask14_yellow" targetRef="servicetask10"></sequenceFlow>
@@ -636,13 +608,9 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
           <activiti:value id="accept" name="топооснову  затверджено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment15" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileApprNach" name="Файл топооснови, підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileApprNach" name="Файл топооснови, підписаний ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nFileAppr},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow26" sourceRef="usertask15_green" targetRef="servicetask9"></sequenceFlow>
@@ -720,11 +688,7 @@ execution.setVariable('outdocDate', new Date().format("dd.MM.yyyy").toString())
         </activiti:formProperty>
         <activiti:formProperty id="sComment16" name="Коментар до опрацьованого документу" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nFileApprNach},${fsurveyScheme1},${fsurveyScheme2},${fsurveyScheme3},${fsurveyScheme4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask16_green" targetRef="servicetask11"></sequenceFlow>

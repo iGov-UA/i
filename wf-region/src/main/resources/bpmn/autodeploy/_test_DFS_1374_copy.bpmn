@@ -31,7 +31,7 @@
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File; ;bNew=true" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Writable" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1.json')}"></activiti:formProperty>
       </extensionElements>
@@ -74,7 +74,7 @@
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string"></activiti:formProperty>
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File" type="file" default="F1301801"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File; ;bNew=true" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
           <activiti:field name="sID_File_XML_SWinEd">
@@ -85,11 +85,7 @@
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="servicetask2"></sequenceFlow>

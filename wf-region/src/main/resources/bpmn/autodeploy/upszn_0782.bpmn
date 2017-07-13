@@ -20,13 +20,13 @@
         <activiti:formProperty id="nInn" name="ІПН отримувача пільг" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sIdPassport" name="Паспортні дані отримувача пільг" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressFactual" name="Адреса реєстрації отримувача пільг" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nTrust" name="Документ, який підтверджує статус довіреної особи або піклувальника" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nScanPassport" name="Скан-копія паспорта отримувача пільг: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nScanINN" name="Довідка про присвоєння індивідуального податкового номеру (ІПН)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nScanFamily" name="Довідка про склад сім’ї" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nScanBenefit" name="Документи, що підтверджують право пільговика та членів його сім’ї на пільги; декілька сторінок об'єднайте у один .pdf файл або .zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nScanInvalid" name="Довідка МСЕК про інвалідність" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nScanPens" name="Копія пенсійного посвідчення" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nTrust" name="Документ, який підтверджує статус довіреної особи або піклувальника; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanPassport" name="Скан-копія паспорта отримувача пільг: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanINN" name="Довідка про присвоєння індивідуального податкового номеру (ІПН); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanFamily" name="Довідка про склад сім’ї; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanBenefit" name="Документи, що підтверджують право пільговика та членів його сім’ї на пільги; декілька сторінок об'єднайте у один .pdf файл або .zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nScanInvalid" name="Довідка МСЕК про інвалідність; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nScanPens" name="Копія пенсійного посвідчення; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -108,14 +108,10 @@ ${sNameOrgan}<br />
           <activiti:value id="reject" name="Відмова громадянину у разі надання неповного пакету документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="result" name="Завантажте довідку з реєстру" type="file"></activiti:formProperty>
+        <activiti:formProperty id="result" name="Завантажте довідку з реєстру; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'accept'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nTrust},${nScanPassport},${nScanINN},${nScanFamily},${nScanBenefit},${nScanInvalid},${nScanPens}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>

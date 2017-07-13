@@ -19,7 +19,7 @@
         <activiti:formProperty id="HeadEntityName" name="П.І.Б. керівника юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="LocationEntity" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="AddressRegistration" name="Адреса реєстрації" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Object" name="Об'єкт, на який видається документ" type="string" default=" " required="true"></activiti:formProperty>
@@ -29,7 +29,7 @@
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу;Перед присвоєнням поштової адреси необхідно отримати реєстраційний номер топомоніторингу (інформація є обов'язковою для отримання послуги), який видається Департаментом архітектури та містобудування м.Києва" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="kved" name="Вид діяльності згідно з КВЕД" type="string"></activiti:formProperty>
         <activiti:formProperty id="landNumb" name="Кадастровий номер земельної ділянки;Кадастровий номер земельної ділянки з документа, що посвідчує право власноcті на земельну ділянку чи право користування земельною ділянкою" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Document1" name="Копія технічного паспорта об'єкта нерухомого майна, виготовленого відповідним суб'єктом господарювання" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="Document1" name="Копія технічного паспорта об'єкта нерухомого майна, виготовленого відповідним суб'єктом господарювання; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="date_today" name="Вкажіть  сьогоднішню дату ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Date" name="Дата заяви ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -108,11 +108,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="[Етап II.1] Відділ правового забезпечення - Перегляд документів та прийняття рішення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Pravo">
@@ -176,11 +172,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask4" name="[Етап II.2] Служба містобудівного кадастру - Перегляд документів та прийняття рішення (2-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_MistoBudivel">
@@ -244,11 +236,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask6" name="[Етап III.1] Відділ правового забезпечення - Підготування листа-відмови (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Pravo">
@@ -321,7 +309,7 @@
           <activiti:value id="Return" name="Є зауваження, повернути на доопрацювання до попереднього етапу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_UT6_Previous_Step" name="У разі повернення на доопрацювання (попередній етап) внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid" name="Копiя листа-відмови" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid" name="Копiя листа-відмови; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/skv/kiev_mda_825_print.html] ; ;bVisible=false" type="string" default="Заява (Тест1)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -336,11 +324,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask5" name="[Етап III.2] Відділ правового забезпечення - Підготування наказу про присвоєння поштової адреси (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Pravo">
@@ -406,7 +390,7 @@
           <activiti:value id="Return" name="Є зауваження, повернути на доопрацювання до попереднього етапу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_UT5_Previous_Step" name="У разі повернення на доопрацювання (попередній етап) внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid" name="Копiя наказу про присвоєння поштової адреси" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid" name="Копiя наказу про присвоєння поштової адреси; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -420,11 +404,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask9" name="[Етап IV] Підписання документу у керівника Відділу правового забезпечення (4-й крок,1 підпис)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Pravo_Chief">
@@ -490,7 +470,7 @@
           <activiti:value id="Return" name="Є зауваження, повернути на доопрацювання до попереднього етапу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_UT9_Previous_Step" name="У разі повернення на доопрацювання (попередній етап) внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid_Doc_Sign1" name="Копiя наказу про присвоєння поштової адреси або листа-відмови з ЕЦП" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid_Doc_Sign1" name="Копiя наказу про присвоєння поштової адреси або листа-відмови з ЕЦП; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -504,11 +484,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask10" name="[Етап V] Підписання документу у керівника Служби містобудівного кадастру (5-й крок,2-й підпис)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_MistoBudivel_Chief">
@@ -574,7 +550,7 @@
           <activiti:value id="Return" name="Є зауваження, повернути на доопрацювання до попереднього етапу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_UT10_Previous_Step" name="У разі повернення на доопрацювання (попередній етап) внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid_Doc_Sign2" name="Копiя наказу про присвоєння поштової адреси або листа-відмови з другим підписом ЕЦП" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid_Doc_Sign2" name="Копiя наказу про присвоєння поштової адреси або листа-відмови з другим підписом ЕЦП; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -588,11 +564,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid_Doc_Sign1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask11" name="[Етап VI] Підписання документу у заступника директора ДМА (6-й крок,3-й підпис)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Deputy_Director_DMA">
@@ -658,7 +630,7 @@
           <activiti:value id="Return" name="Є зауваження, повернути на доопрацювання до попереднього етапу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_UT11_Previous_Step" name="У разі повернення на доопрацювання (попередній етап) внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid_Doc_Sign3" name="Копiя наказу про присвоєння поштової адреси або листа-відмови з третім підписом ЕЦП" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid_Doc_Sign3" name="Копiя наказу про присвоєння поштової адреси або листа-відмови з третім підписом ЕЦП; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -672,11 +644,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid_Doc_Sign2}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask7" name="[Етап  VII] Відділ правового забезпечення - Підтвердження наявності підписаного документу (7-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Pravo">
@@ -763,11 +731,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask14" name="[Етап VIII] Відділ правового забезпечення -  підготовка витягу з наказу про присвоєння поштової адреси та передача до канцелярії (8-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_Pravo">
@@ -833,7 +797,7 @@
           <activiti:value id="Return" name="Є зауваження, повернути на доопрацювання до попереднього етапу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDecisionComment_UT14_Previous_Step" name="У разі повернення на доопрацювання (попередній етап) внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileVidpovid_Vyityag" name="Копiя витягу з наказу про присвоєння поштової адреси" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVidpovid_Vyityag" name="Копiя витягу з наказу про присвоєння поштової адреси; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть центр надання адмінпослуг ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адрес оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідки оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -847,11 +811,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask13" name="[Етап IX] Служба містобудівного кадастру - Підтвердження внесення інформації до реєстру адрес (9 крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}_MistoBudivel">
@@ -934,11 +894,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid},${nFileVidpovid_Vyityag}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask8" name="[Етап X] ЦНАП - Підтвердження отримання документів від ДМА (10-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -1025,11 +981,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid},${nFileVidpovid_Vyityag}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask12" name="[Етап XI] ЦНАП - Підтвердження отримання результату заявником (11-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -1116,11 +1068,7 @@
         <activiti:formProperty id="sMailClerk_BTI" name="Пошта КП -Київське міське бюро технічної інвентаризації- ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи оргструктури (району) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${Document1},${nFileVidpovid},${nFileVidpovid_Vyityag}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask5" name="Повідомлення співробітника ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">

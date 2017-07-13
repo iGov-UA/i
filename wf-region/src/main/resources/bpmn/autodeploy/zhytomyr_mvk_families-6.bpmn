@@ -13,8 +13,8 @@
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="reason" name="Вкажіть причину внесення змін в єдиний банк даних багатодітних родин" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини;якщо декілька файлів об'єднайте їх у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="extra_documents" name="Копії документів, що підтверджують причину внесення змін;наприклад, сторінки паспорта з новою адресою реєстрації, документи про зміну імені або прізвища, тощо" type="file"></activiti:formProperty>
+        <activiti:formProperty id="passport_children" name="Копія свідоцтва про народження дитини;якщо декілька файлів об'єднайте їх у pdf-файл або zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="extra_documents" name="Копії документів, що підтверджують причину внесення змін;наприклад, сторінки паспорта з новою адресою реєстрації, документи про зміну імені або прізвища, тощо;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення співробітника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -76,11 +76,7 @@
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі успішного внесення змін АБО відхилення зверення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_6.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${passport_children},${extra_documents}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>

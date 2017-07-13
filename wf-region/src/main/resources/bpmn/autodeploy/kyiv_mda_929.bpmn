@@ -24,7 +24,7 @@
         <activiti:formProperty id="sInnCompany" name="Код платника податків згідно з ЄДРПОУ або податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Декларація про початок виконання будівельних робіт;Вкладення відсканованого поданого паперового документу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Декларація про початок виконання будівельних робіт;Вкладення відсканованого поданого паперового документу;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_1.json')}"></activiti:formProperty>
@@ -56,11 +56,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
@@ -92,11 +88,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="5. Ознайомлення з документом та визначення відповідального (керівник управління дозвільних процедур)" activiti:candidateGroups="kyiv_dabi_permit_boss">
@@ -129,11 +121,7 @@
         <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_928_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="parallelgateway1" targetRef="usertask2"></sequenceFlow>
@@ -165,11 +153,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="parallelgateway1" targetRef="usertask4"></sequenceFlow>
@@ -312,11 +296,7 @@
           </activiti:field>
         </activiti:taskListener>
 
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask9" name="14. Підтвердження передачі паперового документу до ЦНАП." activiti:candidateGroups="kyiv_dabi_doc">
@@ -438,11 +418,7 @@
         <activiti:formProperty id="sNumberOutDABI" name="Реєстраційний номер вихідного документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_929_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
