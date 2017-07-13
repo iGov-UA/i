@@ -1,5 +1,6 @@
 package org.igov.model.action.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,8 @@ import org.activiti.engine.task.DelegationState;
  * @author idenysenko
  */
 public class TaskDataVO {
+    //для инициализации у всех инстансов TaskDataVO поля variables пустым массивом
+    private static final List FOR_VARIABLES = new ArrayList<>();
     
     private String id;
     private String sUrl;
@@ -34,7 +37,7 @@ public class TaskDataVO {
     private String processInstanceUrl;
     private String processDefinitionId;
     private String processDefinitionUrl;
-    private List variables;
+    private List variables = FOR_VARIABLES;
     private Map<String, Object> flowSlotTicketData;
     private Map<String, Object> globalVariables;
        

@@ -25,6 +25,7 @@ angular.module('dashboardJsApp')
         unassigned: 'unassigned',
         documents: 'documents',
         myDrafts: 'myDrafts',
+        docHistory: 'docHistory',
         viewed: 'viewed',
         ecp: 'ecp',
         finished: 'finished',
@@ -38,13 +39,11 @@ angular.module('dashboardJsApp')
        * @return {Promise}
        */
       list: function (filterType, params) {
-        if(filterType !== 'ecp') {
-          return simpleHttpPromise({
-            method: 'GET',
-            url: '/api/tasks',
-            params: angular.merge({filterType: filterType}, params)
-          });
-        }
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks',
+          params: angular.merge({filterType: filterType}, params)
+        });
       },
       getEventMap: function () {
         var deferred = $q.defer();

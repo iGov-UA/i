@@ -3013,9 +3013,10 @@ public class ActionTaskService {
                 //для фильтра "DocumentClosed" ищем переменные в истории
                 if (bIncludeVariablesProcess
                         && sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
-                    /*oTaskDataVO.setGlobalVariables(
+                    LOG.info("Stsrt find history variable for ProcessInstanceId={}", oTaskInfo.getProcessInstanceId());
+                    oTaskDataVO.setGlobalVariables(
                             getHistoryVariableByHistoryProcessInstanceId(
-                                    oTaskInfo.getProcessInstanceId()));*/
+                                    oTaskInfo.getProcessInstanceId()));
                     LOG.info("THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED");
 
                 } else if (bIncludeVariablesProcess) {
@@ -3040,9 +3041,10 @@ public class ActionTaskService {
     }
 
     public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
-
+        LOG.info("getHistoryVariableByHistoryProcessInstanceId started with "
+                + "sProcessInstanceId={}",sProcessInstanceId );
         Map<String, Object> mHistoryVariables = new HashMap<>();
-
+        
         List<HistoricVariableInstance> aHistoricVariableInstance = oHistoryService
                 .createHistoricVariableInstanceQuery()
                 .processInstanceId(sProcessInstanceId)
