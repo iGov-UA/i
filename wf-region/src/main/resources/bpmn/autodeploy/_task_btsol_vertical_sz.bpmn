@@ -39,9 +39,10 @@
           <activiti:value id="transfered" name="Прошу перенести срок"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст отчета" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="saStatusDecision" name="Решение" type="enum" default="notExecuted">
-          <activiti:value id="executed" name="Пройти процесс дальше (задание выполнено)"></activiti:value>
-          <activiti:value id="notExecuted" name="Закрыть задание"></activiti:value>
+        <activiti:formProperty id="saStatusDecision" name="Решение" type="enum" required="true">
+          <activiti:value id="executed" name="Снять как выполненное"></activiti:value>
+          <activiti:value id="notExecuted" name="Снять как невыполненое"></activiti:value>
+          <activiti:value id="unactual" name="Снять как неактуальное"></activiti:value>
           <activiti:value id="delegated" name="Отправить исполнителю на доработку (отклонить отчет)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Комментарий - что необходимо доработать" type="textArea"></activiti:formProperty>
@@ -67,7 +68,6 @@
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
-          <activiti:value id="delegated" name="Делегування іншому виконавцю"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
@@ -79,7 +79,7 @@
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="parallelgateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'||saStatusDecision == 'notExecuted'||saStatusDecision == 'unactual'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask2">
@@ -87,10 +87,6 @@
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="parallelgateway2" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
-    </sequenceFlow>
     <scriptTask id="scripttask1" name="ID Process" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>// получение ID текущего процесса
     var processInstanceId = execution.getProcessInstanceId();
@@ -119,9 +115,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="896.0" y="240.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="744.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="110.0"></omgdc:Bounds>
@@ -163,10 +156,6 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="851.0" y="257.0"></omgdi:waypoint>
         <omgdi:waypoint x="896.0" y="257.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="761.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="761.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

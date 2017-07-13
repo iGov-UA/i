@@ -23,7 +23,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id групи ; ;bVisible=false" type="string" default="iGov_Departament_BA_New"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="iGov_Grek"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="iGov_Departament_BA"></activiti:formProperty>
         <activiti:formProperty id="sName_Employee_First" name="ПІБ найманого працівника; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Employee_First" name="логін" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада" type="string" required="true"></activiti:formProperty>
@@ -32,8 +32,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sPasspot" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nPhone" name="Номер телефону" type="long" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="адреса E-mail " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}" readable="false" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sActivitiGroup_Acept" name="Узгоджуючі" type="enum" required="true">
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_test_iGov_employ.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sActivitiGroup_Acept" name="Узгоджуючі" type="enum" readable="false" writable="false">
           <activiti:value id="iGov_Prodan" name="Продан Юлія По-батькові"></activiti:value>
           <activiti:value id="iGov_Svidran" name="Свідрань Максим По-батькові"></activiti:value>
         </activiti:formProperty>
@@ -56,12 +56,12 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, s
 
 //Клонування прав для узгоджуванів
 //Клонування прав для відповідальної особи
-var sID_Field='sActivitiGroup_Acept'
-var sKey_GroupPostfix_New =execution.getVariable(sID_Field)
-var sKey_GroupPostfix = '_default_Accept'
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
-</script>
+//var sID_Field='sActivitiGroup_Acept'
+//var sKey_GroupPostfix_New =execution.getVariable(sID_Field)
+//var sKey_GroupPostfix = '_default_Accept'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Accept', 'sTable', 'step_2',true,'sLogin_isExecute')</script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <userTask id="usertask2" name="Обробка заяви">
@@ -76,6 +76,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sParol" name="Пароль співробітника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="логін найманого працівника ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdressa" name="Місце проживання" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодитися"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -156,7 +160,31 @@ var sKey_Step = execution.getVariable('sKey_Step_Document')
 var oResult = documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
 execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString())</script>
     </scriptTask>
-    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask5" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_1'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+
+//реклонирование прав
+//Клонування прав автора
+var sKey_GroupPostfix = '_default_Accept'
+var sKey_GroupPostfix_New =('iGov_Ilchenko')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="scripttask5" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_iGov_employ">
     <bpmndi:BPMNPlane bpmnElement="_doc_test_iGov_employ" id="BPMNPlane__doc_test_iGov_employ">
@@ -176,19 +204,25 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdc:Bounds height="58.0" width="161.0" x="790.0" y="133.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="1150.0" y="250.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1149.0" y="268.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="71.0" width="105.0" x="990.0" y="250.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="988.0" y="260.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="808.0" y="258.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="806.0" y="268.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="722.0" y="268.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="712.0" y="278.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="1040.0" y="133.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1110.0" y="46.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="1079.0" y="141.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="383.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="125.0" y="160.0"></omgdi:waypoint>
@@ -207,20 +241,34 @@ execution.setVariable('bVerificationSignatures', oResult.bSubmitedAll.toString()
         <omgdi:waypoint x="790.0" y="162.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="1150.0" y="277.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1095.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1149.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1093.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="990.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="913.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="988.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="911.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="808.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="757.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="806.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="747.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="870.0" y="191.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1202.0" y="250.0"></omgdi:waypoint>
+        <omgdi:waypoint x="951.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1079.0" y="161.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="1099.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1097.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="247.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="435.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="435.0" y="190.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="1119.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1200.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1201.0" y="268.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

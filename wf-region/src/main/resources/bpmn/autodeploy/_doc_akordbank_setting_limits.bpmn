@@ -108,7 +108,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
@@ -117,7 +117,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:expression><![CDATA[Для клієнта ${sName_client} погодженно  встановлення ліміту на ${sSum}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:string><![CDATA[+380961335385]]></activiti:string>
+          <activiti:string><![CDATA[+380636035879]]></activiti:string>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[ліміт]]></activiti:expression>
@@ -138,7 +138,9 @@ var sKey_GroupPostfix_New ='Akordbank_Member_of_management_RKB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow10" name="більше 2тис $" sourceRef="exclusivegateway2" targetRef="scripttask4"></sequenceFlow>
+    <sequenceFlow id="flow10" name="більше 2тис $" sourceRef="exclusivegateway2" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum>'2000'}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask4" name="прийняття рішення УРКБ">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -168,7 +170,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
@@ -189,7 +191,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[pavlenkojulia2202@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[${sName_client}]]></activiti:expression>
@@ -201,10 +203,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:expression><![CDATA[${sDoc}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:string><![CDATA[+380961335385]]></activiti:string>
+          <activiti:string><![CDATA[+380636035879]]></activiti:string>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[лимит]]></activiti:expression>
+          <activiti:expression><![CDATA[ліміт]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -223,7 +225,9 @@ var sKey_GroupPostfix_New ='Akordbank_Operator_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
-    <sequenceFlow id="flow20" name="менше 2 тис $" sourceRef="exclusivegateway2" targetRef="scripttask5"></sequenceFlow>
+    <sequenceFlow id="flow20" name="менше 2 тис $" sourceRef="exclusivegateway2" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum<='2000'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_setting_limits">
@@ -321,7 +325,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdi:waypoint x="713.0" y="210.0"></omgdi:waypoint>
         <omgdi:waypoint x="970.0" y="210.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="70.0" x="722.0" y="200.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="722.0" y="200.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -370,7 +374,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdi:waypoint x="673.0" y="210.0"></omgdi:waypoint>
         <omgdi:waypoint x="549.0" y="204.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="73.0" x="589.0" y="190.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="589.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
