@@ -1333,7 +1333,7 @@ public class DocumentStepService {
     public Map<String, Object> getDocumentStepRights(String sLogin, String snID_Process_Activiti) {// JSONObject
         // assume that we can have only one active task per process at the same
         // time
-
+        LOG.info("getDocumentStepRights started for process {}", snID_Process_Activiti);
         long startTime = System.nanoTime();
 
         LOG.info("sLogin={}, snID_Process_Activiti={}", sLogin, snID_Process_Activiti);
@@ -1426,7 +1426,7 @@ public class DocumentStepService {
 
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
-        //LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
+        LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
         Map<String, Object> mReturn = new HashMap();
 
