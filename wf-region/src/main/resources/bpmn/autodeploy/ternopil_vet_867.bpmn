@@ -137,7 +137,7 @@
         <activiti:formProperty id="sWorkTime" name="графік роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для справок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameService" name="sNameService; ;bVisible=false" type="string" default="Державна реєстрація створення юридичної особи"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для ЕЦП; ;bVisible=false" type="string" default="pattern/print/ternopil/ternopil_vet_867.html"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('ternopil/ternopil_vet_867.json')}"></activiti:formProperty>
       </extensionElements>
@@ -324,11 +324,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/ternopil/ternopil_vet_867.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/ternopil/ternopil_vet_867.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fAppWithECP}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -540,7 +536,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:value id="attr4_finish" name="Відмова громадянину у видачі висновку держсанепідслужбой"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFile_1" name="Завантажте скановану копию висновку (або рішення) держсанепідслужби" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile_1" name="Завантажте скановану копию висновку (або рішення) держсанепідслужби; ;bNew=true" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>

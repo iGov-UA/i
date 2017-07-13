@@ -61,12 +61,12 @@
         <activiti:formProperty id="sParentAddress" name="Адреса реєстрації батьків;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="string"></activiti:formProperty>
         <activiti:formProperty id="privatePhone" name="Контактний  телефон батьків" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; Усі заповнені сторінки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocInn" name="Копія довідки про присвоєння ІПН" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocVlk" name="Копія довідки про проходження ВЛК" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocEdu" name="Копія документу про освіту" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocMilit" name="Копія військовооблікового документу;приписне, військовий квиток, пенсійне посвідчення" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocReestr" name="Копія довідки з відділу реєстрації або заяви про реєстрацію місця проживання" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; Усі заповнені сторінки;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocInn" name="Копія довідки про присвоєння ІПН; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocVlk" name="Копія довідки про проходження ВЛК; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocEdu" name="Копія документу про освіту; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocMilit" name="Копія військовооблікового документу;приписне, військовий квиток, пенсійне посвідчення;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocReestr" name="Копія довідки з відділу реєстрації або заяви про реєстрацію місця проживання; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/registration.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Назва РВК; ;bVisible=false" type="string"></activiti:formProperty>
@@ -219,11 +219,7 @@
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="Тестовая транзакция (код платежу 21081100)"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nDocInn},${nDocVlk},${nDocEdu},${nDocMilit},${nDocReestr}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
@@ -491,11 +487,7 @@
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/rvk/zajava_regRVK.html]; ;bVisible=false" type="string" default="Заява для постановки на облік" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${nDocInn},${nDocVlk},${nDocEdu},${nDocMilit},${nDocReestr}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow51" sourceRef="usertask2" targetRef="exclusivegateway4"></sequenceFlow>
