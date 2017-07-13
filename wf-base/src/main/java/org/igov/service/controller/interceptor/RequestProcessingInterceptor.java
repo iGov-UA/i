@@ -1211,18 +1211,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             String sURL = oRequest.getRequestURL().toString();
             LOG.info("checkTaskAvailability sURL is: " + sURL);
 
-            String snTaskId = null;
-            snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+            String snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
             LOG.info("snTaskId: " + snTaskId);
 
-            Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
-
-            if (task != null) {
-                LOG.info("checkTaskAvailability task: Name - {}, Id - {}, ProcessInstanceId - {}, "
-                        + "ProcessDefinitionId - {}", task.getName(), task.getId(),
-                        task.getProcessInstanceId(), task.getProcessDefinitionId());
-            } else {
-                LOG.info("checkTaskAvailability task not found!");
+            Task oTask = taskService.createTaskQuery().taskId(snTaskId).singleResult();
+            
+            if (oTask == null) {
+                LOG.error("Task not found!");
                 throw new RuntimeException("Can't find task");
             }
         }
