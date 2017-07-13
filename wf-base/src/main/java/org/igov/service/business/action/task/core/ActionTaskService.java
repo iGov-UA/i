@@ -3040,9 +3040,9 @@ public class ActionTaskService {
     }
 
     public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
-
+        LOG.info("getHistoryVariableByHistoryProcessInstanceId started");
         Map<String, Object> mHistoryVariables = new HashMap<>();
-
+        
         List<HistoricVariableInstance> aHistoricVariableInstance = oHistoryService
                 .createHistoricVariableInstanceQuery()
                 .processInstanceId(sProcessInstanceId)

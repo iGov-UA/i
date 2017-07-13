@@ -1202,11 +1202,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         MasterPassService.otpPhoneConfirm(phoneNumber, $scope.phoneVerify.otp).then(function (res) {
           $scope.phoneVerify.confirmed = $scope.phoneVerify.otpIsConfirmed = res;
-          if (res)
+          if (res) {
             $scope.authorizeCheckout();
-          else {
+            localStorage.setItem('userPhone', phoneNumber);
+          } else {
             $scope.checkoutSpinner = false;
-
           }
         });
       };
@@ -1414,6 +1414,22 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
 
       $scope.setFormToScope = function (form) {
         $scope.myForm = form;
-      }
+      };
+
+      (function () {
+        var isMasterPassForm = $scope.isMPassField(false, true);
+        if(isMasterPassForm) {
+          var savedEarlierPhone = localStorage.getItem('userPhone');
+          if(savedEarlierPhone) {
+            for(var field in $scope.data.formData.params) {
+              if($scope.data.formData.params.hasOwnProperty(field) && field === 'phone') {
+                $scope.data.formData.params[field].value = '+' + savedEarlierPhone;
+                $scope.phoneVerify.confirmed = $scope.phoneVerify.otpIsConfirmed = true;
+                $scope.authorizeCheckout();
+              }
+            }
+          }
+        }
+      })();
       /*MasterPass Checkout end*/
 }]);
