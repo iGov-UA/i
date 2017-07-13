@@ -3977,13 +3977,4 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Error saving history during document editing: {}", ex);
         }
     }
-
-    @RequestMapping(value = "/getHistoryVariable", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, Object> getHistoryVariable(@ApiParam(value = "sProcessInstanceId", required = true)
-            @RequestParam(value = "sProcessInstanceId") String sProcessInstanceId) {
-
-        return oActionTaskService.getHistoryVariableByHistoryProcessInstanceId(sProcessInstanceId);
-    }
-
 }
