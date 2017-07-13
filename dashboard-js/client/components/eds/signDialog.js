@@ -138,6 +138,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
         clearInterval(ping);
         $scope.lastError = undefined;
         $scope.isPluginActivated = true;
+        console.log('The sign plug-in was activated for ' + pingCount + ' request' + (pingCount < 2 ? '.' : 's.'));
       }).catch(catchLastError);
     }
   }
