@@ -649,10 +649,13 @@ public class DocumentStepService {
         return aDocumentStepSubjectRight_Current;
     }
 
-    private void addRightsToCommonStep(String snID_Process_Activiti, DocumentStepSubjectRight oDocumentStepSubjectRight_Saved) {
+    private void addRightsToCommonStep(String snID_Process_Activiti, String sKey_GroupPostfix_New, String sKey_Step_Document_To) {
 
         LOG.info("addRightsToCommonStep started...");
-        LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved);
+        DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step_Document_To);
+        DocumentStepSubjectRight oDocumentStepSubjectRight_Saved = null;
+        
+        
         LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
         //LOG.info("sKey_Group {}", sKey_Group);
         //LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
@@ -666,17 +669,29 @@ public class DocumentStepService {
         //LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_From.getId(), oDocumentStep_From.getsKey_Step());
         DocumentStep oDocumentStep_Common = getDocumentStep(snID_Process_Activiti, "_");
         LOG.info("oDocumentStep_Common id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
-
+        
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
             if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix())) {
                 LOG.info("Group contains in common step");
                 return;
             }
         }
-
-       // for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStepSubjectRight_New.aDocumentStepSubjectRight()) {
+        
+        
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Saved.aDocumentStepSubjectRight()){
+            if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
+                oDocumentStepSubjectRight_Saved = oDocumentStepSubjectRight;
+                break;
+            }
+        }
+        
+        LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved.getId());
+        LOG.info("oDocumentStepSubjectRight_Saved fields count {}", oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields().size());
+        
+        //for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStepSubjectRight_Saved.aDocumentStepSubjectRight()) {
             //if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group_Delegate)) {
                 LOG.info("getsKey_GroupPostfix {}", oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix());
+                LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved);
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setsKey_GroupPostfix(oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix());
                 oDocumentStepSubjectRight_New.setbWrite(null);
@@ -685,7 +700,7 @@ public class DocumentStepService {
 
                 oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
                 LOG.info("oDocumentStepSubjectRightDao in addRightsToCommonStep is {}", oDocumentStepSubjectRight_New.getId());
-
+                
                 for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields()) {
                     DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
                     oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
@@ -901,7 +916,7 @@ public class DocumentStepService {
                 resultList.add(oDocumentStepSubjectRight_New);
                 LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
                 oDocumentStepDao.saveOrUpdate(oDocumentStep_To);
-                addRightsToCommonStep(snID_Process_Activiti, oDocumentStepSubjectRight_New);
+                addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document_To);
             }
 
             if (oDocumentStepSubjectRight_From.getsKey_GroupPostfix().startsWith("_default_")) {
