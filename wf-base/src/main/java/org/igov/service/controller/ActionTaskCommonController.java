@@ -2458,8 +2458,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } else {*/
                 sFilterStatus = "Documents";
             }
-            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
-                    .findAllBy("sKey_GroupPostfix", sLogin);
             
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
