@@ -82,6 +82,8 @@ import org.activiti.engine.task.NativeTaskQuery;
 import org.igov.model.access.vo.HistoryVariableVO;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectStatusDao;
@@ -165,6 +167,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
+    
+    @Autowired
+    DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -2453,6 +2458,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             } else {*/
                 sFilterStatus = "Documents";
             }
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+                    .findAllBy("sKey_GroupPostfix", sLogin);
+            
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
                 if (groups != null && !groups.isEmpty()) {
