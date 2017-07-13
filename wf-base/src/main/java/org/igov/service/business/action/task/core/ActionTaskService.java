@@ -2886,7 +2886,10 @@ public class ActionTaskService {
      * @return обьект обвертка, который содержит лист TaskDataVO и данные для
      * отрисовки на клиенте
      */
-    public TaskDataResultVO getTasksByLoginAndFilterStatus(String sLogin, String sFilterStatus, Integer nSize, Integer nStart) {
+    public TaskDataResultVO getTasksByLoginAndFilterStatus(
+            String sLogin, String sFilterStatus, Integer nSize, Integer nStart,
+            Boolean bIncludeVariablesProcess
+    ) {
 
         LOG.info("getTasksByLoginAndFilterStatus started");
         TaskDataResultVO oTaskDataResultVO = new TaskDataResultVO();
@@ -3005,6 +3008,10 @@ public class ActionTaskService {
                 oTaskDataVO.setName(oTaskInfo.getName());
                 oTaskDataVO.setId(oTaskInfo.getId());
                 oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
+                if (bIncludeVariablesProcess) {
+                    oTaskDataVO.setGlobalVariables(oRuntimeService
+                            .getVariables(oTaskInfo.getExecutionId()));
+                }
 
                 aTaskDataVO.add(oTaskDataVO);
             } else {
