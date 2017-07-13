@@ -142,7 +142,7 @@ exports.index = function (req, res) {
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'ecp') {
-      query.sFilterStatus = 'OpeneUnassigneWithoutECPDocument';
+      query.sFilterStatus = 'OpenedUnassignedWithoutECPDocument';
       query.sLogin = user.id;
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
