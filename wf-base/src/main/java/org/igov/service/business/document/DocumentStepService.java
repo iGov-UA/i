@@ -658,9 +658,9 @@ public class DocumentStepService {
         LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
         LOG.info("sKey_Step {}", sKey_Step);
 
-        if (sKey_Group.startsWith("_default_")) {
+        /*if (sKey_Group.startsWith("_default_")) {
             sKey_Step = "_";
-        }
+        }*/
 
         DocumentStep oDocumentStep_From = getDocumentStep(snID_Process_Activiti, sKey_Step);
         LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_From.getId(), oDocumentStep_From.getsKey_Step());
@@ -676,7 +676,7 @@ public class DocumentStepService {
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_From.aDocumentStepSubjectRight()) {
             if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group)) {
-
+                LOG.info("sKey_GroupPostfix image {}", sKey_Group);
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
                 oDocumentStepSubjectRight_New.setbWrite(null);
@@ -929,8 +929,9 @@ public class DocumentStepService {
                     LOG.info("oDocumentSubjectRightPermition_new id for permition in cloneRights is {}", oDocumentSubjectRightPermition_new.getId());
                 }
             }
-
-            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step_Document_To);
+            
+            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_GroupPostfix_New);
+            
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_GroupPostfix=" + sKey_GroupPostfix + "" + ",sKey_GroupPostfix_New=" + sKey_GroupPostfix_New
