@@ -679,7 +679,7 @@ public class DocumentStepService {
 
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
-                oDocumentStepSubjectRight_New.setbWrite(null);
+                oDocumentStepSubjectRight_New.setbWrite(false);
                 oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
                 oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep_Common);
 
