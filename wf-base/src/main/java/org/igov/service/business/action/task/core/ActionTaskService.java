@@ -2951,7 +2951,7 @@ public class ActionTaskService {
                             .processInstanceId(snID_Process_Activiti)
                             .active()
                             .list();
-
+                    LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
 
                 } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)
@@ -2965,7 +2965,7 @@ public class ActionTaskService {
                             .processInstanceId(snID_Process_Activiti)
                             .active()
                             .list();
-                    LOG.info("aTaskOfDocumentStepSubjectRight={}", aTaskOfDocumentStepSubjectRight);
+                    LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
 
                 } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)
@@ -2979,7 +2979,7 @@ public class ActionTaskService {
                             .processInstanceId(snID_Process_Activiti)
                             .active()
                             .list();
-
+                    LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
             }
