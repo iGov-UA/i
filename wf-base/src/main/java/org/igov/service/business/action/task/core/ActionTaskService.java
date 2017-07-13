@@ -3010,7 +3010,15 @@ public class ActionTaskService {
                 oTaskDataVO.setName(oTaskInfo.getName());
                 oTaskDataVO.setId(oTaskInfo.getId());
                 oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
-                if (bIncludeVariablesProcess) {
+                //для фильтра "DocumentClosed" ищем переменные в истории
+                if (bIncludeVariablesProcess
+                        && sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
+                    /*oTaskDataVO.setGlobalVariables(
+                            getHistoryVariableByHistoryProcessInstanceId(
+                                    oTaskInfo.getProcessInstanceId()));*/
+                    LOG.info("THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED");
+
+                } else if (bIncludeVariablesProcess) {
                     oTaskDataVO.setGlobalVariables(oRuntimeService
                             .getVariables(oTaskInfo.getExecutionId()));
                 }
@@ -3029,5 +3037,28 @@ public class ActionTaskService {
         oTaskDataResultVO.setTotal(nTotalNumber);
 
         return oTaskDataResultVO;
+    }
+
+    public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
+        LOG.info("getHistoryVariableByHistoryProcessInstanceId started");
+        Map<String, Object> mHistoryVariables = new HashMap<>();
+        
+        List<HistoricVariableInstance> aHistoricVariableInstance = oHistoryService
+                .createHistoricVariableInstanceQuery()
+                .processInstanceId(sProcessInstanceId)
+                .list();
+        if (!aHistoricVariableInstance.isEmpty() && aHistoricVariableInstance != null) {           
+            aHistoricVariableInstance.forEach(oHistoricVariableInstance -> {
+                String sVariableName = oHistoricVariableInstance.getVariableName();
+                Object oVariableValue = oHistoricVariableInstance.getValue();
+                LOG.info("Historic variable sVariableName={}, oVariableValue={}",
+                        sVariableName, oVariableValue);
+                mHistoryVariables.put(sVariableName, oVariableValue);
+            });
+        } else {
+            LOG.warn("Cant find HistoricVariable.");
+        }
+
+        return mHistoryVariables;
     }
 }
