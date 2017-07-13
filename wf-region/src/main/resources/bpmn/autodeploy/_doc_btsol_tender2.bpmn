@@ -181,7 +181,7 @@
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_btsol]]></activiti:string>
@@ -1043,22 +1043,22 @@ execution.setVariable('bAccept', bAccept)</script>
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Эскалация. Документ не утвержден]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[У Вас не отработан документ]]></activiti:expression>
+          <activiti:expression>У Вас не отработан документ</activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+          <activiti:expression>${phone}</activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Status zavis [sID_Order] .]]></activiti:expression>
+          <activiti:expression>Status zavis [sID_Order] .</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression>" "</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1246,7 +1246,7 @@ execution.setVariable('bAccept', bAccept)</script>
     <sequenceFlow id="flow120" sourceRef="exclusivegateway14" targetRef="scripttask21">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' }]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow121" name="Ответный документ" sourceRef="exclusivegateway14" targetRef="callactivity2">
+    <sequenceFlow id="flow121" name="Ответный документ" sourceRef="exclusivegateway14" targetRef="callactivity1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumReply' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow122" name="Отказ" sourceRef="exclusivegateway14" targetRef="scripttask17">
@@ -1265,7 +1265,7 @@ execution.setVariable('bAccept', bAccept)</script>
           <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[nID_Relation_1]};;Gruppa::value{[sName_Relation_1]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
         </activiti:field>
         <activiti:field name="name_isExecute">
-          <activiti:expression><![CDATA[${sName_isExecute}]]></activiti:expression>
+          <activiti:expression>${sName_isExecute}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1733,14 +1733,6 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
     <sequenceFlow id="flow151" sourceRef="exclusivegateway21" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll8 == false}]]></conditionExpression>
     </sequenceFlow>
-    <callActivity id="callactivity2" name="Ответный документ" calledElement="_doc_btsol_sz">
-      <extensionElements>
-        <activiti:in source="sGroupAddressee" target="sLoginAuthor"></activiti:in>
-        <activiti:in source="sTitleDoc" target="sDocAnswer"></activiti:in>
-        <activiti:in source="sNumberCard" target="sNumberCard"></activiti:in>
-      </extensionElements>
-    </callActivity>
-    <sequenceFlow id="flow152" sourceRef="callactivity2" targetRef="scripttask17"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1897,9 +1889,6 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       <bpmndi:BPMNShape bpmnElement="exclusivegateway21" id="BPMNShape_exclusivegateway21">
         <omgdc:Bounds height="40.0" width="40.0" x="551.0" y="1340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="callactivity2" id="BPMNShape_callactivity2">
-        <omgdc:Bounds height="68.0" width="105.0" x="519.0" y="1730.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="1256.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="1288.0" y="117.0"></omgdi:waypoint>
@@ -1941,7 +1930,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="1352.0" y="439.0"></omgdi:waypoint>
         <omgdi:waypoint x="1352.0" y="246.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="55.0" x="1684.0" y="427.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="55.0" x="1684.0" y="427.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -1949,14 +1938,14 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="1352.0" y="1109.0"></omgdi:waypoint>
         <omgdi:waypoint x="1352.0" y="246.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="27.0" x="1664.0" y="1091.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="27.0" x="1664.0" y="1091.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="1760.0" y="620.0"></omgdi:waypoint>
         <omgdi:waypoint x="1760.0" y="652.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="1698.0" y="619.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="75.0" x="1698.0" y="619.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -1995,7 +1984,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="1740.0" y="1685.0"></omgdi:waypoint>
         <omgdi:waypoint x="1683.0" y="1684.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="1699.0" y="1694.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="75.0" x="1699.0" y="1694.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
@@ -2075,9 +2064,10 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       <bpmndi:BPMNEdge bpmnElement="flow121" id="BPMNEdge_flow121">
         <omgdi:waypoint x="1291.0" y="1703.0"></omgdi:waypoint>
         <omgdi:waypoint x="1291.0" y="1765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1764.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="1765.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1710.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1101.0" y="1749.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1101.0" y="1749.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
@@ -2085,7 +2075,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="1290.0" y="1278.0"></omgdi:waypoint>
         <omgdi:waypoint x="624.0" y="1278.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="30.0" x="1301.0" y="1585.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="30.0" x="1301.0" y="1585.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
@@ -2199,12 +2189,6 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="591.0" y="1360.0"></omgdi:waypoint>
         <omgdi:waypoint x="1072.0" y="1360.0"></omgdi:waypoint>
         <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow152" id="BPMNEdge_flow152">
-        <omgdi:waypoint x="519.0" y="1764.0"></omgdi:waypoint>
-        <omgdi:waypoint x="441.0" y="1763.0"></omgdi:waypoint>
-        <omgdi:waypoint x="441.0" y="1278.0"></omgdi:waypoint>
-        <omgdi:waypoint x="519.0" y="1278.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
