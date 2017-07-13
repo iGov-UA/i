@@ -2445,13 +2445,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     || sFilterStatus.equals("OpenedUnassignedWithoutECPDocument")
                     || sFilterStatus.equals("DocumentClosed")) {
 
-                LOG.info("getTasks sFilterStatus={}", sFilterStatus);
+                /*LOG.info("getTasks sFilterStatus={}", sFilterStatus);
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
                         sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
                 );
 
-            } else {
-
+            } else {*/
+                sFilterStatus = "Documents";
+            }
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
                 if (groups != null && !groups.isEmpty()) {
@@ -2558,7 +2559,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         aoResult.setTotal(totalCountServices);
                     }
                 }
-            }
+            
         } catch (Exception e) {
             LOG.error("Error occured while getting list of tasks", e);
         }
