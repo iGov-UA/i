@@ -266,7 +266,7 @@
         <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdditionalInformation" name="Службова інформація" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Завантажте матеріал стосовно Вашого звернення, якщо є;(фото або відсканований документ що стосується звернення);bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bReferent" name="Referent ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_2.json')}"></activiti:formProperty>
@@ -614,11 +614,7 @@
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask4"></sequenceFlow>
@@ -1406,11 +1402,7 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_889_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="Script автоадресація в відділ" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -1791,11 +1783,7 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_889_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${anID_Attach_UkrDoc}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <endEvent id="endevent8" name="End"></endEvent>
@@ -2153,11 +2141,7 @@ execution.setVariable('sChannelApp', per1)</script>
         <activiti:formProperty id="sNumberDocIncoming" name="Вихідний номер документа котрий надійшов до ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow77" name="asTypeTr=='sEnumTypeInformation'" sourceRef="exclusivegateway10" targetRef="usertask10">

@@ -26,14 +26,14 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="diploma" name="Копія диплома" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="employment_history" name="Копія трудової книжки; (завантажте єдиним архівом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="certificate_doctor" name="Копія сертифіката лікаря-спеціаліста" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="certificate_kategory" name="Копія посвідчення про наявність кваліфікаційної категорії" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="doc_training" name="Свідоцтво закладу освіти (або факультету удосконалення лікарів) про складання іспиту після закінчення передатестаційного циклу" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="attestation_list" name="Заповнений атестаційний листок" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="report" name="Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій Ви працюєте." type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="report_other" name="Звіти з попередніх місць роботи, затверджені керівниками цих закладів; (завантажте єдиним архівом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="diploma" name="Копія диплома; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="employment_history" name="Копія трудової книжки; (завантажте єдиним архівом);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="certificate_doctor" name="Копія сертифіката лікаря-спеціаліста; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="certificate_kategory" name="Копія посвідчення про наявність кваліфікаційної категорії; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_training" name="Свідоцтво закладу освіти (або факультету удосконалення лікарів) про складання іспиту після закінчення передатестаційного циклу; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="attestation_list" name="Заповнений атестаційний листок; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="report" name="Звіт про професійну діяльність за останні три роки, затверджений керівником установи, в якій Ви працюєте.; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="report_other" name="Звіти з попередніх місць роботи, затверджені керівниками цих закладів; (завантажте єдиним архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="вперше категорія" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;certificate_doctor&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;kategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'second'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="категорія вже є" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;certificate_kategory&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;kategory&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'first' || [sClient] == 'higher' &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="якщо змінював місця роботи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;report_other&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;change_job&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
@@ -72,11 +72,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/HealthMinistry/health_ministry_10_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${diploma},${employment_history},${certificate_doctor},${certificate_kategory},${doc_training},${attestation_list},${report},${report_other}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="рішення ЦАК" activiti:candidateGroups="health_${sID_Public_SubjectOrganJoin}">
@@ -93,7 +89,7 @@
           <activiti:value id="accept_1" name="підтверджено категорію"></activiti:value>
           <activiti:value id="reject" name="відмовлено у присвоєнні категорії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте витяг з протоколу" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте витяг з протоколу; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови  внесіть, будь ласка, коментар" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/HealthMinistry/health_ministry_10_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
       </extensionElements>

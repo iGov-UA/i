@@ -306,11 +306,7 @@ ${sPhoneOrgan}.<br />
         <activiti:formProperty id="decisionComment" name="Коментар до рішення для громадянина" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${docToSend}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask4_green" targetRef="exclusivegateway2"></sequenceFlow>

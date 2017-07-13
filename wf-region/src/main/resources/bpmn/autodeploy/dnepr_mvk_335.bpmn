@@ -28,14 +28,14 @@
         <activiti:formProperty id="sListBuild" name="На ділянці розміщено;(індивідуальний житловий будинок, господарські будівлі і споруди, які належать мені на праві власності)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPurpose" name="Цільове призначення ділянки;(обслуговування жилого будинку господарських будівель і споруд)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabel2" name="Зверніть увагу" type="label" default="&lt;strong&gt;Скан копії документів повині бути завірені належним чином&lt;/strong&gt;"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документ, що підтверджує наявність відомостей про земельну ділянку у Державному земельному кадастрі та містить дані про площу земельної ділянки, цільове призначення, обмеження у використанні, склад земельних угідь та інші відомості - витяг з Державного земельного кадастру про земельну ділянку" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Правовстановлюючи документи, що свідчать про державну реєстрацію права власності на нерухоме майно" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Довідка з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Технічні матеріали та документи, що підтверджують розмір земельної ділянки" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile6" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником)" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Копія довідки про присвоєння ідентифікаційного коду подавача; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документ, що підтверджує наявність відомостей про земельну ділянку у Державному земельному кадастрі та містить дані про площу земельної ділянки, цільове призначення, обмеження у використанні, склад земельних угідь та інші відомості - витяг з Державного земельного кадастру про земельну ділянку; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Правовстановлюючи документи, що свідчать про державну реєстрацію права власності на нерухоме майно; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Технічний паспорт на об’єкт нерухомого майна; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Довідка з Державного земельного кадастру про наявність у Державному земельному кадастрі відомостей про отримання у власність земельної ділянки в межах норм безоплатної приватизації за певним видом її цільового призначення (використання); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Технічні матеріали та документи, що підтверджують розмір земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Довіреність, на підставі якої інтереси заявника представляє його уповноважена особа, або її копія, засвідчена у встановленому порядку;(якщо клопотання подається представником);bNew=true" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення чиновника про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -118,11 +118,7 @@
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі." type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_335_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${bankId_scan_inn},${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -190,7 +186,7 @@
           <activiti:value id="dec_ok" name="Рішення прийнято"></activiti:value>
           <activiti:value id="dec_no" name="Відповідь надано"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте рішення сесії" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDecision" name="Відскануйте та завантажте рішення сесії; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>

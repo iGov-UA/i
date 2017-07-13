@@ -17,7 +17,7 @@
         <activiti:formProperty id="Entity" name="Ідентифікаційний код  згідно ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="LocationEntity" name="Місцезнаходження юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="HeadEntityName" name="ПІБ керівника юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Сканкопія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканкопія паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="AddressRegistration" name="Aдреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -26,7 +26,7 @@
         <activiti:formProperty id="RegNumberTopo" name="Реєстраційний номер топомоніторингу;Перед присвоєнням поштової адреси необхідно отримати реєстраційний номер топомоніторингу (інформація є обов'язковою для отримання послуги), який видається Департаментом архітектури та містобудування м.Києва" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Activity" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_bud_dok" name="Копія проектної документації об'єкта будівництва;(Якщо файлів багато завантажте Zip архівом)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_bud_dok" name="Копія проектної документації об'єкта будівництва;(Якщо файлів багато завантажте Zip архівом);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП ; ;bVisible=false" type="string" default="ПОВНА НАЗВА ОРГАНУ"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП ; ;bVisible=false" type="string" default="ТЕЛЕФОН ДЛЯ ДОВІДОК"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП ; ;bVisible=false" type="string" default="АДРЕСА ОРГАНУ"></activiti:formProperty>
@@ -116,11 +116,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="CadastralNumber" name="Кадастровий номер земельної ділянки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_osoba" name="vubir_osobu" type="markers" default="${markerService.loadFromFile('mvk/mda_832.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -177,11 +173,7 @@ ${sNameOrgan}.<br />
         </activiti:formProperty>
         <activiti:formProperty id="commentSMK" name="Коментар" type="textArea" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask7" name="Лист в ПЗ" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -246,16 +238,12 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamRejectUr" name="Лист-відмова підготовлений та переданий до канцелярії"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentUr" name="Вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file_Nakaz" name="Наказ про присвоєння будівельної адреси" type="file"></activiti:formProperty>
-        <activiti:formProperty id="file_Vidmova" name="Лист-відмова" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_Nakaz" name="Наказ про присвоєння будівельної адреси; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_Vidmova" name="Лист-відмова; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="s3Etap" name="Назва 3го етапу ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_Prav_zab_3etap" name="marker_dla vidmoviSMK" type="markers" default="${markerService.loadFromFile('mvk/mda_832_Prav_zab_3etap.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow13" sourceRef="servicetask7" targetRef="usertask3"></sequenceFlow>
@@ -388,13 +376,9 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamVidmova" name="Відмова в підписанні, повернути в Правове забезпечення"></activiti:value>
           <activiti:value id="sEnamKer_SMK_nazad" name="Нема ЕЦП керівника Правового забезпечення, повернути для підпису"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="file_Dok_z_ECP1" name="Документ з накладеною ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_Dok_z_ECP1" name="Документ з накладеною ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Nakaz},${file_Vidmova},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask25" name="Лист керівнику МК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -458,13 +442,9 @@ ${sNameOrgan}.<br />
         </activiti:formProperty>
         <activiti:formProperty id="marker_ECP1" name="marker_ECP" type="markers" default="${markerService.loadFromFile('mvk/mda_832_ECP1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sComentVidmova" name="Вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="file_Dok_z_ECP2" name="Документ з накладеною ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_Dok_z_ECP2" name="Документ з накладеною ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Dok_z_ECP1},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow66" name="${asKer_SMK_rish=='sEnamVidmova'}" sourceRef="exclusivegateway7" targetRef="scripttask2">
@@ -531,14 +511,10 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamKer_DMA_nazad" name="Нема ЕЦП керівника Служби містобудівного кадастру, повернути для підпису"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_ECP2" name="marker_ECP" type="markers" default="${markerService.loadFromFile('mvk/mda_832_ECP2.json')}"></activiti:formProperty>
-        <activiti:formProperty id="file_Dok_z_ECP3" name="Документ з накладеною ЕЦП" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_Dok_z_ECP3" name="Документ з накладеною ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sComentVidmova" name="Вкажіть причину відмови" type="textArea" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Dok_z_ECP2},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow70" name="${asZam_Dma_rish=='sEnamVidmova'}" sourceRef="exclusivegateway8" targetRef="scripttask2">
@@ -604,13 +580,9 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamNe_Pidpusano" name="Документ не підписано, надіслати назад на підпис"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="marker_Vutag" name="marker_ECP" type="markers" default="${markerService.loadFromFile('mvk/mda_832_Vutag.json')}"></activiti:formProperty>
-        <activiti:formProperty id="file_Vutajg" name="Завантажте сканкопію Витягу про присвоєння будівельної адреси або лист-відмову" type="file"></activiti:formProperty>
+        <activiti:formProperty id="file_Vutajg" name="Завантажте сканкопію Витягу про присвоєння будівельної адреси або лист-відмову; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Dok_z_ECP3},${file_bud_dok}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow73" name="${asPZ_Vutajg=='sEnamNe_Pidpusano}" sourceRef="exclusivegateway9" targetRef="servicetask26">
@@ -667,11 +639,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="acceptdok" name="Так документи надійшли, направити лист заявнику про можливість їх отримання"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Dok_z_ECP3},${file_Vutajg}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
@@ -804,11 +772,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamRejectUr" name="Відмовити у присвоєнні будівельної адреси"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Dok_z_ECP3}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="servicetask12" targetRef="usertask5"></sequenceFlow>
@@ -836,11 +800,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamreject" name="Заявник не з'явився, закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_Dok_z_ECP3}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow31" sourceRef="servicetask15" targetRef="usertask7"></sequenceFlow>
