@@ -2883,6 +2883,7 @@ public class ActionTaskService {
      * без ЭЦП
      * @param nSize количество тасок, которые вернутся
      * @param nStart с какой таски начать отсчет для выборки
+     * @param bIncludeVariablesProcess добавить к ответу глобальные переменные
      * @return обьект обвертка, который содержит лист TaskDataVO и данные для
      * отрисовки на клиенте
      */
