@@ -901,7 +901,7 @@ public class DocumentStepService {
                 resultList.add(oDocumentStepSubjectRight_New);
                 LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
                 oDocumentStepDao.saveOrUpdate(oDocumentStep_To);
-                //addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix_New, sKey_GroupPostfix_New, sKey_Step_Document_To, oDocumentStepSubjectRight_New);
+                addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix_New, sKey_GroupPostfix_New, sKey_Step_Document_To, oDocumentStepSubjectRight_New);
             }
 
             if (oDocumentStepSubjectRight_From.getsKey_GroupPostfix().startsWith("_default_")) {
