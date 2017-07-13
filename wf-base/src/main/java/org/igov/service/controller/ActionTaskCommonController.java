@@ -82,6 +82,8 @@ import org.activiti.engine.task.NativeTaskQuery;
 import org.igov.model.access.vo.HistoryVariableVO;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.process.ProcessSubject;
 import org.igov.model.process.ProcessSubjectStatus;
 import org.igov.model.process.ProcessSubjectStatusDao;
@@ -165,6 +167,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
+    
+    @Autowired
+    DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
     /**
      * Загрузка задач из Activiti:
@@ -2445,13 +2450,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     || sFilterStatus.equals("OpenedUnassignedWithoutECPDocument")
                     || sFilterStatus.equals("DocumentClosed")) {
 
-                LOG.info("getTasks sFilterStatus={}", sFilterStatus);
+                /*LOG.info("getTasks sFilterStatus={}", sFilterStatus);
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
                         sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
                 );
 
-            } else {
-
+            } else {*/
+                sFilterStatus = "Documents";
+            }
+            
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
                 if (groups != null && !groups.isEmpty()) {
@@ -2558,7 +2565,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         aoResult.setTotal(totalCountServices);
                     }
                 }
-            }
+            
         } catch (Exception e) {
             LOG.error("Error occured while getting list of tasks", e);
         }
@@ -3977,13 +3984,4 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Error saving history during document editing: {}", ex);
         }
     }
-
-    @RequestMapping(value = "/getHistoryVariable", method = RequestMethod.GET)
-    public @ResponseBody
-    Map<String, Object> getHistoryVariable(@ApiParam(value = "sProcessInstanceId", required = true)
-            @RequestParam(value = "sProcessInstanceId") String sProcessInstanceId) {
-
-        return oActionTaskService.getHistoryVariableByHistoryProcessInstanceId(sProcessInstanceId);
-    }
-
 }
