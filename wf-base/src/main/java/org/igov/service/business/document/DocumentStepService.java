@@ -671,7 +671,7 @@ public class DocumentStepService {
         LOG.info("oDocumentStep_Common id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
         
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
-            if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix())) {
+            if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
                 LOG.info("Group contains in common step");
                 return;
             }
