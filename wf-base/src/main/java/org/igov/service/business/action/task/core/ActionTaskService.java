@@ -2924,7 +2924,7 @@ public class ActionTaskService {
             aoTaskList.removeAll(aoTaskToRemove);
             LOG.info("Document closed after filtering count={}", aoTaskList.size());
             aoAllTasks.addAll(aoTaskList);
-
+            
         } else {
             /*if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
