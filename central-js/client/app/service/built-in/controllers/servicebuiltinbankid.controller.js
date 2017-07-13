@@ -1296,19 +1296,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
                 $scope.checkoutData.payment= {otpToken: res.token, otpCode: '', invoice: res.invoice, pmt_id: res.pmt_id};
               }
             } else if(res.pmt_status == 5) {
-              MasterPassService.paymentSale($scope.checkoutData.payment).then(function (res) {
-                if(res.pmt_status == 4) {
-                  $scope.paymentStatus = 4;
-                } else if(res.pmt_status == 5) {
-                  $scope.paymentStatus = 5;
-                  for(var field in $scope.data.formData.params) {
-                    if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
-                      $scope.data.formData.params[field].value = res.pmt_id;
-                      $scope.checkoutData.payment = {result: res.pmt_id};
-                    }
-                  }
+              for(var field in $scope.data.formData.params) {
+                if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
+                  $scope.data.formData.params[field].value = res.pmt_id;
+                  $timeout(function () {
+                    $scope.processForm($scope.myForm, activitiForm.formProperties, false);
+                  });
                 }
-              })
+              }
             }
             $scope.checkoutSpinner = false;
           })
@@ -1329,20 +1324,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         MasterPassService.otpConfirm($scope.checkoutData.payment.otpCode, $scope.checkoutData.payment.otpToken, phoneNumber).then(function (res) {
           if(res.status === 'OK') {
-            MasterPassService.paymentSale($scope.checkoutData.payment).then(function (res) {
-              if(res.pmt_status == 4) {
-                otpError();
-              } else if(res.pmt_status == 5) {
-                $scope.paymentStatus = 5;
-                for(var field in $scope.data.formData.params) {
-                  if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
-                    $scope.data.formData.params[field].value = res.pmt_id;
-                    $scope.checkoutData.payment = {result: res.pmt_id};
-                    $scope.processForm($scope.myForm, activitiForm.formProperties, false);
-                  }
-                }
+            for(var field in $scope.data.formData.params) {
+              if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
+                $scope.data.formData.params[field].value = res.pmt_id;
+                $timeout(function () {
+                  $scope.processForm($scope.myForm, activitiForm.formProperties, false);
+                })
               }
-            })
+            }
           } else if(res.error === 'otp max attempts') {
             otpError();
           } else if(res.error) {
