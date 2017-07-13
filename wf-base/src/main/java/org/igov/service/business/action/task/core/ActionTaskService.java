@@ -2926,7 +2926,7 @@ public class ActionTaskService {
             aoAllTasks.addAll(aoTaskList);
 
         } else {
-            if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
+            /*if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                         .findUnassignedUnprocessedDocument(sLogin);
                 
@@ -2934,7 +2934,7 @@ public class ActionTaskService {
                     aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
                 });
             }
-            /*List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("sKey_GroupPostfix", sLogin);
             LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
