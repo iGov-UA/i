@@ -136,6 +136,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
       pingCount++;
       signService.activate().then(function () {
         clearInterval(ping);
+        $scope.lastError = undefined;
         $scope.isPluginActivated = true;
       }).catch(catchLastError);
     }
