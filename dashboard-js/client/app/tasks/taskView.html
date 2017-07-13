@@ -439,7 +439,7 @@
               </button>
               <button ng-click="assignAndSubmitDocument(form)"
                       class="btn btn-info take-to-work-button"
-                      ng-if="documentRights.bWrite !== null"
+                      ng-if="documentRights.bWrite !== null && (!isDocumentNotSigned() || (documentRights.bWrite === false && isDocumentNotSigned()))"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
                       ng-show="selectedTask.assignee == null && isDocument()">
