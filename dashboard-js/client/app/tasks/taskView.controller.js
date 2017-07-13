@@ -868,8 +868,9 @@
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
-            if(isAnyIssuesExist)
+            if(isAnyIssuesExist && isAnyIssuesExist.length > 0){
               $scope.issueValid = false;
+            }
             return;
           } else {
             $scope.isFormInvalid = false;
@@ -1598,14 +1599,16 @@
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
 
-        $scope.assignAndSubmitDocument = function (documentForm, isNeedEDS) {
-          $scope.taskForm.isInProcess = true;
-
-          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
-            .then(function (result) {
-              $scope.submitTask(form, true, isNeedEDS);
-            })
-            .catch(defaultErrorHandler);
+        $scope.assignAndSubmitDocument = function (docForm, isNeedEDS) {
+          $scope.validateForm(docForm);
+          if(!docForm.$invalid){
+            $scope.isFormInvalid = false;
+            tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id).then(function () {
+                $scope.submitTask(docForm, true, isNeedEDS);
+              }).catch(defaultErrorHandler);
+          } else {
+            $scope.isFormInvalid = true;
+          }
         };
 
         $scope.isDocumentNotSigned = function () {
