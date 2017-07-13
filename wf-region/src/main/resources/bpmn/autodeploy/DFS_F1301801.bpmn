@@ -57,7 +57,7 @@
         <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field_SWinEd=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
         <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field_SWinEd=PERIOD_YEAR" type="string" default="2015"></activiti:formProperty>
         <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field_SWinEd=C_STI_ORIG" type="string" default="0463"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system" type="file" default="F1301801"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" default="F1301801"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1401801" writable="false"></activiti:formProperty>
@@ -77,11 +77,7 @@
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -151,11 +147,7 @@
             <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
@@ -301,11 +293,7 @@ execution.setVariable('sCounter', src)</script>
              <activiti:expression><![CDATA[ ]]></activiti:expression>		
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask3" cancelActivity="true">

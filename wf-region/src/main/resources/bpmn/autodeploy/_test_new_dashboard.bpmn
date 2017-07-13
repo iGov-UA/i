@@ -61,7 +61,7 @@
         <activiti:formProperty id="middleName_RU5" name="5. Предыдущее отчество (рус.)" type="string"></activiti:formProperty>
         <activiti:formProperty id="regDoc_type" name="Документ, що посвідчує особу; ;bVisible=false" type="string" default="Паспорт громадянина України"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія громадянського паспорту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія громадянського паспорту; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; у форматі ДД.ММ.РРРР" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="Sex" name="Cтать" type="enum" required="true">
@@ -185,7 +185,7 @@
         <activiti:formProperty id="markers3" name="fields for name change" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_usertask.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="fields for print" type="markers" default="${markerService.loadFromFile('mvd/common_mvd_1_print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}"></activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>

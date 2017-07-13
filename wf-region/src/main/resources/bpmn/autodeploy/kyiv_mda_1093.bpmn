@@ -13,7 +13,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Документ" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Документ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="7. Ознайомлення з документом заступником начальника управління контролю та визначення відповідального начальника" activiti:candidateGroups="kyiv_dabi_contr_deputy_boss">
@@ -26,11 +26,7 @@
         <activiti:formProperty id="sID_Group_step10" name="Група виконавців наступного кроку" type="string" default="kyiv_dabi_insp_bosses"></activiti:formProperty>
         <activiti:formProperty id="sCommentBossDepartment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="8. Ознайомлення з документом начальником управління дозвільних документів та визначення відповідального співробітника" activiti:candidateGroups="kyiv_dabi_permit_boss">
@@ -44,11 +40,7 @@
         <activiti:formProperty id="sCommentBossPermit" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAssigneeName_step9" name="Відповідальний виконавець" type="string" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="parallelgateway1" targetRef="usertask16"></sequenceFlow>
@@ -80,11 +72,7 @@
             <activiti:expression><![CDATA[sID_Group_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="usertask1" targetRef="usertask3"></sequenceFlow>
@@ -102,11 +90,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step9]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
         <activiti:taskListener event="complete" delegateExpression="${setCheckVar}">
           <activiti:field name="paramName">
             <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>
@@ -151,28 +135,28 @@
           <activiti:value id="sEnumThirdPerson_9" name="9"></activiti:value>
           <activiti:value id="sEnumThirdPerson_10" name="10"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nLetter_1" name="Лист (1-ша особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_1" name="Відповідь (1-ша особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_2" name="Лист (2-га особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_2" name="Відповідь (2-га особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_3" name="Лист (3-тя особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_3" name="Відповідь (3-тя особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_4" name="Лист (4-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_4" name="Відповідь (4-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_5" name="Лист (5-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_5" name="Відповідь (5-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_6" name="Лист (6-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_6" name="Відповідь (6-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_7" name="Лист (7-ма особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_7" name="Відповідь (7-ма особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_8" name="Лист (8-ма особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_8" name="Відповідь (8-ма особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_9" name="Лист (9-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_9" name="Відповідь (9-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nLetter_10" name="Лист (10-та особа)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nAnswer_10" name="Відповідь (10-та особа)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_1" name="Лист (1-ша особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_1" name="Відповідь (1-ша особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_2" name="Лист (2-га особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_2" name="Відповідь (2-га особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_3" name="Лист (3-тя особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_3" name="Відповідь (3-тя особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_4" name="Лист (4-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_4" name="Відповідь (4-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_5" name="Лист (5-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_5" name="Відповідь (5-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_6" name="Лист (6-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_6" name="Відповідь (6-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_7" name="Лист (7-ма особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_7" name="Відповідь (7-ма особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_8" name="Лист (8-ма особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_8" name="Відповідь (8-ма особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_9" name="Лист (9-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_9" name="Відповідь (9-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetter_10" name="Лист (10-та особа); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nAnswer_10" name="Відповідь (10-та особа); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNoteEmployeeInspection" name="Примітка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nLetterClose" name="Лист-закриття перевірки" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nLetterClose" name="Лист-закриття перевірки; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asSecondResultChecking" name="Повторний результат перевірки" type="enum">
           <activiti:value id="sEnumSecondResultThirdPerson" name="Залучити треті особи для проведення перевірки"></activiti:value>
           <activiti:value id="sEnumSecondResultGenerate" name="Сформувати результат перевірки"></activiti:value>
@@ -187,11 +171,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${PrintForm_direct},${nOrderSchedule}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway" default="flow14"></exclusiveGateway>
@@ -261,11 +241,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -288,7 +264,7 @@
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sOrderSchedule" name="Наказ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nOrderSchedule" name="Наказ про планову перевірку; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sControlOrganizationName" name="Найменування органу державного архітектурно-будівельного контролю (місцезнаходження, телефон, електронна адреса)" type="textArea" default="Департамент з питань державного архітектурно-будівельного контролю міста Києва виконавчого органу Київської міської ради (Київської міської державної адміністрації)"></activiti:formProperty>
         <activiti:formProperty id="sDateDirection" name="Дата направлення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberDirection" name="Номер направлення" type="string" required="true"></activiti:formProperty>
@@ -325,11 +301,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step11]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
@@ -387,11 +359,7 @@
         <activiti:formProperty id="markers9_req" name="requiredFields9" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_9_required.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="hideShowFields10" type="markers" default="${markerService.loadFromFile('KMDA/kyiv_mda_1093_10.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${tPrescription},${tOffenses},${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+  
       </extensionElements>
     </userTask>
     <userTask id="usertask11" name="17. Очикування оплати штрафу." activiti:candidateGroups="kyiv_dabi_audit">
@@ -410,12 +378,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPaymentDate" name="Дата сплати" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileReceipt" name="Квитанція" type="file" required="true"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        <activiti:formProperty id="nFileReceipt" name="Квитанція; ;bNew=true" type="file" required="true"></activiti:formProperty>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask10" targetRef="parallelgateway3"></sequenceFlow>
@@ -437,11 +401,7 @@
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotesLawyer" name="Примітки" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileAppeal},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
@@ -460,13 +420,9 @@
           <activiti:value id="sEnumUnscheduled" name="позапланова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentEmployeeInspection" name="Коментар співробітника Інспекційного відділу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFileAppeal" name="Оскарження" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileAppeal" name="Оскарження; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFileDirection},${nOrderSchedule},${nLetter_1},${nAnswer_1},${nLetter_2},${nAnswer_2},${nLetter_3},${nAnswer_3},${nLetter_4},${nAnswer_4},${nLetter_5},${nAnswer_5},${nLetter_6},${nAnswer_6},${nLetter_7},${nAnswer_7},${nLetter_8},${nAnswer_8},${nLetter_9},${nAnswer_9},${nLetter_10},${nAnswer_10}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow32" sourceRef="parallelgateway3" targetRef="usertask11"></sequenceFlow>
@@ -489,11 +445,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <userTask id="usertask15" name="4. Ознайомлення з документом заступника директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy_boss">
@@ -503,11 +455,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <userTask id="usertask16" name="6. Ознайомлення начальником управління контролю за будівництвом" activiti:candidateGroups="kyiv_dabi_contr_boss">
@@ -517,11 +465,7 @@
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask17" name="Temporary UserTask for UploadFiles" activiti:candidateGroups="kyiv_dabi_boss">
@@ -533,11 +477,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodExecution" name="Термін виконання" type="string"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
         <activiti:taskListener event="create" delegateExpression="${setCheckVar}">
           <activiti:field name="paramName">
             <activiti:expression><![CDATA[sOpenGate]]></activiti:expression>

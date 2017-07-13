@@ -57,7 +57,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string"/>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea"/>
         <activiti:taskListener delegateExpression="${fileTaskUploadListener}" event="create"/>
-        <activiti:taskListener delegateExpression="${fileTaskInheritance}" event="create"/>
+      
       </extensionElements>
     </userTask>
     <parallelGateway gatewayDirection="Unspecified" id="parallelgateway1" name="Parallel Gateway"/>
@@ -88,7 +88,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"/>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"/>
         <activiti:taskListener delegateExpression="${fileTaskUploadListener}" event="create"/>
-        <activiti:taskListener delegateExpression="${fileTaskInheritance}" event="create"/>
+     
       </extensionElements>
     </userTask>
     <userTask activiti:candidateGroups="kyiv_dabi_deputy_boss" activiti:exclusive="true" id="usertask4" name="3. знайомлення з документом заступника директора ДАБК">
@@ -118,7 +118,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"/>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"/>
         <activiti:taskListener delegateExpression="${fileTaskUploadListener}" event="create"/>
-        <activiti:taskListener delegateExpression="${fileTaskInheritance}" event="create"/>
+     
       </extensionElements>
     </userTask>
     <userTask activiti:candidateGroups="kyiv_dabi_permit_boss" activiti:exclusive="true" id="usertask3" name="4. Ознайомлення з документом та визначення відповідального">
@@ -151,7 +151,7 @@
         <activiti:formProperty default="kyiv_dabi_permit_empl" id="sID_Group_step7" name="Група виконавців наступного кроку" type="string"/>
         <activiti:formProperty id="sCommentBossPermit" name="Коментар начальника управління дозвільних документів" type="textArea"/>
         <activiti:taskListener delegateExpression="${fileTaskUploadListener}" event="create"/>
-        <activiti:taskListener delegateExpression="${fileTaskInheritance}" event="create"/>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="parallelgateway1" targetRef="usertask2"/>
@@ -361,12 +361,12 @@
         <activiti:formProperty id="sChangeNameDoc" name="Найменування документу, що є підставою для зміни даних" required="true" type="string"/>
         <activiti:formProperty id="sChangeDateDoc" name="Дата видачі та номер документу, що є підставою для зміни даних" required="true" type="string"/>
         <activiti:formProperty id="sChangeWhoDoc" name="Ким виданий документ, що є підставою для зміни даних" required="true" type="string"/>
-        <activiti:formProperty id="sDocLetter" name="Лист" required="true" type="file"/>
-        <activiti:formProperty id="sDocDeclaration" name="Декларація, в яку необхідно внести зміни, підписана ЕЦП" required="true" type="file"/>
-        <activiti:formProperty id="sDocZayava" name="Заява про зміну даних" required="true" type="file"/>
-        <activiti:formProperty id="sDocChangeMessage" name="Повідомлення про зміну даних у зареєстрованій декларації про початок виконання підготовчих/будівельних робіт" required="true" type="file"/>
-        <activiti:formProperty id="sDocDeclarationBuild" name="Декларація про початок будівельних робіт" required="true" type="file"/>
-        <activiti:formProperty id="sDocDeclarationPrepare" name="Декларація про початок підготовчих робіт" required="true" type="file"/>
+        <activiti:formProperty id="sDocLetter" name="Лист; ;bNew=true" type="file" required="true" />
+        <activiti:formProperty id="sDocDeclaration" name="Декларація, в яку необхідно внести зміни, підписана ЕЦП; ;bNew=true" type="file" required="true"/>
+        <activiti:formProperty id="sDocZayava" name="Заява про зміну даних; ;bNew=true" type="file" required="true" />
+        <activiti:formProperty id="sDocChangeMessage" name="Повідомлення про зміну даних у зареєстрованій декларації про початок виконання підготовчих/будівельних робіт; ;bNew=true" type="file" required="true"/>
+        <activiti:formProperty id="sDocDeclarationBuild" name="Декларація про початок будівельних робіт; ;bNew=true" type="file" required="true"/>
+        <activiti:formProperty id="sDocDeclarationPrepare" name="Декларація про початок підготовчих робіт; ;bNew=true" type="file" required="true"/>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"/>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"/>
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea"/>
@@ -474,12 +474,12 @@
         <activiti:formProperty id="sChangeNameDoc" name="Найменування документу, що є підставою для зміни даних" required="true" type="string"/>
         <activiti:formProperty id="sChangeDateDoc" name="Дата видачі та номер документу, що є підставою для зміни даних" required="true" type="string"/>
         <activiti:formProperty id="sChangeWhoDoc" name="Ким виданий документ, що є підставою для зміни даних" required="true" type="string"/>
-        <activiti:formProperty id="sDocLetter" name="Лист" type="file"/>
-        <activiti:formProperty id="sDocDeclaration" name="Декларація, в яку необхідно внести зміни, підписана ЕЦП" type="file"/>
-        <activiti:formProperty id="sDocZayava" name="Заява про зміну даних" type="file"/>
-        <activiti:formProperty id="sDocChangeMessage" name="Повідомлення про зміну даних у зареєстрованій декларації про початок виконання підготовчих/будівельних робіт" type="file"/>
-        <activiti:formProperty id="sDocDeclarationBuild" name="Декларація про початок будівельних робіт" type="file"/>
-        <activiti:formProperty id="sDocDeclarationPrepare" name="Декларація про початок підготовчих робіт" type="file"/>
+        <activiti:formProperty id="sDocLetter" name="Лист; ;bNew=true" type="file"/>
+        <activiti:formProperty id="sDocDeclaration" name="Декларація, в яку необхідно внести зміни, підписана ЕЦП; ;bNew=true" type="file"/>
+        <activiti:formProperty id="sDocZayava" name="Заява про зміну даних; ;bNew=true" type="file"/>
+        <activiti:formProperty id="sDocChangeMessage" name="Повідомлення про зміну даних у зареєстрованій декларації про початок виконання підготовчих/будівельних робіт; ;bNew=true" type="file"/>
+        <activiti:formProperty id="sDocDeclarationBuild" name="Декларація про початок будівельних робіт; ;bNew=true" type="file"/>
+        <activiti:formProperty id="sDocDeclarationPrepare" name="Декларація про початок підготовчих робіт; ;bNew=true" type="file"/>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер документообігу АСКОД" type="string" writable="false"/>
         <activiti:formProperty id="sEmployeeComment" name="Коментар співробітника Сектору документообігу" type="textArea" writable="false"/>
         <activiti:formProperty id="sEmplPermitComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea"/>
