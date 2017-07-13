@@ -34,8 +34,8 @@
         <activiti:formProperty id="sBuildPermitDate" name="Дата видачі Дозволу" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nLossNotice" name="Копія документа, який підтверджує розміщення у ЗМІ повідомлення про втрату документа" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nDuplApplication" name="Заява на видачу дублікату" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nLossNotice" name="Копія документа, який підтверджує розміщення у ЗМІ повідомлення про втрату документа; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nDuplApplication" name="Заява на видачу дублікату; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required_marker" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_valid.json')}"></activiti:formProperty>
@@ -77,11 +77,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow18" sourceRef="parallelgateway1" targetRef="usertask_step3"></sequenceFlow>
@@ -119,11 +115,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="parallelgateway1" targetRef="usertask_step4"></sequenceFlow>
@@ -164,11 +156,7 @@
         <activiti:formProperty id="sID_Group_step6" name="Група виконавців" type="string" default="kyiv_dabi_permit_empl"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask_step4" targetRef="parallelgateway2"></sequenceFlow>
@@ -210,11 +198,7 @@
         <activiti:formProperty id="sAssigneeName_step6" name="Відповідальний виконавець" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask_step6"></sequenceFlow>
@@ -262,11 +246,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step6]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -341,11 +321,7 @@
     <userTask id="usertask_upload" name="Upload File" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow40" sourceRef="startevent_step1" targetRef="usertask_upload"></sequenceFlow>
@@ -392,11 +368,7 @@
         <activiti:formProperty id="sID_Group_step8" name="Група виконавців" type="string" default="kyiv_dabi_law"></activiti:formProperty>
         <activiti:formProperty id="sLawBossComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow44" sourceRef="parallelgateway1" targetRef="usertask_step7"></sequenceFlow>
@@ -442,11 +414,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step8]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow45" sourceRef="usertask_step7" targetRef="usertask_step8"></sequenceFlow>
@@ -546,11 +514,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step6]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow52" sourceRef="parallelgateway4" targetRef="usertask_step9"></sequenceFlow>
@@ -639,16 +603,12 @@
         <activiti:formProperty id="sLawBossComment" name="Коментар Керівника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitEmpComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLawEmpComment" name="Коментар співробітника Юридичного сектору" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nDoc" name="Документ" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nDoc" name="Документ; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_valid.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow56" sourceRef="usertask_step9" targetRef="usertask_step13"></sequenceFlow>
@@ -696,11 +656,7 @@
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_build_permit_dupl_valid.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+  
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow58" sourceRef="servicetask_step13.1" targetRef="exclusivegateway2"></sequenceFlow>
