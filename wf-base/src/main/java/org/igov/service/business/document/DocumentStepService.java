@@ -1649,7 +1649,7 @@ public class DocumentStepService {
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
             LOG.info("oDocumentStepSubjectRight group in candidate adding is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
             if ((!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_"))
-                    && (!asGroup_Old.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix()))) {
+                    && (asGroup_Old.isEmpty() || !asGroup_Old.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix()))) {
                 LOG.info("Group added to candidate is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
             }
