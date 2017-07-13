@@ -2457,7 +2457,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     || sFilterStatus.equals("DocumentClosed")) {
                 
                 LOG.info("getTasks sFilterStatus={}", sFilterStatus);
-                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(sLogin, sFilterStatus, nSize, nStart);
+                aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
+                        sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
+                );
                 
             } else {
 
@@ -2550,7 +2552,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                         if (bIncludeVariablesProcess) {
 
-                            oTaskData.setGlobalVariables(runtimeService.getVariables(oTaskData.getProcessInstanceId()));
+                            oTaskData.setGlobalVariables(runtimeService.getVariables(oTaskData.getExecutionId()));
                         }
                     }
 
