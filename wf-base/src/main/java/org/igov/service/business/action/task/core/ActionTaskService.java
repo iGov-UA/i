@@ -2926,16 +2926,12 @@ public class ActionTaskService {
             aoAllTasks.addAll(aoTaskList);
             
         } else {
-            /*if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
-                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
-                        .findUnassignedUnprocessedDocument(sLogin);
-                
-                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
-                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
-                });
-            }
+            long nStartCalculations = System.nanoTime();
+            LOG.info("Start calculations");
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("sKey_GroupPostfix", sLogin);
+            long nFirstPartCalculations = System.nanoTime();
+            LOG.info("First part done time={}", nFirstPartCalculations - nStartCalculations);
             LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
 
@@ -2995,7 +2991,9 @@ public class ActionTaskService {
                     LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
-            }*/
+            }
+            long nSecondPartCalculations = System.nanoTime();
+            LOG.info("Second part done time={}", nSecondPartCalculations - nFirstPartCalculations);
         }
         nTotalNumber = aoAllTasks.size();
         //Сортировка коллекции по дате создания таски, для реализации паджинации
@@ -3068,17 +3066,5 @@ public class ActionTaskService {
         }
 
         return mHistoryVariables;
-    }
-
-    private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
-
-        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
-                .getSnID_Process_Activiti();
-        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
-
-        return oTaskService.createTaskQuery()
-                .processInstanceId(snID_Process_Activiti)
-                .active()
-                .list();
     }
 }

@@ -167,7 +167,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     @Autowired
     private ProcessSubjectStatusDao oProcessSubjectStatusDao;
-    
+
     @Autowired
     DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
 
@@ -2439,7 +2439,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "sFilterStatus", required = false) @RequestParam(value = "sFilterStatus", defaultValue = "OpenedUnassigned", required = false) String sFilterStatus,
             @ApiParam(value = "bFilterHasTicket", required = false) @RequestParam(value = "bFilterHasTicket", defaultValue = "false", required = false) boolean bFilterHasTicket,
             @ApiParam(value = "soaFilterField", required = false) @RequestParam(value = "soaFilterField", required = false) String soaFilterField,
-            @ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess)
+            @ApiParam(value = "bIncludeVariablesProcess", required = false) @RequestParam(value = "bIncludeVariablesProcess", required = false, defaultValue = "false") Boolean bIncludeVariablesProcess,
+            @ApiParam(value = "bInclude", required = false) @RequestParam(value = "bInclude", required = false, defaultValue = "false") Boolean bInclude)
             throws CommonServiceException {
 
         TaskDataResultVO aoResult = new TaskDataResultVO();
@@ -2450,15 +2451,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     || sFilterStatus.equals("OpenedUnassignedWithoutECPDocument")
                     || sFilterStatus.equals("DocumentClosed")) {
 
-                /*LOG.info("getTasks sFilterStatus={}", sFilterStatus);
+                LOG.info("getTasks sFilterStatus={}", sFilterStatus);
+                if (bInclude) {
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
                         sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
                 );
-
-            } else {*/
-                sFilterStatus = "Documents";
-            }
-            
+                } else {
+                    sFilterStatus = "Documents";
+                }
+            } //else {
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
                 if (groups != null && !groups.isEmpty()) {
@@ -2564,8 +2565,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     } else {
                         aoResult.setTotal(totalCountServices);
                     }
-                }
-            
+                //}
+            }
         } catch (Exception e) {
             LOG.error("Error occured while getting list of tasks", e);
         }
