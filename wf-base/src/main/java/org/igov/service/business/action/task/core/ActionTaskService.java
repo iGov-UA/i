@@ -2926,7 +2926,15 @@ public class ActionTaskService {
             aoAllTasks.addAll(aoTaskList);
 
         } else {
-            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+            if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+                        .findUnassignedUnprocessedDocument(sLogin);
+                
+                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
+                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
+                });
+            }
+            /*List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("sKey_GroupPostfix", sLogin);
             LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
             for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
@@ -2987,7 +2995,7 @@ public class ActionTaskService {
                     LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
-            }
+            }*/
         }
         nTotalNumber = aoAllTasks.size();
         //Сортировка коллекции по дате создания таски, для реализации паджинации
@@ -3042,14 +3050,14 @@ public class ActionTaskService {
 
     public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
         LOG.info("getHistoryVariableByHistoryProcessInstanceId started with "
-                + "sProcessInstanceId={}",sProcessInstanceId );
+                + "sProcessInstanceId={}", sProcessInstanceId);
         Map<String, Object> mHistoryVariables = new HashMap<>();
-        
+
         List<HistoricVariableInstance> aHistoricVariableInstance = oHistoryService
                 .createHistoricVariableInstanceQuery()
                 .processInstanceId(sProcessInstanceId)
                 .list();
-        if (!aHistoricVariableInstance.isEmpty() && aHistoricVariableInstance != null) {           
+        if (!aHistoricVariableInstance.isEmpty() && aHistoricVariableInstance != null) {
             aHistoricVariableInstance.forEach(oHistoricVariableInstance -> {
                 String sVariableName = oHistoricVariableInstance.getVariableName();
                 Object oVariableValue = oHistoricVariableInstance.getValue();
@@ -3060,5 +3068,17 @@ public class ActionTaskService {
         }
 
         return mHistoryVariables;
+    }
+
+    private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
+
+        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                .getSnID_Process_Activiti();
+        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+
+        return oTaskService.createTaskQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .list();
     }
 }
