@@ -676,7 +676,7 @@ public class DocumentStepService {
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_From.aDocumentStepSubjectRight()) {
             if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group)) {
-                LOG.info("sKey_GroupPostfix image {}", sKey_Group);
+                LOG.info("getsKey_GroupPostfix {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
                 oDocumentStepSubjectRight_New.setbWrite(null);
@@ -930,8 +930,8 @@ public class DocumentStepService {
                 }
             }
             
-            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_GroupPostfix_New);
             
+            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix_New, sKey_GroupPostfix_New, sKey_Step_Document_To);
         } catch (Exception oException) {
             LOG.error("ERROR:" + oException.getMessage() + " (" + "snID_Process_Activiti=" + snID_Process_Activiti + ""
                     + ",sKey_GroupPostfix=" + sKey_GroupPostfix + "" + ",sKey_GroupPostfix_New=" + sKey_GroupPostfix_New
