@@ -75,10 +75,8 @@ import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
 import org.igov.model.action.vo.TaskDataResultVO;
 import org.igov.model.action.vo.TaskDataVO;
 import org.igov.model.core.GenericEntityDao;
-import org.igov.model.document.DocumentStepSubjectRight;
 import org.igov.model.document.DocumentStepSubjectRightDao;
 import org.igov.model.flow.FlowSlot;
-import org.igov.model.subject.SubjectContact;
 import org.igov.model.subject.SubjectContactDao;
 import org.igov.model.subject.SubjectOrganDepartment;
 
@@ -2898,67 +2896,20 @@ public class ActionTaskService {
         long nTotalNumber;
         //вернуть последнюю юзертаску закрытого процесса-документа
         if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
-            //все закрытые документы, которые относятся к заданому логину
-            HistoricTaskInstanceQuery oTaskQuery = oHistoryService.createHistoricTaskInstanceQuery()
-                    .taskInvolvedUser(sLogin)
-                    .processFinished()
-                    .processDefinitionKeyLikeIgnoreCase("_doc_%");
-            LOG.info("Document closed count={}", oTaskQuery.count());
+            LOG.info("DocumentClosed condition");
+            aoAllTasks.addAll(getDocumentClosed(sLogin));
+            
+        //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
+            LOG.info("OpenedUnassignedUnprocessedDocument condition");
+            aoAllTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
 
-            List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
-            List<HistoricTaskInstance> aoTaskList = oTaskQuery.list();
-            //если таски емеют одинаковый ProcessInstanceId, сверяем дату закрытия
-            //таска которая была закрыта раньше добавляется в список для удаления
-            Collections.sort(aoTaskList, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
-                int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
-                if (nResult == 0) {
-                    nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
-                    if (nResult == 0 || nResult == 1) {
-                        aoTaskToRemove.add(oTask2);
-                    } else {
-                        aoTaskToRemove.add(oTask1);
-                    }
-                }
-                return nResult;
-            });
-            aoTaskList.removeAll(aoTaskToRemove);
-            LOG.info("Document closed after filtering count={}", aoTaskList.size());
-            aoAllTasks.addAll(aoTaskList);
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
 
-        } else {
-            if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
-                LOG.info("OpenedUnassignedUnprocessedDocument condition");
-                long nStartCalculations = System.nanoTime();
-                LOG.info("Start calculations");
-                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
-                        .findUnassignedUnprocessedDocument(sLogin);
-                LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
-                long nFirstPartCalculations = System.nanoTime();
-                LOG.info("First part done time={}", (nFirstPartCalculations - nStartCalculations) / 1000000000);
-                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
-                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
-                });
-                long nSecondPartCalculations = System.nanoTime();
-                LOG.info("Second part done time={}", (nSecondPartCalculations - nFirstPartCalculations) / 1000000000);
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
 
-            } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
-                LOG.info("OpenedUnassignedWithoutECPDocument condition");
-                long nStartCalculations = System.nanoTime();
-                LOG.info("Start calculations");
-                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
-                        .findOpenedUnassignedWithoutECPDocument(sLogin);
-                LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
-                long nFirstPartCalculations = System.nanoTime();
-                LOG.info("First part done time={}", (nFirstPartCalculations - nStartCalculations) / 1000000000);
-                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
-                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
-                });
-                long nSecondPartCalculations = System.nanoTime();
-                LOG.info("Second part done time={}", (nSecondPartCalculations - nFirstPartCalculations) / 1000000000);
-            } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
-                aoAllTasks.addAll(getTasksByDocumentStepSubjectRightNew(sLogin));
-            }
-            /*long nStartCalculations = System.nanoTime();
+        }
+        /*long nStartCalculations = System.nanoTime();
             LOG.info("Start calculations");
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("sKey_GroupPostfix", sLogin);
@@ -3024,7 +2975,7 @@ public class ActionTaskService {
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
             }*/
-        }
+
         nTotalNumber = aoAllTasks.size();
         //Сортировка коллекции по дате создания таски, для реализации паджинации
         Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
@@ -3098,38 +3049,58 @@ public class ActionTaskService {
         return mHistoryVariables;
     }
 
-    private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
-        LOG.info("getTasksByDocumentStepSubjectRight start");
-        long nCalculations = System.nanoTime();
-        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
-                .getSnID_Process_Activiti();
-        long nCalculationsEnd = System.nanoTime();
-        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd - nCalculations);
-        List<Task> aoResult = oTaskService.createTaskQuery()
-                .processInstanceId(snID_Process_Activiti)
-                .active()
-                .list();
-        long nCalculationsEnd2 = System.nanoTime();
-        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd2 - nCalculationsEnd);
-        return aoResult;
+    /**
+     * Получить закрытые документы.
+     *
+     * @param sLogin логин для которого нужно найти документы
+     * @return возвращает последнюю юзертаску закрытого процесса-документа в
+     * списке.
+     */
+    private List<HistoricTaskInstance> getDocumentClosed(String sLogin) {
+        //все закрытые документы, которые относятся к заданому логину
+        HistoricTaskInstanceQuery oTaskQuery = oHistoryService.createHistoricTaskInstanceQuery()
+                .taskInvolvedUser(sLogin)
+                .processFinished()
+                .processDefinitionKeyLikeIgnoreCase("_doc_%");
+        LOG.info("Document closed count={}", oTaskQuery.count());
+
+        List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
+        List<HistoricTaskInstance> aoTaskList = oTaskQuery.list();
+        //если таски емеют одинаковый ProcessInstanceId, сверяем дату закрытия
+        //таска которая была закрыта раньше добавляется в список для удаления
+        Collections.sort(aoTaskList, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
+            int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
+            if (nResult == 0) {
+                nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
+                if (nResult == 0 || nResult == 1) {
+                    aoTaskToRemove.add(oTask2);
+                } else {
+                    aoTaskToRemove.add(oTask1);
+                }
+            }
+            return nResult;
+        });
+        aoTaskList.removeAll(aoTaskToRemove);
+        LOG.info("Document closed after filtering count={}", aoTaskList.size());
+
+        return aoTaskList;
     }
 
-    private List<Task> getTasksByDocumentStepSubjectRightNew(String sLogin) {
-        LOG.info("getTasksByDocumentStepSubjectRight start");
-        long nCalculations = System.nanoTime();
+    private List<Task> getOpenedUnassignedProcessedDocument(String sLogin) {
         
-        String sQuery = "select * from \"public\".\"act_ru_task\" where \"public\".\"act_ru_task\".\"proc_inst_id_\"\n"
-                + "in (select \"public\".\"DocumentStep\".\"snID_Process_Activiti\" from \"public\".\"DocumentStep\" where \"public\".\"DocumentStep\".\"nID\"\n"
-                + "in (select \"public\".\"DocumentStepSubjectRight\".\"nID_DocumentStep\" from \"public\".\"DocumentStepSubjectRight\" where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = 'justice_common'\n"
-                + "and (\"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
-                + "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null)))";
+        LOG.info("getOpenedUnassignedProcessedDocument start");
+        
+        String sQuery = "select * from \"public\".\"act_ru_task\""
+                + " where \"public\".\"act_ru_task\".\"proc_inst_id_" 
+                + " in (select \"public\".\"DocumentStep\".\"snID_Process_Activiti\""
+                +       " from \"public\".\"DocumentStep\""
+                +       " where \"public\".\"DocumentStep\".\"nID\"\n"
+                +       "in (select \"public\".\"DocumentStepSubjectRight\".\"nID_DocumentStep\""
+                +             " from \"public\".\"DocumentStepSubjectRight\""
+                +             " where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
+                +                 "and (\"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
+                +                 "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null)))";
 
-        NativeTaskQuery oNativeTaskQuery = oTaskService.createNativeTaskQuery().sql(sQuery);
-        long nCalculationsEnd = System.nanoTime();
-        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd - nCalculations);
-        List<Task> aoResult = oNativeTaskQuery.list();
-        long nCalculationsEnd2 = System.nanoTime();
-        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd2 - nCalculationsEnd);
-        return aoResult;
+        return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
 }
