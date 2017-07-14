@@ -12,7 +12,7 @@
 1. [ЭЦП](#digitalsignature)
 1. [Электронные очереди](#electronicqueues)
 1. [Оплата услуги](#paymentfortheservice)
-1. [Емайлы](#emails)
+1. [e-mails](#emails)
 1. [Отправка СМС-оповещений](#sendingsmsnotifications)
 1. [Скрипты](#scripts)
 1. [Конфигурационные файлы](#configurationfiles)
