@@ -3850,7 +3850,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         String sKey_Step_Active = null;
                         
                         for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
-                            if (oHistoricVariableInstance.getVariableName().startsWith(sKey_Step)){
+                            if (oHistoricVariableInstance.getVariableName().startsWith("sKey_Step")){
                                 sKey_Step_Active = (String)oHistoricVariableInstance.getValue();
                                 LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
                             }
