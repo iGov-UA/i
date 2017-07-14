@@ -2955,6 +2955,8 @@ public class ActionTaskService {
                 });
                 long nSecondPartCalculations = System.nanoTime();
                 LOG.info("Second part done time={}", (nSecondPartCalculations - nFirstPartCalculations) / 1000000000);
+            } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
+                aoAllTasks.addAll(getTasksByDocumentStepSubjectRightNew(sLogin));
             }
             /*long nStartCalculations = System.nanoTime();
             LOG.info("Start calculations");
@@ -3107,6 +3109,25 @@ public class ActionTaskService {
                 .processInstanceId(snID_Process_Activiti)
                 .active()
                 .list();
+        long nCalculationsEnd2 = System.nanoTime();
+        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd2 - nCalculationsEnd);
+        return aoResult;
+    }
+
+    private List<Task> getTasksByDocumentStepSubjectRightNew(String sLogin) {
+        LOG.info("getTasksByDocumentStepSubjectRight start");
+        long nCalculations = System.nanoTime();
+        
+        String sQuery = "select * from \"public\".\"act_ru_task\" where \"public\".\"act_ru_task\".\"proc_inst_id_\"\n"
+                + "in (select \"public\".\"DocumentStep\".\"snID_Process_Activiti\" from \"public\".\"DocumentStep\" where \"public\".\"DocumentStep\".\"nID\"\n"
+                + "in (select \"public\".\"DocumentStepSubjectRight\".\"nID_DocumentStep\" from \"public\".\"DocumentStepSubjectRight\" where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = 'justice_common'\n"
+                + "and (\"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
+                + "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null)))";
+
+        NativeTaskQuery oNativeTaskQuery = oTaskService.createNativeTaskQuery().sql(sQuery);
+        long nCalculationsEnd = System.nanoTime();
+        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd - nCalculations);
+        List<Task> aoResult = oNativeTaskQuery.list();
         long nCalculationsEnd2 = System.nanoTime();
         LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd2 - nCalculationsEnd);
         return aoResult;
