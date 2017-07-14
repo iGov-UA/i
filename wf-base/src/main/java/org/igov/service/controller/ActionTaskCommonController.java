@@ -2456,6 +2456,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
                         sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
                 );
+                return aoResult;
                 } else {
                     sFilterStatus = "Documents";
                 }

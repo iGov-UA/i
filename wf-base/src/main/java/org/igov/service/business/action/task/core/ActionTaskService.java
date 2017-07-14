@@ -2924,9 +2924,24 @@ public class ActionTaskService {
             aoTaskList.removeAll(aoTaskToRemove);
             LOG.info("Document closed after filtering count={}", aoTaskList.size());
             aoAllTasks.addAll(aoTaskList);
-            
+
         } else {
-            long nStartCalculations = System.nanoTime();
+            if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
+                LOG.info("OpenedUnassignedUnprocessedDocument condition");
+                long nStartCalculations = System.nanoTime();
+                LOG.info("Start calculations");
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+                        .findUnassignedUnprocessedDocument(sLogin);
+                LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
+                long nFirstPartCalculations = System.nanoTime();
+                LOG.info("First part done time={}", (nFirstPartCalculations - nStartCalculations) / 1000000000);
+                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
+                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
+                });
+                long nSecondPartCalculations = System.nanoTime();
+                LOG.info("First part done time={}", (nSecondPartCalculations - nFirstPartCalculations) / 1000000000);
+            }
+            /*long nStartCalculations = System.nanoTime();
             LOG.info("Start calculations");
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("sKey_GroupPostfix", sLogin);
@@ -2991,62 +3006,62 @@ public class ActionTaskService {
                     LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
-            }
-            long nSecondPartCalculations = System.nanoTime();
-            LOG.info("Second part done time={}", nSecondPartCalculations - nFirstPartCalculations);
+            }*/
         }
-        nTotalNumber = aoAllTasks.size();
-        //Сортировка коллекции по дате создания таски, для реализации паджинации
-        Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
+            nTotalNumber = aoAllTasks.size();
+            //Сортировка коллекции по дате создания таски, для реализации паджинации
+            Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
 
-        SimpleDateFormat oFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+            SimpleDateFormat oFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
-        List<TaskDataVO> aTaskDataVO = new ArrayList<>();
-        //паджинация: из отсортированной коллекции берем nSize тасок,
-        //брать начинаем из nStart
-        for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
+            List<TaskDataVO> aTaskDataVO = new ArrayList<>();
+            //паджинация: из отсортированной коллекции берем nSize тасок,
+            //брать начинаем из nStart
+            for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
 
-            if (nIndex < nTotalNumber) {
+                if (nIndex < nTotalNumber) {
 
-                TaskInfo oTaskInfo = aoAllTasks.get(nIndex);
+                    TaskInfo oTaskInfo = aoAllTasks.get(nIndex);
 
-                TaskDataVO oTaskDataVO = new TaskDataVO();
-                oTaskDataVO.setProcessDefinitionId(oTaskInfo.getProcessDefinitionId());
-                oTaskDataVO.setCreateTime(oFormatter.format(oTaskInfo.getCreateTime()));
-                oTaskDataVO.setName(oTaskInfo.getName());
-                oTaskDataVO.setId(oTaskInfo.getId());
-                oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
-                //для фильтра "DocumentClosed" ищем переменные в истории
-                if (bIncludeVariablesProcess
-                        && sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
-                    LOG.info("Stsrt find history variable for ProcessInstanceId={}", oTaskInfo.getProcessInstanceId());
-                    oTaskDataVO.setGlobalVariables(
-                            getHistoryVariableByHistoryProcessInstanceId(
-                                    oTaskInfo.getProcessInstanceId()));
-                    LOG.info("THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED");
+                    TaskDataVO oTaskDataVO = new TaskDataVO();
+                    oTaskDataVO.setProcessDefinitionId(oTaskInfo.getProcessDefinitionId());
+                    oTaskDataVO.setCreateTime(oFormatter.format(oTaskInfo.getCreateTime()));
+                    oTaskDataVO.setName(oTaskInfo.getName());
+                    oTaskDataVO.setId(oTaskInfo.getId());
+                    oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
+                    //для фильтра "DocumentClosed" ищем переменные в истории
+                    if (bIncludeVariablesProcess
+                            && sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
+                        LOG.info("Stsrt find history variable for ProcessInstanceId={}", oTaskInfo.getProcessInstanceId());
+                        oTaskDataVO.setGlobalVariables(
+                                getHistoryVariableByHistoryProcessInstanceId(
+                                        oTaskInfo.getProcessInstanceId()));
+                        LOG.info("THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED");
 
-                } else if (bIncludeVariablesProcess) {
-                    oTaskDataVO.setGlobalVariables(oRuntimeService
-                            .getVariables(oTaskInfo.getExecutionId()));
+                    } else if (bIncludeVariablesProcess) {
+                        oTaskDataVO.setGlobalVariables(oRuntimeService
+                                .getVariables(oTaskInfo.getExecutionId()));
+                    }
+
+                    aTaskDataVO.add(oTaskDataVO);
+                } else {
+                    break;
                 }
-
-                aTaskDataVO.add(oTaskDataVO);
-            } else {
-                break;
             }
+
+            oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);
+            oTaskDataResultVO.setSize(nSize);
+            oTaskDataResultVO.setStart(nStart);
+            oTaskDataResultVO.setOrder("asc");
+            oTaskDataResultVO.setSort("id");
+            oTaskDataResultVO.setTotal(nTotalNumber);
+
+            return oTaskDataResultVO;
         }
 
-        oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);
-        oTaskDataResultVO.setSize(nSize);
-        oTaskDataResultVO.setStart(nStart);
-        oTaskDataResultVO.setOrder("asc");
-        oTaskDataResultVO.setSort("id");
-        oTaskDataResultVO.setTotal(nTotalNumber);
+    
 
-        return oTaskDataResultVO;
-    }
-
-    public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
+    private Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
         LOG.info("getHistoryVariableByHistoryProcessInstanceId started with "
                 + "sProcessInstanceId={}", sProcessInstanceId);
         Map<String, Object> mHistoryVariables = new HashMap<>();
@@ -3066,5 +3081,17 @@ public class ActionTaskService {
         }
 
         return mHistoryVariables;
+    }
+
+    private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
+        LOG.info("getTasksByDocumentStepSubjectRight start, with oDocumentStepSubjectRight={}", oDocumentStepSubjectRight);
+        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                .getSnID_Process_Activiti();
+        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
+
+        return oTaskService.createTaskQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .list();
     }
 }
