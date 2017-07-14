@@ -3838,7 +3838,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
 
-                    //
                     List<Task> aTask = null;
                     Task oActiveTask = null;
                     
@@ -3848,7 +3847,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         for(Task oTask : aTask){
                             if(oTask.getId().equals(taskId)){
                                 Map<String, Object> mProcessVariables = oTask.getProcessVariables();
-                                if(((String)mProcessVariables.get("sKey_Step")).equals(sKey_Step)){
+                                LOG.info("mProcessVariables {}", mProcessVariables);
+                                if(sKey_Step.equals((String)mProcessVariables.get("sKey_Step"))){
+                                    LOG.info("sKey_Step is equals");
                                     oActiveTask = oTask;
                                 }else{
                                    throw new RuntimeException ("DocumentStepModified"); 
