@@ -701,14 +701,14 @@ public class DocumentStepService {
                 oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
                 LOG.info("oDocumentStepSubjectRightDao in addRightsToCommonStep is {}", oDocumentStepSubjectRight_New.getId());
                 
-                for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields()) {
+                //for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields()) {
                     DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                    oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
-                    oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
+                    oDocumentStepSubjectRightField_New.setbWrite(false);
+                    oDocumentStepSubjectRightField_New.setsMask_FieldID("*");
                     oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
                     oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
                     LOG.info("DocumentStepSubjectRightField in addRightsToCommonStep is {}", oDocumentStepSubjectRightField_New.getId());
-                }
+                //}
 
                 //break;
             //}
@@ -1409,8 +1409,7 @@ public class DocumentStepService {
 
         long stopTime = System.nanoTime();
 
-        LOG.info(
-                "getDocumentStepRights 1st block time execution is: " + String.format("%,12d", (stopTime - startTime)));
+        LOG.info("getDocumentStepRights 1st block time execution is: " + String.format("%,12d", (stopTime - startTime)));
 
         startTime = System.nanoTime();
 
@@ -1431,7 +1430,7 @@ public class DocumentStepService {
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Active = oDocumentStep_Active.aDocumentStepSubjectRight().stream()
                 .filter(o -> asID_Group.contains(o.getsKey_GroupPostfix())).collect(Collectors.toList());
         //LOG.info("aDocumentStepSubjectRight_Active={}", aDocumentStepSubjectRight_Active);
-
+        
         List<DocumentSubjectRightPermition> aDocumentSubjectRightPermition = new ArrayList<>();
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight_Active : aDocumentStepSubjectRight_Active) {
@@ -1447,13 +1446,30 @@ public class DocumentStepService {
             }
         }
         
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Merged = new ArrayList<>();
         
-        /*for(){
-            
-        }*/
+        boolean isCommonStepLogin = true;
         
+        for(DocumentStepSubjectRight oDocumentStepSubjectRight_Active : aDocumentStepSubjectRight_Active){
+            if(asID_Group.contains(oDocumentStepSubjectRight_Active.getsKey_GroupPostfix())){
+                isCommonStepLogin = false;
+                aDocumentStepSubjectRight_Merged.add(oDocumentStepSubjectRight_Active);
+                //break;
+            }
+        }
+        
+        if(isCommonStepLogin){
+            for(DocumentStepSubjectRight oDocumentStepSubjectRight_Common : aDocumentStepSubjectRight_Common){
+                if(asID_Group.contains(oDocumentStepSubjectRight_Common.getsKey_GroupPostfix())){
+                    aDocumentStepSubjectRight_Merged.add(oDocumentStepSubjectRight_Common);
+                    //break;
+                }
+            }
+        }
+       
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Merged;
         //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Common;
-        List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Active;
+        //List<DocumentStepSubjectRight> aDocumentStepSubjectRight = aDocumentStepSubjectRight_Active;
         aDocumentStepSubjectRight.addAll(aDocumentStepSubjectRight_Active);
         LOG.info("aDocumentStepSubjectRight={}", aDocumentStepSubjectRight);
 
