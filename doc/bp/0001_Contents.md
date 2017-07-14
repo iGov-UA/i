@@ -13,7 +13,7 @@
 1. [ЭЦП](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/011_Digitalsignature.md)
 1. [Электронные очереди](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/012_Electronicqueues.md)
 1. [Оплата услуги](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/013_Paymentfortheservice.md)
-1. [Емайлы](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/014_Emails.md)
+1. [e-mails](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/014_Emails.md)
 1. [Отправка СМС-оповещений](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/015_SendingSMSnotifications.md)
 1. [Скрипты](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/016_Scripts.md)
 1. [Конфигурационные файлы](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/017_Configurationfiles.md)

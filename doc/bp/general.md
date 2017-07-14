@@ -1,3 +1,4 @@
+(#general)
 1. [Создание бизнес-процессов](#creatingbusinessprocesses)
 1. [Основные элементы Activiti Designer](#themain)
 2. [Типы параметров](#typesofparameters)
@@ -12,7 +13,7 @@
 1. [ЭЦП](#digitalsignature)
 1. [Электронные очереди](#electronicqueues)
 1. [Оплата услуги](#paymentfortheservice)
-1. [Емайлы](#emails)
+1. [e-mails](#emails)
 1. [Отправка СМС-оповещений](#sendingsmsnotifications)
 1. [Скрипты](#scripts)
 1. [Конфигурационные файлы](#configurationfiles)
@@ -29,7 +30,7 @@
 
 ###### creatingbusinessprocesses
 # 1. Создание бизнес-процессов
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
@@ -74,7 +75,7 @@
 
 # 2. Основные элементы Activiti Designer
 
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 * При разработке БП из всего арсенала Activiti Designer используются следующие элементы:
 ###### startevent
