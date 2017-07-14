@@ -3843,10 +3843,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     
                     if(sKey_Step != null && nID_Process != null){
                         aTask = taskService.createTaskQuery().executionId(nID_Process).active().list();
-
+                        
+                        List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                                                                .processInstanceId(nID_Process.toString()).list();
+                        
+                        for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                            LOG.info("oHistoricVariableInstance.getVariableName {}", oHistoricVariableInstance.getVariableName());
+                            LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
+                        }
+                        
                         for(Task oTask : aTask){
                             if(oTask.getId().equals(taskId)){
-                                Map<String, Object> mProcessVariables = oTask.getProcessVariables();
+                                Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
+                                
                                 LOG.info("mProcessVariables {}", mProcessVariables);
                                 if(sKey_Step.equals((String)mProcessVariables.get("sKey_Step"))){
                                     LOG.info("sKey_Step is equals");
