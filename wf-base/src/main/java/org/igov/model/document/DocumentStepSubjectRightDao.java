@@ -7,4 +7,6 @@ public interface DocumentStepSubjectRightDao extends EntityDao<Long, DocumentSte
 
     public List<DocumentStepSubjectRight> findUnassignedUnprocessedDocument(String sLogin);
 
+    public List<DocumentStepSubjectRight> findOpenedUnassignedWithoutECPDocument(String sLogin);
+
 }
