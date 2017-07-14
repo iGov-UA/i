@@ -15,7 +15,7 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Customer" name="id группы (заказчика); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
@@ -728,7 +728,11 @@ var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var sSubjectType = "Organ"
 var nDeepLevel = 0
 var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor, sSubjectType, nDeepLevel)
-execution.setVariable('sEnterpriseCustomer', obj1[0].oSubject.sLabel)</script>
+var obj2 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor, sSubjectType, nDeepLevel)
+execution.setVariable('sEnterpriseCustomer', obj1[0].oSubject.sLabel)
+execution.setVariable('sEnterpriseCustomer', obj2[0].sID_Group_Activiti)
+
+</script>
     </scriptTask>
     <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -1253,7 +1257,7 @@ execution.setVariable('bAccept', bAccept)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="scripttask30">
+    <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYes' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow124" sourceRef="exclusivegateway15" targetRef="scripttask31">
@@ -1296,7 +1300,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Customer" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
@@ -1490,7 +1494,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Customer" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
@@ -1716,7 +1720,6 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
 var sKeyGroup = execution.getVariable('sLogin_LastSubmited')
 var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_8', sKeyGroup)</script>
     </scriptTask>
-    <sequenceFlow id="flow148" sourceRef="scripttask30" targetRef="usertask5"></sequenceFlow>
     <scriptTask id="scripttask31" name="All Signes Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
 var bSubmitedAll8="";
@@ -1889,7 +1892,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="72.0" width="105.0" x="868.0" y="1646.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask30" id="BPMNShape_scripttask30">
-        <omgdc:Bounds height="55.0" width="105.0" x="700.0" y="1544.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="701.0" y="1467.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask31" id="BPMNShape_scripttask31">
         <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1440.0"></omgdc:Bounds>
@@ -2091,7 +2094,8 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
         <omgdi:waypoint x="591.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="1571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow124" id="BPMNEdge_flow124">
         <omgdi:waypoint x="571.0" y="1551.0"></omgdi:waypoint>
@@ -2181,11 +2185,6 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       <bpmndi:BPMNEdge bpmnElement="flow147" id="BPMNEdge_flow147">
         <omgdi:waypoint x="868.0" y="1682.0"></omgdi:waypoint>
         <omgdi:waypoint x="819.0" y="1679.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow148" id="BPMNEdge_flow148">
-        <omgdi:waypoint x="805.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1072.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow149" id="BPMNEdge_flow149">
         <omgdi:waypoint x="571.0" y="1340.0"></omgdi:waypoint>
