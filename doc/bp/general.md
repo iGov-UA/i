@@ -1,4 +1,4 @@
-[Начало](#general)
+###### general
 
 1. [Создание бизнес-процессов](#creatingbusinessprocesses)
 1. [Основные элементы Activiti Designer](#themain)
