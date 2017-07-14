@@ -1257,7 +1257,7 @@ execution.setVariable('bAccept', bAccept)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway15" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="usertask5">
+    <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="scripttask30">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYes' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow124" sourceRef="exclusivegateway15" targetRef="scripttask31">
@@ -1744,6 +1744,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <sequenceFlow id="flow152" sourceRef="scripttask30" targetRef="usertask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
@@ -1892,7 +1893,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="72.0" width="105.0" x="868.0" y="1646.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask30" id="BPMNShape_scripttask30">
-        <omgdc:Bounds height="55.0" width="105.0" x="701.0" y="1467.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="714.0" y="1544.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask31" id="BPMNShape_scripttask31">
         <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1440.0"></omgdc:Bounds>
@@ -2094,8 +2095,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
         <omgdi:waypoint x="591.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1072.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
+        <omgdi:waypoint x="714.0" y="1571.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow124" id="BPMNEdge_flow124">
         <omgdi:waypoint x="571.0" y="1551.0"></omgdi:waypoint>
@@ -2197,6 +2197,11 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       <bpmndi:BPMNEdge bpmnElement="flow151" id="BPMNEdge_flow151">
         <omgdi:waypoint x="591.0" y="1360.0"></omgdi:waypoint>
         <omgdi:waypoint x="1072.0" y="1360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow152" id="BPMNEdge_flow152">
+        <omgdi:waypoint x="819.0" y="1571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1571.0"></omgdi:waypoint>
         <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
