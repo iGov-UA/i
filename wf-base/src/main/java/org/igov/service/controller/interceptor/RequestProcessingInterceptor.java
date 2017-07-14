@@ -142,7 +142,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
-        checkTaskAvailability(oRequest);
+        //checkTaskAvailability(oRequest);
         processSubjectStatusHistoryWritingPreHandle(oRequest);
         return true;
     }
@@ -1198,13 +1198,13 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(SERVICE_SUBJECT_PROCESS_SET_PROCESS_SUBJECT_STATUS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
-
+/*
     private boolean isExistTaskID(HttpServletRequest oRequest) {
 
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
-
+ 
     private void checkTaskAvailability(HttpServletRequest oRequest) {
 
         if (isExistTaskID(oRequest)) {
@@ -1225,7 +1225,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                 throw new RuntimeException("Can't find task");
             }
         }
-    }
+    }*/
 
     private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
 
