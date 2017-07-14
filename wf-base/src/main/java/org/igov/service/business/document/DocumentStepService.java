@@ -637,7 +637,7 @@ public class DocumentStepService {
                 addVisor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
                 DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step);
                 LOG.info("oDocumentStep_Saved.aDocumentStepSubjectRight {}", oDocumentStep_Saved.aDocumentStepSubjectRight());
-                addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+                //addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
             }
 
             String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
