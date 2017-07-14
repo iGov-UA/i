@@ -2903,6 +2903,8 @@ public class ActionTaskService {
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
             aoAllTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
+            //убираем из необработанных те, которые находятся в черновиках
+            aoAllTasks.removeAll(oTaskService.createTaskQuery().taskAssignee(sLogin).list());
             
         //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
