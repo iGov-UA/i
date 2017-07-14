@@ -1297,7 +1297,7 @@ public class DocumentStepService {
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
             Map<String, Object> mParamDocumentStepSubjectRight = new HashMap();
-            mParamDocumentStepSubjectRight.put("sKeyStep", oDocumentStepSubjectRight.getDocumentStep());
+            mParamDocumentStepSubjectRight.put("sKeyStep", oDocumentStepSubjectRight.getDocumentStep().getsKey_Step());
             mParamDocumentStepSubjectRight.put("sDate", oDocumentStepSubjectRight.getsDate() == null ? ""
                     : formatter.print(oDocumentStepSubjectRight.getsDate()));// "2016-05-15
             mParamDocumentStepSubjectRight.put("sDateECP", oDocumentStepSubjectRight.getsDateECP() == null ? ""
