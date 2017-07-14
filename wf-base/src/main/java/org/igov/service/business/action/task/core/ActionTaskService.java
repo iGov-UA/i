@@ -3074,6 +3074,13 @@ public class ActionTaskService {
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
 
+    /**
+     * Документы ожидающие подпись ЭЦП. Выборка из документстепрайт где
+     * sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == nul
+     * 
+     * @param sLogin логин для которого нужно найти документы
+     * @return  документы ожидающие подпись ЭЦП
+     */
     private List<Task> getOpenedUnassignedWithoutECPDocument(String sLogin) {
 
         LOG.info("OpenedUnassignedWithoutECPDocument start");
