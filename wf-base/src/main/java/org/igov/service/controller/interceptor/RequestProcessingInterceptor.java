@@ -1215,8 +1215,12 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.info("snTaskId: " + snTaskId);
 
             Task oTask = taskService.createTaskQuery().taskId(snTaskId).singleResult();
+            HistoricTaskInstance oHistoryTask = historyService
+                    .createHistoricTaskInstanceQuery()
+                    .taskId(snTaskId)
+                    .singleResult();
             
-            if (oTask == null) {
+            if (oTask == null && oHistoryTask == null) {
                 LOG.error("Task not found!");
                 throw new RuntimeException("Can't find task");
             }
