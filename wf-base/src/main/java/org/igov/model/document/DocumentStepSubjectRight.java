@@ -73,7 +73,7 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	private DateTime sDateECP;
 
 	@OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@LazyCollection(LazyCollectionOption.TRUE)
 	private List<DocumentStepSubjectRightField> documentStepSubjectRightFields;
 
 	public List<DocumentStepSubjectRightField> getDocumentStepSubjectRightFields() {
