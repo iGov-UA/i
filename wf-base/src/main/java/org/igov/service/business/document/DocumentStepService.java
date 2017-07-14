@@ -549,7 +549,11 @@ public class DocumentStepService {
                                 LOG.info("DocumentStepSubjectRightField in AddVisor is {}", oDocumentStepSubjectRightField_New.getId());
                             //}
                         }
+                        
+                        oDocumentStepDao.saveOrUpdate(oDocumentStep);
+                        
                         break;
+                        
                     }
                 }
 
