@@ -34,7 +34,8 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	private static final transient Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@JsonIgnore
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = {
+              CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name = "nID_DocumentStep")
 	private DocumentStep documentStep;
 
@@ -72,7 +73,7 @@ public class DocumentStepSubjectRight extends AbstractEntity {
 	private DateTime sDateECP;
 
 	@OneToMany(mappedBy = "documentStepSubjectRight", cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.TRUE)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<DocumentStepSubjectRightField> documentStepSubjectRightFields;
 
 	public List<DocumentStepSubjectRightField> getDocumentStepSubjectRightFields() {
