@@ -864,6 +864,10 @@
         }
 
         $scope.submitTask = function (form, bNotShowSuccessModal, isNeedEDS) {
+
+          //todo сюда передавать значение параметра bNeedECP вместо checkboxForAutoECP.status
+          isNeedEDS = false;
+
           var isAnyIssuesExist = Issue.getIssues();
           $scope.validateForm(form);
           if(form.$invalid){

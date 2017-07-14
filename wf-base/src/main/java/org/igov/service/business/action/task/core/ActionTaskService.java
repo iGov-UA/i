@@ -2924,9 +2924,39 @@ public class ActionTaskService {
             aoTaskList.removeAll(aoTaskToRemove);
             LOG.info("Document closed after filtering count={}", aoTaskList.size());
             aoAllTasks.addAll(aoTaskList);
-            
+
         } else {
-            long nStartCalculations = System.nanoTime();
+            if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
+                LOG.info("OpenedUnassignedUnprocessedDocument condition");
+                long nStartCalculations = System.nanoTime();
+                LOG.info("Start calculations");
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+                        .findUnassignedUnprocessedDocument(sLogin);
+                LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
+                long nFirstPartCalculations = System.nanoTime();
+                LOG.info("First part done time={}", (nFirstPartCalculations - nStartCalculations) / 1000000000);
+                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
+                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
+                });
+                long nSecondPartCalculations = System.nanoTime();
+                LOG.info("Second part done time={}", (nSecondPartCalculations - nFirstPartCalculations) / 1000000000);
+
+            } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
+                LOG.info("OpenedUnassignedWithoutECPDocument condition");
+                long nStartCalculations = System.nanoTime();
+                LOG.info("Start calculations");
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
+                        .findOpenedUnassignedWithoutECPDocument(sLogin);
+                LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
+                long nFirstPartCalculations = System.nanoTime();
+                LOG.info("First part done time={}", (nFirstPartCalculations - nStartCalculations) / 1000000000);
+                aDocumentStepSubjectRight.forEach(oDocumentStepSubjectRight -> {
+                    aoAllTasks.addAll(getTasksByDocumentStepSubjectRight(oDocumentStepSubjectRight));
+                });
+                long nSecondPartCalculations = System.nanoTime();
+                LOG.info("Second part done time={}", (nSecondPartCalculations - nFirstPartCalculations) / 1000000000);
+            }
+            /*long nStartCalculations = System.nanoTime();
             LOG.info("Start calculations");
             List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
                     .findAllBy("sKey_GroupPostfix", sLogin);
@@ -2991,9 +3021,7 @@ public class ActionTaskService {
                     LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
                     aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
                 }
-            }
-            long nSecondPartCalculations = System.nanoTime();
-            LOG.info("Second part done time={}", nSecondPartCalculations - nFirstPartCalculations);
+            }*/
         }
         nTotalNumber = aoAllTasks.size();
         //Сортировка коллекции по дате создания таски, для реализации паджинации
@@ -3046,7 +3074,7 @@ public class ActionTaskService {
         return oTaskDataResultVO;
     }
 
-    public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
+    private Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
         LOG.info("getHistoryVariableByHistoryProcessInstanceId started with "
                 + "sProcessInstanceId={}", sProcessInstanceId);
         Map<String, Object> mHistoryVariables = new HashMap<>();
@@ -3066,5 +3094,21 @@ public class ActionTaskService {
         }
 
         return mHistoryVariables;
+    }
+
+    private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
+        LOG.info("getTasksByDocumentStepSubjectRight start");
+        long nCalculations = System.nanoTime();
+        String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
+                .getSnID_Process_Activiti();
+        long nCalculationsEnd = System.nanoTime();
+        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd - nCalculations);
+        List<Task> aoResult = oTaskService.createTaskQuery()
+                .processInstanceId(snID_Process_Activiti)
+                .active()
+                .list();
+        long nCalculationsEnd2 = System.nanoTime();
+        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd2 - nCalculationsEnd);
+        return aoResult;
     }
 }

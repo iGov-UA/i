@@ -19,7 +19,18 @@ public class DocumentStepSubjectRightDaoImpl extends GenericEntityDao<Long, Docu
         criteria.add(Restrictions.eq("sKey_GroupPostfix", sLogin));
         criteria.add(Restrictions.isNull("sDate"));
         criteria.add(Restrictions.isNotNull("bWrite"));
-       
+
+        return criteria.list();
+    }
+
+    @Override
+    public List<DocumentStepSubjectRight> findOpenedUnassignedWithoutECPDocument(String sLogin) {
+        Criteria criteria = createCriteria();
+        criteria.add(Restrictions.eq("sLogin", sLogin));
+        criteria.add(Restrictions.isNotNull("sDate"));
+        criteria.add(Restrictions.isNull("sDateECP"));
+        criteria.add(Restrictions.eq("bNeedECP", Boolean.valueOf("true")));
+
         return criteria.list();
     }
 
