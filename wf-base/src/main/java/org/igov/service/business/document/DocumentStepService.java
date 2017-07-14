@@ -656,7 +656,9 @@ public class DocumentStepService {
         LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
         LOG.info("sKey_GroupPostfix_New {}", sKey_GroupPostfix_New);
         LOG.info("sKey_Step_Document_To {}", sKey_Step_Document_To);
-        Thread.sleep(5000);
+        
+        try {
+            Thread.sleep(5000);
             //LOG.info("sKey_Group {}", sKey_Group);
             //LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
             //LOG.info("sKey_Step {}", sKey_Step);
@@ -667,7 +669,7 @@ public class DocumentStepService {
         DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step_Document_To);
         
         DocumentStepSubjectRight oDocumentStepSubjectRight_Saved = null;
-        try {
+       
         
 
         /*if (sKey_Group.startsWith("_default_")) {
