@@ -3808,9 +3808,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mReturn = new HashMap<>();
         Map<String, Object> mJsonBody;
         String taskId = null;
+        String nID_Process = null;
+        String sKey_Step = null;
+        
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if (mJsonBody != null) {
+                nID_Process = (String) mJsonBody.get("nID_Process");
+                sKey_Step = (String) mJsonBody.get("sKey_Step");
+                
                 if (mJsonBody.containsKey("taskId")) {
                     LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
                     taskId = (String) mJsonBody.get("taskId");
@@ -3831,11 +3837,31 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 if (mJsonBody.containsKey("properties")) {
                     LOG.info("Parsing properties: " + mJsonBody.get("properties"));
 
-                    List<Task> tasks = taskService.createTaskQuery().taskId(taskId).list();
+                    //
+                    List<Task> aTask = null;
+                    Task oActiveTask = null;
+                    
+                    if(sKey_Step != null && nID_Process != null){
+                        aTask = taskService.createTaskQuery().executionId(nID_Process).active().list();
+
+                        for(Task oTask : aTask){
+                            if(oTask.getId().equals(taskId)){
+                                Map<String, Object> mProcessVariables = oTask.getProcessVariables();
+
+                            }
+                        }
+                    }else{
+                        aTask = taskService.createTaskQuery().taskId(taskId).list();
+                    }
+                    
                     String executionId = null;
-                    if (tasks != null && tasks.size() > 0) {
-                        Task firstTask = tasks.get(0);
-                        executionId = firstTask.getExecutionId();
+                    if (aTask != null && aTask.size() > 0) {
+                        
+                        if(oActiveTask == null){
+                            oActiveTask = aTask.get(0);
+                        }
+                        
+                        executionId = oActiveTask.getExecutionId();
 
                         for (Map<String, Object> param : (List<Map<String, Object>>) mJsonBody.get("properties")) {
                             LOG.info("Updating variable : " + (String) param.get("id") + " with the value " + param.get("value"));
@@ -3845,7 +3871,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                         if (!bSaveOnly && isSubmitFlag) {
                             LOG.info("Submitting task");
-                            taskService.complete(firstTask.getId());
+                            taskService.complete(oActiveTask.getId());
                         }
 
                         //updateProcessHistoryEvent(firstTask.getProcessInstanceId(), mParam);
@@ -3856,7 +3882,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         List<Task> activeTasks = taskService.createTaskQuery().executionId(executionId).active().list();
                         if (activeTasks != null && activeTasks.size() > 0) {
                             LOG.info("Found " + activeTasks.size() + " active tasks for the execution id " + executionId);
-                            mReturn.put("taskId", tasks.get(0).getId());
+                            mReturn.put("taskId", aTask.get(0).getId());
                         } else {
                             LOG.warn("There are no active tasks for execution id " + executionId);
                         }
