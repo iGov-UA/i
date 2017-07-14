@@ -3848,7 +3848,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         for(Task oTask : aTask){
                             if(oTask.getId().equals(taskId)){
                                 Map<String, Object> mProcessVariables = oTask.getProcessVariables();
-
+                                if(((String)mProcessVariables.get("sKey_Step")).equals(sKey_Step)){
+                                    oActiveTask = oTask;
+                                }else{
+                                   throw new RuntimeException ("DocumentStepModified"); 
+                                }
                             }
                         }
                     }else{
