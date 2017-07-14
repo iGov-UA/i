@@ -532,6 +532,7 @@ public class DocumentStepService {
                             DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                             oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
                             oDocumentStepSubjectRight_New.setbWrite(false);
+                            oDocumentStepSubjectRight_New.setsName(" ");
                             oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
                             oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
 
@@ -635,8 +636,10 @@ public class DocumentStepService {
 
             if (sOperationType.equals("AddVisor")) {
                 addVisor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
-                DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step);
-                LOG.info("oDocumentStep_Saved.aDocumentStepSubjectRight {}", oDocumentStep_Saved.aDocumentStepSubjectRight());
+                DocumentStep oDocumentStep_Saved_Before = getDocumentStep(snID_Process_Activiti, sKey_Step);
+                LOG.info("oDocumentStep_Saved_Before.aDocumentStepSubjectRight {}", oDocumentStep_Saved_Before.aDocumentStepSubjectRight());
+                DocumentStep oDocumentStep_Saved_After = getDocumentStep(snID_Process_Activiti, sKey_Step);
+                LOG.info("oDocumentStep_Saved_After.aDocumentStepSubjectRight {}", oDocumentStep_Saved_After.aDocumentStepSubjectRight());
                 //addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
             }
 
