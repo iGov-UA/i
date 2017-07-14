@@ -16,10 +16,10 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
     <userTask id="usertask1" name="Відділення подає заявку на встановлення ліміту Степ1">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nNumberPK" name="Зашифрований номер ПК" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту, $" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
@@ -49,9 +49,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <userTask id="usertask2" name="Аналіз заявки на коректність">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення заяви" type="enum" required="true">
@@ -77,8 +78,8 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //реклонирование прав
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Operator_KC'
-var sKey_GroupPostfix_New =('AkordBank_Ekonomist')
+var sKey_GroupPostfix = '_default_AkordBank_Deputy_Head_of_Branch_bank#66'
+var sKey_GroupPostfix_New =('Akordbank_Operator_KC_1')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 </script>
@@ -95,9 +96,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <userTask id="usertask3" name="Оператор встановлює ліміт">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNoteKC" name="Коментар" type="string"></activiti:formProperty>
@@ -135,7 +137,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для УРКБ
-var sKey_GroupPostfix = '_default_Akordbank_Management_RKB'
+var sKey_GroupPostfix = '_default_AkordBank_Head_UKRB'
 var sKey_GroupPostfix_New ='AkordBank_Head_UKRB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -149,6 +151,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
@@ -223,8 +226,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для оператора КЦ
-var sKey_GroupPostfix = '_default_Akordbank_Operator_KC_1'
-var sKey_GroupPostfix_New ='Akordbank_Operator_KC_1'
+var sKey_GroupPostfix = '_default_Operator_KC'
+var sKey_GroupPostfix_New ='Akordbank_Operator_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
