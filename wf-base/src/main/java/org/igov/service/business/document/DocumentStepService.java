@@ -67,6 +67,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.logging.Level;
 import org.igov.model.document.DocumentStepSubjectRightFieldDao;
 
 @Component("documentStepService")
@@ -658,10 +659,14 @@ public class DocumentStepService {
         DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step_Document_To);
         
         DocumentStepSubjectRight oDocumentStepSubjectRight_Saved = null;
-        
-        //LOG.info("sKey_Group {}", sKey_Group);
-        //LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
-        //LOG.info("sKey_Step {}", sKey_Step);
+        try {
+            Thread.sleep(5000);
+            //LOG.info("sKey_Group {}", sKey_Group);
+            //LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
+            //LOG.info("sKey_Step {}", sKey_Step);
+        } catch (InterruptedException ex) {
+            java.util.logging.Logger.getLogger(DocumentStepService.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         /*if (sKey_Group.startsWith("_default_")) {
             sKey_Step = "_";
