@@ -2914,73 +2914,7 @@ public class ActionTaskService {
             LOG.info("OpenedUnassignedProcessedDocument condition");
             aoAllTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
         }
-        /*long nStartCalculations = System.nanoTime();
-            LOG.info("Start calculations");
-            List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStepSubjectRightDao
-                    .findAllBy("sKey_GroupPostfix", sLogin);
-            long nFirstPartCalculations = System.nanoTime();
-            LOG.info("First part done time={}", nFirstPartCalculations - nStartCalculations);
-            LOG.info("aDocumentStepSubjectRight.size={}", aDocumentStepSubjectRight.size());
-            for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
-
-                DateTime sDateECP = oDocumentStepSubjectRight.getsDateECP();
-                LOG.info("sDateECP={}", oDocumentStepSubjectRight.getsDateECP());
-
-                DateTime sDate = oDocumentStepSubjectRight.getsDate();
-                LOG.info("sDate={} ", sDate);
-
-                Boolean bWrite = oDocumentStepSubjectRight.getbWrite();
-                LOG.info("bWrite={} ", bWrite);
-
-                Boolean bNeedECP = oDocumentStepSubjectRight.getbNeedECP();
-
-                // проверяем, если даты ецп нет, но есть дата подписания - нашли
-                if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)
-                        && sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == null) {
-                    LOG.info("OpenedUnassignedWithoutECPDocument condition");
-                    // Достаем nID_Process_Activiti у найденного
-                    // oDocumentStepSubjectRight через DocumentStep
-                    String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
-                            .getSnID_Process_Activiti();
-                    LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
-
-                    List<Task> aTaskOfDocumentStepSubjectRight = oTaskService.createTaskQuery()
-                            .processInstanceId(snID_Process_Activiti)
-                            .active()
-                            .list();
-                    LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
-                    aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
-
-                } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)
-                        && sDate == null && bWrite != null) {
-                    LOG.info("OpenedUnassignedUnprocessedDocument condition");
-                    String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
-                            .getSnID_Process_Activiti();
-                    LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
-
-                    List<Task> aTaskOfDocumentStepSubjectRight = oTaskService.createTaskQuery()
-                            .processInstanceId(snID_Process_Activiti)
-                            .active()
-                            .list();
-                    LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
-                    aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
-
-                } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)
-                        && (sDate != null || bWrite == null)) {
-                    LOG.info("OpenedUnassignedProcessedDocument condition");
-                    String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
-                            .getSnID_Process_Activiti();
-                    LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
-
-                    List<Task> aTaskOfDocumentStepSubjectRight = oTaskService.createTaskQuery()
-                            .processInstanceId(snID_Process_Activiti)
-                            .active()
-                            .list();
-                    LOG.info("aTaskOfDocumentStepSubjectRight.suze()={}", aTaskOfDocumentStepSubjectRight.size());
-                    aoAllTasks.addAll(aTaskOfDocumentStepSubjectRight);
-                }
-            }*/
-
+        
         nTotalNumber = aoAllTasks.size();
         //Сортировка коллекции по дате создания таски, для реализации паджинации
         Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
