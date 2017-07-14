@@ -679,6 +679,7 @@ public class DocumentStepService {
             }
         }
         
+        LOG.info("oDocumentStep_Saved.aDocumentStepSubjectRight {}", oDocumentStep_Saved.aDocumentStepSubjectRight());
         
         for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Saved.aDocumentStepSubjectRight()){
             if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
