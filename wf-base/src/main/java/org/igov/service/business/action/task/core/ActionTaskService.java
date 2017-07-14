@@ -3098,13 +3098,17 @@ public class ActionTaskService {
 
     private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
         LOG.info("getTasksByDocumentStepSubjectRight start");
+        long nCalculations = System.nanoTime();
         String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
                 .getSnID_Process_Activiti();
-        LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
-
-        return oTaskService.createTaskQuery()
+        long nCalculationsEnd = System.nanoTime();
+        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd - nCalculations);
+        List<Task> aoResult = oTaskService.createTaskQuery()
                 .processInstanceId(snID_Process_Activiti)
                 .active()
                 .list();
+        long nCalculationsEnd2 = System.nanoTime();
+        LOG.info("get snID_Process_Activiti part done time={}", nCalculationsEnd2 - nCalculationsEnd);
+        return aoResult;
     }
 }
