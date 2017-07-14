@@ -29,7 +29,7 @@ public class DocumentStepSubjectRightDaoImpl extends GenericEntityDao<Long, Docu
         criteria.add(Restrictions.eq("sLogin", sLogin));
         criteria.add(Restrictions.isNotNull("sDate"));
         criteria.add(Restrictions.isNull("sDateECP"));
-        criteria.add(Restrictions.eq("bNeedECP", "true"));
+        criteria.add(Restrictions.eq("bNeedECP", Boolean.valueOf("true")));
 
         return criteria.list();
     }
