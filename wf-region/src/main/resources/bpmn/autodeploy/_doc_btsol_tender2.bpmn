@@ -15,7 +15,7 @@
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Customer" name="id группы (заказчика); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
@@ -196,7 +196,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
@@ -363,7 +363,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
@@ -540,7 +540,7 @@
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
@@ -728,7 +728,11 @@ var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var sSubjectType = "Organ"
 var nDeepLevel = 0
 var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor, sSubjectType, nDeepLevel)
-execution.setVariable('sEnterpriseCustomer', obj1[0].oSubject.sLabel)</script>
+var obj2 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor, sSubjectType, nDeepLevel)
+execution.setVariable('sEnterpriseCustomer', obj1[0].oSubject.sLabel)
+execution.setVariable('sID_Group_Activiti_Customer', obj2[0].sID_Group_Activiti)
+
+</script>
     </scriptTask>
     <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
@@ -752,12 +756,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
     <callActivity id="callactivity1" name="ответный документ" calledElement="_doc_btsol_sz">
       <extensionElements>
-        <activiti:in source="sGroupAddressee" target="sLoginAuthor"></activiti:in>
+        <activiti:in source="sLogin_LastSubmited" target="sLoginAuthor"></activiti:in>
         <activiti:in source="sTitleDoc" target="sDocAnswer"></activiti:in>
         <activiti:in source="sNumberCard" target="sNumberCard"></activiti:in>
       </extensionElements>
     </callActivity>
-    <sequenceFlow id="flow64" sourceRef="callactivity1" targetRef="exclusivegateway15"></sequenceFlow>
+    <sequenceFlow id="flow64" sourceRef="servicetask5" targetRef="exclusivegateway15"></sequenceFlow>
     <scriptTask id="scripttask6" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
@@ -848,7 +852,7 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
     <sequenceFlow id="flow99" name="все подписали" sourceRef="exclusivegateway7" targetRef="exclusivegateway13">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll4 == true}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow100" sourceRef="exclusivegateway11" targetRef="callactivity1">
+    <sequenceFlow id="flow100" sourceRef="exclusivegateway11" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYes'  || asActionDocUT5 == 'sEnumYesExit' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow101" sourceRef="exclusivegateway11" targetRef="scripttask17">
@@ -1070,7 +1074,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="линия новая заявка" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sEnterpriseCustomer&quot;],&quot;sValue&quot;:&quot;Ввод новой заявки&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_ARM" name="Id; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Enterprise" name="Id_corp; ;bVisible=false" type="string" default="3"></activiti:formProperty>
@@ -1227,7 +1231,7 @@ execution.setVariable('bAccept', bAccept)</script>
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_isExecute" name="sName_isExecute" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName_isExecute" name="sName_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT5" name="Сгенерировать ответный документ (рекомендация ТК)" type="enum" required="true">
           <activiti:value id="sEnumYes" name="Сформировать ответ (не закрывать заявку)"></activiti:value>
           <activiti:value id="sEnumYesExit" name="Сформировать ответ (закрыть заявку)"></activiti:value>
@@ -1246,7 +1250,7 @@ execution.setVariable('bAccept', bAccept)</script>
     <sequenceFlow id="flow120" sourceRef="exclusivegateway14" targetRef="scripttask21">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumSign' }]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow121" name="Ответный документ" sourceRef="exclusivegateway14" targetRef="callactivity1">
+    <sequenceFlow id="flow121" name="Ответный документ" sourceRef="exclusivegateway14" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT4 == 'sEnumReply' }]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow122" name="Отказ" sourceRef="exclusivegateway14" targetRef="scripttask17">
@@ -1256,7 +1260,7 @@ execution.setVariable('bAccept', bAccept)</script>
     <sequenceFlow id="flow123" sourceRef="exclusivegateway15" targetRef="scripttask30">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYes' }]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow124" sourceRef="exclusivegateway15" targetRef="scripttask17">
+    <sequenceFlow id="flow124" sourceRef="exclusivegateway15" targetRef="scripttask31">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYesExit' }]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name=" Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
@@ -1274,9 +1278,7 @@ execution.setVariable('bAccept', bAccept)</script>
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_8')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_8', true, 'sLogin_isExecute')
 
-// получение группы исполнителя
-var aGroupAddressee = documentStepService.getLoginsFromField(snID_Process_Activiti, 'sTable6', null)
-execution.setVariable('sGroupAddressee', aGroupAddressee[0])</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow126" sourceRef="scripttask21" targetRef="usertask5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway16" name="Exclusive Gateway"></exclusiveGateway>
@@ -1298,11 +1300,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Customer" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" required="true">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -1492,11 +1494,11 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_OGOK" name="id группы ; ;bVisible=false" type="string" default="OGOK_"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Customer" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="bAccept" name="кол-во согласующих; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sID_Relation" name="sID_Relation; ;bVisible=false" type="string" default="CodeOfWorks"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Email для эскалации (технический)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Email для эскалации (технический); ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" required="true">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -1715,15 +1717,39 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
     <sequenceFlow id="flow147" sourceRef="scripttask29" targetRef="servicetask4"></sequenceFlow>
     <scriptTask id="scripttask30" name="убрать подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable('sLoginAuthor')
-var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_5', sKeyGroup)</script>
+var sKeyGroup = execution.getVariable('sLogin_LastSubmited')
+var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_8', sKeyGroup)</script>
     </scriptTask>
-    <sequenceFlow id="flow148" sourceRef="scripttask30" targetRef="usertask5"></sequenceFlow>
+    <scriptTask id="scripttask31" name="All Signes Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId();
+var bSubmitedAll8="";
+var oCheckSubmitedAll8= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_8')
+execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString())</script>
+    </scriptTask>
+    <exclusiveGateway id="exclusivegateway21" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow149" sourceRef="exclusivegateway21" targetRef="scripttask17">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll8 == true}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow150" sourceRef="scripttask31" targetRef="exclusivegateway21"></sequenceFlow>
+    <sequenceFlow id="flow151" sourceRef="exclusivegateway21" targetRef="usertask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll8 == false}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask5" name="Ответный документ" activiti:delegateExpression="#{StartProcess}">
+      <extensionElements>
+        <activiti:field name="soData">
+          <activiti:string><![CDATA[sLoginAuthor::value{[sLogin_LastSubmited]};;sDocAnswer::value{[sTitleDoc]};;sNumberCard::value{[sNumberCard]}]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sID_BP">
+          <activiti:string><![CDATA[_doc_btsol_sz]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow152" sourceRef="scripttask30" targetRef="usertask5"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_tender2">
     <bpmndi:BPMNPlane bpmnElement="_doc_btsol_tender2" id="BPMNPlane__doc_btsol_tender2">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1082.0" y="99.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1018.0" y="100.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="84.0" width="130.0" x="1288.0" y="75.0"></omgdc:Bounds>
@@ -1738,7 +1764,7 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdc:Bounds height="84.0" width="130.0" x="1696.0" y="1467.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="554.0" y="1259.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="554.0" y="1091.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="1151.0" y="90.0"></omgdc:Bounds>
@@ -1747,7 +1773,7 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdc:Bounds height="55.0" width="105.0" x="1708.0" y="652.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="callactivity1" id="BPMNShape_callactivity1">
-        <omgdc:Bounds height="61.0" width="105.0" x="519.0" y="1649.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="105.0" x="360.0" y="1649.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
         <omgdc:Bounds height="56.0" width="105.0" x="1708.0" y="90.0"></omgdc:Bounds>
@@ -1783,10 +1809,10 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdc:Bounds height="56.0" width="105.0" x="1300.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask17" id="BPMNShape_scripttask17">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1419.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1339.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1171.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="84.0" width="105.0" x="1708.0" y="1250.0"></omgdc:Bounds>
@@ -1867,14 +1893,23 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdc:Bounds height="72.0" width="105.0" x="868.0" y="1646.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask30" id="BPMNShape_scripttask30">
-        <omgdc:Bounds height="55.0" width="105.0" x="700.0" y="1544.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="714.0" y="1544.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask31" id="BPMNShape_scripttask31">
+        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1440.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway21" id="BPMNShape_exclusivegateway21">
+        <omgdc:Bounds height="40.0" width="40.0" x="551.0" y="1340.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1652.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="1256.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="1288.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="1117.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1053.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="1151.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
@@ -1894,7 +1929,7 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1760.0" y="728.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="571.0" y="1649.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1652.0"></omgdi:waypoint>
         <omgdi:waypoint x="571.0" y="1591.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -1910,7 +1945,7 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1352.0" y="439.0"></omgdi:waypoint>
         <omgdi:waypoint x="1352.0" y="246.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="55.0" x="1684.0" y="427.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="55.0" x="1684.0" y="427.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
@@ -1918,14 +1953,14 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1352.0" y="1109.0"></omgdi:waypoint>
         <omgdi:waypoint x="1352.0" y="246.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="27.0" x="1664.0" y="1091.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="27.0" x="1664.0" y="1091.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
         <omgdi:waypoint x="1760.0" y="620.0"></omgdi:waypoint>
         <omgdi:waypoint x="1760.0" y="652.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="1698.0" y="619.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="1698.0" y="619.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow78" id="BPMNEdge_flow78">
@@ -1964,7 +1999,7 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="1740.0" y="1685.0"></omgdi:waypoint>
         <omgdi:waypoint x="1683.0" y="1684.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="1699.0" y="1694.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="75.0" x="1699.0" y="1694.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
@@ -1973,20 +2008,20 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
         <omgdi:waypoint x="669.0" y="1662.0"></omgdi:waypoint>
-        <omgdi:waypoint x="668.0" y="1446.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="669.0" y="1279.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1278.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
         <omgdi:waypoint x="1352.0" y="190.0"></omgdi:waypoint>
         <omgdi:waypoint x="1353.0" y="159.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow104" id="BPMNEdge_flow104">
-        <omgdi:waypoint x="571.0" y="1419.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1394.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1251.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1226.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow105" id="BPMNEdge_flow105">
-        <omgdi:waypoint x="571.0" y="1339.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1294.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1171.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
         <omgdi:waypoint x="1760.0" y="895.0"></omgdi:waypoint>
@@ -2044,27 +2079,27 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
       <bpmndi:BPMNEdge bpmnElement="flow121" id="BPMNEdge_flow121">
         <omgdi:waypoint x="1291.0" y="1703.0"></omgdi:waypoint>
         <omgdi:waypoint x="1291.0" y="1765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1710.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="1765.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1707.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1101.0" y="1749.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="1101.0" y="1749.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
         <omgdi:waypoint x="1291.0" y="1663.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1290.0" y="1447.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="1278.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1278.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="30.0" x="1103.0" y="1427.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="30.0" x="1301.0" y="1585.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
         <omgdi:waypoint x="591.0" y="1571.0"></omgdi:waypoint>
-        <omgdi:waypoint x="700.0" y="1571.0"></omgdi:waypoint>
+        <omgdi:waypoint x="714.0" y="1571.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow124" id="BPMNEdge_flow124">
         <omgdi:waypoint x="571.0" y="1551.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1474.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1495.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
         <omgdi:waypoint x="1151.0" y="1680.0"></omgdi:waypoint>
@@ -2128,8 +2163,7 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow143" id="BPMNEdge_flow143">
         <omgdi:waypoint x="2411.0" y="870.0"></omgdi:waypoint>
-        <omgdi:waypoint x="2411.0" y="689.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1835.0" y="689.0"></omgdi:waypoint>
+        <omgdi:waypoint x="2411.0" y="679.0"></omgdi:waypoint>
         <omgdi:waypoint x="1813.0" y="679.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow144" id="BPMNEdge_flow144">
@@ -2152,8 +2186,21 @@ var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Pro
         <omgdi:waypoint x="868.0" y="1682.0"></omgdi:waypoint>
         <omgdi:waypoint x="819.0" y="1679.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow148" id="BPMNEdge_flow148">
-        <omgdi:waypoint x="805.0" y="1571.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow149" id="BPMNEdge_flow149">
+        <omgdi:waypoint x="571.0" y="1340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1306.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow150" id="BPMNEdge_flow150">
+        <omgdi:waypoint x="571.0" y="1440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1380.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow151" id="BPMNEdge_flow151">
+        <omgdi:waypoint x="591.0" y="1360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1360.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow152" id="BPMNEdge_flow152">
+        <omgdi:waypoint x="819.0" y="1571.0"></omgdi:waypoint>
         <omgdi:waypoint x="1072.0" y="1571.0"></omgdi:waypoint>
         <omgdi:waypoint x="1072.0" y="1646.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
