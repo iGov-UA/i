@@ -3845,12 +3845,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         aTask = taskService.createTaskQuery().executionId(nID_Process).active().list();
                         
                         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
-                                                                .processInstanceId(nID_Process.toString()).list();
+                                                                .processInstanceId(nID_Process).list();
                         
                         for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
                             LOG.info("oHistoricVariableInstance.getVariableName {}", oHistoricVariableInstance.getVariableName());
                             LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
                         }
+                        
+                        LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
                         
                         for(Task oTask : aTask){
                             if(oTask.getId().equals(taskId)){
