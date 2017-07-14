@@ -2898,16 +2898,18 @@ public class ActionTaskService {
         if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
             LOG.info("DocumentClosed condition");
             aoAllTasks.addAll(getDocumentClosed(sLogin));
-            
-        //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
+
+            //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
-            aoAllTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
+            aoAllTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
 
+            //Выборка из документстепрайт где bWrite=нал или есть дата подписи bDate    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
-
+            LOG.info("OpenedUnassignedProcessedDocument condition");
+            aoAllTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
         }
         /*long nStartCalculations = System.nanoTime();
             LOG.info("Start calculations");
@@ -3086,21 +3088,53 @@ public class ActionTaskService {
         return aoTaskList;
     }
 
-    private List<Task> getOpenedUnassignedProcessedDocument(String sLogin) {
-        
+    /**
+     * Неотработанные документы. Выборка из документстепрайт где bWrite=тру или
+     * фолс и нет даты подписи.
+     *
+     * @param sLogin логин для которого нужно найти документы
+     * @return все не отработанные документы
+     */
+    private List<Task> getOpenedUnassignedUnprocessedDocument(String sLogin) {
+
         LOG.info("getOpenedUnassignedProcessedDocument start");
-        
-        String sQuery = "select * from \"public\".\"act_ru_task\""
-                + " where \"public\".\"act_ru_task\".\"proc_inst_id_" 
-                + " in (select \"public\".\"DocumentStep\".\"snID_Process_Activiti\""
-                +       " from \"public\".\"DocumentStep\""
-                +       " where \"public\".\"DocumentStep\".\"nID\"\n"
-                +       "in (select \"public\".\"DocumentStepSubjectRight\".\"nID_DocumentStep\""
-                +             " from \"public\".\"DocumentStepSubjectRight\""
-                +             " where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
-                +                 "and (\"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
-                +                 "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null)))";
+
+        String sQuery = "select * from \"public\".\"act_ru_task\" where \"public\".\"act_ru_task\".\"proc_inst_id_\"\n"
+                + "in (select \"public\".\"DocumentStep\".\"snID_Process_Activiti\"\n"
+                + "from \"public\".\"DocumentStep\" \n"
+                + "where \"public\".\"DocumentStep\".\"nID\"\n"
+                + "in (select \"public\".\"DocumentStepSubjectRight\".\"nID_DocumentStep\"\n"
+                + "from \"public\".\"DocumentStepSubjectRight\"\n"
+                + "where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
+                + "and \"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
+                + "and \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null))";
 
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
+
+    /**
+     * Отработанные документы. Выборка из документстепрайт где bWrite=нал или
+     * есть дата подписи bDate
+     *
+     * @param sLogin логин для которого нужно найти документы
+     * @return все отработанные документы
+     */
+    private List<Task> getOpenedUnassignedProcessedDocument(String sLogin) {
+
+        LOG.info("getOpenedUnassignedProcessedDocument start");
+
+        String sQuery = "select * from \"public\".\"act_ru_task\" \n"
+                + "where \"public\".\"act_ru_task\".\"proc_inst_id_\"\n"
+                + "in (select \"public\".\"DocumentStep\".\"snID_Process_Activiti\" \n"
+                + "from \"public\".\"DocumentStep\" \n"
+                + "where \"public\".\"DocumentStep\".\"nID\"\n"
+                + "in (select \"public\".\"DocumentStepSubjectRight\".\"nID_DocumentStep\" \n"
+                + "from \"public\".\"DocumentStepSubjectRight\" \n"
+                + "where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
+                + "and (\"public\".\"DocumentStepSubjectRight\".\"bWrite\" is null\n"
+                + "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is not null)))";
+
+        return oTaskService.createNativeTaskQuery().sql(sQuery).list();
+    }
+
 }
