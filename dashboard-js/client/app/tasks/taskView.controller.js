@@ -864,10 +864,6 @@
         }
 
         $scope.submitTask = function (form, bNotShowSuccessModal, isNeedEDS) {
-
-          //todo сюда передавать значение параметра bNeedECP вместо checkboxForAutoECP.status
-          isNeedEDS = false;
-
           var isAnyIssuesExist = Issue.getIssues();
           $scope.validateForm(form);
           if(form.$invalid){
@@ -1848,6 +1844,19 @@
           $scope.issueValid = Issue.addIssue();
         };
 
+
+        $scope.isNeedECP = function () {
+          var documentStep = taskData.mProcessVariable.sKey_Step_Document;
+          for (var key in documentLogins){
+            if(documentLogins[key].aUser.length > 0){
+              if (documentLogins[key].aUser[0].sID_Group === $scope.getCurrentUserLogin() && documentLogins[key].sKeyStep === documentStep){
+                return documentLogins[key].bNeedECP;
+                break;
+              }
+            }
+          }
+          return false;
+        }
       }
     ])
 })();
