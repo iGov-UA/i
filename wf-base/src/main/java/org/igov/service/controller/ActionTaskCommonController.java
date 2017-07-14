@@ -2452,15 +2452,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     || sFilterStatus.equals("DocumentClosed")) {
 
                 LOG.info("getTasks sFilterStatus={}", sFilterStatus);
-                if (bInclude) {
                 aoResult = oActionTaskService.getTasksByLoginAndFilterStatus(
                         sLogin, sFilterStatus, nSize, nStart, bIncludeVariablesProcess
                 );
-                return aoResult;
-                } else {
-                    sFilterStatus = "Documents";
-                }
-            } //else {
+            } else {
                 List<Group> groups = identityService.createGroupQuery().groupMember(sLogin).list();
 
                 if (groups != null && !groups.isEmpty()) {
@@ -2566,7 +2561,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     } else {
                         aoResult.setTotal(totalCountServices);
                     }
-                //}
+                }
             }
         } catch (Exception e) {
             LOG.error("Error occured while getting list of tasks", e);
