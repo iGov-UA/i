@@ -3084,7 +3084,7 @@ public class ActionTaskService {
     }
 
     private List<Task> getTasksByDocumentStepSubjectRight(DocumentStepSubjectRight oDocumentStepSubjectRight) {
-
+        LOG.info("getTasksByDocumentStepSubjectRight start, with oDocumentStepSubjectRight={}", oDocumentStepSubjectRight);
         String snID_Process_Activiti = oDocumentStepSubjectRight.getDocumentStep()
                 .getSnID_Process_Activiti();
         LOG.info("snID_Process of oDocumentStepSubjectRight: {}", snID_Process_Activiti);
