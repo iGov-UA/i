@@ -3847,19 +3847,22 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                                                                 .processInstanceId(nID_Process).list();
                         
+                        String sKey_Step_Active = null;
+                        
                         for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
-                            LOG.info("oHistoricVariableInstance.getVariableName {}", oHistoricVariableInstance.getVariableName());
-                            LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
+                            if (oHistoricVariableInstance.getVariableName().startsWith(sKey_Step)){
+                                sKey_Step_Active = (String)oHistoricVariableInstance.getValue();
+                                LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
+                            }
                         }
                         
-                        LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
+                        //LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
                         
                         for(Task oTask : aTask){
                             if(oTask.getId().equals(taskId)){
-                                Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
-                                
-                                LOG.info("mProcessVariables {}", mProcessVariables);
-                                if(sKey_Step.equals((String)mProcessVariables.get("sKey_Step"))){
+                                //Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
+                                //LOG.info("mProcessVariables {}", mProcessVariables);
+                                if(sKey_Step.equals(sKey_Step_Active)){
                                     LOG.info("sKey_Step is equals");
                                     oActiveTask = oTask;
                                 }else{
