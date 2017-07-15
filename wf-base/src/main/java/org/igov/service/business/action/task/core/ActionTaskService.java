@@ -3023,6 +3023,7 @@ public class ActionTaskService {
         });
         aoTaskList.removeAll(aoTaskToRemove);
         LOG.info("Document closed after filtering count={}", aoTaskList.size());
+        aoTaskToRemove.forEach(oTaskToRemove -> LOG.info("oTaskToRemove.name={}", oTaskToRemove.getName()));
 
         return aoTaskList;
     }
