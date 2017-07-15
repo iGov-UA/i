@@ -82,7 +82,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2.1</version>
@@ -91,7 +91,7 @@
                         <descriptor>src/main/assembly/ui-jar.xml</descriptor>
                     </descriptors>
                 </configuration>
-            </plugin-->
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -138,8 +138,7 @@
                             <pluginExecutions>
                                 <pluginExecution>
                                     <pluginExecutionFilter>
-                                        <groupId>
-                                            org.zeroturnaround
+                                        <groupId>org.zeroturnaround
                                         </groupId>
                                         <artifactId>
                                             jrebel-maven-plugin
@@ -152,7 +151,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore>true</ignore>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -173,7 +172,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore>true</ignore>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -197,14 +196,14 @@
                         <version>2.3.0</version>
                         <configuration>
                             <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                            <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-                            <runTarget>clean</runTarget>
-                            <soyc>false</soyc>
+                            <extraJvmArgs>-Xmx2G -Xss512M</extraJvmArgs>
+                            <runTarget></runTarget>
+                            <!--soyc>false</soyc-->
                         </configuration>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>resources</goal>
+                                    <!--goal>resources</goal-->
                                     <goal>compile</goal>
                                 </goals>
                             </execution>
@@ -237,7 +236,12 @@
             <classifier>lib</classifier>
             <type>jar</type>
         </dependency>
-        <dependency>
+	    <dependency>
+    <groupId>org.eclipse.m2e</groupId>
+    <artifactId>lifecycle-mapping</artifactId>
+    <version>1.0.0</version>
+</dependency>
+	        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>wf-base</artifactId>
             <version>${igov.wf-base.version}</version>
@@ -263,8 +267,15 @@
             <artifactId>activiti-engine</artifactId>
             <version>${activity.version}</version>
 
-        </dependency>
+
+	    
+	    </dependency>
         <dependency>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.6.1</version>
+</dependency>
+	    <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring</artifactId>
             <version>${activity.version}</version>
