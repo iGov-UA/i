@@ -532,17 +532,30 @@ public class ProcessSubjectTaskService {
                 //CANDIDATE
                 /*oTaskService.addGroupIdentityLink(nId_Task_Root, 
                         (String)((JSONObject)oJsonProcessSubject).get("sLogin"), "CANDIDATE");*/
+                DocumentStep oDocumentStep_Common =
+                        oDocumentStepService.getDocumentStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), "_");
                 
-                String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
-                    .get("snID_Process_Activiti_Root")).active().singleResult().getId();
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = oDocumentStep_Common.aDocumentStepSubjectRight();
                 
-                oTaskService.addCandidateGroup(nId_Task_Root, (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
-                oDocumentStepService.addRightsToCommonStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
-                        (String) ((JSONObject) oJsonProcessSubject).get("sLogin"), 
-                        sKey_Step_Active);
-                LOG.info("nId_Task_Root is {}", nId_Task_Root);
-                LOG.info("sLogin is {}", (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
+                boolean isNewLogin = true;
+                
+                for(DocumentStepSubjectRight oDocumentStepSubjectRight_Common : aDocumentStepSubjectRight_Common){
+                    if(oDocumentStepSubjectRight_Common.getsKey_GroupPostfix().equals((String) ((JSONObject) oJsonProcessSubject).get("sLogin"))){
+                        isNewLogin = false;
+                    }
+                }
+                
+                if(isNewLogin){
+                    String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
+                        .get("snID_Process_Activiti_Root")).active().singleResult().getId();
 
+                    oTaskService.addCandidateGroup(nId_Task_Root, (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
+                    oDocumentStepService.addRightsToCommonStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
+                            (String) ((JSONObject) oJsonProcessSubject).get("sLogin"), 
+                            sKey_Step_Active);
+                    LOG.info("nId_Task_Root is {}", nId_Task_Root);
+                    LOG.info("sLogin is {}", (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
+                }
                 /*for (String step : asKey_Step) {
                     oDocumentStepService.cloneDocumentStepSubject((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"),
                             (String) ((JSONObject) oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject) oJsonProcessSubject).get("sLogin"), step, true);
