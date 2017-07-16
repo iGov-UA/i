@@ -47,6 +47,8 @@
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable_Executor" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Viewer" name="Оберіть співробітника для ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
