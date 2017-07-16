@@ -671,13 +671,12 @@ public class DocumentStepService {
     }
 
     public void addRightsToCommonStep(String snID_Process_Activiti, String sKey_GroupPostfix_New, 
-                                                String sKey_Step_Document_To, String sKey_GroupPostfix_From) {
+                                                String sKey_Step_Document_To) {
 
         LOG.info("addRightsToCommonStep started...");
         LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
         LOG.info("sKey_GroupPostfix_New {}", sKey_GroupPostfix_New);
         LOG.info("sKey_Step_Document_To {}", sKey_Step_Document_To);
-        LOG.info("sKey_GroupPostfix_From {}", sKey_GroupPostfix_From);
         
         /*try {
             Thread.sleep(5000);
@@ -688,13 +687,8 @@ public class DocumentStepService {
             java.util.logging.Logger.getLogger(DocumentStepService.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        DocumentStep oDocumentStep_Saved = null;
-        if(sKey_GroupPostfix_From == null){
-            oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step_Document_To);
-        }
-        else{
-            oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_GroupPostfix_From);
-        }
+        DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step_Document_To);
+        
         DocumentStepSubjectRight oDocumentStepSubjectRight_Saved = null;
        
         /*if (sKey_Group.startsWith("_default_")) {
@@ -714,25 +708,34 @@ public class DocumentStepService {
         }
         
         
-        
-        for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Saved.aDocumentStepSubjectRight()){
-            if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
-                oDocumentStepSubjectRight_Saved = oDocumentStepSubjectRight;
-                break;
+        if(oDocumentStep_Saved != null){
+            for(DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Saved.aDocumentStepSubjectRight()){
+                if(oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)){
+                    oDocumentStepSubjectRight_Saved = oDocumentStepSubjectRight;
+                    break;
+                }
             }
+            
+            LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved.getId());
+            LOG.info("oDocumentStepSubjectRight_Saved fields count {}", oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields().size());
+            LOG.info("getsKey_GroupPostfix {}", oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix());
+            LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved);
+               
         }
         
-        LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved.getId());
-        LOG.info("oDocumentStepSubjectRight_Saved fields count {}", oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields().size());
-        
+                
         //for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStepSubjectRight_Saved.aDocumentStepSubjectRight()) {
             //if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_Group_Delegate)) {
-                LOG.info("getsKey_GroupPostfix {}", oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix());
-                LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved);
                 DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                 oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_GroupPostfix_New);
                 oDocumentStepSubjectRight_New.setbWrite(null);
-                oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight_Saved.getbNeedECP());
+                
+                if(oDocumentStepSubjectRight_Saved != null){
+                    oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight_Saved.getbNeedECP());
+                }
+                else{
+                    oDocumentStepSubjectRight_New.setbNeedECP(false);
+                }
                 oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep_Common);
 
                 oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
