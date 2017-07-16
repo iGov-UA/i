@@ -439,7 +439,6 @@ public class ProcessSubjectTaskService {
 
         Long nOrder = nStartOrder;
 
-        String nId_Task_Root = null;
         /*List<String> asKey_Step = null;
 
         if (((JSONObject) oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null) {
@@ -533,6 +532,10 @@ public class ProcessSubjectTaskService {
                 //CANDIDATE
                 /*oTaskService.addGroupIdentityLink(nId_Task_Root, 
                         (String)((JSONObject)oJsonProcessSubject).get("sLogin"), "CANDIDATE");*/
+                
+                String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
+                    .get("snID_Process_Activiti_Root")).active().singleResult().getId();
+                
                 oTaskService.addCandidateGroup(nId_Task_Root, (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
                 oDocumentStepService.addRightsToCommonStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                         (String) ((JSONObject) oJsonProcessSubject).get("sLogin"), 
