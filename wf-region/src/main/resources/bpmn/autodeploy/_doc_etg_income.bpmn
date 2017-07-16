@@ -45,7 +45,6 @@
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Executor" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Viewer" name="Оберіть співробітника для ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income2.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
@@ -93,7 +92,6 @@
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Executor" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Viewer" name="Оберіть співробітника для ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable_doc_etg_income2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -241,7 +239,7 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 
 //Клонування прав для основного виконавця
-var oCloneRightsExec = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_ETG', 'sTable_Executor', 'step_3', true, 'sLogin_isExecute');
+//var oCloneRightsExec = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_ETG', 'sTable_Executor', 'step_3', true, 'sLogin_isExecute');
 </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask8"></sequenceFlow>
