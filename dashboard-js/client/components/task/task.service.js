@@ -195,7 +195,7 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      submitTaskForm: function (taskId, formProperties, task, attachments, issue) {
+      submitTaskForm: function (taskId, formProperties, task, attachments, issue, docParams) {
         var self = this,
             deferred = $q.defer(),
             promises = [],
@@ -295,6 +295,9 @@ angular.module('dashboardJsApp')
 
           if(issue) {
             submitTaskFormData.aProcessSubjectTask = issue;
+          } else if (docParams && docParams.nID_Process && docParams.sStep_Document) {
+            submitTaskFormData.nID_Process = docParams.nID_Process;
+            submitTaskFormData.sKey_Step = docParams.sStep_Document;
           }
 
           var req = {
