@@ -57,15 +57,11 @@
           <activiti:expression><![CDATA[iDoc - Процесс запущен для физлица.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-
-Процесс запущен для  физ лица.<br />
+          <activiti:expression><![CDATA[Процесс запущен для  физ лица.<br />
 <br />Письмо содержит 1 вложение.
 <br />
 ${costumerDef}
-Спасибо за сотрудничество.
-
-]]></activiti:expression>
+Спасибо за сотрудничество.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${DocFiz}]]></activiti:expression>
@@ -84,15 +80,11 @@ ${costumerDef}
           <activiti:expression><![CDATA[iDoc - Процесс запущен для юрлица.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[
-
-Процесс запущен для  юр лица.<br />
+          <activiti:expression><![CDATA[Процесс запущен для  юр лица.<br />
 <br />Письмо содержит 2 вложения.
 <br />
 ${costumerDef}
-Спасибо за сотрудничество.
-
-]]></activiti:expression>
+Спасибо за сотрудничество.]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${DocUr}, ${DocUr1}]]></activiti:expression>
@@ -106,7 +98,7 @@ ${costumerDef}
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="exclusivegateway3" targetRef="endevent2"></sequenceFlow>
-    <userTask id="usertask2" name="Запускаем процесс?">
+    <userTask id="usertask2" name="Запускаем процесс?" activiti:candidateGroups="sale">
       <extensionElements>
         <activiti:formProperty id="GetProc" name="Запуск Процесса" type="enum">
           <activiti:value id="Y" name="Yes"></activiti:value>
