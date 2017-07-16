@@ -715,12 +715,6 @@ public class DocumentStepService {
                     break;
                 }
             }
-            
-            LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved.getId());
-            LOG.info("oDocumentStepSubjectRight_Saved fields count {}", oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields().size());
-            LOG.info("getsKey_GroupPostfix {}", oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix());
-            LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved);
-               
         }
         
                 
@@ -732,6 +726,10 @@ public class DocumentStepService {
                 
                 if(oDocumentStepSubjectRight_Saved != null){
                     oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight_Saved.getbNeedECP());
+                    LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved.getId());
+                    LOG.info("oDocumentStepSubjectRight_Saved fields count {}", oDocumentStepSubjectRight_Saved.getDocumentStepSubjectRightFields().size());
+                    LOG.info("getsKey_GroupPostfix {}", oDocumentStepSubjectRight_Saved.getsKey_GroupPostfix());
+                    LOG.info("oDocumentStepSubjectRight_Saved id {}", oDocumentStepSubjectRight_Saved);
                 }
                 else{
                     oDocumentStepSubjectRight_New.setbNeedECP(false);
