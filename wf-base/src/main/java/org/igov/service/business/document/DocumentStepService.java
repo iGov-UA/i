@@ -670,7 +670,7 @@ public class DocumentStepService {
         return aDocumentStepSubjectRight_Current;
     }
 
-    private void addRightsToCommonStep(String snID_Process_Activiti, String sKey_GroupPostfix_New, String sKey_Step_Document_To) {
+    public void addRightsToCommonStep(String snID_Process_Activiti, String sKey_GroupPostfix_New, String sKey_Step_Document_To) {
 
         LOG.info("addRightsToCommonStep started...");
         LOG.info("snID_Process_Activiti {}", snID_Process_Activiti);
