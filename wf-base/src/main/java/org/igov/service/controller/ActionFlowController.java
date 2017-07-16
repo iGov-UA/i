@@ -1320,6 +1320,7 @@ public class ActionFlowController {
     String getServiceCenterList(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid
     ) throws Exception {
+    	LOG.info("getServiceCenterList start");
         String oJsonResult = qLogic.getServiceCenterList(sOrganizatonGuid);
 
         return oJsonResult;
@@ -1331,6 +1332,7 @@ public class ActionFlowController {
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId
     ) throws Exception {
+    	LOG.info("getServiceList start");
         String oJsonResult = qLogic.getServiceList(sOrganizatonGuid, sServiceCenterId);
 
         return oJsonResult.toString();
