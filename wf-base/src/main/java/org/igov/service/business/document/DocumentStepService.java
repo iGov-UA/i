@@ -536,18 +536,24 @@ public class DocumentStepService {
                             oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
                             oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
 
-                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+                            //oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
 
                             LOG.info("oDocumentStepSubjectRightDao in AddVisor is {}", oDocumentStepSubjectRight_New.getId());
-
+                            List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_new = new ArrayList<>();
                             //for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
                                 DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
                                 oDocumentStepSubjectRightField_New.setbWrite(false);
                                 oDocumentStepSubjectRightField_New.setsMask_FieldID("*");
                                 oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
-                                oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
+                                //oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
                                 LOG.info("DocumentStepSubjectRightField in AddVisor is {}", oDocumentStepSubjectRightField_New.getId());
                             //}
+                            aDocumentStepSubjectRightField_new.add(oDocumentStepSubjectRightField_New);
+                            oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_new);
+                            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = oDocumentStep.aDocumentStepSubjectRight();
+                            aDocumentStepSubjectRight_New.add(oDocumentStepSubjectRight_New);
+                            oDocumentStep.setaDocumentStepSubjectRight(aDocumentStepSubjectRight_New);
+                            oDocumentStepDao.saveOrUpdate(oDocumentStep);
                         }
                         break;
                         
