@@ -43,7 +43,7 @@ public class HttpEntityCover {
     private String sURL = null;
     private MultiValueMap<String, Object> mParamObject = null;
     private MultiValueMap<String, ByteArrayResource> mParamByteArray = null;
-    private Map<String, Object> mUrlVariables = null;
+    private String mUrlVariable = null;
     
     private ResponseEntity<String> osResponseEntity = null;
             
@@ -73,9 +73,9 @@ public class HttpEntityCover {
         this.mParamByteArray = mParamByteArray;
         return this;
     }
-
-    public HttpEntityCover _UrlVariables(Map<String, Object> mUrlVariables){
-        this.mUrlVariables = mUrlVariables;
+    
+    public HttpEntityCover _UrlVariable(String mUrlVariable){
+        this.mUrlVariable = mUrlVariable;
         return this;
     }
 
@@ -125,8 +125,8 @@ public class HttpEntityCover {
             sRequest = mParamObject != null ? mParamObject.toString() : "";
             
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-            if (mUrlVariables != null){
-            	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class, mUrlVariables);
+            if (mUrlVariable != null){
+            	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class, mUrlVariable);
             } else {
             	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
             }
