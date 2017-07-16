@@ -113,7 +113,7 @@ public class HttpEntityCover {
                 }
             }
             
-            sRequest = mParamObject.toString();
+            sRequest = mParamObject != null ? mParamObject.toString() : "";
             
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
             osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
