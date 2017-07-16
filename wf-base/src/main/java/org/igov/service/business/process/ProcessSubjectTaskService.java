@@ -552,7 +552,8 @@ public class ProcessSubjectTaskService {
                     oTaskService.addCandidateGroup(nId_Task_Root, (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
                     oDocumentStepService.addRightsToCommonStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), 
                             (String) ((JSONObject) oJsonProcessSubject).get("sLogin"), 
-                            sKey_Step_Active);
+                            sKey_Step_Active, oTaskService.createTaskQuery().
+                                    processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")).singleResult().getAssignee());
                     LOG.info("nId_Task_Root is {}", nId_Task_Root);
                     LOG.info("sLogin is {}", (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
                 }
