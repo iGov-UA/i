@@ -9,8 +9,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import org.igov.io.Log;
+
 import static org.igov.util.Tool.sCut;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
@@ -39,7 +43,7 @@ public class HttpEntityCover {
     private String sURL = null;
     private MultiValueMap<String, Object> mParamObject = null;
     private MultiValueMap<String, ByteArrayResource> mParamByteArray = null;
-
+    private Map<String, Object> mUrlVariables = null;
     
     private ResponseEntity<String> osResponseEntity = null;
             
@@ -67,6 +71,11 @@ public class HttpEntityCover {
 
     public HttpEntityCover _DataArray(MultiValueMap<String, ByteArrayResource> mParamByteArray){
         this.mParamByteArray = mParamByteArray;
+        return this;
+    }
+    
+    public HttpEntityCover _UrlVariables(Map<String, Object> mUrlVariables){
+        this.mUrlVariables = mUrlVariables;
         return this;
     }
 
@@ -116,7 +125,11 @@ public class HttpEntityCover {
             sRequest = mParamObject != null ? mParamObject.toString() : "";
             
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-            osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+            if (mUrlVariables != null){
+            	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class, mUrlVariables);
+            } else {
+            	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+            }
             
             if(nStatus()!=200){
                 new Log(this.getClass(), LOG)
@@ -151,7 +164,5 @@ public class HttpEntityCover {
         _Reset();
         return this;
     }
-    
-    
     
 }
