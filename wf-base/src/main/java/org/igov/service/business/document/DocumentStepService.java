@@ -535,19 +535,21 @@ public class DocumentStepService {
                             oDocumentStepSubjectRight_New.setsName(" ");
                             oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
                             oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
-
                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
 
                             LOG.info("oDocumentStepSubjectRightDao in AddVisor is {}", oDocumentStepSubjectRight_New.getId());
-
-                            //for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
-                                DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                                oDocumentStepSubjectRightField_New.setbWrite(false);
-                                oDocumentStepSubjectRightField_New.setsMask_FieldID("*");
-                                oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
-                                oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
-                                LOG.info("DocumentStepSubjectRightField in AddVisor is {}", oDocumentStepSubjectRightField_New.getId());
-                            //}
+                            
+                            List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new ArrayList<>();
+                            DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                            oDocumentStepSubjectRightField_New.setbWrite(false);
+                            oDocumentStepSubjectRightField_New.setsMask_FieldID("*");
+                            oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
+                            oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
+                            LOG.info("DocumentStepSubjectRightField in AddVisor is {}", oDocumentStepSubjectRightField_New.getId());
+                            aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
+                            oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
+                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+                            
                             List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = oDocumentStep.aDocumentStepSubjectRight();
                             aDocumentStepSubjectRight_New.add(oDocumentStepSubjectRight_New);
                             oDocumentStep.setaDocumentStepSubjectRight(aDocumentStepSubjectRight_New);
@@ -590,24 +592,32 @@ public class DocumentStepService {
                             }
                         } else {
                             LOG.info("sKeyGroupeSource is null");
+                            
                             DocumentStepSubjectRight oDocumentStepSubjectRight_New = new DocumentStepSubjectRight();
                             oDocumentStepSubjectRight_New.setsKey_GroupPostfix(sKey_Group_Delegate);
                             oDocumentStepSubjectRight_New.setbWrite(true);
+                            oDocumentStepSubjectRight_New.setsName(" ");
                             oDocumentStepSubjectRight_New.setbNeedECP(oDocumentStepSubjectRight.getbNeedECP());
                             oDocumentStepSubjectRight_New.setDocumentStep(oDocumentStep);
-
                             oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
 
-                            LOG.info("oDocumentStepSubjectRightDao in addAcceptor is {}", oDocumentStepSubjectRight_New.getId());
-
-                            for (DocumentStepSubjectRightField oDocumentStepSubjectRightField : oDocumentStepSubjectRight.getDocumentStepSubjectRightFields()) {
-                                DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
-                                oDocumentStepSubjectRightField_New.setbWrite(oDocumentStepSubjectRightField.getbWrite());
-                                oDocumentStepSubjectRightField_New.setsMask_FieldID(oDocumentStepSubjectRightField.getsMask_FieldID());
-                                oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
-                                oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
-                                LOG.info("DocumentStepSubjectRightField in addAcceptor is {}", oDocumentStepSubjectRightField_New.getId());
-                            }
+                            LOG.info("oDocumentStepSubjectRightDao in AddVisor is {}", oDocumentStepSubjectRight_New.getId());
+                            
+                            List<DocumentStepSubjectRightField> aDocumentStepSubjectRightField_New = new ArrayList<>();
+                            DocumentStepSubjectRightField oDocumentStepSubjectRightField_New = new DocumentStepSubjectRightField();
+                            oDocumentStepSubjectRightField_New.setbWrite(true);
+                            oDocumentStepSubjectRightField_New.setsMask_FieldID("*");
+                            oDocumentStepSubjectRightField_New.setDocumentStepSubjectRight(oDocumentStepSubjectRight_New);
+                            oDocumentStepSubjectRightFieldDao.saveOrUpdate(oDocumentStepSubjectRightField_New);
+                            LOG.info("DocumentStepSubjectRightField in AddVisor is {}", oDocumentStepSubjectRightField_New.getId());
+                            aDocumentStepSubjectRightField_New.add(oDocumentStepSubjectRightField_New);
+                            oDocumentStepSubjectRight_New.setDocumentStepSubjectRightFields(aDocumentStepSubjectRightField_New);
+                            oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_New);
+                            
+                            List<DocumentStepSubjectRight> aDocumentStepSubjectRight_New = oDocumentStep.aDocumentStepSubjectRight();
+                            aDocumentStepSubjectRight_New.add(oDocumentStepSubjectRight_New);
+                            oDocumentStep.setaDocumentStepSubjectRight(aDocumentStepSubjectRight_New);
+                            oDocumentStepDao.saveOrUpdate(oDocumentStep);
                         }
                         break;
                     }
@@ -641,11 +651,11 @@ public class DocumentStepService {
 
             if (sOperationType.equals("AddVisor")) {
                 addVisor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
-                DocumentStep oDocumentStep_Saved_Before = getDocumentStep(snID_Process_Activiti, sKey_Step);
-                LOG.info("oDocumentStep_Saved_Before.aDocumentStepSubjectRight {}", oDocumentStep_Saved_Before.aDocumentStepSubjectRight());
-                DocumentStep oDocumentStep_Saved_After = getDocumentStep(snID_Process_Activiti, sKey_Step);
-                LOG.info("oDocumentStep_Saved_After.aDocumentStepSubjectRight {}", oDocumentStep_Saved_After.aDocumentStepSubjectRight());
-                //addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+                //DocumentStep oDocumentStep_Saved_Before = getDocumentStep(snID_Process_Activiti, sKey_Step);
+                //LOG.info("oDocumentStep_Saved_Before.aDocumentStepSubjectRight {}", oDocumentStep_Saved_Before.aDocumentStepSubjectRight());
+                //DocumentStep oDocumentStep_Saved_After = getDocumentStep(snID_Process_Activiti, sKey_Step);
+                //LOG.info("oDocumentStep_Saved_After.aDocumentStepSubjectRight {}", oDocumentStep_Saved_After.aDocumentStepSubjectRight());
+                addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
             }
 
             String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
@@ -667,21 +677,19 @@ public class DocumentStepService {
         LOG.info("sKey_GroupPostfix_New {}", sKey_GroupPostfix_New);
         LOG.info("sKey_Step_Document_To {}", sKey_Step_Document_To);
         
-        try {
+        /*try {
             Thread.sleep(5000);
             //LOG.info("sKey_Group {}", sKey_Group);
             //LOG.info("sKey_Group_Delegate {}", sKey_Group_Delegate);
             //LOG.info("sKey_Step {}", sKey_Step);
         } catch (InterruptedException ex) {
             java.util.logging.Logger.getLogger(DocumentStepService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
         DocumentStep oDocumentStep_Saved = getDocumentStep(snID_Process_Activiti, sKey_Step_Document_To);
         
         DocumentStepSubjectRight oDocumentStepSubjectRight_Saved = null;
        
-        
-
         /*if (sKey_Group.startsWith("_default_")) {
             sKey_Step = "_";
         }*/

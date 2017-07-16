@@ -3804,14 +3804,19 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         Map<String, Object> mReturn = new HashMap<>();
         Map<String, Object> mJsonBody;
         String taskId = null;
-        String nID_Process = null;
+        Integer nID_Process = null;
         String sKey_Step = null;
         
         try {
             mJsonBody = JsonRestUtils.readObject(sJsonBody, Map.class);
             if (mJsonBody != null) {
-                nID_Process = (String) mJsonBody.get("nID_Process");
-                sKey_Step = (String) mJsonBody.get("sKey_Step");
+                
+                if (mJsonBody.containsKey("nID_Process")) {
+                    nID_Process = (Integer) mJsonBody.get("nID_Process");
+                }
+                if (mJsonBody.containsKey("sKey_Step")) {
+                    sKey_Step = (String) mJsonBody.get("sKey_Step");
+                }
                 
                 if (mJsonBody.containsKey("taskId")) {
                     LOG.info("Processsing task with ID: " + mJsonBody.get("taskId"));
@@ -3837,10 +3842,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     Task oActiveTask = null;
                     
                     if(sKey_Step != null && nID_Process != null){
-                        aTask = taskService.createTaskQuery().executionId(nID_Process).active().list();
+                        aTask = taskService.createTaskQuery().executionId(nID_Process+"").active().list();
                         
                         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
-                                                                .processInstanceId(nID_Process).list();
+                                                                .processInstanceId(nID_Process+"").list();
                         
                         String sKey_Step_Active = null;
                         
