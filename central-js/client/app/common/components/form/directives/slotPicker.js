@@ -89,7 +89,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             }).
             error(function(data, status, headers, config) {
               console.error('Error reserved slot ' + angular.toJson(data));
-              var err = data.message.split(": response=");
+              var err = data.message ? data.message.split(": response=") : [];
               if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
                 var needReload = false;
                 if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
@@ -104,7 +104,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                   scope.loadList();
                 }
               } else {
-                dialogs.error('Помилка', data.message);
+                dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
               }
             });
           }
