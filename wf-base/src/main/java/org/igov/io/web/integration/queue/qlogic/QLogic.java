@@ -175,7 +175,7 @@ public class QLogic {
 	public String getOrganizationState(String sOrganisationGuid) throws Exception {
 		HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
-        String url = String.format(urlGetOrganisationState, host, port);
+        String url = String.format(urlGetOrganisationState, host, port, sOrganisationGuid);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
