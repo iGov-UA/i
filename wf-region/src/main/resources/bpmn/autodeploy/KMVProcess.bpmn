@@ -36,16 +36,16 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Тип клиента" activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="eVarTypeClient" name="Тип клиента; ;writable=false" type="enum">
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum">
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr1" name="Вожение 2 для юрлица; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="marker_fiz" name="Показать поле с вложением для физлица " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;DocFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
+<!--        <activiti:formProperty id="marker_fiz" name="Показать поле с вложением для физлица " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;DocFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker_ur" name="Показать поле с вложением для юрлица" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ur&quot;:{&quot;aField_ID&quot;:[&quot;DocUr&quot;, &quot;DocUr1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ur'&quot;}}}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+    -->    <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="scripttask1">
