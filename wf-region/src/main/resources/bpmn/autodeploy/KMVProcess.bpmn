@@ -26,6 +26,10 @@
         <activiti:field name="subject">
           <activiti:expression><![CDATA[iDoc - Отказ от запуска процесса]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Отказ от запуска процесса<br />
+Спасибо за сотрудничество]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="servicetask1">
@@ -35,12 +39,13 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Тип клиента" activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum">
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum" writable="false">
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="DocUr1" name="Вожение 2 для юрлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
