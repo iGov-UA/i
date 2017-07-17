@@ -17,7 +17,7 @@
           <activiti:value id="sEnumVtrataGodyvalnuka" name="за втрати годувальника"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport" name="Паспорт (сканкопія);(1,3 сторінка та сторінка з місцем реєстрації, завантажте ZIP архівом або PDF файлом);bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка;за наявності" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка;за наявності" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileMsekInval" name="Довідка МСЕК при призначенні інвалідності ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileSvidotSmert" name="Cвідотство про смерть; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensreq.json')}"></activiti:formProperty>
@@ -223,7 +223,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask5" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask5" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -384,7 +384,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="569.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="569.0" y="66.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="517.0" y="79.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="42.0" x="517.0" y="79.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
