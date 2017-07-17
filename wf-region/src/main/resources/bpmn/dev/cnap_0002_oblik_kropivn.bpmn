@@ -87,7 +87,7 @@ ${sNameOrgan}.<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення в ЦНАП"></userTask>
+    <userTask id="usertask1" name="Обробка звернення в ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}"></userTask>
     <serviceTask id="servicetask3" name="Повідомлення про відмову"></serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
