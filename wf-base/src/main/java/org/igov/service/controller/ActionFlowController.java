@@ -2,10 +2,13 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.*;
 import static java.lang.Math.toIntExact;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import org.igov.io.web.integration.queue.cherg.Cherg;
+import org.igov.io.web.integration.queue.qlogic.QLogic;
 import org.igov.model.flow.FlowProperty;
 import org.igov.model.flow.FlowSlotTicket;
 import org.igov.model.subject.SubjectOrganDepartment;
@@ -38,12 +41,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.Flow;
+
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
 import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
 import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
+
 import org.igov.service.business.flow.slot.Day;
 import org.igov.model.flow.FlowDao;
 
@@ -63,6 +69,9 @@ public class ActionFlowController {
 
     @Autowired
     Cherg cherg;
+    
+    @Autowired
+    QLogic qLogic;
 
     @Autowired
     private FlowDao flowServiceDataDao;
@@ -1306,4 +1315,77 @@ public class ActionFlowController {
         return "ok!";
     }
 
+    @RequestMapping(value = "/Qlogic/getServiceCenterList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getServiceCenterList(
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid
+    ) throws Exception {
+    	LOG.info("getServiceCenterList start");
+        String oJsonResult = qLogic.getServiceCenterList(sOrganizatonGuid);
+
+        return oJsonResult;
+    }
+    
+    @RequestMapping(value = "/Qlogic/getServiceList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getServiceList(
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
+            @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId
+    ) throws Exception {
+    	LOG.info("getServiceList start");
+        String oJsonResult = qLogic.getServiceList(sOrganizatonGuid, sServiceCenterId);
+
+        return oJsonResult.toString();
+    }
+    
+    @RequestMapping(value = "/Qlogic/getDaysList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getDaysList(
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
+            @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
+            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
+    ) throws Exception {
+        String oJsonResult = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+
+        return oJsonResult.toString();
+    }
+    
+    @RequestMapping(value = "/Qlogic/getTimeList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getTimeList(
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
+            @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
+            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
+            @ApiParam(value = "Дата для которой необходимо получить список временных (YYYY-MM-DD)", required = true) @RequestParam(value = "sDate") String sDate
+    ) throws Exception {
+        String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate);
+
+        return oJsonResult.toString();
+    }
+    
+    @RequestMapping(value = "/Qlogic/regCustomer", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String regCustomer(
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
+            @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
+            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
+            @ApiParam(value = "Дата для которой необходимо получить список временных (YYYY-MM-DD)", required = true) @RequestParam(value = "sDate") String sDate,
+            @ApiParam(value = "Время на которое производиться регистрация. Необходимо использовать "
+            		+ "StartTime из запроса временных промежутков.", required = true) @RequestParam(value = "sTime") String sTime
+    ) throws Exception {
+        String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime);
+
+        return oJsonResult.toString();
+    }
+    
+    @RequestMapping(value = "/Qlogic/getOrganizationState", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getOrganizationState(
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid) 
+            		throws Exception {
+        String oJsonResult = qLogic.getOrganizationState(sOrganizatonGuid);
+
+        return oJsonResult.toString();
+    }
+    
 }
