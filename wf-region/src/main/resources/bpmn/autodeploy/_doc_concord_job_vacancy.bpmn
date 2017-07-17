@@ -29,7 +29,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="AkordBank_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long"></activiti:formProperty>
@@ -45,7 +45,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Кому підпорядковується" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable5" name="Ким керує (кількість, посади, ПІБ)" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Ким керує " type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Досвід роботи" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="textArea"></activiti:formProperty>
@@ -75,7 +75,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" default="Нижня: , Середня: , Вища: ."></activiti:formProperty>
@@ -118,7 +118,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmailOfHead" name="имейл начальника отдела, создающий заявку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Діти" type="table"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
