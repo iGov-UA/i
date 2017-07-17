@@ -55,10 +55,12 @@ public class QLogic {
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetServicesCenterList, host, port);
+        Map<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
-                ._UrlVariable("{" + sOrganizatonGuid + "}")
-                ._Send();
+                ._UrlVariable(urlVariables)
+                ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
@@ -77,10 +79,12 @@ public class QLogic {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetServicesList, host, port, sServiceCenterId);
+        Map<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
-                ._UrlVariable("{" + sOrganizatonGuid + "}")
-                ._Send();
+                ._UrlVariable(urlVariables)
+                ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
@@ -99,10 +103,12 @@ public class QLogic {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetDaysList, host, port, sServiceCenterId, sServiceId);
+        Map<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
-                ._UrlVariable("{" + sOrganizatonGuid + "}")
-                ._Send();
+                ._UrlVariable(urlVariables)
+                ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
@@ -121,10 +127,12 @@ public class QLogic {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetTimeList, host, port, sServiceCenterId, sServiceId, sDate);
+        Map<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
-                ._UrlVariable("{" + sOrganizatonGuid + "}")
-                ._Send();
+                ._UrlVariable(urlVariables)
+                ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
@@ -145,10 +153,12 @@ public class QLogic {
         String sFullDateTime = String.format("%s %s", sDate, sTime);
         
         String url = String.format(urlRegCustomer, host, port, sServiceCenterId, sServiceId, sFullDateTime);
+        Map<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
-                ._UrlVariable("{" + sOrganizatonGuid + "}")
-                ._Send();
+                ._UrlVariable(urlVariables)
+                ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
@@ -166,10 +176,12 @@ public class QLogic {
 		HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetOrganisationState, host, port);
+        Map<String, Object> urlVariables = new HashMap<String, Object>();
+        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
-                ._UrlVariable("{" + sOrganizatonGuid + "}")
-                ._Send();
+                ._UrlVariable(urlVariables)
+                ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
