@@ -25,12 +25,12 @@
         
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови використання диких тварин та інших об'єктів тваринного світу" type="textArea" required="true"></activiti:formProperty>
         
-        <activiti:formProperty id="nFile1" name="Погодження з органами державної ветеринарної медицини;у разі відлову диких тварин з метою їх переселення у нові місця перебування" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile2" name="Погодження з органами МОЗ;у разі використання диких тварин та інших об’єктів тваринного світу з метою одержання лікувально-технічної сировини" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Погодження з органами Держлісагентства та користувачів відповідних мисливських угідь;у разі використання мисливських тварин з науковою, культурно-освітньою, виховною, естетичною метою, метою переселення та регулювання чисельності диких тварин" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Погодження з відповідними науковими установами і організаціями;у разі спеціального використання диких тварин та інших об’єктів тваринного світу з науковою метою, яке здійснюватиметься окремими науковцями" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Погодження з з іншими органами виконавчої влади;у разі використання тварин на територіях особливого статусу (зона безумовного (обов’язкового) відселення ЧАЕС, військові об’єкти)" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile6" name="Погодження з органами виконавчої влади Автономної республіки Крим з охорони навколишнього природного середовища, обласних, Київської та Севастопольської міської державної адміністрації;в залежності від місця спеціального використання" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Погодження з органами державної ветеринарної медицини;у разі відлову диких тварин з метою їх переселення у нові місця перебування;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Погодження з органами МОЗ;у разі використання диких тварин та інших об’єктів тваринного світу з метою одержання лікувально-технічної сировини;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Погодження з органами Держлісагентства та користувачів відповідних мисливських угідь;у разі використання мисливських тварин з науковою, культурно-освітньою, виховною, естетичною метою, метою переселення та регулювання чисельності диких тварин;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Погодження з відповідними науковими установами і організаціями;у разі спеціального використання диких тварин та інших об’єктів тваринного світу з науковою метою, яке здійснюватиметься окремими науковцями;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Погодження з з іншими органами виконавчої влади;у разі використання тварин на територіях особливого статусу (зона безумовного (обов’язкового) відселення ЧАЕС, військові об’єкти); ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile6" name="Погодження з органами виконавчої влади Автономної республіки Крим з охорони навколишнього природного середовища, обласних, Київської та Севастопольської міської державної адміністрації;в залежності від місця спеціального використання;bNew=true" type="file"></activiti:formProperty>
         
         <activiti:formProperty id="asDelivery" name="Оберіть спосіб отримання дозволу" type="enum" required="true">
           <activiti:value id="sEnumSelf" name="особисто заявникові або представнику за довіреністю"></activiti:value>
@@ -127,11 +127,7 @@
         <activiti:formProperty id="markers4" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFaunaQuantity}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
@@ -279,15 +275,11 @@
           <activiti:value id="sEnumPost" name="Відправити повідомлення про відправку дозволу поштою"></activiti:value>
           <activiti:value id="sEnumReject" name="Відправити лист про відмову у видачі дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFilePermit" name="Скан-копія дозволу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFilePermit" name="Скан-копія дозволу; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0598_useAnimals_4.json')}"></activiti:formProperty>
-      	<activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5},${nFile6},${nFaunaQuantity}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2_yellow"></sequenceFlow>

@@ -254,7 +254,7 @@ ${sNameOrgan}<br>
           <activiti:value id="ApplyECP_ncmm_bad" name="необхідно доопрацювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file1" name="Завантажте завізований ЕЦП документ-відповідь" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Завантажте завізований ЕЦП документ-відповідь; ;bNew=true" type="file" default=" "></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -435,13 +435,9 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="sComment4" name="Коментар співробітника СММ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment5" name="Коментар начальника СММ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment6" name="Коментар директора ДМА" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="file2" name="Завантажте завізований ЕЦП документ-відповідь" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Завантажте завізований ЕЦП документ-відповідь; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow17" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>

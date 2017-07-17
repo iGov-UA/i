@@ -105,11 +105,11 @@
           <activiti:value id="sDiplom" name="морський диплом або свідоцтво"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="slabelSize" name="Зверніть увагу" type="label" default="Розмір файлів та архівів не може перевищувати 5Мб"></activiti:formProperty>
-        <activiti:formProperty id="nDocEdu" name="Копія довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocContract" name="Копія трудового договору (контракту) про працевлаштування на судні;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocEdu" name="Копія довідки з навчального закладу (для студентів), підписаної керівником або уповноваженою особою такого закладу;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocContract" name="Копія трудового договору (контракту) про працевлаштування на судні;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocDiplom" name="Копія морського диплому та підтвердження до нього або свідоцтва та, за наявності, підтвердження до нього;Якщо декілька сторінок об'єднайте у pdf-файл або zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Вам потрібно завантажити, заповнити та вклеїти фотокартку до &lt;a href=&quot;https://drive.google.com/open?id=0B68lQ-z45GpYYzZmclRXdUF4UjA&quot;&gt;анкети для видачі/обміну посвідчення особи моряка&lt;/a&gt;."></activiti:formProperty>
-        <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nDocAnketa" name="Кольорова скан-копія заповненої анкети; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="&lt;b&gt;Перед замовленням послуги уважно перевірте достовірність усіх внесених даних&lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="saQuestion1" name="Ви надаєте згоду на обробку Ваших персональних даних у обсязі, необхідному для отримання послуги;;sID_CheckboxTrue=yes" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -478,11 +478,7 @@ execution.setVariable('sID_Payment', Pay)
         <activiti:formProperty id="OPERDAYDATE" name="Дата здійснення платежу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1_yellow" targetRef="exclusivegateway1"></sequenceFlow>
@@ -992,11 +988,7 @@ execution.setVariable('sMoz2', moz2)
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('infrastr/sea_passp.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocEdu},${nDocDiplom},${nDocAnketa},${nDocContract}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow62" sourceRef="usertask3" targetRef="exclusivegateway6"></sequenceFlow>

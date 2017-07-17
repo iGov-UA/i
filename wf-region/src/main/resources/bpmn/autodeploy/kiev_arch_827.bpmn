@@ -14,12 +14,12 @@
           <activiti:value id="FOP" name="ФОП"></activiti:value>
           <activiti:value id="UrOsoba" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surosobaName" name="Найменування юридичної особи;Вишукувальна організація" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surosobaOrudniyname" name="В орудному відмінку повне найменування юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sedrpou" name="Ідентифікаційний код згідно ЄДРПОУ;тільки цифри" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fedrpou" name="Ідентифікаційний код згідно ЄДРПОУ;скан-копія" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fedrpou" name="Ідентифікаційний код згідно ЄДРПОУ;скан-копія;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPIB_urosoba" name="ПІБ керівника юрособи або уповноваженної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surosobaAddress" name="Місцезнаходження юрособи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surosobaPhone" name="Телефон юрособи" type="string" required="true"></activiti:formProperty>
@@ -49,7 +49,7 @@
           <activiti:value id="tScale1" name="1:500"></activiti:value>
           <activiti:value id="tScale3" name="1:2000"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Fgrounds1" name="Документ підстави 1" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Fgrounds1" name="Документ підстави 1; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Darea1" name="Обсяг робіт 1, га ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Etopografe2" name="Вид робіт 2" type="enum">
           <activiti:value id="topog1" name="Комплексні інженерно-геодезичні вишукування"></activiti:value>
@@ -62,7 +62,7 @@
           <activiti:value id="tScale2" name="1:1000"></activiti:value>
           <activiti:value id="tScale3" name="1:2000"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Fgrounds2" name="Документ підстави 2" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Fgrounds2" name="Документ підстави 2; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Darea2" name="Обсяг робіт 2, га ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Etopografe3" name="Вид робіт 3" type="enum">
           <activiti:value id="topog1" name="Комплексні інженерно-геодезичні вишукування"></activiti:value>
@@ -75,7 +75,7 @@
           <activiti:value id="tScale2" name="1:1000"></activiti:value>
           <activiti:value id="tScale3" name="1:2000"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Fgrounds3" name="Документ підстави 3" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Fgrounds3" name="Документ підстави 3; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Darea3" name="Обсяг робіт 3, га ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="Etopografe4" name="Вид робіт 4" type="enum">
           <activiti:value id="topog1" name="Комплексні інженерно-геодезичні вишукування"></activiti:value>
@@ -88,7 +88,7 @@
           <activiti:value id="tScale2" name="1:1000"></activiti:value>
           <activiti:value id="tScale3" name="1:2000"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Fgrounds4" name="Документ підстави 4" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Fgrounds4" name="Документ підстави 4; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="Darea4" name="Обсяг робіт 4, га ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sStreet" name="Місцезнаходження об’єкту-Вулиця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAppartment" name="Місцезнаходження об’єкту-Будинок" type="string" required="true"></activiti:formProperty>
@@ -263,11 +263,7 @@
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Якщо ви відмовляєте замовнику у реєстрації звернення, обов'язково вкажіть підставу у цьому полі" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fedrpou},${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask3_first" targetRef="scripttask2"></sequenceFlow>
@@ -373,13 +369,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment4" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject4" name="Лист відмови ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject4" name="Лист відмови ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fedrpou},${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow23" sourceRef="usertask4" targetRef="servicetask4"></sequenceFlow>
@@ -495,13 +487,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentReject" name="Коментар до рішення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject5" name="Лист відмови ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject5" name="Лист відмови ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fedrpou},${nFileReject4},${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask5" targetRef="servicetask5"></sequenceFlow>
@@ -689,13 +677,9 @@
         <activiti:formProperty id="sreposPass" name="Пароль" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment8" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileTopograf" name="Топографо-геодезичні вихідні дані (якщо файлів декілька - запакуйте в архів)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileTopograf" name="Топографо-геодезичні вихідні дані (якщо файлів декілька - запакуйте в архів); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fedrpou},${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow14" sourceRef="usertask6_red" targetRef="servicetask8"></sequenceFlow>
@@ -811,13 +795,9 @@
         <activiti:formProperty id="sreposPass" name="Пароль" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sComment9" name="Коментар" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFileVutjag" name="Витяг підписаний ЕЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileVutjag" name="Витяг підписаний ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fedrpou},${nFileTopograf},${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask9" targetRef="usertask10_green"></sequenceFlow>
@@ -915,11 +895,7 @@
         <activiti:formProperty id="sreposPass" name="Пароль" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExecutor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport},${fedrpou},${nFileTopograf},${nFileVutjag},${Fgrounds1},${Fgrounds2},${Fgrounds3},${Fgrounds4}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow20" sourceRef="usertask10_green" targetRef="servicetask9"></sequenceFlow>

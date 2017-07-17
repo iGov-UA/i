@@ -11,13 +11,13 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Назва організації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdressDelivery" name="Адреса, за якою надіслати оригінал документу" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Клопотання про встановлення лімітів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Клопотання про встановлення лімітів; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="info_1" name=" " type="label" default="Форму проекту ліміту можна завантажити за &lt;a href=&quot;https://poslugy.gov.ua/files/418?languageId=0&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
         
-        <activiti:formProperty id="nFile2" name="Проект ліміту за формою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile3" name="Обґрунтовуючі матеріали, погоджені з відповідними науковими установами – науковими  кураторами  територій  та  об'єктів природно-заповідного фонду, науково-дослідними інститутами" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Карта-схема території чи об'єкта, на якій буде здійснюватися використання природних ресурсів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Витяг з рішення науково-технічної ради установи  природно-заповідного фонду;(тільки  для  біосферного заповідника, природного заповідника, національного   природного   парку   чи  ботанічного  саду)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Проект ліміту за формою; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Обґрунтовуючі матеріали, погоджені з відповідними науковими установами – науковими  кураторами  територій  та  об'єктів природно-заповідного фонду, науково-дослідними інститутами; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Карта-схема території чи об'єкта, на якій буде здійснюватися використання природних ресурсів; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Витяг з рішення науково-технічної ради установи  природно-заповідного фонду;(тільки  для  біосферного заповідника, природного заповідника, національного   природного   парку   чи  ботанічного  саду);bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення чиновнику про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -86,17 +86,13 @@
         </activiti:formProperty>
         <activiti:formProperty id="sCommentRemake" name="Якщо ви повертаєте клопотання на доопрацювання, обов'язково вкажіть на помилки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentReject" name="Якщо ви відмовляєте в затвердженні лімітів, обов'язково вкажіть підставу" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nFileRemake" name="Скан-копія листа про повернення клопотання на доопрацювання" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject" name="Скан-копія листа про відмову затвердження ліміту заявнику" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileLimit" name="Скан-копія супроводжувального листа до  ліміту" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileRemake" name="Скан-копія листа про повернення клопотання на доопрацювання; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject" name="Скан-копія листа про відмову затвердження ліміту заявнику; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileLimit" name="Скан-копія супроводжувального листа до  ліміту; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0516_zapovidnyk_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="requiredFields1" type="markers" default="${markerService.loadFromFile('eco/eco_0516_zapovidnyk_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFile2},${nFile3},${nFile4},${nFile5}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>

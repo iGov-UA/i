@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_529_mode_worktime_Mariupol" name="Погодження режиму роботи об’єктів торгівлі та сфери послуг" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 24.04.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 12.07.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган надання адмінпослуг" type="select" default="0" required="true"></activiti:formProperty>
@@ -9,10 +9,11 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="asTypeZayava" name="Оберіть потрібний тип дії" type="enum">
-          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
-          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
-          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання узгодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження узгодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у узгодження режиму роботи"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія попереднього узгодженого режиму роботи; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
@@ -62,7 +63,7 @@
         <activiti:formProperty id="sTime_Break" name="Перерва (з .. до ..)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWeekend" name="Вихідні дні" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSpecialConditions" name="Особливі умови роботи" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileDozvilSanEpedimSluzbi" name="Дозвіл Санепідслужби; Для закладів громадського харчування;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="nFileOwnershipZemlya" name="Копія правовстановлюючого документа, що підтверджує право користування або право власності на земельну ділянку на якій розміщений відповідний об’єкт; ;bNew=true" type="file" default=" "></activiti:formProperty>
@@ -91,9 +92,9 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeZayava" name="Тип дії" type="enum" writable="false">
-          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
-          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
-          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання узгодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження узгодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у узгодження режиму роботи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -171,6 +172,7 @@
         <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileSvrdnFunc" name="Копія документу, що підтверджує зміну функціонального призначення приміщення , або частини приміщення;подається у разі невідповідності типу об'єкту визначеному у документі, що підтверджує право власності;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileSvrdnSanSt" name="Копія висновку державної санітарно-епідеміологічної експертизи;подається для 1) підприємств торгівлі з продажу великогабаритних товарів, будівельних матеріалів, синтетичних миючих засобів, товарів побутової хімії, минеральних добрів та засобів захисту рослин або 2) для підприємств сфери послуг, за винятком пунктів прийому замовлень;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія попереднього узгодженого режиму роботи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -178,9 +180,9 @@
       <extensionElements>
         <activiti:formProperty id="sNameOrgan" name="Орган надання адмінпослуг" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asTypeZayava" name="Тип дії" type="enum" writable="false">
-          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання погодження режиму роботи"></activiti:value>
-          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження погодженого режиму роботи"></activiti:value>
-          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у режим роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Nadannya" name="Надання узгодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Podovzennya" name="Продовження узгодження режиму роботи"></activiti:value>
+          <activiti:value id="sElementTypeZayava_Zmina" name="Внесення змін у узгодження режиму роботи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFIO" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
@@ -242,9 +244,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddDoc" name="Перелік документів-додатків ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Report" name="Сканкопія погодженого режиму роботи або відмови; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="Настроювання принтформи" type="markers" default="${markerService.loadFromFile('dnepr_cnap_529_mode_worktime_2_Print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/skv/dnepr_cnap_529_mode_worktime_Mariupol_print.html] ; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/skv/dnepr_cnap_529_mode_worktime_Mariupol_print.html,sFileName=Zayava,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Dovirenist" name="Довіреність на представника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileDerzReestration" name="Копія документа про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileOwnership" name="Копія документа, що засвідчує право власності на приміщення, де буде здійснюватись торгівля (надання послуг) або договору оренди приміщення (у разі оренди); ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -258,6 +261,7 @@
         <activiti:formProperty id="nFileHouseWaste" name="Копія договору про надання послуг з вивезення побутових відходів з підприємством, яке надає даний вид послуг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileSvrdnFunc" name="Копія документу, що підтверджує зміну функціонального призначення приміщення , або частини приміщення;подається у разі невідповідності типу об'єкту визначеному у документі, що підтверджує право власності;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileSvrdnSanSt" name="Копія висновку державної санітарно-епідеміологічної експертизи;подається для 1) підприємств торгівлі з продажу великогабаритних товарів, будівельних матеріалів, синтетичних миючих засобів, товарів побутової хімії, минеральних добрів та засобів захисту рослин або 2) для підприємств сфери послуг, за винятком пунктів прийому замовлень;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Original_Dozvolu" name="Копія попереднього узгодженого режиму роботи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відпрвка e-mail з відмовою + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -293,7 +297,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile_Report}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Report}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -323,6 +327,8 @@
 					Ваше звернення [sID_Order] щодо погодження режиму роботи об’єктів торгівлі та сфери послуг опрацьовано.<br />
 					Ви або уповноважена Вами особа (при наявності довіреності) можете отримати рішення собисто під підпис у ЦНАПі.<br />
 					<br />
+					Заяву щодо режиму роботи об’єктів торгівлі та сфери послуг реєстрацію, що знаходиться у додатку до листа, розрукуйте на одному аркуші, підпишить та завірте печаткою заяву (печаткою завіряється лише підпис керівника, у разі підпису довіреною особою — печатка не проставляється).<br />
+					<br />
 					${sNameOrgan}<br />
 					${sAddress}<br />
 					${sWorkTime}<br />
@@ -336,7 +342,7 @@
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${nFile_Report}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFile_Report},${PrintForm_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
