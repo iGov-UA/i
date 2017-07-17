@@ -51,12 +51,12 @@ public class QLogic {
         }
     }
 
-    public String getServiceCenterList(String sOrganizatonGuid) throws Exception {
+    public String getServiceCenterList(String sOrganisationGuid) throws Exception {
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetServicesCenterList, host, port);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
+        urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
@@ -74,13 +74,13 @@ public class QLogic {
         return sReturn;
     }
     
-    public String getServiceList(String sOrganizatonGuid,
+    public String getServiceList(String sOrganisationGuid,
 			String sServiceCenterId) throws Exception {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetServicesList, host, port, sServiceCenterId);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
+        urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
@@ -98,13 +98,13 @@ public class QLogic {
         return sReturn;
 	}
     
-    public String getDaysList(String sOrganizatonGuid, String sServiceCenterId,
+    public String getDaysList(String sOrganisationGuid, String sServiceCenterId,
 			String sServiceId) throws Exception {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetDaysList, host, port, sServiceCenterId, sServiceId);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
+        urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
@@ -122,13 +122,13 @@ public class QLogic {
         return sReturn;
 	}
 	
-    public String getTimeList(String sOrganizatonGuid, String sServiceCenterId,
+    public String getTimeList(String sOrganisationGuid, String sServiceCenterId,
 			String sServiceId, String sDate) throws Exception {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetTimeList, host, port, sServiceCenterId, sServiceId, sDate);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
+        urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
@@ -146,7 +146,7 @@ public class QLogic {
         return sReturn;
 	}
     
-    public String regCustomer(String sOrganizatonGuid, String sServiceCenterId,
+    public String regCustomer(String sOrganisationGuid, String sServiceCenterId,
 			String sServiceId, String sDate, String sTime) throws Exception {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
@@ -154,7 +154,7 @@ public class QLogic {
         
         String url = String.format(urlRegCustomer, host, port, sServiceCenterId, sServiceId, sFullDateTime);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
+        urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
@@ -172,12 +172,12 @@ public class QLogic {
         return sReturn;
 	}
 
-	public String getOrganizationState(String sOrganizatonGuid) throws Exception {
+	public String getOrganizationState(String sOrganisationGuid) throws Exception {
 		HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String url = String.format(urlGetOrganisationState, host, port);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
-        urlVariables.put("sOrganizatonGuid", "{" + sOrganizatonGuid + "}");
+        urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
