@@ -8,10 +8,10 @@
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="costumerDef" name="Определение клиента" type="string"></activiti:formProperty>
-        <activiti:formProperty id="DocUr1" name="Вложение2 для юрлица; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="costumerDef" name="Определение клиента" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="DocUr1" name="Вложение2 для юрлица; ;bNew=true" type="file" readable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -46,6 +46,8 @@
         <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr1" name="Вожение 2 для юрлица; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="marker_fiz" name="Показать поле с вложением для физлица " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;DocFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_ur" name="Показать поле с вложением для юрлица" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ur&quot;:{&quot;aField_ID&quot;:[&quot;DocUr&quot;, &quot;DocUr1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ur'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
