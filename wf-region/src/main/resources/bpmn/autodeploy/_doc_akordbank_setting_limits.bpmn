@@ -42,7 +42,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
 var sKey_GroupPostfix = '_default_AkordBank_KC'
-var sKey_GroupPostfix_New ='Akordbank_Operator_KC_1'
+var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -79,9 +79,11 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 //реклонирование прав
 //Клонування прав для начальника відділення
 var sKey_GroupPostfix = '_default_AkordBank_KC'
-var sKey_GroupPostfix_New =('AkordBank_Brunch_of_Bank')
+var sKey_GroupPostfix_New ='AkordBank_Brunch_of_Bank'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -93,7 +95,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <sequenceFlow id="flow8" name="коректно" sourceRef="exclusivegateway1" targetRef="exclusivegateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCorrectness=='correctly'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Оператор встановлює ліміт">
+    <userTask id="usertask3" name="Оператор встановлює ліміт або повідомляє відділення про відмову">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
@@ -102,11 +104,15 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNoteUKRB" name="Рішення УКРБ" type="enum" writable="false">
+          <activiti:value id="NotAccept" name="Відмовлено"></activiti:value>
+          <activiti:value id="Accept" name="Погоджено"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sNoteKC" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask1" name="Інформування відділення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask1" name="Інформування відділення про встановлення ліміту клієнту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -115,16 +121,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
+          <activiti:string><![CDATA[Інформування про виконання запиту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Для клієнта ${sName_client} погодженно  встановлення ліміту на ${sSum}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:string><![CDATA[+380636035879]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[ліміт]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          		Для клієнта <b>${sName_client}</b> погодженно  встановлення ліміту у розмірі <b>${sSum} </b>
+          ]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -158,11 +160,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:value id="agree" name="Погодити зміну ліміту"></activiti:value>
           <activiti:value id="refuse" name="відмовити"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sNoteUKRB" name="Коментар " type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNoteUKRB" name="Коментар " type="enum" required="true">
+          <activiti:value id="Accept" name="Погоджено"></activiti:value>
+          <activiti:value id="NotAccept" name="Відмовлено"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow11" sourceRef="usertask3" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -170,7 +174,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow15" name="погоджено" sourceRef="exclusivegateway3" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='agree'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="інформування  КЦ про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="інформування  КЦ про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -179,10 +183,19 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
+          <activiti:string><![CDATA[Інформування про виконання запиту]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Клієнту ${sName_client} відмовлено у збільшені ліміту]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+          	<p>
+          		Клієнту <b>${sName_client}</b> <br>
+          		відмовлено у  встановленні ліміту на <b>${sSum} </b><br>
+          	</p>
+          	[pattern/mail/new_design/_common_content_end.html]
+          	[pattern/mail/new_design/_common_signature_start.html]
+          	[pattern/mail/new_design/_common_signature_end.html]
+          	[pattern/mail/new_design/_common_footer.html]  ]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -235,6 +248,36 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum<='2000'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow22" sourceRef="usertask3" targetRef="exclusivegateway4"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Інформування відділення про відмову у  встановленні ліміту клієнту" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Інформування про відмову у встановленні ліміту]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[
+          		Клієнту <b>${sName_client}</b> <br>
+          		відмовлено у  встановленні ліміту на  у розмірі <b>${sSum} </b><br>
+          	]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow24" sourceRef="exclusivegateway4" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sNoteUKRB=='NotAccept'||sNoteUKRB=='Відмовлено'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow25" sourceRef="servicetask4" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="exclusivegateway4" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sNoteUKRB=='Accept'||sNoteUKRB=='Погоджено'}
+]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_setting_limits">
     <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_setting_limits" id="BPMNPlane__doc_akordbank_setting_limits">
@@ -263,13 +306,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="57.0" width="105.0" x="460.0" y="277.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="175.0" x="425.0" y="278.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="57.0" width="105.0" x="314.0" y="277.0"></omgdc:Bounds>
+        <omgdc:Bounds height="105.0" width="105.0" x="266.0" y="350.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="240.0" y="288.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="189.0" y="385.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="65.0" width="105.0" x="970.0" y="178.0"></omgdc:Bounds>
@@ -291,6 +334,15 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
         <omgdc:Bounds height="68.0" width="105.0" x="460.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="499.0" y="382.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="81.0" width="141.0" x="460.0" y="460.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="370.0" y="483.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="57.0"></omgdi:waypoint>
@@ -334,13 +386,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <omgdc:Bounds height="14.0" width="70.0" x="782.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="460.0" y="305.0"></omgdi:waypoint>
-        <omgdi:waypoint x="419.0" y="305.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="314.0" y="305.0"></omgdi:waypoint>
-        <omgdi:waypoint x="275.0" y="305.0"></omgdi:waypoint>
+        <omgdi:waypoint x="266.0" y="402.0"></omgdi:waypoint>
+        <omgdi:waypoint x="224.0" y="402.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="1022.0" y="243.0"></omgdi:waypoint>
@@ -385,7 +433,23 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="512.0" y="245.0"></omgdi:waypoint>
-        <omgdi:waypoint x="512.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="278.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="512.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="519.0" y="382.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="519.0" y="422.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="460.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="460.0" y="500.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="500.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="499.0" y="402.0"></omgdi:waypoint>
+        <omgdi:waypoint x="371.0" y="402.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
