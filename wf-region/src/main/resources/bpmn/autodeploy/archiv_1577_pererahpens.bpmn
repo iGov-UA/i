@@ -160,7 +160,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow5" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення громодянина про виконання" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -199,7 +199,7 @@ ${sNameOrgan},<br>
     </serviceTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow7" name="згода" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка данних співробітником архіву" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -320,10 +320,10 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow10" name="відмова" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow12" name="згода" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asStatus=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
   </process>
@@ -420,7 +420,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="670.0" y="253.0"></omgdi:waypoint>
         <omgdi:waypoint x="710.0" y="253.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="42.0" x="623.0" y="261.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="623.0" y="261.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -428,7 +428,7 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="670.0" y="387.0"></omgdi:waypoint>
         <omgdi:waypoint x="710.0" y="387.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="27.0" x="621.0" y="372.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="621.0" y="372.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
