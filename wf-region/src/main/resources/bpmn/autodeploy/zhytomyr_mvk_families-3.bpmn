@@ -14,8 +14,8 @@
         <activiti:formProperty id="adres_1" name="Адреса реєстрації громадянина" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="adres_2" name="Адреса проживання родини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="surname" name="Прізвище родини в родовому відмінку;наприклад, &quot;Іванових&quot;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_father" name="Копія паспорту батька (сторінки 1, 2 та прописка);об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="passport_mother" name="Копія паспорту матері (сторінки 1, 2 та прописка):об'єднайте у pdf-файл або zip архів" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_father" name="Копія паспорту батька (сторінки 1, 2 та прописка);об'єднайте у pdf-файл або zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="passport_mother" name="Копія паспорту матері (сторінки 1, 2 та прописка):об'єднайте у pdf-файл або zip архів;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення співробітника про нову заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -78,11 +78,7 @@
         <activiti:formProperty id="comment_1" name="Додаткова інформація громадянину у разі надання довідки АБО відхилення зверення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/zhitomir/zhytomyr_mvk_families_3.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${passport_father},${passport_mother}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>

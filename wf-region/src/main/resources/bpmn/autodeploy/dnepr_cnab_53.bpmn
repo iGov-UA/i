@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
@@ -28,8 +28,8 @@
         <activiti:formProperty id="pib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="adres_1" name="Місцезнаходження юридичної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="telef" name="Телефон юридичної особи" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="doc_pidpriemci" name="Довідка про наявність рибальских суден, дозволених знарядь лову та рибоприймальних пунктів на визначеному рибогосподарському водному об'єкті" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="perelic" name="Програма виконання робіт, в якій визначені методи, мета та завдання робіт, типи і кількість рибальских суден, назва  і кількість необхідних знарядь лову" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про наявність рибальских суден, дозволених знарядь лову та рибоприймальних пунктів на визначеному рибогосподарському водному об'єкті; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="perelic" name="Програма виконання робіт, в якій визначені методи, мета та завдання робіт, типи і кількість рибальских суден, назва  і кількість необхідних знарядь лову; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="rNumber" name="номер району; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="rName" name="район; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="remail" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
@@ -69,16 +69,12 @@
           <activiti:value id="reject" name="Дані заповнені невірно, відхилити звернення (обов'язково впишіть коментар нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відхилення запиту внесіть, будь ласка, коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів " type="file"></activiti:formProperty>
+        <activiti:formProperty id="opis" name="Завантажте опис прийнятих документів ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="принтформа якщо юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_12&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;imya_ur_pf&quot;,&quot;kved_pf&quot;,&quot;edrpo_pf&quot;,&quot;pib_ur_pf&quot;,&quot;adres_1_pf&quot;,&quot;tel_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа якщо фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;shapka&quot;,&quot;zagolovok&quot;,&quot;obect_pf&quot;,&quot;obect_2_pf&quot;,&quot;adres_2_pf&quot;,&quot;pib_fiz_pf&quot;,&quot;kved_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;adres_0_pf&quot;,&quot;phone_pf&quot;,&quot;person_pf&quot;,&quot;end_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_53_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_passport}, ${doc_pidpriemci},${perelic}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -111,7 +107,7 @@
           <activiti:value id="accept" name="надано дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dnepr_cnap_53_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_53_print.html]; ;bVisible=false" type="string" default="Заява встановленого зразку" writable="false"></activiti:formProperty>

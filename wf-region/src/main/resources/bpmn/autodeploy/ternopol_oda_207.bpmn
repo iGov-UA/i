@@ -23,7 +23,7 @@
           <activiti:value id="fizic" name="Надіслати поштою"></activiti:value>
           <activiti:value id="digit" name="Отримати електронну копію"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="doc" name="Супроводжуючі документи; за наявності" type="file"></activiti:formProperty>
+        <activiti:formProperty id="doc" name="Супроводжуючі документи; за наявності;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sID_UA" name="sID_UA; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="postV1" name="електронна пошта ОДА1; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="postV2" name="електронна пошта ОДА2; ;bVisible=false" type="string"></activiti:formProperty>
@@ -148,11 +148,7 @@ execution.setVariable('postV2', per4)
         <activiti:formProperty id="docID" name="Реєстраційний номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/ternopil/ternopil_oda_207.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${doc}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -239,7 +235,7 @@ execution.setVariable('postV2', per4)
           <activiti:value id="fizic" name="Надіслати поштою"></activiti:value>
           <activiti:value id="digit" name="Отримати електронну копію"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="docFile" name="Додати скан-копію офіційної відповіді" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="docFile" name="Додати скан-копію офіційної відповіді;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>

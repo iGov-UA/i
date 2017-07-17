@@ -362,11 +362,7 @@
         <activiti:formProperty id="plan" name="План проведення релігійного заходу ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${plan},${oxr},${vrach},${stroi},${dovir}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>

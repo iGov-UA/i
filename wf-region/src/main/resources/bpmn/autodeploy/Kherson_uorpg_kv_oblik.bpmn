@@ -28,7 +28,7 @@
           <activiti:value id="other" name="для інших потреб (зазначити у полі нижче)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="explanation_dovidka" name="Опишіть потребу отримання довідки; якщо в попередньому пункті обрали варіант &quot;інші потреби&quot;" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="dovidka_file" name="Завантажте довідку про склад сім’ї та реєстрацію (форма №2)" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dovidka_file" name="Завантажте довідку про склад сім’ї та реєстрацію (форма №2); ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="sBody; ;bVisible=false" type="string" default=" "></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -254,11 +254,7 @@
         <activiti:formProperty id="adres_2" name="Зазначте адресу за якою замовник може отримати довідку" type="textArea" default="м.Херсон, вул.Ушакова 37, каб.106"></activiti:formProperty>
         <activiti:formProperty id="comment_1" name="У разі відмови у наданні довідки внесіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${dovidka_file}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="mailtask2" targetRef="usertask1"></sequenceFlow>

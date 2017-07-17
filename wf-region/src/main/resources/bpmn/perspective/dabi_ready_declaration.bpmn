@@ -27,9 +27,9 @@
           <activiti:value id="sEnumObjUnlicensed" name="самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nCategoryDeclar" name="Декларація про готовність до експлуатації об’єкта, який належить до І-ІІІ категорії складності" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nPassportDeclar" name="Декларація про готовність до експлуатації об’єкта, будівництво якого здійснено на підставі будівельного паспорту" type="file" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nUnlicensedDeclar" name="Декларація про готовність до експлуатації самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nCategoryDeclar" name="Декларація про готовність до експлуатації об’єкта, який належить до І-ІІІ категорії складності; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nPassportDeclar" name="Декларація про готовність до експлуатації об’єкта, будівництво якого здійснено на підставі будівельного паспорту; ;bNew=true" type="file" default=" "></activiti:formProperty>
+        <activiti:formProperty id="nUnlicensedDeclar" name="Декларація про готовність до експлуатації самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду; ;bNew=true" type="file" default=" "></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_req1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_valid.json')}"></activiti:formProperty>
@@ -65,11 +65,7 @@
         <activiti:formProperty id="sID_Group_step5" name="Група виконавців; ;bVisible=false" type="string" default="kyiv_dabi_permit_boss"></activiti:formProperty>
         <activiti:formProperty id="sBossComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis1.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nCategoryDeclar},${nPassportDeclar},${nUnlicensedDeclar}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask_step4" name="4. Ознайомлення заступником директора ДАБК" activiti:candidateGroups="kyiv_dabi_deputy_boss">
@@ -100,11 +96,7 @@
         <activiti:formProperty id="sDocEmpComment" name="Коментар працівника сектору документообігу" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBossComment" name="Коментар директора ДАБК" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis1.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nCategoryDeclar},${nPassportDeclar},${nUnlicensedDeclar}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="usertask_step3" targetRef="parallelgateway3"></sequenceFlow>
@@ -145,11 +137,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step5]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nCategoryDeclar},${nPassportDeclar},${nUnlicensedDeclar}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow19" sourceRef="usertask_step5" targetRef="parallelgateway2"></sequenceFlow>
@@ -185,11 +173,7 @@
         <activiti:formProperty id="sAssigneeName_step7" name="Відповідальний виконавець" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis1.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nCategoryDeclar},${nPassportDeclar},${nUnlicensedDeclar}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" sourceRef="parallelgateway2" targetRef="usertask_step7"></sequenceFlow>
@@ -437,11 +421,7 @@
             <activiti:expression><![CDATA[sLoginAsignee_step7]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nCategoryDeclar},${nPassportDeclar},${nUnlicensedDeclar}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask_step7" targetRef="usertask_step19"></sequenceFlow>
@@ -496,11 +476,7 @@
         <activiti:formProperty id="sID_DateOutputDoc" name="Дата реєстрації вихідного документу" type="string"></activiti:formProperty>
         <activiti:formProperty id="marker_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker_visible2" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_ready_declaration_vis2.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nCategoryDeclar},${nPassportDeclar},${nUnlicensedDeclar}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -575,11 +551,7 @@
     <userTask id="usertask1" name="Upload Files" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nLossNotice},${nDuplApplication}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer3" name="Timer" attachedToRef="usertask1" cancelActivity="true">

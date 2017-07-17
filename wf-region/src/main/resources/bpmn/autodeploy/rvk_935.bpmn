@@ -18,11 +18,11 @@
         <activiti:formProperty id="sJob" name="Посада" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть РВК за місцем Вашої реєстрації" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVlasn" type="label" default="Додайте необхідні документи. Якщо у документі декілька сторінок - об'єднайте у pdf-файл або zip архів"></activiti:formProperty>
-        <activiti:formProperty id="nDocWedding" name="Копія свідоцтва про шлюб" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocDivorce" name="Копія свідоцтва про розірвання шлюбу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocChild" name="Копія свідоцтва про народження дитини" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocPass" name="Копія паспорта зі сторінкою реєстрації" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nDocMed" name="Копія довідки з МСЕК" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocWedding" name="Копія свідоцтва про шлюб; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocDivorce" name="Копія свідоцтва про розірвання шлюбу; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocChild" name="Копія свідоцтва про народження дитини; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocPass" name="Копія паспорта зі сторінкою реєстрації; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nDocMed" name="Копія довідки з МСЕК; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPenal" type="label" default="За несвоєчасне подання відомостей Ви можете отримати шртаф згідно &lt;a href=&quot;http://zakon3.rada.gov.ua/laws/show/80731-10/page14&quot;&gt;ст.210,211 КУпАП&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -108,11 +108,7 @@
         <activiti:formProperty id="sSum" name="Сума для сплати штрафу" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('rvk/rvk_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nDocWedding},${nDocDivorce},${nDocChild},${nDocPass},${nDocMed}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>

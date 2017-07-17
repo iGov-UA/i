@@ -28,8 +28,8 @@
         <activiti:formProperty id="nVukidTable" name="Викиди яких забруднюючих речовин плануэться здійснювати" type="table" default="${markerService.loadFromFile('test_folder/ecotest_1565_Zabrud_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPosition" name="Должность" type="string" default="Директору Державного архіву Одеської області" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDirector" name="Прізвище директора архіву; ;bVisible=false" type="string" default="Левчуку В.В."></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ);bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="color" name="test; ; labelType=success" type="label" default="test color 1"></activiti:formProperty>
         <activiti:formProperty id="color2" name="test 1; ;labelType=info" type="label" default="test2 color"></activiti:formProperty>
       </extensionElements>
@@ -121,11 +121,7 @@
         <activiti:formProperty id="decisionComment" name="Зазначте дату отримання довідки або причину неможливості отримання послуги" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBodyArchiv" name="[pattern/print/archiv/odessa_archiv_392_print.html]; ;bVisible=false" type="string" default="Заявка громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid},${nVukidTable}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
