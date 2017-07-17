@@ -36,7 +36,7 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Тип клиента" activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum" writable="false">
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента; ;writable=false" type="enum">
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
@@ -100,10 +100,10 @@ ${costumerDef}
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="exclusivegateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Fiz'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Физ лицо'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Ur'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Юрлицо'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent2" name="End"></endEvent>
