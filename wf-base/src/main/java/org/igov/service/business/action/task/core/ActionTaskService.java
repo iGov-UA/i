@@ -2905,6 +2905,7 @@ public class ActionTaskService {
             aoAllTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
             //убираем из необработанных те, которые находятся в черновиках
             aoAllTasks.removeAll(oTaskService.createTaskQuery().taskAssignee(sLogin).list());
+            LOG.info("Task to remove {}", oTaskService.createTaskQuery().taskAssignee(sLogin).singleResult());
             
         //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
