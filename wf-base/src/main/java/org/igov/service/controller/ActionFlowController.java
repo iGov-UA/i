@@ -5,6 +5,7 @@ import static java.lang.Math.toIntExact;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1365,8 +1368,8 @@ public class ActionFlowController {
             JSONObject oJSONObject = (JSONObject) o;
             String datePart = (String) oJSONObject.get("DatePart");
             
-            Integer isAllow = (Integer) oJSONObject.get("IsAllow");
-
+            Long isAllow = (Long) oJSONObject.get("IsAllow");
+            
             if (isAllow == 1){
 	            long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
 	            Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
@@ -1377,6 +1380,64 @@ public class ActionFlowController {
             }
         }
         oJSONObjectReturn.put("aDate", dates);
+
+        return oJSONObjectReturn.toString();
+    }
+
+    @RequestMapping(value = "/Qlogic/getSlots", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getSlots(
+    		@ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
+            @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
+            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
+    ) throws Exception {
+        JSONObject oJSONObjectReturn = new JSONObject();
+
+        JSONArray oaSlot = null;
+
+        JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+        for (Object o : oaJSONArray) {
+        	JSONObject oJSONObject = (JSONObject) o;
+            String datePart = (String) oJSONObject.get("DatePart");
+
+            Long isAllow = (Long) oJSONObject.get("IsAllow");
+
+            if (isAllow == 1){
+            	long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+	            Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+	            sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+	            String formattedDate = sdf.format(date);
+
+	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
+
+	            JSONParser parser = new JSONParser();
+	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
+	            JSONArray timesArr = new JSONArray();
+	            if (response.containsKey("d")){
+	            	JSONArray times = (JSONArray) response.get("d");
+	            	for (Object o1 : oaJSONArray) {
+	                	JSONObject oJSONTimeObject = (JSONObject) o1;
+	                    Integer countJobsAllow = (Integer) oJSONTimeObject.get("CountJobsAllow");
+	                    if (countJobsAllow > 0){
+	                    	String startTime = (String) oJSONObject.get("StartTime");
+	                    	String stopTime = (String) oJSONObject.get("StopTime");
+
+	                    	Duration dStartTime = Duration.parse(startTime);
+	                    	Duration dStopTime =  Duration.parse(stopTime);
+	                    	Map<String, Object> currRes = new HashMap<String, Object>();
+	                    	currRes.put("date", formattedDate);
+	                    	currRes.put("time", dStartTime.toHours() + ":" + dStartTime.toMinutes());
+	                    	Integer difference = (int)(dStopTime.toMillis() - dStartTime.toMillis())/ (1000 * 60);
+	                    	currRes.put("length", difference);
+	                    	timesArr.add(currRes);
+	                    }
+
+	            	}
+	            }
+	            oJSONObjectReturn.put("formattedDate", timesArr);
+            }
+        }
 
         return oJSONObjectReturn.toString();
     }
