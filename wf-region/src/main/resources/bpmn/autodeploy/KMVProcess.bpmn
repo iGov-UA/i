@@ -9,11 +9,12 @@
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="costumerDef" name="Определение клиента" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="LName" name="Фамилия; Укажите Вашу фамилию" type="string" default="${bankIdlastName}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="FName" name="Имя; Укажите Ваше имя" type="string" default="${bankIdfirstName}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="MName" name="Отчество; Укажите Ваше отчество" type="string" default="${bankIdmiddleName}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="INN" name="ИНН; Укажите свой индивидуальный налоговый номер" type="string" default="${bankIdinn}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="marker_fizdop" name="Показать дополнительные поля по физлицу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;DocFiz&quot;, &quot;LName&quot;, &quot;FName&quot;, &quot;MName&quot;, &quot;INN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Фамилия; ;bVisible=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Имя; ;bVisible=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Отчество; ;bVisible=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ИНН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_fizdop" name="Показать дополнительные поля по физлицу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;bankIdlastName&quot;, &quot;bankIdfirstName&quot;, &quot;bankIdmiddleName&quot;, &quot;bankIdinn&quot;, &quot;bankIdbirthDay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата рождения" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
