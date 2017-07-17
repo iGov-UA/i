@@ -42,7 +42,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
 var sKey_GroupPostfix = '_default_AkordBank_KC'
-var sKey_GroupPostfix_New ='Akordbank_Operator_KC_1'
+var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -78,10 +78,12 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //реклонирование прав
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_AkordBank_KC'
-var sKey_GroupPostfix_New =('AkordBank_Brunch_of_Bank')
+var sKey_GroupPostfix = '_default_AkordBank_Brunch_of_Bank'
+var sKey_GroupPostfix_New =('AkordBank_Head_of_Branch_bank#66')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -148,7 +150,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <userTask id="usertask4" name="прийняття рішення УРКБ">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" writable="false"></activiti:formProperty>
@@ -227,7 +229,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
 var sKey_GroupPostfix = '_default_AkordBank_KC'
-var sKey_GroupPostfix_New ='Akordbank_Operator_KC_1'
+var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -354,7 +356,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdi:waypoint x="832.0" y="285.0"></omgdi:waypoint>
         <omgdi:waypoint x="512.0" y="245.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="761.0" y="251.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="761.0" y="251.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
