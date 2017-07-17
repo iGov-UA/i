@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.StringUtils;
 import org.igov.io.web.integration.queue.cherg.Cherg;
 import org.igov.io.web.integration.queue.qlogic.QLogic;
 import org.igov.model.flow.FlowProperty;
@@ -38,9 +39,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
@@ -1338,16 +1342,31 @@ public class ActionFlowController {
         return oJsonResult.toString();
     }
     
-    @RequestMapping(value = "/Qlogic/getDaysList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/Qlogic/getSlotFreeDays", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    String getDaysList(
+    String getSlotFreeDays(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
     ) throws Exception {
-        String oJsonResult = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+    	JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+        
+        JSONObject oJSONObjectReturn = new JSONObject();
+        JSONArray dates = new JSONArray();
+        for (Object o : oaJSONArray) {
+            JSONObject oJSONObject = (JSONObject) o;
+            String datePart = (String) oJSONObject.get("DatePart");
+            
+            long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+            Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+            sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+            String formattedDate = sdf.format(date);
+            dates.add(formattedDate);
+        }
+        oJSONObjectReturn.put("aDate", dates);
 
-        return oJsonResult.toString();
+        return oJSONObjectReturn.toString();
     }
     
     @RequestMapping(value = "/Qlogic/getTimeList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
