@@ -1364,9 +1364,9 @@ public class ActionFlowController {
             
             if (isAllow == 1){
 	            long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-	            Date date = new Date(unixSeconds/1000L); // *1000 is to convert seconds to milliseconds
+	            Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
 	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-	            sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
 	            String formattedDate = sdf.format(date);
 	            dates.add(formattedDate);
             }
@@ -1396,9 +1396,9 @@ public class ActionFlowController {
             
             if (isAllow == 1){
             	long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-	            Date date = new Date(unixSeconds/1000L); // *1000 is to convert seconds to milliseconds
+	            Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
 	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-	            sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
 	            String formattedDate = sdf.format(date);
 	            
 	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
