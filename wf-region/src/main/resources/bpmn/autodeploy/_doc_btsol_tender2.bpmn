@@ -772,16 +772,7 @@ var oCloneRightsAgree22 = documentStepService.cloneDocumentStepFromTable(snID_Pr
 
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
-
-// Присвоение названия докумнту
-var title = 'd'
-if (execution.getVariable('asAttributeApplication') == 'Enum1') {
-title = 'Заявка на тендер по определению поставщика ТМЦ'
-}
-if (execution.getVariable('asAttributeApplication') == 'Enum2') {
-title = 'Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера'
-}
-execution.setVariable('sTitleDoc', title)</script>
+</script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask7" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -1023,7 +1014,17 @@ var bAccept = false;
 if(nCountAcceptBT &gt; 0 || nCountAccepCustomer &gt; 0){
 	var bAccept = true;
 }
-execution.setVariable('bAccept', bAccept)</script>
+execution.setVariable('bAccept', bAccept)
+
+// Присвоение названия докумнту
+var title = 'd'
+if (execution.getVariable('asAttributeApplication') == 'Enum1') {
+title = 'Заявка на тендер по определению поставщика ТМЦ'
+}
+if (execution.getVariable('asAttributeApplication') == 'Enum2') {
+title = 'Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера'
+}
+execution.setVariable('sTitleDoc', title)</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway12" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow113" sourceRef="scripttask20" targetRef="exclusivegateway12"></sequenceFlow>

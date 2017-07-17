@@ -94,7 +94,7 @@ execution.setVariable('processInstanceId', processInstanceId)
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -425,7 +425,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask4">
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask14">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
@@ -1071,6 +1071,13 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <sequenceFlow id="flow52" sourceRef="exclusivegateway4" targetRef="scripttask12">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
     </sequenceFlow>
+    <scriptTask id="scripttask14" name="снос подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_3', sKeyGroup)</script>
+    </scriptTask>
+    <sequenceFlow id="flow53" sourceRef="scripttask14" targetRef="scripttask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_comfy_dogovor_1">
     <bpmndi:BPMNPlane bpmnElement="_doc_comfy_dogovor_1" id="BPMNPlane__doc_comfy_dogovor_1">
@@ -1170,6 +1177,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
         <omgdc:Bounds height="40.0" width="40.0" x="556.0" y="685.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask14" id="BPMNShape_scripttask14">
+        <omgdc:Bounds height="55.0" width="105.0" x="907.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="95.0" y="97.0"></omgdi:waypoint>
         <omgdi:waypoint x="150.0" y="97.0"></omgdi:waypoint>
@@ -1217,7 +1227,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="1102.0" y="197.0"></omgdi:waypoint>
-        <omgdi:waypoint x="405.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1012.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="1122.0" y="305.0"></omgdi:waypoint>
@@ -1331,6 +1341,10 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="573.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="519.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="907.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="197.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

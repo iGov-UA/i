@@ -23,30 +23,38 @@
     <userTask id="usertask1" name="Контроль" activiti:candidateUsers="${sLogin}">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ETG_Head_ComDir"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Завдання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable2_task_etg.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable3_task_etg.json')}"></activiti:formProperty>
-        <activiti:formProperty id="saStatusTask" name="Статус задания" type="enum" writable="false">
-          <activiti:value id="executed" name="Выполнено"></activiti:value>
-          <activiti:value id="notExecuted" name="Невыполнено"></activiti:value>
+        <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" writable="false">
+          <activiti:value id="executed" name="Виконано"></activiti:value>
+          <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
           <activiti:value id="unactual" name="Неактуально"></activiti:value>
-          <activiti:value id="delegated" name="Делегировать другому исполнителю"></activiti:value>
+          <activiti:value id="delegated" name="Делегувати іншому виконавцю"></activiti:value>
           <activiti:value id="transfered" name="Прошу перенести срок"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sReport" name="Текст отчета" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="saStatusDecision" name="Решение" type="enum" default="notExecuted">
-          <activiti:value id="executed" name="Пройти процесс дальше (задание выполнено)"></activiti:value>
-          <activiti:value id="notExecuted" name="Закрыть задание"></activiti:value>
-          <activiti:value id="delegated" name="Отправить исполнителю на доработку (отклонить отчет)"></activiti:value>
+        <activiti:formProperty id="sReport" name="Текст звіта" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="saStatusDecision" name="Рішення" type="enum" default="notExecuted">
+          <activiti:value id="executed" name="Пройти процес далі (завдання виконано)"></activiti:value>
+          <activiti:value id="notExecuted" name="Закрыти завдання"></activiti:value>
+          <activiti:value id="delegated" name="Відправити на доопрацювання (відхилити звіт)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sRemark" name="Комментарий - что необходимо доработать" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRemark" name="Коментар - що необхідно доопрацювати" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComentDir" name="Коментар керівника" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
@@ -57,15 +65,23 @@
     <userTask id="usertask2" name="Исполнитель" activiti:candidateUsers="${sLogin}">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина! ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Контроль; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable2_task_etg.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Исполнители; ;bNew=true" type="table" default="${markerService.loadFromFile('table/ETG/sTable3_task_etg.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTextTask" name="Завдання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sComentDir" name="Коментар керівника" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
