@@ -1378,7 +1378,7 @@ public class ActionFlowController {
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
             @ApiParam(value = "Дата для которой необходимо получить список временных (YYYY-MM-DD)", required = true) @RequestParam(value = "sDate") String sDate,
             @ApiParam(value = "Время на которое производиться регистрация. Необходимо использовать "
-            		+ "StartTime из запроса временных промежутков.", required = true) @RequestParam(value = "sDate") String sTime
+            		+ "StartTime из запроса временных промежутков.", required = true) @RequestParam(value = "sTime") String sTime
     ) throws Exception {
         String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime);
 
