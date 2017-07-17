@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="cnap_0002_oblik_kropivn.bpmn" name="cnap_0002_oblik_kropivn.bpmn" isExecutable="true">
+  <process id="cnap_0002_oblik_kropivn" name="cnap_0002_oblik_kropivn" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="string" required="true"></activiti:formProperty>
@@ -60,7 +60,6 @@
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <endEvent id="endevent2" name="End"></endEvent>
     <serviceTask id="servicetask2" name="Повідомлення про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="From">
@@ -93,24 +92,21 @@ ${sNameOrgan}.<br />
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення позитивне рішення"></serviceTask>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_0002_oblik_kropivn.bpmn">
-    <bpmndi:BPMNPlane bpmnElement="cnap_0002_oblik_kropivn.bpmn" id="BPMNPlane_cnap_0002_oblik_kropivn.bpmn">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_0002_oblik_kropivn">
+    <bpmndi:BPMNPlane bpmnElement="cnap_0002_oblik_kropivn" id="BPMNPlane_cnap_0002_oblik_kropivn">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="21.0" y="10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="10.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="66.0" width="121.0" x="100.0" y="45.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="600.0" y="225.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="600.0" y="56.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="600.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="65.0" width="141.0" x="241.0" y="46.0"></omgdc:Bounds>
@@ -128,8 +124,8 @@ ${sNameOrgan}.<br />
         <omgdc:Bounds height="65.0" width="105.0" x="453.0" y="210.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="56.0" y="27.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="45.0"></omgdi:waypoint>
+        <omgdi:waypoint x="45.0" y="78.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="78.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="221.0" y="78.0"></omgdi:waypoint>
@@ -148,10 +144,6 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="430.0" y="73.0"></omgdi:waypoint>
         <omgdi:waypoint x="450.0" y="74.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="558.0" y="74.0"></omgdi:waypoint>
-        <omgdi:waypoint x="600.0" y="73.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="430.0" y="180.0"></omgdi:waypoint>
         <omgdi:waypoint x="430.0" y="247.0"></omgdi:waypoint>
@@ -159,7 +151,13 @@ ${sNameOrgan}.<br />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="558.0" y="242.0"></omgdi:waypoint>
-        <omgdi:waypoint x="600.0" y="242.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="242.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="173.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="558.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="617.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
