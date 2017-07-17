@@ -611,7 +611,7 @@ public class ProcessSubjectTaskService {
      * заданного процесса)
      * @return список задач, которые относятся к заданому процессу(-ам)
      */
-    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
+    public List<ProcessSubjectTask> getProcessSubjectTask(String snID_Process_Activiti, Long nDeepProcessSubjectTask) {
 
         LOG.info("getProcessSubjectTask started...");
         LOG.info("snID_Process_Activiti {}, nDeepProcessSubjectTask {}", snID_Process_Activiti, nDeepProcessSubjectTask);
@@ -619,27 +619,35 @@ public class ProcessSubjectTaskService {
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
 
         try {
+            //1. Реализация поиска от процесса к таскам + заполнение трансидентных полей
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
-
-            for (ProcessSubject oProcessSubject : aProcessSubject) {
-                oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
-                ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
-                        getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
-                for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
-                    processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
-                }
-                oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
-            }
-            LOG.info("aProcessSubject.size {}", aProcessSubject.size());
+            setProcessSubjectUserAndChild(aProcessSubject);
+            
             if (!aProcessSubject.isEmpty()) {
                 Long nID_ProcessSubjectTask = aProcessSubject.get(0).getnID_ProcessSubjectTask();
                 LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
                 if (nID_ProcessSubjectTask != null) {
                     ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(nID_ProcessSubjectTask);
-
                     oProcessSubjectTask.setaProcessSubject(aProcessSubject);
                     aListOfProcessSubjectTask.add(oProcessSubjectTask);
                 }
+
+            //2. Если ничего не нашли пробуем наоборот от тасок к процессу + заполнение трансидентных полей     
+            } else {
+                List<ProcessSubjectTask> aoProcessSubjectTask = oProcessSubjectTaskDao
+                        .findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti);
+
+                aoProcessSubjectTask.forEach(oProcessSubjectTask -> {
+                    Long nID_ProcessSubjectTask = oProcessSubjectTask.getId();
+                    LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
+                    
+                    List<ProcessSubject> aProcessSubjectRevers = oProcessSubjectDao
+                            .findAllBy("nID_ProcessSubjectTask", nID_ProcessSubjectTask);
+                    oProcessSubjectTask.setaProcessSubject(aProcessSubjectRevers);
+                    
+                    setProcessSubjectUserAndChild(aProcessSubjectRevers);
+                });
+                aListOfProcessSubjectTask.addAll(aoProcessSubjectTask);
             }
         } catch (Exception ex) {
             LOG.error("Error in getProcessSubjectTask {}", ex);
@@ -681,5 +689,23 @@ public class ProcessSubjectTaskService {
         oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
         LOG.info("oProcessSubjectTreeParent is {}", oProcessSubjectTreeParent);
         oProcessSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
+    }
+
+    /**
+     * Заполнить aUser и aProcessSubjectChild.
+     *
+     * @param aProcessSubject лист для которого нужно заполнить поля
+     */
+    private void setProcessSubjectUserAndChild(List<ProcessSubject> aProcessSubject) {
+        LOG.info("Setting startted aProcessSubject.size {}", aProcessSubject.size());
+        for (ProcessSubject oProcessSubject : aProcessSubject) {
+            oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
+            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+                    getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), 0l, null);
+            for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
+                processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
+            }
+            oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
+        }
     }
 }
