@@ -8,10 +8,7 @@
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file" readable="false"></activiti:formProperty>
         <activiti:formProperty id="costumerDef" name="Определение клиента" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="DocUr1" name="Вложение2 для юрлица; ;bNew=true" type="file" readable="false"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -117,6 +114,7 @@ ${costumerDef}
           <activiti:value id="Y" name="Yes"></activiti:value>
           <activiti:value id="N" name="No"></activiti:value>
         </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="usertask2"></sequenceFlow>
