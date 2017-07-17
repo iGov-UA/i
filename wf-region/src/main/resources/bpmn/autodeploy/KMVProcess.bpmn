@@ -4,12 +4,10 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="email" name="E-Mail;На данный адрес вы получите результат процесса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="IDProc" name="Process" type="string"></activiti:formProperty>
-        <activiti:formProperty id="TypeClient" name="Тип клиента" type="enum">
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum">
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="IdClient" name="IdClient; bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="costumerDef" name="Определение клиента" type="string"></activiti:formProperty>
@@ -30,12 +28,14 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarGetProc== 'N'}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <userTask id="usertask1" name="Тип клиента" activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="TypeClient" name="Тип клиента" type="enum">
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum">
           <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
           <activiti:value id="Ur" name="Юрлицо"></activiti:value>
         </activiti:formProperty>
@@ -44,7 +44,9 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarGetProc== 'Y'}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask2" name="E-mail уведомление физ лица с одним вложением" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
@@ -93,14 +95,18 @@ ${costumerDef}
     </serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="exclusivegateway2" targetRef="servicetask2"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Fiz'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Ur'}]]></conditionExpression>
+    </sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow10" sourceRef="exclusivegateway3" targetRef="endevent2"></sequenceFlow>
     <userTask id="usertask2" name="Запускаем процесс?" activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="GetProc" name="Запуск Процесса" type="enum">
+        <activiti:formProperty id="eVarGetProc" name="Запуск Процесса" type="enum" required="true">
           <activiti:value id="Y" name="Yes"></activiti:value>
           <activiti:value id="N" name="No"></activiti:value>
         </activiti:formProperty>
