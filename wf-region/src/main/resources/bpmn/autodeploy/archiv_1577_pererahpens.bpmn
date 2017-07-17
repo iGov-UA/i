@@ -3,6 +3,7 @@
   <process id="archiv_1577_pererahpens" name="Довідка про заробітну плату на призначення (перерахунок) пенсії" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sVariantDovidk" name="Довідка" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
@@ -12,15 +13,14 @@
         <activiti:formProperty id="email" name="Ваш e-mail;На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnumPilga" name="Підстава для одержання послуги" type="enum" required="true">
-          <activiti:value id="sEnumPilgymova" name="На пільгових умовах"></activiti:value>
+          <activiti:value id="sEnumPilgumova" name="На пільгових умовах"></activiti:value>
           <activiti:value id="sEnumBezPilg" name="Без пільг"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnumVudDovidku" name="Вид довідки" type="enum" required="true">
+        <activiti:formProperty id="asEnumVydDovidku" name="Вид довідки" type="enum" required="true">
           <activiti:value id="sEnumZarplata" name="Довідка про заробітну плату"></activiti:value>
           <activiti:value id="sEnumYear" name="Довідка про стаж роботи"></activiti:value>
-          <activiti:value id="sEnumZarplataYear" name="Довідка про стаж роботи і заробітну плату "></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asEnumVudPensii" name="Призначення пенсії " type="enum" default="sEnumVik" required="true">
+        <activiti:formProperty id="asEnumVydPensii" name="Призначення пенсії " type="enum" default="sEnumVik" required="true">
           <activiti:value id="sEnumVik" name="за віком"></activiti:value>
           <activiti:value id="sEnumInval" name="по інвалідності"></activiti:value>
           <activiti:value id="sEnumVtrataGodyvalnuka" name="за втрати годувальника"></activiti:value>
