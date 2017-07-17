@@ -99,12 +99,13 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                   needReload = true;
                   dialogs.error('Помилка', err[1])
                 }
-                scope.selected.slot = null;
-                if(needReload){
-                  scope.loadList();
-                }
               } else {
+                needReload = true;
                 dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
+              }
+              scope.selected.slot = null;
+              if(needReload){
+                scope.loadList();
               }
             });
           }
