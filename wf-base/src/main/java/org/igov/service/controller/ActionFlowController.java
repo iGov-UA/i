@@ -6,6 +6,7 @@ import static java.lang.Math.toIntExact;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import org.apache.commons.lang3.StringUtils;
@@ -1419,15 +1420,15 @@ public class ActionFlowController {
 	                    	Duration dStopTime =  Duration.parse(stopTime);
 	                    	Map<String, Object> currRes = new HashMap<String, Object>();
 	                    	currRes.put("date", formattedDate);
-	                    	currRes.put("time", dStartTime.toHours() + ":" + dStartTime.toMinutes());
-	                    	Integer difference = (int)(dStopTime.toMillis() - dStartTime.toMillis())/ (1000 * 60);
-	                    	currRes.put("length", difference);
+	                    	currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
+	                    	Duration delta = dStopTime.minus(dStartTime);
+	                    	currRes.put("length", delta.getSeconds() / 60);
 	                    	timesArr.add(currRes);
 	                    }
 	                    
 	            	}
 	            }
-	            oJSONObjectReturn.put("formattedDate", timesArr);
+	            oJSONObjectReturn.put("aDate", timesArr);
             }
         }
 
