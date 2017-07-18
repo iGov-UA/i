@@ -1455,8 +1455,8 @@ public class ActionFlowController {
 
         return oJsonResult.toString();
     }
-
-    @RequestMapping(value = "/Qlogic/regCustomer", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    
+    @RequestMapping(value = "/Qlogic/setSlot", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String regCustomer(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
@@ -1468,9 +1468,24 @@ public class ActionFlowController {
     ) throws Exception {
         String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime);
 
-        return oJsonResult.toString();
-    }
+        JSONParser oJSONParser = new JSONParser();
+        JSONObject res = new JSONObject();
+        if(oJsonResult!=null){
+            try {
+                JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
+                if (oJSONObject.containsKey("d")){
+                	JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
+                	res.put("id", oJSONObjectMap.get("CustOrderGuid"));
+                	res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
+                }
+            } catch (Exception e){
+            	LOG.error("Error parsing response = {}", oJsonResult, e);
+            }
+        }
 
+        return res.toString();
+    }
+    
     @RequestMapping(value = "/Qlogic/getOrganizationState", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getOrganizationState(
