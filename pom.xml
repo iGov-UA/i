@@ -9,14 +9,11 @@
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-
-    <profiles>
+ <profiles>
 
         <profile>
-            <id>alpha</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <!--id>alpha</id>
+         
             <properties>
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
@@ -78,21 +75,25 @@
                 <sRevision>o${sSubBranch}</sRevision>
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
-                <sRevisionSubPath>/prod</sRevisionSubPath>
-            </properties>
+                <sRevisionSubPath></sRevisionSubPath>
+            </properties-->
         </profile>
         <profile>
             <id>release</id>
+                    <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision>${sSubBranch}</sRevision>
+                <sRevision></sRevision>
                 <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
                 <sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase>
                 <sRevisionSubPath>/prod</sRevisionSubPath>
-            </properties>
-        </profile>
+                     </properties>
+           </profile>
     </profiles>
+
 
     <properties>
         <!--compiler properties -->
@@ -171,12 +172,12 @@
         <repository>
             <id>eGovUa_Nexus</id>
             <name>Internal Releases</name>
-            <url>https://nexus.tech.btsol.com.ua/repository/maven-releases/</url>
+            <url>https://nexus.igov.org.ua/nexus/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>eGovUa_Nexus</id>
             <name>Internal Snapshots</name>
-            <url>https://nexus.tech.btsol.com.ua/repository/maven-snapshots</url>
+            <url>https://nexus.igov.org.ua/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <repositories>
@@ -194,7 +195,7 @@
         </repository>
         <repository>
             <id>eGovUa_Nexus</id>
-            <url>https://nexus.tech.btsol.com.ua/repository/maven-public/</url>
+            <url>https://nexus.igov.org.ua/nexus/content/groups/public</url>
         </repository>
         <repository>
             <id>Activiti</id>
@@ -759,3 +760,4 @@
     </reporting>
 
 </project>
+
