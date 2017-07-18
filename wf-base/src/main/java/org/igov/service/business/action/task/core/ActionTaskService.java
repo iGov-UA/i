@@ -3030,8 +3030,10 @@ public class ActionTaskService {
             int nResult = oTask1.getProcessInstanceId().compareTo(oTask2.getProcessInstanceId());
             if (nResult == 0) {
                 nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
-                if (nResult == 0 || nResult == 1) {
+                if (nResult == 1) {
                     aoTaskToRemove.add(oTask2);
+                } else if (nResult == 0) {
+                    LOG.info("founded task with equal endTime");
                 } else {
                     aoTaskToRemove.add(oTask1);
                 }
