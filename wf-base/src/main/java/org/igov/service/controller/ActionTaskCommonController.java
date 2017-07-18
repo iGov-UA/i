@@ -962,8 +962,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         oHistoryVariableVO.setsType(oFormProperty.getType());
                         oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
 
-                        if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")) {
-                            aTableAndAttachement.add(oHistoryVariableVO);
+                        if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")){ 
+                            if (((String)oHistoryVariableVO.getoValue()).contains("sKey")) {
+                                aResultField.add(oHistoryVariableVO);
+                            }
                         } else if (oFormProperty.getType().equals("enum")) {
 
                             List<FormValue> aEnumFormProperty = oFormProperty.getFormValues();
@@ -1031,12 +1033,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeAttachments.equals(Boolean.TRUE)) {
             LOG.info("Attach is triggered!");
 
-            if (isHistory) {
-                LOG.info("aTableAndAttachement size {}", aTableAndAttachement);
-                response.put("aAttachment", aTableAndAttachement);
-            } else {
+            //if (isHistory) {
+            //    LOG.info("aTableAndAttachement size {}", aTableAndAttachement);
+            //    response.put("aAttachment", aTableAndAttachement);
+            //} else {
                 response.put("aAttachment", oActionTaskService.getAttachmentsByTaskID(nID_Task));
-            }
+            //}
         } else {
             LOG.info("Attach is not triggered!");
         }
