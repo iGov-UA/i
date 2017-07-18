@@ -103,6 +103,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="info" name=" " type="label" default="Ви обробляете Довідку про заробітну плату и стаж роботи на призначенння (перерахнок) пенсії"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIdPassport" name="Паспортні дані; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFilePassport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -125,7 +126,6 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа " type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/archiv_1577_pererahpen_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="info" name=" " type="label" default="Ви обробляете Довідку про заробітну плату и стаж роботи на призначенння (перерахнок) пенсії"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -152,7 +152,6 @@ ${sNameOrgan},<br>
 <p>${sComment}</p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
 <br />
-${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -254,10 +253,6 @@ ${sNameOrgan},<br>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
 <br />
 ${sPhoneOrgan}<br />
-[pattern/mail/_common_signature_start.html]
-</p>
-<br />
-${sPhoneOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
 [pattern/mail/_common_signature_start.html]
@@ -296,11 +291,6 @@ ${sNameOrgan},<br>
 <p>
 Замовлена Вами довідка про заробітну плату на призначення (перерахунок) пенсії готова.<br />
 			Ви можете  отримати оригінал у ЦНАП особисто за пред’явленням паспорта чи іншого документа, що посвідчує особу за адресою:<br />
-</p>
-${sAddress}<br />
-[pattern/mail/_common_signature_start.html]
-</p>
-<br />
 ${sPhoneOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
