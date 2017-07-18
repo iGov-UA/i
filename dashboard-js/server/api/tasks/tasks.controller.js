@@ -118,28 +118,48 @@ exports.index = function (req, res) {
       }
     });
   } else {
-    var path = 'action/task/getTasks';
+    var path = 'action/task/getTasksNew';
 
     query.nStart = (req.query.page || 0) * query.nSize;
 
     if (req.query.filterType === 'selfAssigned') {
       query.sLogin = user.id;
       query.sFilterStatus = 'OpenedAssigned';
-      query.includeProcessVariables = true;
+      query.bIncludeVariablesProcess = true;
     } else if (req.query.filterType === 'unassigned') {
       query.sLogin = user.id;
       query.sFilterStatus = 'OpenedUnassigned';
-      query.includeProcessVariables = false;
+      query.bIncludeVariablesProcess = false;
     } else if (req.query.filterType === 'finished') {
       path = 'history/historic-task-instances';
       query.size = query.nSize;
       query.start = query.nStart;
       query.taskInvolvedUser = user.id;
       query.finished = true;
-    } else if (req.query.filterType === 'documents' || req.query.filterType === 'viewed' || req.query.filterType === 'myDrafts') {
-      query.sFilterStatus = 'Documents';
+    } else if (req.query.filterType === 'documents') {
+      query.sFilterStatus = 'OpenedUnassignedUnprocessedDocument';
       query.sLogin = user.id;
-      query.includeProcessVariables = true;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'ecp') {
+      query.sFilterStatus = 'OpenedUnassignedWithoutECPDocument';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'viewed') {
+      query.sFilterStatus = 'OpenedUnassignedProcessedDocument';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'myDrafts') {
+      query.sFilterStatus = 'OpenedAssignedDocument';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'docHistory') {
+      query.sFilterStatus = 'DocumentClosed';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';

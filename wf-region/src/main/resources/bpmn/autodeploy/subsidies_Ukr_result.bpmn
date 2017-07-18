@@ -109,8 +109,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="result" name="ОБОВ'ЯЗКОВО додайте файл з розрахунком, якщо субсидію призначено; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nScan_passport" name="Скан-копія паспорта: сторінки 1-3 та відомості про реєстрацію місця проживання; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker22" name="прячем резалт" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal_2&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'картошечка'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker21" name="required" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;},&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;result&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;goal&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -154,16 +153,13 @@
     <sequenceFlow id="flow4" name="Заявка прийнята " sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${goal=='Enum1'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="В процесі обробці" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask4" name="В процесі обробці" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["   "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.ua]]></activiti:string>
@@ -192,16 +188,13 @@
     <sequenceFlow id="flow5" name="Заявка в процесі обробки" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${goal=='Enum2'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["  "]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -258,7 +251,7 @@ execution.setVariable('area', per3)
   <bpmndi:BPMNDiagram id="BPMNDiagram_subsidies_Ukr_result">
     <bpmndi:BPMNPlane bpmnElement="subsidies_Ukr_result" id="BPMNPlane_subsidies_Ukr_result">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="64.0" y="22.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="64.0" y="143.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="61.0" width="105.0" x="150.0" y="130.0"></omgdc:Bounds>
@@ -339,8 +332,8 @@ execution.setVariable('area', per3)
         <omgdi:waypoint x="718.0" y="57.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="81.0" y="57.0"></omgdi:waypoint>
-        <omgdi:waypoint x="202.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="99.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

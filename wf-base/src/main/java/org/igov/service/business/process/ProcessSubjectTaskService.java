@@ -18,6 +18,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -158,7 +159,7 @@ public class ProcessSubjectTaskService {
 
         try {
             //LOG.info("aJsonProcessSubjectTask in synctProcessSubjectTask: {}", oaProcessSubjectTask.toJSONString());
-
+            int processSubjectTask_Counter = 0;
             for (Object oJsonProcessSubjectTask : oaProcessSubjectTask) {
 
                 String sActionType = (String) ((JSONObject) oJsonProcessSubjectTask).get("sActionType");
@@ -168,7 +169,7 @@ public class ProcessSubjectTaskService {
                 LOG.info("Redis key in synctProcessSubjectTask: {}", sKey);
 
                 if (sActionType.equals("set")) {
-                    setProcessSubjectTask(oJsonProcessSubjectTask, aJsonProcessSubject, sKey);
+                    setProcessSubjectTask(oJsonProcessSubjectTask, aJsonProcessSubject, sKey, processSubjectTask_Counter);
                 } else if (sActionType.equals("edit")) {
                     editProcessSubject(oJsonProcessSubjectTask, aJsonProcessSubject, sKey, snId_Task);
                 } else if (sActionType.equals("delegate")) {
@@ -197,6 +198,8 @@ public class ProcessSubjectTaskService {
                 } else {
                     throw new RuntimeException("There is wrong sActionType");
                 }
+
+                processSubjectTask_Counter++;
             }
         } catch (Exception ex) {
             throw new RuntimeException("Error task setting: " + ex.getMessage());
@@ -342,10 +345,10 @@ public class ProcessSubjectTaskService {
 
         LOG.info("startProcess started...");
         Map<String, Object> mParamTask = new HashMap<>();
-        Optional<ProcessSubjectTask> oOptionalProcessSubjectTask
-                = oProcessSubjectTaskDao.findBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root);
-        if (oOptionalProcessSubjectTask.isPresent()) {
-            ProcessSubjectTask oProcessSubjectTask = oOptionalProcessSubjectTask.get();
+        List<ProcessSubjectTask> aProcessSubjectTask
+                = oProcessSubjectTaskDao.findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti_Root);
+        for (ProcessSubjectTask oProcessSubjectTask : aProcessSubjectTask) {
+            //ProcessSubjectTask oProcessSubjectTask = oOptionalProcessSubjectTask.get();
             LOG.info("ProcessSubjectTask with id {} was founded {}", oProcessSubjectTask.getId());
             byte[] aByteTaskBody = oBytesDataStaticStorage.getData(oProcessSubjectTask.getsKey());
 
@@ -378,7 +381,7 @@ public class ProcessSubjectTaskService {
         return 1L;
     }
 
-    private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey) throws Exception {
+    private void setProcessSubjectTask(Object oJsonProcessSubjectTask, JSONArray aJsonProcessSubject, String sKey, Integer processSubjectTask_Counter) throws Exception {
 
         ProcessSubjectTask oProcessSubjectTask = new ProcessSubjectTask();
         oProcessSubjectTask.setSnID_Process_Activiti_Root((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"));
@@ -390,7 +393,7 @@ public class ProcessSubjectTaskService {
 
         List<ProcessSubject> aProcessSubject
                 = setProcessSubjectList(aJsonProcessSubject,
-                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, (String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), null, 0L);
+                        (JSONObject) oJsonProcessSubjectTask, oProcessSubjectTask, ((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")).concat(processSubjectTask_Counter.toString()), null, 0L);
         LOG.info("aProcessSubject in synctProcessSubjectTask: {}", aProcessSubject);
     }
 
@@ -436,8 +439,7 @@ public class ProcessSubjectTaskService {
 
         Long nOrder = nStartOrder;
 
-        String nId_Task_Root = null;
-        List<String> asKey_Step = null;
+        /*List<String> asKey_Step = null;
 
         if (((JSONObject) oJsonProcessSubjectTask).get("sKey_GroupPostfix") != null) {
             HistoricProcessInstance oHistoricProcessInstance = oHistoryService.createHistoricProcessInstanceQuery().
@@ -463,8 +465,7 @@ public class ProcessSubjectTaskService {
                 LOG.info("List of steps in ProcessSubjectTask is: {}", asKey_Step);
             }
 
-        }
-
+        }*/
         for (Object oJsonProcessSubject : aJsonProcessSubject) {
 
             ProcessSubject oProcessSubject = null;
@@ -514,15 +515,47 @@ public class ProcessSubjectTaskService {
             aProcessSubject.add(oProcessSubject);
             LOG.info("oProcessSubject in setProcessSubjectList: {}", oProcessSubject);
 
-            if (asKey_Step != null && nId_Task_Root != null) {
+            List<HistoricVariableInstance> aHistoricVariableInstance = oHistoryService.createHistoricVariableInstanceQuery()
+                    .processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")).list();
+
+            String sKey_Step_Active = null;
+
+            for (HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance) {
+                if (oHistoricVariableInstance.getVariableName().startsWith("sKey_Step")) {
+                    sKey_Step_Active = (String) oHistoricVariableInstance.getValue();
+                    LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
+                }
+            }
+
+            if (sKey_Step_Active != null) {
                 //CANDIDATE
                 /*oTaskService.addGroupIdentityLink(nId_Task_Root, 
                         (String)((JSONObject)oJsonProcessSubject).get("sLogin"), "CANDIDATE");*/
-                oTaskService.addCandidateGroup(nId_Task_Root, (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
-                LOG.info("nId_Task_Root is {}", nId_Task_Root);
-                LOG.info("sLogin is {}", (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
+                DocumentStep oDocumentStep_Common
+                        = oDocumentStepService.getDocumentStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"), "_");
 
-                for (String step : asKey_Step) {
+                List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = oDocumentStep_Common.aDocumentStepSubjectRight();
+
+                boolean isNewLogin = true;
+
+                for (DocumentStepSubjectRight oDocumentStepSubjectRight_Common : aDocumentStepSubjectRight_Common) {
+                    if (oDocumentStepSubjectRight_Common.getsKey_GroupPostfix().equals((String) ((JSONObject) oJsonProcessSubject).get("sLogin"))) {
+                        isNewLogin = false;
+                    }
+                }
+
+                if (isNewLogin) {
+                    String nId_Task_Root = oTaskService.createTaskQuery().processInstanceId((String) ((JSONObject) oJsonProcessSubjectTask)
+                            .get("snID_Process_Activiti_Root")).active().singleResult().getId();
+
+                    oTaskService.addCandidateGroup(nId_Task_Root, (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
+                    oDocumentStepService.addRightsToCommonStep((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"),
+                            (String) ((JSONObject) oJsonProcessSubject).get("sLogin"),
+                            sKey_Step_Active);
+                    LOG.info("nId_Task_Root is {}", nId_Task_Root);
+                    LOG.info("sLogin is {}", (String) ((JSONObject) oJsonProcessSubject).get("sLogin"));
+                }
+                /*for (String step : asKey_Step) {
                     oDocumentStepService.cloneDocumentStepSubject((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"),
                             (String) ((JSONObject) oJsonProcessSubjectTask).get("sKey_GroupPostfix"), (String) ((JSONObject) oJsonProcessSubject).get("sLogin"), step, true);
 
@@ -537,8 +570,8 @@ public class ProcessSubjectTaskService {
                                break;
                             }
                         }
-                    }*/
-                }
+                    }
+                }*/
             }
         }
 
@@ -611,7 +644,7 @@ public class ProcessSubjectTaskService {
      * заданного процесса)
      * @return список задач, которые относятся к заданому процессу(-ам)
      */
-    public List<ProcessSubjectTask> getProcessSubjectTask(final String snID_Process_Activiti, final Long nDeepProcessSubjectTask) {
+    public List<ProcessSubjectTask> getProcessSubjectTask(String snID_Process_Activiti, Long nDeepProcessSubjectTask) {
 
         LOG.info("getProcessSubjectTask started...");
         LOG.info("snID_Process_Activiti {}, nDeepProcessSubjectTask {}", snID_Process_Activiti, nDeepProcessSubjectTask);
@@ -619,27 +652,34 @@ public class ProcessSubjectTaskService {
         List<ProcessSubjectTask> aListOfProcessSubjectTask = new ArrayList<>();
 
         try {
+            //1. Реализация поиска от процесса к таскам + заполнение трансидентных полей
             List<ProcessSubject> aProcessSubject = oProcessSubjectDao.findAllBy("snID_Process_Activiti", snID_Process_Activiti);
+            setProcessSubjectUserAndChild(aProcessSubject);
 
-            for (ProcessSubject oProcessSubject : aProcessSubject) {
-                oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
-                ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
-                        getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), nDeepProcessSubjectTask, null);
-                for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
-                    processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
-                }
-                oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
-            }
-            LOG.info("aProcessSubject.size {}", aProcessSubject.size());
             if (!aProcessSubject.isEmpty()) {
                 Long nID_ProcessSubjectTask = aProcessSubject.get(0).getnID_ProcessSubjectTask();
                 LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
                 if (nID_ProcessSubjectTask != null) {
                     ProcessSubjectTask oProcessSubjectTask = oProcessSubjectTaskDao.findByIdExpected(nID_ProcessSubjectTask);
-
                     oProcessSubjectTask.setaProcessSubject(aProcessSubject);
                     aListOfProcessSubjectTask.add(oProcessSubjectTask);
                 }
+            //2. Если ничего не нашли пробуем наоборот от тасок к процессу + заполнение трансидентных полей     
+            } else {
+                List<ProcessSubjectTask> aoProcessSubjectTask = oProcessSubjectTaskDao
+                        .findAllBy("snID_Process_Activiti_Root", snID_Process_Activiti);
+
+                aoProcessSubjectTask.forEach(oProcessSubjectTask -> {
+                    Long nID_ProcessSubjectTask = oProcessSubjectTask.getId();
+                    LOG.info("nID_ProcessSubjectTask={}", nID_ProcessSubjectTask);
+
+                    List<ProcessSubject> aProcessSubjectRevers = oProcessSubjectDao
+                            .findAllBy("nID_ProcessSubjectTask", nID_ProcessSubjectTask);
+                    oProcessSubjectTask.setaProcessSubject(aProcessSubjectRevers);
+
+                    setProcessSubjectUserAndChild(aProcessSubjectRevers);
+                });
+                aListOfProcessSubjectTask.addAll(aoProcessSubjectTask);
             }
         } catch (Exception ex) {
             LOG.error("Error in getProcessSubjectTask {}", ex);
@@ -681,5 +721,23 @@ public class ProcessSubjectTaskService {
         oProcessSubjectTreeParent.setProcessSubjectChild(oProcessSubjectChild);
         LOG.info("oProcessSubjectTreeParent is {}", oProcessSubjectTreeParent);
         oProcessSubjectTreeDao.saveOrUpdate(oProcessSubjectTreeParent);
+    }
+
+    /**
+     * Заполнить aUser и aProcessSubjectChild.
+     *
+     * @param aProcessSubject лист для которого нужно заполнить поля
+     */
+    private void setProcessSubjectUserAndChild(List<ProcessSubject> aProcessSubject) {
+        LOG.info("Setting startted aProcessSubject.size {}", aProcessSubject.size());
+        for (ProcessSubject oProcessSubject : aProcessSubject) {
+            oProcessSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(oProcessSubject.getsLogin()));
+            ProcessSubjectResult oProcessSubjectResult = oProcessSubjectService.
+                    getCatalogProcessSubject(oProcessSubject.getSnID_Task_Activiti(), 0l, null);
+            for (ProcessSubject processSubject : oProcessSubjectResult.getaProcessSubject()) {
+                processSubject.setaUser(oProcessSubjectService.getUsersByGroupSubject(processSubject.getsLogin()));
+            }
+            oProcessSubject.setaProcessSubjectChild(oProcessSubjectResult.getaProcessSubject());
+        }
     }
 }
