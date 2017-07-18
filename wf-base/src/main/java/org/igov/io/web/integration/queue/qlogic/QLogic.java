@@ -11,6 +11,10 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +102,7 @@ public class QLogic {
         return sReturn;
 	}
     
-    public String getDaysList(String sOrganisationGuid, String sServiceCenterId,
+    public JSONArray getDaysList(String sOrganisationGuid, String sServiceCenterId,
 			String sServiceId) throws Exception {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
@@ -118,8 +122,24 @@ public class QLogic {
                     + oHttpEntityCover.nStatus());
         }
 
-        LOG.info("Result:{}", sReturn);
-        return sReturn;
+        JSONParser oJSONParser = new JSONParser();
+        JSONObject oJSONObjectGot;
+        JSONArray oaJSONArrayReturn = new JSONArray();
+        if(sReturn!=null){
+            try {
+
+                oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
+
+                oaJSONArrayReturn = (JSONArray) oJSONObjectGot.get("d");
+            } catch (ParseException e) {
+                LOG.error("Error parsing response = {}", sReturn, e);
+                throw new Exception("Error parsing response for: [sendRequest](sURL=" + url + "): nStatus()="
+                        + oHttpEntityCover.nStatus());
+            }
+        }
+        
+        LOG.info("Result:{}", oaJSONArrayReturn);
+        return oaJSONArrayReturn;
 	}
 	
     public String getTimeList(String sOrganisationGuid, String sServiceCenterId,
