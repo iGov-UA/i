@@ -2910,6 +2910,7 @@ public class ActionTaskService {
             Set<String> snTaskIdToRemove = aoTaskToRemove.stream()
                     .map(Task::getId)
                     .collect(Collectors.toSet());
+            LOG.info("snTaskIdToRemove {}", snTaskIdToRemove);
             aoAllTasks.stream()
                     .filter(oTask -> !snTaskIdToRemove.contains(oTask.getId()))
                     .collect(Collectors.toList());
