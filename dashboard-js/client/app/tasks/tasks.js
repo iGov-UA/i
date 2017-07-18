@@ -92,7 +92,7 @@
             '$q',
             function (tasks, $stateParams, tasksStateModel, $q) {
               tasksStateModel.taskId = $stateParams.id;
-              if ($stateParams.type == 'finished'){
+              if ($stateParams.type == 'finished' || $stateParams.type == 'docHistory'){
                 var defer = $q.defer();
                 tasks.taskFormFromHistory($stateParams.id).then(function(response){
                   defer.resolve(JSON.parse(response).data[0]);
