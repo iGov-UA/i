@@ -1,3 +1,5 @@
+[Архив с удаленными БП](https://drive.google.com/drive/u/0/folders/0B218KjOVgSlEN1F1TFJQQllSMEE)
+
 **[18.0 Установка Eclipce](https://github.com/e-government-ua/iBP/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-Eclipce)**   
 **[18.1 Ветки](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%92%D0%B5%D1%82%D0%BA%D0%B8)**  
 **[18.2 Переключение между ветками](https://github.com/e-government-ua/iBP/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%B3%D0%B8%D1%82%D0%BE%D0%BC-%D0%B8-%D1%80%D0%B5%D0%BF%D0%BE%D0%B7%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B5%D0%BC#%D0%9F%D0%B5%D1%80%D0%B5%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BC%D0%B5%D0%B6%D0%B4%D1%83-%D0%B2%D0%B5%D1%82%D0%BA%D0%B0%D0%BC%D0%B8)**  

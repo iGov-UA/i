@@ -134,14 +134,14 @@
         tasks.list($stateParams.type, data)
           .then(function (oResult) {
             try {
-              if (oResult.data.code) {
-                var e = new Error(oResult.data.message);
-                e.name = oResult.data.code;
+              if (oResult.aoTaskDataVO.code) {
+                var e = new Error(oResult.aoTaskDataVO.message);
+                e.name = oResult.aoTaskDataVO.code;
                 throw e;
               }
 
-              if (oResult.data !== null && oResult.data !== undefined) {
-                var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+              if (oResult.aoTaskDataVO !== null && oResult.aoTaskDataVO !== undefined) {
+                var aTaskFiltered = _.filter(oResult.aoTaskDataVO, function (oTask) {
                   return oTask.endTime !== null;
                 });
                 $scope.filteredTasks = [];
@@ -256,20 +256,19 @@
 
       $scope.tasksLoading = true;
 
-      if ($stateParams.type !== 'ecp')
         tasks.list($stateParams.type, data)
           .then(function (oResult) {
             try {
-              if (oResult.data.code) {
-                var e = new Error(oResult.data.message);
-                e.name = oResult.data.code;
+              if (oResult.aoTaskDataVO.code) {
+                var e = new Error(oResult.aoTaskDataVO.message);
+                e.name = oResult.aoTaskDataVO.code;
 
                 throw e;
               }
 
-              if (oResult.data !== null && oResult.data !== undefined) {
+              if (oResult.aoTaskDataVO !== null && oResult.aoTaskDataVO !== undefined) {
                 // build tasks array
-                var aTaskFiltered = _.filter(oResult.data, function (oTask) {
+                var aTaskFiltered = _.filter(oResult.aoTaskDataVO, function (oTask) {
                   return oTask.endTime !== null;
                 });
                 if (!$scope.tasks)

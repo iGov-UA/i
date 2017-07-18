@@ -169,13 +169,13 @@
 
         // после перехода подгрузки и фильтра вкладки "Документы" на бек, будет не актуальным.
         if(params.type === 'documents') {
-          response.data = response.data.filter(function (res) {
+          response.aoTaskDataVO = response.aoTaskDataVO.filter(function (res) {
             return res.processDefinitionId.charAt(0) === '_' && res.processDefinitionId.split('_')[1] === 'doc';
           })
         }
 
-        for (var i = 0; i < response.data.length; i++) {
-          if (response.data[i].id == params.taskId) {
+        for (var i = 0; i < response.aoTaskDataVO.length; i++) {
+          if (response.aoTaskDataVO[i].id == params.taskId) {
             var newPath = '/tasks/' + params.type + '/' + params.taskId;
             if (newPath == $location.$$path){
               $route.reload();

@@ -25,6 +25,7 @@ angular.module('dashboardJsApp')
         unassigned: 'unassigned',
         documents: 'documents',
         myDrafts: 'myDrafts',
+        docHistory: 'docHistory',
         viewed: 'viewed',
         ecp: 'ecp',
         finished: 'finished',
@@ -38,13 +39,11 @@ angular.module('dashboardJsApp')
        * @return {Promise}
        */
       list: function (filterType, params) {
-        if(filterType !== 'ecp') {
-          return simpleHttpPromise({
-            method: 'GET',
-            url: '/api/tasks',
-            params: angular.merge({filterType: filterType}, params)
-          });
-        }
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks',
+          params: angular.merge({filterType: filterType}, params)
+        });
       },
       getEventMap: function () {
         var deferred = $q.defer();
@@ -196,7 +195,7 @@ angular.module('dashboardJsApp')
         }, callback);
       },
 
-      submitTaskForm: function (taskId, formProperties, task, attachments, issue) {
+      submitTaskForm: function (taskId, formProperties, task, attachments, issue, docParams) {
         var self = this,
             deferred = $q.defer(),
             promises = [],
@@ -296,6 +295,9 @@ angular.module('dashboardJsApp')
 
           if(issue) {
             submitTaskFormData.aProcessSubjectTask = issue;
+          } else if (docParams && docParams.nID_Process && docParams.sStep_Document) {
+            submitTaskFormData.nID_Process = docParams.nID_Process;
+            submitTaskFormData.sKey_Step = docParams.sStep_Document;
           }
 
           var req = {

@@ -37,15 +37,11 @@
               ng-show="isVisible(menu.type)"
               ng-class="{'selected-menu-list': isTaskFilterActive(menu.type)}">
 
-            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
-               ng-if="menu.tab !== 'ecp'"
+            <a class="navbar-nav-tab"
+               ng-attr-id="{{menu.type}}"
+               title="{{menu}}"
                ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
               <span ng-if="menu.showCount" class="label counter">{{menu.count}}</span>
-            </a>
-
-            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
-               ng-if="menu.tab === 'ecp'"
-               ui-sref="tasks.typeof.ecp">{{menu.title}}
             </a>
           </li>
         </ul>

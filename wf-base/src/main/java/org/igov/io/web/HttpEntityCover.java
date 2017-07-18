@@ -9,14 +9,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import org.igov.io.Log;
+
 import static org.igov.util.Tool.sCut;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -39,7 +44,7 @@ public class HttpEntityCover {
     private String sURL = null;
     private MultiValueMap<String, Object> mParamObject = null;
     private MultiValueMap<String, ByteArrayResource> mParamByteArray = null;
-
+    private Map<String, Object> mUrlVariable = null;
     
     private ResponseEntity<String> osResponseEntity = null;
             
@@ -67,6 +72,11 @@ public class HttpEntityCover {
 
     public HttpEntityCover _DataArray(MultiValueMap<String, ByteArrayResource> mParamByteArray){
         this.mParamByteArray = mParamByteArray;
+        return this;
+    }
+    
+    public HttpEntityCover _UrlVariable(Map<String, Object> mUrlVariable){
+        this.mUrlVariable = mUrlVariable;
         return this;
     }
 
@@ -113,10 +123,14 @@ public class HttpEntityCover {
                 }
             }
             
-            sRequest = mParamObject.toString();
+            sRequest = mParamObject != null ? mParamObject.toString() : "";
             
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
-            osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+            if (mUrlVariable != null){
+            	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class, mUrlVariable);
+            } else {
+            	osResponseEntity = oRestTemplate.postForEntity(sURL, oHttpEntity, String.class);
+            }
             
             if(nStatus()!=200){
                 new Log(this.getClass(), LOG)
@@ -152,6 +166,57 @@ public class HttpEntityCover {
         return this;
     }
     
-    
+    public HttpEntityCover _SendGET(){
+        String sRequest = null;
+        try{
+            StringHttpMessageConverter oStringHttpMessageConverter = new StringHttpMessageConverter();
+            HttpMessageConverter<Resource> oHttpMessageConverter = new ResourceHttpMessageConverter();
+            FormHttpMessageConverter oFormHttpMessageConverter = new FormHttpMessageConverter();
+            oFormHttpMessageConverter.addPartConverter(oHttpMessageConverter);
+
+            RestTemplate oRestTemplate = new RestTemplate(
+                    Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
+
+            
+            HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
+            if (mUrlVariable != null){
+            	osResponseEntity = oRestTemplate.exchange(sURL, HttpMethod.GET, oHttpEntity, String.class, mUrlVariable);
+            } else {
+            	osResponseEntity = oRestTemplate.exchange(sURL, HttpMethod.GET, oHttpEntity, String.class);
+            }
+            
+            if(nStatus()!=200){
+                new Log(this.getClass(), LOG)
+                        ._Case("Web_PostNo200")
+                        ._Head("[_Send]:nStatus!=200")
+                        ._Status(Log.LogStatus.ERROR)
+                        ._Param("sURL", sURL)
+                        ._Param("sRequest", sRequest)
+                        ._Param("nReturn", nStatus())
+                        ._LogTransit()
+                        .save()
+                        ;
+            }
+            LOG.info("FINISHED! (nStatus={},sURL={},sRequest(cuted)={},sReturn(cuted)={})",nStatus(),sURL,sCut(100,sRequest),sCut(100,sReturn()));
+            LOG_BIG.debug("FINISHED! (nStatus={},sURL={},sRequest={},sReturn()={})",nStatus(),sURL,sRequest,sReturn());
+        }catch(Exception oException){
+            new Log(oException, LOG)
+                    ._Case("Web_Post")
+                    ._Head("[_Send]:BREAKED!")
+                    ._Status(Log.LogStatus.ERROR)
+                    ._Param("sURL", sURL)
+                    ._Param("sRequest", sRequest)
+                    ._LogTransit()
+                    ._LogTrace()
+                    .save()
+                    ;
+            LOG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG_BIG.error("BREAKED: {} (sURL={},sRequest={}):",oException.getMessage(),sURL,sRequest);
+            LOG_BIG.debug("BREAKED:", oException);
+            throw oException;
+        }
+        _Reset();
+        return this;
+    }
     
 }
