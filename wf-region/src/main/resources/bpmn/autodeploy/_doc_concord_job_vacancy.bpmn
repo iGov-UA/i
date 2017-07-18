@@ -28,8 +28,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="AkordBank_"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long"></activiti:formProperty>
@@ -44,17 +44,15 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         </activiti:formProperty>
         <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubordination" name="Кому підпорядковується" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Кому підпорядковується" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Ким керує " type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table5.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sExpPost" name="Досвід роботи: посада" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sExpActivity" name="Досвід роботи: напрям діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Досвід роботи" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_job_vacancy.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_job_vacancy.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table7.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAge" name="Вік" type="string"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
@@ -62,7 +60,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumFemale" name="Жінка"></activiti:value>
           <activiti:value id="sEnumBoth" name="Чоловік або жінка"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFamily" name="Сімейний стан, діти" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Сімейний стан, діти" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table6.json')}"></activiti:formProperty>
         <activiti:formProperty id="asCar" name="Наявність авто; ;sID_CheckboxTrue=sEnumCarYes" type="enum">
           <activiti:value id="sEnumCarNo" name="відсутнє"></activiti:value>
           <activiti:value id="sEnumCarYes" name="є авто"></activiti:value>
@@ -77,7 +75,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" default="Нижня: , Середня: , Вища: ."></activiti:formProperty>
@@ -109,7 +107,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumFindYes" name="закритий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFindMoney" name="Бюджет на пошук" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="string" default="Місто: , Регіон: , Країна: ."></activiti:formProperty>
+        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="enum">
+          <activiti:value id="Country" name="Країна"></activiti:value>
+          <activiti:value id="Region" name="Регіон"></activiti:value>
+          <activiti:value id="City" name="Місто"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFindCompany" name="Компанії, в яких може працювати кандидат (назва та сфера діяльності)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date"></activiti:formProperty>
@@ -275,7 +277,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:expression><![CDATA[${sEmailOfHead}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Інформація стосовна пошуку кандидатів ]]></activiti:string>
+          <activiti:string><![CDATA[Інформація стосовна пошуку кандидатів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
