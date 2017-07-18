@@ -2912,11 +2912,9 @@ public class ActionTaskService {
             LOG.info("snTaskIdToRemove {}", snID_TaskToRemove);
             
             aoUnassignedUnprocessedTask.forEach(oTask -> {
-                String snID_Task = oTask.getId();
-                LOG.info("snID_Task={}", snID_Task);
-                boolean result = snID_TaskToRemove.contains(snID_Task);
-                LOG.info("Contain result={}", result);
-                if (!result) {
+
+                //boolean result = snID_TaskToRemove.contains(oTask.getId());
+                if (!snID_TaskToRemove.contains(oTask.getId())) {
                     aoAllTasks.add(oTask);
                 }
             });
