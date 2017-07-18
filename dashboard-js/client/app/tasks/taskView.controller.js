@@ -962,7 +962,6 @@
 
               return;
             }
-
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();

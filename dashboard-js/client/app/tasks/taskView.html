@@ -456,7 +456,7 @@
                   <span ng-if="isNeedECP()">Пiдписати ЕЦП</span>
                 </span>
               </button>
-              <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
+              <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -468,13 +468,13 @@
 
           <div ng-if="!clarify && !inUnassigned()" class="fixed-bottom-menu-buttons">
             <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || documentRights">
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || sSelectedTask == 'docHistory'"
                       ng-click="submitTaskQuestion(form)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Опрацювати
               </button>
-              <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
+              <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -484,7 +484,7 @@
             </div>
 
             <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || !documentRights">
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || sSelectedTask == 'docHistory'"
                       ng-click="submitTask(form)"
                       ng-if="documentRights.bWrite !== null"
                       class="btn btn-info"
@@ -504,7 +504,7 @@
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
                 </span>
               </button>
-              <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
+              <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -522,6 +522,7 @@
 
           <div ng-hide="(selectedTask.assignee === null && !isDocument())
            || sSelectedTask === 'finished'
+           || sSelectedTask == 'docHistory'
            || sSelectedTask === 'all'
            || selectedTask.processDefinitionId.indexOf('system') == 0"
                class="fixed-bottom-menu-buttons"
@@ -552,7 +553,7 @@
             <delegate-button></delegate-button>
           </div>
 
-          <div style="display: inline-block;">
+          <div style="display: inline-block;" ng-if="issue">
             <button type="button" class="btn btn-link" ng-click="addIssue()">Додати завдання</button>
           </div>
 
