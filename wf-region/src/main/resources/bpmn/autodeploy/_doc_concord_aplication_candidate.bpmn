@@ -7,6 +7,10 @@
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVacansion" name="Вакансія, на яку претендуєте" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string"></activiti:formProperty>
@@ -14,6 +18,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Сканкопія вашого паспорта;(перша, друга сторінка та сторінка з відміткою про реєстрацію);bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -74,9 +79,12 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVacansion" name="Вакансія, на яку претендує заявник; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
@@ -115,16 +123,15 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds" name="Чи відповідає кандидат вимогам вакансії?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markers5" name="якщо відповідає" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_5.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -143,9 +150,12 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVacansion" name="Вакансія, на яку претендує заявник; ;writable=false" type="string"></activiti:formProperty>
+                
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
@@ -184,10 +194,11 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds1" name="Чи пройшов кандидат перевірку?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -275,9 +286,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVacansion" name="Вакансія, на яку претендує заявник; ;writable=false" type="string"></activiti:formProperty>
+                
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
@@ -316,9 +330,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds2" name="Погодити кандидатуру ?" type="enum" required="true">
@@ -413,9 +427,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVacansion" name="Вакансія, на яку претендує заявник; ;writable=false" type="string"></activiti:formProperty>
+                
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
@@ -454,9 +471,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
@@ -508,9 +525,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sVacansion" name="Вакансія, на яку претендує заявник; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
@@ -549,9 +569,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="markers2" name="Якщо притягалися до відповідальності" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо військовий" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо змінювали прізвище" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_3.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_2.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_aplication_candidate_table_3.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Трудова діяльність; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Близькі родичі; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds3" name="Кандидат прийняв пропозицію працевлаштування?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -634,7 +655,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="35.0" width="35.0" x="974.0" y="199.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="42.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="329.0" y="120.0"></omgdc:Bounds>
@@ -646,25 +667,25 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="55.0" width="105.0" x="939.0" y="119.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="1371.0" y="42.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1511.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="1185.0" y="49.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="1325.0" y="49.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent5" id="BPMNShape_endevent5">
-        <omgdc:Bounds height="35.0" width="35.0" x="1188.0" y="200.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1328.0" y="200.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent6" id="BPMNShape_endevent6">
-        <omgdc:Bounds height="35.0" width="35.0" x="1500.0" y="51.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1640.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="1250.0" y="42.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1390.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="220.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1200.0" y="42.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
-        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="120.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="1060.0" y="119.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="205.0" y="67.0"></omgdi:waypoint>
@@ -716,7 +737,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="1011.0" y="67.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1060.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1060.0" y="67.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="381.0" y="175.0"></omgdi:waypoint>
@@ -731,32 +752,32 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="991.0" y="199.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="1225.0" y="69.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1250.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1365.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1390.0" y="69.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="1205.0" y="89.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1205.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1345.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1345.0" y="200.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="1476.0" y="69.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1500.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1616.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1640.0" y="68.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="1355.0" y="69.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1371.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1495.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1511.0" y="69.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="1112.0" y="220.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1205.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1305.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1325.0" y="69.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="1112.0" y="97.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1112.0" y="120.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="119.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
-        <omgdi:waypoint x="1112.0" y="175.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1112.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1112.0" y="119.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1252.0" y="97.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
