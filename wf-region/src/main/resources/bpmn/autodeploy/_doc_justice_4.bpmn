@@ -19,7 +19,6 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sLogin_AutorResolution" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
@@ -231,8 +230,7 @@
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sLogin_AutorResolution" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
+       <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPrevious" name="Вхідний № попереднього звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
@@ -600,8 +598,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
-         <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
+         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" required="true">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
@@ -830,8 +827,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sReportCommon" name="Текст звіту про виконання" type="fileHTML" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
+       <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
@@ -951,17 +947,17 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //Клонування прав для керівнка
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
-var cloneDocumentStepSubject_sKey_GroupPostfix_New = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
-var cloneDocumentStepSubject_justice_common = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
+var cloneDocStepSub_sKey = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
+var cloneDocStepSub_jc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
 </script>
     </scriptTask>
     <sequenceFlow id="flow63" sourceRef="scripttask5" targetRef="usertask2"></sequenceFlow>
     <scriptTask id="scripttask6" name="перемикання степа 3" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var processInstanceId = execution.getVariable('processInstanceId');
+      <script>
 //перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var cloneDocumentStepSubject_justice_common = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
+var cloneDocStepSub_jc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
 </script>
     </scriptTask>
     <sequenceFlow id="flow64" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
@@ -969,7 +965,7 @@ var cloneDocumentStepSubject_justice_common = documentStepService.cloneDocumentS
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
-var cloneDocumentStepSubject_justice_common = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')
+var cloneDocStepSub_jc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')
 </script>
     </scriptTask>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -980,8 +976,10 @@ var cloneDocumentStepSubject_justice_common = documentStepService.cloneDocumentS
     </scriptTask>
     <sequenceFlow id="flow68" sourceRef="scripttask8" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask9" name="Старт виконання" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
-var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
+      <script>
+      var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
+var result = processSubjectTaskService.startProcess(snID_Process_Activiti)
+      </script>
     </scriptTask>
     <sequenceFlow id="flow69" sourceRef="scripttask9" targetRef="scripttask6"></sequenceFlow>
   </process>
