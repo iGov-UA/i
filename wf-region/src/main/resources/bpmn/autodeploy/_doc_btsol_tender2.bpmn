@@ -734,7 +734,7 @@ execution.setVariable('sID_Group_Activiti_Customer', obj2[0].sID_Group_Activiti)
 
 </script>
     </scriptTask>
-    <scriptTask id="scripttask4" name="Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask4" name="Step_Approve" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable3', 'step_3', true, 'sLogin_Approver')
@@ -762,7 +762,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       </extensionElements>
     </callActivity>
     <sequenceFlow id="flow64" sourceRef="servicetask5" targetRef="exclusivegateway15"></sequenceFlow>
-    <scriptTask id="scripttask6" name="Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask6" name="Step_Agreement" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable2', 'step_2',true,'sLogin_isExecute')
@@ -775,7 +775,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
 </script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
-    <scriptTask id="scripttask7" name="Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask7" name="Step_Resolution_Addressee" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti,  '_default_btsol', 'sTable4', 'step_4','sLogin_Addressee')
@@ -806,7 +806,7 @@ execution.setVariable('sGroupAddressee', aGroupAddressee[0])</script>
     <sequenceFlow id="flow74" name="отказ" sourceRef="exclusivegateway4" targetRef="scripttask16">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT3 == 'sEnumRemark'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask10" name="All Signes Step2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask10" name="Check Signes Agreement" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
 var bSubmitedAll2="";
 var oCheckSubmitedAll2= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_2')
@@ -821,12 +821,12 @@ execution.setVariable('bSubmitedAll2', oCheckSubmitedAll2.bSubmitedAll.toString(
     <sequenceFlow id="flow79" sourceRef="exclusivegateway5" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll2 == false}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask11" name="All Signes Step3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask11" name="Check Signes Approve" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
 var oCheckSubmitedAll3= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_3')
 execution.setVariable('bSubmitedAll3', oCheckSubmitedAll3.bSubmitedAll.toString())</script>
     </scriptTask>
-    <scriptTask id="scripttask12" name="All Signes Step4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask12" name="Check Signes Addressee" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
 var oCheckSubmitedAll4= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_4')
 execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString())</script>
@@ -849,14 +849,14 @@ execution.setVariable('bSubmitedAll4', oCheckSubmitedAll4.bSubmitedAll.toString(
     <sequenceFlow id="flow101" sourceRef="exclusivegateway11" targetRef="scripttask31">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumNo' }]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask16" name="Step1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask16" name="Step_Create" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask17" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask17" name="Step_View_Author" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
@@ -984,7 +984,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name=" Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
+    <serviceTask id="servicetask2" name=" Update_Document ARM" activiti:delegateExpression="#{Update_ARM}">
       <extensionElements>
         <activiti:field name="soData">
           <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[nID_Relation_1]};;Gruppa::value{[sName_Relation_1]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
@@ -1264,7 +1264,7 @@ execution.setVariable('sTitleDoc', title)</script>
     <sequenceFlow id="flow124" sourceRef="exclusivegateway15" targetRef="scripttask31">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT5 == 'sEnumYesExit' }]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name=" Update_DocumentARM" activiti:delegateExpression="#{Update_ARM}">
+    <serviceTask id="servicetask4" name=" Update_Document ARM" activiti:delegateExpression="#{Update_ARM}">
       <extensionElements>
         <activiti:field name="soData">
           <activiti:string><![CDATA[Id::value{[sID_ARM]};;Industry::value{[sEnterpriseCustomer]};;Priznak::enum{[asAttributeApplication]};;Prioritet::enum{[asPriorityApplication]};;Out_number::value{[sNumberCard]};;Data_out::value{[sDateApprove]};;Number_441::value{[sNumber_441]};;Data_in::value{[sDateApprove]};;Dep_number::enum{[asNumberDep]};;State::enum{[asStatus]};;Name_object::value{[sNameObject]};;Kod::value{[nID_Relation_1]};;Gruppa::value{[sName_Relation_1]};;Undergroup::value{[sSubgroup]};;Prilog::value{[sTable1]};;Expert::value{[sTable6]};;DataEZ::value{[sPlannedDateEZ]};;DataBB::value{[sFactDateEZ]};;Zametki::value{[sNotesHead]};;Number_442::value{[sNumber_442]};;Data_out_raz::value{[sDate_442]};;Srok::value{[sNumberResponseDoc]};;Protocol_Number::value{[sNumberProtocolMeetings]};;CorrectionDoc::value{[sCorrectionDoc]};;AuctionForm::enum{[asFormBargaining]};;Winner::value{[sShortName_SubjectOrgan_01]};;Kod_okpo::value{[sID_SubjectOrgan_OKPO_01]};;Phone::value{[phone]};;Sumzak::value{[sStartSum]};;Summa::value{[sFinalSum]};;Sumkred::value{[sSaveSum]};;UAN::value{[sID_UA_Currency]};;If_oplata::enum{[asPrefPay]};;Uslovie::value{[sSpecialConditions]};;Bank::value{[sBankProvider]};;Finans::value{[sMeansFinancing]};;Smeta::value{[sAgreedEstimates]};;UpdateData::value{[sDateChange]};;Notes::value{[sNotes]};;Priemka::value{[sAcceptanceInformation]};;Arhiv::value{[sArchive]};;Id_corp::value{[sID_Enterprise]};;Longterm::value{[sLongterm]};;CreateDate::value{[sCreateDate]};;Prockred::value{[sProckred]};;UpdOKBID::value{[sUpdOKBID]}]]></activiti:string>
@@ -1274,7 +1274,7 @@ execution.setVariable('sTitleDoc', title)</script>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask21" name="Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask21" name="Step_Execution by the executor" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_8')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable6', 'step_8', true, 'sLogin_isExecute')
@@ -1721,7 +1721,7 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
 var sKeyGroup = execution.getVariable('sLogin_LastSubmited')
 var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_8', sKeyGroup)</script>
     </scriptTask>
-    <scriptTask id="scripttask31" name="All Signes Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask31" name="Check Signes Executor" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
 var bSubmitedAll8="";
 var oCheckSubmitedAll8= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_8')
@@ -1738,7 +1738,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
     <serviceTask id="servicetask5" name="Ответный документ" activiti:delegateExpression="#{StartProcess}">
       <extensionElements>
         <activiti:field name="soData">
-          <activiti:string><![CDATA[sLoginAuthor::value{[sLogin_LastSubmited]};;sDocAnswer::value{[sTitleDoc]};;sNumberCard::value{[sNumberCard]}]]></activiti:string>
+          <activiti:string><![CDATA[sLoginAuthor::value{[sLogin_LastSubmited]};;sDocAnswer::value{[sTitleDoc]};;sNumberCard::value{[sNumberCard]};;sEnterpriseCustomer::value{[sEnterpriseCustomer]};;sNumber_441::value{[sNumber_441]};;sDate_441::value{[sDate_441]};;sDateApprove::value{[sDateApprove]};;sNameObject::value{[sNameObject]};;sSubgroup::value{[sSubgroup]};;sName_Relation_1::value{[sName_Relation_1]};;nID_Relation_1::value{[nID_Relation_1]};;sTechCharacteristic::value{[sTechCharacteristic]};;asUnit::enum{[asUnit]};;sQuantity::value{[sQuantity]};;sPurposeSupply::value{[sPurposeSupply]};;sScheduleSupply::value{[sScheduleSupply]};;sProducer::value{[sProducer]};;oDateBegin::value{[oDateBegin]};;oDateEnd::value{[oDateEnd]};;asSupplyMaterials::enum{[asSupplyMaterials]};;asServicemMachines::enum{[asServicemMachines]};;sAddInformation::value{[sAddInformation]};;sNumber_442::value{[sNumber_442]};;sDate_442::value{[sDate_442]};;sNumberResponseDoc::value{[sNumberResponseDoc]};;sNumberProtocolMeetings::value{[sNumberProtocolMeetings]};;sShortName_SubjectOrgan_01::value{[sShortName_SubjectOrgan_01]};;sID_SubjectOrgan_OKPO_01::value{[sID_SubjectOrgan_OKPO_01]};;phone::value{[phone]};;sStartSum::value{[sStartSum]};;Phone::value{[Phone]};;sFinalSum::value{[sFinalSum]};;sSaveSum::value{[sSaveSum]};;sCurrency::value{[sCurrency]};;sID_UA_Currency::value{[sID_UA_Currency]};;asPrefPay::enum{[asPrefPay]};;sSpecialConditions::value{[sSpecialConditions]};;asProgFin::enum{[asProgFin]};;sContactPerson::value{[sContactPerson]};;asBankGaranty::enum{[asBankGaranty]};;sBankGaranty::value{[sBankGaranty]};;sBankProvider::value{[sBankProvider]};;sMeansFinancing::value{[sMeansFinancing]};;sAgreedEstimates::value{[sAgreedEstimates]};;sNotes::value{[sNotes]};;asFormBargaining::enum{[asFormBargaining]};;sAcceptanceInformation::value{[sAcceptanceInformation]};;sArchive::value{[sArchive]};;sCorrectionDoc::value{[sCorrectionDoc]};;asPriorityApplication::enum{[asPriorityApplication]};;sName_isExecute::value{[sName_isExecute]};;sPlannedDateEZ::value{[sPlannedDateEZ]};;sFactDateEZ::value{[sFactDateEZ]};;sNotesHead::value{[sNotesHead]}]]></activiti:string>
         </activiti:field>
         <activiti:field name="sID_BP">
           <activiti:string><![CDATA[_doc_btsol_sz]]></activiti:string>
@@ -1780,7 +1780,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="56.0" width="105.0" x="1708.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="1708.0" y="1377.0"></omgdc:Bounds>
+        <omgdc:Bounds height="62.0" width="105.0" x="1708.0" y="1370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="1740.0" y="420.0"></omgdc:Bounds>
@@ -1789,16 +1789,16 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="40.0" width="40.0" x="1740.0" y="1090.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
-        <omgdc:Bounds height="55.0" width="105.0" x="1708.0" y="500.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="1708.0" y="490.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="1740.0" y="580.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="1708.0" y="1160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="105.0" x="1708.0" y="1160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask12" id="BPMNShape_scripttask12">
-        <omgdc:Bounds height="55.0" width="105.0" x="1708.0" y="1580.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="1708.0" y="1572.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
         <omgdc:Bounds height="40.0" width="40.0" x="1740.0" y="1665.0"></omgdc:Bounds>
@@ -1810,7 +1810,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="56.0" width="105.0" x="1300.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask17" id="BPMNShape_scripttask17">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1251.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="519.0" y="1251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1171.0"></omgdc:Bounds>
@@ -1819,16 +1819,16 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="84.0" width="105.0" x="1708.0" y="1250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="1380.0" y="1655.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="114.0" x="1367.0" y="1648.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask18" id="BPMNShape_scripttask18">
-        <omgdc:Bounds height="55.0" width="105.0" x="1708.0" y="840.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="1708.0" y="840.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask19" id="BPMNShape_scripttask19">
-        <omgdc:Bounds height="55.0" width="105.0" x="1511.0" y="1580.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="1510.0" y="1575.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask20" id="BPMNShape_scripttask20">
-        <omgdc:Bounds height="55.0" width="105.0" x="1447.0" y="89.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="114.0" x="1447.0" y="75.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway12" id="BPMNShape_exclusivegateway12">
         <omgdc:Bounds height="40.0" width="40.0" x="1597.0" y="97.0"></omgdc:Bounds>
@@ -1849,10 +1849,10 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="40.0" width="40.0" x="551.0" y="1551.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="714.0" y="1652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="73.0" width="105.0" x="714.0" y="1646.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask21" id="BPMNShape_scripttask21">
-        <omgdc:Bounds height="55.0" width="105.0" x="1151.0" y="1653.0"></omgdc:Bounds>
+        <omgdc:Bounds height="73.0" width="105.0" x="1151.0" y="1646.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway16" id="BPMNShape_exclusivegateway16">
         <omgdc:Bounds height="40.0" width="40.0" x="1740.0" y="320.0"></omgdc:Bounds>
@@ -1897,13 +1897,13 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="55.0" width="105.0" x="714.0" y="1544.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask31" id="BPMNShape_scripttask31">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1440.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="519.0" y="1431.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway21" id="BPMNShape_exclusivegateway21">
         <omgdc:Bounds height="40.0" width="40.0" x="551.0" y="1340.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1652.0"></omgdc:Bounds>
+        <omgdc:Bounds height="73.0" width="105.0" x="519.0" y="1646.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="1256.0" y="117.0"></omgdi:waypoint>
@@ -1919,18 +1919,18 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow57" id="BPMNEdge_flow57">
         <omgdi:waypoint x="1418.0" y="117.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1447.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1447.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
         <omgdi:waypoint x="1760.0" y="460.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1760.0" y="500.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1760.0" y="490.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
         <omgdi:waypoint x="1760.0" y="707.0"></omgdi:waypoint>
         <omgdi:waypoint x="1760.0" y="728.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow64" id="BPMNEdge_flow64">
-        <omgdi:waypoint x="571.0" y="1652.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1646.0"></omgdi:waypoint>
         <omgdi:waypoint x="571.0" y="1591.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -1975,7 +1975,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="1826.0" y="218.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow83" id="BPMNEdge_flow83">
-        <omgdi:waypoint x="1760.0" y="1635.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1760.0" y="1643.0"></omgdi:waypoint>
         <omgdi:waypoint x="1760.0" y="1665.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow86" id="BPMNEdge_flow86">
@@ -1988,7 +1988,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow94" id="BPMNEdge_flow94">
         <omgdi:waypoint x="1761.0" y="1551.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1760.0" y="1580.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1760.0" y="1572.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow97" id="BPMNEdge_flow97">
         <omgdi:waypoint x="1780.0" y="1685.0"></omgdi:waypoint>
@@ -2005,12 +2005,12 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow100" id="BPMNEdge_flow100">
         <omgdi:waypoint x="649.0" y="1682.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1682.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
         <omgdi:waypoint x="669.0" y="1662.0"></omgdi:waypoint>
-        <omgdi:waypoint x="669.0" y="1467.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="669.0" y="1465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1466.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
         <omgdi:waypoint x="1352.0" y="190.0"></omgdi:waypoint>
@@ -2025,24 +2025,24 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="571.0" y="1126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow109" id="BPMNEdge_flow109">
-        <omgdi:waypoint x="1760.0" y="895.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1760.0" y="921.0"></omgdi:waypoint>
         <omgdi:waypoint x="1760.0" y="970.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow110" id="BPMNEdge_flow110">
         <omgdi:waypoint x="1760.0" y="1334.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1760.0" y="1377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1760.0" y="1370.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow111" id="BPMNEdge_flow111">
-        <omgdi:waypoint x="1380.0" y="1682.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1367.0" y="1683.0"></omgdi:waypoint>
         <omgdi:waypoint x="1311.0" y="1683.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow112" id="BPMNEdge_flow112">
-        <omgdi:waypoint x="1511.0" y="1607.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1432.0" y="1607.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1432.0" y="1655.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1510.0" y="1607.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1423.0" y="1607.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1424.0" y="1648.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow113" id="BPMNEdge_flow113">
-        <omgdi:waypoint x="1552.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1561.0" y="117.0"></omgdi:waypoint>
         <omgdi:waypoint x="1597.0" y="117.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow114" id="BPMNEdge_flow114">
@@ -2059,14 +2059,14 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       <bpmndi:BPMNEdge bpmnElement="flow116" id="BPMNEdge_flow116">
         <omgdi:waypoint x="1663.0" y="1664.0"></omgdi:waypoint>
         <omgdi:waypoint x="1662.0" y="1606.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1616.0" y="1607.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1615.0" y="1607.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow117" id="BPMNEdge_flow117">
         <omgdi:waypoint x="1643.0" y="1684.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1485.0" y="1682.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1481.0" y="1683.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow118" id="BPMNEdge_flow118">
-        <omgdi:waypoint x="1760.0" y="1215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1760.0" y="1226.0"></omgdi:waypoint>
         <omgdi:waypoint x="1760.0" y="1250.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow119" id="BPMNEdge_flow119">
@@ -2075,23 +2075,23 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow120" id="BPMNEdge_flow120">
         <omgdi:waypoint x="1271.0" y="1683.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1256.0" y="1680.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1256.0" y="1682.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow121" id="BPMNEdge_flow121">
         <omgdi:waypoint x="1291.0" y="1703.0"></omgdi:waypoint>
         <omgdi:waypoint x="1291.0" y="1765.0"></omgdi:waypoint>
         <omgdi:waypoint x="570.0" y="1765.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1707.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1719.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="100.0" x="1101.0" y="1749.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
         <omgdi:waypoint x="1291.0" y="1663.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1290.0" y="1278.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1278.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="1286.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1286.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="30.0" x="1301.0" y="1585.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="30.0" x="1301.0" y="1530.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
@@ -2100,10 +2100,10 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow124" id="BPMNEdge_flow124">
         <omgdi:waypoint x="571.0" y="1551.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1501.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
-        <omgdi:waypoint x="1151.0" y="1680.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1151.0" y="1682.0"></omgdi:waypoint>
         <omgdi:waypoint x="1125.0" y="1682.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow127" id="BPMNEdge_flow127">
@@ -2126,7 +2126,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="2326.0" y="313.0"></omgdi:waypoint>
         <omgdi:waypoint x="2326.0" y="14.0"></omgdi:waypoint>
         <omgdi:waypoint x="1499.0" y="14.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1499.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1504.0" y="75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow135" id="BPMNEdge_flow135">
         <omgdi:waypoint x="1760.0" y="1010.0"></omgdi:waypoint>
@@ -2172,7 +2172,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="2563.0" y="1087.0"></omgdi:waypoint>
         <omgdi:waypoint x="2563.0" y="-6.0"></omgdi:waypoint>
         <omgdi:waypoint x="1499.0" y="-6.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1499.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1504.0" y="75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow145" id="BPMNEdge_flow145">
         <omgdi:waypoint x="2209.0" y="786.0"></omgdi:waypoint>
@@ -2180,19 +2180,19 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdi:waypoint x="1813.0" y="679.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow146" id="BPMNEdge_flow146">
-        <omgdi:waypoint x="714.0" y="1679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="714.0" y="1682.0"></omgdi:waypoint>
         <omgdi:waypoint x="689.0" y="1682.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow147" id="BPMNEdge_flow147">
         <omgdi:waypoint x="868.0" y="1682.0"></omgdi:waypoint>
-        <omgdi:waypoint x="819.0" y="1679.0"></omgdi:waypoint>
+        <omgdi:waypoint x="819.0" y="1682.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow149" id="BPMNEdge_flow149">
         <omgdi:waypoint x="571.0" y="1340.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1306.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1321.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow150" id="BPMNEdge_flow150">
-        <omgdi:waypoint x="571.0" y="1440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1431.0"></omgdi:waypoint>
         <omgdi:waypoint x="571.0" y="1380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow151" id="BPMNEdge_flow151">
