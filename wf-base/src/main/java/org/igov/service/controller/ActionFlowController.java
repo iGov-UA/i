@@ -1416,9 +1416,9 @@ public class ActionFlowController {
 	            JSONArray timesArr = new JSONArray();
 	            if (response.containsKey("d")){
 	            	JSONArray times = (JSONArray) response.get("d");
-	            	for (Object o1 : oaJSONArray) {
+	            	for (Object o1 : times) {
 	                	JSONObject oJSONTimeObject = (JSONObject) o1;
-	                    Integer countJobsAllow = (Integer) oJSONTimeObject.get("CountJobsAllow");
+	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
 	                    if (countJobsAllow > 0){
 	                    	String startTime = (String) oJSONObject.get("StartTime");
 	                    	String stopTime = (String) oJSONObject.get("StopTime");
