@@ -321,7 +321,7 @@
 
         // todo соеденить с isUnasigned
         $scope.isDocument = function () {
-          return $state.params.type === 'documents';
+          return ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($state.params.type) > -1;
         };
 
         $scope.validateForm = function(form) {
