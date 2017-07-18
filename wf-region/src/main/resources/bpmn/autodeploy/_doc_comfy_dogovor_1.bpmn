@@ -123,8 +123,7 @@ var sKey_GroupPostfix_New = obj1[0].sID_Group_Activiti
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy_view', sKey_GroupPostfix_New, 'step_2')</script>
+</script>
     </scriptTask>
     <userTask id="usertask2" name="керівник автора">
       <extensionElements>
@@ -222,9 +221,7 @@ var sKey_GroupPostfix_New ='Comfy_Financial_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-//права автору на просмотр
-//var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy_view', sKey_GroupPostfix_New, 'step_3')</script>
+</script>
     </scriptTask>
     <userTask id="usertask3" name="фінансист">
       <extensionElements>
@@ -346,9 +343,7 @@ var sKey_GroupPostfix_New ='Comfy_Legal_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-//права автору на просмотр
-//var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy_view', sKey_GroupPostfix_New, 'step_4')</script>
+</script>
     </scriptTask>
     <userTask id="usertask4" name="юрист">
       <extensionElements>
@@ -469,9 +464,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 //var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_6')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Comfy', 'sTable', 'step_6',true,'sLogin_isExecute')
 
-//права автору на просмотр
-//var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy_view', sKey_GroupPostfix_New, 'step_6')
 
 </script>
     </scriptTask>
@@ -488,9 +480,6 @@ var sKey_GroupPostfix_New ='Comfy_Clerk'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
-//права автору на просмотр
-//var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy_view', sKey_GroupPostfix_New, 'step_10')
 </script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -993,9 +982,7 @@ if(sKey_GroupPostfix_New == null){
 }
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_9')
 
-//права автору на просмотр
-//var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy_view', sKey_GroupPostfix_New, 'step_9')</script>
+</script>
     </scriptTask>
     <userTask id="usertask10" name="тот же юрист">
       <extensionElements>
@@ -1095,9 +1082,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask14" name="снос подписи  с правами" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var sKey_Step= 'step_3'
-var nID_Process = execution.getProcessInstanceId()
-var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, sKey_Step, 'Comfy_Financial_Department')</script>
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLogin_LastSubmited')
+var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_3', sKeyGroup)</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask14" targetRef="scripttask4"></sequenceFlow>
   </process>
