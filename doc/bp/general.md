@@ -1,3 +1,5 @@
+###### general
+
 1. [Создание бизнес-процессов](#creatingbusinessprocesses)
 1. [Основные элементы Activiti Designer](#themain)
 2. [Типы параметров](#typesofparameters)
@@ -12,7 +14,7 @@
 1. [ЭЦП](#digitalsignature)
 1. [Электронные очереди](#electronicqueues)
 1. [Оплата услуги](#paymentfortheservice)
-1. [Емайлы](#emails)
+1. [e-mails](#emails)
 1. [Отправка СМС-оповещений](#sendingsmsnotifications)
 1. [Скрипты](#scripts)
 1. [Конфигурационные файлы](#configurationfiles)
@@ -29,7 +31,7 @@
 
 ###### creatingbusinessprocesses
 # 1. Создание бизнес-процессов
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### сбор информации и предварительная подготовка
 * получить информационную и технологическую карточку услуги
@@ -74,7 +76,7 @@
 
 # 2. Основные элементы Activiti Designer
 
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 * При разработке БП из всего арсенала Activiti Designer используются следующие элементы:
 ###### startevent
@@ -129,7 +131,7 @@
 
 ###### typesofparameters
 # 3. Типы параметров
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 
 ### string
@@ -337,7 +339,7 @@ type="queueData" required="true"></activiti:formProperty>
 ###### reservedandsystemvariables
 # 4. Зарезервированные и системные переменные
 
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### attributesbankid
 ### attributesBankID (Переменные BankID)
@@ -408,7 +410,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### generalrulesfornaming
 # 5. Общие правила при именовании
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ## Наличие в любых IDшниках кириллических символов, а также пробелов - недопустимо
 
@@ -433,7 +435,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### typeslisteneranddelegate
 # 6. Типы Listener и delegateExpression
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### listener
 * ${fileTaskUploadListener} - тянет ВСЕ атачи из стартовой формы. Указывать на первой Юзертаске.  
@@ -489,7 +491,7 @@ type="queueData" required="true"></activiti:formProperty>
  
 ###### assigngroupsandusers
 # Назначение групп и пользователей
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 <br><br>
 <a href="https://docs.google.com/spreadsheets/d/1qSOpxtcC8O1FQLWzLu5--307dlBiMQDA2m6ahfSlOdg/edit#gid=1215479518">Группы и пользователи Днепропетровской области</a><br><br>
 В данный момент основной веткой для работы считается Дельта (test-delta). Пользователи и группы заведенные в этой ветке автоматически добавятся в другие ветки на следующий день. В случае необходимости сделать проливку групп и пользователей с Дельты на другие ветки в режиме он-лайн, необходимо перейти по ссылке https://ci-jenkins.tech.igov.org.ua/view/active/job/_sync_users/ нажать Build with Parameters выбрать галочками необходимые ветки и нажать сборку.
@@ -512,7 +514,7 @@ type="queueData" required="true"></activiti:formProperty>
 
 ###### mathematical
 # 8. Математические действия с переменными и операторы условий
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### Выполнение простейших математических действий с переменными
 
@@ -531,7 +533,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### workingwithdatesandtimers
 # 9. Работа с датами и таймерами
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 ###### usingtimers
 ### Использование таймеров
 Для использования таймера с целью приостановки процесса, используем стандартный элемент **TimerCatchingEvent** (самостоятельный элемент схемы) который приостанавливает процесс до срабатывания таймера.
@@ -541,7 +543,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### markersandvalidators
 # 10. Маркеры и Валидаторы
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 Маркеры и Валидаторы позволяют работать с уже существующими полями и расширяют их возможности.
 
@@ -895,7 +897,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### printform
 # 11. Принтформы
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### printformmd
 ### PrintForm
@@ -938,7 +940,7 @@ digit3 - переменная, куда присвоится результат 
 
 ##### digitalsignature
 # 12. ЭЦП
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### creationofasignededsdocument
 ### Создание подписанного ЭЦП документа cо стартовой формы
@@ -977,7 +979,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### electronicqueues
 # 13. Электронные очереди
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### Настройка электронной очереди
 Все файлы для настройки электронной очереди расположены в wf-base/src/main/resources/data/ ….   
@@ -1065,7 +1067,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### paymentfortheservice
 # 14. Оплата услуги
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 * добавить в  БП такие поля (можно на стартовой таске):
 ```xml
@@ -1094,7 +1096,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### emails
 # 15. Емайлы
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### automaticsendingmail
 ### Автоматическая отправка почты 
@@ -1170,7 +1172,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### sendingsmsnotifications
 # 16. Отправка СМС-оповещений
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### smsnotifications
 
@@ -1182,7 +1184,7 @@ digit3 - переменная, куда присвоится результат 
 
 ###### scripts
 # 17. Скрипты
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### scriptsmd
 1. [Форматирование даты в процессе](#formatthedateintheprocess)  
@@ -1470,7 +1472,7 @@ value - значение атрибута в столбце.
 
 ###### configurationfiles
 # 18. Конфигурационные файлы
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### wf-central  
 путь к конфигурационным файлам: **\i\wf-central\src\main\resources\data\**  
@@ -1630,7 +1632,7 @@ value - значение атрибута в столбце.
 
 ###### workingwiththegithandrepository
 # 19. Работа с гитом и репозиторием 
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 
 **[19.0 Установка Eclipce](#installationeclipse)**   
@@ -1756,7 +1758,7 @@ IDE NetBeans позволяет автоматизировать этот про
 
 ###### installationeclipse
 # Установка Eclipce
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ###### installjavajdk
 ### Устанавливаем JAVA JDK
@@ -1786,7 +1788,7 @@ http://www.eclipse.org/downloads/download.php?file=/technology/epp/downloads/rel
 
 ###### autotests
 # 20. Автотесты
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 
 ### Подготовка среды
@@ -2061,7 +2063,7 @@ clickButton(driver, sBP, "Ok");
 
 ###### escalationsandfeedback
 ### 21. Эскалации
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 Эскалации создаются для каждой юзертаски каждого бизнес-процесса. Бывает так что для некоторых юзертасок не нужно генерировать эскалации - аналитик решает это сам, учитывая специфику бизнес-процесса.
 
@@ -2155,14 +2157,14 @@ clickButton(driver, sBP, "Ok");
 
 ###### statisticsanduploads
 # 22. Статистика и выгрузки
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 Empty
 
 
 ###### commonerrors  
 # 23. Часто возникающие ошибки
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### Case 1. Не отображается тест выбранного Enum в принтформе, а отображается ID
 Возможные проблемы:
@@ -2203,7 +2205,7 @@ Tests in error:
 
 ###### usefulinquiries
 # 24. Полезные запросы
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### запустить правило эскалации (метод GET)  
 ```
@@ -2299,7 +2301,7 @@ https://alpha.test.region.igov.org.ua/wf/service/object/file/download_file_from_
 
 ###### lifehacking
 # 25. Лайф Хаки
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 
 Для сравнения файлов в Notepad++ можно установить плагин Compare  - он позволяет открыть рядышком два файла, синхронно их прокручивает и подкрашивает разными цветами различия.  
@@ -2382,7 +2384,7 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ###### checkListtestbranch
 # 25. Чек лист тестирования ветки
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 (в скобках номер услуги на которой можно проверить)
 - [x] **подача услуги с файлами и приход файлов в дашборд** (любая)
@@ -2429,7 +2431,7 @@ https://mu-dp.test.region.igov.org.ua/ - мин.юст
 
 ###### idoc
 # 26. СЭД
-[вернуться в начало](general.md)
+[вернуться в начало](#general)
 
 ### [Переменные iDoc](#variablesidoc)
 ### [Листенеры iDoc](#listenersidoc)

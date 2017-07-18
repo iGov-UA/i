@@ -142,7 +142,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         oRequest.setAttribute("startTime", startTime);
         protocolize(oRequest, response, false);
         documentHistoryPreProcessing(oRequest, response);
-        checkTaskAvailability(oRequest);
+        //checkTaskAvailability(oRequest);
         processSubjectStatusHistoryWritingPreHandle(oRequest);
         return true;
     }
@@ -1198,35 +1198,34 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(SERVICE_SUBJECT_PROCESS_SET_PROCESS_SUBJECT_STATUS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
-
+/*
     private boolean isExistTaskID(HttpServletRequest oRequest) {
 
         return (oRequest != null && oRequest.getRequestURL().toString().indexOf(RUNTIME_TASKS) > 0
                 && GET.equalsIgnoreCase(oRequest.getMethod().trim()));
     }
-
+ 
     private void checkTaskAvailability(HttpServletRequest oRequest) {
 
         if (isExistTaskID(oRequest)) {
             String sURL = oRequest.getRequestURL().toString();
             LOG.info("checkTaskAvailability sURL is: " + sURL);
 
-            String snTaskId = null;
-            snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
+            String snTaskId = sURL.substring(sURL.lastIndexOf("/") + 1);
             LOG.info("snTaskId: " + snTaskId);
 
-            Task task = taskService.createTaskQuery().taskId(snTaskId).singleResult();
-
-            if (task != null) {
-                LOG.info("checkTaskAvailability task: Name - {}, Id - {}, ProcessInstanceId - {}, "
-                        + "ProcessDefinitionId - {}", task.getName(), task.getId(),
-                        task.getProcessInstanceId(), task.getProcessDefinitionId());
-            } else {
-                LOG.info("checkTaskAvailability task not found!");
+            Task oTask = taskService.createTaskQuery().taskId(snTaskId).singleResult();
+            HistoricTaskInstance oHistoryTask = historyService
+                    .createHistoricTaskInstanceQuery()
+                    .taskId(snTaskId)
+                    .singleResult();
+            
+            if (oTask == null && oHistoryTask == null) {
+                LOG.error("Task not found!");
                 throw new RuntimeException("Can't find task");
             }
         }
-    }
+    }*/
 
     private void processSubjectStatusHistoryWritingPreHandle(HttpServletRequest oRequest) throws Exception {
 
