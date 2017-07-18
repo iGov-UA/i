@@ -671,6 +671,83 @@
                </column>
            </addColumn>
        </changeSet>        
-                        
+       
+        <changeSet id="issue-2-iProject-add-new-entity" author="Kovylin Yegor">
+        
+            <createTable tableName="DocumentImageFile">
+                <column name="nID" type="bigint">
+                    <constraints primaryKey="true" nullable="false"/>
+                </column>
+                <column name="sHash" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sSecret" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sKey_File" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sID_FileStorage" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sFileType" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sFileExtension" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="nBytes" type="bigint">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sDateSave" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+            </createTable>
+            
+            <createTable tableName="DocumentImageFileSign">
+                <column name="nID" type="bigint">
+                    <constraints primaryKey="true" nullable="false"/>
+                </column>
+                <column name="nID_DocumentImageFile" type="bigint">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sSign" type="varchar(400)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="nID_SignType" type="bigint">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sSignData_JSON" type="varchar(5000)">
+                    <constraints nullable="true"/>
+                </column>
+            </createTable>
+            
+            <createTable tableName="SignType">
+                <column name="nID" type="bigint">
+                    <constraints primaryKey="true" nullable="false"/>
+                </column>
+                <column name="sID" type="varchar(200)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sName" type="varchar(200)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sNote" type="varchar(1000)">
+                    <constraints nullable="true"/>
+                </column>
+                <column name="sClass" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+            </createTable>
+            
+            <addForeignKeyConstraint constraintName="FK_DocumentImageFile_DocumentImageFileSign" referencedTableName="DocumentImageFile"
+                                 baseColumnNames="nID_DocumentImageFile" baseTableName="DocumentImageFileSign" 
+                                 referencedColumnNames="nID"/>
+            
+            <addForeignKeyConstraint constraintName="FK_SignType_DocumentImageFileSign" referencedTableName="SignType"
+                                 baseColumnNames="nID_SignType" baseTableName="DocumentImageFileSign" 
+                                 referencedColumnNames="nID"/>
+    
+        </changeSet>                           
                                         
 </databaseChangeLog>

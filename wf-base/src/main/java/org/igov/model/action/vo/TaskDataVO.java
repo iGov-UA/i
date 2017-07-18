@@ -1,5 +1,6 @@
 package org.igov.model.action.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,43 +11,45 @@ import org.activiti.engine.task.DelegationState;
  * @author idenysenko
  */
 public class TaskDataVO {
+    //для инициализации у всех инстансов TaskDataVO поля variables пустым массивом
+    private static final List FOR_VARIABLES = new ArrayList<>();
     
-    private String sId;
+    private String id;
     private String sUrl;
-    private String sOwner;
-    private String sAssignee;
-    private DelegationState oDelegationState;
-    private String sName;
-    private String sDescription;
-    private String sCreateTime;
-    private String sDueDate;
-    private Integer nPriority;
-    private Boolean bSuspended;
-    private String sTaskDefinitionKey;
-    private String sTenantId;
-    private String sCategory;
-    private String sFormKey;
-    private String sParentTaskId;
-    private String sParentTaskUrl;
-    private String sExecutionId;
-    private String sExecutionUrl;
-    private String sProcessInstanceId;
-    private String sProcessInstanceUrl;
-    private String sProcessDefinitionId;
-    private String sProcessDefinitionUrl;
-    private List aVariables;
-    private Map<String, Object> mFlowSlotTicketData;
-    private Map<String, Object> mGlobalVariables;
+    private String owner;
+    private String assignee;
+    private DelegationState delegationState;
+    private String name;
+    private String description;
+    private String createTime;
+    private String dueDate;
+    private Integer priority;
+    private Boolean suspended;
+    private String taskDefinitionKey;
+    private String tenantId;
+    private String category;
+    private String formKey;
+    private String parentTaskId;
+    private String parentTaskUrl;
+    private String executionId;
+    private String executionUrl;
+    private String processInstanceId;
+    private String processInstanceUrl;
+    private String processDefinitionId;
+    private String processDefinitionUrl;
+    private List variables = FOR_VARIABLES;
+    private Map<String, Object> flowSlotTicketData;
+    private Map<String, Object> globalVariables;
        
     public TaskDataVO() {
     }
 
-    public String getsId() {
-        return sId;
+    public String getId() {
+        return id;
     }
 
-    public void setsId(String sId) {
-        this.sId = sId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getsUrl() {
@@ -57,196 +60,196 @@ public class TaskDataVO {
         this.sUrl = sUrl;
     }
 
-    public String getsOwner() {
-        return sOwner;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setsOwner(String sOwner) {
-        this.sOwner = sOwner;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
-    public String getsAssignee() {
-        return sAssignee;
+    public String getAssignee() {
+        return assignee;
     }
 
-    public void setsAssignee(String sAssignee) {
-        this.sAssignee = sAssignee;
+    public void setAssignee(String assignee) {
+        this.assignee = assignee;
     }
 
-    public DelegationState getoDelegationState() {
-        return oDelegationState;
+    public DelegationState getDelegationState() {
+        return delegationState;
     }
 
-    public void setoDelegationState(DelegationState oDelegationState) {
-        this.oDelegationState = oDelegationState;
+    public void setDelegationState(DelegationState delegationState) {
+        this.delegationState = delegationState;
     }
 
-    public String getsName() {
-        return sName;
+    public String getName() {
+        return name;
     }
 
-    public void setsName(String sName) {
-        this.sName = sName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getsDescription() {
-        return sDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setsDescription(String sDescription) {
-        this.sDescription = sDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getsCreateTime() {
-        return sCreateTime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setsCreateTime(String sCreateTime) {
-        this.sCreateTime = sCreateTime;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
-    public String getsDueDate() {
-        return sDueDate;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public void setsDueDate(String sDueDate) {
-        this.sDueDate = sDueDate;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Integer getnPriority() {
-        return nPriority;
+    public Integer getPriority() {
+        return priority;
     }
 
-    public void setnPriority(Integer nPriority) {
-        this.nPriority = nPriority;
+    public void setPriority(Integer priority) {
+        this.priority = priority;
     }
 
-    public Boolean getbSuspended() {
-        return bSuspended;
+    public Boolean getSuspended() {
+        return suspended;
     }
 
-    public void setbSuspended(Boolean bSuspended) {
-        this.bSuspended = bSuspended;
+    public void setSuspended(Boolean suspended) {
+        this.suspended = suspended;
     }
 
-    public String getsTaskDefinitionKey() {
-        return sTaskDefinitionKey;
+    public String getTaskDefinitionKey() {
+        return taskDefinitionKey;
     }
 
-    public void setsTaskDefinitionKey(String sTaskDefinitionKey) {
-        this.sTaskDefinitionKey = sTaskDefinitionKey;
+    public void setTaskDefinitionKey(String taskDefinitionKey) {
+        this.taskDefinitionKey = taskDefinitionKey;
     }
 
-    public String getsTenantId() {
-        return sTenantId;
+    public String getTenantId() {
+        return tenantId;
     }
 
-    public void setsTenantId(String sTenantId) {
-        this.sTenantId = sTenantId;
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
-    public String getsCategory() {
-        return sCategory;
+    public String getCategory() {
+        return category;
     }
 
-    public void setsCategory(String sCategory) {
-        this.sCategory = sCategory;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getsFormKey() {
-        return sFormKey;
+    public String getFormKey() {
+        return formKey;
     }
 
-    public void setsFormKey(String sFormKey) {
-        this.sFormKey = sFormKey;
+    public void setFormKey(String formKey) {
+        this.formKey = formKey;
     }
 
-    public String getsParentTaskId() {
-        return sParentTaskId;
+    public String getParentTaskId() {
+        return parentTaskId;
     }
 
-    public void setsParentTaskId(String sParentTaskId) {
-        this.sParentTaskId = sParentTaskId;
+    public void setParentTaskId(String parentTaskId) {
+        this.parentTaskId = parentTaskId;
     }
 
-    public String getsParentTaskUrl() {
-        return sParentTaskUrl;
+    public String getParentTaskUrl() {
+        return parentTaskUrl;
     }
 
-    public void setsParentTaskUrl(String sParentTaskUrl) {
-        this.sParentTaskUrl = sParentTaskUrl;
+    public void setParentTaskUrl(String parentTaskUrl) {
+        this.parentTaskUrl = parentTaskUrl;
     }
 
-    public String getsExecutionId() {
-        return sExecutionId;
+    public String getExecutionId() {
+        return executionId;
     }
 
-    public void setsExecutionId(String sExecutionId) {
-        this.sExecutionId = sExecutionId;
+    public void setExecutionId(String executionId) {
+        this.executionId = executionId;
     }
 
-    public String getsExecutionUrl() {
-        return sExecutionUrl;
+    public String getExecutionUrl() {
+        return executionUrl;
     }
 
-    public void setsExecutionUrl(String sExecutionUrl) {
-        this.sExecutionUrl = sExecutionUrl;
+    public void setExecutionUrl(String executionUrl) {
+        this.executionUrl = executionUrl;
     }
 
-    public String getsProcessInstanceId() {
-        return sProcessInstanceId;
+    public String getProcessInstanceId() {
+        return processInstanceId;
     }
 
-    public void setsProcessInstanceId(String sProcessInstanceId) {
-        this.sProcessInstanceId = sProcessInstanceId;
+    public void setProcessInstanceId(String processInstanceId) {
+        this.processInstanceId = processInstanceId;
     }
 
-    public String getsProcessInstanceUrl() {
-        return sProcessInstanceUrl;
+    public String getProcessInstanceUrl() {
+        return processInstanceUrl;
     }
 
-    public void setsProcessInstanceUrl(String sProcessInstanceUrl) {
-        this.sProcessInstanceUrl = sProcessInstanceUrl;
+    public void setProcessInstanceUrl(String processInstanceUrl) {
+        this.processInstanceUrl = processInstanceUrl;
     }
 
-    public String getsProcessDefinitionId() {
-        return sProcessDefinitionId;
+    public String getProcessDefinitionId() {
+        return processDefinitionId;
     }
 
-    public void setsProcessDefinitionId(String sProcessDefinitionId) {
-        this.sProcessDefinitionId = sProcessDefinitionId;
+    public void setProcessDefinitionId(String processDefinitionId) {
+        this.processDefinitionId = processDefinitionId;
     }
 
-    public String getsProcessDefinitionUrl() {
-        return sProcessDefinitionUrl;
+    public String getProcessDefinitionUrl() {
+        return processDefinitionUrl;
     }
 
-    public void setsProcessDefinitionUrl(String sProcessDefinitionUrl) {
-        this.sProcessDefinitionUrl = sProcessDefinitionUrl;
+    public void setProcessDefinitionUrl(String processDefinitionUrl) {
+        this.processDefinitionUrl = processDefinitionUrl;
     }
 
-    public List getaVariables() {
-        return aVariables;
+    public List getVariables() {
+        return variables;
     }
 
-    public void setaVariables(List aVariables) {
-        this.aVariables = aVariables;
+    public void setVariables(List variables) {
+        this.variables = variables;
     }
 
-    public Map<String, Object> getmFlowSlotTicketData() {
-        return mFlowSlotTicketData;
+    public Map<String, Object> getFlowSlotTicketData() {
+        return flowSlotTicketData;
     }
 
-    public void setmFlowSlotTicketData(Map<String, Object> mFlowSlotTicketData) {
-        this.mFlowSlotTicketData = mFlowSlotTicketData;
+    public void setFlowSlotTicketData(Map<String, Object> flowSlotTicketData) {
+        this.flowSlotTicketData = flowSlotTicketData;
     }
 
-    public Map<String, Object> getmGlobalVariables() {
-        return mGlobalVariables;
+    public Map<String, Object> getGlobalVariables() {
+        return globalVariables;
     }
 
-    public void setmGlobalVariables(Map<String, Object> mGlobalVariables) {
-        this.mGlobalVariables = mGlobalVariables;
+    public void setGlobalVariables(Map<String, Object> globalVariables) {
+        this.globalVariables = globalVariables;
     }
        
 }
