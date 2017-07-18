@@ -3106,7 +3106,15 @@ public class ActionTaskService {
 
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
-
+    
+    /**
+     * Получить закрытые таски для процессов в которых учавствовал sLogin. В 
+     * act_hi_identitylink узнали процессы в которых учавствует логин, по 
+     * процессам нашли все закрытые таски.
+     * 
+     * @param sLogin логин для которого нужно найти таски
+     * @return все закрытые таски для процессов в которых учавствовал sLogin
+     */
     private List<HistoricTaskInstance> getDocumentClosedTask(String sLogin) {
         LOG.info("getDocumentClosedTask start");
 
