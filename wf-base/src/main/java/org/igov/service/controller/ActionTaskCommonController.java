@@ -963,7 +963,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         oHistoryVariableVO.setoValue(oHistoricVariableInstance.getValue());
 
                         if (oFormProperty.getType().equals("file") || oFormProperty.getType().equals("table")){ 
-                            if (((String)oHistoryVariableVO.getoValue()).contains("sKey")) {
+                            if (oHistoryVariableVO.getoValue() != null && ((String)oHistoryVariableVO.getoValue()).contains("sKey")) {
                                 aResultField.add(oHistoryVariableVO);
                             }
                         } else if (oFormProperty.getType().equals("enum")) {
