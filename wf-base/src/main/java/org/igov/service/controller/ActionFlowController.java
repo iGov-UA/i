@@ -1421,9 +1421,9 @@ public class ActionFlowController {
 	                	JSONObject oJSONTimeObject = (JSONObject) o1;
 	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
 	                    if (countJobsAllow > 0){
-	                    	String startTime = (String) oJSONObject.get("StartTime");
-	                    	String stopTime = (String) oJSONObject.get("StopTime");
-
+	                    	String startTime = (String) oJSONTimeObject.get("StartTime");
+	                    	String stopTime = (String) oJSONTimeObject.get("StopTime");
+	                    	
 	                    	Duration dStartTime = Duration.parse(startTime);
 	                    	Duration dStopTime =  Duration.parse(stopTime);
 	                    	Map<String, Object> currRes = new HashMap<String, Object>();
