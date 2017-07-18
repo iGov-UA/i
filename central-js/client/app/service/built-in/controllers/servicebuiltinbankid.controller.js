@@ -1323,7 +1323,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         $scope.checkoutSpinner = true;
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
         MasterPassService.otpConfirm($scope.checkoutData.payment.otpCode, $scope.checkoutData.payment.otpToken, phoneNumber).then(function (res) {
-          if(res.status === 'OK') {
+          if(res.pmt_status == 5) {
             for(var field in $scope.data.formData.params) {
               if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
                 $scope.data.formData.params[field].value = res.pmt_id;
