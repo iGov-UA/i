@@ -319,9 +319,8 @@
         $rootScope.delegateSelectMenu = false;
         $scope.spinner = false;
 
-        // todo соеденить с isUnasigned
         $scope.isDocument = function () {
-          return $state.params.type === 'documents';
+          return ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($state.params.type) > -1;
         };
 
         $scope.validateForm = function(form) {
@@ -350,7 +349,7 @@
 
         var isItemFormPropertyDisabled = function (oItemFormProperty){
           if (!$scope.selectedTask || (!$scope.selectedTask.assignee && !$scope.isDocument()) || !oItemFormProperty
-            || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
+            || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished' || $scope.sSelectedTask === 'docHistory')
             return true;
 
           var sID_Field = oItemFormProperty.id;
@@ -404,6 +403,11 @@
           angular.forEach($scope.taskForm, function (i, k, o) {
             if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
+                o[k].valueVisible = res;
+              })
+            } else if(i.sType === 'fileHTML' && i.oValue && i.oValue.indexOf('sKey') > -1) {
+              var key = JSON.parse(i.oValue);
+              tasks.getTableOrFileAttachment(key.sKey, key.sID_StorageType, true).then(function (res) {
                 o[k].valueVisible = res;
               })
             }
@@ -467,11 +471,11 @@
 
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
-            if(item.type === 'file' || item.type === 'table' || item.type === 'string') {
+            if(item.type === 'file' || item.type === 'table' || item.sType === 'table') {
               try {
-                var parsedValue = JSON.parse(item.value);
+                var parsedValue = item.oValue ? JSON.parse(item.oValue) : JSON.parse(item.value);
                 if(parsedValue && parsedValue.sKey) {
-                  var sFieldName = item.name || '';
+                  var sFieldName = item.name || item.sName || '';
                   var aNameParts = sFieldName.split(';');
                   var sFieldNotes = aNameParts[0].trim();
                   item.sFieldLabel = sFieldNotes;
@@ -962,6 +966,7 @@
 
               return;
             }
+
             $scope.taskForm.isInProcess = true;
 
             rollbackReadonlyEnumFields();
@@ -1335,9 +1340,10 @@
 
         $scope.isTableAttachment = function (item) {
           if(typeof item === 'object') {
-            return item.type === 'table';
+            return item.type === 'table' || item.sType === 'table';
           } else {
-            return item.indexOf('[table]') > -1;
+            if(item)
+              return item.indexOf('[table]') > -1;
           }
         };
 
@@ -1347,6 +1353,12 @@
 
         $scope.openTableAttachment = function (id, taskId, isNew) {
           $scope.attachIsLoading = true;
+
+          if (!taskId && id.indexOf('sKey') > -1) {
+            var key = JSON.parse(id);
+            taskId = key.sKey;
+            id = key.sID_StorageType;
+          }
 
           tasks.getTableOrFileAttachment(taskId, id, isNew).then(function (res) {
             $scope.openedAttachTable = typeof res === 'object' ? res : JSON.parse(res);
@@ -1415,12 +1427,14 @@
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
               var reg = /(\[id=(\w+)\])/;
-              var match = attachment.description.match(reg);
-              if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
-                tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
-                  obj[key] = JSON.parse(res);
-                  obj[key].description = attachment.description;
-                })
+              if (attachment.description) {
+                var match = attachment.description.match(reg);
+                if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
+                  tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
+                    obj[key] = JSON.parse(res);
+                    obj[key].description = attachment.description;
+                  })
+                }
               }
             })
           });
@@ -1521,13 +1535,15 @@
 
         $scope.searchingTablesForPrint = function () {
           angular.forEach($scope.taskData.aAttachment, function (attachment) {
-            var tableID = attachment.description.match(/(\[id=(\w+)\])/);
-            if(tableID !== null && tableID.length === 3) {
-              tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
-                var table = JSON.parse(res);
-                fixFieldsForTable(table);
-                $scope.taskData.aTable.push(table);
-              })
+            if (attachment.description) {
+              var tableID = attachment.description.match(/(\[id=(\w+)\])/);
+              if(tableID !== null && tableID.length === 3) {
+                tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
+                  var table = JSON.parse(res);
+                  fixFieldsForTable(table);
+                  $scope.taskData.aTable.push(table);
+                })
+              }
             }
           });
 
@@ -1853,7 +1869,6 @@
         $scope.addIssue = function () {
           $scope.issueValid = Issue.addIssue();
         };
-
 
         $scope.isNeedECP = function () {
           var documentStep = taskData.mProcessVariable.sKey_Step_Document;
