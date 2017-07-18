@@ -68,6 +68,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.mail.EmailException;
 
@@ -2902,14 +2903,18 @@ public class ActionTaskService {
         //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
-            List<Task> aoTask = getOpenedUnassignedUnprocessedDocument(sLogin);
-            LOG.info("All to remove {}", aoTask);
+            aoAllTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
             //убираем из необработанных те, которые находятся в черновиках
+            //removeAll не работает
             List<Task> aoTaskToRemove = oTaskService.createTaskQuery().taskAssignee(sLogin).list();
-            LOG.info("Task to remove {}", aoTaskToRemove);
-            aoTask.removeAll(aoTaskToRemove);
-            aoAllTasks.addAll(aoTask);
-            LOG.info("Result tasks {}", aoAllTasks);
+            Set<String> snTaskIdToRemove = aoTaskToRemove.stream()
+                    .map(Task::getId)
+                    .collect(Collectors.toSet());
+            aoAllTasks.stream()
+                    .filter(oTask -> !snTaskIdToRemove.contains(oTask.getId()))
+                    .collect(Collectors.toList());
+
+            LOG.info("All tasks {}", aoAllTasks);
             
         //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
