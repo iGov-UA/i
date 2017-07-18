@@ -134,13 +134,14 @@
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask1" name="лічільник| отримання ІД та назви БП|+30 днів додати виконання" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//1. лічільник
+      <script>
+      //1. лічільник
 var number=execution.getVariable('sID_Custom_GovPublic')
 number = number&lt;&lt;0
 var fullNumber="вх-"+number+"/"
 execution.setVariable('sID_Custom_GovPublic', fullNumber)
 
-//2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
+	//2. назначение даты исполнения - по умолчанию + 30 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
 var updatedDate = new Date();
 var days = 30;
 updatedDate.setDate(new Date().getDate() + days);
