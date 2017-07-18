@@ -3106,12 +3106,12 @@ public class ActionTaskService {
 
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
-    
+
     /**
-     * Получить закрытые таски для процессов в которых учавствовал sLogin. В 
-     * act_hi_identitylink узнали процессы в которых учавствует логин, по 
+     * Получить закрытые таски для процессов в которых учавствовал sLogin. В
+     * act_hi_identitylink узнали процессы в которых учавствует логин, по
      * процессам нашли все закрытые таски.
-     * 
+     *
      * @param sLogin логин для которого нужно найти таски
      * @return все закрытые таски для процессов в которых учавствовал sLogin
      */
@@ -3120,9 +3120,13 @@ public class ActionTaskService {
 
         String sQuery = "select * from \"public\".\"act_hi_taskinst\"\n"
                 + "where \"public\".\"act_hi_taskinst\".\"proc_inst_id_\"\n"
+                + "in(select \"public\".\"act_hi_procinst\".\"proc_inst_id_\"\n"
+                + "from \"public\".\"act_hi_procinst\"\n"
+                + "where \"public\".\"act_hi_procinst\".\"proc_inst_id_\" \n"
                 + "in (select \"public\".\"act_hi_identitylink\".\"proc_inst_id_\"\n"
                 + "from \"public\".\"act_hi_identitylink\"\n"
                 + "where \"public\".\"act_hi_identitylink\".\"user_id_\" = '" + sLogin + "')\n"
+                + "and \"public\".\"act_hi_procinst\".\"end_time_\" is not null)\n"
                 + "and \"public\".\"act_hi_taskinst\".\"proc_def_id_\" like '_doc%'\n"
                 + "and \"public\".\"act_hi_taskinst\".\"end_time_\" is not null";
 
