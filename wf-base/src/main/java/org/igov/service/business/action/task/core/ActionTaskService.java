@@ -2909,17 +2909,12 @@ public class ActionTaskService {
             Set<String> snID_TaskToRemove = aoTaskToRemove.stream()
                     .map(Task::getId)
                     .collect(Collectors.toSet());
-            LOG.info("snTaskIdToRemove {}", snID_TaskToRemove);
             
             aoUnassignedUnprocessedTask.forEach(oTask -> {
-
-                //boolean result = snID_TaskToRemove.contains(oTask.getId());
                 if (!snID_TaskToRemove.contains(oTask.getId())) {
                     aoAllTasks.add(oTask);
                 }
             });
-
-            LOG.info("All tasks {}", aoAllTasks);
             
         //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
