@@ -856,7 +856,7 @@ var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol', sKey_GroupPostfix_New, 'step_1')</script>
     </scriptTask>
     <sequenceFlow id="flow103" sourceRef="scripttask16" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask17" name="Step5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask17" name="Step_View_Author" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_5')
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
@@ -1721,7 +1721,7 @@ execution.setVariable('sName_isExecute', oResultAuthorName.sLabel)</script>
 var sKeyGroup = execution.getVariable('sLogin_LastSubmited')
 var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_8', sKeyGroup)</script>
     </scriptTask>
-    <scriptTask id="scripttask31" name="All Signes Step8" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask31" name="Check Signes Executor" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
 var bSubmitedAll8="";
 var oCheckSubmitedAll8= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_8')
@@ -1810,7 +1810,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="56.0" width="105.0" x="1300.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask17" id="BPMNShape_scripttask17">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1251.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="519.0" y="1251.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
         <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1171.0"></omgdc:Bounds>
@@ -1897,7 +1897,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
         <omgdc:Bounds height="55.0" width="105.0" x="714.0" y="1544.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask31" id="BPMNShape_scripttask31">
-        <omgdc:Bounds height="55.0" width="105.0" x="519.0" y="1440.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="519.0" y="1431.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway21" id="BPMNShape_exclusivegateway21">
         <omgdc:Bounds height="40.0" width="40.0" x="551.0" y="1340.0"></omgdc:Bounds>
@@ -2009,8 +2009,8 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow101" id="BPMNEdge_flow101">
         <omgdi:waypoint x="669.0" y="1662.0"></omgdi:waypoint>
-        <omgdi:waypoint x="669.0" y="1467.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1467.0"></omgdi:waypoint>
+        <omgdi:waypoint x="669.0" y="1465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1466.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow103" id="BPMNEdge_flow103">
         <omgdi:waypoint x="1352.0" y="190.0"></omgdi:waypoint>
@@ -2088,8 +2088,8 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow122" id="BPMNEdge_flow122">
         <omgdi:waypoint x="1291.0" y="1663.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1290.0" y="1278.0"></omgdi:waypoint>
-        <omgdi:waypoint x="624.0" y="1278.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1290.0" y="1286.0"></omgdi:waypoint>
+        <omgdi:waypoint x="624.0" y="1286.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="30.0" x="1301.0" y="1530.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -2100,7 +2100,7 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow124" id="BPMNEdge_flow124">
         <omgdi:waypoint x="571.0" y="1551.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1495.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1501.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow126" id="BPMNEdge_flow126">
         <omgdi:waypoint x="1151.0" y="1682.0"></omgdi:waypoint>
@@ -2189,10 +2189,10 @@ execution.setVariable('bSubmitedAll8', oCheckSubmitedAll8.bSubmitedAll.toString(
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow149" id="BPMNEdge_flow149">
         <omgdi:waypoint x="571.0" y="1340.0"></omgdi:waypoint>
-        <omgdi:waypoint x="571.0" y="1306.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1321.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow150" id="BPMNEdge_flow150">
-        <omgdi:waypoint x="571.0" y="1440.0"></omgdi:waypoint>
+        <omgdi:waypoint x="571.0" y="1431.0"></omgdi:waypoint>
         <omgdi:waypoint x="571.0" y="1380.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow151" id="BPMNEdge_flow151">
