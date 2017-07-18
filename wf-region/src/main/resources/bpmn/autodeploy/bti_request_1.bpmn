@@ -191,6 +191,10 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 Ваш запит було оброблено спеціалистом.<br/><br/>
 Результат Ви можете знайти в додатку цього листа. <br/><br/>
 
+<b>Зверніть увагу!</b><br/> В додатку, 2 документа. Один з ЕЦП, інший без.<br/>
+БТІ підписує документ ЕЦП мін.юста і інколи замовник не може самостійно відкоити файл.<br/>
+Тому, якщо ви не зможете самостійно відкрити файл підписаний ЕЦП. Ви зможете побачити інформацію в іншому документі, а документ підписаний ЕЦП, у вас буде як доказ у випадку винекнення спорів.<br/><br/>
+
 <b>Коментар спеціаліста:</b><br/>
 ${comment}
 
@@ -202,7 +206,7 @@ ${comment}
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA["${form2_signed}"]]></activiti:expression>
+          <activiti:expression><![CDATA["${form2_signed},${fVidpNoECP}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -274,6 +278,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="form_signed" name="Файл Запиту з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVidpNoECP" name="Файл відповіді без ЄЦП; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар до видповіді на запит" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]; ;bVisible=false" type="string" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/bti/bti_request_1_3.html]; ;bVisible=false" type="string" default="Акт виконаних робіт" writable="false"></activiti:formProperty>
