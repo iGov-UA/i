@@ -2902,11 +2902,14 @@ public class ActionTaskService {
         //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
-            aoAllTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
+            List<Task> aoTask = getOpenedUnassignedUnprocessedDocument(sLogin);
+            LOG.info("All to remove {}", aoTask);
             //убираем из необработанных те, которые находятся в черновиках
-            aoAllTasks.removeAll(oTaskService.createTaskQuery().taskAssignee(sLogin).list());
-            LOG.info("Task to remove {}", oTaskService.createTaskQuery().taskAssignee(sLogin).singleResult());
-            LOG.info("All tasks {}", aoAllTasks);
+            List<Task> aoTaskToRemove = oTaskService.createTaskQuery().taskAssignee(sLogin).list();
+            LOG.info("Task to remove {}", aoTaskToRemove);
+            aoTask.removeAll(aoTaskToRemove);
+            aoAllTasks.addAll(aoTask);
+            LOG.info("Result tasks {}", aoAllTasks);
             
         //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
