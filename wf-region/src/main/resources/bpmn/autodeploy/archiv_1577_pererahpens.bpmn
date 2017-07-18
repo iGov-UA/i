@@ -3,7 +3,7 @@
   <process id="archiv_1577_pererahpens" name="Довідка про заробітну плату на призначення (перерахунок) пенсії" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sVariantDovidk" name="Довідка; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVariantDovidk" name="Надання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
@@ -103,7 +103,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="sVariantDovidk" name="Довідка" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVariantDovidk" name="Надання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="sIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFilePassport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
