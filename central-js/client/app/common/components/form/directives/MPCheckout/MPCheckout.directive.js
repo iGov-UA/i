@@ -16,7 +16,8 @@ angular.module('app').directive('masterpassCheckout', ['MasterPassService', 'mod
             scope.sum = {price: res.sum/100};
 
             MasterPassService.getCommission(res.sum, phoneNumber).then(function (response) {
-              scope.sum.commission = response.amount/100 - scope.sum.price;
+              scope.sum.commission = +(response.amount/100 - scope.sum.price).toFixed(2);
+              scope.sum.total = +(scope.sum.price + scope.sum.commission).toFixed(2);
             })
           });
         })();

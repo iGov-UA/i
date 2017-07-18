@@ -10,45 +10,45 @@ import java.util.List;
 public class TaskDataResultVO {
     
     private List<TaskDataVO> aoTaskDataVO = new ArrayList<>();
-    private Integer nSize;
-    private Integer nStart;
-    private String sOrder;
-    private String sSort;
-    private long nTotal;
+    private Integer size;
+    private Integer start;
+    private String order;
+    private String sort;
+    private long total;
 
     public TaskDataResultVO() {
     }
 
-    public Integer getnSize() {
-        return nSize;
+    public Integer getSize() {
+        return size;
     }
 
-    public void setnSize(Integer nSize) {
-        this.nSize = nSize;
+    public void setSize(Integer size) {
+        this.size = size;
     }
 
-    public Integer getnStart() {
-        return nStart;
+    public Integer getStart() {
+        return start;
     }
 
-    public void setnStart(Integer nStart) {
-        this.nStart = nStart;
+    public void setStart(Integer start) {
+        this.start = start;
     }
 
-    public String getsOrder() {
-        return sOrder;
+    public String getOrder() {
+        return order;
     }
 
-    public void setsOrder(String sOrder) {
-        this.sOrder = sOrder;
+    public void setOrder(String order) {
+        this.order = order;
     }
 
-    public String getsSort() {
-        return sSort;
+    public String getSort() {
+        return sort;
     }
 
-    public void setsSort(String sSort) {
-        this.sSort = sSort;
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 
     public List<TaskDataVO> getAoTaskDataVO() {
@@ -59,12 +59,12 @@ public class TaskDataResultVO {
         this.aoTaskDataVO = aoTaskDataVO;
     }
 
-    public long getnTotal() {
-        return nTotal;
+    public long getTotal() {
+        return total;
     }
 
-    public void setnTotal(long nTotal) {
-        this.nTotal = nTotal;
+    public void setTotal(long total) {
+        this.total = total;
     }
       
 }

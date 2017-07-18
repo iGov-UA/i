@@ -46,22 +46,6 @@
           }
         }
       })
-      .state('tasks.typeof.ecp', {
-        url: '/ecp',
-        templateUrl: 'app/tasks/edsView.html',
-        controller: 'edsViewCtrl',
-        access: {
-          requiresLogin: true
-        },
-        resolve: {
-          unsignedDocsList: [
-            'DocumentsService',
-            function (DocumentsService) {
-              return DocumentsService.getUnsignedDocsList();
-            }
-          ]
-        }
-      })
       .state('tasks.typeof.create', {
         url: '/create:tab',
         templateUrl: 'app/tasks/createView.html',

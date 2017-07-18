@@ -868,8 +868,9 @@
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
-            if(isAnyIssuesExist)
+            if(isAnyIssuesExist && isAnyIssuesExist.length > 0){
               $scope.issueValid = false;
+            }
             return;
           } else {
             $scope.isFormInvalid = false;
@@ -989,6 +990,17 @@
           }
 
           function signAndSubmitForm(isNeedSign, oIssue) {
+            var oDocParams = {};
+            if($scope.taskData.oProcess.sBP.indexOf('_doc_') === 0) {
+              oDocParams.nID_Process = $scope.taskData.oProcess.nID;
+              for (var variable in $scope.taskData.mProcessVariable) {
+                if ($scope.taskData.mProcessVariable.hasOwnProperty(variable) && variable === 'sKey_Step_Document') {
+                  oDocParams.sStep_Document = $scope.taskData.mProcessVariable[variable];
+                  break;
+                }
+              }
+            }
+
             if (isNeedSign) {
               relinkPrintFormsIntoFileFields();
               tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
@@ -1019,7 +1031,7 @@
                           sKey_Step: sKeyStepValue,
                           taskId: $scope.selectedTask.id
                         }).then(function (resp) {
-                          submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+                          submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue, oDocParams);
                         }, function (error) {
                           Modal.inform.error()(angular.toJson(error));
                         })
@@ -1040,12 +1052,12 @@
                 Modal.inform.error()(angular.toJson(error));
               }).catch(defaultErrorHandler);
             } else {
-              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue, oDocParams);
             }
           }
 
-          function submitTaskForm(taskForm, selectedTask, attachmets, issues) {
-            return tasks.submitTaskForm(selectedTask.id, taskForm, selectedTask, attachmets, issues)
+          function submitTaskForm(taskForm, selectedTask, attachmets, issues, docParams) {
+            return tasks.submitTaskForm(selectedTask.id, taskForm, selectedTask, attachmets, issues, docParams)
               .then(submitCallback)
               .catch(defaultErrorHandler);
           }
@@ -1598,14 +1610,16 @@
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
 
-        $scope.assignAndSubmitDocument = function (documentForm, isNeedEDS) {
-          $scope.taskForm.isInProcess = true;
-
-          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
-            .then(function (result) {
-              $scope.submitTask(form, true, isNeedEDS);
-            })
-            .catch(defaultErrorHandler);
+        $scope.assignAndSubmitDocument = function (docForm, isNeedEDS) {
+          $scope.validateForm(docForm);
+          if(!docForm.$invalid){
+            $scope.isFormInvalid = false;
+            tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id).then(function () {
+                $scope.submitTask(docForm, true, isNeedEDS);
+              }).catch(defaultErrorHandler);
+          } else {
+            $scope.isFormInvalid = true;
+          }
         };
 
         $scope.isDocumentNotSigned = function () {
@@ -1840,6 +1854,7 @@
         $scope.addIssue = function () {
           $scope.issueValid = Issue.addIssue();
         };
+
 
         $scope.isNeedECP = function () {
           var documentStep = taskData.mProcessVariable.sKey_Step_Document;

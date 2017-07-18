@@ -1,4 +1,4 @@
-angular.module('app').controller('FooterController', function ($scope) {
+angular.module('app').controller('FooterController', function ($scope, $state) {
   $scope.adsset = [
     /*{
       url: 'http://contact-call.com',
@@ -234,6 +234,10 @@ angular.module('app').controller('FooterController', function ($scope) {
   $scope.adsset.sort(function (a, b) {
     return a.sortid - b.sortid;
   });
+
+  $scope.isShowMessageAboutProcessingOfPersonalData = function () {
+    return $state.$current.name === 'index.service.general.place.built-in.bankid';
+  };
 
   window.addEventListener("resize", snapFooter);
   window.addEventListener("DOMSubtreeModified", snapFooter);
