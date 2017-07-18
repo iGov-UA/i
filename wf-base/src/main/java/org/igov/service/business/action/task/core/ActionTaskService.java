@@ -2903,17 +2903,23 @@ public class ActionTaskService {
         //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
-            aoAllTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
+            List<Task> aoUnassignedUnprocessedTask = getOpenedUnassignedUnprocessedDocument(sLogin);
             //убираем из необработанных те, которые находятся в черновиках
-            //removeAll не работает
             List<Task> aoTaskToRemove = oTaskService.createTaskQuery().taskAssignee(sLogin).list();
-            Set<String> snTaskIdToRemove = aoTaskToRemove.stream()
+            Set<String> snID_TaskToRemove = aoTaskToRemove.stream()
                     .map(Task::getId)
                     .collect(Collectors.toSet());
-            LOG.info("snTaskIdToRemove {}", snTaskIdToRemove);
-            aoAllTasks.stream()
-                    .filter(oTask -> !snTaskIdToRemove.contains(oTask.getId()))
-                    .collect(Collectors.toList());
+            LOG.info("snTaskIdToRemove {}", snID_TaskToRemove);
+            
+            aoUnassignedUnprocessedTask.forEach(oTask -> {
+                String snID_Task = oTask.getId();
+                LOG.info("snID_Task={}", snID_Task);
+                boolean result = snID_TaskToRemove.contains(snID_Task);
+                LOG.info("Contain result={}", result);
+                if (!result) {
+                    aoAllTasks.add(oTask);
+                }
+            });
 
             LOG.info("All tasks {}", aoAllTasks);
             
