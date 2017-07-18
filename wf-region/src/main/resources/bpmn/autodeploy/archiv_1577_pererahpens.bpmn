@@ -3,7 +3,7 @@
   <process id="archiv_1577_pererahpens" name="Довідка про заробітну плату на призначення (перерахунок) пенсії" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sVariantDovidk" name="Довідка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sVariantDovidk" name="Довідка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
@@ -125,6 +125,7 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа " type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/dneprOblSnap/archiv_1577_pererahpen_print.html]; ;bVisible=false" type="string" default="Форма заяви гомадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="info" name=" " type="label" default="Ви обробляете Довідку про заробітну плату и стаж роботи" readable="false" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
