@@ -970,7 +970,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                             for (FormValue oEnumFormProperty : aEnumFormProperty) {
 
-                                if (oHistoricVariableInstance.getValue().equals(oEnumFormProperty.getId())) {
+                                if (oHistoricVariableInstance.getValue() != null &&
+                                        oHistoricVariableInstance.getValue().equals(oEnumFormProperty.getId())) {
                                     LOG.info("oEnumFormProperty id {}", oEnumFormProperty.getId());
                                     oHistoryVariableVO.setoValue(oEnumFormProperty.getName());
                                     break;
