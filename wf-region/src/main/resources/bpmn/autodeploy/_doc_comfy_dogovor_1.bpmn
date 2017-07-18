@@ -1095,10 +1095,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask14" name="снос подписи" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>
+      <script>var sKey_Step= 'step_3'
 var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable('sLoginAuthor')
-var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, 'step_3', 'Comfy_Financial_Department')</script>
+var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, sKey_Step, 'Comfy_Financial_Department')</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask14" targetRef="scripttask4"></sequenceFlow>
   </process>
@@ -1174,7 +1173,7 @@ var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, 'step_3',
         <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="556.0" y="481.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="488.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
         <omgdc:Bounds height="55.0" width="105.0" x="404.0" y="260.0"></omgdc:Bounds>
@@ -1287,7 +1286,7 @@ var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, 'step_3',
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="456.0" y="474.0"></omgdi:waypoint>
         <omgdi:waypoint x="457.0" y="500.0"></omgdi:waypoint>
-        <omgdi:waypoint x="556.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="508.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
@@ -1318,13 +1317,14 @@ var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, 'step_3',
         <omgdi:waypoint x="862.0" y="419.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="596.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="722.0" y="508.0"></omgdi:waypoint>
         <omgdi:waypoint x="701.0" y="500.0"></omgdi:waypoint>
         <omgdi:waypoint x="702.0" y="474.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="576.0" y="521.0"></omgdi:waypoint>
-        <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="528.0"></omgdi:waypoint>
+        <omgdi:waypoint x="701.0" y="567.0"></omgdi:waypoint>
+        <omgdi:waypoint x="629.0" y="567.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="524.0" y="567.0"></omgdi:waypoint>
@@ -1362,7 +1362,6 @@ var oCancelRigtsForAutorStep3 = removeDocumentStepSubject(nID_Process, 'step_3',
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="596.0" y="446.0"></omgdi:waypoint>
         <omgdi:waypoint x="573.0" y="463.0"></omgdi:waypoint>
-        <omgdi:waypoint x="519.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
