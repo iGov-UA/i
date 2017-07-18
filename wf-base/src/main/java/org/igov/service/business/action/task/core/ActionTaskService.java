@@ -3017,6 +3017,7 @@ public class ActionTaskService {
 
         List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
         List<HistoricTaskInstance> aoTaskList = oTaskQuery.list();
+        LOG.info("aoTaskList={}", aoTaskList);
         //если таски емеют одинаковый ProcessInstanceId, сверяем дату закрытия
         //таска которая была закрыта раньше добавляется в список для удаления
         Collections.sort(aoTaskList, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
