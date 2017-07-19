@@ -888,8 +888,10 @@ public class DocumentStepService {
             for (String sID_Group_Activiti_New : asID_Group_Activiti_New) {
                 if (isNew_DocumentStepSubjectRight(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(),
                         sKey_GroupPostfix_New)) {
+                    LOG.info("isNew_DocumentStepSubjectRight case.");
                     asID_Group_Activiti_New_Selected.add(sID_Group_Activiti_New);
                 } else if (bReClone) {
+                    LOG.info("bReClone case.");
                     reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sKey_GroupPostfix_New);
                 } else {
                     LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sKey_GroupPostfix_New,
@@ -1702,7 +1704,7 @@ public class DocumentStepService {
         });
         LOG.info("asGroup_Old before setting: {} delegateTask: {}", asGroup_Old, delegateTask.getId());
 
-        DocumentStep oDocumentStep_Common = getDocumentStep(delegateTask.getProcessInstanceId(), "_");
+        /*DocumentStep oDocumentStep_Common = getDocumentStep(delegateTask.getProcessInstanceId(), "_");
 
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
             LOG.info("oDocumentStepSubjectRight group in candidate adding is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
@@ -1711,7 +1713,7 @@ public class DocumentStepService {
                 LOG.info("Group added to candidate is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
                 asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
             }
-        }
+        }*/
 
         delegateTask.addCandidateGroups(asGroup);
 
