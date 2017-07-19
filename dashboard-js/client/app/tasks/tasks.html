@@ -70,7 +70,15 @@
 
     <div class="form-group col-md-5 search-box-idoc" ng-class="{'toRight': !isMenuOpened}"
          style="margin-right: 15px; margin-left: 15px;">
-      <search-box></search-box>
+      <search-box ng-if="sSelectedTask !== 'ecp'"></search-box>
+      <div ng-if="sSelectedTask === 'ecp'" class="row">
+        <label style="margin-left: 20px; margin-right: 20px">
+          <input type="checkbox" ng-model="bSelectAllForEDS" style="margin-right: 5px; margin-left: 5px"> Усі
+        </label>
+        <button class="btn btn-info menu-tab-is-selected">
+          <span style="margin-left: 10px; margin-right: 10px">Підписати ЕЦП</span>
+        </button>
+      </div>
     </div>
 
     <div ng-class="{'col-xs-9': isMenuOpened, 'col-xs-12 ': !isMenuOpened}"
@@ -134,18 +142,34 @@
                   ng-class="{'active': isTaskSelected(task)}"
                   igov-focus-if="tasksStateModel.taskId == task.id"
                   ui-sref="tasks.typeof.view({id:task.id})">
-                  <!-- Task can have multiple statuses, but show only one sorted by priority -->
-                  <span class="badge badge-task badge-red" title="Ответ дан от гражданина"
-                        ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
-                  <span class="badge badge-task badge-yellow" title="Комментарий от гражданина"
-                        ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
-                  <span class="badge badge-task" title="Вопрос задан от госслужащего"
-                        ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
+                  <div class="row">
+                    <table>
+                      <tr>
+                        <td>
+                          <input type="checkbox"
+                                 ng-checked="task.bSelectedForEDS"
+                                 title="Обрати для накладання ЕЦП"
+                                 ng-if="sSelectedTask === 'ecp'"
+                                 style="float: left; margin-right: 5px; margin-left: 5px">
+                        </td>
+                        <td>
+                          <!-- Task can have multiple statuses, but show only one sorted by priority -->
+                          <span class="badge badge-task badge-red" title="Ответ дан от гражданина"
+                                ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
+                          <span class="badge badge-task badge-yellow" title="Комментарий от гражданина"
+                                ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
+                          <span class="badge badge-task" title="Вопрос задан от госслужащего"
+                                ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
 
-                  <span class="ticket-date-time" style="color:black;font-size:13px"
-                        ng-bind="::getProcessName(task)"></span><br>
-                  <span class="ticket-title" style="color: dimgrey;font-size: 11px;"
-                        ng-bind="::getTaskTitle(task)"></span>
+                          <span class="ticket-date-time" style="color:black;font-size:13px"
+                                ng-bind="::getProcessName(task)"></span><br>
+                          <span class="ticket-title" style="color: dimgrey;font-size: 11px;"
+                                ng-bind="::getTaskTitle(task)"></span>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </div>
                 </a>
               </div>
             </div>
