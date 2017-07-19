@@ -2920,7 +2920,7 @@ public class ActionTaskService {
                     .taskAssignee(sLogin)
                     .list();
             aoResultTasks.addAll(aoOpenedAssignedTask);
-            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
+            removeDocumentsFromTasks(aoResultTasks);
             LOG.info("aoResultTasks={}", aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
@@ -2929,7 +2929,7 @@ public class ActionTaskService {
                     .taskCandidateUser(sLogin)
                     .list();
             aoResultTasks.addAll(aoOpenedUnassignedTask);
-            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
+            removeDocumentsFromTasks(aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED)) {
             LOG.info("Opened condition");
@@ -2937,7 +2937,7 @@ public class ActionTaskService {
                     .taskCandidateOrAssigned(sLogin)
                     .list();
             aoResultTasks.addAll(aoOpenedTask);
-            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
+            removeDocumentsFromTasks(aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_CLOSED)) {
             LOG.info("Close condition");
@@ -2946,7 +2946,7 @@ public class ActionTaskService {
                     .processFinished()
                     .list();
             aoResultTasks.addAll(aoClosedTask);
-            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
+            removeDocumentsFromTasks(aoResultTasks);
         }
 
         return aoResultTasks;
