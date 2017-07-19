@@ -3962,7 +3962,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> getmID_TaskAndProcess(
             @ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
-            @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false, defaultValue = "nID_Order") Long nID_Order
+            @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order
     ) throws Exception 
     {
         Map <String, Object> resulMap = new HashMap<>();
@@ -3980,7 +3980,20 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
         
         try{
-            resulMap.put("nID_Task_HistoryLast", historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list().get(0));
+           
+            List<HistoricTaskInstance> aHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list();
+            
+            if(resulMap.get("nID_Task_Active") == null){
+               resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(0).getId()); 
+            }
+            else{
+                if(aHistoricTaskInstance.size() > 1){
+                    resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(1).getId());
+                }else{
+                    resulMap.put("nID_Task_HistoryLast", null);
+                }  
+            }
+            
         }catch (Exception ex){
             resulMap.put("nID_Task_HistoryLast", null);
         }
