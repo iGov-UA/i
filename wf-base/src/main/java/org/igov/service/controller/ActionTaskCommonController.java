@@ -3956,7 +3956,39 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("mReturn={}", mReturn);
         return mReturn;
     }
-
+    
+    @ApiOperation(value = "https://alpha.test.region.igov.org.ua/wf/service/action/task/getmID_TaskAndProcess", notes = "##### Получение активной и последней юзертаски процесса#####\n\n")
+    @RequestMapping(value = "/getmID_TaskAndProcess", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> getmID_TaskAndProcess(
+            @ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false, defaultValue = "nID_Order") Long nID_Order
+    ) throws Exception 
+    {
+        Map <String, Object> resulMap = new HashMap<>();
+        
+        if(nID_Order != null){
+            nID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
+        }
+        
+        resulMap.put("nID_Process", nID_Process);
+        
+        try{
+            resulMap.put("nID_Task_Active", taskService.createTaskQuery().processInstanceId(nID_Process).active().list().get(0).getId());
+        }catch (Exception ex){
+            resulMap.put("nID_Task_Active", null);
+        }
+        
+        try{
+            resulMap.put("nID_Task_HistoryLast", historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list().get(0));
+        }catch (Exception ex){
+            resulMap.put("nID_Task_HistoryLast", null);
+        }
+        
+        return resulMap;
+    }
+    
+    
     public void updateProcessHistoryEvent(String processInstanceId, Map<String, Object> mParamDocument) throws ParseException {
 
         DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
@@ -4070,4 +4102,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Error saving history during document editing: {}", ex);
         }
     }
+    
+    
 }
