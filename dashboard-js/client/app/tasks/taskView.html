@@ -1,30 +1,11 @@
 <style>
-  label {
-    margin-bottom: 0;
-  }
-  .empty-modal {
-    width: 150px;
-    height: 34px;
-  }
-  .open-full-info {
-    position:fixed;
-    top: 130px;
-    right: 10px;
-    z-index: 100;
-  }
-  .open-full-info a {
-    font-size: 24px;
-  }
-  .open-full-info a:hover {
-    text-decoration: none;
-  }
-  .documentUsers {
-    margin-top: 20px;
-  }
-  .documentDate {
-    float: right;
-    /*margin-left: 10px;*/
-  }
+  label { margin-bottom: 0; }
+  .empty-modal { width: 150px; height: 34px; }
+  .open-full-info { position:fixed; top: 130px; right: 10px; z-index: 100; }
+  .open-full-info a { font-size: 24px; }
+  .open-full-info a:hover { text-decoration: none; }
+  .documentUsers { margin-top: 20px; }
+  .documentDate { float: right; }
 </style>
 
 <div class="back-forward-btns" ng-class="{'col-xs-9':isMenuOpened, 'col-xs-12':!isMenuOpened, 'spinner-is-on': spinner}">
@@ -55,10 +36,6 @@
     <span style="font-size: 18px">{{taskData.oProcess.sName}}</span>
   </div>
 
-  <!--<div class="open-full-info">-->
-    <!--<a class="btn btn-link glyphicon glyphicon-modal-window" title="Відкрити повний профіль задачі" href="/task?nID_Task={{selectedTask.id}}" ng-if="::isShowExtendedLink()"></a>-->
-  <!--</div>-->
-
   <div class="btn-group task-form-tabs" ng-if="!inUnassigned()">
     <a ng-class="{'tab-is-selected' : tabHistoryAppeal === 'appeal', 'w-33': tabMenu === 'documents'}"
        class="btn btn-link">
@@ -69,6 +46,7 @@
     <a ng-if="tabMenu === 'documents'"
        ng-class="{'tab-is-selected' : tabHistoryAppeal === 'fulfillment', 'w-33': tabMenu === 'documents'}"
        class="btn btn-link"
+       ng-disabled="sSelectedTask === 'docHistory'"
        ui-sref="tasks.typeof.fulfillment({id: taskId})">Виконання
     </a>
 
@@ -110,37 +88,37 @@
         </div>
 
         <!--поле типа simple-field-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <simple-field></simple-field>
         </div>
 
         <!--поле типа date-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <date-field></date-field>
         </div>
 
         <!--поле типа text-area-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <textarea-field></textarea-field>
         </div>
 
         <!--поле типа enum-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <enum-field></enum-field>
         </div>
 
         <!--поле типа checkbox-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <checkbox-field></checkbox-field>
         </div>
 
         <!--поле типа select-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <select-field></select-field>
         </div>
 
         <!--поле типа fileHTML-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
+        <div ng-if="(item.value || item.oValue) && isFormPropertyDisabled(item)">
           <file-html></file-html>
         </div>
 
@@ -321,7 +299,11 @@
                 ng-if="!isTableAttachment(item)">Перевірити ЕЦП
               </button>
               <a ng-click="openTableAttachment(item.id, taskData.oProcess.nID, true)"
-                 ng-if="isTableAttachment(item)"
+                 ng-if="isTableAttachment(item) && sSelectedTask !== 'docHistory'"
+                 class="btn btn-info">Переглянути
+              </a>
+              <a ng-click="openTableAttachment(item.oValue, false, true)"
+                 ng-if="isTableAttachment(item) && sSelectedTask === 'docHistory'"
                  class="btn btn-info">Переглянути
               </a>
             </div>
@@ -456,7 +438,7 @@
                   <span ng-if="isNeedECP()">Пiдписати ЕЦП</span>
                 </span>
               </button>
-              <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
+              <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -468,13 +450,13 @@
 
           <div ng-if="!clarify && !inUnassigned()" class="fixed-bottom-menu-buttons">
             <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || documentRights">
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || sSelectedTask == 'docHistory'"
                       ng-click="submitTaskQuestion(form)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Опрацювати
               </button>
-              <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
+              <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -484,7 +466,7 @@
             </div>
 
             <div ng-hide="selectedTask.assignee == null || sSelectedTask == 'all' || !documentRights">
-              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished'"
+              <button ng-hide="selectedTask.assignee == null || sSelectedTask == 'finished' || sSelectedTask == 'docHistory'"
                       ng-click="submitTask(form)"
                       ng-if="documentRights.bWrite !== null"
                       class="btn btn-info"
@@ -504,7 +486,7 @@
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
                 </span>
               </button>
-              <button ng-hide="sSelectedTask == 'finished' || inUnassigned()"
+              <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
                       class="btn btn-link"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess()">Зберегти
@@ -522,6 +504,7 @@
 
           <div ng-hide="(selectedTask.assignee === null && !isDocument())
            || sSelectedTask === 'finished'
+           || sSelectedTask == 'docHistory'
            || sSelectedTask === 'all'
            || selectedTask.processDefinitionId.indexOf('system') == 0"
                class="fixed-bottom-menu-buttons"
@@ -548,11 +531,11 @@
             </div>
           </div>
 
-          <div ng-if="isDocument()" class="fixed-bottom-menu-buttons">
+          <div ng-if="isDocument() && sSelectedTask !== 'docHistory'" class="fixed-bottom-menu-buttons">
             <delegate-button></delegate-button>
           </div>
 
-          <div style="display: inline-block;">
+          <div style="display: inline-block;" ng-if="issue">
             <button type="button" class="btn btn-link" ng-click="addIssue()">Додати завдання</button>
           </div>
 
