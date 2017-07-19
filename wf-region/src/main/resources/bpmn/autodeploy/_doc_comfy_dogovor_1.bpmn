@@ -78,7 +78,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
         <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
@@ -333,7 +333,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <scriptTask id="scripttask5" name="права юр,степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var sKey_Step= 'step_4'
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -1083,8 +1084,8 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     </sequenceFlow>
     <scriptTask id="scripttask14" name="снос подписи  с правами" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable('sLogin_LastSubmited')
-var oCancelRigtsForAutorStep5 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_3', sKeyGroup)</script>
+var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_3', sKeyGroup)</script>
     </scriptTask>
     <sequenceFlow id="flow53" sourceRef="scripttask14" targetRef="scripttask4"></sequenceFlow>
   </process>
