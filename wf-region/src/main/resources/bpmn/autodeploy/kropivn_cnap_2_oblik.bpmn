@@ -61,6 +61,7 @@
         <activiti:formProperty id="markers2" name="маркер якщо fop" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocFop&quot;,&quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;,&quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty> 
         <activiti:formProperty id="markers3" name="маркер якщо ur" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sShortName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;,&quot;sCEOName_SubjectOrgan_01&quot;,&quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;,&quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="поле довіреність обов'язково" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectDov&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_4" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ &quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення в ЦНАП про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -69,7 +70,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення:Повідомлення про розміщення об’єкта]]></activiti:expression>
@@ -102,7 +103,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:expression>
