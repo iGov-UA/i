@@ -124,13 +124,13 @@
     </userTask>
     <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:string><![CDATA[Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
@@ -154,13 +154,13 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow5" name="decide=='reject'" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення позитивне рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:string><![CDATA[Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
