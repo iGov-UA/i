@@ -186,9 +186,7 @@
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
+       <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date" writable="false"></activiti:formProperty>
@@ -397,7 +395,10 @@
         </activiti:formProperty>
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
-      
+       
+       <activiti:formProperty id="oProcessSubject_Executor_1" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        
         <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date" writable="false"></activiti:formProperty>
@@ -842,7 +843,7 @@
           <activiti:value id="sEnumDecisionNo" name="Повернути документ на доопрацювання"></activiti:value>
           <activiti:value id="sEnumDecisionYesBut" name="Завдання виконано - не формувати вихідний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_Executor" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_Executor" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executors" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_Executor" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
