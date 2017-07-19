@@ -2921,24 +2921,25 @@ public class ActionTaskService {
             List<Task> aoOpenedAssignedTask = oTaskService.createTaskQuery()
                     .taskAssignee(sLogin)
                     .list();
-            aoListOfTaskForFiltering.addAll(aoOpenedAssignedTask);
-            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
+            aoResultTasks.addAll(aoOpenedAssignedTask);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
+            LOG.info("aoResultTasks={}", aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
             LOG.info("OpenedUnassigned condition");
             List<Task> aoOpenedUnassignedTask = oTaskService.createTaskQuery()
                     .taskCandidateUser(sLogin)
                     .list();
-            aoListOfTaskForFiltering.addAll(aoOpenedUnassignedTask);
-            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
+            aoResultTasks.addAll(aoOpenedUnassignedTask);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED)) {
             LOG.info("Opened condition");
             List<Task> aoOpenedTask = oTaskService.createTaskQuery()
                     .taskCandidateOrAssigned(sLogin)
                     .list();
-            aoListOfTaskForFiltering.addAll(aoOpenedTask);
-            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
+            aoResultTasks.addAll(aoOpenedTask);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_CLOSED)) {
             LOG.info("Close condition");
@@ -2946,8 +2947,8 @@ public class ActionTaskService {
                     .taskInvolvedUser(sLogin)
                     .processFinished()
                     .list();
-            aoListOfTaskForFiltering.addAll(aoClosedTask);
-            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
+            aoResultTasks.addAll(aoClosedTask);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
         }
 
         return aoResultTasks;
