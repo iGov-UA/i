@@ -2886,7 +2886,6 @@ public class ActionTaskService {
 
         LOG.info("getTasksByLoginAndFilterStatus started");
         List<TaskInfo> aoResultTasks = new LinkedList<>();
-        List<TaskInfo> aoListOfTaskForFiltering = new ArrayList<>();
         //вернуть последнюю юзертаску закрытого процесса-документа
         if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
             LOG.info("DocumentClosed condition");
@@ -2913,8 +2912,7 @@ public class ActionTaskService {
                     .taskAssignee(sLogin)
                     .processDefinitionKeyLikeIgnoreCase("_doc%")
                     .list();
-            aoListOfTaskForFiltering.addAll(aoOpenedAssignedDocument);
-            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
+            aoResultTasks.addAll(aoOpenedAssignedDocument);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED)) {
             LOG.info("OpenedAssigned condition");
@@ -3119,7 +3117,8 @@ public class ActionTaskService {
     }
 
     /**
-     * Удалить все таски-документы. Если ProcessDefinitionId начинается на
+     * Удалить все таски-документы. Определяем по ProcessDefinitionId
+     * начинается на "_doc"
      *
      * @param aoListOfTask лист который нужно отфильтровать
      * @return лист без документов
