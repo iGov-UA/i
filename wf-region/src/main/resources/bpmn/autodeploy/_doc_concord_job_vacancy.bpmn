@@ -118,8 +118,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmailOfHead" name="имейл начальника отдела, создающий заявку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html] ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="Анкета кандидата" type="string" default="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html]" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
@@ -128,6 +128,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener} "></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="кандидати на вакансію ${sVacancy}">
@@ -225,9 +226,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmailOfHead" name="имейл начальника отдела, создающий заявку" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html] ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="Анкета кандидата" type="string" default="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html]"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum" required="true">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита. Кандидата знайдено"></activiti:value>
           <activiti:value id="Vacancy_is_Open" name="Пошук не дав результатів. Потрібно змінити умови"></activiti:value>
