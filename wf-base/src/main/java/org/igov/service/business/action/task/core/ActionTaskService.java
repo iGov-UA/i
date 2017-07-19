@@ -2920,7 +2920,7 @@ public class ActionTaskService {
                     .taskAssignee(sLogin)
                     .list();
             aoResultTasks.addAll(aoOpenedAssignedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
             LOG.info("aoResultTasks={}", aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
@@ -2937,7 +2937,7 @@ public class ActionTaskService {
                     .taskCandidateOrAssigned(sLogin)
                     .list();
             aoResultTasks.addAll(aoOpenedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_CLOSED)) {
             LOG.info("Close condition");
@@ -2946,7 +2946,7 @@ public class ActionTaskService {
                     .processFinished()
                     .list();
             aoResultTasks.addAll(aoClosedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
         }
 
         return aoResultTasks;
