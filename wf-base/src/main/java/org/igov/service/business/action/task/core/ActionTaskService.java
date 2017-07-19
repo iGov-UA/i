@@ -2880,105 +2880,78 @@ public class ActionTaskService {
      * отработанные документы OpenedUnassignedUnprocessedDocument -
      * неотработанные документы OpenedUnassignedWithoutECPDocument - документы
      * без ЭЦП
-     * @param nSize количество тасок, которые вернутся
-     * @param nStart с какой таски начать отсчет для выборки
-     * @param bIncludeVariablesProcess добавить к ответу глобальные переменные
-     * @return обьект обвертка, который содержит лист TaskDataVO и данные для
-     * отрисовки на клиенте
+     * @return возвращает лист тасок
      */
-    public TaskDataResultVO getTasksByLoginAndFilterStatus(
-            String sLogin, String sFilterStatus, Integer nSize, Integer nStart,
-            Boolean bIncludeVariablesProcess
-    ) {
+    public List<TaskInfo> getTasksByLoginAndFilterStatus(String sLogin, String sFilterStatus) {
 
         LOG.info("getTasksByLoginAndFilterStatus started");
-        TaskDataResultVO oTaskDataResultVO = new TaskDataResultVO();
-        List<TaskInfo> aoAllTasks = new LinkedList<>();
-        long nTotalNumber;
+        List<TaskInfo> aoResultTasks = new LinkedList<>();
         //вернуть последнюю юзертаску закрытого процесса-документа
         if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
             LOG.info("DocumentClosed condition");
-            aoAllTasks.addAll(getDocumentClosed(sLogin));
+            aoResultTasks.addAll(getDocumentClosed(sLogin));
 
             //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
-            List<Task> aoUnassignedUnprocessedTask = getOpenedUnassignedUnprocessedDocument(sLogin);
-            //убираем из необработанных те, которые находятся в черновиках
-            List<Task> aoTaskToRemove = oTaskService.createTaskQuery().taskAssignee(sLogin).list();
-            Set<String> snID_TaskToRemove = aoTaskToRemove.stream()
-                    .map(Task::getId)
-                    .collect(Collectors.toSet());
-
-            aoUnassignedUnprocessedTask.forEach(oTask -> {
-                if (!snID_TaskToRemove.contains(oTask.getId())) {
-                    aoAllTasks.add(oTask);
-                }
-            });
+            aoResultTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
 
             //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
             LOG.info("OpenedUnassignedWithoutECPDocument condition");
-            aoAllTasks.addAll(getOpenedUnassignedWithoutECPDocument(sLogin));
+            aoResultTasks.addAll(getOpenedUnassignedWithoutECPDocument(sLogin));
 
             //Выборка из документстепрайт где bWrite=нал или есть дата подписи bDate    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedProcessedDocument condition");
-            aoAllTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
+            aoResultTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
+
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT)) {
+            LOG.info("OpenedAssignedDocument condition");
+            List<Task> aoOpenedAssignedDocument = oTaskService.createTaskQuery()
+                    .taskAssignee(sLogin)
+                    .processDefinitionKeyLikeIgnoreCase("_doc%")
+                    .list();
+            aoResultTasks.addAll(aoOpenedAssignedDocument);
+
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED)) {
+            LOG.info("OpenedAssigned condition");
+            List<Task> aoOpenedAssignedTask = oTaskService.createTaskQuery()
+                    .taskAssignee(sLogin)
+                    .list();
+            aoResultTasks.addAll(aoOpenedAssignedTask);
+            removeDocumentsFromTasks(aoResultTasks);
+
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
+            LOG.info("OpenedUnassigned condition");
+            List<Task> aoOpenedUnassignedTask = oTaskService.createTaskQuery()
+                    .taskCandidateUser(sLogin)
+                    .list();
+            aoResultTasks.addAll(aoOpenedUnassignedTask);
+            removeDocumentsFromTasks(aoResultTasks);
+
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED)) {
+            LOG.info("Opened condition");
+            List<Task> aoOpenedTask = oTaskService.createTaskQuery()
+                    .taskCandidateOrAssigned(sLogin)
+                    .list();
+            aoResultTasks.addAll(aoOpenedTask);
+            removeDocumentsFromTasks(aoResultTasks);
+
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_CLOSED)) {
+            LOG.info("Close condition");
+            List<HistoricTaskInstance> aoClosedTask = oHistoryService.createHistoricTaskInstanceQuery()
+                    .taskInvolvedUser(sLogin)
+                    .processFinished()
+                    .list();
+            aoResultTasks.addAll(aoClosedTask);
+            removeDocumentsFromTasks(aoResultTasks);
         }
 
-        nTotalNumber = aoAllTasks.size();
-        //Сортировка коллекции по дате создания таски, для реализации паджинации
-        Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
-
-        SimpleDateFormat oFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-
-        List<TaskDataVO> aTaskDataVO = new ArrayList<>();
-        //паджинация: из отсортированной коллекции берем nSize тасок,
-        //брать начинаем из nStart
-        for (int nIndex = nStart; aTaskDataVO.size() < nSize; nIndex++) {
-
-            if (nIndex < nTotalNumber) {
-
-                TaskInfo oTaskInfo = aoAllTasks.get(nIndex);
-
-                TaskDataVO oTaskDataVO = new TaskDataVO();
-                oTaskDataVO.setProcessDefinitionId(oTaskInfo.getProcessDefinitionId());
-                oTaskDataVO.setCreateTime(oFormatter.format(oTaskInfo.getCreateTime()));
-                oTaskDataVO.setName(oTaskInfo.getName());
-                oTaskDataVO.setId(oTaskInfo.getId());
-                oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
-                //для фильтра "DocumentClosed" ищем переменные в истории
-                if (bIncludeVariablesProcess
-                        && sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
-                    LOG.info("Stsrt find history variable for ProcessInstanceId={}", oTaskInfo.getProcessInstanceId());
-                    oTaskDataVO.setGlobalVariables(
-                            getHistoryVariableByHistoryProcessInstanceId(
-                                    oTaskInfo.getProcessInstanceId()));
-                    LOG.info("THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED");
-
-                } else if (bIncludeVariablesProcess) {
-                    oTaskDataVO.setGlobalVariables(oRuntimeService
-                            .getVariables(oTaskInfo.getExecutionId()));
-                }
-
-                aTaskDataVO.add(oTaskDataVO);
-            } else {
-                break;
-            }
-        }
-
-        oTaskDataResultVO.setAoTaskDataVO(aTaskDataVO);
-        oTaskDataResultVO.setSize(nSize);
-        oTaskDataResultVO.setStart(nStart);
-        oTaskDataResultVO.setOrder("asc");
-        oTaskDataResultVO.setSort("id");
-        oTaskDataResultVO.setTotal(nTotalNumber);
-
-        return oTaskDataResultVO;
+        return aoResultTasks;
     }
 
-    private Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
+    public Map<String, Object> getHistoryVariableByHistoryProcessInstanceId(String sProcessInstanceId) {
         LOG.info("getHistoryVariableByHistoryProcessInstanceId started with "
                 + "sProcessInstanceId={}", sProcessInstanceId);
         Map<String, Object> mHistoryVariables = new HashMap<>();
@@ -3053,7 +3026,16 @@ public class ActionTaskService {
                 + "and \"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
                 + "and \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null))";
 
-        return oTaskService.createNativeTaskQuery().sql(sQuery).list();
+        List<Task> aoUnassignedUnprocessedTask = oTaskService.createNativeTaskQuery().sql(sQuery).list();
+        //убираем из необработанных те, которые находятся в черновиках
+        List<Task> aoTaskToRemove = oTaskService.createTaskQuery().taskAssignee(sLogin).list();
+        Set<String> snID_TaskToRemove = aoTaskToRemove.stream()
+                .map(Task::getId)
+                .collect(Collectors.toSet());
+
+        return aoUnassignedUnprocessedTask.stream()
+                .filter(oTask -> !snID_TaskToRemove.contains(oTask.getId()))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -3131,5 +3113,19 @@ public class ActionTaskService {
                 + "and \"public\".\"act_hi_taskinst\".\"end_time_\" is not null";
 
         return oHistoryService.createNativeHistoricTaskInstanceQuery().sql(sQuery).list();
+    }
+
+    /**
+     * Удалить все таски-документы. Если ProcessDefinitionId начинается на
+     *
+     * @param aoListOfTask лист который нужно отфильтровать
+     * @return лист без документов
+     */
+    private List<TaskInfo> removeDocumentsFromTasks(List<TaskInfo> aoListOfTask) {
+
+        LOG.info("removeDocumentsFromTasks start");
+        return aoListOfTask.stream()
+                .filter(oTask -> !oTask.getProcessDefinitionId().startsWith("_doc"))
+                .collect(Collectors.toList());
     }
 }

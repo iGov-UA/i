@@ -471,7 +471,8 @@
 
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
-            if(item.type === 'file' || item.type === 'table' || item.sType === 'table') {
+            var type = item.type ? item.type : item.sType;
+            if(['file', 'table'].indexOf(type) > -1) {
               try {
                 var parsedValue = item.oValue ? JSON.parse(item.oValue) : JSON.parse(item.value);
                 if(parsedValue && parsedValue.sKey) {
