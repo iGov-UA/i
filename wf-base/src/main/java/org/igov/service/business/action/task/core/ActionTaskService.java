@@ -2929,7 +2929,7 @@ public class ActionTaskService {
                     .taskCandidateUser(sLogin)
                     .list();
             aoResultTasks.addAll(aoOpenedUnassignedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED)) {
             LOG.info("Opened condition");
