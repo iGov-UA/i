@@ -25,7 +25,7 @@
             name="{{item.id}}"
             ng-bind-html="viewTrustedHTMLContent(item.valueVisible)"
             ng-model="item.valueVisible">{{item.valueVisible}}
-    </span>
+      </span>
 
       <span class="validation-message" ng-messages="isFormInvalid && form[item.id].$error">
       <span ng-message="required">Необхідно заповнити.</span>
@@ -59,4 +59,11 @@
     </div>
   </div>
 
+</div>
+
+<div ng-if="item.sType == 'fileHTML'" class="form-field" style="width: 95%;float: right;">
+      <span style="white-space: pre-line"
+            ng-bind-html="viewTrustedHTMLContent(item.valueVisible)"
+            ng-model="item.valueVisible">{{item.valueVisible}}
+      </span>
 </div>

@@ -82,6 +82,9 @@
                 bIncludeProcessVariables: $stateParams.type === 'documents',
                 bIncludeMessages: true
               };
+              if ($stateParams.type == 'finished' || $stateParams.type == 'docHistory'){
+                params.isHistory = true;
+              }
               return tasks.getTaskData(params, false)
             }
           ],
@@ -108,12 +111,11 @@
             'oTask',
             'tasks',
             '$q',
-            function (oTask, tasks, $q) {
+            'taskData',
+            function (oTask, tasks, $q, taskData) {
               var defer = $q.defer();
               if (oTask.endTime) {
-                tasks.taskFormFromHistory(oTask.id).then(function (result) {
-                  defer.resolve(JSON.parse(result).data[0].variables)
-                }, defer.reject)
+                defer.resolve(taskData.aField);
               } else {
                 tasks.taskForm(oTask.id).then(function (result) {
                   defer.resolve(result.formProperties);

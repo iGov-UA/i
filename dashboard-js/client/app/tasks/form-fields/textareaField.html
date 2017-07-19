@@ -20,7 +20,7 @@
     </span>
 
     <span class="validation-message" ng-messages="isFormInvalid && form[item.id].$error">
-<span ng-message="required">Необхідно заповнити.</span>
+      <span ng-message="required">Необхідно заповнити.</span>
       <span ng-message="pattern">Значення має бути числом.</span>
       <span ng-message="email">Помилка в email.</span>
       <span ng-message="tel">Помилка в номері телефону.</span>
@@ -47,6 +47,18 @@
       <span ng-message="documentdate">Дата може бути тільки формату ДД.ММ.PPPP.</span>
       <span ng-message="FieldNotEmptyAndNonZero">Будь ласка, оберiть iз запропонованого перелiку</span>
       <span ng-message="OrderValue">Такого номеру не існує</span>
+    </span>
+  </div>
+</div>
+
+<div ng-if="item.sType && item.sType == 'textArea'" class="col-sm-12 form-field no-padding-left-right">
+  <div class="col-sm-6 task-form-title">
+    <label>{{sFieldLabel(item.sName)}}</label>
+  </div>
+  <div class="col-sm-6" style="padding-right: 0">
+    <span class="task-form-written-right-sight"
+          style="white-space: pre-line"
+          ng-model="item.oValue">{{item.oValue}}
     </span>
   </div>
 </div>
