@@ -1008,6 +1008,7 @@
             if (isNeedSign) {
               relinkPrintFormsIntoFileFields();
               tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
+                result.base64encoded = true;
 
                 signDialog.signContentsArray(result,
                   function (signedContents) {
