@@ -13,18 +13,19 @@
 var processInstanceId = execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
-    <userTask id="usertask1" name="Економіст подає сканкопію Степ1">
+    <userTask id="usertask1" name="Відділення подає заявку на встановлення ліміту Степ1">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="Сума бажаного ліміту, $" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_AkordBank_Ekonomist]]></activiti:string>
+            <activiti:string><![CDATA[_default_AkordBank_Brunch_of_Bank]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -40,17 +41,18 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
-var sKey_GroupPostfix = '_default_Operator_KC'
-var sKey_GroupPostfix_New ='Akordbank_Operator_KC'
+var sKey_GroupPostfix = '_default_AkordBank_KC'
+var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
     <userTask id="usertask2" name="Аналіз заявки на коректність">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення заяви" type="enum" required="true">
@@ -63,10 +65,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask3" name="реклонування прав економісту" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask3" name="реклонування прав  у відділення" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_1'
@@ -76,10 +77,12 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //реклонирование прав
 //Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_Operator_KC'
-var sKey_GroupPostfix_New =('AkordBank_Ekonomist')
+var sKey_GroupPostfix = '_default_AkordBank_Brunch_of_Bank'
+var sKey_GroupPostfix_New ='AkordBank_Brunch_of_Bank'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
 </script>
     </scriptTask>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
@@ -94,15 +97,17 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <userTask id="usertask3" name="Оператор встановлює ліміт">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNoteKC" name="Коментар" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask1" name="Інформування економіста" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask1" name="Інформування відділення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -133,8 +138,8 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для УРКБ
-var sKey_GroupPostfix = '_default_Akordbank_Management_RKB'
-var sKey_GroupPostfix_New ='Akordbank_Member_of_management_RKB'
+var sKey_GroupPostfix = '_default_AkordBank_UKRB'
+var sKey_GroupPostfix_New ='AkordBank_Head_UKRB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -144,15 +149,17 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <userTask id="usertask4" name="прийняття рішення УРКБ">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Встановлення індивідуальних лімітів по ПК" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_client" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="agree" name="Погодити зміну ліміту"></activiti:value>
           <activiti:value id="refuse" name="відмовити"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sNoteUKRB" name="Коментар " type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -164,7 +171,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow15" name="погоджено" sourceRef="exclusivegateway3" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='agree'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="інформування економіста відмова" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="інформування  КЦ про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -219,9 +226,9 @@ var sKey_Step= 'step_3'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
-//Клонування прав для оператора КЦ
-var sKey_GroupPostfix = '_default_Operator_KC'
-var sKey_GroupPostfix_New ='Akordbank_Operator_KC'
+//Клонування прав для співробітника банку
+var sKey_GroupPostfix = '_default_AkordBank_KC'
+var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </scriptTask>
@@ -229,6 +236,15 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum<='2000'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
+    <scriptTask id="scripttask6" name="ПІБ автора" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>// ПІБ працівника, що подає заяву
+
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
+execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
+    </scriptTask>
+    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="scripttask6"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="scripttask6" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_setting_limits">
     <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_setting_limits" id="BPMNPlane__doc_akordbank_setting_limits">
@@ -239,7 +255,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdc:Bounds height="57.0" width="105.0" x="100.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="57.0" width="105.0" x="250.0" y="30.0"></omgdc:Bounds>
+        <omgdc:Bounds height="101.0" width="105.0" x="250.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="61.0" width="105.0" x="510.0" y="30.0"></omgdc:Bounds>
@@ -248,16 +264,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdc:Bounds height="61.0" width="105.0" x="641.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="62.0" width="105.0" x="250.0" y="109.0"></omgdc:Bounds>
+        <omgdc:Bounds height="62.0" width="105.0" x="354.0" y="116.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="190.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="57.0" width="105.0" x="444.0" y="277.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="105.0" x="460.0" y="277.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="57.0" width="105.0" x="314.0" y="277.0"></omgdc:Bounds>
@@ -284,15 +300,14 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdc:Bounds height="61.0" width="105.0" x="380.0" y="30.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
-        <omgdc:Bounds height="68.0" width="105.0" x="444.0" y="170.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="105.0" x="460.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="166.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="100.0" y="58.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="205.0" y="58.0"></omgdi:waypoint>
-        <omgdi:waypoint x="250.0" y="58.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="615.0" y="60.0"></omgdi:waypoint>
@@ -300,36 +315,36 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="693.0" y="91.0"></omgdi:waypoint>
-        <omgdi:waypoint x="693.0" y="116.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="673.0" y="136.0"></omgdi:waypoint>
-        <omgdi:waypoint x="377.0" y="137.0"></omgdi:waypoint>
-        <omgdi:waypoint x="355.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="673.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="459.0" y="147.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="59.0" x="496.0" y="107.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="59.0" x="534.0" y="126.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="302.0" y="109.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="354.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="301.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="693.0" y="156.0"></omgdi:waypoint>
+        <omgdi:waypoint x="693.0" y="166.0"></omgdi:waypoint>
         <omgdi:waypoint x="693.0" y="190.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="46.0" x="714.0" y="120.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="46.0" x="700.0" y="165.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="713.0" y="210.0"></omgdi:waypoint>
         <omgdi:waypoint x="970.0" y="210.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="722.0" y="200.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="70.0" x="782.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="444.0" y="305.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="305.0"></omgdi:waypoint>
         <omgdi:waypoint x="419.0" y="305.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -346,16 +361,16 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
         <omgdi:waypoint x="832.0" y="285.0"></omgdi:waypoint>
-        <omgdi:waypoint x="496.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="245.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="753.0" y="238.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="761.0" y="251.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="832.0" y="325.0"></omgdi:waypoint>
         <omgdi:waypoint x="832.0" y="367.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="830.0" y="309.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="830.0" y="332.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -363,7 +378,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdi:waypoint x="711.0" y="402.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="355.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="355.0" y="60.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -372,14 +387,22 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="673.0" y="210.0"></omgdi:waypoint>
-        <omgdi:waypoint x="549.0" y="204.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="211.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="589.0" y="190.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="73.0" x="589.0" y="190.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="496.0" y="238.0"></omgdi:waypoint>
-        <omgdi:waypoint x="496.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="152.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="166.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="152.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

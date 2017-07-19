@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_protocol_meeting" name="Протокол оперативного совещания1" isExecutable="true">
+  <process id="_doc_btsol_division_order" name="Распоряжение по подразделению" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -11,30 +11,15 @@
     <userTask id="usertask1" name="Создание документа">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" default="Протокол оперативного совещания" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHearken" name="Слушали" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecided" name="Решили" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_protocol_meeting.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTitle" name="Название документа" type="string" default="Распоряжение по подразделению" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_division_order.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
@@ -54,36 +39,17 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHearken" name="Слушали" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecided" name="Решили" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_protocol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sTitle" name="Название документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_division_order.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT2" name="Действие с документом" type="enum" required="true">
           <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
           <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentAgreement" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers5" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sCommentAgreement&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -93,36 +59,17 @@
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHearken" name="Слушали" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecided" name="Решили" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_protocol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sTitle" name="Название документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_division_order.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
-          <activiti:value id="sEnumSign" name="Завизировать"></activiti:value>
-          <activiti:value id="sEnumRemark" name="Замечание"></activiti:value>
+          <activiti:value id="sEnumSign" name="Утвердить"></activiti:value>
+          <activiti:value id="sEnumRemark" name="Возврат автору (все визы будут аннулированы)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Внесите текст замечания" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="если замечание" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sCommentApprove&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asActionDocUT3&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRemark'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -136,7 +83,7 @@ var sID_Order= generalConfig.getOrderId_ByProcess(processInstanceIdToLong)
 execution.setVariable('sID_Order', sID_Order)
 </script>
     </scriptTask>
-    <scriptTask id="scripttask4" name="права утверждающим" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask4" name="Step3,права утвержд" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable_Approve', 'step_3', true, 'sLogin_Approver')
@@ -155,14 +102,25 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asActionDocUT2 == 'sEnumSign'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow60" sourceRef="scripttask4" targetRef="usertask2_yellow"></sequenceFlow>
-    <scriptTask id="scripttask6" name="права согласующим" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask6" name="Step2, права согласующим" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol', 'sTable_Agreement', 'step_2',true,'sLogin_isExecute')
 
 var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_2')
-</script>
+
+
+
+// Присвоение названия докумнту
+var title = 'd'
+if (execution.getVariable('asAttributeApplication') == 'Enum1') {
+title = 'Заявка на тендер по определению поставщика ТМЦ'
+}
+if (execution.getVariable('asAttributeApplication') == 'Enum2') {
+title = 'Заявка на проведение тендера по отбору подрядчика/ТЭЭ победителя внутреннего тендера'
+}
+execution.setVariable('sTitleDoc', title)</script>
     </scriptTask>
     <sequenceFlow id="flow65" sourceRef="scripttask6" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
@@ -195,7 +153,7 @@ execution.setVariable('bSubmitedAll3', oCheckSubmitedAll3.bSubmitedAll.toString(
     </scriptTask>
     <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow80" sourceRef="scripttask11" targetRef="exclusivegateway6"></sequenceFlow>
-    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask41">
+    <sequenceFlow id="flow82" name="все утвердили" sourceRef="exclusivegateway6" targetRef="scripttask21">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll3 == true}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow86" sourceRef="usertask2" targetRef="exclusivegateway14"></sequenceFlow>
@@ -231,16 +189,11 @@ execution.setVariable('nCountAccept', nCountAccept)
     <sequenceFlow id="flow113" sourceRef="exclusivegateway12" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nCountAccept<=0}]]></conditionExpression>
     </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway13" name="Exclusive Gateway"></exclusiveGateway>
     <endEvent id="endevent2" name="End"></endEvent>
     <scriptTask id="scripttask21" name="старт задания" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
 var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
     </scriptTask>
-    <sequenceFlow id="flow119" sourceRef="exclusivegateway13" targetRef="scripttask21">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll ==
-true}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow120" sourceRef="scripttask21" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway14" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow123" sourceRef="exclusivegateway14" targetRef="exclusivegateway3">
@@ -249,32 +202,17 @@ true}]]></conditionExpression>
     <userTask id="usertask4" name="автору на редактир">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHearken" name="Слушали" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecided" name="Решили" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTitle" name="Название документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_division_order.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_protocol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -306,29 +244,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <userTask id="usertask5" name="автору на редак">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHearken" name="Слушали" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDecided" name="Решили" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_protocol_meeting.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTitle" name="Название документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_division_order.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable_Agreement" name="Согласующие; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
@@ -384,7 +305,7 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
 </script>
     </scriptTask>
     <sequenceFlow id="flow163" sourceRef="scripttask36" targetRef="scripttask4"></sequenceFlow>
-    <scriptTask id="scripttask37" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask37" name="снести подпись" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var nID_Process = execution.getProcessInstanceId()
 var sKeyGroup = execution.getVariable('sLoginAuthor')
@@ -393,74 +314,15 @@ var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Pro
 </script>
     </scriptTask>
     <sequenceFlow id="flow164" sourceRef="scripttask37" targetRef="scripttask4"></sequenceFlow>
-    <scriptTask id="scripttask40" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask40" name="снести подпись" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
 var sKeyGroup = execution.getVariable('sLoginAuthor')
 var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_2', sKeyGroup)</script>
     </scriptTask>
     <sequenceFlow id="flow167" sourceRef="scripttask40" targetRef="scripttask19"></sequenceFlow>
-    <scriptTask id="scripttask41" name="права на ознакомление" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
-var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable_Present', 'step_4', true, 'sLogin_isExecute')
-
-var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_btsol_view', 'sTable_Agreement', 'step_4',true,'sLogin_isExecute')
-
-var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_btsol_view', sKey_GroupPostfix_New, 'step_4')</script>
-    </scriptTask>
-    <userTask id="usertask6" name="ознакомление">
-      <extensionElements>
-        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll2" name="bSubmitedAll2 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll3" name="bSubmitedAll3 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bSubmitedAll4" name="bSubmitedAll4 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTextMeeting" name="Повестка дня" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sDateMeeting" name="Дата проведения совещания" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sAmtParticipants" name="Количество участников" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sAmtDecisions" name="Количество принятых решений" type="long"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="линия Председатель" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sChairperson&quot;],&quot;sValue&quot;:&quot;Председатель&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sChairperson" name="Ф.И.О." type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers_02" name="линия Присутствовали" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sPresent&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Present" name="Присутствовали; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_03" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_03&quot;:{&quot;aElement_ID&quot;:[&quot;sHearken&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sHearken" name="Слушали" type="fileHTML"></activiti:formProperty>
-        <activiti:formProperty id="sDecided" name="Решили" type="fileHTML" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_04" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_04&quot;:{&quot;aElement_ID&quot;:[&quot;sTask&quot;],&quot;sValue&quot;:&quot;Присутствовали&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;asActionDocUT1&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Agreement" name="Согласующий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable_Approve" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sCommentAgreement" name="Замечание согласующего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCommentApprove" name="Замечание утверждающего" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Исполнитель; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable_doc_btsol_protocol_meeting.json')}"></activiti:formProperty>
-        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
-      </extensionElements>
-    </userTask>
-    <sequenceFlow id="flow168" sourceRef="scripttask41" targetRef="usertask6"></sequenceFlow>
-    <scriptTask id="scripttask42" name="проверка подписей" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var nID_Process = execution.getProcessInstanceId()
-var sKey_Step = execution.getVariable('sKey_Step_Document')
-var oDocumentStepSubmitedAll =
-documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test',
-sKey_Step)
-execution.setVariable('bDocumentStepSubmitedAll',
-oDocumentStepSubmitedAll.bSubmitedAll.toString())</script>
-    </scriptTask>
-    <sequenceFlow id="flow169" sourceRef="usertask6" targetRef="scripttask42"></sequenceFlow>
-    <sequenceFlow id="flow170" sourceRef="scripttask42" targetRef="exclusivegateway13"></sequenceFlow>
-    <sequenceFlow id="flow171" sourceRef="exclusivegateway13" targetRef="usertask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll ==
-false}]]></conditionExpression>
-    </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_protocol_meeting">
-    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_protocol_meeting" id="BPMNPlane__doc_btsol_protocol_meeting">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_division_order">
+    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_division_order" id="BPMNPlane__doc_btsol_division_order">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -512,14 +374,11 @@ false}]]></conditionExpression>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway12" id="BPMNShape_exclusivegateway12">
         <omgdc:Bounds height="40.0" width="40.0" x="580.0" y="109.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway13" id="BPMNShape_exclusivegateway13">
-        <omgdc:Bounds height="40.0" width="40.0" x="443.0" y="887.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="446.0" y="1060.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="702.0" y="930.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask21" id="BPMNShape_scripttask21">
-        <omgdc:Bounds height="55.0" width="105.0" x="411.0" y="970.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="800.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway14" id="BPMNShape_exclusivegateway14">
         <omgdc:Bounds height="40.0" width="40.0" x="932.0" y="207.0"></omgdc:Bounds>
@@ -556,15 +415,6 @@ false}]]></conditionExpression>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask40" id="BPMNShape_scripttask40">
         <omgdc:Bounds height="55.0" width="105.0" x="1250.0" y="281.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask41" id="BPMNShape_scripttask41">
-        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="790.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="667.0" y="880.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask42" id="BPMNShape_scripttask42">
-        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="880.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="215.0" y="127.0"></omgdi:waypoint>
@@ -627,7 +477,7 @@ false}]]></conditionExpression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow82" id="BPMNEdge_flow82">
         <omgdi:waypoint x="719.0" y="716.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="790.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="800.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="48.0" width="74.0" x="719.0" y="716.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -674,13 +524,9 @@ false}]]></conditionExpression>
         <omgdi:waypoint x="851.0" y="491.0"></omgdi:waypoint>
         <omgdi:waypoint x="772.0" y="491.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow119" id="BPMNEdge_flow119">
-        <omgdi:waypoint x="463.0" y="927.0"></omgdi:waypoint>
-        <omgdi:waypoint x="463.0" y="970.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow120" id="BPMNEdge_flow120">
-        <omgdi:waypoint x="463.0" y="1025.0"></omgdi:waypoint>
-        <omgdi:waypoint x="463.0" y="1060.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="855.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="930.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow123" id="BPMNEdge_flow123">
         <omgdi:waypoint x="932.0" y="227.0"></omgdi:waypoint>
@@ -743,7 +589,7 @@ false}]]></conditionExpression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow163" id="BPMNEdge_flow163">
         <omgdi:waypoint x="1157.0" y="426.0"></omgdi:waypoint>
-        <omgdi:waypoint x="762.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="719.0" y="427.0"></omgdi:waypoint>
         <omgdi:waypoint x="719.0" y="464.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow164" id="BPMNEdge_flow164">
@@ -757,24 +603,6 @@ false}]]></conditionExpression>
         <omgdi:waypoint x="773.0" y="38.0"></omgdi:waypoint>
         <omgdi:waypoint x="473.0" y="38.0"></omgdi:waypoint>
         <omgdi:waypoint x="473.0" y="100.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow168" id="BPMNEdge_flow168">
-        <omgdi:waypoint x="719.0" y="845.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="880.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow169" id="BPMNEdge_flow169">
-        <omgdi:waypoint x="667.0" y="907.0"></omgdi:waypoint>
-        <omgdi:waypoint x="645.0" y="907.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow170" id="BPMNEdge_flow170">
-        <omgdi:waypoint x="540.0" y="907.0"></omgdi:waypoint>
-        <omgdi:waypoint x="483.0" y="907.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow171" id="BPMNEdge_flow171">
-        <omgdi:waypoint x="463.0" y="887.0"></omgdi:waypoint>
-        <omgdi:waypoint x="463.0" y="867.0"></omgdi:waypoint>
-        <omgdi:waypoint x="718.0" y="867.0"></omgdi:waypoint>
-        <omgdi:waypoint x="719.0" y="880.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
