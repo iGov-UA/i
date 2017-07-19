@@ -758,7 +758,7 @@ public class DocumentStepService {
             for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
                 DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
                 if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
-                    if (oDocumentStepSubjectRight_To.getsDate() != null) {
+                    //if (oDocumentStepSubjectRight_To.getsDate() != null) {
                         LOG.info("DocumentStepSubjectRight_From when sDate isn't null: {}",
                                 oDocumentStepSubjectRight_From);
                         LOG.info("DocumentStepSubjectRight_To equals _From with date {}", oDocumentStepSubjectRight_To);
@@ -805,7 +805,7 @@ public class DocumentStepService {
                         LOG.info("DocumentStepSubjectRight_To before saving is: {}", oDocumentStepSubjectRight_To);
                         oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                         break;
-                    }
+                    //}
                 }
             }
 
@@ -888,8 +888,10 @@ public class DocumentStepService {
             for (String sID_Group_Activiti_New : asID_Group_Activiti_New) {
                 if (isNew_DocumentStepSubjectRight(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(),
                         sKey_GroupPostfix_New)) {
+                    LOG.info("isNew_DocumentStepSubjectRight case.");
                     asID_Group_Activiti_New_Selected.add(sID_Group_Activiti_New);
                 } else if (bReClone) {
+                    LOG.info("bReClone case.");
                     reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sKey_GroupPostfix_New);
                 } else {
                     LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sKey_GroupPostfix_New,
