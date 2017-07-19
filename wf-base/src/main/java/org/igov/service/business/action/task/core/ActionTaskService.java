@@ -2886,6 +2886,7 @@ public class ActionTaskService {
 
         LOG.info("getTasksByLoginAndFilterStatus started");
         List<TaskInfo> aoResultTasks = new LinkedList<>();
+        List<TaskInfo> aoListOfTaskForFiltering = new ArrayList<>();
         //вернуть последнюю юзертаску закрытого процесса-документа
         if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED)) {
             LOG.info("DocumentClosed condition");
@@ -2912,32 +2913,32 @@ public class ActionTaskService {
                     .taskAssignee(sLogin)
                     .processDefinitionKeyLikeIgnoreCase("_doc%")
                     .list();
-            aoResultTasks.addAll(aoOpenedAssignedDocument);
+            aoListOfTaskForFiltering.addAll(aoOpenedAssignedDocument);
+            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED)) {
             LOG.info("OpenedAssigned condition");
             List<Task> aoOpenedAssignedTask = oTaskService.createTaskQuery()
                     .taskAssignee(sLogin)
                     .list();
-            aoResultTasks.addAll(aoOpenedAssignedTask);
-            removeDocumentsFromTasks(aoResultTasks);
-            LOG.info("aoResultTasks={}", aoResultTasks);
+            aoListOfTaskForFiltering.addAll(aoOpenedAssignedTask);
+            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
             LOG.info("OpenedUnassigned condition");
             List<Task> aoOpenedUnassignedTask = oTaskService.createTaskQuery()
                     .taskCandidateUser(sLogin)
                     .list();
-            aoResultTasks.addAll(aoOpenedUnassignedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoListOfTaskForFiltering.addAll(aoOpenedUnassignedTask);
+            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED)) {
             LOG.info("Opened condition");
             List<Task> aoOpenedTask = oTaskService.createTaskQuery()
                     .taskCandidateOrAssigned(sLogin)
                     .list();
-            aoResultTasks.addAll(aoOpenedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoListOfTaskForFiltering.addAll(aoOpenedTask);
+            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_CLOSED)) {
             LOG.info("Close condition");
@@ -2945,8 +2946,8 @@ public class ActionTaskService {
                     .taskInvolvedUser(sLogin)
                     .processFinished()
                     .list();
-            aoResultTasks.addAll(aoClosedTask);
-            removeDocumentsFromTasks(aoResultTasks);
+            aoListOfTaskForFiltering.addAll(aoClosedTask);
+            aoResultTasks.addAll(removeDocumentsFromTasks(aoListOfTaskForFiltering));
         }
 
         return aoResultTasks;
@@ -3125,14 +3126,8 @@ public class ActionTaskService {
     private List<TaskInfo> removeDocumentsFromTasks(List<TaskInfo> aoListOfTask) {
 
         LOG.info("removeDocumentsFromTasks start");
-        List<TaskInfo> aoTaskWithoutDocument = new ArrayList<>();
-        aoListOfTask.forEach(oTask -> {
-            String snProcessDefinitionId = oTask.getProcessDefinitionId();
-            LOG.info("snProcessDefinitionId={}", snProcessDefinitionId);
-            if (!snProcessDefinitionId.startsWith("_doc")) {
-                aoTaskWithoutDocument.add(oTask);
-            }
-        });
-        return aoTaskWithoutDocument;
+        return aoListOfTask.stream()
+                .filter(oTask -> !oTask.getProcessDefinitionId().startsWith("_doc"))
+                .collect(Collectors.toList());
     }
 }
