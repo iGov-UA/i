@@ -283,13 +283,13 @@
               <p>{{item.sFieldLabel | tableButtonFilter}}</p>
               <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id || item.sId}}"
                  target="_blank"
-                 ng-if="!isTableAttachment(item) && (item.type === 'file' || item.sType === 'file')"
+                 ng-if="!isTableAttachment(item) && item.type === 'file'"
                  class="btn btn-info">Завантажити
               </a>
 
               <a href="/api/tasks/download/{{takeTheKeyFromJSON(item)}}/attachment/Mongo/{{takeTheFileNameFromJSON(item)}}"
                  target="_blank"
-                 ng-if="!isTableAttachment(item) && item.type === 'string'"
+                 ng-if="!isTableAttachment(item) && (item.type === 'string' || item.sType === 'file')"
                  class="btn btn-info">Завантажити
               </a>
               <button

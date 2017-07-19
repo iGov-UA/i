@@ -3117,7 +3117,8 @@ public class ActionTaskService {
     }
 
     /**
-     * Удалить все таски-документы. Если ProcessDefinitionId начинается на
+     * Удалить все таски-документы. Определяем по ProcessDefinitionId
+     * начинается на "_doc"
      *
      * @param aoListOfTask лист который нужно отфильтровать
      * @return лист без документов
@@ -3125,14 +3126,8 @@ public class ActionTaskService {
     private List<TaskInfo> removeDocumentsFromTasks(List<TaskInfo> aoListOfTask) {
 
         LOG.info("removeDocumentsFromTasks start");
-        List<TaskInfo> aoTaskWithoutDocument = new ArrayList<>();
-        aoListOfTask.forEach(oTask -> {
-            String snProcessDefinitionId = oTask.getProcessDefinitionId();
-            LOG.info("snProcessDefinitionId={}", snProcessDefinitionId);
-            if (!snProcessDefinitionId.startsWith("_doc")) {
-                aoTaskWithoutDocument.add(oTask);
-            }
-        });
-        return aoTaskWithoutDocument;
+        return aoListOfTask.stream()
+                .filter(oTask -> !oTask.getProcessDefinitionId().startsWith("_doc"))
+                .collect(Collectors.toList());
     }
 }

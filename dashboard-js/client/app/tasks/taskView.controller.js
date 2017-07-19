@@ -540,37 +540,20 @@
         };
 
         $scope.takeTheKeyFromJSON = function (item) {
-          return JSON.parse(item.value).sKey;
+          return item.oValue ? JSON.parse(item.oValue).sKey : JSON.parse(item.value).sKey;
         };
 
         $scope.takeTheFileNameFromJSON = function (item) {
-          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var originalFileName = JSON.parse(item.value || item.oValue).sFileNameAndExt;
           var ext;
           if (originalFileName && originalFileName.indexOf('.') > 0){
             var parts = originalFileName.split(".");
             ext = parts[parts.length - 1];
           }
           if(ext){
-            return item.name + '.' + ext;
+            return (item.name || item.sName) + '.' + ext;
           }
-          return item.name;
-        };
-
-        $scope.takeTheKeyFromJSON = function (item) {
-          return JSON.parse(item.value).sKey;
-        };
-
-        $scope.takeTheFileNameFromJSON = function (item) {
-          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
-          var ext;
-          if (originalFileName && originalFileName.indexOf('.') > 0){
-            var parts = originalFileName.split(".");
-            ext = parts[parts.length - 1];
-          }
-          if(ext){
-            return item.name + '.' + ext;
-          }
-          return item.name;
+          return item.name || item.sName;
         };
 
         $scope.clarify = false;
