@@ -239,8 +239,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
     <scriptTask id="scripttask6" name="снос прав группы" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId()
-var sKeyGroup = execution.getVariable(''sLogin_LastSubmited'')
-var oCancelRigtsForAutorStep2 = documentStepService.cancelDocumentSubmit(nID_Process, 'step_2', sKeyGroup)</script>
+var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_2', sKeyGroup)</script>
     </scriptTask>
     <sequenceFlow id="flow23" sourceRef="scripttask6" targetRef="scripttask3"></sequenceFlow>
   </process>
