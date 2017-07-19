@@ -281,7 +281,7 @@
 
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.sFieldLabel | tableButtonFilter}}</p>
-              <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
+              <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id || item.sId}}"
                  target="_blank"
                  ng-if="!isTableAttachment(item) && (item.type === 'file' || item.sType === 'file')"
                  class="btn btn-info">Завантажити
