@@ -17,11 +17,21 @@
         <activiti:formProperty id="email" name="E-Mail адреса" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <scriptTask id="scripttask1" name="Обробити данні" scriptFormat="groovy" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask1" name="Обробити данні" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var SelectSexCheck = execution.getVariable('asSelectSexCheck')
+if (SelectSexCheck==man)
+execution.setVariable (sHello, 'Доброго дня, мужчина!')
+else
+execution.setVariable (sHello, 'Доброго дня, дівчино!')
+
+</script>
+    </scriptTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Відправити лист чоловікові" activiti:expression="#{MailTaskWithAttachments}">
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SelectSexCheck==man}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask1" name="Відправити лист чоловікові" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -34,6 +44,9 @@
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${vFile}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${sHello}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -51,6 +64,9 @@
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${vFile}]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${sHello}]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -58,7 +74,9 @@
     <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SelectSexCheck==girl}]]></conditionExpression>
+    </sequenceFlow>
     <userTask id="usertask3" name="Продивитись відповіді" activiti:assignee="kermit">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="false"></activiti:formProperty>
@@ -70,6 +88,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="vFile" name="Документ з рекомендаціями; ;bNew=true" type="file" readable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail адреса" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHello" name="Ексклюзивне вітання; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
