@@ -1,12 +1,16 @@
 angular.module('dashboardJsApp').service('fieldsService', ['FieldMotionService', function (FieldMotionService) {
   return {
     isFieldVisible : function(item, taskForm) {
-      var bVisible = item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
+      if (item.sId && item.oValue) { // for history tab;
+        return true;
+      } else {
+        var bVisible = item.id !== 'processName' && (FieldMotionService.FieldMentioned.inShow(item.id) ?
           FieldMotionService.isFieldVisible(item.id, taskForm) : true);
-      if(item.options && item.options.hasOwnProperty('bVisible')){
-        bVisible = bVisible && item.options['bVisible'];
+        if(item.options && item.options.hasOwnProperty('bVisible')){
+          bVisible = bVisible && item.options['bVisible'];
+        }
+        return bVisible;
       }
-      return bVisible;
     },
 
     creationDateFormatted: function (date) {

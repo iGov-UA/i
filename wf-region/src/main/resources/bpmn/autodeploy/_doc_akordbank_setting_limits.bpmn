@@ -80,13 +80,13 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_AkordBank_Brunch_of_Bank'
 var sKey_GroupPostfix_New ='AkordBank_Brunch_of_Bank'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
 
 
 </script>
     </scriptTask>
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow6" name="Некоректно" sourceRef="exclusivegateway1" targetRef="scripttask3">
+    <sequenceFlow id="flow6" name="Некоректно" sourceRef="exclusivegateway1" targetRef="scripttask6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCorrectness=='incorrectly'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="scripttask3" targetRef="usertask1"></sequenceFlow>
@@ -236,15 +236,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum<='2000'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
-    <scriptTask id="scripttask6" name="ПІБ автора" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>// ПІБ працівника, що подає заяву
-
-var sLoginAuthor = execution.getVariable('sLoginAuthor')
-var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
-execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
+    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask6" name="снос прав группы" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_2', sKeyGroup)</script>
     </scriptTask>
-    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="scripttask6"></sequenceFlow>
-    <sequenceFlow id="flow23" sourceRef="scripttask6" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="scripttask6" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_setting_limits">
     <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_setting_limits" id="BPMNPlane__doc_akordbank_setting_limits">
@@ -267,7 +265,7 @@ execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="62.0" width="105.0" x="354.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="62.0" width="105.0" x="80.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="190.0"></omgdc:Bounds>
@@ -303,7 +301,7 @@ execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
         <omgdc:Bounds height="68.0" width="105.0" x="460.0" y="177.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="166.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="390.0" y="119.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="57.0"></omgdi:waypoint>
@@ -319,14 +317,13 @@ execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="673.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="459.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="495.0" y="146.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="59.0" x="534.0" y="126.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="354.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="301.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="153.0"></omgdi:waypoint>
         <omgdi:waypoint x="302.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -363,7 +360,7 @@ execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
         <omgdi:waypoint x="832.0" y="285.0"></omgdi:waypoint>
         <omgdi:waypoint x="512.0" y="245.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="761.0" y="251.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="761.0" y="251.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -397,12 +394,12 @@ execution.setVariable('sAvtor', oResultAuthorName.sLabel)</script>
         <omgdi:waypoint x="512.0" y="277.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="152.0" y="87.0"></omgdi:waypoint>
-        <omgdi:waypoint x="152.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="205.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="60.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
-        <omgdi:waypoint x="152.0" y="166.0"></omgdi:waypoint>
-        <omgdi:waypoint x="302.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="153.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

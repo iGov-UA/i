@@ -2900,7 +2900,7 @@ public class ActionTaskService {
             LOG.info("DocumentClosed condition");
             aoAllTasks.addAll(getDocumentClosed(sLogin));
 
-        //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
+            //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
             List<Task> aoUnassignedUnprocessedTask = getOpenedUnassignedUnprocessedDocument(sLogin);
@@ -2909,29 +2909,24 @@ public class ActionTaskService {
             Set<String> snID_TaskToRemove = aoTaskToRemove.stream()
                     .map(Task::getId)
                     .collect(Collectors.toSet());
-            LOG.info("snTaskIdToRemove {}", snID_TaskToRemove);
-            
-            aoUnassignedUnprocessedTask.forEach(oTask -> {
 
-                //boolean result = snID_TaskToRemove.contains(oTask.getId());
+            aoUnassignedUnprocessedTask.forEach(oTask -> {
                 if (!snID_TaskToRemove.contains(oTask.getId())) {
                     aoAllTasks.add(oTask);
                 }
             });
 
-            LOG.info("All tasks {}", aoAllTasks);
-            
-        //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
+            //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
             LOG.info("OpenedUnassignedWithoutECPDocument condition");
             aoAllTasks.addAll(getOpenedUnassignedWithoutECPDocument(sLogin));
 
-        //Выборка из документстепрайт где bWrite=нал или есть дата подписи bDate    
+            //Выборка из документстепрайт где bWrite=нал или есть дата подписи bDate    
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
             LOG.info("OpenedUnassignedProcessedDocument condition");
             aoAllTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
         }
-        
+
         nTotalNumber = aoAllTasks.size();
         //Сортировка коллекции по дате создания таски, для реализации паджинации
         Collections.sort(aoAllTasks, (task1, task2) -> task1.getCreateTime().compareTo(task2.getCreateTime()));
@@ -3014,14 +3009,9 @@ public class ActionTaskService {
      */
     private List<HistoricTaskInstance> getDocumentClosed(String sLogin) {
         //все закрытые документы, которые относятся к заданому логину
-        HistoricTaskInstanceQuery oTaskQuery = oHistoryService.createHistoricTaskInstanceQuery()
-                .taskInvolvedUser(sLogin)
-                .processFinished()
-                .processDefinitionKeyLikeIgnoreCase("_doc_%");
-        LOG.info("Document closed count={}", oTaskQuery.count());
-
+        List<HistoricTaskInstance> aoTaskList = getDocumentClosedTask(sLogin);
+        LOG.info("Closed task before filtering aoTaskList.size={}", aoTaskList.size());
         List<HistoricTaskInstance> aoTaskToRemove = new ArrayList<>();
-        List<HistoricTaskInstance> aoTaskList = oTaskQuery.list();
         //если таски емеют одинаковый ProcessInstanceId, сверяем дату закрытия
         //таска которая была закрыта раньше добавляется в список для удаления
         Collections.sort(aoTaskList, (HistoricTaskInstance oTask1, HistoricTaskInstance oTask2) -> {
@@ -3030,8 +3020,6 @@ public class ActionTaskService {
                 nResult = oTask1.getEndTime().compareTo(oTask2.getEndTime());
                 if (nResult == 1) {
                     aoTaskToRemove.add(oTask2);
-                } else if (nResult == 0) {
-                    LOG.info("founded task with equal endTime");
                 } else {
                     aoTaskToRemove.add(oTask1);
                 }
@@ -3094,11 +3082,11 @@ public class ActionTaskService {
     }
 
     /**
-     * Документы ожидающие подпись ЭЦП. Выборка из документстепрайт где
-     * sDate != null && bNeedECP != null && bNeedECP != false && sDateECP == nul
-     * 
+     * Документы ожидающие подпись ЭЦП. Выборка из документстепрайт где sDate !=
+     * null && bNeedECP != null && bNeedECP != false && sDateECP == nul
+     *
      * @param sLogin логин для которого нужно найти документы
-     * @return  документы ожидающие подпись ЭЦП
+     * @return документы ожидающие подпись ЭЦП
      */
     private List<Task> getOpenedUnassignedWithoutECPDocument(String sLogin) {
 
@@ -3119,4 +3107,29 @@ public class ActionTaskService {
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
 
+    /**
+     * Получить закрытые таски для процессов в которых учавствовал sLogin. В
+     * act_hi_identitylink узнали процессы в которых учавствует логин, по
+     * процессам нашли все закрытые таски.
+     *
+     * @param sLogin логин для которого нужно найти таски
+     * @return все закрытые таски для процессов в которых учавствовал sLogin
+     */
+    private List<HistoricTaskInstance> getDocumentClosedTask(String sLogin) {
+        LOG.info("getDocumentClosedTask start");
+
+        String sQuery = "select * from \"public\".\"act_hi_taskinst\"\n"
+                + "where \"public\".\"act_hi_taskinst\".\"proc_inst_id_\"\n"
+                + "in(select \"public\".\"act_hi_procinst\".\"proc_inst_id_\"\n"
+                + "from \"public\".\"act_hi_procinst\"\n"
+                + "where \"public\".\"act_hi_procinst\".\"proc_inst_id_\" \n"
+                + "in (select \"public\".\"act_hi_identitylink\".\"proc_inst_id_\"\n"
+                + "from \"public\".\"act_hi_identitylink\"\n"
+                + "where \"public\".\"act_hi_identitylink\".\"user_id_\" = '" + sLogin + "')\n"
+                + "and \"public\".\"act_hi_procinst\".\"end_time_\" is not null)\n"
+                + "and \"public\".\"act_hi_taskinst\".\"proc_def_id_\" like '_doc%'\n"
+                + "and \"public\".\"act_hi_taskinst\".\"end_time_\" is not null";
+
+        return oHistoryService.createNativeHistoricTaskInstanceQuery().sql(sQuery).list();
+    }
 }
