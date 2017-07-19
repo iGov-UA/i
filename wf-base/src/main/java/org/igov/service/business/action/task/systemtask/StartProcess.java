@@ -44,11 +44,15 @@ public class StartProcess extends Abstract_MailTaskCustom implements JavaDelegat
         Map<String, Object> data = parseData(soData_Value_Result);
         Map<String, Object> mDataWithoutNull = new HashMap<>();
         
+        LOG.info("data {}", data);
+        
         for(String key : data.keySet()){
-            if(data.get(key) != null){
+            if(data.get(key)!= null && !((String)data.get(key)).equals("null")){
                mDataWithoutNull.put(key, data.get(key)); 
             }
         }
+        
+        LOG.info("data {}", mDataWithoutNull);
         
         runtimeService.startProcessInstanceByKey(sID_BP_Value, mDataWithoutNull);
     }
