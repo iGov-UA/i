@@ -15,10 +15,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Скорочене найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Скорочене найменування юридичної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -57,18 +58,19 @@
         <activiti:formProperty id="markersLine_2" name="Режим роботи об'єкта у вихідні дні" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sWorkholiday_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта у вихідні дні&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectDov&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
-<!--         <activiti:formProperty id="markers2" name="маркер якщо fop" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocFop&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>  -->
-        <activiti:formProperty id="markers3" name="маркер якщо ur" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sShortName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;,&quot;sCEOName_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="маркер якщо fop" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sDocFop&quot;,&quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;,&quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty> 
+        <activiti:formProperty id="markers3" name="маркер якщо ur" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sShortName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;,&quot;sCEOName_SubjectOrgan_01&quot;,&quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;,&quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="поле довіреність обов'язково" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectDov&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_4" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ &quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення в ЦНАП про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення:Повідомлення про розміщення об’єкта]]></activiti:expression>
@@ -77,7 +79,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 			<p>
-			Ваше звернення № щодо видачі картки обліку об'єкта та довідки про розміщення об'єкта успішно зареєстроване.<br />
+			Ваше звернення № [sID_Order] щодо видачі картки обліку об'єкта та довідки про розміщення об'єкта успішно зареєстроване.<br />
 			Ви отримаєте відповідь протягом найближчого часу.
 			</p>
 			<p>Контакти підрозділу ЦНАП, яке буде займатися обробкою Вашого звернення:</p>
@@ -97,13 +99,13 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <serviceTask id="servicetask2" name="Повідомлення про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
@@ -124,19 +126,19 @@
     </userTask>
     <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:string><![CDATA[Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-По вашому зверненню № винесено відмову.<br />
+По вашому зверненню № [sID_Order] винесено відмову.<br />
 ЦНАП відмовило у видачі картки обліку об'єкта та довідки про розіщення об'єкта.<br />
 <p>Причина відмови: ${comment}</p>
 Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
@@ -154,19 +156,19 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow5" name="decide=='reject'" sourceRef="exclusivegateway1" targetRef="servicetask3"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення позитивне рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:string><![CDATA[Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-По вашому зверненню винесено позитивне рішення.<br />
+По вашому зверненню № [sID_Order] винесено позитивне рішення.<br />
 Отримайте відповідь в ЦНАПі.<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
