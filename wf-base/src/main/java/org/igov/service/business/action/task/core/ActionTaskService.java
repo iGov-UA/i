@@ -2921,6 +2921,7 @@ public class ActionTaskService {
                     .list();
             aoResultTasks.addAll(aoOpenedAssignedTask);
             removeDocumentsFromTasks(aoResultTasks);
+            LOG.info("aoResultTasks={}", aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
             LOG.info("OpenedUnassigned condition");
@@ -3124,8 +3125,14 @@ public class ActionTaskService {
     private List<TaskInfo> removeDocumentsFromTasks(List<TaskInfo> aoListOfTask) {
 
         LOG.info("removeDocumentsFromTasks start");
-        return aoListOfTask.stream()
-                .filter(oTask -> !oTask.getProcessDefinitionId().startsWith("_doc"))
-                .collect(Collectors.toList());
+        List<TaskInfo> aoTaskWithoutDocument = new ArrayList<>();
+        aoListOfTask.forEach(oTask -> {
+            String snProcessDefinitionId = oTask.getProcessDefinitionId();
+            LOG.info("snProcessDefinitionId={}", snProcessDefinitionId);
+            if (!snProcessDefinitionId.startsWith("_doc")) {
+                aoTaskWithoutDocument.add(oTask);
+            }
+        });
+        return aoTaskWithoutDocument;
     }
 }
