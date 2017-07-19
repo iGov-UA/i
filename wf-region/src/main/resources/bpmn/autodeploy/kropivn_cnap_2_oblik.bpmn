@@ -64,10 +64,10 @@
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення в ЦНАП про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
-        <activiti:field name="To">
+        <activiti:field name="to">
           <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
@@ -97,13 +97,13 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <serviceTask id="servicetask2" name="Повідомлення про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="From">
+        <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="Subject">
+        <activiti:field name="subject">
           <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: Видача картки обліку об'кта та довідки про розміщення об'єкта]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
