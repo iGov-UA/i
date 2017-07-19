@@ -25,7 +25,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <userTask id="usertask1" name="Створення заявки на заміщення вакансії">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на підбір персоналу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ConcordBank_Head_of_Brunch"></activiti:formProperty>
@@ -119,7 +119,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Анкета кандидата" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
@@ -134,7 +134,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <userTask id="usertask2" name="кандидати на вакансію ${sVacancy}">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на підбір персоналу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ConcordBank_Head_of_Brunch"></activiti:formProperty>
@@ -225,9 +225,9 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sFindCompany" name="Компанії, в яких може працювати кандидат (назва та сфера діяльності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Анкета кандидата"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum" required="true">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита. Кандидата знайдено"></activiti:value>
