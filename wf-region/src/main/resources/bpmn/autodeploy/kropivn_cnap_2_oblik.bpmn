@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="kropivn_cnap_2_oblik" name="kropivn_cnap_2_oblik" isExecutable="true">
+  <process id="kropivn_cnap_0002_oblik" name="kropivn_cnap_0002_oblik" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -60,7 +60,7 @@
         <activiti:formProperty id="markers_4" name="лінія ЄДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ &quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <serviceTask id="servicetask1" name="Повідомлення в ЦНАП про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask1" name="Повідомлення про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -69,7 +69,7 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Нове звернення:Повідомлення про розміщення об’єкта]]></activiti:expression>
+          <activiti:expression><![CDATA[Ваше звернення успішно зареєстроване]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -93,7 +93,7 @@
     </serviceTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="servicetask2" name="Повідомлення про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask2" name="Повідомлення в ЦНАП " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -210,8 +210,8 @@ ${sNameOrgan}<br/>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_kropivn_cnap_2_oblik">
-    <bpmndi:BPMNPlane bpmnElement="kropivn_cnap_2_oblik" id="BPMNPlane_kropivn_cnap_2_oblik">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_kropivn_cnap_0002_oblik">
+    <bpmndi:BPMNPlane bpmnElement="kropivn_cnap_0002_oblik" id="BPMNPlane_kropivn_cnap_0002_oblik">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="12.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
