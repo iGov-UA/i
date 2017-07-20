@@ -2473,7 +2473,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
                     //для фильтра "DocumentClosed" ищем переменные в истории
                     if (bIncludeVariablesProcess
-                            && sFilterStatus.equals("DocumentClosed")) {
+                            && (sFilterStatus.equals("DocumentClosed") || sFilterStatus.equals("Closed"))) {
                         LOG.info("Stsrt find history variable for ProcessInstanceId={}", oTaskInfo.getProcessInstanceId());
                         oTaskDataVO.setGlobalVariables(
                                 oActionTaskService.getHistoryVariableByHistoryProcessInstanceId(
