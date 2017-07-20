@@ -82,10 +82,7 @@
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="parallelgateway2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'delegated'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="parallelgateway2" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
@@ -141,17 +138,6 @@
         <omgdi:waypoint x="781.0" y="168.0"></omgdi:waypoint>
         <omgdi:waypoint x="831.0" y="168.0"></omgdi:waypoint>
         <omgdi:waypoint x="831.0" y="237.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="696.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="830.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="277.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="761.0" y="188.0"></omgdi:waypoint>
-        <omgdi:waypoint x="760.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="643.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="643.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="851.0" y="257.0"></omgdi:waypoint>
