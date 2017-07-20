@@ -93,6 +93,7 @@ import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.processUtil.ProcessUtilService;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
@@ -130,10 +131,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private RepositoryService repositoryService;
     @Autowired
     private IdentityService identityService;
-
+    @Autowired
+    private ProcessUtilService oProcessUtilService;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
+    
     @Autowired
     private ProcessHistoryDao processHistoryDao;
 
@@ -3836,7 +3839,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly,
             @ApiParam(value = "JSON-объект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
-    ) throws Exception {
+    ) {
         LOG.info("updateProcess started...");
         //LOG.info("sJsonBody {}", sJsonBody);
         boolean isSubmitFlag = true;
@@ -3856,6 +3859,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
                 if (mJsonBody.containsKey("sKey_Step")) {
                     sKey_Step = (String) mJsonBody.get("sKey_Step");
+                    LOG.info("sKey_Step {}", sKey_Step);
                 }
 
                 if (mJsonBody.containsKey("taskId")) {
@@ -3880,10 +3884,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                     List<Task> aTask = null;
                     Task oActiveTask = null;
-
+                    
                     if (sKey_Step != null && nID_Process != null) {
+                        
+                        //oProcessUtilService.
+                        
                         aTask = taskService.createTaskQuery().executionId(nID_Process + "").active().list();
-
+                        
                         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                                 .processInstanceId(nID_Process + "").list();
 
@@ -3895,18 +3902,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
                             }
                         }
-
+                        
+                        if (sKey_Step.equals(sKey_Step_Active)) {
+                            LOG.info("sKey_Step is equals");
+                        } else {
+                            throw new RuntimeException("DocumentStepModified");
+                        }
+                        
+                        //Map<String, Object> mID_TaskAndProcess = oProcessUtilService.getmID_TaskAndProcess(nID_Process + "");
                         //LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
                         for (Task oTask : aTask) {
                             if (oTask.getId().equals(taskId)) {
                                 //Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
                                 //LOG.info("mProcessVariables {}", mProcessVariables);
-                                if (sKey_Step.equals(sKey_Step_Active)) {
-                                    LOG.info("sKey_Step is equals");
                                     oActiveTask = oTask;
-                                } else {
-                                    throw new RuntimeException("DocumentStepModified");
-                                }
+                               
                             }
                         }
                     } else {
@@ -3948,7 +3958,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (ParseException e) {
             LOG.error("updateProcess error {}", e);
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
@@ -3965,40 +3975,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order
     ) throws Exception 
     {
-        Map <String, Object> resulMap = new HashMap<>();
         
         if(nID_Order != null){
             nID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
         }
         
-        resulMap.put("nID_Process", nID_Process);
-        
-        try{
-            resulMap.put("nID_Task_Active", taskService.createTaskQuery().processInstanceId(nID_Process).active().list().get(0).getId());
-        }catch (Exception ex){
-            resulMap.put("nID_Task_Active", null);
-        }
-        
-        try{
-           
-            List<HistoricTaskInstance> aHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list();
-            
-            if(resulMap.get("nID_Task_Active") == null){
-               resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(0).getId()); 
-            }
-            else{
-                if(aHistoricTaskInstance.size() > 1){
-                    resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(1).getId());
-                }else{
-                    resulMap.put("nID_Task_HistoryLast", null);
-                }  
-            }
-            
-        }catch (Exception ex){
-            resulMap.put("nID_Task_HistoryLast", null);
-        }
-        
-        return resulMap;
+        return oProcessUtilService.getmID_TaskAndProcess(nID_Process);
     }
     
     

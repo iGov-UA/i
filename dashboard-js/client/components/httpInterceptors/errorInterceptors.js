@@ -56,7 +56,9 @@
           } catch (e) {
 
           }
-          Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
+
+          if(rejection.data.message !== 'DocumentStepModified')
+            Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
 
           function isTemplateFileNotFound(rejection){
             var isTrue = true;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_task_justice" name="_task_justice" isExecutable="true">
+  <process id="_task_justice" name="Завдання" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
@@ -26,7 +26,7 @@
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ETG_Head_ComDir"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Завдання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
@@ -39,7 +39,8 @@
           <activiti:value id="transfered" name="Прошу перенести срок"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіта" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="saStatusDecision" name="Рішення" type="enum" default="notExecuted">
+        <activiti:formProperty id="saStatusDecision" name="Рішення" type="enum" default="waiting">
+          <activiti:value id="waiting" name="Очікування виконання"></activiti:value>
           <activiti:value id="executed" name="Пройти процес далі (завдання виконано)"></activiti:value>
           <activiti:value id="notExecuted" name="Закрити завдання"></activiti:value>
           <activiti:value id="delegated" name="Відправити на доопрацювання (відхилити звіт)"></activiti:value>
@@ -61,7 +62,7 @@
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина! ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Завдання" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;Звіт про виконання&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Коментар - що необхідно доопрацювати" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">

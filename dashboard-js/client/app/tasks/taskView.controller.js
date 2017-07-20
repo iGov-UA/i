@@ -319,6 +319,11 @@
         $rootScope.delegateSelectMenu = false;
         $scope.spinner = false;
 
+        $scope.isAnyIssues = function () {
+          var issues = Issue.getIssues();
+          return issues.length > 0;
+        };
+
         $scope.isDocument = function () {
           return ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($state.params.type) > -1;
         };
@@ -869,6 +874,8 @@
           function submitCallback(result) {
             if(result.status == 500){
               var message = result.data.message;
+              if(message === 'DocumentStepModified')
+                message = 'Документ вже був переміщений на наступний крок, поновіть, будь ласка, сторінку';
               var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
               $scope.taskForm.isInProcess = false;
               $scope.convertDisabledEnumFiedsToReadonlySimpleText();
