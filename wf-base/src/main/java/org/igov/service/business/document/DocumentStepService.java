@@ -772,10 +772,15 @@ public class DocumentStepService {
 
                         if (aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
                             oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(0);
-                            oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(1);
+                            
+                            if(aDocumentStepSubjectRightField_New.size() > 1){
+                                oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(1);
+                            }
                         } else {
                             oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(1);
-                            oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(0);
+                            if(aDocumentStepSubjectRightField_New.size() > 1){
+                                oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(0);
+                            }
                         }
 
                         if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
