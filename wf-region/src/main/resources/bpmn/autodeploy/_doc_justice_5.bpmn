@@ -1145,24 +1145,24 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     </scriptTask>
     <scriptTask id="scripttask4" name="отримання основного виконавця | перемикання степа2 | Клонування прав " scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var processInstanceId = execution.getVariable('processInstanceId');
-var obj = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1);
+var getCatProcSubjTree = processSubjectTreeService.getCatalogProcessSubjectTree(processInstanceId, 1, null, false, 1);
 var sMainExecutor = " ";
 var sFirstName = " ";
 var sLastName = " ";
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
-execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
+var getSubjGroupsTreeUp = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
+execution.setVariable('sNameDepart', getSubjGroupsTreeUp[0].oSubject.sLabel)
 
 
 var i = 0;
 do {
 i++
-} while (obj.aProcessSubjectTree[0].sLogin != obj.aProcessSubjectTree[0].aUser[i].sLogin)
-execution.setVariable('sMainExecutor', obj.aProcessSubjectTree[0].aUser[i].sLogin)
-execution.setVariable('sFirstName', obj.aProcessSubjectTree[0].aUser[i].sFirstName)
-execution.setVariable('sLastName', obj.aProcessSubjectTree[0].aUser[i].sLastName)
-var sName_Executor = obj.aProcessSubjectTree[0].aUser[i].sFirstName + " " + obj.aProcessSubjectTree[0].aUser[i].sLastName
+} while (getCatProcSubjTree.aProcessSubjectTree[0].sLogin != getCatProcSubjTree.aProcessSubjectTree[0].aUser[i].sLogin)
+execution.setVariable('sMainExecutor', getCatProcSubjTree.aProcessSubjectTree[0].aUser[i].sLogin)
+execution.setVariable('sFirstName', getCatProcSubjTree.aProcessSubjectTree[0].aUser[i].sFirstName)
+execution.setVariable('sLastName', getCatProcSubjTree.aProcessSubjectTree[0].aUser[i].sLastName)
+var sName_Executor = getCatProcSubjTree.aProcessSubjectTree[0].aUser[i].sFirstName + " " + getCatProcSubjTree.aProcessSubjectTree[0].aUser[i].sLastName
 execution.setVariable('sName_Executor', sName_Executor)
 
 //перемикання степа
@@ -1172,8 +1172,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //Клонування прав для основного виконавця
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sMainExecutor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
+var oResultcloneDoc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
+var oResultcloneDoc_jus = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
 </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask8"></sequenceFlow>
@@ -1217,8 +1217,8 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <script>//Клонування прав для керівнка
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_1')
+var oResultcloneDoc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')
+var oResultcloneDoc_jus = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_1')
 
 </script>
     </scriptTask>
@@ -1227,7 +1227,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
+var oResultcloneDoc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
 </script>
     </scriptTask>
     <sequenceFlow id="flow64" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
@@ -1235,7 +1235,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')
+var oResultcloneDoc = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')
 </script>
     </scriptTask>
     <endEvent id="endevent2" name="End"></endEvent>
