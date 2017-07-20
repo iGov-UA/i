@@ -25,7 +25,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_AkordBank]]></activiti:string>
+            <activiti:string><![CDATA[_default_AkordBank_Brunch_of_Bank]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -41,7 +41,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
-var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix = '_default_AkordBank_KC'
 var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -76,10 +76,10 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 
 //реклонирование прав
-var sKey_GroupPostfix = '_default_AkordBank'
-var sKey_GroupPostfix_New ='AkordBank_Brunch_of_Bank'
+var sKey_GroupPostfix = '_default_AkordBank_Brunch_of_Bank'
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 
 
 </script>
@@ -131,7 +131,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для УРКБ
-var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix = '_default_AkordBank_UKRB'
 var sKey_GroupPostfix_New ='AkordBank_Head_UKRB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -215,7 +215,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
-var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix = '_default_AkordBank_KC'
 var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -288,7 +288,7 @@ var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, '
         <omgdc:Bounds height="68.0" width="105.0" x="460.0" y="177.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="219.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="220.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="57.0"></omgdi:waypoint>
@@ -304,6 +304,7 @@ var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, '
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="673.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="462.0" y="146.0"></omgdi:waypoint>
         <omgdi:waypoint x="355.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="59.0" x="534.0" y="126.0"></omgdc:Bounds>
