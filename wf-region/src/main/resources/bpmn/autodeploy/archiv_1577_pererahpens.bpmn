@@ -115,9 +115,9 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sAddressFact" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnumVudPensii" name="Призначення пенсії за" type="enum" writable="false">
@@ -160,12 +160,13 @@ ${sNameOrgan},<br>
 <p>Причина в наступному:</p>
 <p>${sComment}</p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
-<br />
+${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]
+]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -229,9 +230,9 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Рішення" type="enum" required="true">
@@ -262,8 +263,7 @@ ${sNameOrgan},<br>
 На жаль, Ваше звернення про отрамання довідки про заробітну плату на призначення (перерахунок) пенсії було відхилено.</p>
 <p>Причина в наступному:</p>
 <p>${sComment}</p>
-<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
-<br />
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p><br />
 ${sPhoneOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
