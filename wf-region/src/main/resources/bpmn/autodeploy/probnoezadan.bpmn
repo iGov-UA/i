@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
+  <process id="probnoezadan" name="Пробное задание Юлии Липовецкой" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -13,16 +13,16 @@
         <activiti:formProperty id="application_vopros1" name="Будь-ласка введіть свою найулюбленішу марку автомобіля" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="application_vopros2" name="Будь-ласка введіть свого найулюбленішого дизайнера одягу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_01_01" name="показати питання 1, якщо це чоловік" type="markers" default="{&quot;motion&quot;: {ShowFieldsOnCondition_Hide_01_01&quot;: {aField_ID&quot;: [&quot;application_vopros1&quot;], asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'man'}}}" readable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_Hide_01_02" name="показати питання 2, якщо це жінка" type="markers" default="{&quot;motion&quot;: {ShowFieldsOnCondition_Hide_01_02&quot;: {aField_ID&quot;: [&quot;application_vopros2&quot;], asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'girl'}}}" readable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_02" name="показати питання 2, якщо це жінка  " type="markers" default="{&quot;motion&quot;: {ShowFieldsOnCondition_Hide_01_02&quot;: {aField_ID&quot;: [&quot;application_vopros2&quot;], asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'girl'}}}" readable="false" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Обробити данні" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var SelectSexCheck = execution.getVariable('asSelectSexCheck')
-if (SelectSexCheck==man)
-execution.setVariable (sHello, 'Доброго дня, мужчина!')
-else
-execution.setVariable (sHello, 'Доброго дня, дівчино!')
+if (SelectSexCheck=='man')
+execution.setVariable ('sHello', 'Доброго дня, мужчина!')
+if (SelectSexCheck=='girl')
+execution.setVariable ('sHello', 'Доброго дня, дівчино!')
 
 </script>
     </scriptTask>
@@ -77,7 +77,7 @@ execution.setVariable (sHello, 'Доброго дня, дівчино!')
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SelectSexCheck==girl}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Продивитись відповіді" activiti:assignee="kermit">
+    <userTask id="usertask3" name="Продивитись відповіді" activiti:candidateGroups="sale">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" readable="false"></activiti:formProperty>
@@ -95,8 +95,8 @@ execution.setVariable (sHello, 'Доброго дня, дівчино!')
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="usertask3"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_probnoezadan">
+    <bpmndi:BPMNPlane bpmnElement="probnoezadan" id="BPMNPlane_probnoezadan">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="92.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
