@@ -648,7 +648,7 @@ public class DocumentStepService {
 
             if (sOperationType.equals("AddAcceptor")) {
                 addAcceptor(oDocumentStep, aDocumentStepSubjectRight, sKey_Group, snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
-                //addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+                addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
             }
 
             if (sOperationType.equals("AddVisor")) {
@@ -657,7 +657,7 @@ public class DocumentStepService {
                 //LOG.info("oDocumentStep_Saved_Before.aDocumentStepSubjectRight {}", oDocumentStep_Saved_Before.aDocumentStepSubjectRight());
                 //DocumentStep oDocumentStep_Saved_After = getDocumentStep(snID_Process_Activiti, sKey_Step);
                 //LOG.info("oDocumentStep_Saved_After.aDocumentStepSubjectRight {}", oDocumentStep_Saved_After.aDocumentStepSubjectRight());
-                //addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
+                addRightsToCommonStep(snID_Process_Activiti, sKey_Group_Delegate, sKey_Step);
             }
 
             String nId_Task = oTaskService.createTaskQuery().processInstanceId(snID_Process_Activiti).
@@ -758,7 +758,7 @@ public class DocumentStepService {
             for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
                 DocumentStepSubjectRight oDocumentStepSubjectRight_To = aDocumentStepSubjectRight_To.get(i);
                 if (oDocumentStepSubjectRight_To.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
-                    if (oDocumentStepSubjectRight_To.getsDate() != null) {
+                    //if (oDocumentStepSubjectRight_To.getsDate() != null) {
                         LOG.info("DocumentStepSubjectRight_From when sDate isn't null: {}",
                                 oDocumentStepSubjectRight_From);
                         LOG.info("DocumentStepSubjectRight_To equals _From with date {}", oDocumentStepSubjectRight_To);
@@ -805,7 +805,7 @@ public class DocumentStepService {
                         LOG.info("DocumentStepSubjectRight_To before saving is: {}", oDocumentStepSubjectRight_To);
                         oDocumentStepSubjectRightDao.saveOrUpdate(oDocumentStepSubjectRight_To);
                         break;
-                    }
+                    //}
                 }
             }
 
@@ -888,8 +888,10 @@ public class DocumentStepService {
             for (String sID_Group_Activiti_New : asID_Group_Activiti_New) {
                 if (isNew_DocumentStepSubjectRight(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(),
                         sKey_GroupPostfix_New)) {
+                    LOG.info("isNew_DocumentStepSubjectRight case.");
                     asID_Group_Activiti_New_Selected.add(sID_Group_Activiti_New);
                 } else if (bReClone) {
+                    LOG.info("bReClone case.");
                     reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sKey_GroupPostfix_New);
                 } else {
                     LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sKey_GroupPostfix_New,
@@ -927,14 +929,15 @@ public class DocumentStepService {
                 resultList.add(oDocumentStepSubjectRight_New);
                 LOG.info("aDocumentStepSubjectRight_To before saving is {} ", aDocumentStepSubjectRight_To);
                 oDocumentStepDao.saveOrUpdate(oDocumentStep_To);
-                //addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document_To);
             }
-
+            
+            addRightsToCommonStep(snID_Process_Activiti, sKey_GroupPostfix_New, sKey_Step_Document_To);
+            
             if (oDocumentStepSubjectRight_From.getsKey_GroupPostfix().startsWith("_default_")) {
                 List<DocumentStepSubjectRight> aDocumentStepSubjectRight = oDocumentStep_To.aDocumentStepSubjectRight();
 
                 DocumentStepSubjectRight oDocumentStepSubjectRight_saved = null;
-
+                
                 for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight) {
                     if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
                         oDocumentStepSubjectRight_saved = oDocumentStepSubjectRight;
@@ -1701,18 +1704,31 @@ public class DocumentStepService {
             asGroup_Old.add(groupOld.getGroupId());
         });
         LOG.info("asGroup_Old before setting: {} delegateTask: {}", asGroup_Old, delegateTask.getId());
-
-        DocumentStep oDocumentStep_Common = getDocumentStep(delegateTask.getProcessInstanceId(), "_");
-
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
-            LOG.info("oDocumentStepSubjectRight group in candidate adding is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
-            if ((!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_"))
-                    && (asGroup_Old.isEmpty() || !asGroup_Old.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix()))) {
-                LOG.info("Group added to candidate is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
-                asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+        
+        List<DocumentStep> aDocumentStep_All = oDocumentStepDao.findAllBy("snID_Process_Activiti", delegateTask.getProcessInstanceId());
+        
+        DocumentStep oDocumentStep_Common = null;
+        
+        if(aDocumentStep_All != null){
+            for(DocumentStep oDocumentStep : aDocumentStep_All){
+                if(oDocumentStep.getsKey_Step().equals("_")){
+                    oDocumentStep_Common = oDocumentStep;
+                    break;
+                }
             }
         }
-
+        
+        if(oDocumentStep_Common != null){
+            for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
+                LOG.info("oDocumentStepSubjectRight group in candidate adding is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                if ((!oDocumentStepSubjectRight.getsKey_GroupPostfix().startsWith("_default_"))
+                        && (asGroup_Old.isEmpty() || !asGroup_Old.contains(oDocumentStepSubjectRight.getsKey_GroupPostfix()))) {
+                    LOG.info("Group added to candidate is {}", oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                    asGroup.add(oDocumentStepSubjectRight.getsKey_GroupPostfix());
+                }
+            }
+        }
+        
         delegateTask.addCandidateGroups(asGroup);
 
         List<String> asGroup_New = new ArrayList<>();

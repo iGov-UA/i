@@ -281,7 +281,7 @@
 
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
               <p>{{item.sFieldLabel | tableButtonFilter}}</p>
-              <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id}}"
+              <a href="/api/tasks/download/{{taskData.oProcess.nID}}/attachment/{{item.id || item.sId}}"
                  target="_blank"
                  ng-if="!isTableAttachment(item) && item.type === 'file'"
                  class="btn btn-info">Завантажити
@@ -289,7 +289,7 @@
 
               <a href="/api/tasks/download/{{takeTheKeyFromJSON(item)}}/attachment/Mongo/{{takeTheFileNameFromJSON(item)}}"
                  target="_blank"
-                 ng-if="!isTableAttachment(item) && item.type === 'string'"
+                 ng-if="!isTableAttachment(item) && (item.type === 'string' || item.sType === 'file')"
                  class="btn btn-info">Завантажити
               </a>
               <button
@@ -423,6 +423,7 @@
                       class="btn btn-info take-to-work-button"
                       ng-if="documentRights.bWrite !== null && (!isDocumentNotSigned() || (documentRights.bWrite === false && isDocumentNotSigned()))"
                       style="background-color: #337ACF; outline: none; border: none"
+                      stub="Відпрацювати"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
                       ng-show="selectedTask.assignee == null && isDocument()">
                 <span ng-if="!isDocumentNotSigned()">Підписано</span>
@@ -431,12 +432,11 @@
               <button ng-click="assignAndSubmitDocument(form, isNeedECP())"
                       class="btn btn-info take-to-work-button"
                       style="background-color: #337ACF; outline: none; border: none"
+                      stub="Відпрацювати"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()"
                       ng-if="documentRights.bWrite && isDocumentNotSigned() && (selectedTask.assignee == null && isDocument()) && documentRights.bWrite !== null">
-                <span>
                   <span ng-if="!isNeedECP()">Пiдписати</span>
                   <span ng-if="isNeedECP()">Пiдписати ЕЦП</span>
-                </span>
               </button>
               <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
@@ -471,6 +471,7 @@
                       ng-if="documentRights.bWrite !== null"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
+                      stub="Відпрацювати"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()">
                 <span ng-if="!isDocumentNotSigned()">Підписано</span>
                 <span ng-if="documentRights.bWrite === false && !isDocument()">Ознайомлений</span>
@@ -480,11 +481,10 @@
                       ng-if="documentRights.bWrite && !isDocument() && isDocumentNotSigned && !(selectedTask.assignee == null || sSelectedTask == 'finished' || documentRights.bWrite !== null)"
                       class="btn btn-info"
                       style="background-color: #337ACF; outline: none; border: none"
+                      stub="Відпрацювати"
                       ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()">
-                <span>
                   <span ng-if="!checkboxForAutoECP.status">Пiдписати</span>
                   <span ng-if="checkboxForAutoECP.status">Пiдписати ЕЦП</span>
-                </span>
               </button>
               <button ng-hide="sSelectedTask == 'finished' || sSelectedTask == 'docHistory' || inUnassigned()"
                       ng-click="saveChangesTask(form)"
@@ -552,11 +552,6 @@
   <div ng-if="clarify" style="overflow:hidden;">
     <clarify-directive></clarify-directive>
   </div>
-
-  <!--<div class="task-form-history" ng-if="tabHistoryAppeal === 'history'">-->
-    <!--<div ng-if="!inUnassigned()" ng-include="'app/tasks/taskFormHistoryNew.html'"></div>-->
-  <!--</div>-->
-
 </div>
 
 <print-dialog></print-dialog>
