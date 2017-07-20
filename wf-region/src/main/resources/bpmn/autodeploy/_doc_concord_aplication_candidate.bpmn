@@ -90,8 +90,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -108,8 +110,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -161,8 +161,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -179,8 +181,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -207,7 +207,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers6" name="якщо пройшов" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc2" name="Висновок" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -297,8 +297,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження; ;writable=false;(Село, місто, район, область)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -315,8 +317,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження; ;writable=false;(Село, місто, район, область)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -337,6 +337,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок СБ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds2" name="Погодити кандидатуру ?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -1093,8 +1094,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -1111,8 +1114,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -1133,8 +1134,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок СБ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc3" name="документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="документ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -1191,8 +1193,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -1209,8 +1213,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
