@@ -55,17 +55,17 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
     });
 
   async.forEach(usersIDs, function (usersID, frCallback) {
-    var path = 'runtime/tasks';
+    var path = 'action/task/getTasksNew';
 
     var options = {
       path: path,
-      query: {assignee: usersID},
+      query: {sLogin: usersID, nSize: 500, bIncludeVariablesProcess: false, sFilterStatus: 'Opened', nStart: 0},
       json: true
     };
 
     activiti.get(options, function (error, statusCode, result) {
-      if (!error && result.data) {
-        tasks = tasks.concat(result.data);
+      if (!error && result.aoTaskDataVO) {
+        tasks = tasks.concat(result.aoTaskDataVO);
       }
       frCallback(null);
     });
@@ -75,19 +75,19 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
 }
 
 function loadAllTasks(tasks, wfCallback, assigneeID) {
-  var path = 'runtime/tasks';
-
+  var path = 'action/task/getTasksNew';
   var options = {
     path: path,
-    query: {candidateOrAssigned: assigneeID, size: 500},
+    query: {sLogin: assigneeID, nSize: 500, bIncludeVariablesProcess: false, sFilterStatus: 'Opened', nStart: 0},
     json: true
   };
+
 
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
       wfCallback(error);
     } else {
-      result.data = result.data.concat(tasks);
+      result.data = result.aoTaskDataVO.concat(tasks);
       wfCallback(null, result);
     }
   });
@@ -131,28 +131,26 @@ exports.index = function (req, res) {
       query.sFilterStatus = 'OpenedUnassigned';
       query.bIncludeVariablesProcess = false;
     } else if (req.query.filterType === 'finished') {
-      path = 'history/historic-task-instances';
-      query.size = query.nSize;
-      query.start = query.nStart;
-      query.taskInvolvedUser = user.id;
-      query.finished = true;
+      query.bIncludeVariablesProcess = true;
+      query.sLogin = user.id;
+      query.sFilterStatus = 'Closed';
     } else if (req.query.filterType === 'documents') {
-      query.sFilterStatus = 'OpenedUnassignedUnprocessedDocument';
+      query.sFilterStatus = 'DocumentOpenedUnassignedUnprocessed';
       query.sLogin = user.id;
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'ecp') {
-      query.sFilterStatus = 'OpenedUnassignedWithoutECPDocument';
+      query.sFilterStatus = 'DocumentOpenedUnassignedWithoutECP';
       query.sLogin = user.id;
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'viewed') {
-      query.sFilterStatus = 'OpenedUnassignedProcessedDocument';
+      query.sFilterStatus = 'DocumentOpenedUnassignedProcessed';
       query.sLogin = user.id;
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'myDrafts') {
-      query.sFilterStatus = 'OpenedAssignedDocument';
+      query.sFilterStatus = 'DocumentOpenedAssigned';
       query.sLogin = user.id;
       query.bIncludeVariablesProcess = true;
       query.nSize = 15;
