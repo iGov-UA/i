@@ -3839,7 +3839,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly,
             @ApiParam(value = "JSON-объект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
-    ) throws Exception {
+    ) {
         LOG.info("updateProcess started...");
         //LOG.info("sJsonBody {}", sJsonBody);
         boolean isSubmitFlag = true;
@@ -3906,7 +3906,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         if (sKey_Step.equals(sKey_Step_Active)) {
                             LOG.info("sKey_Step is equals");
                         } else {
-                            throw new RuntimeException("DocumentStepModified");
+                            throws new RuntimeException("DocumentStepModified");
                         }
                         
                         //Map<String, Object> mID_TaskAndProcess = oProcessUtilService.getmID_TaskAndProcess(nID_Process + "");
