@@ -165,8 +165,7 @@ ${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]
-]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -223,6 +222,7 @@ ${sNameOrgan},<br>
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка данних співробітником архіву" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sVariantDovidk" name="Прошу надати" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспорт" type="string" writable="false"></activiti:formProperty>
