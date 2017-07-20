@@ -113,10 +113,10 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
     private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssignedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassignedProcessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassignedUnprocessedDocument";
-    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassignedWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_ASSIGNED = "DocumentOpenedAssigned";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_UNASSIGNED_PROCESSED = "DocumentOpenedUnassignedProcessed";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_UNASSIGNED_UNPROCESSED = "DocumentOpenedUnassignedUnprocessed";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_UNASSIGNED_WITHOUTECP = "DocumentOpenedUnassignedWithoutECP";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED = "DocumentClosed";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
@@ -2645,7 +2645,7 @@ public class ActionTaskService {
             } else if (THE_STATUS_OF_TASK_IS_DOCUMENTS.equalsIgnoreCase(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskCandidateOrAssigned(sLogin).processDefinitionKeyLikeIgnoreCase("_doc_%");
 
-            } else if (THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT.equals(sFilterStatus)) {
+            } else if (THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_ASSIGNED.equals(sFilterStatus)) {
                 taskQuery = ((TaskQuery) taskQuery).taskAssignee(sLogin);
 
             }
@@ -2892,21 +2892,21 @@ public class ActionTaskService {
             aoResultTasks.addAll(getDocumentClosed(sLogin));
 
             //выборка из документстепрайт где bWrite=тру или фолс и нет даты подписи    
-        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT)) {
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_UNASSIGNED_UNPROCESSED)) {
             LOG.info("OpenedUnassignedUnprocessedDocument condition");
             aoResultTasks.addAll(getOpenedUnassignedUnprocessedDocument(sLogin));
 
             //выборка из документстепрайт где  sDate != null && bNeedECP == true && sDateECP == null    
-        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT)) {
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_UNASSIGNED_WITHOUTECP)) {
             LOG.info("OpenedUnassignedWithoutECPDocument condition");
             aoResultTasks.addAll(getOpenedUnassignedWithoutECPDocument(sLogin));
 
             //Выборка из документстепрайт где bWrite=нал или есть дата подписи bDate    
-        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT)) {
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_UNASSIGNED_PROCESSED)) {
             LOG.info("OpenedUnassignedProcessedDocument condition");
             aoResultTasks.addAll(getOpenedUnassignedProcessedDocument(sLogin));
 
-        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT)) {
+        } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_DOCUMENT_OPENED_ASSIGNED)) {
             LOG.info("OpenedAssignedDocument condition");
             List<Task> aoOpenedAssignedDocument = oTaskService.createTaskQuery()
                     .taskAssignee(sLogin)
