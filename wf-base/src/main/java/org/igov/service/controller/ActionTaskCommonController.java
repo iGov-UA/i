@@ -135,8 +135,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private ProcessUtilService oProcessUtilService;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-    @Autowired
-    private ProcessUtilService oProcessUtilService;
+
     
     @Autowired
     private ProcessHistoryDao processHistoryDao;
@@ -3903,20 +3902,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
                             }
                         }
-
+                        
+                        if (sKey_Step.equals(sKey_Step_Active)) {
+                            LOG.info("sKey_Step is equals");
+                        } else {
+                            throw new RuntimeException("DocumentStepModified");
+                        }
+                        
+                        //Map<String, Object> mID_TaskAndProcess = oProcessUtilService.getmID_TaskAndProcess(nID_Process + "");
                         //LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
-                        //for (Task oTask : aTask) {
-                            //if (oTask.getId().equals(taskId)) {
+                        for (Task oTask : aTask) {
+                            if (oTask.getId().equals(taskId)) {
                                 //Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
                                 //LOG.info("mProcessVariables {}", mProcessVariables);
-                                if (sKey_Step.equals(sKey_Step_Active)) {
-                                    LOG.info("sKey_Step is equals");
                                     oActiveTask = oTask;
-                                } else {
-                                    throw new RuntimeException("DocumentStepModified");
-                                }
-                            //}
-                        //}
+                               
+                            }
+                        }
                     } else {
                         aTask = taskService.createTaskQuery().taskId(taskId).list();
                     }
