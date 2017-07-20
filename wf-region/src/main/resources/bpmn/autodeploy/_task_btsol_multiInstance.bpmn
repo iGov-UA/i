@@ -7,15 +7,6 @@
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTextTask" name="Задание" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Срок выполнения задания" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asTypeReport" name="Тип отчета" type="enum">
-          <activiti:value id="sEnumReport" name="отчет"></activiti:value>
-          <activiti:value id="sEnumDoc" name="документ"></activiti:value>
-          <activiti:value id="sEnumDecomposition" name="декомпозиция"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sName_Kontroler" name="Контролирующий; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sLogin_Kontroler" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
@@ -54,14 +45,19 @@
     <sequenceFlow id="flow2" sourceRef="parallelgateway1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="Исполнитель" activiti:candidateUsers="${sLogin}">
       <extensionElements>
-        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="processInstanceId - ид процесса; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_File_StorateTemp" name="sID_File_StorateTemp; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина! ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Задание" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="saStatusDecision" name="Решение" type="enum" writable="false">
+          <activiti:value id="executed" name="Задание выполнено"></activiti:value>
+          <activiti:value id="notExecuted" name="Закрыть задание"></activiti:value>
+          <activiti:value id="delegated" name="Отправить исполнителю на доработку (отклонить отчет)"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
@@ -78,86 +74,99 @@
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="parallelgateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed' || saStatusDecision == 'notExecuted'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'delegated'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow8" sourceRef="parallelgateway2" targetRef="endevent1"></sequenceFlow>
-    <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
-    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="parallelgateway2" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:string><![CDATA[msvidran@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Задание]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[<b>Задание выполнено</b>]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_btsol_multiInstance">
     <bpmndi:BPMNPlane bpmnElement="_task_btsol_multiInstance" id="BPMNPlane__task_btsol_multiInstance">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="310.0" y="240.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="239.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="391.0" y="237.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="309.0" y="237.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="591.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="591.0" y="310.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="741.0" y="148.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="600.0" y="148.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="811.0" y="237.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="670.0" y="237.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="896.0" y="240.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="899.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
-        <omgdc:Bounds height="35.0" width="35.0" x="744.0" y="90.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="747.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="345.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="391.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="274.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="309.0" y="257.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="411.0" y="237.0"></omgdi:waypoint>
-        <omgdi:waypoint x="411.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="591.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="329.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="411.0" y="277.0"></omgdi:waypoint>
-        <omgdi:waypoint x="410.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="591.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="329.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="328.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="696.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="741.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="168.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="781.0" y="168.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="168.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="237.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="696.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="830.0" y="337.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="689.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="277.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="761.0" y="188.0"></omgdi:waypoint>
-        <omgdi:waypoint x="760.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="643.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="643.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="249.0"></omgdi:waypoint>
+        <omgdi:waypoint x="502.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="851.0" y="257.0"></omgdi:waypoint>
-        <omgdi:waypoint x="896.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="710.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="747.0" y="257.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="761.0" y="148.0"></omgdi:waypoint>
-        <omgdi:waypoint x="761.0" y="125.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="852.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="899.0" y="257.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
