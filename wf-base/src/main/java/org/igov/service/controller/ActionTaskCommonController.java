@@ -135,7 +135,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private ProcessUtilService oProcessUtilService;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-
+    @Autowired
+    private ProcessUtilService oProcessUtilService;
+    
     @Autowired
     private ProcessHistoryDao processHistoryDao;
 
@@ -3858,6 +3860,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
                 if (mJsonBody.containsKey("sKey_Step")) {
                     sKey_Step = (String) mJsonBody.get("sKey_Step");
+                    LOG.info("sKey_Step {}", sKey_Step);
                 }
 
                 if (mJsonBody.containsKey("taskId")) {
@@ -3882,10 +3885,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                     List<Task> aTask = null;
                     Task oActiveTask = null;
-
+                    
                     if (sKey_Step != null && nID_Process != null) {
+                        
+                        //oProcessUtilService.
+                        
                         aTask = taskService.createTaskQuery().executionId(nID_Process + "").active().list();
-
+                        
                         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                                 .processInstanceId(nID_Process + "").list();
 
@@ -3899,8 +3905,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         }
 
                         //LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
-                        for (Task oTask : aTask) {
-                            if (oTask.getId().equals(taskId)) {
+                        //for (Task oTask : aTask) {
+                            //if (oTask.getId().equals(taskId)) {
                                 //Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
                                 //LOG.info("mProcessVariables {}", mProcessVariables);
                                 if (sKey_Step.equals(sKey_Step_Active)) {
@@ -3909,8 +3915,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 } else {
                                     throw new RuntimeException("DocumentStepModified");
                                 }
-                            }
-                        }
+                            //}
+                        //}
                     } else {
                         aTask = taskService.createTaskQuery().taskId(taskId).list();
                     }
