@@ -134,21 +134,43 @@
             <div ng-if="sSelectedTask!='tickets'">
               <div ng-repeat="task in filteredTasks | orderBy:predicate:reverse">
                 <span class="task-date-idoc" date-divider></span>
+                <a
+                  class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}"
+                  href=""
+                  ng-if="sSelectedTask !== 'ecp'"
+                  title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
+                  ng-class="{'active': isTaskSelected(task)}"
+                  igov-focus-if="tasksStateModel.taskId == task.id"
+                  ui-sref="tasks.typeof.view({id:task.id})">
+                  <!-- Task can have multiple statuses, but show only one sorted by priority -->
+                  <span class="badge badge-task badge-red" title="Ответ дан от гражданина"
+                        ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
+                  <span class="badge badge-task badge-yellow" title="Комментарий от гражданина"
+                        ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
+                  <span class="badge badge-task" title="Вопрос задан от госслужащего"
+                        ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
+
+                  <span class="ticket-date-time" style="color:black;font-size:13px"
+                        ng-bind="::getProcessName(task)"></span><br>
+                  <span class="ticket-title" style="color: dimgrey;font-size: 11px;"
+                        ng-bind="::getTaskTitle(task)"></span>
+                </a>
+
                 <div
                   class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}"
                   title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
                   ng-class="{'active': isTaskSelected(task)}"
+                  ng-if="sSelectedTask === 'ecp'"
                   igov-focus-if="tasksStateModel.taskId == task.id">
-                  <table>
+                  <table width="100%">
                     <tr>
                       <td>
                         <input type="checkbox"
                                ng-checked="task.bSelectedForEDS"
                                title="Обрати для накладання ЕЦП"
-                               ng-if="sSelectedTask === 'ecp'"
                                style="float: left; margin-right: 5px; margin-left: 5px">
                       </td>
-                      <td>
+                      <td width="100%">
                         <a href="" ui-sref="tasks.typeof.view({id:task.id})">
                           <!-- Task can have multiple statuses, but show only one sorted by priority -->
                           <span class="badge badge-task badge-red" title="Ответ дан от гражданина"
