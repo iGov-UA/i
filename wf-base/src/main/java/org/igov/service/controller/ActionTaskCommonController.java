@@ -3906,7 +3906,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         if (sKey_Step.equals(sKey_Step_Active)) {
                             LOG.info("sKey_Step is equals");
                         } else {
-                            throws new RuntimeException("DocumentStepModified");
+                            throw new RuntimeException("DocumentStepModified");
                         }
                         
                         //Map<String, Object> mID_TaskAndProcess = oProcessUtilService.getmID_TaskAndProcess(nID_Process + "");
