@@ -319,6 +319,11 @@
         $rootScope.delegateSelectMenu = false;
         $scope.spinner = false;
 
+        $scope.isAnyIssues = function () {
+          var issues = Issue.getIssues();
+          return issues.length > 0;
+        };
+
         $scope.isDocument = function () {
           return ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($state.params.type) > -1;
         };
