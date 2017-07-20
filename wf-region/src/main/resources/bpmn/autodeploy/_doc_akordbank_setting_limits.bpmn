@@ -25,7 +25,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sNote" name="Коментар" type="string" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
-            <activiti:string><![CDATA[_default_AkordBank_Brunch_of_Bank]]></activiti:string>
+            <activiti:string><![CDATA[_default_AkordBank]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -41,7 +41,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
-var sKey_GroupPostfix = '_default_AkordBank_KC'
+var sKey_GroupPostfix = '_default_AkordBank'
 var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -76,11 +76,10 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 
 //реклонирование прав
-//Клонування прав для начальника відділення
-var sKey_GroupPostfix = '_default_AkordBank_Brunch_of_Bank'
+var sKey_GroupPostfix = '_default_AkordBank'
 var sKey_GroupPostfix_New ='AkordBank_Brunch_of_Bank'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
 
 
 </script>
@@ -107,25 +106,19 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <serviceTask id="servicetask1" name="Інформування відділення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask1" name="Інформування відділення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
+          <activiti:string><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[Для клієнта ${sName_client} погодженно  встановлення ліміту на ${sSum}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:string><![CDATA[+380636035879]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[ліміт]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -138,7 +131,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для УРКБ
-var sKey_GroupPostfix = '_default_AkordBank_UKRB'
+var sKey_GroupPostfix = '_default_AkordBank'
 var sKey_GroupPostfix_New ='AkordBank_Head_UKRB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -171,19 +164,19 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <sequenceFlow id="flow15" name="погоджено" sourceRef="exclusivegateway3" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='agree'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="інформування  КЦ про відмову" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask2" name="інформування  КЦ про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
+          <activiti:string><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
+          <activiti:expression><![CDATA[Інформування КЦ про відмову]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Клієнту ${sName_client} відмовлено у збільшені ліміту]]></activiti:expression>
+          <activiti:expression><![CDATA[Клієнту ${sName_client} відмовлено у збільшені ліміту.]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -192,7 +185,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow17" sourceRef="servicetask2" targetRef="endevent2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Лист контакт центру" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask3" name="Лист контакт центру" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -201,19 +194,14 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
           <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[${sName_client}]]></activiti:expression>
+          <activiti:expression><![CDATA[Заява клієнта ${sName_client} про погодження ліміту]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Заява на зміну ліміту по ПК]]></activiti:expression>
+          <activiti:expression><![CDATA[Заява на зміну ліміту по ПК для клієнта
+${sName_client}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${sDoc}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:string><![CDATA[+380636035879]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[ліміт]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -227,7 +215,7 @@ var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для співробітника банку
-var sKey_GroupPostfix = '_default_AkordBank_KC'
+var sKey_GroupPostfix = '_default_AkordBank'
 var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
 sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
@@ -237,6 +225,11 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask6" name="снос прав группы" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup= execution.getVariable('sLogin_LastSubmited')
+var oRemoveRights = documentStepService.removeDocumentStepSubject(nID_Process, 'step_2', sKeyGroup)</script>
+    </scriptTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_setting_limits">
     <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_setting_limits" id="BPMNPlane__doc_akordbank_setting_limits">
@@ -259,7 +252,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="62.0" width="105.0" x="354.0" y="116.0"></omgdc:Bounds>
+        <omgdc:Bounds height="62.0" width="105.0" x="250.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
         <omgdc:Bounds height="40.0" width="40.0" x="673.0" y="190.0"></omgdc:Bounds>
@@ -294,6 +287,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
         <omgdc:Bounds height="68.0" width="105.0" x="460.0" y="177.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="90.0" y="219.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="65.0" y="57.0"></omgdi:waypoint>
         <omgdi:waypoint x="100.0" y="58.0"></omgdi:waypoint>
@@ -308,14 +304,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="673.0" y="146.0"></omgdi:waypoint>
-        <omgdi:waypoint x="459.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="355.0" y="157.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="59.0" x="534.0" y="126.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="354.0" y="147.0"></omgdi:waypoint>
-        <omgdi:waypoint x="301.0" y="146.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="126.0"></omgdi:waypoint>
         <omgdi:waypoint x="302.0" y="111.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
