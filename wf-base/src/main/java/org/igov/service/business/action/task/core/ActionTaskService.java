@@ -2921,7 +2921,6 @@ public class ActionTaskService {
                     .list();
             aoResultTasks.addAll(aoOpenedAssignedTask);
             aoResultTasks = removeDocumentsFromTasks(aoResultTasks);
-            LOG.info("aoResultTasks={}", aoResultTasks);
 
         } else if (sFilterStatus.equals(THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED)) {
             LOG.info("OpenedUnassigned condition");
@@ -3025,7 +3024,8 @@ public class ActionTaskService {
                 + "from \"public\".\"DocumentStepSubjectRight\"\n"
                 + "where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
                 + "and \"public\".\"DocumentStepSubjectRight\".\"bWrite\" is not null\n"
-                + "and \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null))";
+                + "and \"public\".\"DocumentStepSubjectRight\".\"sDate\" is null))"
+                + "and \"public\".\"act_ru_task\".\"proc_def_id_\" like '_doc%'";
 
         List<Task> aoUnassignedUnprocessedTask = oTaskService.createNativeTaskQuery().sql(sQuery).list();
         //убираем из необработанных те, которые находятся в черновиках
@@ -3059,7 +3059,8 @@ public class ActionTaskService {
                 + "from \"public\".\"DocumentStepSubjectRight\" \n"
                 + "where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
                 + "and (\"public\".\"DocumentStepSubjectRight\".\"bWrite\" is null\n"
-                + "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is not null)))";
+                + "or \"public\".\"DocumentStepSubjectRight\".\"sDate\" is not null)))"
+                + "and \"public\".\"act_ru_task\".\"proc_def_id_\" like '_doc%'";
 
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
@@ -3085,7 +3086,8 @@ public class ActionTaskService {
                 + "where \"public\".\"DocumentStepSubjectRight\".\"sKey_GroupPostfix\" = '" + sLogin + "'\n"
                 + "and \"public\".\"DocumentStepSubjectRight\".\"sDate\" is not null\n"
                 + "and \"public\".\"DocumentStepSubjectRight\".\"bNeedECP\" = 'true'\n"
-                + "and \"public\".\"DocumentStepSubjectRight\".\"sDateECP\" is null))";
+                + "and \"public\".\"DocumentStepSubjectRight\".\"sDateECP\" is null))"
+                + "and \"public\".\"act_ru_task\".\"proc_def_id_\" like '_doc%'";
 
         return oTaskService.createNativeTaskQuery().sql(sQuery).list();
     }
