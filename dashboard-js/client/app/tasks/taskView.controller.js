@@ -874,6 +874,8 @@
           function submitCallback(result) {
             if(result.status == 500){
               var message = result.data.message;
+              if(message === 'DocumentStepModified')
+                message = 'Документ вже був переміщений на наступний крок, поновіть, будь ласка, сторінку';
               var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
               $scope.taskForm.isInProcess = false;
               $scope.convertDisabledEnumFiedsToReadonlySimpleText();
