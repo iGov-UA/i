@@ -93,6 +93,7 @@ import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.processUtil.ProcessUtilService;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
@@ -130,7 +131,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private RepositoryService repositoryService;
     @Autowired
     private IdentityService identityService;
-
+    @Autowired
+    private ProcessUtilService oProcessUtilService;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
@@ -3965,40 +3967,12 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order
     ) throws Exception 
     {
-        Map <String, Object> resulMap = new HashMap<>();
         
         if(nID_Order != null){
             nID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
         }
         
-        resulMap.put("nID_Process", nID_Process);
-        
-        try{
-            resulMap.put("nID_Task_Active", taskService.createTaskQuery().processInstanceId(nID_Process).active().list().get(0).getId());
-        }catch (Exception ex){
-            resulMap.put("nID_Task_Active", null);
-        }
-        
-        try{
-           
-            List<HistoricTaskInstance> aHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list();
-            
-            if(resulMap.get("nID_Task_Active") == null){
-               resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(0).getId()); 
-            }
-            else{
-                if(aHistoricTaskInstance.size() > 1){
-                    resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(1).getId());
-                }else{
-                    resulMap.put("nID_Task_HistoryLast", null);
-                }  
-            }
-            
-        }catch (Exception ex){
-            resulMap.put("nID_Task_HistoryLast", null);
-        }
-        
-        return resulMap;
+        return oProcessUtilService.getmID_TaskAndProcess(nID_Process);
     }
     
     
