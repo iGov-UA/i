@@ -752,7 +752,11 @@ public class DocumentStepService {
 
     private void reCloneRight(List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To,
             DocumentStepSubjectRight oDocumentStepSubjectRight_From, String sKey_GroupPostfix_New) {
-
+        
+        LOG.info("sKey_GroupPostfix_New in reCloneRight {}", sKey_GroupPostfix_New);
+        LOG.info("aDocumentStepSubjectRight_To in reCloneRight {}", aDocumentStepSubjectRight_To);
+        LOG.info("sKey_GroupPostfix_New in reCloneRight {}", oDocumentStepSubjectRight_From);
+        
         try {
 
             for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
