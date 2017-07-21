@@ -160,6 +160,7 @@ var all = {
   bCompile: (config.getProperty('bCompile_Application') === "TRUE"),
 
   bTest: (config.getProperty('bTest') === "TRUE"),
+  bIncludeTimeStampInEDS: config.getProperty('bIncludeTimeStampInEDS') || process.env.bIncludeTimeStampInEDS,
 
   //debug: (config.getProperty('bDebug_Application') === "TRUE"),
 

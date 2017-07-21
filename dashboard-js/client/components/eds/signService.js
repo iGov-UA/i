@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory, $timeout) {
-  var tspURL = "http://acsk.privatbank.ua/services/tsp/";//presume we have online mode and pass url to plugin
+angular.module('dashboardJsApp').service('signService', function ($q, $base64, cryptoPluginFactory, $timeout, $rootScope) {
+  var tspURL = $rootScope.bIncludeTimeStampInEDS ? "http://acsk.privatbank.ua/services/tsp/" : null;//presume we have online mode and pass url to plugin
   var sessionTimeout = 36000;
   var pluginVersion = '1.0.3';
   var plugin;
