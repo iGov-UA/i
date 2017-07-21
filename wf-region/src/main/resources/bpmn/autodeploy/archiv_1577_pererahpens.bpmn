@@ -241,14 +241,16 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensreq.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensshow.json')}"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Результат звернення " type="enum" required="true">
           <activiti:value id="accept" name="Сповістити громадянина про можливість отримання довідки. Запросити громадянина до ЦНАПу"></activiti:value>
           <activiti:value id="reject" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Комментарії (у разі наявності)" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRishen" name="Сканкопія рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
