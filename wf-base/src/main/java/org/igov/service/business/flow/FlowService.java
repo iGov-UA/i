@@ -877,7 +877,7 @@ public class FlowService implements ApplicationContextAware {
 
             List<Task> aTask = actionTaskService.getTasksForChecking(sLogin, bEmployeeUnassigned);
 
-            Map<Long, Task> mTask = new HashMap<>();
+            Map<String, Task> mTask = new HashMap<>();
             //Map<Long, List<FormProperty>> mTaskProperty = new HashMap<>();
             //Map<Long, List<FormProperty>> mTaskProperty_DMS = new HashMap<>();
             //Map<Long, Task> mTask = new HashMap<Long, Task>();
@@ -924,7 +924,8 @@ public class FlowService implements ApplicationContextAware {
                         }
                     }
                     if (bQueue && !bQueueDMS) {
-                        Long nID_Task = Long.valueOf(oTask.getProcessInstanceId());
+                        LOG.info("Not DMS Queue.");
+                        String nID_Task = oTask.getProcessInstanceId();
                         mTask.put(nID_Task, oTask);
                         ///mTaskProperty.put(nID_Task, aProperty);
                     }
@@ -948,8 +949,8 @@ public class FlowService implements ApplicationContextAware {
                     });
 
                     for (FlowSlotTicket oFlowSlotTicket : aFlowSlowTicket) {
-                        if (mTask.keySet().contains(oFlowSlotTicket.getnID_Task_Activiti())) {
-                            Task oTask = mTask.get(oFlowSlotTicket.getnID_Task_Activiti());
+                        if (mTask.keySet().contains(String.valueOf(oFlowSlotTicket.getnID_Task_Activiti()))) {
+                            Task oTask = mTask.get(String.valueOf(oFlowSlotTicket.getnID_Task_Activiti()));
                             /*if (oDateFilter != null) {
                             LOG.info("Comparing two dates:{} and {}", oFlowSlotTicket.getsDateStart().toDate(), oDateFilter);
                         }*/
@@ -965,8 +966,8 @@ public class FlowService implements ApplicationContextAware {
                     }
                 }
             }
-        } catch (Exception ex) {
-            LOG.info("Error during gettion of flowservice: {}", ex.getMessage());
+        } catch (NumberFormatException | ParseException oException) {
+            LOG.error("Error during gettion of flowservice: {}", oException.getMessage());
         }
 
         return mReturn;
