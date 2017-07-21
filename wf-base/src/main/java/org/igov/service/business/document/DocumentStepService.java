@@ -777,14 +777,14 @@ public class DocumentStepService {
                         if (aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
                             oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(0);
                             
-                            //if(aDocumentStepSubjectRightField_New.size() > 1){
+                            if(aDocumentStepSubjectRightField_New.size() > 1){
                                 oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(1);
-                            //}
+                            }
                         } else {
                             
-                            //if(aDocumentStepSubjectRightField_New.size() > 1){
+                            if(aDocumentStepSubjectRightField_New.size() > 1){
                                 oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(1);
-                            //}
+                            }
                             
                             oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(0);
                             
@@ -798,20 +798,20 @@ public class DocumentStepService {
                             oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
                                     .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
                             
-                            //if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
+                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
-                            //}
+                            }
 
                         } else {
-                            //if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
+                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
-                            //}
+                            }
                             oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
                                     .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
                             oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
