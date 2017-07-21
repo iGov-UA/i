@@ -134,7 +134,7 @@ public class SubjectGroupTreeService {
                                     return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
                                             && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
                                             && subjectGroupTree.getoSubjectGroup_Parent().getsID_Group_Activiti().equals(sID_Group_Activiti)
-                                            && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
+                                            //&& subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
                                             && subjectHumansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                                 }
                             }));
@@ -167,7 +167,7 @@ public class SubjectGroupTreeService {
                                     return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
                                             && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
                                             && subjectGroupTree.getoSubjectGroup_Parent().getsID_Group_Activiti().equals(sID_Group_Activiti)
-                                            && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
+                                            //&& subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
                                             && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                                 }
                             }));
