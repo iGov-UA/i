@@ -144,23 +144,45 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     })
   };
 
-  function doSingleSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS) {
+  function doSingleSign(data, isForcedBase64Encoding, isCertificateSavedInEDS) {
     return executeIfPluginCreated(function () {
       var d = $q.defer();
       var dataBase64 = isForcedBase64Encoding ? $base64.encode(data.content) : data.content;
       plugin.getCertificate(function (data) {
         var certBase64 = data.certificate;
-        plugin.CMSSign(dataBase64,
-          "",
-          certBase64,
-          tspURL,
-          isDataSavedInEDS,
-          isCertificateSavedInEDS,
-          function (data) {
-            d.resolve({sign: data.sign, certificate: certBase64});
-          }, function () {
-            d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
-          });
+
+        plugin.getDataFromCMS(dataBase64, function (success) {
+          plugin.CMSSign(success.data,
+            "",
+            certBase64,
+            tspURL,
+            false,
+            isCertificateSavedInEDS,
+            function (data) {
+
+              plugin.CMSJoin([dataBase64, data.sign], function (signed) {
+                d.resolve({sign: signed.CMS, certificate: certBase64});
+              }, function (error) {
+                d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+              })
+
+            }, function () {
+              d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+            });
+        }, function (error) {
+          plugin.CMSSign(dataBase64,
+            "",
+            certBase64,
+            tspURL,
+            true,
+            isCertificateSavedInEDS,
+            function (data) {
+              d.resolve({sign: data.sign, certificate: certBase64});
+            }, function () {
+              d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+            });
+        });
+
       }, function (result) {
         if (result.code == 107 && result.source == "getCertificate") {
           d.reject({code: errorCodes.noCertificateFromKey, msg: "Ключ немає сертифікату"});
@@ -174,7 +196,7 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
     });
   }
 
-  function doMultiSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS) {
+  function doMultiSign(data, isForcedBase64Encoding, isCertificateSavedInEDS) {
     return executeIfPluginCreated(function () {
       var d = $q.defer();
       var dataBase64s = [];// isForcedBase64Encoding ? $base64.encode(data.content) : data.content;
@@ -214,19 +236,39 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
             if (i < contentForSign.length) {
               var dataBase64 = contentForSign[i];
 
-              return plugin.CMSSign(dataBase64, "", certBase64,
-                tspURL,
-                isDataSavedInEDS,
-                isCertificateSavedInEDS,
-                function (data) {
-                  defs[i].resolve({
-                    sign: data.sign,
-                    certificate: certBase64
+              return plugin.getDataFromCMS(dataBase64, function (success) {
+                plugin.CMSSign(success.data,
+                  "",
+                  certBase64,
+                  tspURL,
+                  false,
+                  isCertificateSavedInEDS,
+                  function (data) {
+
+                    plugin.CMSJoin([dataBase64, data.sign], function (signed) {
+                      defs[i].resolve({sign: signed.CMS, certificate: certBase64});
+                      return asyncSign(i + 1, contentForSign, defs);
+                    }, function (error) {
+                      defs[i].reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+                    })
+
+                  }, function () {
+                    defs[i].reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
                   });
-                  return asyncSign(i + 1, contentForSign, defs);
-                }, function () {
-                  defs[i].reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
-                });
+              }, function (error) {
+                plugin.CMSSign(dataBase64,
+                  "",
+                  certBase64,
+                  tspURL,
+                  true,
+                  isCertificateSavedInEDS,
+                  function (data) {
+                    defs[i].resolve({sign: data.sign, certificate: certBase64});
+                    return asyncSign(i + 1, contentForSign, defs);
+                  }, function () {
+                    defs[i].reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+                  });
+              });
 
             }
           };
@@ -256,12 +298,11 @@ angular.module('dashboardJsApp').service('signService', function ($q, $base64, c
   }
 
   this.signCMS = function (data, isForcedBase64Encoding) {
-    var isDataSavedInEDS = true;
     var isCertificateSavedInEDS = true;
     if(angular.isArray(data)){
-      return doMultiSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS);
+      return doMultiSign(data, isForcedBase64Encoding, isCertificateSavedInEDS);
     } else if (data.content){
-      return doSingleSign(data, isForcedBase64Encoding, isDataSavedInEDS, isCertificateSavedInEDS);
+      return doSingleSign(data, isForcedBase64Encoding, isCertificateSavedInEDS);
     }
   };
 
