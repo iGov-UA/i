@@ -216,7 +216,7 @@ src=(+src + +1)
 execution.setVariable('sCounter', src)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="exclusivegateway1" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter != 205}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="timerintermediatecatchevent1"></sequenceFlow>
     <serviceTask id="servicetask4" name="Негативна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -268,7 +268,7 @@ execution.setVariable('sCounter', src)</script>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 1}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent3" name="End">
       <extensionElements>
