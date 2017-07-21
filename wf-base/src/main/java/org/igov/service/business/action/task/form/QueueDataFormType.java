@@ -49,7 +49,7 @@ public class QueueDataFormType extends AbstractFormType {
 
     @Override
     public String convertModelValueToFormValue(Object modelValue) {
-        return String.valueOf(modelValue);
+        return (String) modelValue;
     }
 
 }
