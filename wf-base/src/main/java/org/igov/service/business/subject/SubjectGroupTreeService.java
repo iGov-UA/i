@@ -95,6 +95,7 @@ public class SubjectGroupTreeService {
          */
         List<Long> resSubjectTypeList = new ArrayList<>();
         List<SubjectGroup> aChildResult = new ArrayList<>();
+        List<SubjectGroup> resultTree = new ArrayList<>();
         //get all SubjectGroupTree
         List<SubjectGroupTree> subjectGroupRelations = new ArrayList<>(baseEntityDao.findAll(SubjectGroupTree.class));
         LOG.info("subjectGroupRelations.size: " + subjectGroupRelations.size());
@@ -165,8 +166,8 @@ public class SubjectGroupTreeService {
                                     // список по Organs
                                     return Objects.nonNull(subjectGroupTree.getoSubjectGroup_Parent().getoSubject())
                                             && Objects.nonNull(subjectGroupTree.getoSubjectGroup_Child().getoSubject())
-                                            && (subjectGroupTree.getoSubjectGroup_Parent().getsID_Group_Activiti().equals(sID_Group_Activiti)
-                                            || subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId()))
+                                            && subjectGroupTree.getoSubjectGroup_Parent().getsID_Group_Activiti().equals(sID_Group_Activiti)
+                                            && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Parent().getoSubject().getId())
                                             && subjectOrgansIdSubj.contains(subjectGroupTree.getoSubjectGroup_Child().getoSubject().getId());
                                 }
                             }));
@@ -271,7 +272,6 @@ public class SubjectGroupTreeService {
 
                 LOG.info("aChildResultByUser {}", aChildResultByUser);
 
-                List<SubjectGroup> resultTree;
                 if (sFind != null && !sFind.isEmpty()) {
                     resultTree = getSubjectGroupTree(hierarchyProcessSubject, aChildResultByUser);
 
@@ -293,6 +293,8 @@ public class SubjectGroupTreeService {
                 }
 
                 LOG.info("processSubjectResultTree" + processSubjectResultTree);
+            } else {
+                processSubjectResultTree.setaSubjectGroupTree(resultTree);
             }
         }
         return processSubjectResultTree;
