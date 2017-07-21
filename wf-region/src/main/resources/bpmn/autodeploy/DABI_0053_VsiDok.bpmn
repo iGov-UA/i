@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="DABI_0053_VsiDok" name="Декларація про готовність до експлуатації об`єкта, будівництво якого здійснено на підставі будівельного паспорта" isExecutable="true">
+  <process id="DABI_0053_VsiDok" name="Подати вже заповнену декларацію/повідомлення про будівництво/введення в експлуатацію/внесення змін" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sLabeECP" name=" ; ;labelType=info" type="label" default="Увага!  Щоб скористатися цією послугою, потрібно використати власний &lt;a href=&quot;https://goo.gl/1OioXt &quot; target=&quot;_blank&quot;&gt;електронно-цифровий підпис (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що вас обслуговує)"></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП, де Вам буде зручніше отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
                 
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
@@ -23,14 +26,15 @@
         <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Ваші паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressRegistr" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markerDABI_ur_fiz" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABI_ur_fiz.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerDABI_ur_fiz" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABI_ur_fizVsiDok.json')}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
           <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddressRegistr" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
@@ -39,6 +43,69 @@
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
         
+        <activiti:formProperty id="markersLine_Dok" name="Завантаження документу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Dok&quot;:{&quot;aElement_ID&quot;:[&quot;asTipDok&quot;],&quot;sValue&quot;:&quot;Завантаження документу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asTipDok" name="Про що ви хочете пододати документ" type="enum" required="true">
+          <activiti:value id="sEnamPP" name="Про початок підготовчих робіт"></activiti:value>
+          <activiti:value id="sEnamPB" name="Про початок будівельних робіт"></activiti:value>
+          <activiti:value id="sEnamVE" name="Про введення об'єкта в експлуатацію"></activiti:value>
+          <activiti:value id="sEnamZm" name="Про внесення змін до вже поданого документа"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asBud" name="Оберіть тип документа про будівельні роботи" type="enum" required="true">
+          <activiti:value id="sEnamBCC1" name="Повідомлення про початок виконання будівельних робіт (СС1)"></activiti:value>
+          <activiti:value id="sEnamBBP" name="Повідомлення про початок виконання будівельних робіт на підставі будівельного паспорта"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asEksp" name="Оберіть тип документа про введення в експлуатацію" type="enum" required="true">
+          <activiti:value id="sEnamECC1" name="Декларація про готовність до експлуатації об’єкта (СС1)"></activiti:value>
+          <activiti:value id="sEnamEBP" name="Декларація про готовність до експлуатації об`єкта, будівництво якого здійснено на підставі будівельного паспорта"></activiti:value>
+          <activiti:value id="sEnamES" name="Декларація про готовність до експлуатації самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asZmin" name="Оберіть тип документа до якого вносяться зміни" type="enum" required="true">
+          <activiti:value id="sEnamZP" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт"></activiti:value>
+          <activiti:value id="sEnamZBCC1" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт (СС1)"></activiti:value>
+          <activiti:value id="sEnamZBBP" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт на підставі будівельного паспорта"></activiti:value>
+          <activiti:value id="sEnamZECC1" name="Внесеня змін до декларації про готовність до експлуатації об’єкта (СС1)"></activiti:value>
+          <activiti:value id="sEnamZEBP" name="Внесеня змін до декларації про готовність до експлуатації об’єкта, збудованого на підставі будівельного паспорта"></activiti:value>
+          <activiti:value id="sEnamZES" name="Внесеня змін до декларація про готовність до експлуатації самочинно збудованого об’єкта, на який визнано право власності за рішенням суду"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_PR" name="Повідомлення про підготовчі роботи; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_BCC1" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/1568/general &quot; target=&quot;_blank&quot;&gt;Заповнити електронний бланк&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_BCC1" name="Повідомлення про будівельні роботи (СС1); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_BBP" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/1569/general &quot; target=&quot;_blank&quot;&gt;Заповнити електронний бланк&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_BBP" name="Повідомлення про будівельні роботи на підставі будівельного паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_ECC1" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/54/general &quot; target=&quot;_blank&quot;&gt;Заповнити електронний бланк&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ECC1" name="Декларація про введення в експлуатацію (СС1); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_EBP" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/56/general &quot; target=&quot;_blank&quot;&gt;Заповнити електронний бланк&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_EBP" name="Декларація про введення в експлуатацію на підставі будівельного паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_ES" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/55/general &quot; target=&quot;_blank&quot;&gt;Заповнити електронний бланк&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ES" name="Декларація про введення в експлуатацію на підставі рішення суду; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_ZP" name="Зміни в повідомлення про підготовчі роботи; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_ZBCC1" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/1575/general &quot; target=&quot;_blank&quot;&gt;Декларація про готовність до експлуатації&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZBCC1" name="Зміни в повідомлення про будівельні роботи (СС1); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabe_ZBBP" name=" ; ;labelType=info" type="label" default="Якщо ви хочете заповнити електронну форму, перейдіть за посиланням - &lt;a href=&quot;https://igov.org.ua/service/1576/general &quot; target=&quot;_blank&quot;&gt;Декларація про готовність до експлуатації&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZBBP" name="Зміни в повідомлення про будівельні роботи на підставі будівельного паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_ZECC1" name="Зміни в декларацію про введення в експлуатацію (СС1); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_ZEBP" name="Зміни в декларацію про введення в експлуатацію на підставі будівельного паспорта; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_ZES" name="Зміни в декларацію про введення в експлуатацію на підставі рішення суду; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerFiles" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIVsiFiles.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markerFilesLables" name="markers" type="markers" default="${markerService.loadFromFile('DABI/DABIVsiFilesLables.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="form_signed_all" name="Підпис ЭЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -194,6 +261,47 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_Dok" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Dok&quot;:{&quot;aElement_ID&quot;:[&quot;asTipDok&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asTipDok" name="Вид документа поданого заявником" type="enum" writable="false">
+          <activiti:value id="sEnamPP" name="Про початок підготовчих робіт"></activiti:value>
+          <activiti:value id="sEnamPB" name="Про початок будівельних робіт"></activiti:value>
+          <activiti:value id="sEnamVE" name="Про введення об'єкта в експлуатацію"></activiti:value>
+          <activiti:value id="sEnamZm" name="Про внесення змін до вже поданого документа"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asBud" name="Тип документа про будівельні роботи" type="enum" writable="false">
+          <activiti:value id="sEnamBCC1" name="Повідомлення про початок виконання будівельних робіт (СС1)"></activiti:value>
+          <activiti:value id="sEnamBBP" name="Повідомлення про початок виконання будівельних робіт на підставі будівельного паспорта"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asEksp" name="Тип документа про введення в експлуатацію" type="enum" writable="false">
+          <activiti:value id="sEnamECC1" name="Декларація про готовність до експлуатації об’єкта (СС1)"></activiti:value>
+          <activiti:value id="sEnamEBP" name="Декларація про готовність до експлуатації об`єкта, будівництво якого здійснено на підставі будівельного паспорта"></activiti:value>
+          <activiti:value id="sEnamES" name="Декларація про готовність до експлуатації самочинно збудованого об’єкта, на яке визнано право власності за рішенням суду"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asZmin" name="Тип документа до якого вносяться зміни" type="enum" writable="false">
+          <activiti:value id="sEnamZP" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт"></activiti:value>
+          <activiti:value id="sEnamZBCC1" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт (СС1)"></activiti:value>
+          <activiti:value id="sEnamZBBP" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт на підставі будівельного паспорта"></activiti:value>
+          <activiti:value id="sEnamZECC1" name="Внесеня змін до декларації про готовність до експлуатації об’єкта (СС1)"></activiti:value>
+          <activiti:value id="sEnamZEBP" name="Внесеня змін до декларації про готовність до експлуатації об’єкта, збудованого на підставі будівельного паспорта"></activiti:value>
+          <activiti:value id="sEnamZES" name="Внесеня змін до декларація про готовність до експлуатації самочинно збудованого об’єкта, на який визнано право власності за рішенням суду"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_PR" name="Повідомлення про підготовчі роботи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_BCC1" name="Повідомлення про будівельні роботи (СС1); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_BBP" name="Повідомлення про будівельні роботи на підставі будівельного паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ECC1" name="Декларація про введення в експлуатацію (СС1); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_EBP" name="Декларація про введення в експлуатацію на підставі будівельного паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ES" name="Декларація про введення в експлуатацію на підставі рішення суду; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZP" name="Зміни в повідомлення про підготовчі роботи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZBCC1" name="Зміни в повідомлення про будівельні роботи (СС1); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZBBP" name="Зміни в повідомлення про будівельні роботи на підставі будівельного паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZECC1" name="Зміни в декларацію про введення в експлуатацію (СС1); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZEBP" name="Зміни в декларацію про введення в експлуатацію на підставі будівельного паспорта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_ZES" name="Зміни в декларацію про введення в експлуатацію на підставі рішення суду; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         
         
