@@ -924,6 +924,7 @@ public class FlowService implements ApplicationContextAware {
                         }
                     }
                     if (bQueue && !bQueueDMS) {
+                        LOG.info("Not DMS Queue.");
                         String nID_Task = oTask.getProcessInstanceId();
                         mTask.put(nID_Task, oTask);
                         ///mTaskProperty.put(nID_Task, aProperty);
