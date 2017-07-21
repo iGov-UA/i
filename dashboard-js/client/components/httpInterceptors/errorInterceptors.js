@@ -36,7 +36,7 @@
            */
           if(rejection.status == -1) {
             if(rejection.config.url.indexOf('TWAIN@Web') > 0){
-              Modal.inform.warning()('Для роботи зі сканером необхідно встановити програму TWAIN@Web та правильно налаштувати посилання на IP-адресу та номер порту компьютера, до якого пыдключено сканер (за замовчуванням це http://127.0.0.1:9005). Якщо сканер пыдключено не до локального компьютера, перевірте налаштування брендмауера. Програму TWAIN@Web рекомендуємо скачати з нашого репозиторію за наступним посиланням: https://github.com/e-government-ua/i/tree/test/twain-scanner/install');
+              Modal.inform.warning()('Для роботи зі сканером необхідно встановити програму TWAIN@Web та правильно налаштувати посилання на IP-адресу та номер порту компьютера, до якого підключено сканер (за замовчуванням це http://127.0.0.1:9005). Якщо сканер підключено не до локального компьютера, перевірте налаштування брендмауера. Програму TWAIN@Web рекомендуємо скачати з нашого репозиторію за наступним посиланням: https://github.com/e-government-ua/i/tree/test/twain-scanner/install');
             } else {
               alert("Виникла помилка при спробі звернення до сервера");
             }
@@ -56,7 +56,9 @@
           } catch (e) {
 
           }
-          Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
+
+          if(rejection.data.message !== 'DocumentStepModified')
+            Modal.inform.error()(rejection.data.message || rejection.data.serverMessage || (rejection.statusText === '' ? 'Виникла помилка: ' + rejection.status : rejection.statusText));
 
           function isTemplateFileNotFound(rejection){
             var isTrue = true;

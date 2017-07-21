@@ -357,8 +357,8 @@ public class ProcessSubjectTaskService {
             JSONParser parser = new JSONParser();
 
             mParamTask.put("sID_File_StorateTemp", oProcessSubjectTask.getsKey());
-            mParamTask.put("sID_Order_Document", oGeneralConfig.
-                    getOrderId_ByProcess((String) (((JSONObject) parser.parse(new String(aByteTaskBody))).get("snID_Process_Activiti_Root"))));
+            //String snID_Process_Activiti_Root = (String) (((JSONObject) parser.parse(new String(aByteTaskBody))).get("snID_Process_Activiti_Root"));
+            mParamTask.put("nID_Order_Document", oGeneralConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti_Root)));
 
             LOG.info("mParamTask {}", mParamTask);
             ProcessInstance oProcessInstance = oRuntimeService

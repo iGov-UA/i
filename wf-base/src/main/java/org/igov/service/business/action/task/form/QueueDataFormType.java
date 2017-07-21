@@ -49,6 +49,9 @@ public class QueueDataFormType extends AbstractFormType {
 
     @Override
     public String convertModelValueToFormValue(Object modelValue) {
+        String sClassName = modelValue.getClass().getName();
+        String sValue = modelValue.toString();
+        LOG.info("convertModelValueToFormValue start, sClassName={}, sValue={}", sClassName, sValue);
         return (String) modelValue;
     }
 

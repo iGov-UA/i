@@ -136,6 +136,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
+    
     @Autowired
     private ProcessHistoryDao processHistoryDao;
 
@@ -3838,7 +3839,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public @ResponseBody
     Map<String, Object> updateProcess(@ApiParam(value = "bSaveOnly", required = false) @RequestParam(value = "bSaveOnly", required = false, defaultValue = "true") Boolean bSaveOnly,
             @ApiParam(value = "JSON-объект с заполненными полями заполненной стартформы", required = true) @RequestBody String sJsonBody
-    ) throws Exception {
+    ) {
         LOG.info("updateProcess started...");
         //LOG.info("sJsonBody {}", sJsonBody);
         boolean isSubmitFlag = true;
@@ -3858,6 +3859,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 }
                 if (mJsonBody.containsKey("sKey_Step")) {
                     sKey_Step = (String) mJsonBody.get("sKey_Step");
+                    LOG.info("sKey_Step {}", sKey_Step);
                 }
 
                 if (mJsonBody.containsKey("taskId")) {
@@ -3882,10 +3884,13 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
                     List<Task> aTask = null;
                     Task oActiveTask = null;
-
+                    
                     if (sKey_Step != null && nID_Process != null) {
+                        
+                        //oProcessUtilService.
+                        
                         aTask = taskService.createTaskQuery().executionId(nID_Process + "").active().list();
-
+                        
                         List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
                                 .processInstanceId(nID_Process + "").list();
 
@@ -3897,18 +3902,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                                 LOG.info("oHistoricVariableInstance.getValue {}", oHistoricVariableInstance.getValue());
                             }
                         }
-
+                        
+                        if (sKey_Step.equals(sKey_Step_Active)) {
+                            LOG.info("sKey_Step is equals");
+                        } else {
+                            throw new RuntimeException("DocumentStepModified");
+                        }
+                        
+                        //Map<String, Object> mID_TaskAndProcess = oProcessUtilService.getmID_TaskAndProcess(nID_Process + "");
                         //LOG.info("process variables: {}", runtimeService.createProcessInstanceQuery().processInstanceId(nID_Process).singleResult().getProcessVariables());
                         for (Task oTask : aTask) {
                             if (oTask.getId().equals(taskId)) {
                                 //Map<String, Object> mProcessVariables = oTask.getTaskLocalVariables();
                                 //LOG.info("mProcessVariables {}", mProcessVariables);
-                                if (sKey_Step.equals(sKey_Step_Active)) {
-                                    LOG.info("sKey_Step is equals");
                                     oActiveTask = oTask;
-                                } else {
-                                    throw new RuntimeException("DocumentStepModified");
-                                }
+                               
                             }
                         }
                     } else {
@@ -3950,7 +3958,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (ParseException e) {
             LOG.error("updateProcess error {}", e);
             throw new IllegalArgumentException("Error parse JSON sJsonBody in request: " + e.getMessage());
         }
@@ -3967,12 +3975,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order
     ) throws Exception 
     {
-        
-        if(nID_Order != null){
-            nID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
-        }
-        
-        return oProcessUtilService.getmID_TaskAndProcess(nID_Process);
+        return oProcessUtilService.getmID_TaskAndProcess(nID_Order, nID_Process);
     }
     
     

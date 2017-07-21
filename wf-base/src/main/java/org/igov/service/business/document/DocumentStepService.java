@@ -752,7 +752,11 @@ public class DocumentStepService {
 
     private void reCloneRight(List<DocumentStepSubjectRight> aDocumentStepSubjectRight_To,
             DocumentStepSubjectRight oDocumentStepSubjectRight_From, String sKey_GroupPostfix_New) {
-
+        
+        LOG.info("sKey_GroupPostfix_New in reCloneRight {}", sKey_GroupPostfix_New);
+        LOG.info("aDocumentStepSubjectRight_To in reCloneRight {}", aDocumentStepSubjectRight_To);
+        LOG.info("sKey_GroupPostfix_New in reCloneRight {}", oDocumentStepSubjectRight_From);
+        
         try {
 
             for (int i = 0; i < aDocumentStepSubjectRight_To.size(); i++) {
@@ -899,14 +903,14 @@ public class DocumentStepService {
 
             for (String sID_Group_Activiti_New : asID_Group_Activiti_New) {
                 if (isNew_DocumentStepSubjectRight(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(),
-                        sKey_GroupPostfix_New)) {
+                        sID_Group_Activiti_New)) {
                     LOG.info("isNew_DocumentStepSubjectRight case.");
                     asID_Group_Activiti_New_Selected.add(sID_Group_Activiti_New);
                 } else if (bReClone) {
                     LOG.info("bReClone case.");
-                    reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sKey_GroupPostfix_New);
+                    reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sID_Group_Activiti_New);
                 } else {
-                    LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sKey_GroupPostfix_New,
+                    LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sID_Group_Activiti_New,
                             oDocumentStep_To.getsKey_Step());
                 }
 
