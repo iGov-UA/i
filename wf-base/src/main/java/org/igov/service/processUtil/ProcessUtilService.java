@@ -37,28 +37,29 @@ public class ProcessUtilService {
         resulMap.put("nID_Process", nID_Process);
         String nID_Task_Active = null;
         List<Task> aTask = taskService.createTaskQuery().processInstanceId(nID_Process).active().list();
-        if (aTask.size() > 0) {
+        if (aTask != null && aTask.size() > 0) {
             nID_Task_Active = aTask.get(0).getId();
         }
+        
         resulMap.put("nID_Task_Active", nID_Task_Active);
 
-        try {
-
-            List<HistoricTaskInstance> aHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list();
-
+        List<HistoricTaskInstance> aHistoricTaskInstance = historyService.createHistoricTaskInstanceQuery().processInstanceId(nID_Process).orderByHistoricTaskInstanceEndTime().desc().list();
+        
+        String snID_Task_HistoryLast = null;
+        
+        if(aHistoricTaskInstance != null && aHistoricTaskInstance.size() > 0)
+        {
             if (resulMap.get("nID_Task_Active") == null) {
-                resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(0).getId());
+                snID_Task_HistoryLast = aHistoricTaskInstance.get(0).getId();
+                    
             } else {
                 if (aHistoricTaskInstance.size() > 1) {
-                    resulMap.put("nID_Task_HistoryLast", aHistoricTaskInstance.get(1).getId());
-                } else {
-                    resulMap.put("nID_Task_HistoryLast", null);
+                    snID_Task_HistoryLast = aHistoricTaskInstance.get(1).getId();
                 }
             }
-
-        } catch (Exception ex) {
-            resulMap.put("nID_Task_HistoryLast", null);
         }
+            
+        resulMap.put("nID_Task_HistoryLast", snID_Task_HistoryLast);    
 
         return resulMap;
     }
