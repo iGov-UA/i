@@ -41,12 +41,14 @@
         <activiti:formProperty id="sReport" name="Текст звіта" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusDecision" name="Рішення" type="enum" default="waiting">
           <activiti:value id="waiting" name="Очікування виконання"></activiti:value>
-          <activiti:value id="executed" name="Пройти процес далі (завдання виконано)"></activiti:value>
-          <activiti:value id="notExecuted" name="Закрити завдання"></activiti:value>
-          <activiti:value id="delegated" name="Відправити на доопрацювання (відхилити звіт)"></activiti:value>
+          <activiti:value id="done" name="Завдання виконано"></activiti:value>
+          <activiti:value id="rejected" name="Завдання не виконано"></activiti:value>
+          <activiti:value id="expired" name="Завдання не актуально"></activiti:value>
+          <activiti:value id="hang" name="Перенесення терміну виконання"></activiti:value>
+          <activiti:value id="rework" name="Направити на доопрацювання"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Коментар - що необхідно доопрацювати" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rework'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
       </extensionElements>
@@ -81,17 +83,17 @@
     <sequenceFlow id="flow4" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="parallelgateway2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'done'||saStatusDecision == 'rejected'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'delegated'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'rework'||saStatusDecision == 'hang'||saStatusDecision == 'waiting'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="parallelgateway2" targetRef="endevent1"></sequenceFlow>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="endevent2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'expired'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_justice">
