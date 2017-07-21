@@ -25,4 +25,4 @@
 1. [Полезные запросы](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/023_UsefulInquiries.md)
 1. [Лайф Хаки](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/024_%20LifeHacking.md)
 1. [Чек лист тестирования ветки](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/025_CheckListTestBranch.md)
-1. [СЭД](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/026_IDoc.md)
+1. [СЭД iDoc](https://github.com/e-government-ua/i/blob/test-alpha/doc/bp/026_IDoc.md)
