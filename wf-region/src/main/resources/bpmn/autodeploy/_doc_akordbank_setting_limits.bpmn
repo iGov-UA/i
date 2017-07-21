@@ -44,7 +44,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_AkordBank_KC'
 var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
     </scriptTask>
     <userTask id="usertask2" name="Аналіз заявки на коректність">
       <extensionElements>
@@ -134,7 +134,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_AkordBank_UKRB'
 var sKey_GroupPostfix_New ='AkordBank_Head_UKRB'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
     </scriptTask>
     <sequenceFlow id="flow10" name="більше 2тис $" sourceRef="exclusivegateway2" targetRef="scripttask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum>'2000'}]]></conditionExpression>
@@ -218,7 +218,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_AkordBank_KC'
 var sKey_GroupPostfix_New ='AkordBank_KC'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
     </scriptTask>
     <sequenceFlow id="flow20" name="менше 2 тис $" sourceRef="exclusivegateway2" targetRef="scripttask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sSum<='2000'}]]></conditionExpression>

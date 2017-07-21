@@ -32,7 +32,7 @@ angular.module('dashboardJsApp').directive('dateDivider', [function() {
             currentYear = correctC.getFullYear();
 
         if( prevDay !== currentDay ){
-          angular.element(elem).append('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">до '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>')
+          angular.element(elem).append('<div style="font-size: 13px; position:relative; display: block;text-align:right;margin-top: 20px;padding-right: 20px;">від '+ currentDay + " " + dates[currentMonth]  + ' ' + currentYear + '</div>')
         }
       }
     };

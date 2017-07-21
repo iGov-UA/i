@@ -93,6 +93,7 @@ import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
+import org.igov.service.processUtil.ProcessUtilService;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
 import org.igov.util.ToolLuna;
@@ -130,7 +131,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private RepositoryService repositoryService;
     @Autowired
     private IdentityService identityService;
-
+    @Autowired
+    private ProcessUtilService oProcessUtilService;
     @Autowired
     private NotificationPatterns oNotificationPatterns;
 
@@ -2473,7 +2475,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     oTaskDataVO.setProcessInstanceId(oTaskInfo.getProcessInstanceId());
                     //для фильтра "DocumentClosed" ищем переменные в истории
                     if (bIncludeVariablesProcess
-                            && sFilterStatus.equals("DocumentClosed")) {
+                            && (sFilterStatus.equals("DocumentClosed") || sFilterStatus.equals("Closed"))) {
                         LOG.info("Stsrt find history variable for ProcessInstanceId={}", oTaskInfo.getProcessInstanceId());
                         oTaskDataVO.setGlobalVariables(
                                 oActionTaskService.getHistoryVariableByHistoryProcessInstanceId(
@@ -3956,7 +3958,24 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("mReturn={}", mReturn);
         return mReturn;
     }
-
+    
+    @ApiOperation(value = "https://alpha.test.region.igov.org.ua/wf/service/action/task/getmID_TaskAndProcess", notes = "##### Получение активной и последней юзертаски процесса#####\n\n")
+    @RequestMapping(value = "/getmID_TaskAndProcess", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<String, Object> getmID_TaskAndProcess(
+            @ApiParam(value = "nID_Process", required = false) @RequestParam(value = "nID_Process", required = false) String nID_Process,
+            @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order
+    ) throws Exception 
+    {
+        
+        if(nID_Order != null){
+            nID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
+        }
+        
+        return oProcessUtilService.getmID_TaskAndProcess(nID_Process);
+    }
+    
+    
     public void updateProcessHistoryEvent(String processInstanceId, Map<String, Object> mParamDocument) throws ParseException {
 
         DateFormat df_StartProcess = new SimpleDateFormat("dd/MM/yyyy");
@@ -4070,4 +4089,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             LOG.info("Error saving history during document editing: {}", ex);
         }
     }
+    
+    
 }
