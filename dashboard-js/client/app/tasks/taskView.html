@@ -410,7 +410,7 @@
 
       <div class="control-form-fields" ng-class="{'width-with-opened-menu':isMenuOpened, 'width-with-closed-menu':!isMenuOpened}" style="position:fixed; bottom: 0; background: white; z-index: 5;">
 
-        <div class="main-form-controls" ng-init="checkForEmpty()">
+        <div class="main-form-controls" ng-init="checkForEmpty()" ng-if="sSelectedTask !== 'ecp'">
           <div ng-if="(!clarify && inUnassigned()) || (!clarify && isDocument())" class="fixed-bottom-menu-buttons">
             <div ng-hide="selectedTask.assignee != null || sSelectedTask == 'all'">
               <button ng-click="assignTask()"
@@ -543,6 +543,39 @@
             <button class="btn btn-warning" style="border: none">Очікую відповідь</button>
           </div>
 
+        </div>
+
+        <div class="main-form-controls" ng-init="checkForEmpty()" ng-if="sSelectedTask === 'ecp'">
+          <div class="fixed-bottom-menu-buttons">
+            <button ng-click="submitTask(form, false, true)"
+                    class="btn btn-info take-to-work-button"
+                    style="background-color: #3b94b7; outline: none; border: none"
+                    stub="Відпрацювати"
+                    ng-disabled="isTaskSuccessfullySubmitted() || isTaskInProcess() || !isDocumentNotSigned()">
+              <span ng-if="!isNeedECP()">Пiдписати</span>
+              <span ng-if="isNeedECP()">Пiдписати ЕЦП</span>
+            </button>
+            <label ng-show="isTaskInProcess() && !isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Зачекайте...</label>
+            <label ng-show="isTaskSuccessfullySubmitted()">&nbsp;&nbsp;Документ підписано.</label>
+          </div>
+
+          <div ng-hide="(selectedTask.assignee === null && !isDocument())
+           || sSelectedTask === 'finished'
+           || sSelectedTask == 'docHistory'
+           || sSelectedTask === 'all'
+           || selectedTask.processDefinitionId.indexOf('system') == 0"
+               class="fixed-bottom-menu-buttons"
+               style="position:relative; float: right">
+            <div class="dropup" ng-if="!clarify && !inUnassigned()">
+              <div class="print-form-div dropdown-menu drop-up" role="menu">
+                <div ng-repeat="item in printTemplateList">
+                  <a href="#" ng-click="newPrint(form, item)">{{item.displayTemplate}}</a>
+                </div>
+              </div>
+              <button ng-if="printTemplateList.length > 0" class="btn btn-link dropdown-toggle" data-toggle="dropdown">Роздрукувати <i style="font-size: 11px" class="glyphicon glyphicon-chevron-down"></i></button>
+              <button ng-if="printTemplateList.length === 0" ng-click="print()" class="btn btn-link dropdown-toggle" data-toggle="dropdown">Роздрукувати</button>
+            </div>
+          </div>
         </div>
       </div>
     </form>
