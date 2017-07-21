@@ -25,7 +25,7 @@
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDigitalDocForm" name="Електронна форма документа; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" default="sEnumNotUrgentDoc">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
@@ -142,7 +142,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNote" name="Примітка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDigitalDocForm" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUrgently" name="терміновий документ; ;sID_CheckboxTrue=sEnumUrgentDoc" type="enum" writable="false">
           <activiti:value id="sEnumUrgentDoc" name="терміновий"></activiti:value>
           <activiti:value id="sEnumNotUrgentDoc" name="не терміновий"></activiti:value>
@@ -193,21 +193,21 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 
 //клонування для юзерів в таблиці
-    		var obj1 = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
+    		var cloneDocStepFromTable = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
 
 //отримання назви департамента
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ',null);
-execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel) 
+var cloneDocStepFromTable = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ',null);
+execution.setVariable('sNameDepart', cloneDocStepFromTable[0].oSubject.sLabel) 
 
 	 </script>
     </scriptTask>
     <sequenceFlow id="flow61" sourceRef="scripttask2" targetRef="usertask5"></sequenceFlow>
     <scriptTask id="scripttask3" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var nID_Process = execution.getProcessInstanceId();
-var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_2')
-execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
+var isDocStepSubmitedAll= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', 'step_2')
+execution.setVariable('bSubmitedAll', isDocStepSubmitedAll.bSubmitedAll.toString())
 		
 </script>
     </scriptTask>
