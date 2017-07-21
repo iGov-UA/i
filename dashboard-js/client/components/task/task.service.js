@@ -166,6 +166,13 @@ angular.module('dashboardJsApp')
         })
       },
 
+      getDocumentImage: function (taskId, sKey_Step) {
+        return simpleHttpPromise({
+          method: 'GET',
+          url: '/api/tasks/download/' + taskId + '/attachment/' + sKey_Step
+        })
+      },
+
       getTableOrFileAttachment: function (taskId, attachId, isNewService) {
         // old and new services requests
         if(isNewService) {

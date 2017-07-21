@@ -350,6 +350,21 @@ exports.getAttachmentFile = function (req, res) {
   activiti.filedownload(req, res, options);
 };
 
+exports.getDocumentImage = function (req, res) {
+  var user = JSON.parse(req.cookies.user);
+  var qs = {
+    'nID_Process': req.params.keyOrProcessID,
+    'sLogin': user.id,
+    'sKey_Step': req.params.sKey_Step
+  };
+
+  var options = {
+    path: 'object/file/getDocumentImage',
+    query: qs
+  };
+  activiti.filedownload(req, res, options);
+};
+
 exports.getAttachmentContentTable = function (req, res) {
   var options = {
     path: 'object/file/download_file_from_db',
