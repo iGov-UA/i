@@ -27,9 +27,9 @@
           <activiti:value id="sEnumVtrataGodyvalnuka" name="за втрати годувальника"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport" name="Паспорт (сканкопія);1,2 сторінка та сторінка з місцем реєстрації, завантажте ZIP архівом або PDF файлом;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка; за наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileMsekInval" name="Довідка МСЕК при призначенні інвалідності ; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileSvidotSmert" name="Cвідотство про смерть; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка; за наявності, завантажте ZIP архівом або PDF файлом" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileMsekInval" name="Довідка МСЕК при призначенні інвалідності ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvidotSmert" name="Cвідотство про смерть; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Місце роботи;Написати повну назву підприємства в лапках (буде відображатися у довідці); ;bNew=true" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з ; ;bNew=true" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" required="true"></activiti:formProperty>
@@ -92,10 +92,14 @@ ${sNameOrgan},<br>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-			<p>
-				Ваша заявка на отримання архівної довідки успішно зареєстрована [sID_Order].<br>
-				Спеціалісти ${sNameOrgan} повинні дати відповідь найближчим часом.
-			</p>
+			<p>				
+                       Ваше звернення в  ${sNameOrgan} на отримання архівної довідки успішно зареєстроване [sID_Order].<br>
+                    <p>     
+                    Повідомлення про результат опрацювання запиту буде спрямоване на Ваш e-mail</p>
+		    <p> 	За наявності питань можете звернутись за наступними контактами<br>l</p>
+                     ${sPhoneOrgan}<br>			
+                     ${sAddress}<br>
+			${sWorkTime}<br><br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -126,12 +130,13 @@ ${sNameOrgan},<br>
           <activiti:value id="sEnumVtrataGodyvalnuka" name="за втрати годувальника"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date"></activiti:formProperty>
         <activiti:formProperty id="asDecide" name="Результат звернення" type="enum" required="true">
-          <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
-          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
+          <activiti:value id="accept" name="Заява зареєстрована -з документами все гаразд"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації, у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Комментарії (у разі наявності)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа " type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBodyArhive" name="[pattern/print/archiv_1577_pererahpen_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
@@ -196,8 +201,10 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення щодо отримання довідки про заробітну плату на призначення (перерахунок) пенсії - відправлене у державний трудовий архів.<br />
-Спеціалісти з архівної установи повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви. Однак строк може становити 45 днів, згідно п. 4.2.12 «Правил роботи архівних установ України», які затверджені наказом Міністерства юстиції  України від 08.04.2013 г. № 656/5, з обов’язковим інформуванням заявника. Першочергово виконуються запити осіб, які мають встановлені законодавством пільги <br /> 
-<p>Номер Вашого замовлення: ${sExtensionNumber}</p><br /> 
+Спеціалісти з архівної установи повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви. Однак строк може становити 45 днів, згідно п. 4.2.12 «Правил роботи архівних установ України», які затверджені наказом Міністерства юстиції  України від 08.04.2013 г. № 656/5. Першочергово виконуються запити осіб, які мають встановлені законодавством пільги <br /> 
+<p>Реєстраційний номер Вашого звернення: ${sExtensionNumber}</p><br /> 
+<p>Причина в наступному:</p>
+<p>${sComment}</p>
 ${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -235,10 +242,11 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Рішення" type="enum" required="true">
-          <activiti:value id="accept" name="Рішення готове. Запросити громадянина до ЦНАПу"></activiti:value>
-          <activiti:value id="reject" name="Відправити заявнику копію рішення у разі негативного рішення управління"></activiti:value>
+        <activiti:formProperty id="asStatus" name="Результат звернення " type="enum" required="true">
+          <activiti:value id="accept" name="Сповістити громадянина про можливість отримання довідки. Запросити громадянина до ЦНАПу"></activiti:value>
+          <activiti:value id="reject" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Комментарії (у разі наявності)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRishen" name="Сканкопія рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
