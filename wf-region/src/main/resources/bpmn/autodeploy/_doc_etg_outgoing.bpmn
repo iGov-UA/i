@@ -3,7 +3,7 @@
   <process id="_doc_etg_outgoing" name="502 - Вихідна кореспонденція" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідна кореспонденція"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -23,15 +23,13 @@
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask4" name="Канцелярія - формування та реєстрація вихідного листа-відповіді">
+    <userTask id="usertask4" name="Референт - формування та реєстрація вихідної кореспонденції">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Вихідний лист-відповідь" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ETG_Head_Referent"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="3"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Реєстраційний номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
