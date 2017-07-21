@@ -843,9 +843,9 @@
           <activiti:value id="sEnumDecisionYes" name="Сформувати вихідний документ"></activiti:value>
           <activiti:value id="sEnumDecisionYesBut" name="Не формувати вихідний документ"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sName_Executors" name="Виконавець; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_Executor" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateEndControl" name="Дата зняття з контролю" type="date"></activiti:formProperty>
         <activiti:formProperty id="sDateCancellation" name="Дата списання до справи" type="date"></activiti:formProperty>
@@ -974,7 +974,7 @@ var cloneDocStepSub_jc = documentStepService.cloneDocumentStepSubject(snID_Proce
       <script>execution.setVariable('sDateRegistration', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow68" sourceRef="scripttask8" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask9" name="Старт виконання" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask9" name="Старт виконання мультизадач" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
       var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
 var result = processSubjectTaskService.startProcess(snID_Process_Activiti)

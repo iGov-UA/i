@@ -777,14 +777,14 @@ public class DocumentStepService {
                         if (aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
                             oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(0);
                             
-                            //if(aDocumentStepSubjectRightField_New.size() > 1){
+                            if(aDocumentStepSubjectRightField_New.size() > 1){
                                 oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(1);
-                            //}
+                            }
                         } else {
                             
-                            //if(aDocumentStepSubjectRightField_New.size() > 1){
+                            if(aDocumentStepSubjectRightField_New.size() > 1){
                                 oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(1);
-                            //}
+                            }
                             
                             oDocumentStepSubjectRightFieldRead_From = aDocumentStepSubjectRightField_New.get(0);
                             
@@ -798,20 +798,20 @@ public class DocumentStepService {
                             oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
                                     .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
                             
-                            //if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
+                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
-                            //}
+                            }
 
                         } else {
-                            //if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
+                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
                                 oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
                                         .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
-                            //}
+                            }
                             oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
                                     .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
                             oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
@@ -903,14 +903,14 @@ public class DocumentStepService {
 
             for (String sID_Group_Activiti_New : asID_Group_Activiti_New) {
                 if (isNew_DocumentStepSubjectRight(snID_Process_Activiti, oDocumentStep_To.getsKey_Step(),
-                        sKey_GroupPostfix_New)) {
+                        sID_Group_Activiti_New)) {
                     LOG.info("isNew_DocumentStepSubjectRight case.");
                     asID_Group_Activiti_New_Selected.add(sID_Group_Activiti_New);
                 } else if (bReClone) {
                     LOG.info("bReClone case.");
-                    reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sKey_GroupPostfix_New);
+                    reCloneRight(aDocumentStepSubjectRight_To, oDocumentStepSubjectRight_From, sID_Group_Activiti_New);
                 } else {
-                    LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sKey_GroupPostfix_New,
+                    LOG.info("skip sKey_GroupPostfix_New: {} sKey_GroupPostfix: {}", sID_Group_Activiti_New,
                             oDocumentStep_To.getsKey_Step());
                 }
 
