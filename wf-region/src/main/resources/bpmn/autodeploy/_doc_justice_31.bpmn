@@ -72,7 +72,7 @@
         <activiti:formProperty id="sTableFamiliarize" name="Потребує повідомлення на емейл; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_MJU]]></activiti:string>
@@ -220,10 +220,10 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
     <sequenceFlow id="flow65" name="false" sourceRef="exclusivegateway1" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bSubmitedAll == 'false'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="тесатове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="текстове повідомлення" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sValue}</activiti:expression>
+          <activiti:expression><![CDATA[${sValue}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -232,7 +232,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
           <activiti:string><![CDATA[рассылка на емейл]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 тело письма
 ${sEmail}
@@ -241,10 +241,10 @@ ${sEmail}
 [pattern/mail/new_design/_common_feedback.html]   	 
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_7}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_7}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTableFamiliarize', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
@@ -309,13 +309,13 @@ ${sEmail}
         <omgdc:Bounds height="40.0" width="40.0" x="760.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="65.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="568.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="930.0" y="10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="728.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="161.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="105.0" x="240.0" y="161.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
@@ -345,7 +345,7 @@ ${sEmail}
         <omgdi:waypoint x="800.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="880.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="19.0" x="814.0" y="273.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="19.0" x="814.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -353,12 +353,12 @@ ${sEmail}
         <omgdi:waypoint x="620.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
         <omgdi:waypoint x="526.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="568.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="85.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
         <omgdi:waypoint x="620.0" y="120.0"></omgdi:waypoint>
