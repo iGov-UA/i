@@ -48,14 +48,15 @@
           <activiti:value id="Enum6" name="Департамент тендерів з будівельних та спеціальних робіт|УРС"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea" default="В рамках договора на оказание услуг прошу организовать и провести тендер по отбору..."></activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441; ;bVisible=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" default="${sID_Order}"></activiti:formProperty>
         <activiti:formProperty id="sDateApprove" name="Дата исход №; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Предмет заявки; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг; ;sID_Relation=sID_Relation,nID_Parent=nID_Parent" type="select"></activiti:formProperty>
+        <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг; ;sID_Relation=sID_Relation,nID_Parent=nID_Parent" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -101,7 +102,7 @@
           <activiti:value id="Enum1" name="заказчика"></activiti:value>
           <activiti:value id="Enum2" name="подрядчика"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sAddInformation" name="Доп.информация" type="textArea" default=" - количество (для заявки на увеличение объема поставки) - цена ранее выданной рекомендации (для заявки на пересмотр цены) - номер ранее выданной рекомендации - цена поставщика на данный момент (для заявки на пересмотр цены) - альтернативный, предложенный предприятием поставщик (для заявки на пересмотр цены) и его цена"></activiti:formProperty>
+        <activiti:formProperty id="sAddInformation" name="Доп.информация;количество (для заявки на увеличение объема поставки), цена ранее выданной рекомендации (для заявки на пересмотр цены), номер ранее выданной рекомендации, цена поставщика на данный момент (для заявки на пересмотр цены), альтернативный, предложенный предприятием поставщик (для заявки на пересмотр цены) и его цена" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="линия заключительные данные" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNumber_442&quot;],&quot;sValue&quot;:&quot;Внесение заключительных данных&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sNumber_442" name="Вх №442; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_442" name="Дата №442; ;bVisible=false" type="date"></activiti:formProperty>
@@ -195,8 +196,9 @@
         <activiti:formProperty id="markers2" name="если зоны пресональной ответственности" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTable5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPersonalResponse&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_ogok.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_ogok.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
@@ -227,6 +229,7 @@
         <activiti:formProperty id="sUpdOKBID" name="UpdOKBID; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sID_Order" name="sID_Order; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" writable="false">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -415,6 +418,7 @@
         <activiti:formProperty id="sID_Order" name="sID_Order; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sGroupAddressee" name="sGroupAddressee; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" writable="false">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -610,6 +614,7 @@
         <activiti:formProperty id="sGroupAddressee" name="sGroupAddressee; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_isExecute" name="sName_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" writable="false">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -950,6 +955,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="btsol_070363MSV"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
@@ -1184,6 +1190,7 @@ execution.setVariable('sTitleDoc', title)</script>
         <activiti:formProperty id="sGroupAddressee" name="sGroupAddressee; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_isExecute" name="sName_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asAttributeApplication" name="Признак заявки" type="enum" writable="false">
           <activiti:value id="Enum1" name="ТМЦ"></activiti:value>
           <activiti:value id="Enum2" name="услуги"></activiti:value>
@@ -1450,6 +1457,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="Enum6" name="Департамент тендерів з будівельних та спеціальних робіт|УРС"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441; ;bVisible=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" default="${sID_Order}"></activiti:formProperty>
@@ -1595,8 +1603,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markers2" name="если зоны пресональной ответственности" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTable5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPersonalResponse&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_ogok.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -1662,6 +1671,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
           <activiti:value id="Enum6" name="Департамент тендерів з будівельних та спеціальних робіт|УРС"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sEnterpriseCustomer" name="Предприятие заказчик" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPreamble" name="_" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNumber_441" name="Вх №441; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDate_441" name="Дата №441; ;bVisible=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNumberCard" name="№ документа" type="string" default="${sID_Order}"></activiti:formProperty>
@@ -1807,8 +1817,9 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markers2" name="если зоны пресональной ответственности" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sTable5&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asPersonalResponse&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_ogok.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sReturnDocument" name="Вернуть документ" type="enum">
