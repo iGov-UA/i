@@ -1884,7 +1884,7 @@
             params: {nID_Order: nID_Order}
           }).then(function successCallback(response) {
             var obj = JSON.parse(response.data);
-            window.location.href = '/tasks/documents/' + obj.nID_Task_Active;
+            $location.path("/tasks/documents/" + obj.nID_Task_Active)
           }, function errorCallback(response) {
           });
         }
