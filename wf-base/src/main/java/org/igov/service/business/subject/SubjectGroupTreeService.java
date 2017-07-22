@@ -143,10 +143,8 @@ public class SubjectGroupTreeService {
                     resSubjectTypeList.addAll(subjectHumansIdSubj);
                     LOG.info("resSubjectTypeList.size HUMAN: " + resSubjectTypeList.size());
                 }
-            }
-
-            //get all SubjectOrgan
-            if (ORGAN.equals(sSubjectType)) {
+                //get all SubjectOrgan
+            } else if (ORGAN.equals(sSubjectType)) {
                 subjectOrgans = new ArrayList<>(baseEntityDao.findAll(SubjectOrgan.class));
                 LOG.info("subjectOrgans.size: " + subjectOrgans.size());
                 isSubjectType = true;
@@ -178,6 +176,8 @@ public class SubjectGroupTreeService {
                     resSubjectTypeList.addAll(subjectOrgansIdSubj);
                     LOG.info("subjectGroupRelations.size ORGAN: " + subjectGroupRelations.size());
                 }
+            } else {
+                throw new RuntimeException("There is no such Subject type! Wrong sSubjectType=" + sSubjectType);
             }
 
             for (SubjectGroupTree subjectGroupRelation : subjectGroupRelations) {
@@ -278,18 +278,18 @@ public class SubjectGroupTreeService {
                 }
                 //LOG.info("resultTree: " + resultTree);
             }
-                if (isDisplayRootElement(bIncludeRoot)) {
-                    if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
-                        if (resultTree != null && !resultTree.isEmpty()) {
-                            List<SubjectGroup> result = new ArrayList<>();
-                            result.add(resultTree.get(checkDeepLevelWidth(deepLevelWidth).intValue()));
-                            processSubjectResultTree.setaSubjectGroupTree(result);
-                        }
+            if (isDisplayRootElement(bIncludeRoot)) {
+                if (checkDeepLevelWidth(deepLevelWidth) < resultTree.size()) {
+                    if (resultTree != null && !resultTree.isEmpty()) {
+                        List<SubjectGroup> result = new ArrayList<>();
+                        result.add(resultTree.get(checkDeepLevelWidth(deepLevelWidth).intValue()));
+                        processSubjectResultTree.setaSubjectGroupTree(result);
                     }
-                } else {
-                    processSubjectResultTree.setaSubjectGroupTree(resultTree);
                 }
-                //LOG.info("processSubjectResultTree" + processSubjectResultTree);
+            } else {
+                processSubjectResultTree.setaSubjectGroupTree(resultTree);
+            }
+            //LOG.info("processSubjectResultTree" + processSubjectResultTree);
         }
 
         return processSubjectResultTree;
