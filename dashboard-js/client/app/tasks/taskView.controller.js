@@ -9,13 +9,13 @@
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
       'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'DocumentsService', 'snapRemote', 'tasksSearchService',
-      'fieldsService', 'Issue', 'signDialog', 'generationService',
+      'fieldsService', 'Issue', 'signDialog', 'generationService', '$http',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
                 processSubject, $sce, eaTreeViewFactory, $location, DocumentsService, snapRemote, tasksSearchService,
-                fieldsService, Issue, signDialog, generationService) {
+                fieldsService, Issue, signDialog, generationService, $http) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -1873,6 +1873,20 @@
             }
           }
           return false;
+        }
+
+        $scope.getLinkToDocument = function(nID_Order_Document){
+          var regex = /([0-9]{1})-([0-9]{9})/g;
+          var nID_Order = regex.exec(nID_Order_Document)[2];
+          $http({
+            url: '/api/processes/getmID_TaskAndProcess',
+            method: "GET",
+            params: {nID_Order: nID_Order}
+          }).then(function successCallback(response) {
+            var obj = JSON.parse(response.data);
+            window.location.href = '/tasks/documents/' + obj.nID_Task_Active;
+          }, function errorCallback(response) {
+          });
         }
       }
     ])
