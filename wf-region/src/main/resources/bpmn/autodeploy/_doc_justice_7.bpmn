@@ -1171,8 +1171,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //Клонування прав для основного виконавця
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sMainExecutor')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2', false)
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2', false)
 </script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask1" targetRef="scripttask8"></sequenceFlow>
@@ -1216,8 +1216,8 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <script>//Клонування прав для керівнка
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_1')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_1', false)
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_1', false)
 </script>
     </scriptTask>
     <sequenceFlow id="flow63" sourceRef="scripttask5" targetRef="usertask2"></sequenceFlow>
@@ -1225,7 +1225,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3', false)
 </script>
     </scriptTask>
     <sequenceFlow id="flow64" sourceRef="scripttask6" targetRef="usertask3"></sequenceFlow>
@@ -1233,7 +1233,7 @@ var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activit
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4')
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_4', false)
 </script>
     </scriptTask>
     <endEvent id="endevent2" name="End"></endEvent>
