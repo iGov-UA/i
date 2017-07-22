@@ -26,7 +26,7 @@
 1. [Полезные запросы](#usefulinquiries)
 1. [Лайф Хаки](#lifehacking)
 1. [Чек лист тестирования ветки](#checklisttestbranch)
-1. [СЭД](#idoc)
+1. [СЭД iDoc](#idoc)
 
 
 ###### creatingbusinessprocesses
@@ -1442,8 +1442,8 @@ execution.setVariable('sExecutor', sExecutor)
 ```
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var obj1 = subjectGroupTreeService.getDeparByGroup_Activiti(sID_Group_Activiti);
-execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
+var DepInfo = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
+execution.setVariable('sNameDepart', DepInfo[0].oSubject.sLabel) - получение названия Департамента
 ```
 
  ###### getsidorder   

@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_akordbank_MPS" name="Розпорядження на проведення розрахунків МПС" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Отримання Id поточного процессу" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>олучение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId()
+execution.setVariable('processInstanceId', processInstanceId)</script>
+    </scriptTask>
+    <userTask id="usertask1" name="Співробітник  РБ  створює розпорядження">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFromDate" name="період з" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sByDate" name="період по" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAgreement" name="Номер договору" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateAgreement" name="Дата договору" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Cума коштів" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="валюта" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_AkordBank]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask2" name="Перехід на степ2, права співробітникам ДУКБО" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для співробітника банку
+var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix_New ='AkordBank_Department_DUKBO'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
+    </scriptTask>
+    <userTask id="usertask2" name="Співробітник ДУКБО перевіряє розпорядження  та відправляє його на узгодження Голові">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreement" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAgreement" name="Дата договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
+          <activiti:value id="correctly" name="Розпорядження оформлене вірно, відправити на узгодження"></activiti:value>
+          <activiti:value id="incorrectly" name="Розпорядження оформлене не вірно, повернути на доопрацювання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо некоректно" type="markers" default="${markerService.loadFromFile('_doc_akordbank_MPS.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask3" name="реклонування прав  співробітнику, що створив розпорядження" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_1'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+
+//реклонирование прав
+var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
+
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" name="Некоректно" sourceRef="exclusivegateway1" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCorrectness=='incorrectly'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="scripttask3" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask3" name="Голова/заст голови правління узгоджує та відправляє на виконання співробітнику ДКО">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreement" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAgreement" name="Дата договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
+          <activiti:value id="correctly" name="Узгодити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask3" name="Повідомлення Директора РБ на. ел.пошту(сума, валюта, плат. сис-ма " activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Оформлено Доручення на переказ коштів для клієнте ${sName_client}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Для клієнта ${sName_client} оформлено доручення на переказ коштів 
+з такими умовами:
+
+- сума: ${nSum};
+- валюта: ${sCurrency};
+- назва платіжної системи: ${sCurrency};]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow18" sourceRef="usertask1" targetRef="servicetask3"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="servicetask3" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask5" name="права Голові/Заст Голови степ3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_3'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для співробітника банку
+var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix_New ='AkordBank_Direction'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
+    </scriptTask>
+    <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+    <userTask id="usertask4" name="Співробітник ДКО виконує(формує свіфт-платіж????)">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreement" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAgreement" name="Дата договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sActionDKO" name="Виконання завдання(свіфт-платіж сформовано)" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask6" name="Права ДКО, степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для співробітника банку
+var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix_New ='AkordBank_Department_DKO'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
+    </scriptTask>
+    <sequenceFlow id="flow23" sourceRef="usertask3" targetRef="scripttask6"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="scripttask6" targetRef="usertask4"></sequenceFlow>
+    <scriptTask id="scripttask7" name="права ДУКБО степ 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_5
+'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для співробітника банку
+var sKey_GroupPostfix = '_default_AkordBank'
+var sKey_GroupPostfix_New ='AkordBank_Department_DUKBO'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
+    </scriptTask>
+    <sequenceFlow id="flow25" sourceRef="usertask4" targetRef="scripttask7"></sequenceFlow>
+    <userTask id="usertask5" name="Співробітник ДУКБО виконує">
+      <extensionElements>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAgreement" name="Номер договору" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAgreement" name="Дата договору" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sActionDUBKO" name="Виконання завдання(відображення операції в ОДБ)" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow26" sourceRef="scripttask7" targetRef="usertask5"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="usertask5" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow28" name="Коректно" sourceRef="exclusivegateway1" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sCorrectness=='correctly'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_akordbank_MPS">
+    <bpmndi:BPMNPlane bpmnElement="_doc_akordbank_MPS" id="BPMNPlane__doc_akordbank_MPS">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="41.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="81.0" width="105.0" x="80.0" y="20.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="101.0" width="105.0" x="230.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="101.0" width="105.0" x="533.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="101.0" width="105.0" x="664.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="696.0" y="163.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="95.0" width="105.0" x="230.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="101.0" width="105.0" x="664.0" y="360.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="388.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="101.0" width="105.0" x="380.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="68.0" width="105.0" x="664.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="91.0" width="105.0" x="360.0" y="365.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="383.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="61.0" width="121.0" x="214.0" y="378.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="65.0" width="105.0" x="73.0" y="373.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="36.0" y="58.0"></omgdi:waypoint>
+        <omgdi:waypoint x="94.0" y="59.0"></omgdi:waypoint>
+        <omgdi:waypoint x="185.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="638.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="664.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="716.0" y="111.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="163.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="696.0" y="183.0"></omgdi:waypoint>
+        <omgdi:waypoint x="335.0" y="183.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="59.0" x="557.0" y="166.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="282.0" y="136.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="111.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="335.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="380.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="485.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="533.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="716.0" y="318.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="360.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="185.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="60.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="664.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="615.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="510.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="360.0" y="410.0"></omgdi:waypoint>
+        <omgdi:waypoint x="335.0" y="408.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="214.0" y="408.0"></omgdi:waypoint>
+        <omgdi:waypoint x="178.0" y="405.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="73.0" y="405.0"></omgdi:waypoint>
+        <omgdi:waypoint x="36.0" y="405.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="716.0" y="203.0"></omgdi:waypoint>
+        <omgdi:waypoint x="716.0" y="250.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="736.0" y="216.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
