@@ -70,7 +70,6 @@
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/_doc_justice_171_gtu.html] ; ;bVisible=false" type="string" default="бланк ГТУЮ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/minust/_doc_justice_171_reestracia.html] ; ;bVisible=false" type="string" default="бланк упр.реєстр" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_9" name="[pattern/print/minust/_doc_justice_171_vpvr.html] ; ;bVisible=false" type="string" default="бланк ВПВР" writable="false"></activiti:formProperty>
-       
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
@@ -116,10 +115,9 @@
           <activiti:value id="sEnumToPerform" name="До виконання"></activiti:value>
           <activiti:value id="sEnumToBusiness" name="До справи"></activiti:value>
           <activiti:value id="sEnumOtherResolution" name="Індивідуальна резолюція"></activiti:value>
-        </activiti:formProperty> 
+        </activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Executor_1" name="Виконавець; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
- 
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -292,11 +290,10 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
       <script>//Клонування прав для керівника
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2', false)
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2', false)
           
           //перемикання степа
-var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 </script>
     </scriptTask>
@@ -304,8 +301,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
     <scriptTask id="scripttask7" name="перемикання степ 3 Старт завдання" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3', false)
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3', false)
 
 //старт задания
 
