@@ -79,7 +79,7 @@
                 bIncludeGroups: true,
                 bIncludeStartForm: true,
                 bIncludeAttachments: true,
-                bIncludeProcessVariables: ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($stateParams.type) !== -1,
+                bIncludeProcessVariables: ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory', 'unassigned', 'selfAssigned'].indexOf($stateParams.type) !== -1,
                 bIncludeMessages: true
               };
               if ($stateParams.type == 'finished' || $stateParams.type == 'docHistory'){
@@ -179,7 +179,7 @@
                 bIncludeGroups: true,
                 bIncludeStartForm: true,
                 bIncludeAttachments: true,
-                bIncludeProcessVariables: ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($stateParams.type) !== -1,
+                bIncludeProcessVariables: ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory', 'unassigned', 'selfAssigned'].indexOf($stateParams.type) !== -1,
                 bIncludeMessages: true
               };
               return tasks.getTaskData(params, false)
@@ -223,7 +223,7 @@
                 bIncludeGroups: true,
                 bIncludeStartForm: true,
                 bIncludeAttachments: true,
-                bIncludeProcessVariables: ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($stateParams.type) !== -1,
+                bIncludeProcessVariables: ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory', 'unassigned', 'selfAssigned'].indexOf($stateParams.type) !== -1,
                 bIncludeMessages: true
               };
               return tasks.getTaskData(params, false)

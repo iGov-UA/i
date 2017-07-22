@@ -46,8 +46,8 @@
         <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_justice_31.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Виконавець; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_kolegia.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
@@ -55,24 +55,10 @@
         <activiti:formProperty id="sTableFamiliarize" name="Потребує повідомлення на емейл; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable3_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression>${sLoginAuthor}</activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_MJU]]></activiti:string>
-          </activiti:field>
-        </activiti:taskListener>
-        <activiti:taskListener event="complete" delegateExpression="${SetTasks}">
-          <activiti:field name="sTaskProcessDefinition">
-            <activiti:string><![CDATA[_task_justice]]></activiti:string>
-          </activiti:field>
-          <activiti:field name="sID_Attachment">
-            <activiti:expression>${sTable2}</activiti:expression>
-          </activiti:field>
-          <activiti:field name="processDefinitionId">
-            <activiti:expression>${processDefinitionId}</activiti:expression>
-          </activiti:field>
-          <activiti:field name="soData">
-            <activiti:expression>sDoc1::${sDoc1};;sTableViewed::${sTableViewed};;sNameDoc::${sNameDoc};;sNote::${sNote};;sPrepareted::${sPrepareted};;sTypeDoc::${sTypeDoc};;sID_Custom_GovPublic::${sID_Custom_GovPublic};;sSigned::${sSigned};;sSupervisor::${sSupervisor};;sChangeDoc::${sChangeDoc};;sDateChangeDoc::${sDateChangeDoc};;sCancelDoc::${sCancelDoc};;sDateCancelDoc::${sDateCancelDoc};;asActualDoc::${asActualDoc};;sDateRegistration::${sDateRegistration};;sDateExecution::${sDateExecution}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -159,7 +145,8 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Виконавець; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
@@ -178,18 +165,18 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //отримання назви департамента
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ',null);
-execution.setVariable('sNameDepart', obj1[0].oSubject.sLabel)
+var getSubGrTreeUp = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
+execution.setVariable('sNameDepart', getSubGrTreeUp[0].oSubject.sLabel)
 	 </script>
     </scriptTask>
-    <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow60" sourceRef="usertask4" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow61" sourceRef="scripttask2" targetRef="usertask5"></sequenceFlow>
     <scriptTask id="scripttask3" name="перевірка підписів" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 		var nID_Process = execution.getProcessInstanceId();
 		var sKey_Step = execution.getVariable('sKey_Step_Document')
-		var obj3= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
-execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
+		var isDocSubmitedAll= documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test', sKey_Step)
+execution.setVariable('bSubmitedAll', isDocSubmitedAll.bSubmitedAll.toString())
 		
 </script>
     </scriptTask>
@@ -206,10 +193,10 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
       <script>execution.setVariable('sDateRegistration', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow66" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
-    <serviceTask id="servicetask2" name="рассылка нп емейл" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask2" name="рассылка на емейл" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sValue}</activiti:expression>
+          <activiti:expression><![CDATA[${sValue}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -218,7 +205,7 @@ execution.setVariable('bSubmitedAll', obj3.bSubmitedAll.toString())
           <activiti:string><![CDATA[рассылка на емейл]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 тело письма
 ${sEmail}
@@ -227,14 +214,21 @@ ${sEmail}
 [pattern/mail/new_design/_common_feedback.html]   	 
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_7}</activiti:expression>
+         <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_7}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
+      <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${subjectService.getSubjectContacts(execution.getProcessInstanceId(), 'sTableFamiliarize', 'Organ', 'Email')}" activiti:elementVariable="sValue"></multiInstanceLoopCharacteristics>
     </serviceTask>
     <sequenceFlow id="flow67" sourceRef="servicetask2" targetRef="scripttask2"></sequenceFlow>
+    <scriptTask id="scripttask5" name="Старт виконання мультизадач" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
+var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
+    </scriptTask>
+    <sequenceFlow id="flow68" sourceRef="scripttask5" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_33">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_33" id="BPMNPlane__doc_justice_33">
@@ -257,7 +251,7 @@ ${sEmail}
         <omgdc:Bounds height="84.0" width="130.0" x="556.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="84.0" width="121.0" x="400.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="121.0" x="540.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="84.0" width="121.0" x="720.0" y="161.0"></omgdc:Bounds>
@@ -269,7 +263,10 @@ ${sEmail}
         <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="568.0" y="64.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="408.0" y="324.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="69.0" width="105.0" x="408.0" y="202.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
@@ -284,12 +281,12 @@ ${sEmail}
         <omgdi:waypoint x="301.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">
-        <omgdi:waypoint x="526.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="568.0" y="91.0"></omgdi:waypoint>
+        <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="202.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="521.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="556.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="686.0" y="202.0"></omgdi:waypoint>
@@ -303,7 +300,7 @@ ${sEmail}
         <omgdi:waypoint x="800.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="880.0" y="290.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="19.0" x="814.0" y="273.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="19.0" x="814.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
@@ -311,7 +308,7 @@ ${sEmail}
         <omgdi:waypoint x="620.0" y="290.0"></omgdi:waypoint>
         <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow66" id="BPMNEdge_flow66">
@@ -319,8 +316,12 @@ ${sEmail}
         <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow67" id="BPMNEdge_flow67">
-        <omgdi:waypoint x="620.0" y="119.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="513.0" y="351.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="352.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
+        <omgdi:waypoint x="460.0" y="271.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="324.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
