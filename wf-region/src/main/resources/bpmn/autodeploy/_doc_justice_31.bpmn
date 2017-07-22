@@ -46,7 +46,7 @@
         <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+      
         <activiti:formProperty id="asNeedChange" name="Чи має місце скасування іншого документу або внесення змін?" type="enum" default="sEnumNoChange">
           <activiti:value id="sEnumNoChange" name="ні"></activiti:value>
           <activiti:value id="sEnumCancel" name="скасовується інший документ"></activiti:value>
@@ -63,7 +63,11 @@
           <activiti:value id="sEnumActualDoc" name="чиний"></activiti:value>
           <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+       
+        <activiti:formProperty id="oProcessSubject_Executor_1" name="Виконавець; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
+        <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
+       
+       
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
@@ -135,7 +139,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="MJU_Dnipro_0"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="id группы підрозділів ; ;bVisible=false" type="string" default="MJU_Dnipro_"></activiti:formProperty>
         <activiti:formProperty id="nDeepLevelDepart" name="глубина підрозділів ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер наказу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDoc" name="Назва наказу" type="string" writable="false"></activiti:formProperty>
@@ -162,7 +166,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_Supervisor" name="ПІБ особи, що здійснює контроль; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="asNeedChange" name="Чи має місце скасування іншого документу або внесення змін?" type="enum" writable="false">
           <activiti:value id="sEnumNoChange" name="ні"></activiti:value>
           <activiti:value id="sEnumCancel" name="скасовується інший документ"></activiti:value>
@@ -179,7 +183,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumActualDoc" name="чиний"></activiti:value>
           <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
@@ -193,12 +196,12 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 
 //клонування для юзерів в таблиці
-    		var cloneDocStepFromTable = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
+var cloneDocStepFromTable = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
 
 //отримання назви департамента
 var sNameDepart = " ";
 var sID_Group_Activiti = execution.getVariable('sID_Group_Activiti');
-var cloneDocStepFromTable = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ',null);
+var cloneDocStepFromTable = subjectGroupTreeService.getSubjectGroupsTreeUp(sID_Group_Activiti,'Organ');
 execution.setVariable('sNameDepart', cloneDocStepFromTable[0].oSubject.sLabel) 
 
 	 </script>
@@ -272,12 +275,18 @@ ${sEmail}
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow68" sourceRef="usertask4" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow68" sourceRef="usertask4" targetRef="scripttask5"></sequenceFlow>
     <sequenceFlow id="flow69" sourceRef="servicetask2" targetRef="scripttask2"></sequenceFlow>
     <scriptTask id="scripttask4" name="сегодняшняя дата по умолчанию" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateRegistration', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow70" sourceRef="scripttask4" targetRef="usertask4"></sequenceFlow>
+    <scriptTask id="scripttask5" name="Старт виконання мультизадач" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      var snID_Process_Activiti = execution.getProcessInstanceId();                                                                 
+var result = processSubjectTaskService.startProcess(snID_Process_Activiti)</script>
+    </scriptTask>
+    <sequenceFlow id="flow71" sourceRef="scripttask5" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_justice_31">
     <bpmndi:BPMNPlane bpmnElement="_doc_justice_31" id="BPMNPlane__doc_justice_31">
@@ -300,7 +309,7 @@ ${sEmail}
         <omgdc:Bounds height="84.0" width="130.0" x="556.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="84.0" width="121.0" x="400.0" y="160.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="121.0" x="560.0" y="320.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="84.0" width="121.0" x="720.0" y="161.0"></omgdc:Bounds>
@@ -309,13 +318,16 @@ ${sEmail}
         <omgdc:Bounds height="40.0" width="40.0" x="760.0" y="270.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="70.0" width="105.0" x="568.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="70.0" width="105.0" x="408.0" y="327.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="mailtask1" id="BPMNShape_mailtask1">
         <omgdc:Bounds height="55.0" width="105.0" x="728.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="80.0" width="105.0" x="240.0" y="161.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="408.0" y="202.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
         <omgdi:waypoint x="65.0" y="92.0"></omgdi:waypoint>
@@ -330,8 +342,8 @@ ${sEmail}
         <omgdi:waypoint x="292.0" y="161.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow61" id="BPMNEdge_flow61">
-        <omgdi:waypoint x="521.0" y="202.0"></omgdi:waypoint>
-        <omgdi:waypoint x="556.0" y="202.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow62" id="BPMNEdge_flow62">
         <omgdi:waypoint x="686.0" y="202.0"></omgdi:waypoint>
@@ -350,23 +362,27 @@ ${sEmail}
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow65" id="BPMNEdge_flow65">
         <omgdi:waypoint x="760.0" y="290.0"></omgdi:waypoint>
-        <omgdi:waypoint x="620.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="652.0" y="289.0"></omgdi:waypoint>
         <omgdi:waypoint x="621.0" y="244.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="14.0" width="24.0" x="639.0" y="273.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow68" id="BPMNEdge_flow68">
-        <omgdi:waypoint x="526.0" y="92.0"></omgdi:waypoint>
-        <omgdi:waypoint x="568.0" y="85.0"></omgdi:waypoint>
+        <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="202.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow69" id="BPMNEdge_flow69">
-        <omgdi:waypoint x="620.0" y="120.0"></omgdi:waypoint>
-        <omgdi:waypoint x="460.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="513.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="362.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow70" id="BPMNEdge_flow70">
         <omgdi:waypoint x="292.0" y="161.0"></omgdi:waypoint>
         <omgdi:waypoint x="461.0" y="134.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow71" id="BPMNEdge_flow71">
+        <omgdi:waypoint x="460.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="327.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
