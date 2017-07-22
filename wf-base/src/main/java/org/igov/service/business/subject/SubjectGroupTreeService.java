@@ -631,7 +631,6 @@ public class SubjectGroupTreeService {
             if (oSubjectGroup.isPresent()) {
                 Subject oSubject = oSubjectGroup.get().getoSubject();
                 LOG.info("oSubjectGroup in getSubjectType is " + oSubject.getId());
-                LOG.info("oSubject in getSubjectType is " + oSubject.getsID());
 
                 Optional<SubjectHuman> oSubjectHuman = SubjectHumanDao.findBy("oSubject", oSubject);
                 LOG.info("sID_Group_Activiti: {} oSubjectHuman isPresent: {}", sID_Group_Activiti, oSubjectHuman.isPresent());
