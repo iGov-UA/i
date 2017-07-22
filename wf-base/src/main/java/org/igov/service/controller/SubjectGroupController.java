@@ -91,7 +91,7 @@ public class SubjectGroupController {
             @RequestParam(value = "nDeepLevel", required = false) Long nDeepLevel,
             @ApiParam(value = "текст поиска (искать в ФИО, по наличию вхождения текста в ФИО)", required = false) 
             @RequestParam(value = "sFind", required = false) String sFind,
-            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию yes)", required = false) 
+            @ApiParam(value = "Флаг отображения рутового элемента для всей иерархии (true-отоборажаем, false-нет, по умолчанию false)", required = false) 
             @RequestParam(value = "bIncludeRoot", required = false) Boolean bIncludeRoot,
             @ApiParam(value = "Ширина выборки", required = false) 
             @RequestParam(value = "nDeepLevelWidth", required = false) Long nDeepLevelWidth,
