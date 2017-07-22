@@ -46,7 +46,6 @@
         <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
-      
         <activiti:formProperty id="asNeedChange" name="Чи має місце скасування іншого документу або внесення змін?" type="enum" default="sEnumNoChange">
           <activiti:value id="sEnumNoChange" name="ні"></activiti:value>
           <activiti:value id="sEnumCancel" name="скасовується інший документ"></activiti:value>
@@ -63,11 +62,8 @@
           <activiti:value id="sEnumActualDoc" name="чиний"></activiti:value>
           <activiti:value id="sEnumNotActualtDoc" name="той що втратив чинність"></activiti:value>
         </activiti:formProperty>
-       
         <activiti:formProperty id="oProcessSubject_Executor_1" name="Виконавець; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_171.json')}"></activiti:formProperty>
         <activiti:formProperty id="oProcessSubject_Controller_1" name="Контролер; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-       
-       
         <activiti:formProperty id="sTableViewed" name="Потребує ознайомлення; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_justice_31.json')}"></activiti:formProperty>
         <activiti:formProperty id="sNameDepart" name="Департамент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/minust/_doc_justice_171_nakaz.html] ; ;bVisible=false" type="string" default="бланк для наказу" writable="false"></activiti:formProperty>
@@ -166,7 +162,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asNeedChange" name="Чи має місце скасування іншого документу або внесення змін?" type="enum" writable="false">
           <activiti:value id="sEnumNoChange" name="ні"></activiti:value>
           <activiti:value id="sEnumCancel" name="скасовується інший документ"></activiti:value>
@@ -196,7 +191,7 @@ var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 
 //клонування для юзерів в таблиці
-var cloneDocStepFromTable = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2')
+var cloneDocStepFromTable = documentStepService.cloneDocumentStepFromTable (snID_Process_Activiti, '_default_MJU_read', 'sTableViewed', 'step_2', false)
 
 //отримання назви департамента
 var sNameDepart = " ";
