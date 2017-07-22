@@ -55,7 +55,7 @@
         <activiti:formProperty id="sNameObject" name="Предмет заявки; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг; ;sID_Relation=sID_Relation,nID_Parent=nID_Parent" type="select"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -109,7 +109,6 @@
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия; ;bVisible=false" type="string"></activiti:formProperty>
@@ -133,15 +132,35 @@
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы; ;bVisible=false" type="string"></activiti:formProperty>
@@ -227,7 +246,7 @@
         <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>	
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -281,7 +300,6 @@
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
@@ -304,15 +322,35 @@
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
+        
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string" writable="false"></activiti:formProperty>
@@ -344,8 +382,7 @@
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
-        
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
@@ -403,7 +440,7 @@
         <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -457,7 +494,6 @@
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
@@ -480,15 +516,33 @@
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string" writable="false"></activiti:formProperty>
@@ -581,7 +635,7 @@
         <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -635,7 +689,6 @@
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия" type="string" writable="false"></activiti:formProperty>
@@ -658,15 +711,33 @@
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string" writable="false"></activiti:formProperty>
@@ -881,7 +952,7 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         <activiti:formProperty id="sTitleDoc" name="Заголовок документа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -944,14 +1015,33 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum" writable="false">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum" writable="false">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asPersonalResponse" name="Персональная ответственность (Внесение положения о персональной ответственности и антикоррупционного соглашения в договор подряда по результатам тендера)" type="enum" writable="false">
           <activiti:value id="Enum1" name="Требуется"></activiti:value>
@@ -1119,7 +1209,7 @@ execution.setVariable('sTitleDoc', title)</script>
         <activiti:formProperty id="sNameObject" name="Предмет заявки" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum" writable="false">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -1173,7 +1263,6 @@ execution.setVariable('sTitleDoc', title)</script>
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия" type="string"></activiti:formProperty>
@@ -1196,15 +1285,33 @@ execution.setVariable('sTitleDoc', title)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы" type="string"></activiti:formProperty>
@@ -1236,7 +1343,8 @@ execution.setVariable('sTitleDoc', title)</script>
           <activiti:value id="Enum2" name="Не требуется"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
@@ -1349,7 +1457,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNameObject" name="Предмет заявки; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг; ;sID_Relation=sID_Relation,nID_Parent=nID_Parent" type="select"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -1403,7 +1511,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия; ;bVisible=false" type="string"></activiti:formProperty>
@@ -1427,15 +1534,33 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы; ;bVisible=false" type="string"></activiti:formProperty>
@@ -1544,7 +1669,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNameObject" name="Предмет заявки; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_Relation_1" name="Подгруппа товаров/услуг; ;sID_Relation=sID_Relation,nID_Parent=nID_Parent" type="select"></activiti:formProperty>
         <activiti:formProperty id="nID_Relation_1" name="Код продукции согласно классификатора" type="string"></activiti:formProperty>
-		<activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubgroup" name="Наименование продукции" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTechCharacteristic" name="Технические характеристики, особые требования" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asUnit" name="Единица измерения" type="enum">
           <activiti:value id="thing" name="штука|шт"></activiti:value>
@@ -1598,7 +1723,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="sNumberProtocolMeetings" name="№ протокола заседаний; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ОКПО; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Победитель тендера; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="sStartSum" name="Стартовая сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFinalSum" name="Окончательная сумма; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSaveSum" name="Экономия; ;bVisible=false" type="string"></activiti:formProperty>
@@ -1622,15 +1746,33 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         </activiti:formProperty>
         <activiti:formProperty id="sContactPerson" name="Контактное лицо для участников тендера" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактный телефон" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asBankGaranty" name="Банковская гарантия покрытия условий договора с победителем тендера" type="enum">
-          <activiti:value id="Enum1" name="Выполнение работ в полном объеме"></activiti:value>
-          <activiti:value id="Enum2" name="Выполнение работ по оговоренной стоимости"></activiti:value>
-          <activiti:value id="Enum3" name="Выполнение работ оговоренного качества"></activiti:value>
-          <activiti:value id="Enum4" name="Выполнение работ в оговоренные сроки"></activiti:value>
-          <activiti:value id="Enum5" name="Другое"></activiti:value>
+        <activiti:formProperty id="asBankGaranty" name="Необходимость банковской гарантии покрытия условий договора с победителем тендера" type="enum">
+          <activiti:value id="Enum1" name="Да"></activiti:value>
+          <activiti:value id="Enum2" name="Нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asPerformanceFull" name="Выполнение работ в полном объеме; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedCost" name="Выполнение работ по оговоренной стоимости; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSpecifiedQuality" name="Выполнение работ оговоренного качества; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asAgreedTimeframe" name="Выполнение работ в оговоренные сроки; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOther" name="Другое; ;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumYes" name="да"></activiti:value>
+          <activiti:value id="sEnumNo" name="нет"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBankGaranty" name="Другой вид банковской гарантии" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum5'||[sReason] == 'Другое'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="если другая банковская гарантия" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sBankGaranty&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asOther&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'sEnumYes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="необходимость банковской гарантии" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;asPerformanceFull&quot;,&quot;asAgreedCost&quot;,&quot;asSpecifiedQuality&quot;,&quot;asAgreedTimeframe&quot;,&quot;asOther&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;asBankGaranty&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'Enum1'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBankProvider" name="Банк для проведения взаиморасчётов с Поставщиком" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMeansFinancing" name="Средства финансирования; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAgreedEstimates" name="Согласованые сметы; ;bVisible=false" type="string"></activiti:formProperty>
