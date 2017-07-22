@@ -445,16 +445,17 @@ public class SubjectService {
      * 
      * @param snID_Process_Activiti     ид процесса
      * @param sID_Field                 ид поля
+     * @param sID_FieldTable            ид поля в таблице
      * @param sSubjectType              тип SubjectGroup
      * @param sSubjectContactType       тип контакта, который нужно получить
      * @return                          лист контактов заданного типа
      * @throws Exception 
      */
-    public List<String> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sSubjectType, String sSubjectContactType) throws Exception {
+    public List<String> getSubjectContacts(String snID_Process_Activiti, String sID_Field, String sID_FieldTable, String sSubjectType, String sSubjectContactType) throws Exception {
         
         LOG.info("getSubjectContacts start...");        
         //Login = sID_Group_Activiti
-        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field);
+        List<String> asLogin = oDocumentStepService.getLoginsFromField(snID_Process_Activiti, sID_Field, sID_FieldTable);
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
         
         Set<SubjectGroup> aoAllSubjectGroup = new HashSet<>();
