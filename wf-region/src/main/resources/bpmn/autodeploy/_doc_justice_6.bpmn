@@ -620,8 +620,6 @@
         <activiti:formProperty id="markers3" name="Якщо Індивідуальна резолюція" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sTextResolution&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTypeResolution&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumOtherResolution'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextResolution" name="Текст резолюції" type="textArea" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="oProcessSubject_Executor_1" name="Оберіть виконавця; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum" writable="false">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
@@ -632,9 +630,7 @@
           <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc2" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-     
-
+       
         <activiti:formProperty id="sName_Prepareted" name="Підготував; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevelDepart" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="sName_Signed" name="Підписав; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" variable="sName_AutorResolution" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateAnswer" name="Дата направлення відповіді" type="date"></activiti:formProperty>
@@ -736,8 +732,8 @@ var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, '
 //Клонування прав для керівнка
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
-var oResultcloneDocStepSub = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2')
-var oResultcloneDocStepSub_jus = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2')
+var oResultcloneDocStepSub = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2', true)
+var oResultcloneDocStepSub_jus = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2', true)
 </script>
     </scriptTask>
     <sequenceFlow id="flow63" sourceRef="scripttask5" targetRef="usertask2"></sequenceFlow>
@@ -745,7 +741,7 @@ var oResultcloneDocStepSub_jus = documentStepService.cloneDocumentStepSubject(sn
       <script>//перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultcloneDocStepSub = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')
-var oResultcloneDocStepSub_jus = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3')
+var oResultcloneDocStepSub_jus = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_3', false)
 </script>
     </scriptTask>
     <endEvent id="endevent2" name="End"></endEvent>
