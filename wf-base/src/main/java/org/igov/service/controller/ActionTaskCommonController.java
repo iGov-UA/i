@@ -3975,12 +3975,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "nID_Order", required = false) @RequestParam(value = "nID_Order", required = false) Long nID_Order
     ) throws Exception 
     {
-        
-        if(nID_Order != null){
-            nID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
-        }
-        
-        return oProcessUtilService.getmID_TaskAndProcess(nID_Process);
+        return oProcessUtilService.getmID_TaskAndProcess(nID_Order, nID_Process);
     }
     
     

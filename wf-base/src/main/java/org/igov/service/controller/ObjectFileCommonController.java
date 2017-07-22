@@ -846,6 +846,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
             @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
             @ApiParam(value = "Имя файла по умолчанию", required = false) @RequestParam(required = false, value = "sFileName") String sFileName,
+            @ApiParam(value = "Ответ шифровать в Base64", required = false) @RequestParam(required = false, value = "bAsBase64", defaultValue = "false") Boolean bAsBase64,
             HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("nID_Process: " + nID_Process);
@@ -869,7 +870,11 @@ public class ObjectFileCommonController {
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(aRes.length);*/
-        return multipartFile.getBytes();
+        if(bAsBase64.equals(Boolean.TRUE)){
+            return Base64.getDecoder().decode(multipartFile.getBytes());
+        } else {
+            return multipartFile.getBytes();
+        }
     }
 
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
@@ -880,6 +885,7 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
             @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
+            @ApiParam(value = "Ответ шифровать в Base64", required = false) @RequestParam(required = false, value = "bAsBase64", defaultValue = "false") Boolean bAsBase64,
                    HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("snID_Process_Activiti: " + nID_Process);
@@ -894,7 +900,11 @@ public class ObjectFileCommonController {
 
         httpResponse.setContentLength(multipartFile.getBytes().length);
 
-        return multipartFile.getBytes();
+        if(bAsBase64.equals(Boolean.TRUE)){
+            return Base64.getDecoder().decode(multipartFile.getBytes());
+        } else {
+            return multipartFile.getBytes();
+        }
     }
 
     
