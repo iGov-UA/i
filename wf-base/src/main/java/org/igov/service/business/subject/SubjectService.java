@@ -460,22 +460,33 @@ public class SubjectService {
         LOG.info("getSubjectContacts: asLogin={}", asLogin);
 
         Set<SubjectGroup> aoAllSubjectGroup = new HashSet<>();
+        boolean bNeedToFindHumanAndOrgan = false;
 
         for (String sID_Group_Activiti : asLogin) {
 
             if (sSubjectType == null) {
                 sSubjectType = "Human";
+                bNeedToFindHumanAndOrgan = true;
             }
             //находим SubjectGroup рутового элемент
             SubjectGroup oSubjectGroupRoot = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
             String sSubjectGroupRootType = oSubjectGroupTreeService.getSubjectType(sID_Group_Activiti);
             LOG.info("oSubjectGroupRoot={} type={}", oSubjectGroupRoot, sSubjectGroupRootType);
-            if (sSubjectGroupRootType.equals(sSubjectType)) {
+            //рут кладем, если совпал тип или на вход получили sSubjectType == null
+            if (sSubjectGroupRootType.equals(sSubjectType) || bNeedToFindHumanAndOrgan) {
                 aoAllSubjectGroup.add(oSubjectGroupRoot);
             }
+            //находим всех детей
             aoAllSubjectGroup.addAll(oSubjectGroupTreeService
                     .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, sSubjectType)
                     .getaSubjectGroupTree());
+            
+            if (bNeedToFindHumanAndOrgan) {
+            //находим всех детей для другого типа
+            aoAllSubjectGroup.addAll(oSubjectGroupTreeService
+                    .getCatalogSubjectGroupsTree(sID_Group_Activiti, 0l, null, false, 0l, "Organ")
+                    .getaSubjectGroupTree());
+            }
             LOG.info("aoAllSubjectGroup={}", aoAllSubjectGroup);
         }
         long nID_SubjectContactType = 0;
