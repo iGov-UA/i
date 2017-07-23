@@ -414,7 +414,7 @@ public class ProcessSubjectTaskService {
         /*mParamTask.put("sID_Order_Document", oGeneralConfig.
                 getOrderId_ByProcess((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));*/
         
-        mParamTask.put("nID_Order_Document", ToolLuna.getProtectedNumber(Long.parseLong(snID_Process_Activiti_Root)));
+        mParamTask.put("nID_Order_Document", ToolLuna.getProtectedNumber(Long.parseLong((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"))));
         
         ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject) oJsonProcessSubjectTask).get("sID_BP"), mParamTask);
         LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
