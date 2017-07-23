@@ -210,7 +210,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Согласование заявки">
+    <userTask id="usertask2" name="Согласование заявки - ${sName_Relation_1}">
       <extensionElements>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -384,7 +384,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
@@ -577,7 +577,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT3" name="Действие с документом" type="enum" required="true">
@@ -773,7 +774,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" required="true">
@@ -1053,7 +1055,8 @@ var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Proc
         </activiti:formProperty>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asActionDocUT4" name="Резолюция" type="enum" writable="false">
@@ -1350,7 +1353,8 @@ execution.setVariable('sTitleDoc', title)</script>
         <activiti:formProperty id="sTable5" name="Зоны персональной ответственности в рамках заявки; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="Приложения; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable1_doc_btsol_dogovor.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="sTable2" name="Согласующие; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sName_isExecute" name="sName_isExecute; ;bVisible=false" type="string"></activiti:formProperty>
@@ -1603,7 +1607,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_ogok.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -1817,7 +1821,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markersLine_1" name="линия визы" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;визы&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable2_1" name="Согласующие (заказчик); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_ogok.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="sTable2" name="Согласующие (БиТиСолюшн); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Согласующие (прочие); ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable2_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable3" name="Утверждающий; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable3_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sTable4" name="Адресат; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/btsol/sTable4_doc_btsol_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sReturnDocument" name="Вернуть документ" type="enum">

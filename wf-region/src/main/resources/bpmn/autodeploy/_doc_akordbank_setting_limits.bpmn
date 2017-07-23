@@ -102,7 +102,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
         <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNoteKC" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNoteKC" name="Встановлюю ліиміт клієнту" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -118,7 +118,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
           <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Для клієнта ${sName_client}  встановлення ліміту на ${sSum}]]></activiti:expression>
+          <activiti:expression><![CDATA[Для клієнта ${sName_client}  погоджено встановлення ліміту на ${sSum}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${sDoc}]]></activiti:expression>
@@ -259,13 +259,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="696.0" y="224.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="57.0" width="105.0" x="483.0" y="340.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="105.0" x="280.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="57.0" width="105.0" x="274.0" y="340.0"></omgdc:Bounds>
+        <omgdc:Bounds height="57.0" width="105.0" x="280.0" y="437.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="133.0" y="351.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="448.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="65.0" width="105.0" x="843.0" y="212.0"></omgdc:Bounds>
@@ -316,7 +316,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <omgdi:waypoint x="716.0" y="176.0"></omgdi:waypoint>
         <omgdi:waypoint x="716.0" y="224.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="46.0" x="723.0" y="175.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="46.0" x="694.0" y="186.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -327,12 +327,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="483.0" y="368.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="437.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
-        <omgdi:waypoint x="274.0" y="368.0"></omgdi:waypoint>
-        <omgdi:waypoint x="168.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="465.0"></omgdi:waypoint>
+        <omgdi:waypoint x="145.0" y="465.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="895.0" y="277.0"></omgdi:waypoint>
@@ -343,17 +343,18 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <omgdi:waypoint x="743.0" y="368.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="723.0" y="348.0"></omgdi:waypoint>
+        <omgdi:waypoint x="703.0" y="368.0"></omgdi:waypoint>
+        <omgdi:waypoint x="537.0" y="368.0"></omgdi:waypoint>
         <omgdi:waypoint x="535.0" y="279.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="54.0" x="671.0" y="304.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="54.0" x="614.0" y="355.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="723.0" y="388.0"></omgdi:waypoint>
         <omgdi:waypoint x="723.0" y="430.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="69.0" x="721.0" y="395.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="689.0" y="398.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -376,8 +377,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="535.0" y="279.0"></omgdi:waypoint>
-        <omgdi:waypoint x="535.0" y="340.0"></omgdi:waypoint>
+        <omgdi:waypoint x="483.0" y="245.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="244.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="228.0" y="58.0"></omgdi:waypoint>
