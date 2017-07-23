@@ -32,7 +32,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_AkordBank]]></activiti:string>
@@ -216,8 +216,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
     <scriptTask id="scripttask7" name="права ДУКБО степ 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_5
-'
+var sKey_Step= 'step_5'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
