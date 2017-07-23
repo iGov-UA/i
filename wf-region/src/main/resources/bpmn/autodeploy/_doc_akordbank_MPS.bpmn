@@ -9,7 +9,7 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Отримання Id поточного процессу" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>олучение ИД текущего процесса
+      <script>//3. получение ИД текущего процесса
 var processInstanceId = execution.getProcessInstanceId()
 execution.setVariable('processInstanceId', processInstanceId)</script>
     </scriptTask>
@@ -18,6 +18,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="Назва клієнта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateRozp" name="Дата формування розпорядження" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFromDate" name="період з" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sByDate" name="період по" type="date" required="true"></activiti:formProperty>
@@ -26,11 +28,11 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nSum" name="Cума коштів" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="валюта" type="select" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBeneficiarySBank" name="BENEFICIARY'S BANK:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ" readable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_AkordBank]]></activiti:string>
@@ -59,6 +61,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="Назва клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRozp" name="Дата формування розпорядження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
@@ -67,16 +71,15 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBeneficiarySBank" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
           <activiti:value id="correctly" name="Розпорядження оформлене вірно, відправити на узгодження"></activiti:value>
           <activiti:value id="incorrectly" name="Розпорядження оформлене не вірно, повернути на доопрацювання"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers" name="Якщо некоректно" type="markers" default="${markerService.loadFromFile('_doc_akordbank_MPS.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -110,6 +113,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="Назва клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRozp" name="Дата формування розпорядження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
@@ -118,10 +123,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
         <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBeneficiarySBank" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
           <activiti:value id="correctly" name="Узгодити"></activiti:value>
@@ -147,7 +152,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
 
 - сума: ${nSum};
 - валюта: ${sCurrency};
-- назва платіжної системи: ${sCurrency};]]></activiti:expression>
+- назва платіжної системи: ${sNumberPS};]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -164,7 +169,7 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_AkordBank'
 var sKey_GroupPostfix_New ='AkordBank_Direction'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
@@ -173,6 +178,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="Назва клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRozp" name="Дата формування розпорядження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
@@ -181,10 +188,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
         <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBeneficiarySBank" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sActionDKO" name="Виконання завдання(свіфт-платіж сформовано)" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -225,6 +232,8 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sTypeDoc" name="Тип документу" type="string" default="Розпорядження Департаменту казначейських операцій" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sName_client" name="Назва клієнта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateRozp" name="Дата формування розпорядження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNumberPS" name="Назва платіжної системи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFromDate" name="період з" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sByDate" name="період по" type="date" writable="false"></activiti:formProperty>
@@ -233,10 +242,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="markers_01" name="Платіжні реквізити" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;nSum&quot;],&quot;sValue&quot;:&quot;Реквізити для сплати&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nSum" name="Cума коштів" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCurrency" name="валюта" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBENEFICIARY'S_BANK" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBEN'S_IBAN" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNAME_OF_BENEFICIARY" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sINTERMEDIARY_BANK" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBeneficiarySBank" name="BENEFICIARY'S BANK:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sActionDUBKO" name="Виконання завдання(відображення операції в ОДБ)" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
@@ -359,7 +368,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <omgdi:waypoint x="716.0" y="203.0"></omgdi:waypoint>
         <omgdi:waypoint x="716.0" y="250.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="736.0" y="216.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="736.0" y="216.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
