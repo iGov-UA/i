@@ -85,3 +85,19 @@ exports.getBPs_ForExport = function (req, res) {
     });
   }
 };
+
+exports.getmIDTaskAndProcess = function (req, res) {
+  var options = {
+    path: 'action/task/getmID_TaskAndProcess',
+    query: req.query
+  };
+
+  activiti.get(options, function (error, statusCode, result) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.json(result);
+    }
+  });
+};
+
