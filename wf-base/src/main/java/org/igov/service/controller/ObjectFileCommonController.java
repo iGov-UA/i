@@ -876,6 +876,28 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
+    @RequestMapping(value = "/getProcessAttachAsBase64", method = RequestMethod.GET, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String getProcessAttachAsBase64(
+            @ApiParam(value = "ИД процесса", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "ИД поля", required = false) @RequestParam(required = false, value = "sID_Field") String sID_Field,
+            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
+            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
+            @ApiParam(value = "Имя файла по умолчанию", required = false) @RequestParam(required = false, value = "sFileName") String sFileName) throws Exception {
+
+        LOG.info("nID_Process: " + nID_Process);
+        LOG.info("sID_Field: " + sID_Field);
+        LOG.info("sKey: " + sKey);
+        LOG.info("sID_StorageType: " + sID_StorageType);
+        LOG.info("sFileName: " + sFileName);
+
+        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
+
+        return getJsonBase64EncodedFiles(multipartFile);
+    }
+
+    @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
     @RequestMapping(value = "/getDocumentImage", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -1135,9 +1157,23 @@ public class ObjectFileCommonController {
             byte[] upload = getBytes(file);
 
             Map<java.lang.String, Object> response = new HashMap<>();
-            response.put("Base64", Base64.getEncoder().encode(upload));
-            response.put("Base64Mime", Base64.getMimeEncoder().encode(upload));
-            response.put("Decoded", upload);
+            try {
+                response.put("Base64", Base64.getEncoder().encode(upload));
+            } catch (Exception e){
+                response.put("Base64", e.getMessage());
+            }
+
+            try {
+                response.put("Base64Mime", Base64.getMimeEncoder().encode(upload));
+            } catch (Exception e){
+                response.put("Base64Mime", e.getMessage());
+            }
+
+            try {
+                response.put("Decoded", upload);
+            } catch (Exception e){
+                response.put("Decoded", e.getMessage());
+            }
 
             return JsonRestUtils.toJson(response);
         } catch (/*RecordInmemoryException |*/ IOException e) {
