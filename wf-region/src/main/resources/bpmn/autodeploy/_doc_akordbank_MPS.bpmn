@@ -41,6 +41,7 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener} "></activiti:taskListener>
       </extensionElements>
     </userTask>
     <scriptTask id="scripttask2" name="Перехід на степ2, права співробітникам ДУКБО" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -75,7 +76,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" readable="false" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
           <activiti:value id="correctly" name="Розпорядження оформлене вірно, відправити на узгодження"></activiti:value>
           <activiti:value id="incorrectly" name="Розпорядження оформлене не вірно, повернути на доопрацювання"></activiti:value>
