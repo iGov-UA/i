@@ -67,7 +67,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <scriptTask id="scripttask3" name="реклонування прав  у відділення" scriptFormat="groovy" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask3" name="реклонування прав  у відділення" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_1'
@@ -102,7 +102,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
         <activiti:formProperty id="sNumberPK" name="Зашифрований номер ПК" type="string" readable="false"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума бажаного ліміту" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDoc" name="Скан-копія заяви; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNoteKC" name="Коментар" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNoteKC" name="Встановлюю ліиміт клієнту" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -118,7 +118,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
           <activiti:expression><![CDATA[Інформування про виконання запиту]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Для клієнта ${sName_client}  встановлення ліміту на ${sSum}]]></activiti:expression>
+          <activiti:expression><![CDATA[Для клієнта ${sName_client}  погоджено встановлення ліміту на ${sSum}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${sDoc}]]></activiti:expression>
