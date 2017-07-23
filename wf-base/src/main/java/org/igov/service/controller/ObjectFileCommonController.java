@@ -1208,12 +1208,6 @@ public class ObjectFileCommonController {
             }
 
             try {
-                response.put("Decoded", upload);
-            } catch (Exception e){
-                response.put("Decoded", e.getMessage());
-            }
-
-            try {
                 response.put("Apache", AbstractModelTask.contentByteToString(upload));
             } catch (Exception e){
                 response.put("Apache", e.getMessage());
@@ -1238,12 +1232,6 @@ public class ObjectFileCommonController {
             }
 
             try {
-                response.put("Decodedr", upload2);
-            } catch (Exception e){
-                response.put("Decodedr", e.getMessage());
-            }
-
-            try {
                 response.put("Apacher", AbstractModelTask.contentByteToString(upload2));
             } catch (Exception e){
                 response.put("Apacher", e.getMessage());
@@ -1253,6 +1241,18 @@ public class ObjectFileCommonController {
                 response.put("ToolWebr", ToolWeb.base64_encode(upload2));
             } catch (Exception e){
                 response.put("ToolWebr", e.getMessage());
+            }
+
+            try {
+                response.put("ToolWebSunr", ToolWeb.contentByteToString(upload2));
+            } catch (Exception e){
+                response.put("ToolWebSunr", e.getMessage());
+            }
+
+            try {
+                response.put("ToolWebSun", ToolWeb.contentByteToString(upload));
+            } catch (Exception e){
+                response.put("ToolWebSun", e.getMessage());
             }
 
             return JsonRestUtils.toJson(response);
