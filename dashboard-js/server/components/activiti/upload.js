@@ -20,10 +20,10 @@ function getConfigOptions() {
   var activiti = config.activiti;
 
   options = {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
+    protocol: activiti.prot,
+    hostname: activiti.host,
     port: activiti.port,
-    path: activiti.path,
+    path: activiti.rest,
     username: activiti.username,
     password: activiti.password
   };
@@ -33,7 +33,7 @@ function getConfigOptions() {
 
 function getRequestUrl(apiURL, sHost) {
   var options = getConfigOptions();
-  return (sHost !== null && sHost !== undefined ? sHost : options.protocol + '://' + options.hostname + options.path) + apiURL;
+  return (sHost !== null && sHost !== undefined ? sHost : options.protocol + '://' + options.hostname + ':' + options.port + '/' + options.path + '/') + apiURL;
 }
 
 function buildGET(apiURL, params, sHost, isCustomAuth, buffer) {
@@ -140,4 +140,22 @@ module.exports.uploadContent = function (apiURL, params, content, callback, sHos
 
   var r = request.post(uploadRequest, callback);
   formAppend(r.form(), content, params.qs && params.qs.sID_Field ? params.qs.sID_Field : undefined);
+};
+
+module.exports.get = function (apiURL, params, callback, sHost, buffer) {
+  if(!params.headers){
+    params.headers = {};
+  }
+
+  if(!params.headers.Authorization){
+    _.merge(params.headers, {
+      'Authorization': authBase
+    });
+  }
+  var prepared = buildGET(apiURL, params, sHost, true, buffer);
+  return request(prepared, callback);
+};
+
+module.exports.downloadBuffer = function (apiURL, params, callback, sHost) {
+  this.get(apiURL, params, callback, null, true);
 };
