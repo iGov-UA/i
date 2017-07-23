@@ -347,7 +347,16 @@ exports.getAttachmentFile = function (req, res) {
     path: 'object/file/getProcessAttach',
     query: qs
   };
-  activiti.filedownload(req, res, options);
+
+  if(!req.query || (req.query && !req.query.bAsBase64)){
+    activiti.filedownload(req, res, options);
+  } else {
+    activitiUpload.downloadBuffer(options.path, options.query, function (error, response, buffer) {
+      var encoded = buffer.toString('base64');
+      error ? res.send(error) : res.send(encoded);
+    })
+  }
+
 };
 
 exports.getDocumentImage = function (req, res) {

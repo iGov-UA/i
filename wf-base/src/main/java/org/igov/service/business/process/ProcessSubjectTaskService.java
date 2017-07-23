@@ -45,6 +45,7 @@ import org.igov.model.process.ProcessUser;
 import org.igov.service.business.document.DocumentStepService;
 import org.igov.util.JSON.JsonRestUtils;
 import org.igov.util.Tool;
+import org.igov.util.ToolLuna;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -58,6 +59,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import static org.igov.util.ToolLuna.getProtectedNumber;
 /**
  *
  * @author idenysenko
@@ -358,8 +360,9 @@ public class ProcessSubjectTaskService {
 
             mParamTask.put("sID_File_StorateTemp", oProcessSubjectTask.getsKey());
             //String snID_Process_Activiti_Root = (String) (((JSONObject) parser.parse(new String(aByteTaskBody))).get("snID_Process_Activiti_Root"));
-            mParamTask.put("nID_Order_Document", oGeneralConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti_Root)));
-
+            //mParamTask.put("nID_Order_Document", oGeneralConfig.getOrderId_ByProcess(Long.parseLong(snID_Process_Activiti_Root)));
+            mParamTask.put("nID_Order_Document", ToolLuna.getProtectedNumber(Long.parseLong(snID_Process_Activiti_Root)));
+            
             LOG.info("mParamTask {}", mParamTask);
             ProcessInstance oProcessInstance = oRuntimeService
                     .startProcessInstanceByKey((String) (((JSONObject) parser.parse(new String(aByteTaskBody)))).get("sID_BP"), mParamTask);
@@ -408,9 +411,11 @@ public class ProcessSubjectTaskService {
         Map<String, Object> mParamTask = new HashMap<>();
 
         mParamTask.put("sID_File_StorateTemp", sKey);
-        mParamTask.put("sID_Order_Document", oGeneralConfig.
-                getOrderId_ByProcess((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));
-
+        /*mParamTask.put("sID_Order_Document", oGeneralConfig.
+                getOrderId_ByProcess((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root")));*/
+        
+        mParamTask.put("nID_Order_Document", ToolLuna.getProtectedNumber(Long.parseLong((String) ((JSONObject) oJsonProcessSubjectTask).get("snID_Process_Activiti_Root"))));
+        
         ProcessInstance oProcessInstance = oRuntimeService.startProcessInstanceByKey((String) ((JSONObject) oJsonProcessSubjectTask).get("sID_BP"), mParamTask);
         LOG.info("oProcessSubjectTask is {}", oProcessSubjectTask);
 

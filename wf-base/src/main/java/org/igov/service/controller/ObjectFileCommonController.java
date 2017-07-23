@@ -846,11 +846,13 @@ public class ObjectFileCommonController {
             @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
             @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType,
             @ApiParam(value = "Имя файла по умолчанию", required = false) @RequestParam(required = false, value = "sFileName") String sFileName,
-            @ApiParam(value = "Ответ шифровать в Base64", required = false) @RequestParam(required = false, value = "bAsBase64", defaultValue = "false") Boolean bAsBase64,
             HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
+        LOG.info("sKey: " + sKey);
+        LOG.info("sID_StorageType: " + sID_StorageType);
+        LOG.info("sFileName: " + sFileName);
 
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
 
@@ -870,11 +872,7 @@ public class ObjectFileCommonController {
         httpResponse.setHeader("Content-Type", "application/octet-stream");
 
         httpResponse.setContentLength(aRes.length);*/
-        if(bAsBase64.equals(Boolean.TRUE)){
-            return Base64.getDecoder().decode(multipartFile.getBytes());
-        } else {
-            return multipartFile.getBytes();
-        }
+        return multipartFile.getBytes();
     }
 
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
@@ -885,7 +883,6 @@ public class ObjectFileCommonController {
             @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
             @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
             @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step,
-            @ApiParam(value = "Ответ шифровать в Base64", required = false) @RequestParam(required = false, value = "bAsBase64", defaultValue = "false") Boolean bAsBase64,
                    HttpServletResponse httpResponse) throws Exception {
 
         LOG.info("snID_Process_Activiti: " + nID_Process);
@@ -900,11 +897,7 @@ public class ObjectFileCommonController {
 
         httpResponse.setContentLength(multipartFile.getBytes().length);
 
-        if(bAsBase64.equals(Boolean.TRUE)){
-            return Base64.getDecoder().decode(multipartFile.getBytes());
-        } else {
-            return multipartFile.getBytes();
-        }
+        return multipartFile.getBytes();
     }
 
     
@@ -928,7 +921,7 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
         LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-        //LOG.info("setAttachment file: " + file);
+        LOG.info("setAttachment file: {}", new String(file.getBytes(), "UTF-8"));
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);
