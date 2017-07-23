@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_task_etg" name="_task_etg" isExecutable="true">
+  <process id="_task_etg" name="Завдання по вхідній кореспонденції" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLogin_isExecute" name="sLogin_isExecute" type="string"></activiti:formProperty>
@@ -41,20 +41,10 @@
         <activiti:formProperty id="sReport" name="Текст звіта" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusDecision" name="Рішення" type="enum" default="notExecuted">
           <activiti:value id="executed" name="Пройти процес далі (завдання виконано)"></activiti:value>
-          <activiti:value id="notExecuted" name="Закрыти завдання"></activiti:value>
+          <activiti:value id="notExecuted" name="Закрити завдання"></activiti:value>
           <activiti:value id="delegated" name="Відправити на доопрацювання (відхилити звіт)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sRemark" name="Коментар - що необхідно доопрацювати" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sComentDir" name="Коментар керівника" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Если доработать" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sRemark&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;saStatusDecision&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'delegated'||[sClient] == 'Отправить исполнителю на доработку (отклонить отчет)'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
         <activiti:taskListener event="complete" delegateExpression="${SyncProcessSubject}"></activiti:taskListener>
@@ -72,17 +62,8 @@
         <activiti:formProperty id="nDeepLevel" name="глубина! ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTextTask" name="Завдання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers_05" name="линия" type="markers" default="{&quot;attributes&quot;:{&quot;Line_05&quot;:{&quot;aElement_ID&quot;:[&quot;sReport&quot;],&quot;sValue&quot;:&quot;П&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Вхідний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateDoc" name="Дата документа" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNumberRegistration" name="Реєстраційний номер документа" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sContent" name="Короткий зміст документа" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateExecution" name="Термін виконання" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції" type="select" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sComentDir" name="Коментар керівника" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReport" name="Текст звіту про виконання" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRemark" name="Коментар - що необхідно доопрацювати" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="saStatusTask" name="Статус завдання" type="enum" required="true">
           <activiti:value id="executed" name="Виконано"></activiti:value>
           <activiti:value id="notExecuted" name="Невиконано"></activiti:value>
@@ -102,7 +83,7 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'executed'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask2" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="usertask2">
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="parallelgateway3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'delegated'}]]></conditionExpression>
     </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -111,6 +92,9 @@
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${saStatusDecision == 'notExecuted'}]]></conditionExpression>
     </sequenceFlow>
+    <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow10" sourceRef="parallelgateway3" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="parallelgateway3" targetRef="usertask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__task_etg">
     <bpmndi:BPMNPlane bpmnElement="_task_etg" id="BPMNPlane__task_etg">
@@ -137,6 +121,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="744.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway3" id="BPMNShape_parallelgateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="460.0" y="237.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="345.0" y="257.0"></omgdi:waypoint>
@@ -168,9 +155,8 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="761.0" y="188.0"></omgdi:waypoint>
-        <omgdi:waypoint x="760.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="643.0" y="249.0"></omgdi:waypoint>
-        <omgdi:waypoint x="643.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="257.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="851.0" y="257.0"></omgdi:waypoint>
@@ -179,6 +165,16 @@
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="761.0" y="148.0"></omgdi:waypoint>
         <omgdi:waypoint x="761.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="480.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="480.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="480.0" y="337.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="337.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

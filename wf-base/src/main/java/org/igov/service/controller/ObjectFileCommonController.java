@@ -850,6 +850,9 @@ public class ObjectFileCommonController {
 
         LOG.info("nID_Process: " + nID_Process);
         LOG.info("sID_Field: " + sID_Field);
+        LOG.info("sKey: " + sKey);
+        LOG.info("sID_StorageType: " + sID_StorageType);
+        LOG.info("sFileName: " + sFileName);
 
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
 
@@ -918,7 +921,7 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
         LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-        //LOG.info("setAttachment file: " + file);
+        LOG.info("setAttachment file: {}", new String(file.getBytes(), "UTF-8"));
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);

@@ -259,6 +259,8 @@ public class AttachmetService implements CustomRegexPattern{
             if (aResultArray != null) {
                 LOG.info("Mongo byte array isn't null");
             }
+            
+            LOG.info("aResultArray {}", aResultArray);
         }
         if (sID_StorageType.equals("Redis")) {
             aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
@@ -268,7 +270,7 @@ public class AttachmetService implements CustomRegexPattern{
                 LOG.info("Redis byte array isn't null");
             }
         }
-
+        LOG.info("oMultipartFile content {}", new String(oMultipartFile.getBytes(), "UTF-8"));
         return oMultipartFile;
         //return aResultArray;
     }

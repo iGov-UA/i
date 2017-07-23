@@ -70,20 +70,26 @@
       title: 'Мої чернетки',
       type: tasks.filterTypes.myDrafts,
       count: 0,
-      showCount: false,
+      showCount: true,
       tab: 'myDrafts'
     }, {
       title: 'Очiкують мого ЕЦП',
-        type: tasks.filterTypes.ecp,
-        count: 0,
-        showCount: false,
-        tab: 'ecp'
+      type: tasks.filterTypes.ecp,
+      count: 0,
+      showCount: true,
+      tab: 'ecp'
     }, {
       title: 'Переглянутi',
       type: tasks.filterTypes.viewed,
       count: 0,
-      showCount: false,
+      showCount: true,
       tab: 'viewed'
+    }, {
+      title: 'Історія',
+      type: tasks.filterTypes.docHistory,
+      count: 0,
+      showCount: true,
+      tab: 'docHistory'
     }];
 
     service.instrumentsMenus = [

@@ -5,6 +5,7 @@
  */
 package org.igov.service.business.action.task.systemtask;
 
+import java.util.HashMap;
 import java.util.Map;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.delegate.DelegateExecution;
@@ -41,7 +42,19 @@ public class StartProcess extends Abstract_MailTaskCustom implements JavaDelegat
         String soData_Value_Result = replaceTags(soData_Value, oDelegateExecution);
         LOG.info("soData_Value after: " + soData_Value_Result);
         Map<String, Object> data = parseData(soData_Value_Result);
-        runtimeService.startProcessInstanceByKey(sID_BP_Value, data);
+        Map<String, Object> mDataWithoutNull = new HashMap<>();
+        
+        LOG.info("data {}", data);
+        
+        for(String key : data.keySet()){
+            if(data.get(key)!= null && !((String)data.get(key)).equals("null")){
+               mDataWithoutNull.put(key, data.get(key)); 
+            }
+        }
+        
+        LOG.info("data {}", mDataWithoutNull);
+        
+        runtimeService.startProcessInstanceByKey(sID_BP_Value, mDataWithoutNull);
     }
 
 }

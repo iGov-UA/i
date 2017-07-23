@@ -78,7 +78,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
         <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
         <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
         <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
@@ -94,7 +94,7 @@ execution.setVariable('processInstanceId', processInstanceId)
             <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -118,10 +118,12 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sLoginAuthor = execution.getVariable('sLoginAuthor')
 var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
 execution.setVariable('sLogin', obj1[0].sID_Group_Activiti)
-var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix = '_default_Comfy_Head'
 var sKey_GroupPostfix_New = obj1[0].sID_Group_Activiti
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+</script>
     </scriptTask>
     <userTask id="usertask2" name="керівник автора">
       <extensionElements>
@@ -193,6 +195,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
@@ -201,7 +204,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="fDoc1" name="Договір з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -217,7 +219,9 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Financial_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+</script>
     </scriptTask>
     <userTask id="usertask3" name="фінансист">
       <extensionElements>
@@ -290,13 +294,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодитися"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -329,8 +333,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <scriptTask id="scripttask5" name="права юр,степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//переключение степа
-var snID_Process_Activiti = execution.getProcessInstanceId()
+      <script>var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_Step= 'step_4'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
@@ -339,7 +342,9 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Legal_Department'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+</script>
     </scriptTask>
     <userTask id="usertask4" name="юрист">
       <extensionElements>
@@ -411,13 +416,13 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="направити на розгляд"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -460,6 +465,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
 //var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_6')
 var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Comfy', 'sTable', 'step_6',true,'sLogin_isExecute')
 
+
 </script>
     </scriptTask>
     <scriptTask id="scripttask8" name="права деловод,степ10" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -473,7 +479,9 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_Comfy'
 var sKey_GroupPostfix_New ='Comfy_Clerk'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+</script>
     </scriptTask>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow14" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
@@ -627,6 +635,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="погодити"></activiti:value>
           <activiti:value id="backToAuthor" name="відмовити"></activiti:value>
@@ -634,7 +643,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
         <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -835,12 +843,12 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="направити на розгляд"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -973,7 +981,9 @@ for (var i = 0; i&lt;aDocumentStepSubjectRight.length; i++){
 if(sKey_GroupPostfix_New == null){
 	sKey_GroupPostfix_New = 'Comfy_Yurist_1'
 }
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_9')</script>
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_9')
+
+</script>
     </scriptTask>
     <userTask id="usertask10" name="тот же юрист">
       <extensionElements>
@@ -1046,6 +1056,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
           <activiti:value id="accept" name="направити на регістрацію"></activiti:value>
           <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
@@ -1144,7 +1155,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
-        <omgdc:Bounds height="40.0" width="40.0" x="556.0" y="481.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="682.0" y="488.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
         <omgdc:Bounds height="55.0" width="105.0" x="404.0" y="260.0"></omgdc:Bounds>
@@ -1254,7 +1265,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
         <omgdi:waypoint x="456.0" y="474.0"></omgdi:waypoint>
         <omgdi:waypoint x="457.0" y="500.0"></omgdi:waypoint>
-        <omgdi:waypoint x="556.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="682.0" y="508.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
@@ -1285,13 +1296,14 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
         <omgdi:waypoint x="862.0" y="419.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="596.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="722.0" y="508.0"></omgdi:waypoint>
         <omgdi:waypoint x="701.0" y="500.0"></omgdi:waypoint>
         <omgdi:waypoint x="702.0" y="474.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="576.0" y="521.0"></omgdi:waypoint>
-        <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="528.0"></omgdi:waypoint>
+        <omgdi:waypoint x="701.0" y="567.0"></omgdi:waypoint>
+        <omgdi:waypoint x="629.0" y="567.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
         <omgdi:waypoint x="524.0" y="567.0"></omgdi:waypoint>
@@ -1329,7 +1341,6 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
       <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
         <omgdi:waypoint x="596.0" y="446.0"></omgdi:waypoint>
         <omgdi:waypoint x="573.0" y="463.0"></omgdi:waypoint>
-        <omgdi:waypoint x="519.0" y="463.0"></omgdi:waypoint>
         <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

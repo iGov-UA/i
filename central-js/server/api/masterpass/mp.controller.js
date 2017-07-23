@@ -157,26 +157,8 @@ module.exports.verify3DSCallback = function (req, res) {
     });
   }
   function checkoutOrReturn(result, callback) {
-    if(result.response.pmt_status == 1) {
-      request.post({
-        "url": "https://walletmc.ipay.ua/",
-        "headers": {"Content-type": "application/json; charset=utf-8"},
-        "json": {
-          "request": {
-            "auth": auth,
-            "action": 'PaymentSale',
-            "body": {"pmt_id": result.response.pmt_id, "invoice": result.response.invoice, "guid": masterPassAuth.createGuid()}
-          }
-        }
-      }, function (err, response, body) {
-        if(!err) {
-          res.redirect(callbackUrl + '?status=' + body.response.pmt_status + '&pmt_id=' + body.response.pmt_id);
-          res.end();
-        } else {
-          res.send(err.message);
-          res.end();
-        }
-      });
+    if(result.response.pmt_status == 5) {
+      res.redirect(callbackUrl + '?status=' + result.response.pmt_status + '&pmt_id=' + result.response.pmt_id);
     } else if(result.response.pmt_status == 4 && result.response.error || result.response.error){
       res.redirect(callbackUrl + '?status=' + result.response.error);
     } else if(result.response.pmt_status == 4 && !result.response.error) {

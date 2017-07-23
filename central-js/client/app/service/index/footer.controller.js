@@ -147,12 +147,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }*/
 
-    /*,{
+    ,{
       url: 'http://lawyer.ua',
       alt: 'lawyer.ua',
       image: 'assets/images/ads/lawuer-services.png',
       height: 50
-    }*/
+    }
 
     ,{
       url: 'https://www.imena.ua',
@@ -210,6 +210,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }
 
+    ,{
+      url: 'https://opendatabot.com/',
+      alt: 'https://opendatabot.com/',
+      image: 'assets/images/ads/opendatabot.png',
+      height: 50
+    }
   ];
 
   function randomizeIndexes(indexes, item, arr) {

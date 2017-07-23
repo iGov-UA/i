@@ -11,7 +11,7 @@ import org.igov.service.business.action.task.core.AbstractModelTask;
 /**
  * @author BW
  */
-@Component("fileTaskUpload")
+@Component("procedQueueTickets")
 public class ProcedQueueTickets extends AbstractModelTask implements JavaDelegate {
     public static final String BUILDER_ATACH_MODEL_LIST = "builderAtachModel";
     static final transient Logger LOG = LoggerFactory
