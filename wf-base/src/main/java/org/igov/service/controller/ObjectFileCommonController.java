@@ -921,7 +921,7 @@ public class ObjectFileCommonController {
         LOG.info("setAttachment bSigned: " + bSigned);
         LOG.info("setAttachment sID_StorageType: " + sID_StorageType);
         LOG.info("setAttachment saAttribute_JSON: " + aAttribute);
-        LOG.info("setAttachment file: {}", file.getBytes());
+        LOG.info("setAttachment file: {}", new String(file.getBytes(), "UTF-8"));
         LOG.info("setAttachment sFileNameAndExt: " + sFileNameAndExt);
         LOG.info("setAttachment sID_Field: " + sID_Field);
         LOG.info("setAttachment sContentType: " + sContentType);

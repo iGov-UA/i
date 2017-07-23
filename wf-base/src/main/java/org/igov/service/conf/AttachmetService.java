@@ -270,7 +270,7 @@ public class AttachmetService implements CustomRegexPattern{
                 LOG.info("Redis byte array isn't null");
             }
         }
-        LOG.info("oMultipartFile content {}", oMultipartFile.getBytes());
+        LOG.info("oMultipartFile content {}", new String(oMultipartFile.getBytes(), "UTF-8"));
         return oMultipartFile;
         //return aResultArray;
     }
