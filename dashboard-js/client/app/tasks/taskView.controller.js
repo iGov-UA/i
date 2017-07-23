@@ -1876,12 +1876,10 @@
         }
 
         $scope.getLinkToDocument = function(nID_Order_Document){
-          var regex = /([0-9]{1})-([0-9]{9})/g;
-          var nID_Order = regex.exec(nID_Order_Document)[2];
           $http({
             url: '/api/processes/getmID_TaskAndProcess',
             method: "GET",
-            params: {nID_Order: nID_Order}
+            params: {nID_Order: nID_Order_Document}
           }).then(function successCallback(response) {
             var obj = JSON.parse(response.data);
             $location.path("/tasks/documents/" + obj.nID_Task_Active)
