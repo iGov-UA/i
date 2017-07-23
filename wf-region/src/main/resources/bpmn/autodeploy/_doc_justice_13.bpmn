@@ -287,16 +287,15 @@ execution.setVariable('sIncomingNumber',sID_Custom_GovPublic)</script>
     </sequenceFlow>
     <sequenceFlow id="flow64" sourceRef="callactivity1" targetRef="endevent1"></sequenceFlow>
     <scriptTask id="scripttask6" name="Клонування прав для керівника" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>//перемикання степа
+      <script>   //перемикання степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')
 
 //Клонування прав для керівника
-var snID_Process_Activiti = execution.getProcessInstanceId()
 var sKey_GroupPostfix_New = execution.getVariable('sLogin_AutorResolution')
-var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2', false )
-
-var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2, false')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', sKey_GroupPostfix_New, 'step_2', false)
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_MJU', 'justice_common', 'step_2', false)
+          
 
 </script>
     </scriptTask>
