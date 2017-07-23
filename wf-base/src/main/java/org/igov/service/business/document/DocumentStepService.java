@@ -700,7 +700,7 @@ public class DocumentStepService {
         DocumentStep oDocumentStep_Common = getDocumentStep(snID_Process_Activiti, "_");
         LOG.info("oDocumentStep_Common id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
         List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = 
-                oDocumentStepSubjectRightDao.findAllBy("nID_DocumentStep", oDocumentStep_Common.getId());
+                oDocumentStepSubjectRightDao.findAllBy("documentStep", oDocumentStep_Common);
         LOG.info("oDocumentStep_Common rights {}", aDocumentStepSubjectRight_Common);   
         for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight_Common) {
             if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
