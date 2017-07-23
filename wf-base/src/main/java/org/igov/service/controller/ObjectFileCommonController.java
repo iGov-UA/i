@@ -894,7 +894,8 @@ public class ObjectFileCommonController {
 
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
 
-        return getJsonBase64EncodedFiles(multipartFile);
+
+        return getJsonBase64EncodedFiles(multipartFile, sFileName);
     }
 
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
@@ -1184,6 +1185,41 @@ public class ObjectFileCommonController {
 
     }
 
+    private String getJsonBase64EncodedFiles(MultipartFile file, String fileName) throws IOException, CRCInvalidException, RecordNotFoundException,
+            FileServiceIOException {
+
+        try {
+
+            byte[] upload = getBytes(file, fileName);
+
+            Map<java.lang.String, Object> response = new HashMap<>();
+            try {
+                response.put("Base64", Base64.getEncoder().encode(upload));
+            } catch (Exception e){
+                response.put("Base64", e.getMessage());
+            }
+
+            try {
+                response.put("Base64Mime", Base64.getMimeEncoder().encode(upload));
+            } catch (Exception e){
+                response.put("Base64Mime", e.getMessage());
+            }
+
+            try {
+                response.put("Decoded", upload);
+            } catch (Exception e){
+                response.put("Decoded", e.getMessage());
+            }
+
+            return JsonRestUtils.toJson(response);
+        } catch (/*RecordInmemoryException |*/ IOException e) {
+            LOG.warn(e.getMessage(), e);
+            throw new FileServiceIOException(
+                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
+        }
+
+    }
+
     @ApiOperation(value = "/getBase64EncodedFile", notes
             = "##### кодирования файла в Base64")
     @RequestMapping(value = "/getBase64EncodedFile", method = RequestMethod.POST, produces = "application/json")
@@ -1260,10 +1296,14 @@ public class ObjectFileCommonController {
 
     }
 
-    private byte[] getBytes(MultipartFile file) throws IOException {
+    private byte[] getBytes(MultipartFile file, String fileName) throws IOException{
         return AbstractModelTask
-                        .multipartFileToByteArray(file, file.getOriginalFilename())
-                        .toByteArray();
+                .multipartFileToByteArray(file, fileName)
+                .toByteArray();
+    }
+
+    private byte[] getBytes(MultipartFile file) throws IOException {
+        return getBytes(file, file.getOriginalFilename());
     }
 
 }
