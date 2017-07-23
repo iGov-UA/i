@@ -1,8 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_btsol_meeting" name="Протокол оперативного совещания" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="usertask1" name="Відділення">
+  <process id="_doc_cib_ObslPublOs" name="Дозвіл на обслуговування публічного діяча" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Службова записка про дозвіл на обслуговування публічного діяча"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <serviceTask id="servicetask1" name="ProcessCountTaskCustom" activiti:delegateExpression="#{ProcessCountTaskCustomListener}">
+      <extensionElements>
+        <activiti:field name="sKey">
+          <activiti:string><![CDATA[_doc_cib_ObslPublOs]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="sPattern">
+          <activiti:string><![CDATA[[sID_Custom_GovPublic]]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="nDigits">
+          <activiti:string><![CDATA[5]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <scriptTask id="scripttask11" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      //1. лічільник
+var number=execution.getVariable('sID_Custom_GovPublic')
+number = number&lt;&lt;0
+var fullNumber="вх-"+number+"/"
+execution.setVariable('sID_Custom_GovPublic', fullNumber)
+
+	//2. назначение даты исполнения - по умолчанию + 7 дней к текущей даты и перевод даты в нужный формат дд/мм/гггг
+var updatedDate = new Date();
+var days = 7;
+updatedDate.setDate(new Date().getDate() + days);
+var d = updatedDate.getDate();
+if (d &lt; 10) d = "0"+d;
+var m = updatedDate.getMonth() + 1;
+if (m &lt; 10) m = "0"+m;
+var sNewDate = (d + "/" + m + "/" + updatedDate.getFullYear());
+execution.setVariable('sDateExecution', sNewDate)
+
+//3. получение ИД текущего процесса
+var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//4. получение ИД БП
+var executeProcessDefinitionId = execution.getProcessDefinitionId();
+var splittedProcessDefinitionId = executeProcessDefinitionId.split(':')[0];
+execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
+      </script>
+    </scriptTask>
+    <userTask id="usertask1" name="Відділення - створення службової записки">
       <extensionElements>
         <activiti:formProperty id="asZayavnik" name="Хто звернувся" type="enum" required="true">
           <activiti:value id="sEnamKlient" name="Клієнт особисто"></activiti:value>
@@ -10,66 +60,197 @@
         </activiti:formProperty>
         <activiti:formProperty id="asStatus" name="Статус клієнта" type="enum" required="true">
           <activiti:value id="sEnamPublOs" name="публічна особа"></activiti:value>
-          <activiti:value id="sEnamBlOsPublOs" name="близіка особа публічної особа"></activiti:value>
+          <activiti:value id="sEnamBlOsPublOs" name="близька особа публічної особа"></activiti:value>
           <activiti:value id="sEnamOsPovPublOs" name="особа пов'язана з публічною особою"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="PIBClient" name="ПІБ клієнта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IPNClient" name="ІПН клієнта" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="tComentVid" name="Коментар працівника відділення" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tComentVid" name="Коментар працівника відділення (описати факт належності)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/CIB/_doc_cib_ObslPublOs.html] ; ;bVisible=false" type="string" default="Службова записка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="tComentSlujbaFM" name="Висновок Служби фінансового моніторингу; ;bVisible=false" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="FlagViddil" name="FlagViddil; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markerViddil" name="Viddil" type="markers" default="${markerService.loadFromFile('CIB/ObslPublOs/Viddil.json')}"></activiti:formProperty>
+        <activiti:formProperty id="tComentVidhulen" name="Коментар про причини відхилення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asVid_Rish" name="Рішення по службовій записці" type="enum">
+          <activiti:value id="sEnamAccept" name="Направити службову записку повторно"></activiti:value>
+          <activiti:value id="sEnamDenined" name="Скасувати службову"></activiti:value>
+        </activiti:formProperty>
       </extensionElements>
     </userTask>
+    <sequenceFlow id="flow5" name="На Службу ФМ" sourceRef="exclusivegateway1" targetRef="scripttask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${FlagViddil != 'SlujbaFM_Vozvr'||asVid_Rish == 'sEnamAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" name="Задачу скасовано" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asVid_Rish == 'sEnamDenined'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow2" sourceRef="scripttask11" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow4" name="Задачу скасово" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
-    <scriptTask id="scripttask2" name="Степ" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="Степ 2 - Служба фінансового моніторингу" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
+      //перемикання степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_2')      
       
+      //Клонування прав для Служби фінансового моніторингу
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_CIB_SlugbFM', 'ГРУППА Служби ФМ', 'step_2')
       </script>
     </scriptTask>
-    <sequenceFlow id="flow5" name="На Службу ФМ" sourceRef="exclusivegateway1" targetRef="scripttask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[На Службу ФМ]]></conditionExpression>
-    </sequenceFlow>
     <userTask id="usertask2" name="Служба ФМ">
       <extensionElements>
-        <activiti:formProperty id="asZayavnik" name="Хто звернувся" type="enum" writable="false">
+        <activiti:formProperty id="asZayavnik" name="Хто звернувся" type="enum">
           <activiti:value id="sEnamKlient" name="Клієнт особисто"></activiti:value>
           <activiti:value id="sEnamKlientPred" name="Особа що діє від імені клієнта"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Статус клієнта" type="enum" writable="false">
+        <activiti:formProperty id="asStatus" name="Статус клієнта" type="enum">
           <activiti:value id="sEnamPublOs" name="публічна особа"></activiti:value>
-          <activiti:value id="sEnamBlOsPublOs" name="близіка особа публічної особа"></activiti:value>
+          <activiti:value id="sEnamBlOsPublOs" name="близька особа публічної особа"></activiti:value>
           <activiti:value id="sEnamOsPovPublOs" name="особа пов'язана з публічною особою"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="PIBClient" name="ПІБ клієнта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="IPNClient" name="ІПН клієнта" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="tComentVid" name="Коментар працівника відділення" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="tComentSlujbaFM" name="Висновок Служби фінансового моніторингу" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PIBClient" name="ПІБ клієнта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="IPNClient" name="ІПН клієнта" type="long"></activiti:formProperty>
+        <activiti:formProperty id="tComentVid" name="Коментар працівника відділення" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="asGP_Rish" name="Рішення Голови правління" type="enum">
+          <activiti:value id="sEnamAccept" name="Дозволити обслуговування публічного діяча"></activiti:value>
+          <activiti:value id="sEnamVidhul" name="Відхилити на доопрацювання Службою ФМ"></activiti:value>
+          <activiti:value id="sEnamDenined" name="Відмова у дозволі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tComentGP" name="Коментар Голови правління" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="asSlFM_Rish" name="Рішення по службовій записці" type="enum">
+          <activiti:value id="sEnamAccept" name="Службова оформлена вірно. Надати висновок та звізувати"></activiti:value>
+          <activiti:value id="sEnamDenined" name="Відхилити службову"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tComentSlujbaFM" name="Висновок Служби фінансового моніторингу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="tComentVidhulen" name="Коментар про причини відхилення" type="textArea"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerSlujbaFM" name="SlujbaFM" type="markers" default="${markerService.loadFromFile('CIB/ObslPublOs/SlujbaFM.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/CIB/_doc_cib_ObslPublOs.html] ; ;bVisible=false" type="string" default="Службова записка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="FlagViddil" name="FlagViddil; ;bVisible=false" type="string" default="SlujbaFM_Vozvr"></activiti:formProperty>
+        <activiti:formProperty id="FlagSlujbFM" name="FlagViddil; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT120H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="flow8" name="Назад до відділення" sourceRef="exclusivegateway2" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSlFM_Rish == 'sEnamDenined' && FlagSlujbFM != 'GP_Vozvr'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" name="Керівнику бранча" sourceRef="exclusivegateway2" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSlFM_Rish == 'sEnamAccept' && FlagSlujbFM != 'GP_Vozvr'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" name="Голові правління" sourceRef="exclusivegateway2" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${FlagSlujbFM == 'GP_Vozvr'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask3" name="Степ 1 - Повернення у відділ на доопрацювання" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      //перемикання степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_1')      
+      
+      //Клонування прав для Служби фінансового моніторингу
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_CIB_ViddilPovern', 'ГРУППА Відділу', 'step_1')
+      </script>
+    </scriptTask>
+    <scriptTask id="scripttask4" name="Степ 3 - Керівник бранчу" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      //перемикання степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_3')      
+      
+      //Клонування прав для Служби фінансового моніторингу
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_CIB_read', 'ГРУППА Керівника бранча', 'step_3')
+      </script>
+    </scriptTask>
     <sequenceFlow id="flow6" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <scriptTask id="scripttask3" name="Степ" activiti:autoStoreVariables="false"></scriptTask>
-    <sequenceFlow id="flow8" name="Назад до відділення" sourceRef="exclusivegateway2" targetRef="scripttask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[Назад до відділення]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="scripttask3" targetRef="usertask1"></sequenceFlow>
-    <scriptTask id="scripttask4" name="Степ" activiti:autoStoreVariables="false"></scriptTask>
-    <sequenceFlow id="flow10" name="Керівнику бранча" sourceRef="exclusivegateway2" targetRef="scripttask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[Керівнику бранча]]></conditionExpression>
-    </sequenceFlow>
-    <userTask id="usertask3" name="Керівник бранчу"></userTask>
+    <userTask id="usertask3" name="Керівник бранчу">
+      <extensionElements>
+        <activiti:formProperty id="asZayavnik" name="Хто звернувся" type="enum">
+          <activiti:value id="sEnamKlient" name="Клієнт особисто"></activiti:value>
+          <activiti:value id="sEnamKlientPred" name="Особа що діє від імені клієнта"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Статус клієнта" type="enum">
+          <activiti:value id="sEnamPublOs" name="публічна особа"></activiti:value>
+          <activiti:value id="sEnamBlOsPublOs" name="близька особа публічної особа"></activiti:value>
+          <activiti:value id="sEnamOsPovPublOs" name="особа пов'язана з публічною особою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PIBClient" name="ПІБ клієнта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="IPNClient" name="ІПН клієнта" type="long"></activiti:formProperty>
+        <activiti:formProperty id="tComentVid" name="Коментар працівника відділення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asSlFM_Rish" name="Рішення Служби фінансового моніторингу" type="enum">
+          <activiti:value id="sEnamAccept" name="Службова оформлена вірно. Надано висновок"></activiti:value>
+          <activiti:value id="sEnamDenined" name="Відхилити службову"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tComentSlujbaFM" name="Висновок Служби фінансового моніторингу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/CIB/_doc_cib_ObslPublOs.html] ; ;bVisible=false" type="string" default="Службова записка" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow11" sourceRef="scripttask4" targetRef="usertask3"></sequenceFlow>
-    <scriptTask id="scripttask5" name="Степ" activiti:autoStoreVariables="false"></scriptTask>
+    <scriptTask id="scripttask5" name="Степ 4 - Голова правління" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+      //перемикання степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_4')      
+      
+      //Клонування прав для Служби фінансового моніторингу
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var oResult2 = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_CIB_GolPravl', 'ГРУППА Голови правління', 'step_4')
+      </script>
+    </scriptTask>
     <sequenceFlow id="flow12" sourceRef="usertask3" targetRef="scripttask5"></sequenceFlow>
-    <userTask id="usertask4" name="Голова правління"></userTask>
+    <userTask id="usertask4" name="Голова правління">
+      <extensionElements>
+        <activiti:formProperty id="asZayavnik" name="Хто звернувся" type="enum">
+          <activiti:value id="sEnamKlient" name="Клієнт особисто"></activiti:value>
+          <activiti:value id="sEnamKlientPred" name="Особа що діє від імені клієнта"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Статус клієнта" type="enum">
+          <activiti:value id="sEnamPublOs" name="публічна особа"></activiti:value>
+          <activiti:value id="sEnamBlOsPublOs" name="близька особа публічної особа"></activiti:value>
+          <activiti:value id="sEnamOsPovPublOs" name="особа пов'язана з публічною особою"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="PIBClient" name="ПІБ клієнта" type="string"></activiti:formProperty>
+        <activiti:formProperty id="IPNClient" name="ІПН клієнта" type="long"></activiti:formProperty>
+        <activiti:formProperty id="tComentVid" name="Коментар працівника відділення" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asSlFM_Rish" name="Рішення Служби фінансового моніторингу" type="enum">
+          <activiti:value id="sEnamAccept" name="Службова оформлена вірно. Надано висновок"></activiti:value>
+          <activiti:value id="sEnamDenined" name="Відхилити службову"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tComentSlujbaFM" name="Висновок Служби фінансового моніторингу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asGP_Rish" name="Рішення Голови правління" type="enum" required="true">
+          <activiti:value id="sEnamAccept" name="Дозволити обслуговування публічного діяча"></activiti:value>
+          <activiti:value id="sEnamVidhul" name="Відхилити на доопрацювання Службою ФМ"></activiti:value>
+          <activiti:value id="sEnamDenined" name="Відмова у дозволі"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="tComentGP" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markerGP" name="GP" type="markers" default="${markerService.loadFromFile('CIB/ObslPublOs/GP.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/CIB/_doc_cib_ObslPublOs.html] ; ;bVisible=false" type="string" default="Службова записка" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="FlagSlujbFM" name="FlagViddil; ;bVisible=false" type="string" default="GP_Vozvr"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow13" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
-    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask2"></sequenceFlow>
-    <sequenceFlow id="flow17" name="Голові правління" sourceRef="exclusivegateway2" targetRef="scripttask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[Голові правління]]></conditionExpression>
+    <sequenceFlow id="flow16" name="Служба ФМ доопрацювання" sourceRef="exclusivegateway3" targetRef="scripttask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asGP_Rish == 'sEnamVidhul'}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="flow30" name="Закінчення процесу" sourceRef="exclusivegateway3" targetRef="parallelgateway1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asGP_Rish == 'sEnamDenined'||asGP_Rish == 'sEnamAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask10" name="Висновок відсутній" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+        var Vusn ='Висновок відсутній'
+        execution.setVariable('tComentSlujbaFM', Vusn)
+      </script>
+    </scriptTask>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
     <endEvent id="endevent2" name="End"></endEvent>
     <scriptTask id="scripttask7" name="Степ" activiti:autoStoreVariables="false"></scriptTask>
@@ -91,22 +272,22 @@
     <sequenceFlow id="flow28" sourceRef="parallelgateway2" targetRef="endevent2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow29" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow30" sourceRef="exclusivegateway3" targetRef="parallelgateway1"></sequenceFlow>
-    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="true">
-      <timerEventDefinition></timerEventDefinition>
-    </boundaryEvent>
-    <scriptTask id="scripttask10" name="Висновок відсутній" activiti:autoStoreVariables="false"></scriptTask>
+    
     <sequenceFlow id="flow32" sourceRef="boundarytimer1" targetRef="scripttask10"></sequenceFlow>
     <sequenceFlow id="flow33" sourceRef="scripttask10" targetRef="scripttask5"></sequenceFlow>
-    <scriptTask id="scripttask11" name="Script Task" activiti:autoStoreVariables="false"></scriptTask>
-    <serviceTask id="servicetask1" name="Service Task"></serviceTask>
     <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="servicetask1" targetRef="scripttask11"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_btsol_meeting">
-    <bpmndi:BPMNPlane bpmnElement="_doc_btsol_meeting" id="BPMNPlane__doc_btsol_meeting">
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_cib_ObslPublOs">
+    <bpmndi:BPMNPlane bpmnElement="_doc_cib_ObslPublOs" id="BPMNPlane__doc_cib_ObslPublOs">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="72.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="71.0" y="61.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="201.0" y="61.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="105.0" x="351.0" y="61.0"></omgdc:Bounds>
@@ -126,14 +307,14 @@
       <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="772.0" y="74.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="713.0" y="138.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="55.0" width="105.0" x="553.0" y="131.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
         <omgdc:Bounds height="55.0" width="105.0" x="681.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="713.0" y="138.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="681.0" y="291.0"></omgdc:Bounds>
@@ -177,12 +358,20 @@
       <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
         <omgdc:Bounds height="55.0" width="105.0" x="831.0" y="211.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
-        <omgdc:Bounds height="55.0" width="105.0" x="201.0" y="61.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="71.0" y="61.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="531.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="551.0" y="87.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="74.0" x="513.0" y="117.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="511.0" y="69.0"></omgdi:waypoint>
+        <omgdi:waypoint x="511.0" y="36.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="82.0" x="395.0" y="13.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="306.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="351.0" y="88.0"></omgdi:waypoint>
@@ -191,18 +380,27 @@
         <omgdi:waypoint x="456.0" y="88.0"></omgdi:waypoint>
         <omgdi:waypoint x="491.0" y="89.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="511.0" y="69.0"></omgdi:waypoint>
-        <omgdi:waypoint x="511.0" y="36.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="713.0" y="158.0"></omgdi:waypoint>
+        <omgdi:waypoint x="658.0" y="158.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="82.0" x="395.0" y="13.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="656.0" y="117.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="531.0" y="89.0"></omgdi:waypoint>
-        <omgdi:waypoint x="551.0" y="87.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="733.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="733.0" y="211.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="74.0" x="513.0" y="117.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="90.0" x="737.0" y="184.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="733.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="606.0" y="243.0"></omgdi:waypoint>
+        <omgdi:waypoint x="606.0" y="388.0"></omgdi:waypoint>
+        <omgdi:waypoint x="683.0" y="388.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="87.0" x="524.0" y="285.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
@@ -213,24 +411,10 @@
         <omgdi:waypoint x="733.0" y="115.0"></omgdi:waypoint>
         <omgdi:waypoint x="733.0" y="138.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="713.0" y="158.0"></omgdi:waypoint>
-        <omgdi:waypoint x="658.0" y="158.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="656.0" y="117.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
         <omgdi:waypoint x="553.0" y="158.0"></omgdi:waypoint>
         <omgdi:waypoint x="403.0" y="158.0"></omgdi:waypoint>
         <omgdi:waypoint x="403.0" y="116.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="733.0" y="178.0"></omgdi:waypoint>
-        <omgdi:waypoint x="733.0" y="211.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="90.0" x="737.0" y="184.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
         <omgdi:waypoint x="733.0" y="266.0"></omgdi:waypoint>
@@ -250,14 +434,8 @@
         <omgdi:waypoint x="815.0" y="39.0"></omgdi:waypoint>
         <omgdi:waypoint x="603.0" y="39.0"></omgdi:waypoint>
         <omgdi:waypoint x="603.0" y="60.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="733.0" y="178.0"></omgdi:waypoint>
-        <omgdi:waypoint x="606.0" y="243.0"></omgdi:waypoint>
-        <omgdi:waypoint x="606.0" y="388.0"></omgdi:waypoint>
-        <omgdi:waypoint x="683.0" y="388.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="87.0" x="524.0" y="285.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="819.0" y="438.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
@@ -307,6 +485,9 @@
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
         <omgdi:waypoint x="736.0" y="540.0"></omgdi:waypoint>
         <omgdi:waypoint x="735.0" y="581.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="736.0" y="540.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
         <omgdi:waypoint x="802.0" y="89.0"></omgdi:waypoint>
