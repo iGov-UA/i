@@ -11,7 +11,7 @@
         <activiti:formProperty id="sApplicant" name="Кореспондент ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum">
+        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа ; ;bVisible=false" type="enum">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
@@ -21,6 +21,8 @@
           <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа ; ;bVisible=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sName_Signed" name="Підписав ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask4" name="Референт - формування та реєстрація вихідної кореспонденції">
@@ -70,7 +72,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Счетчик номера и получение ИД БП" isForCompensation="true" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле исходящего номера
 var number=execution.getVariable('sID_Custom_GovPublic');
 var sIncomingNumber=execution.getVariable('sIncomingNumber');
