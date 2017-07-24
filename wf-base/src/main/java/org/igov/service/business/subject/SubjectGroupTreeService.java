@@ -586,7 +586,7 @@ public class SubjectGroupTreeService {
      */
     private static boolean isDisplayRootElement(Boolean bIncludeRoot) {
         if (bIncludeRoot == null) {
-            return Boolean.FALSE;
+            return Boolean.TRUE;
         }
         return bIncludeRoot;
     }
