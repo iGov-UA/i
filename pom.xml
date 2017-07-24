@@ -13,9 +13,7 @@
 
         <profile>
             <id>alpha</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+         
             <properties>
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
@@ -26,7 +24,7 @@
             </properties>
         </profile>
         <profile>
-            <id>beta</id>
+            <!--id>beta</id>
             <properties>
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
@@ -78,27 +76,36 @@
                 <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
                 <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
                 <sRevisionSubPath></sRevisionSubPath>
-            </properties>
+            </properties-->
         </profile>
         <profile>
             <id>release</id>
-            <properties>
+                              <properties>
                 <sRevisionVersion>1.0.0</sRevisionVersion>
                 <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision>${sSubBranch}</sRevision>
+                <sRevision></sRevision>
                 <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
                 <sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase>
                 <sRevisionSubPath></sRevisionSubPath>
-                <!--igov.storage-static.version>1.0.0-RELEASE</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0-RELEASE</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0-RELEASE</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0-RELEASE</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0-RELEASE</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}/prod</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}/prod</activiti.custom.data.path-->
-            </properties>
-        </profile>
+                     </properties>
+           </profile>
+
+           <profile>
+            <id>prod</id>
+                    <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sRevisionVersion>1.0.0</sRevisionVersion>
+                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
+                <sRevision></sRevision>
+                <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
+                <sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase>
+                <sRevisionSubPath></sRevisionSubPath>
+                     </properties>
+           </profile>
     </profiles>
+
 
 
     <properties>
@@ -173,17 +180,17 @@
         <igov.ibp.git>git@github.com:e-government-ua/iBP.git</igov.ibp.git>
     </properties>
 
-    <distributionManagement>
+      <distributionManagement>
         <!-- XXX Replace localNexus to iGov_Nexus or something like that. And reconfigure Jenkins -->
         <repository>
             <id>eGovUa_Nexus</id>
             <name>Internal Releases</name>
-            <url>https://nexus.igov.org.ua/nexus/content/repositories/releases</url>
+            <url>https://nexus.igov.org.ua/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>eGovUa_Nexus</id>
             <name>Internal Snapshots</name>
-            <url>https://nexus.igov.org.ua/nexus/content/repositories/snapshots</url>
+            <url>https://nexus.igov.org.ua/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
     <repositories>
@@ -201,7 +208,7 @@
         </repository>
         <repository>
             <id>eGovUa_Nexus</id>
-            <url>https://nexus.igov.org.ua/nexus/content/groups/public</url>
+            <url>https://nexus.igov.org.ua/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>Activiti</id>
@@ -217,6 +224,7 @@
             <url>https://jcenter.bintray.com/</url>
         </repository>        
     </repositories>
+
 
     <modules>
         <module>auth-custom</module>
@@ -766,3 +774,4 @@
     </reporting>
 
 </project>
+

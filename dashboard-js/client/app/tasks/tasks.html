@@ -1,4 +1,4 @@
-<style>
+﻿<style>
   .toRight {
     float: right;
   }
@@ -37,15 +37,10 @@
               ng-show="isVisible(menu.type)"
               ng-class="{'selected-menu-list': isTaskFilterActive(menu.type)}">
 
-            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
-               ng-if="menu.tab !== 'ecp'"
+            <a class="navbar-nav-tab"
+               ng-attr-id="{{menu.type}}"
                ui-sref="tasks.typeof({type:menu.tab})">{{menu.title}}
               <span ng-if="menu.showCount" class="label counter">{{menu.count}}</span>
-            </a>
-
-            <a class="navbar-nav-tab" ng-attr-id="{{menu.type}}"
-               ng-if="menu.tab === 'ecp'"
-               ui-sref="tasks.typeof.ecp">{{menu.title}}
             </a>
           </li>
         </ul>
@@ -75,7 +70,15 @@
 
     <div class="form-group col-md-5 search-box-idoc" ng-class="{'toRight': !isMenuOpened}"
          style="margin-right: 15px; margin-left: 15px;">
-      <search-box></search-box>
+      <search-box ng-if="sSelectedTask !== 'ecp'"></search-box>
+      <div ng-if="sSelectedTask === 'ecp'" class="row">
+        <label style="margin-left: 20px; margin-right: 20px">
+          <input type="checkbox" ng-model="bSelectAllForEDS" style="margin-right: 5px; margin-left: 5px"> Усі
+        </label>
+        <button class="btn btn-info menu-tab-is-selected">
+          <span style="margin-left: 10px; margin-right: 10px">Підписати ЕЦП</span>
+        </button>
+      </div>
     </div>
 
     <div ng-class="{'col-xs-9': isMenuOpened, 'col-xs-12 ': !isMenuOpened}"
@@ -134,7 +137,7 @@
                 <a
                   class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}"
                   href=""
-
+                  ng-if="sSelectedTask !== 'ecp'"
                   title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
                   ng-class="{'active': isTaskSelected(task)}"
                   igov-focus-if="tasksStateModel.taskId == task.id"
@@ -152,6 +155,40 @@
                   <span class="ticket-title" style="color: dimgrey;font-size: 11px;"
                         ng-bind="::getTaskTitle(task)"></span>
                 </a>
+
+                <div
+                  class="list-group-item igov-tasks-list task {{sSelectedTask}}_{{task.processInstanceId}} {{ sTaskClass(task.taskDefinitionKey) }}"
+                  title="{{task.description}} (Задача №{{task.id}}, Процесс №{{task.processDefinitionId}})"
+                  ng-class="{'active': isTaskSelected(task)}"
+                  ng-if="sSelectedTask === 'ecp'"
+                  igov-focus-if="tasksStateModel.taskId == task.id">
+                  <table width="100%">
+                    <tr>
+                      <td>
+                        <input type="checkbox"
+                               ng-checked="task.bSelectedForEDS"
+                               title="Обрати для накладання ЕЦП"
+                               style="float: left; margin-right: 5px; margin-left: 5px">
+                      </td>
+                      <td width="100%">
+                        <a href="" ui-sref="tasks.typeof.view({id:task.id})">
+                          <!-- Task can have multiple statuses, but show only one sorted by priority -->
+                          <span class="badge badge-task badge-red" title="Ответ дан от гражданина"
+                                ng-if="hasTaskStatus(task, 'GotAnswer')">1</span>
+                          <span class="badge badge-task badge-yellow" title="Комментарий от гражданина"
+                                ng-if="hasTaskStatus(task, 'GotUpdate')">1</span>
+                          <span class="badge badge-task" title="Вопрос задан от госслужащего"
+                                ng-if="hasTaskStatus(task, 'WaitAnswer')">1</span>
+
+                          <span class="ticket-date-time" style="color:black;font-size:13px"
+                                ng-bind="::getProcessName(task)"></span><br>
+                          <span class="ticket-title" style="color: dimgrey;font-size: 11px;"
+                                ng-bind="::getTaskTitle(task)"></span>
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
               </div>
             </div>
 

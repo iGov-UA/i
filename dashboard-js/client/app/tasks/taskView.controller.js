@@ -9,13 +9,13 @@
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
       'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'DocumentsService', 'snapRemote', 'tasksSearchService',
-      'fieldsService', 'Issue', 'signDialog', 'generationService',
+      'fieldsService', 'Issue', 'signDialog', 'generationService', '$http',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
                 processSubject, $sce, eaTreeViewFactory, $location, DocumentsService, snapRemote, tasksSearchService,
-                fieldsService, Issue, signDialog, generationService) {
+                fieldsService, Issue, signDialog, generationService, $http) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -319,9 +319,13 @@
         $rootScope.delegateSelectMenu = false;
         $scope.spinner = false;
 
-        // todo соеденить с isUnasigned
+        $scope.isAnyIssues = function () {
+          var issues = Issue.getIssues();
+          return issues.length > 0;
+        };
+
         $scope.isDocument = function () {
-          return $state.params.type === 'documents';
+          return ['documents', 'myDrafts', 'ecp', 'viewed', 'docHistory'].indexOf($state.params.type) > -1;
         };
 
         $scope.validateForm = function(form) {
@@ -350,7 +354,7 @@
 
         var isItemFormPropertyDisabled = function (oItemFormProperty){
           if (!$scope.selectedTask || (!$scope.selectedTask.assignee && !$scope.isDocument()) || !oItemFormProperty
-            || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished')
+            || !$scope.sSelectedTask || $scope.sSelectedTask === 'finished' || $scope.sSelectedTask === 'docHistory')
             return true;
 
           var sID_Field = oItemFormProperty.id;
@@ -404,6 +408,11 @@
           angular.forEach($scope.taskForm, function (i, k, o) {
             if(i.type === 'fileHTML' && i.value && i.value.indexOf('sKey') > -1) {
               tasks.getTableOrFileAttachment($scope.taskData.oProcess.nID, i.id, true).then(function (res) {
+                o[k].valueVisible = res;
+              })
+            } else if(i.sType === 'fileHTML' && i.oValue && i.oValue.indexOf('sKey') > -1) {
+              var key = JSON.parse(i.oValue);
+              tasks.getTableOrFileAttachment(key.sKey, key.sID_StorageType, true).then(function (res) {
                 o[k].valueVisible = res;
               })
             }
@@ -467,11 +476,12 @@
 
         function fillArrayWithNewAttaches() {
           angular.forEach($scope.taskForm, function (item) {
-            if(item.type === 'file' || item.type === 'table' || item.type === 'string') {
+            var type = item.type ? item.type : item.sType;
+            if(['file', 'table'].indexOf(type) > -1) {
               try {
-                var parsedValue = JSON.parse(item.value);
+                var parsedValue = item.oValue ? JSON.parse(item.oValue) : JSON.parse(item.value);
                 if(parsedValue && parsedValue.sKey) {
-                  var sFieldName = item.name || '';
+                  var sFieldName = item.name || item.sName || '';
                   var aNameParts = sFieldName.split(';');
                   var sFieldNotes = aNameParts[0].trim();
                   item.sFieldLabel = sFieldNotes;
@@ -535,37 +545,20 @@
         };
 
         $scope.takeTheKeyFromJSON = function (item) {
-          return JSON.parse(item.value).sKey;
+          return item.oValue ? JSON.parse(item.oValue).sKey : JSON.parse(item.value).sKey;
         };
 
         $scope.takeTheFileNameFromJSON = function (item) {
-          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
+          var originalFileName = JSON.parse(item.value || item.oValue).sFileNameAndExt;
           var ext;
           if (originalFileName && originalFileName.indexOf('.') > 0){
             var parts = originalFileName.split(".");
             ext = parts[parts.length - 1];
           }
           if(ext){
-            return item.name + '.' + ext;
+            return (item.name || item.sName) + '.' + ext;
           }
-          return item.name;
-        };
-
-        $scope.takeTheKeyFromJSON = function (item) {
-          return JSON.parse(item.value).sKey;
-        };
-
-        $scope.takeTheFileNameFromJSON = function (item) {
-          var originalFileName = JSON.parse(item.value).sFileNameAndExt;
-          var ext;
-          if (originalFileName && originalFileName.indexOf('.') > 0){
-            var parts = originalFileName.split(".");
-            ext = parts[parts.length - 1];
-          }
-          if(ext){
-            return item.name + '.' + ext;
-          }
-          return item.name;
+          return item.name || item.sName;
         };
 
         $scope.clarify = false;
@@ -868,8 +861,9 @@
           $scope.validateForm(form);
           if(form.$invalid){
             $scope.isFormInvalid = true;
-            if(isAnyIssuesExist)
+            if(isAnyIssuesExist && isAnyIssuesExist.length > 0){
               $scope.issueValid = false;
+            }
             return;
           } else {
             $scope.isFormInvalid = false;
@@ -880,6 +874,8 @@
           function submitCallback(result) {
             if(result.status == 500){
               var message = result.data.message;
+              if(message === 'DocumentStepModified')
+                message = 'Документ вже був переміщений на наступний крок, поновіть, будь ласка, сторінку';
               var errMsg = (message.indexOf("errMsg") >= 0) ? message.split(":")[1].split("=")[1] : message;
               $scope.taskForm.isInProcess = false;
               $scope.convertDisabledEnumFiedsToReadonlySimpleText();
@@ -989,9 +985,21 @@
           }
 
           function signAndSubmitForm(isNeedSign, oIssue) {
+            var oDocParams = {};
+            if($scope.taskData.oProcess.sBP.indexOf('_doc_') === 0) {
+              oDocParams.nID_Process = $scope.taskData.oProcess.nID;
+              for (var variable in $scope.taskData.mProcessVariable) {
+                if ($scope.taskData.mProcessVariable.hasOwnProperty(variable) && variable === 'sKey_Step_Document') {
+                  oDocParams.sStep_Document = $scope.taskData.mProcessVariable[variable];
+                  break;
+                }
+              }
+            }
+
             if (isNeedSign) {
               relinkPrintFormsIntoFileFields();
               tasks.generatePDFFromPrintForms($scope.taskForm, $scope.selectedTask).then(function (result) {
+                result.base64encoded = true;
 
                 signDialog.signContentsArray(result,
                   function (signedContents) {
@@ -1019,7 +1027,7 @@
                           sKey_Step: sKeyStepValue,
                           taskId: $scope.selectedTask.id
                         }).then(function (resp) {
-                          submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+                          submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue, oDocParams);
                         }, function (error) {
                           Modal.inform.error()(angular.toJson(error));
                         })
@@ -1040,12 +1048,12 @@
                 Modal.inform.error()(angular.toJson(error));
               }).catch(defaultErrorHandler);
             } else {
-              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue);
+              submitTaskForm($scope.taskForm, $scope.selectedTask, $scope.taskData.aAttachment, oIssue, oDocParams);
             }
           }
 
-          function submitTaskForm(taskForm, selectedTask, attachmets, issues) {
-            return tasks.submitTaskForm(selectedTask.id, taskForm, selectedTask, attachmets, issues)
+          function submitTaskForm(taskForm, selectedTask, attachmets, issues, docParams) {
+            return tasks.submitTaskForm(selectedTask.id, taskForm, selectedTask, attachmets, issues, docParams)
               .then(submitCallback)
               .catch(defaultErrorHandler);
           }
@@ -1324,9 +1332,10 @@
 
         $scope.isTableAttachment = function (item) {
           if(typeof item === 'object') {
-            return item.type === 'table';
+            return item.type === 'table' || item.sType === 'table';
           } else {
-            return item.indexOf('[table]') > -1;
+            if(item)
+              return item.indexOf('[table]') > -1;
           }
         };
 
@@ -1336,6 +1345,12 @@
 
         $scope.openTableAttachment = function (id, taskId, isNew) {
           $scope.attachIsLoading = true;
+
+          if (!taskId && id.indexOf('sKey') > -1) {
+            var key = JSON.parse(id);
+            taskId = key.sKey;
+            id = key.sID_StorageType;
+          }
 
           tasks.getTableOrFileAttachment(taskId, id, isNew).then(function (res) {
             $scope.openedAttachTable = typeof res === 'object' ? res : JSON.parse(res);
@@ -1404,12 +1419,14 @@
           angular.forEach($scope.taskForm, function (item, key, obj) {
             angular.forEach($scope.taskData.aAttachment, function (attachment) {
               var reg = /(\[id=(\w+)\])/;
-              var match = attachment.description.match(reg);
-              if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
-                tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
-                  obj[key] = JSON.parse(res);
-                  obj[key].description = attachment.description;
-                })
+              if (attachment.description) {
+                var match = attachment.description.match(reg);
+                if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
+                  tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
+                    obj[key] = JSON.parse(res);
+                    obj[key].description = attachment.description;
+                  })
+                }
               }
             })
           });
@@ -1510,13 +1527,15 @@
 
         $scope.searchingTablesForPrint = function () {
           angular.forEach($scope.taskData.aAttachment, function (attachment) {
-            var tableID = attachment.description.match(/(\[id=(\w+)\])/);
-            if(tableID !== null && tableID.length === 3) {
-              tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
-                var table = JSON.parse(res);
-                fixFieldsForTable(table);
-                $scope.taskData.aTable.push(table);
-              })
+            if (attachment.description) {
+              var tableID = attachment.description.match(/(\[id=(\w+)\])/);
+              if(tableID !== null && tableID.length === 3) {
+                tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
+                  var table = JSON.parse(res);
+                  fixFieldsForTable(table);
+                  $scope.taskData.aTable.push(table);
+                })
+              }
             }
           });
 
@@ -1598,14 +1617,16 @@
           $scope.usersHierarchyOpened = !$scope.usersHierarchyOpened;
         };
 
-        $scope.assignAndSubmitDocument = function (documentForm, isNeedEDS) {
-          $scope.taskForm.isInProcess = true;
-
-          tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
-            .then(function (result) {
-              $scope.submitTask(form, true, isNeedEDS);
-            })
-            .catch(defaultErrorHandler);
+        $scope.assignAndSubmitDocument = function (docForm, isNeedEDS) {
+          $scope.validateForm(docForm);
+          if(!docForm.$invalid){
+            $scope.isFormInvalid = false;
+            tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id).then(function () {
+                $scope.submitTask(docForm, true, isNeedEDS);
+              }).catch(defaultErrorHandler);
+          } else {
+            $scope.isFormInvalid = true;
+          }
         };
 
         $scope.isDocumentNotSigned = function () {
@@ -1852,6 +1873,18 @@
             }
           }
           return false;
+        }
+
+        $scope.getLinkToDocument = function(nID_Order_Document){
+          $http({
+            url: '/api/processes/getmID_TaskAndProcess',
+            method: "GET",
+            params: {nID_Order: nID_Order_Document}
+          }).then(function successCallback(response) {
+            var obj = JSON.parse(response.data);
+            $location.path("/tasks/documents/" + obj.nID_Task_Active)
+          }, function errorCallback(response) {
+          });
         }
       }
     ])

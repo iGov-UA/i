@@ -145,7 +145,7 @@ var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti
     <scriptTask id="scripttask5" name="перехід степ4 клонування права ДД РБ" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_4'
+var sKey_Step= 'step_5'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -184,7 +184,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
     <scriptTask id="scripttask6" name="права членам ТК степ5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step = 'step_5'
+var sKey_Step = 'step_6'
 var oResultSetDoc = documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
 //Клонування прав для тарифного комітету
@@ -323,7 +323,7 @@ true}]]></conditionExpression>
     <scriptTask id="scripttask9" name="права відповідальній особі степ 6" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_6'
+var sKey_Step= 'step_7'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -339,7 +339,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     </scriptTask>
     <userTask id="usertask6" name="протокол щодо зміни тарифу ТК">
       <extensionElements>
-        <activiti:formProperty id="sOrder" name="тип документу" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
@@ -356,12 +355,12 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrder" name="тип документу" type="fileHTML"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask7" name="розпорядження щодо зміни тарифу">
       <extensionElements>
-        <activiti:formProperty id="sOrder" name="Тип документу" type="fileHTML" default="0"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asForma_SZ" name="Оберіть форму для формування СЗ" type="enum" writable="false">
@@ -378,6 +377,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sFoundation" name="Обгрунтування" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMarket_Monitoring" name="Моніторинг ринку" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAmount_of_commission" name="Процент суми розрахованої комісії" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sOrder" name="Тип документу" type="fileHTML" default="0"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>

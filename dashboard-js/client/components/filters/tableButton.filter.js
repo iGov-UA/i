@@ -4,6 +4,7 @@
 angular.module('dashboardJsApp')
   .filter('tableButtonFilter', function () {
     return function (value) {
-      return  value.split('[')[0];
+      if(value)
+        return value.split('[')[0];
     }
   });

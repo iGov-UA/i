@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="_doc_concord_job_vacancy" name="Заявка на подбор персонала" isExecutable="true">
+  <process id="_doc_concord_job_vacancy" name="Заявка на підбір персоналу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала"></activiti:formProperty>
@@ -25,15 +25,17 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
     <userTask id="usertask1" name="Створення заявки на заміщення вакансії">
       <extensionElements>
         <activiti:formProperty id="processDefinitionId" name="processDefinitionId ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на підбір персоналу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ConcordBank_Head_of_Brunch"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Відділ" type="enum" required="true">
           <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
           <activiti:value id="sEnumFilia2" name="Відділ №2"></activiti:value>
@@ -42,61 +44,74 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumDepartment1" name="Департамент №1"></activiti:value>
           <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSubordination" name="Кому підпорядковується" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sExpPost" name="Досвід роботи: посада" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sExpActivity" name="Досвід роботи: напрям діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Кому підпорядковується; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Ким керує; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable2&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="labelExpirience" name="Доcвід роботи" type="label" default="Доcвід роботи"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Досвід роботи; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table2.json')}"></activiti:formProperty>
         <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_job_vacancy.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_job_vacancy.json')}"></activiti:formProperty>
+        <activiti:formProperty id="slanguage" name="Знання іноземних мов; мова-ступінь володіння; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameLanguage&quot;,&quot;name&quot;:&quot;Мова&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLevelLanguage&quot;,&quot;name&quot;:&quot;Ступінь володіння&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;Beginner&quot;,&quot;name&quot;:&quot;Beginner - початковий рівень&quot;},{&quot;id&quot;:&quot;Elementary&quot;,&quot;name&quot;:&quot;Elementary - базовий рівень&quot;},{&quot;id&quot;:&quot;PreIntermeadiate&quot;,&quot;name&quot;:&quot;Pre-Intermeadiate - перед-середній&quot;},{&quot;id&quot;:&quot;Intermediate&quot;,&quot;name&quot;:&quot;Intermediate - середній&quot;},{&quot;id&quot;:&quot;UpperIntermediate &quot;,&quot;name&quot;:&quot;Upper-Intermediate - вище-середнього&quot;},{&quot;id&quot;:&quot;Advanced&quot;,&quot;name&quot;:&quot;Advanced - підвищений&quot;},{&quot;id&quot;:&quot;Proficiency&quot;,&quot;name&quot;:&quot;Proficiency – професійний&quot;}]}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable7" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table7.json')}"></activiti:formProperty>
         <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAge" name="Вік" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asSex" name="Стать" type="enum" required="true">
+        <activiti:formProperty id="asSex" name="Стать" type="enum" default="sEnumBoth" required="true">
           <activiti:value id="sEnumMale" name="Чоловік"></activiti:value>
           <activiti:value id="sEnumFemale" name="Жінка"></activiti:value>
-          <activiti:value id="sEnumBoth" name="Чоловік або жінка"></activiti:value>
+          <activiti:value id="sEnumBoth" name="неважливо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFamily" name="Сімейний стан, діти" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asCar" name="Наявність авто; ;sID_CheckboxTrue=sEnumCarYes" type="enum">
-          <activiti:value id="sEnumCarNo" name="відсутнє"></activiti:value>
-          <activiti:value id="sEnumCarYes" name="є авто"></activiti:value>
+        <activiti:formProperty id="asMarriage" name="Сімейний стан" type="enum" default="sEnumBoth">
+          <activiti:value id="sEnumYes" name="у шлюбі"></activiti:value>
+          <activiti:value id="sEnumNo" name="не в шлюбі"></activiti:value>
+          <activiti:value id="sEnumBoth" name="неважливо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення; ;sID_CheckboxTrue=sEnumLicYes" type="enum">
-          <activiti:value id="sEnumLicNo" name="відсутнє"></activiti:value>
-          <activiti:value id="sEnumLicYes" name="є посвідчення"></activiti:value>
+        <activiti:formProperty id="aChildren" name="Наявність дітей" type="enum" default="sEnumBoth">
+          <activiti:value id="sEnumYes" name="є діти"></activiti:value>
+          <activiti:value id="sEnumNo" name="без дітей"></activiti:value>
+          <activiti:value id="sEnumBoth" name="неважливо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asCar" name="Наявність авто;sID_CheckboxTrue=sEnumYes" type="enum">
+          <activiti:value id="sEnumYes" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumNo" name="є авто"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення;sID_CheckboxTrue=sEnumYes" type="enum">
+          <activiti:value id="sEnumYes" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumNo" name="є посвідчення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sExpExtra" name="Додаткові бажані навички, досвід" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTasks" name="Основні задачі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" default="Нижня: , Середня: , Вища: ."></activiti:formProperty>
-        <activiti:formProperty id="sBonus" name="Змінна складова (грн або %, періодичність виплати)" type="string" default="Премії: , Бонуси: "></activiti:formProperty>
-        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку" type="enum" default="sEnumRefundMobileNo">
-          <activiti:value id="sEnumRefundMobileNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="sSalaryBottom" name="Оклад - нижня межа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSalaryAverage" name="Середній оклад" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSalaryTop" name="Оклад - верхня межа" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asBonus" name="Змінна складова" type="enum">
+          <activiti:value id="sEnumNo" name="Премія"></activiti:value>
+          <activiti:value id="sEnumYes" name="Бонус"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRefundGas" name="Компенсація бензину" type="enum" default="sEnumRefundGasNo">
-          <activiti:value id="sEnumRefundGasNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="sBonusPercent" name="Процент (або кількісний показник)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBonuspPeriod" name="Періодичність виплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто" type="enum" default="sEnumRefundDeprecNo">
-          <activiti:value id="sEnumRefundDeprecNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="asRefundGas" name="Компенсація бензину;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRefundOther" name="Компенсація інше" type="enum" default="sEnumRefundOtherNo">
-          <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRefundOther" name="Компенсація інше;sID_CheckboxTrue=sEnumYes" type="enum" default="sEnumNo">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string"></activiti:formProperty>
         <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string"></activiti:formProperty>
@@ -109,13 +124,17 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumFindYes" name="закритий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFindMoney" name="Бюджет на пошук" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="string" default="Місто: , Регіон: , Країна: ."></activiti:formProperty>
+        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="enum">
+          <activiti:value id="Country" name="Країна"></activiti:value>
+          <activiti:value id="Region" name="Регіон"></activiti:value>
+          <activiti:value id="City" name="Місто"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFindCompany" name="Компанії, в яких може працювати кандидат (назва та сфера діяльності)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sEmailOfHead" name="имейл начальника отдела, создающий заявку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_Concord_head_profile_unit]]></activiti:string>
@@ -124,6 +143,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
             <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener} "></activiti:taskListener>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="кандидати на вакансію ${sVacancy}">
@@ -132,12 +152,14 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="sTypeDoc" name="Тип документа" type="string" default="Заявка на подбор персонала" writable="false"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="OE_"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="5"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ConcordBank_Head_of_Brunch"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sName_SubjectRole" name="Логін ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер задачі" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nQuantity" name="Кількість штатних одиниць" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sReason" name="Причина виникнення вакансії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asFilia" name="Відділ" type="enum" writable="false">
           <activiti:value id="sEnumFilia1" name="Відділ №1"></activiti:value>
           <activiti:value id="sEnumFilia2" name="Відділ №2"></activiti:value>
@@ -146,61 +168,74 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumDepartment1" name="Департамент №1"></activiti:value>
           <activiti:value id="sEnumDepartment2" name="Департамент №2"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sVacancy" name="Вакантна посада" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sCategory" name="Категорія, ранг вакантної посади" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSubordination" name="Кому підпорядковується" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sManagement" name="Ким керує (кількість, посади, ПІБ)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sExpDuration" name="Досвід роботи: тривалість" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExpPost" name="Досвід роботи: посада" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sExpActivity" name="Досвід роботи: напрям діяльності" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable4" name="Кому підпорядковується; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table4.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable5" name="Ким керує; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table5.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Вимоги до кандидата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sExpDuration&quot;],&quot;sValue&quot;:&quot;Вимоги до кандидата&quot;}}}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_4" name="Доcвід роботи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sExperienceLine&quot;],&quot;sValue&quot;:&quot;Досвід роботи&quot;}}}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Досвід роботи; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table2.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCompetence" name="Необхідні професійні навички, вміння, знання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEducationMain" name="Основна освіта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEducationExtra" name="Додаткова освіта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable1" name="Володіння іноземними мовами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable1_doc_concord_job_vacancy.json')}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTable2" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable2_doc_concord_job_vacancy.json')}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="slanguage" name="Знання іноземних мов; мова-ступінь володіння; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sNameLanguage&quot;,&quot;name&quot;:&quot;Мова&quot;,&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;},{&quot;id&quot;:&quot;sLevelLanguage&quot;,&quot;name&quot;:&quot;Ступінь володіння&quot;,&quot;type&quot;:&quot;enum&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;a&quot;:[{&quot;id&quot;:&quot;Beginner&quot;,&quot;name&quot;:&quot;Beginner - початковий рівень&quot;},{&quot;id&quot;:&quot;Elementary&quot;,&quot;name&quot;:&quot;Elementary - базовий рівень&quot;},{&quot;id&quot;:&quot;PreIntermeadiate&quot;,&quot;name&quot;:&quot;Pre-Intermeadiate - перед-середній&quot;},{&quot;id&quot;:&quot;Intermediate&quot;,&quot;name&quot;:&quot;Intermediate - середній&quot;},{&quot;id&quot;:&quot;UpperIntermediate &quot;,&quot;name&quot;:&quot;Upper-Intermediate - вище-середнього&quot;},{&quot;id&quot;:&quot;Advanced&quot;,&quot;name&quot;:&quot;Advanced - підвищений&quot;},{&quot;id&quot;:&quot;Proficiency&quot;,&quot;name&quot;:&quot;Proficiency – професійний&quot;}]}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTable7" name="Володіння ПК; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table7.json')}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPersonal" name="Особисті якості та характеристики, необходні для ефективного виконання функціональних обов’язків" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asSex" name="Стать" type="enum" writable="false">
           <activiti:value id="sEnumMale" name="Чоловік"></activiti:value>
           <activiti:value id="sEnumFemale" name="Жінка"></activiti:value>
-          <activiti:value id="sEnumBoth" name="Чоловік або жінка"></activiti:value>
+          <activiti:value id="sEnumBoth" name="неважливо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFamily" name="Сімейний стан, діти" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asCar" name="Наявність авто" type="enum" writable="false">
-          <activiti:value id="sEnumCarNo" name="відсутнє"></activiti:value>
-          <activiti:value id="sEnumCarYes" name="є авто"></activiti:value>
+        <activiti:formProperty id="asMarriage" name="Сімейний стан" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="у шлюбі"></activiti:value>
+          <activiti:value id="sEnumNo" name="не в шлюбі"></activiti:value>
+          <activiti:value id="sEnumBoth" name="неважливо"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення" type="enum" writable="false">
-          <activiti:value id="sEnumLicNo" name="відсутнє"></activiti:value>
-          <activiti:value id="sEnumLicYes" name="є посвідчення"></activiti:value>
+        <activiti:formProperty id="aChildren" name="Наявність дітей" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="є діти"></activiti:value>
+          <activiti:value id="sEnumNo" name="без дітей"></activiti:value>
+          <activiti:value id="sEnumBoth" name="неважливо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asCar" name="Наявність авто;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumNo" name="є авто"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asLicense" name="Наявність водійського посвідчення;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="відсутнє"></activiti:value>
+          <activiti:value id="sEnumNo" name="є посвідчення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sExpExtra" name="Додаткові бажані навички, досвід" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Вакантна позиція" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Вакантна позиція&quot;}}}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTasks" name="Основні задачі" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFunctions" name="Основні функціональні обов'язки" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTestTasks" name="Основні задачі на випробувальний період" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sResults" name="Очікувані результати в випробувальний період" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період (тут будет селект из дерева)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sMentor" name="Наставник на випробувальний період" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Умови найму" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTasks&quot;],&quot;sValue&quot;:&quot;Умови найму&quot;}}}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWorkPlace" name="Робоче місце" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSalary" name="Заробітна плата: оклад (ставка, грн)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBonus" name="Змінна складова (грн або %, періодичність виплати)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку" type="enum" writable="false">
-          <activiti:value id="sEnumRefundMobileNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="sSalaryBottom" name="Оклад - нижня межа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSalaryAverage" name="Середній оклад" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSalaryTop" name="Оклад - верхня межа" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asBonus" name="Змінна складова" type="enum" writable="false">
+          <activiti:value id="sEnumNo" name="Премія"></activiti:value>
+          <activiti:value id="sEnumYes" name="Бонус"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRefundGas" name="Компенсація бензину" type="enum" writable="false">
-          <activiti:value id="sEnumRefundGasNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="sBonusPercent" name="Процент (або кількісний показник)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBonuspPeriod" name="Періодичність виплати" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asRefundMobile" name="Компенсація мобільного зв'язку;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто" type="enum" writable="false">
-          <activiti:value id="sEnumRefundDeprecNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="asRefundGas" name="Компенсація бензину;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRefundOther" name="Компенсація інше" type="enum" writable="false">
-          <activiti:value id="sEnumRefundOtherNo" name="відсутня"></activiti:value>
-          <activiti:value id="sEnumRefundMobileYes" name="є компенсація"></activiti:value>
+        <activiti:formProperty id="asRefundDeprec" name="Компенсація амортизації авто;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asRefundOther" name="Компенсація інше;sID_CheckboxTrue=sEnumYes" type="enum" writable="false">
+          <activiti:value id="sEnumNo" name="відсутня"></activiti:value>
+          <activiti:value id="sEnumYes" name="є компенсація"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sTestTerm" name="Тривалість випробувального терміну" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTestSalary" name="Зарплата на час випробувального терміну" type="string" writable="false"></activiti:formProperty>
@@ -213,17 +248,22 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="sEnumFindYes" name="закритий"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFindMoney" name="Бюджет на пошук" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFindPlace" name="Масштаб пошуку" type="enum" writable="false">
+          <activiti:value id="Country" name="Країна"></activiti:value>
+          <activiti:value id="Region" name="Регіон"></activiti:value>
+          <activiti:value id="City" name="Місто"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sFindCompany" name="Компанії, в яких може працювати кандидат (назва та сфера діяльності)" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNotCompany" name="Компанії, з яких не бажано брати кандидатів. Чому?" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFindDate" name="Бажані строки закриття вакансії, до" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select"></activiti:formProperty>
-        <activiti:formProperty id="sTable" name="Статус анкети кандидата" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAutorResolution" name="Автор заявки; ;sID_SubjectRole=Executor,sID_Group_Activiti=sID_Group_Activiti,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Статус анкети кандидата; ;bNew=true" type="table" default="${markerService.loadFromFile('table/conkord/_doc_concord_job_vacancy_table.json')}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sEmailOfHead" name="Електронна адреса керівника відділу, що створив заявку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_job_vacancy.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Анкета кандидата"></activiti:formProperty>
         <activiti:formProperty id="sDecision" name="Рішення про результат підбору кандидатури на вакантну посаду" type="enum">
           <activiti:value id="Vacancy_Closed" name="Вакансія закрита. Кандидата знайдено"></activiti:value>
           <activiti:value id="Vacancy_is_Open" name="Пошук не дав результатів. Потрібно змінити умови"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sEmailOfHead" name="имейл заказывающего поиск кандидата" type="string" readable="false" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -257,9 +297,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow15" name="прийнято" sourceRef="exclusivegateway1" targetRef="endevent1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow20" sourceRef="exclusivegateway2" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="exclusivegateway2" targetRef="endevent2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_Closed'}]]></conditionExpression>
     </sequenceFlow>
@@ -275,25 +312,185 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:expression><![CDATA[${sEmailOfHead}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Інформація стосовна пошуку кандидатів ]]></activiti:string>
+          <activiti:string><![CDATA[Інформація стосовно пошуку кандидатів]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-			[pattern/mail/new_design/_common_content_start.html]
-          	<p>
-          		Уважаемый <b>${sAutorResolution}</b> <br>
-          		По Вашей заявке не удалось найти подходящего кандидата.
-                     Пересмотрите требования к кандидату и подайте новую заявку: <br>
-          	</p>
-          	[pattern/mail/new_design/_common_content_end.html]
-          	[pattern/mail/new_design/_common_signature_start.html]
-          	[pattern/mail/new_design/_common_signature_end.html]
-          	[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=600" name="viewport" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title> </title>
+    <style type="text/css">
+
+        body {
+            width:100%!important;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
+        }
+        a:link {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+        a:visited {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+			hr {
+			border-bottom: 1px dotted #c2c2c2; 
+			border-top:none;
+			border-left:none;
+			border-right:none;
+			height: 1px; 
+		}
+    </style>
+</head>
+
+<body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+  <tbody>
+      <tr>
+          <td style="text-align: center">
+                <span style="color:#58889D; font-size:5px;"></span>
+          </td>
+      </tr>
+      <tr>
+          <td style="  padding-bottom: 0; mso-table-lspace:0pt !important; mso-table-rspace:0pt !important" height="0"></td>
+      </tr>
+  </tbody>
+</table>                
+
+<!-- main table -->
+<table style="margin:0; padding:0;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td align="center">
+
+            <!-- main content starts here-->
+            <center style="width: 100%;max-width: 600px !important;-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-moz-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+
+                <!--[if gte mso 9]>
+                <table border="0" cellpadding="0" cellspacing="0" 
+                      style="margin:0;padding:0;width: 100%;max-width: 600px;box-shadow:  10px 10px 4px rgba(0,0,0,0.1);-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+                    <tr>
+                        <td>
+                <![endif]-->
+
+                <!-- header logo -->
+                <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 47px; text-align: left; background-color:transparent ;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
+                            </td>
+							
+
+                        </tr>
+                    </tbody>
+                </table> <!-- contents section 1/5 end-->
+
+
+                <!--  main content  -->
+                <table style="margin:0;padding-left: 0;padding-right: 0;-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;" 
+						width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 0;background-color: #FFFFFF;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;padding:10px">
+								<table style="margin:0; padding:0; text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+
+                                            <tr>					
+    <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+          <b>value{[sNameMmiddle]} </b>
+        </p>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td style="overflow:hidden; margin:0; padding:20px 35px 20px 35px; font:16px Arial, sans-serif!important; text-align: left; padding-bottom: 35px;&#10; mso-table-lspace:0pt !important;&#10; mso-table-rspace:0pt !important">
+	
+Шановний ${sAutorResolution}
+Нажаль, не вдалось знайти кандидата на вакансію ${sVacancy} за вказаними критеріями.<br>
+Будь ласка, перегляньте вимоги до кандидата, і подайте нову заявку у разі необхідності.
+	        </td>
+      </tr>
+   </tbody>
+</table>
+	
+						<tr>
+                            <td style="padding: 20px 35px 25px;&#10;background-color: #191970;&#10;-webkit-border-bottom-left-radius: 15px;&#10;-moz-border-bottom-left-radius: 15px;&#10;                                        border-bottom-left-radius: 15px;&#10;-webkit-border-bottom-right-radius: 15px;&#10;                                        -moz-border-bottom-right-radius: 15px;&#10;                                        border-bottom-right-radius: 15px;&#10;                                        mso-table-lspace:0pt !important;&#10;                                        mso-table-rspace:0pt !important;">
+
+                                <table style="margin:0; padding: 0; text-align: left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 0;&#10;mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+                                                <p style="font:15px Arial, sans-serif!important; color:white; margin: 0; padding: 0; line-height: 22px !important;">
+                                                    З повагою, <br>                                                 
+													
+													Управління по роботі з персоналом ConcordBank <br>   
+																								
+                                                </p>
+												 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+						
+						                    </tbody>
+                </table>
+
+                <!--[if gte mso 9]>
+                        </td>
+                    </tr>
+                </table>
+                <![endif]-->
+            </center>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- internal padding bottom -->
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+                <tbody><tr>
+                    <td style="line-height:0;&#10;                                            font-size:0;&#10;                                            padding-bottom: 0;&#10;                                            mso-table-lspace:0pt !important;&#10;                                            mso-table-rspace:0pt !important" height="100">
+
+                    </td>
+                </tr>   
+</tbody></table>   
+
+
+<style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Zapovnit, bud laska, anketu. Detali u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <endEvent id="endevent3" name="End"></endEvent>
-    <sequenceFlow id="flow27" sourceRef="servicetask1" targetRef="endevent3"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="exclusivegateway2" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='Vacancy_is_Open'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="servicetask1" targetRef="endevent2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram__doc_concord_job_vacancy">
     <bpmndi:BPMNPlane bpmnElement="_doc_concord_job_vacancy" id="BPMNPlane__doc_concord_job_vacancy">
@@ -325,10 +522,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdc:Bounds height="35.0" width="35.0" x="523.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="200.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
-        <omgdc:Bounds height="35.0" width="35.0" x="200.0" y="210.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="333.0" y="203.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="295.0" y="62.0"></omgdi:waypoint>
@@ -349,12 +543,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <omgdc:Bounds height="14.0" width="48.0" x="1499.0" y="692.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="520.0" y="230.0"></omgdi:waypoint>
-        <omgdi:waypoint x="485.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="430.0" y="228.0"></omgdi:waypoint>
-        <omgdi:waypoint x="405.0" y="227.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
         <omgdi:waypoint x="540.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="540.0" y="280.0"></omgdi:waypoint>
@@ -367,9 +555,14 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <omgdi:waypoint x="540.0" y="185.0"></omgdi:waypoint>
         <omgdi:waypoint x="540.0" y="210.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="300.0" y="227.0"></omgdi:waypoint>
-        <omgdi:waypoint x="235.0" y="227.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="520.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="438.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="385.0" y="258.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="523.0" y="297.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,0 +1,1353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_doc_test_BP" name="Тестовый - 2202" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="id процесу" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var processInstanceId = execution.getProcessInstanceId();
+execution.setVariable('processInstanceId', processInstanceId)
+
+//скрипт по доставанию фио автора
+//execution.setVariable('processInstanceId', processInstanceId)</script>
+    </scriptTask>
+    <userTask id="usertask1" name="створення документа">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору; ;bNew=true" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="fDoc1" name="Договір з EЦП; ;sID_Field_Printform_ForECP=sBody_1, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
+          <activiti:field name="sKey_GroupPostfix">
+            <activiti:string><![CDATA[_default_Comfy]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="sKey_GroupPostfix_New">
+            <activiti:expression>${sLoginAuthor}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask2" name="права керівнику, степ2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_2'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для керівника автора
+//var sKey_GroupPostfix = '_default_Comfy'
+//var sKey_GroupPostfix_New ='Comfy_Author_Head'
+//var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+//sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+
+
+//скрипт получения логина руководителя
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var obj1 = subjectGroupTreeService.getSubjectGroupsTreeUp(sLoginAuthor,'Human')
+execution.setVariable('sLogin', obj1[0].sID_Group_Activiti)
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New = obj1[0].sID_Group_Activiti
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <userTask id="usertask2" name="керівник автора">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ; ;writable=false" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа; ;writable=false" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління; ;writable=false" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора; ;writable=false" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору; ;writable=false" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора; ;writable=false" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора; ;writable=false" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору; ;writable=false" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ; ;writable=false" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодитися"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="fDoc1" name="Договір з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask3" name="права фин, степ3" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_3'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для финансиста
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Financial_Department'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <userTask id="usertask3" name="фінансист">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ; ;writable=false" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа; ;writable=false" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління; ;writable=false" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора; ;writable=false" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору; ;writable=false" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора; ;writable=false" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора; ;writable=false" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору; ;writable=false" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ; ;writable=false" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації; ;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодитися"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask4" name="права автору, степ1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_1'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для начальника відділення
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_manager'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="scripttask10"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="scripttask2" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="scripttask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="scripttask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="scripttask4" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="scripttask3" targetRef="usertask3"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <scriptTask id="scripttask5" name="права юр,степ4" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_4'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для юриста
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Legal_Department'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <userTask id="usertask4" name="юрист">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="направити на розгляд"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="scripttask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="exclusivegateway2" targetRef="scripttask14">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="scripttask5" targetRef="usertask4"></sequenceFlow>
+    <scriptTask id="scripttask6" name="права автору, степ5" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_5'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для автора
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <scriptTask id="scripttask7" name="права кругу, степ6" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_6'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для круга рассмотрения
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Matching_group_1'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
+
+//права из таблицы
+//var snID_Process_Activiti = execution.getProcessInstanceId()
+//var oSwitchStep12 = documentStepService.setDocumentStep(snID_Process_Activiti, 'step_6')
+var oCloneRightsAgree = documentStepService.cloneDocumentStepFromTable(snID_Process_Activiti,  '_default_Comfy', 'sTable', 'step_6',true,'sLogin_isExecute')
+
+</script>
+    </scriptTask>
+    <scriptTask id="scripttask8" name="права деловод,степ10" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_10'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для деловода
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New ='Comfy_Clerk'
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow14" sourceRef="usertask4" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="exclusivegateway3" targetRef="scripttask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="exclusivegateway3" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask5" name="автор">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask6" name="круг рассмотр">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="погодити"></activiti:value>
+          <activiti:value id="backToAuthor" name="відмовити"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="markers" name="Якщо повернути" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask7" name="діловод">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="fDoc10" name="Договір з EЦП; ;sID_Field_Printform_ForECP=sBody_1, bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow18" sourceRef="scripttask6" targetRef="usertask5"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="scripttask7" targetRef="usertask6"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
+    <scriptTask id="scripttask9" name="всі підписали" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var nID_Process = execution.getProcessInstanceId()
+var sKey_Step = execution.getVariable('sKey_Step_Document')
+var oDocumentStepSubmitedAll =
+documentStepService.isDocumentStepSubmitedAll(nID_Process, 'test',
+sKey_Step)
+execution.setVariable('bDocumentStepSubmitedAll',
+oDocumentStepSubmitedAll.bSubmitedAll.toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow24" sourceRef="usertask6" targetRef="exclusivegateway4"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway4" targetRef="scripttask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask10" name="ПІБ автора" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>// ФИО заявителя
+var sLoginAuthor = execution.getVariable('sLoginAuthor')
+var oResultAuthorName = subjectService.getSubjectByLoginAccount(sLoginAuthor)
+execution.setVariable('sAvtor', oResultAuthorName.sLabel)
+</script>
+    </scriptTask>
+    <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow27" sourceRef="scripttask9" targetRef="exclusivegateway5"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="scripttask10" targetRef="usertask1"></sequenceFlow>
+    <scriptTask id="scripttask11" name="тот же юрист степ 7" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_7'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для того же юриста
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var aDocumentStepSubjectRight = documentStepService.getDocumentStep(snID_Process_Activiti, 'step_4');
+var sKey_GroupPostfix_New;
+for (var i = 0; i&lt;aDocumentStepSubjectRight.length; i++){
+ var oDocumentStepSubjectRight = aDocumentStepSubjectRight[i]
+ if(oDocumentStepSubjectRight.sDate != null){
+  sKey_GroupPostfix_New = oDocumentStepSubjectRight.sKey_GroupPostfix;
+  break;
+ }
+}
+if(sKey_GroupPostfix_New == null){
+	sKey_GroupPostfix_New = 'Comfy_Yurist_1'
+}
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_7')</script>
+    </scriptTask>
+    <userTask id="usertask8" name="тот же юрист">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="направити на розгляд"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow31" sourceRef="usertask5" targetRef="scripttask11"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="scripttask11" targetRef="usertask8"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway6" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow33" sourceRef="usertask8" targetRef="exclusivegateway6"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="exclusivegateway6" targetRef="scripttask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="exclusivegateway6" targetRef="scripttask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="usertask9" name="автор">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <scriptTask id="scripttask12" name="права автору, степ8" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_8'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для автора
+var sKey_GroupPostfix = '_default_Comfy'
+var sKey_GroupPostfix_New = execution.getVariable('sLoginAuthor')
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)</script>
+    </scriptTask>
+    <sequenceFlow id="flow41" sourceRef="exclusivegateway5" targetRef="usertask6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll ==
+false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="exclusivegateway5" targetRef="scripttask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bDocumentStepSubmitedAll ==
+true}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask13" name="права юристу, степ9" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>//переключение степа
+var snID_Process_Activiti = execution.getProcessInstanceId()
+var sKey_Step= 'step_9'
+var oResultSetDoc =
+documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
+
+//Клонування прав для автора
+var snID_Process_Activiti = execution.getProcessInstanceId();
+var aDocumentStepSubjectRight = documentStepService.getDocumentStep(snID_Process_Activiti, 'step_4');
+var sKey_GroupPostfix_New;
+for (var i = 0; i&lt;aDocumentStepSubjectRight.length; i++){
+ var oDocumentStepSubjectRight = aDocumentStepSubjectRight[i]
+ if(oDocumentStepSubjectRight.sDate != null){
+  sKey_GroupPostfix_New = oDocumentStepSubjectRight.sKey_GroupPostfix;
+  break;
+ }
+}
+
+if(sKey_GroupPostfix_New == null){
+	sKey_GroupPostfix_New = 'Comfy_Yurist_1'
+}
+var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti, '_default_Comfy', sKey_GroupPostfix_New, 'step_9')</script>
+    </scriptTask>
+    <userTask id="usertask10" name="тот же юрист">
+      <extensionElements>
+        <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc1" name="Заявка " type="string" default="Заявка на підготовку(експертизу) документа" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAvtor" name="Заявник" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sType" name="Вид заяви" type="enum" required="true">
+          <activiti:value id="sExpertise" name="Експертиза"></activiti:value>
+          <activiti:value id="sPreparation" name="Підготовка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sTypeDoc" name="Документ" type="enum" required="true">
+          <activiti:value id="doc" name="Договір"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата документа" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSubdivision" name="Оберіть підрозділ; ;sID_SubjectRole=ExecutorDepart,sID_Group_Activiti=sID_Group_Activiti_Depart,nDeepLevel=nDeepLevel" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sManagement" name="Оберіть управління" type="enum">
+          <activiti:value id="enum12" name="Управління розвитку мережі"></activiti:value>
+          <activiti:value id="enum13" name="Управління запуску торгових обєктів"></activiti:value>
+          <activiti:value id="enum14" name="Роздріб(магазини)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType2" name="Вид договора" type="enum">
+          <activiti:value id="enum6" name="Договір підряду по ремонту нерухомості"></activiti:value>
+          <activiti:value id="enum7" name="Договір придбання стендів"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType1" name="Вид договору" type="enum">
+          <activiti:value id="enum1" name="договір оренди приміщення(розміщення магазину)"></activiti:value>
+          <activiti:value id="enum2" name="договір субаренди приміщення"></activiti:value>
+          <activiti:value id="enum3" name="попередній договір аренди"></activiti:value>
+          <activiti:value id="enum4" name="договір зміни сторони"></activiti:value>
+          <activiti:value id="enum5" name="надання комунальних послуг"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType3" name="Вид договора" type="enum">
+          <activiti:value id="enum8" name="Договір поставки товару з магазину"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sType4" name="Вид договора" type="enum">
+          <activiti:value id="enum10" name="Купівля-продаж подарункових карток"></activiti:value>
+          <activiti:value id="enum11" name="Агентський договір(страхові агенти)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers1" name="якщо експертиза" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDoc" name="шаблон(проект) документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Зміст договору" type="fileHTML"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Accept" name="id групи для узгодження ; ;bVisible=false" type="string" default="Comfy_Matching_group_2  "></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Якщо підготовка" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers4" name="Якщо операц" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_4.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="линия ЕДРПОУ 01" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Контрагент&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЕДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_01" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_01" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_02" name="линия ЕДРПОУ 02" type="markers" default="{&quot;attributes&quot;:{&quot;Line_02&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_02&quot;],&quot;sValue&quot;:&quot;Наша сторона&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_02" name="Введіть код ЕДРПОУ" type="string" default="36962487 " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Повна назва" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_02" name="Коротка назва" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Адреса" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="ФІО керівника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRequisites_02" name="Реквізити для сплати" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact_02" name="Контактні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nNumber" name="Номер регістрації" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCessation" name="Припинення" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sNote" name="Коментар" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sTable" name="Оберіть узгоджувачів; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/sTable_doc_comfy_dogovor.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Group_Activiti_Depart" name="ід групи підрозд ; ;bVisible=false" type="string" default="Comfy_Operational_directorate"></activiti:formProperty>
+        <activiti:formProperty id="sAuthorName" name="ПІБ заявника; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name="Вид для коммерческой дирек" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="Вид дог управ мережі" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers7" name="Вид дог управ запуска" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_7.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers8" name="Вид дог розница" type="markers" default="${markerService.loadFromFile('_doc_comfy_dogovor_8.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sDecision" name="Прийняте рішення" type="enum" required="true">
+          <activiti:value id="accept" name="направити на регістрацію"></activiti:value>
+          <activiti:value id="backToAuthor" name="повернути ініціатору"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Comfy/_doc_comfy_dogovor_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTable2" name="Можливі ризики; ;bNew=true" type="table" default="${markerService.loadFromFile('table/sed/Comfy/_doc_comfy_dogovor_table.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow43" sourceRef="scripttask12" targetRef="usertask9"></sequenceFlow>
+    <sequenceFlow id="flow44" sourceRef="usertask9" targetRef="scripttask13"></sequenceFlow>
+    <sequenceFlow id="flow45" sourceRef="scripttask13" targetRef="usertask10"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow46" sourceRef="exclusivegateway7" targetRef="scripttask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow47" sourceRef="exclusivegateway7" targetRef="scripttask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow48" sourceRef="scripttask8" targetRef="usertask7"></sequenceFlow>
+    <sequenceFlow id="flow50" sourceRef="usertask10" targetRef="exclusivegateway7"></sequenceFlow>
+    <sequenceFlow id="flow51" sourceRef="usertask7" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="exclusivegateway4" targetRef="scripttask12">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sDecision=='backToAuthor'}]]></conditionExpression>
+    </sequenceFlow>
+    <scriptTask id="scripttask14" name="снести подпись и права" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var nID_Process = execution.getProcessInstanceId()
+var sKeyGroup = execution.getVariable('sLoginAuthor')
+var oCancelRigtsForAutorStep2 = removeDocumentStepSubject(nID_Process, 'step_3', 'iGov_Svidran')
+
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow53" sourceRef="scripttask14" targetRef="scripttask4"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__doc_test_BP">
+    <bpmndi:BPMNPlane bpmnElement="_doc_test_BP" id="BPMNPlane__doc_test_BP">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="620.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="790.0" y="77.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="900.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="1070.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask4" id="BPMNShape_scripttask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="1102.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask5" id="BPMNShape_scripttask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="1070.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="1070.0" y="350.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask6" id="BPMNShape_scripttask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="810.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask7" id="BPMNShape_scripttask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="810.0" y="419.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask8" id="BPMNShape_scripttask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="676.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="976.0" y="357.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask6" id="BPMNShape_usertask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="650.0" y="419.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask7" id="BPMNShape_usertask7">
+        <omgdc:Bounds height="55.0" width="105.0" x="789.0" y="674.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="942.0" y="684.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway4" id="BPMNShape_exclusivegateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="556.0" y="426.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask9" id="BPMNShape_scripttask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="404.0" y="419.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask10" id="BPMNShape_scripttask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
+        <omgdc:Bounds height="40.0" width="40.0" x="556.0" y="481.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask11" id="BPMNShape_scripttask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="404.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask8" id="BPMNShape_usertask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="264.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
+        <omgdc:Bounds height="40.0" width="40.0" x="530.0" y="343.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask9" id="BPMNShape_usertask9">
+        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="540.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask12" id="BPMNShape_scripttask12">
+        <omgdc:Bounds height="55.0" width="105.0" x="524.0" y="540.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask13" id="BPMNShape_scripttask13">
+        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="634.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask10" id="BPMNShape_usertask10">
+        <omgdc:Bounds height="55.0" width="105.0" x="290.0" y="730.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
+        <omgdc:Bounds height="40.0" width="40.0" x="556.0" y="685.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask14" id="BPMNShape_scripttask14">
+        <omgdc:Bounds height="55.0" width="105.0" x="907.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="202.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="405.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="565.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="725.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="830.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="900.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="810.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="809.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="352.0" y="170.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="1005.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1070.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="1122.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1122.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="1122.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1122.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="1102.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1012.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="1122.0" y="305.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1122.0" y="350.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="1070.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1016.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="996.0" y="357.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="315.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="996.0" y="397.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="419.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="810.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="765.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="810.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="755.0" y="446.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="650.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="596.0" y="446.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="556.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="446.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="456.0" y="474.0"></omgdi:waypoint>
+        <omgdi:waypoint x="457.0" y="500.0"></omgdi:waypoint>
+        <omgdi:waypoint x="556.0" y="501.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="202.0" y="160.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="660.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="509.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="404.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="369.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="316.0" y="315.0"></omgdi:waypoint>
+        <omgdi:waypoint x="316.0" y="362.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="363.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="550.0" y="343.0"></omgdi:waypoint>
+        <omgdi:waypoint x="549.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="224.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="570.0" y="363.0"></omgdi:waypoint>
+        <omgdi:waypoint x="863.0" y="363.0"></omgdi:waypoint>
+        <omgdi:waypoint x="862.0" y="419.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="596.0" y="501.0"></omgdi:waypoint>
+        <omgdi:waypoint x="701.0" y="500.0"></omgdi:waypoint>
+        <omgdi:waypoint x="702.0" y="474.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="576.0" y="521.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
+        <omgdi:waypoint x="524.0" y="567.0"></omgdi:waypoint>
+        <omgdi:waypoint x="395.0" y="567.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow44" id="BPMNEdge_flow44">
+        <omgdi:waypoint x="342.0" y="595.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="634.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow45" id="BPMNEdge_flow45">
+        <omgdi:waypoint x="342.0" y="689.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="730.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow46" id="BPMNEdge_flow46">
+        <omgdi:waypoint x="576.0" y="685.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="595.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow47" id="BPMNEdge_flow47">
+        <omgdi:waypoint x="596.0" y="705.0"></omgdi:waypoint>
+        <omgdi:waypoint x="650.0" y="703.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow48" id="BPMNEdge_flow48">
+        <omgdi:waypoint x="755.0" y="703.0"></omgdi:waypoint>
+        <omgdi:waypoint x="789.0" y="701.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="395.0" y="757.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="757.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="725.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="894.0" y="701.0"></omgdi:waypoint>
+        <omgdi:waypoint x="942.0" y="701.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="596.0" y="446.0"></omgdi:waypoint>
+        <omgdi:waypoint x="573.0" y="463.0"></omgdi:waypoint>
+        <omgdi:waypoint x="519.0" y="463.0"></omgdi:waypoint>
+        <omgdi:waypoint x="576.0" y="540.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow53" id="BPMNEdge_flow53">
+        <omgdi:waypoint x="907.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="405.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

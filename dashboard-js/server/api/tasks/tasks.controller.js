@@ -55,17 +55,17 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
     });
 
   async.forEach(usersIDs, function (usersID, frCallback) {
-    var path = 'runtime/tasks';
+    var path = 'action/task/getTasksNew';
 
     var options = {
       path: path,
-      query: {assignee: usersID},
+      query: {sLogin: usersID, nSize: 500, bIncludeVariablesProcess: false, sFilterStatus: 'Opened', nStart: 0},
       json: true
     };
 
     activiti.get(options, function (error, statusCode, result) {
-      if (!error && result.data) {
-        tasks = tasks.concat(result.data);
+      if (!error && result.aoTaskDataVO) {
+        tasks = tasks.concat(result.aoTaskDataVO);
       }
       frCallback(null);
     });
@@ -75,19 +75,19 @@ function loadTasksForOtherUsers(usersIDs, wfCallback, currentUserID) {
 }
 
 function loadAllTasks(tasks, wfCallback, assigneeID) {
-  var path = 'runtime/tasks';
-
+  var path = 'action/task/getTasksNew';
   var options = {
     path: path,
-    query: {candidateOrAssigned: assigneeID, size: 500},
+    query: {sLogin: assigneeID, nSize: 500, bIncludeVariablesProcess: false, sFilterStatus: 'Opened', nStart: 0},
     json: true
   };
+
 
   activiti.get(options, function (error, statusCode, result) {
     if (error) {
       wfCallback(error);
     } else {
-      result.data = result.data.concat(tasks);
+      result.data = result.aoTaskDataVO.concat(tasks);
       wfCallback(null, result);
     }
   });
@@ -118,28 +118,46 @@ exports.index = function (req, res) {
       }
     });
   } else {
-    var path = 'action/task/getTasks';
+    var path = 'action/task/getTasksNew';
 
     query.nStart = (req.query.page || 0) * query.nSize;
 
     if (req.query.filterType === 'selfAssigned') {
       query.sLogin = user.id;
       query.sFilterStatus = 'OpenedAssigned';
-      query.includeProcessVariables = true;
+      query.bIncludeVariablesProcess = true;
     } else if (req.query.filterType === 'unassigned') {
       query.sLogin = user.id;
       query.sFilterStatus = 'OpenedUnassigned';
-      query.includeProcessVariables = false;
+      query.bIncludeVariablesProcess = false;
     } else if (req.query.filterType === 'finished') {
-      path = 'history/historic-task-instances';
-      query.size = query.nSize;
-      query.start = query.nStart;
-      query.taskInvolvedUser = user.id;
-      query.finished = true;
-    } else if (req.query.filterType === 'documents' || req.query.filterType === 'viewed' || req.query.filterType === 'myDrafts') {
-      query.sFilterStatus = 'Documents';
+      query.bIncludeVariablesProcess = true;
       query.sLogin = user.id;
-      query.includeProcessVariables = true;
+      query.sFilterStatus = 'Closed';
+    } else if (req.query.filterType === 'documents') {
+      query.sFilterStatus = 'DocumentOpenedUnassignedUnprocessed';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'ecp') {
+      query.sFilterStatus = 'DocumentOpenedUnassignedWithoutECP';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'viewed') {
+      query.sFilterStatus = 'DocumentOpenedUnassignedProcessed';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'myDrafts') {
+      query.sFilterStatus = 'DocumentOpenedAssigned';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
+      query.nSize = 15;
+    } else if (req.query.filterType === 'docHistory') {
+      query.sFilterStatus = 'DocumentClosed';
+      query.sLogin = user.id;
+      query.bIncludeVariablesProcess = true;
       query.nSize = 15;
     } else if (req.query.filterType === 'tickets') {
       path = 'action/flow/getFlowSlotTickets';
@@ -326,10 +344,50 @@ exports.getAttachmentFile = function (req, res) {
     }
   }
   var options = {
-    path: 'object/file/getProcessAttach',
     query: qs
   };
-  activiti.filedownload(req, res, options);
+
+  if(!req.query || (req.query && !req.query.bAsBase64)){
+    options.path = 'object/file/getProcessAttach';
+    activiti.filedownload(req, res, options);
+  } else {
+    options.path = 'object/file/getProcessAttachAsBase64';
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.status(statusCode).json(result);
+      }
+    });
+  }
+
+};
+
+exports.getDocumentImage = function (req, res) {
+  var user = JSON.parse(req.cookies.user);
+  var qs = {
+    'nID_Process': req.params.keyOrProcessID,
+    'sLogin': user.id,
+    'sKey_Step': req.params.sKey_Step
+  };
+
+  var options = {
+    query: qs
+  };
+
+  if(!req.query || (req.query && !req.query.bAsBase64)){
+    options.path = 'object/file/getDocumentImage';
+    activiti.filedownload(req, res, options);
+  } else {
+    options.path = 'object/file/getDocumentImageAsBase64';
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.status(statusCode).json(result);
+      }
+    });
+  }
 };
 
 exports.getAttachmentContentTable = function (req, res) {
@@ -586,7 +644,7 @@ exports.setDocumentImage = function (req, res) {
   var content = {buffer: new Buffer(new Buffer(contentAndSignContainer, 'base64').toString('binary'), 'binary')};
 
   activitiUpload.uploadContent('object/file/setDocumentImage', params, content, function (error, response, body) {
-    error ? res.send(error) : res.status(response.statusCode).json(result);
+    error ? res.send(error) : res.status(response.statusCode).json(body);
   });
 
 };
