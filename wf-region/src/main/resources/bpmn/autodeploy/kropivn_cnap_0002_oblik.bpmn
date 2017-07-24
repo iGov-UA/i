@@ -168,8 +168,11 @@
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapkaUprRoz" name="шапка принт форми1; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kropivn_cnap_0002_povidoml.html]; ;bVisible=false ,bPrintform=true" type="string" default="Повідомлення " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kropivn_cnap_0002_povidoml.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/kropivn_cnap_0002_kartka.html]; ;bVisible=false ,bPrintform=true" type="string" default="Картка обліку об'єкта " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kropivn_cnap_0002_kartka.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/kropivn_cnap_0002_dovidka.html]; ;bVisible=false ,bPrintform=true" type="string" default="Довідка " writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kropivn_cnap_0002_dovidka.html" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -204,7 +207,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow5" name="Відмова" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Повідомлення позитивне рішення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Повідомлення позитивне рішення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -229,6 +232,16 @@ ${sPhoneOrgan}<br />
 ${sNameOrgan}<br/>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_2}, {PrintForm_3}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
