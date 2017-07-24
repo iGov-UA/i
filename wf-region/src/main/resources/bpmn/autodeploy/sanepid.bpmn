@@ -3,159 +3,317 @@
   <process id="sanepid" name="Довідка щодо підтримання належного санітарного стану" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asSelectSexCheck" name="Виберіть будь-ласка свою стать" type="enum" required="true">
-          <activiti:value id="man" name="мужчина"></activiti:value>
-          <activiti:value id="girl" name="женщина"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="application_vopros1" name="Будь-ласка введіть свою найулюбленішу марку автомобіля" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="application_vopros2" name="Будь-ласка введіть свого найулюбленішого дизайнера одягу" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_Hide_01_01" name="показати питання 1, якщо це чоловік" type="markers" default="{&quot;motion&quot;: {ShowFieldsOnCondition_Hide_01_01&quot;: {aField_ID&quot;: [&quot;application_vopros1&quot;], asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'man'}}}" readable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markers_Hide_01_02" name="показати питання 2, якщо це жінка" type="markers" default="{&quot;motion&quot;: {ShowFieldsOnCondition_Hide_01_02&quot;: {aField_ID&quot;: [&quot;application_vopros2&quot;], asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'girl'}}}" readable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-Mail адреса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="У давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="TextArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="TextArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="Ім’я, по батькові та прізвище керівника юридичної особи/ фізичної особи-підприємця/ уповноваженої особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocationLive" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateCreateProcess" name="Вкажіть сьогоднішню дату ; ;bVisible=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ" type="markers" default="{&amp;quot;attributes&amp;quot;:{&amp;quot;Line_01&amp;quot;:{&amp;quot;aElement_ID&amp;quot;:[&amp;quot;sID_SubjectOrgan_OKPO_01&amp;quot;],&amp;quot;sValue&amp;quot;:&amp;quot;Дані з ЄДРПОУ - 01&amp;quot;}}}" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <scriptTask id="scripttask1" name="Обробити данні" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var SelectSexCheck = execution.getVariable('asSelectSexCheck')
-if (SelectSexCheck==man)
-execution.setVariable (sHello, 'Доброго дня, мужчина!')
-else
-execution.setVariable (sHello, 'Доброго дня, дівчино!')
-
-</script>
-    </scriptTask>
-    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SelectSexCheck==man}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask1" name="Відправити лист чоловікові" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <serviceTask id="servicetask1" name="Повідомлення про доставку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
         <activiti:field name="from">
-          <activiti:string><![CDATA[tests@gmail.com]]></activiti:string>
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[Ваші відповіді прийняті.]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${vFile}]]></activiti:expression>
+          <activiti:string><![CDATA[Нове звернення. Довідка щодо підтримання належного санітарного стану.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[${sHello}]]></activiti:expression>
+          <activiti:expression><![CDATA[pattern/mail/new_design/_common_employee_notify.html]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="Відправити лист жінці" activiti:delegateExpression="#{MailTaskWithAttachments}">
+    <userTask id="usertask1" name="Прийом і перевірка пакету документів">
       <extensionElements>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[tests@gmail.com]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:expression><![CDATA[Ваші відповіді прийняті.]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${vFile}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[${sHello}]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow6" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow7" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow8" sourceRef="exclusivegateway2" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SelectSexCheck==girl}]]></conditionExpression>
-    </sequenceFlow>
-    <userTask id="usertask3" name="Продивитись відповіді" activiti:assignee="kermit">
-      <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="asSelectSexCheck" name="Результат вибраної статі" type="enum" required="true">
-          <activiti:value id="man" name="Чоловік"></activiti:value>
-          <activiti:value id="girl" name="Жінка"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="vFile" name="Документ з рекомендаціями; ;bNew=true" type="file" readable="false" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="E-mail адреса" type="string" readable="false"></activiti:formProperty>
-        <activiti:formProperty id="sHello" name="Ексклюзивне вітання; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="У давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="Ім’я, по батькові та прізвище керівника юридичної особи/ фізичної особи-підприємця/ уповноваженої особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocationLive" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow10" sourceRef="usertask3" targetRef="scripttask1"></sequenceFlow>
-    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="usertask3"></sequenceFlow>
+    <userTask id="usertask2" name="Передача документів начальнику ">
+      <extensionElements>
+        <activiti:formProperty id="sStatus" name="Обробка заяви " type="enum" required="true">
+          <activiti:value id="sAccept" name="Документи передані для виконання"></activiti:value>
+          <activiti:value id="sReject" name="Відмова громадянину у разі неповного пакета документів, невідповідністі поданих документів, недостовірних відомостей"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markers_01" name="Обов'язкове поле для введення информации" type="markers" default="{&quot;motion&quot;: {&quot;RequiredFieldsOnCondition_01&quot;: {&quot;aField_ID&quot;: [&quot;sComment&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;sStatus&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'sReject'&quot;}}}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea" required="true"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <userTask id="usertask3" name="Запис у бланку проходження документа ">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="tring" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="У давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="trusted_person" name="Ім’я, по батькові та прізвище керівника юридичної особи/ фізичної особи-підприємця/ уповноваженої особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocationLive" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFile_dov" name="Завантажте скановану довідку щодо підтримання належного санітарного стану; ;bNew=true" type="file"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <serviceTask id="servicetask2" name="Лист з зауваженнями замовнику " activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Довідка щодо підтримання належного санітарного стану.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[pattern/mail/new_design/_common_employee_notify.html]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatus == 'sReject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Лист про запис у бланку і довідка" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Довідка щодо підтримання належного санітарного стану.]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p align="left">
+${substance_2}.<br />
+</p>
+<p align="left">
+Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
+При собі треба мати:<br/> 
+1. Документ, що посвідчує особу.<br/> 
+2. Для уповоноваженої особи - довіренність.<br/>
+3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
+4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
+</p>]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="servicetask3"></sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="endevent2"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Повідомлення про доставку заяви до ЦНАПу" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Довідка щодо підтримання належного санітарного стану.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p align="left"> Ваше звернення №[sID_Order] щодо ${substance_3} довідки щодо підтримання належного санітарного стану.<br/>
+Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow11" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask5" name="Лист про успішне замовлення послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] peredano dlia vykonannia.
+Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Довідка щодо підтримання належного санітарного стану.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
+<p align="left">Ваше звернення щодо ${substance_3} довідки щодо підтримання належного санітарного стану.<br />
+Спеціалісти повинні дати відповідь протягом 5 календарних днів з дня реєстрації заяви.<br /> 
+<p>Номер Вашого замовлення: ${number_cnap}</p>.
+</p>
+<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow13" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sStatus == 'sAccept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_sanepid">
     <bpmndi:BPMNPlane bpmnElement="sanepid" id="BPMNPlane_sanepid">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="92.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="209.0" y="80.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="359.0" y="88.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="105.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="446.0" y="38.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="105.0" x="65.0" y="93.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="55.0" width="105.0" x="446.0" y="124.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="323.0" y="98.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="594.0" y="89.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="65.0" width="108.0" x="453.0" y="93.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="679.0" y="92.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="603.0" y="105.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="69.0" y="82.0"></omgdc:Bounds>
+        <omgdc:Bounds height="60.0" width="105.0" x="813.0" y="96.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="314.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="359.0" y="108.0"></omgdi:waypoint>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="723.0" y="25.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="65.0" width="105.0" x="571.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="943.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="1083.0" y="108.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="64.0" width="105.0" x="193.0" y="94.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="65.0" width="105.0" x="676.0" y="93.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="36.0" y="122.0"></omgdi:waypoint>
+        <omgdi:waypoint x="65.0" y="123.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="428.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="453.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="379.0" y="88.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="446.0" y="65.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
-        <omgdi:waypoint x="551.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="614.0" y="65.0"></omgdi:waypoint>
-        <omgdi:waypoint x="614.0" y="89.0"></omgdi:waypoint>
+        <omgdi:waypoint x="561.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="603.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
-        <omgdi:waypoint x="551.0" y="151.0"></omgdi:waypoint>
-        <omgdi:waypoint x="614.0" y="151.0"></omgdi:waypoint>
-        <omgdi:waypoint x="614.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="623.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="623.0" y="75.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
-        <omgdi:waypoint x="634.0" y="109.0"></omgdi:waypoint>
-        <omgdi:waypoint x="679.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="676.0" y="42.0"></omgdi:waypoint>
+        <omgdi:waypoint x="723.0" y="42.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="379.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="379.0" y="151.0"></omgdi:waypoint>
-        <omgdi:waypoint x="446.0" y="151.0"></omgdi:waypoint>
+        <omgdi:waypoint x="918.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="943.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
-        <omgdi:waypoint x="174.0" y="109.0"></omgdi:waypoint>
-        <omgdi:waypoint x="209.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1048.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1083.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="36.0" y="109.0"></omgdi:waypoint>
-        <omgdi:waypoint x="69.0" y="109.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="193.0" y="126.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="298.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="323.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="643.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="676.0" y="125.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="781.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="813.0" y="126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
