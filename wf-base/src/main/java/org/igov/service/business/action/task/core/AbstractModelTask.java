@@ -260,9 +260,16 @@ public abstract class AbstractModelTask {
     public static ByteArrayOutputStream multipartFileToByteArray(MultipartFile oMultipartFile, String sFileNameReal)
             throws IOException {
 
-        String sFilenameEncoded = new String(oMultipartFile.getOriginalFilename().getBytes(Charset.forName("UTF-8")));//UTF-8
+        if(sFileNameReal == null){
+            String sOriginalFilename = oMultipartFile.getOriginalFilename();
+            if(sOriginalFilename != null){
+                sFileNameReal = new String(sOriginalFilename.getBytes(Charset.forName("UTF-8")));//UTF-8
+            } else {
+                sFileNameReal = "";
+            }
+        }
         ByteArrayMultipartFile oByteArrayMultipartFile = new ByteArrayMultipartFile(
-                oMultipartFile.getBytes(), oMultipartFile.getName(), sFileNameReal == null ? sFilenameEncoded : sFileNameReal,
+                oMultipartFile.getBytes(), oMultipartFile.getName(), sFileNameReal,
                 oMultipartFile.getContentType());
         ByteArrayOutputStream oByteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream oObjectOutputStream = new ObjectOutputStream(oByteArrayOutputStream);
