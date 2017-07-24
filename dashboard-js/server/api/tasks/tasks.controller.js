@@ -344,17 +344,21 @@ exports.getAttachmentFile = function (req, res) {
     }
   }
   var options = {
-    path: 'object/file/getProcessAttach',
     query: qs
   };
 
   if(!req.query || (req.query && !req.query.bAsBase64)){
+    options.path = 'object/file/getProcessAttach';
     activiti.filedownload(req, res, options);
   } else {
-    activitiUpload.downloadBuffer(options.path, options.query, function (error, response, buffer) {
-      var encoded = buffer.toString('base64');
-      error ? res.send(error) : res.send(encoded);
-    })
+    options.path = 'object/file/getProcessAttachAsBase64';
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.status(statusCode).json(result);
+      }
+    });
   }
 
 };
@@ -368,10 +372,22 @@ exports.getDocumentImage = function (req, res) {
   };
 
   var options = {
-    path: 'object/file/getDocumentImage',
     query: qs
   };
-  activiti.filedownload(req, res, options);
+
+  if(!req.query || (req.query && !req.query.bAsBase64)){
+    options.path = 'object/file/getDocumentImage';
+    activiti.filedownload(req, res, options);
+  } else {
+    options.path = 'object/file/getDocumentImageAsBase64';
+    activiti.get(options, function (error, statusCode, result) {
+      if (error) {
+        res.send(error);
+      } else {
+        res.status(statusCode).json(result);
+      }
+    });
+  }
 };
 
 exports.getAttachmentContentTable = function (req, res) {
@@ -628,7 +644,7 @@ exports.setDocumentImage = function (req, res) {
   var content = {buffer: new Buffer(new Buffer(contentAndSignContainer, 'base64').toString('binary'), 'binary')};
 
   activitiUpload.uploadContent('object/file/setDocumentImage', params, content, function (error, response, body) {
-    error ? res.send(error) : res.status(response.statusCode).json(result);
+    error ? res.send(error) : res.status(response.statusCode).json(body);
   });
 
 };

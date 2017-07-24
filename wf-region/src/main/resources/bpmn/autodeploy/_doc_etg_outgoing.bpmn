@@ -7,11 +7,10 @@
         <activiti:formProperty id="sID_Custom_GovPublic" name="Номер звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ид процесса ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIncomingNumber" name="sIncomingNumber ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sName_Executor" name="Виконавець ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sName_AutorResolution" name="Автор резолюції ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа" type="enum">
+        <activiti:formProperty id="asTypeDispatch" name="Вид відправки документа ; ;bVisible=false" type="enum">
           <activiti:value id="sEnum1" name="поштовий зв'язок"></activiti:value>
           <activiti:value id="sEnum2" name="нарочно"></activiti:value>
           <activiti:value id="sEnum3" name="самостійно"></activiti:value>
@@ -21,6 +20,8 @@
           <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Електронна форма документа; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sContent" name="Короткий зміст документа ; ;bVisible=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sName_Signed" name="Підписав ; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask4" name="Референт - формування та реєстрація вихідної кореспонденції">
@@ -29,7 +30,7 @@
         <activiti:formProperty id="processInstanceId" name="ІД процесу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false" type="string" default="ETG_Head_ComDir"></activiti:formProperty>
-        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="nDeepLevel" name="глубина ; ;bVisible=false" type="string" default="3"></activiti:formProperty>
         <activiti:formProperty id="sID_Custom_GovPublic" name="Реєстраційний номер документа" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sApplicant" name="Кореспондент" type="string" required="true"></activiti:formProperty>
@@ -46,23 +47,9 @@
           <activiti:value id="sEnum6" name="замовленою кореспонденцією"></activiti:value>
           <activiti:value id="sEnum7" name="рекомендованим листом з повідомленням"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asRegular" name="регулярний документ; ;sID_CheckboxTrue=sEnumRegularDoc" type="enum" default="sEnumNotRegularDoc">
-          <activiti:value id="sEnumRegularDoc" name="регулярний"></activiti:value>
-          <activiti:value id="sEnumNotRegularDoc" name="не регулярний"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateBegin" name="Дата початку" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPeriodicity" name="Періодичність" type="enum">
-          <activiti:value id="sEnumDay" name="щоденно"></activiti:value>
-          <activiti:value id="sEnumWeek" name="щотижнево"></activiti:value>
-          <activiti:value id="sEnumMonth" name="щомісяця"></activiti:value>
-          <activiti:value id="sEnumQuarter" name="щокварталу"></activiti:value>
-          <activiti:value id="sEnumYear" name="щороку"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sDateEnd" name="Дата закінчення" type="date"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Якщо періодичний" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sDateBegin&quot;,&quot;asPeriodicity&quot;,&quot;sDateEnd&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asRegular&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sEnumRegularDoc'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix_New">
-            <activiti:expression><![CDATA[${soginAuthor}]]></activiti:expression>
+            <activiti:expression><![CDATA[${sLoginAuthor}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_ETG]]></activiti:string>
@@ -70,7 +57,7 @@
         </activiti:taskListener>
       </extensionElements>
     </userTask>
-    <scriptTask id="scripttask1" name="2 скрипта" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask1" name="Счетчик номера и получение ИД БП" isForCompensation="true" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//1. счетчик добавления номера в поле исходящего номера
 var number=execution.getVariable('sID_Custom_GovPublic');
 var sIncomingNumber=execution.getVariable('sIncomingNumber');
@@ -111,7 +98,7 @@ execution.setVariable('processInstanceId', processInstanceId)
         <omgdc:Bounds height="84.0" width="130.0" x="392.0" y="50.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="84.0" width="121.0" x="241.0" y="50.0"></omgdc:Bounds>
+        <omgdc:Bounds height="84.0" width="121.0" x="240.0" y="51.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="84.0" width="116.0" x="86.0" y="51.0"></omgdc:Bounds>
@@ -125,10 +112,10 @@ execution.setVariable('processInstanceId', processInstanceId)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="202.0" y="93.0"></omgdi:waypoint>
-        <omgdi:waypoint x="241.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="93.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow59" id="BPMNEdge_flow59">
-        <omgdi:waypoint x="362.0" y="92.0"></omgdi:waypoint>
+        <omgdi:waypoint x="361.0" y="93.0"></omgdi:waypoint>
         <omgdi:waypoint x="392.0" y="92.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow60" id="BPMNEdge_flow60">

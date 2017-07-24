@@ -699,8 +699,10 @@ public class DocumentStepService {
         //LOG.info("oDocumentStep_From id {} step {}", oDocumentStep_From.getId(), oDocumentStep_From.getsKey_Step());
         DocumentStep oDocumentStep_Common = getDocumentStep(snID_Process_Activiti, "_");
         LOG.info("oDocumentStep_Common id {} step {}", oDocumentStep_Common.getId(), oDocumentStep_Common.getsKey_Step());
-        LOG.info("oDocumentStep_Common rights {}", oDocumentStep_Common.aDocumentStepSubjectRight());   
-        for (DocumentStepSubjectRight oDocumentStepSubjectRight : oDocumentStep_Common.aDocumentStepSubjectRight()) {
+        List<DocumentStepSubjectRight> aDocumentStepSubjectRight_Common = 
+                oDocumentStepSubjectRightDao.findAllBy("documentStep", oDocumentStep_Common);
+        LOG.info("oDocumentStep_Common rights {}", aDocumentStepSubjectRight_Common);   
+        for (DocumentStepSubjectRight oDocumentStepSubjectRight : aDocumentStepSubjectRight_Common) {
             if (oDocumentStepSubjectRight.getsKey_GroupPostfix().equals(sKey_GroupPostfix_New)) {
                 LOG.info("Group contains in common step");
                 return;
@@ -774,7 +776,8 @@ public class DocumentStepService {
                         DocumentStepSubjectRightField oDocumentStepSubjectRightFieldRead_From = null;
                         DocumentStepSubjectRightField oDocumentStepSubjectRightFieldWrite_From = null;
 
-                        if (aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
+                        if (aDocumentStepSubjectRightField_New != null && 
+                                aDocumentStepSubjectRightField_New.get(0).getbWrite() == true) {
                             oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(0);
                             
                             if(aDocumentStepSubjectRightField_New.size() > 1){
@@ -782,7 +785,7 @@ public class DocumentStepService {
                             }
                         } else {
                             
-                            if(aDocumentStepSubjectRightField_New.size() > 1){
+                            if(aDocumentStepSubjectRightField_New != null && aDocumentStepSubjectRightField_New.size() > 1){
                                 oDocumentStepSubjectRightFieldWrite_From = aDocumentStepSubjectRightField_New.get(1);
                             }
                             
@@ -790,32 +793,41 @@ public class DocumentStepService {
                             
                         }
 
-                        if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
-                                .getbWrite() == true) {
-
-                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
-                                    .setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
-                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
-                                    .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
-                            
-                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
-                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
-                                        .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
-                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
-                                        .setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
-                            }
-
-                        } else {
-                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
-                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
+                        if (oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields() != null &&
+                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0).getbWrite() == true) 
+                        {
+                            if(oDocumentStepSubjectRightFieldRead_From != null && oDocumentStepSubjectRightFieldWrite_From != null){
+                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
                                         .setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
-                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
+                                oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
                                         .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
+
+                                if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
+                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
+                                            .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
+                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
+                                            .setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
+                                }
                             }
-                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
-                                    .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
-                            oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
-                                    .setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
+                        } else {
+                            
+                            if(oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields() != null){
+                                
+                                if(oDocumentStepSubjectRightFieldWrite_From != null && 
+                                        oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().size() > 1){
+                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
+                                            .setbWrite(oDocumentStepSubjectRightFieldWrite_From.getbWrite());
+                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(1)
+                                            .setsMask_FieldID(oDocumentStepSubjectRightFieldWrite_From.getsMask_FieldID());
+                                }
+                                
+                                if(oDocumentStepSubjectRightFieldRead_From != null){
+                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
+                                        .setbWrite(oDocumentStepSubjectRightFieldRead_From.getbWrite());
+                                    oDocumentStepSubjectRight_To.getDocumentStepSubjectRightFields().get(0)
+                                        .setsMask_FieldID(oDocumentStepSubjectRightFieldRead_From.getsMask_FieldID());
+                                }
+                            }
                         }
 
                         LOG.info("DocumentStepSubjectRight_To before saving is: {}", oDocumentStepSubjectRight_To);

@@ -33,6 +33,7 @@ import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.FileServiceIOException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
+import org.igov.util.ToolWeb;
 import org.igov.util.VariableMultipartFile;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
@@ -876,6 +877,26 @@ public class ObjectFileCommonController {
     }
 
     @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
+    @RequestMapping(value = "/getProcessAttachAsBase64", method = RequestMethod.GET, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String getProcessAttachAsBase64(
+            @ApiParam(value = "ИД процесса", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "ИД поля", required = false) @RequestParam(required = false, value = "sID_Field") String sID_Field,
+            @ApiParam(value = "Ключ в БД", required = false) @RequestParam(required = false, value = "sKey") String sKey,
+            @ApiParam(value = "Тип БД", required = false) @RequestParam(required = false, value = "sID_StorageType") String sID_StorageType) throws Exception {
+
+        LOG.info("nID_Process: " + nID_Process);
+        LOG.info("sID_Field: " + sID_Field);
+        LOG.info("sKey: " + sKey);
+        LOG.info("sID_StorageType: " + sID_StorageType);
+
+        MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
+
+        return getJsonBase64EncodedFiles(multipartFile);
+    }
+
+    @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
     @RequestMapping(value = "/getDocumentImage", method = RequestMethod.GET)
     @Transactional
     public @ResponseBody
@@ -898,6 +919,25 @@ public class ObjectFileCommonController {
         httpResponse.setContentLength(multipartFile.getBytes().length);
 
         return multipartFile.getBytes();
+    }
+
+    @ApiOperation(value = "Загрузка прикрепленного к заявке файла из базы по новой схеме")
+    @RequestMapping(value = "/getDocumentImageAsBase64", method = RequestMethod.GET, produces = "application/json")
+    @Transactional
+    public @ResponseBody
+    String getDocumentImageAsBase64(
+            @ApiParam(value = "ИД процесс-активити", required = false) @RequestParam(required = false, value = "nID_Process") String nID_Process,
+            @ApiParam(value = "Логин подписанта", required = false) @RequestParam(required = false, value = "sLogin") String sLogin,
+            @ApiParam(value = "Ключ шага документа", required = false) @RequestParam(required = false, value = "sKey_Step") String sKey_Step) throws Exception {
+
+        LOG.info("snID_Process_Activiti: " + nID_Process);
+        LOG.info("sLogin: " + sLogin);
+        LOG.info("sKey_Step: " + sKey_Step);
+
+        MultipartFile multipartFile = attachmetService.getDocumentImage(nID_Process, sLogin, sKey_Step);
+
+
+        return getJsonBase64EncodedFiles(multipartFile);
     }
 
     
@@ -1114,30 +1154,17 @@ public class ObjectFileCommonController {
         return oAttachmentCover.apply(attachment);
     }
 
-    @ApiOperation(value = "/getJsonBase64EncodedFiles", notes
-            = "##### загрузка файла-PDF-документа для дальнейшей обработки")
-    @RequestMapping(value = "/getJsonBase64EncodedFiles", method = RequestMethod.POST, produces = "application/json")
-    @Transactional
-    public @ResponseBody
-    String getJsonBase64EncodedFiles(
-            @ApiParam(value = "файл для сохранения в БД", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
-    ) throws IOException, CRCInvalidException, RecordNotFoundException,
+
+    private String getJsonBase64EncodedFiles(MultipartFile file) throws IOException, CRCInvalidException, RecordNotFoundException,
             FileServiceIOException {
 
         try {
-            /*
-            String key = oBytesDataInmemoryStorage.putBytes(AbstractModelTask
-                    .multipartFileToByteArray(file, file.getOriginalFilename())
-                    .toByteArray());
 
-            byte[] upload = oBytesDataInmemoryStorage.getBytes(key);
-            */
-            byte[] upload = getBytes(file);
+            byte[] bytes = file.getBytes();
 
             Map<java.lang.String, Object> response = new HashMap<>();
-            response.put("Base64", Base64.getEncoder().encode(upload));
-            response.put("Base64Mime", Base64.getMimeEncoder().encode(upload));
-            response.put("Decoded", upload);
+
+            response.put("base64", AbstractModelTask.contentByteToString(bytes));
 
             return JsonRestUtils.toJson(response);
         } catch (/*RecordInmemoryException |*/ IOException e) {
@@ -1148,86 +1175,14 @@ public class ObjectFileCommonController {
 
     }
 
-    @ApiOperation(value = "/getBase64EncodedFile", notes
-            = "##### кодирования файла в Base64")
-    @RequestMapping(value = "/getBase64EncodedFile", method = RequestMethod.POST, produces = "application/json")
-    @Transactional
-    public @ResponseBody
-    byte[] getBase64EncodedFile(
-            @ApiParam(value = "MultipartFile для кодирования в Base64", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
-    ) throws IOException, CRCInvalidException, RecordNotFoundException,
-            FileServiceIOException {
-
-        try {
-            byte[] upload = getBytes(file);
-
-            return Base64.getEncoder().encode(upload);
-        } catch (IOException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new FileServiceIOException(
-                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-
-    }
-
-    @ApiOperation(value = "/getBase64MimeEncodedFile", notes
-            = "##### кодирования файла в Base64 MIME")
-    @RequestMapping(value = "/getBase64MimeEncodedFile", method = RequestMethod.POST, produces = "application/json")
-    @Transactional
-    public @ResponseBody
-    byte[] getBase64MimeEncodedFile(
-            @ApiParam(value = "MultipartFile для кодирования в Base64 MIME", required = true) @RequestParam(value = "file", required = true) MultipartFile file //Название не менять! Не будет работать прикрепление файла через проксю!!!
-    ) throws IOException, CRCInvalidException, RecordNotFoundException,
-            FileServiceIOException {
-
-        try {
-            byte[] upload = getBytes(file);
-
-            return Base64.getMimeEncoder().encode(upload);
-        } catch (IOException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new FileServiceIOException(
-                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-
-    }
-
-    @ApiOperation(value = "/getBase64DecodedFile", notes
-            = "##### декодирование файла из Base64")
-    @RequestMapping(value = "/getBase64DecodedFile", method = RequestMethod.POST, produces = "application/pdf")
-    @Transactional
-    public @ResponseBody
-    byte[] getBase64DecodedFile(
-            @ApiParam(value = "использовать MIME декодер", required = false) @RequestParam(value = "isMime", required = false, defaultValue = "false") boolean isMime,
-            @ApiParam(value = "MultipartFile для декодирования из Base64", required = true) @RequestParam(value = "file", required = false) MultipartFile file, //Название не менять! Не будет работать прикрепление файла через проксю!!!
-            @RequestBody byte[] byteArray
-    ) throws IOException, CRCInvalidException, RecordNotFoundException,
-            FileServiceIOException {
-
-        try {
-            if(isMime){
-                if(byteArray.length > 0){
-                    return Base64.getMimeDecoder().decode(byteArray);
-                }
-                return Base64.getMimeDecoder().decode(getBytes(file));
-            } else {
-                if(byteArray.length > 0){
-                    return Base64.getDecoder().decode(byteArray);
-                }
-                return Base64.getDecoder().decode(getBytes(file));
-            }
-        } catch (IOException e) {
-            LOG.warn(e.getMessage(), e);
-            throw new FileServiceIOException(
-                    FileServiceIOException.Error.REDIS_ERROR, e.getMessage());
-        }
-
+    private byte[] getBytes(MultipartFile file, String fileName) throws IOException{
+        return AbstractModelTask
+                .multipartFileToByteArray(file, fileName)
+                .toByteArray();
     }
 
     private byte[] getBytes(MultipartFile file) throws IOException {
-        return AbstractModelTask
-                        .multipartFileToByteArray(file, file.getOriginalFilename())
-                        .toByteArray();
+        return getBytes(file, file.getOriginalFilename());
     }
 
 }

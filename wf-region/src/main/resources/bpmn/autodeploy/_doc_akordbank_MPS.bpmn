@@ -31,8 +31,8 @@ execution.setVariable('processInstanceId', processInstanceId)</script>
         <activiti:formProperty id="sBeneficiarySBank" name="BENEFICIARY'S BANK:" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}">
           <activiti:field name="sKey_GroupPostfix">
             <activiti:string><![CDATA[_default_AkordBank]]></activiti:string>
@@ -76,7 +76,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" readable="false" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
           <activiti:value id="correctly" name="Розпорядження оформлене вірно, відправити на узгодження"></activiti:value>
           <activiti:value id="incorrectly" name="Розпорядження оформлене не вірно, повернути на доопрацювання"></activiti:value>
@@ -128,7 +128,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ"></activiti:formProperty>
         <activiti:formProperty id="sCorrectness" name="Коректність оформлення Розпорядження" type="enum" required="true">
           <activiti:value id="correctly" name="Узгодити"></activiti:value>
         </activiti:formProperty>
@@ -142,7 +142,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[elena.shebaldenkova@gmail.com]]></activiti:expression>
+          <activiti:expression><![CDATA[zagraevskaya@accordbank.com.ua]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Оформлено Доручення на переказ коштів для клієнте ${sName_client}]]></activiti:expression>
@@ -170,11 +170,11 @@ documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 var sKey_GroupPostfix = '_default_AkordBank'
 var sKey_GroupPostfix_New ='AkordBank_Direction'
 var oResult = documentStepService.cloneDocumentStepSubject(snID_Process_Activiti,
-sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
+sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
     </scriptTask>
     <sequenceFlow id="flow21" sourceRef="scripttask5" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask4" name="Співробітник ДКО виконує(формує свіфт-платіж????)">
+    <userTask id="usertask4" name="Співробітник ДКО виконує(формує свіфт-платіж)">
       <extensionElements>
         <activiti:formProperty id="sKey_Step_Document" name="sKey_Step_Document ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="processInstanceId" name="ід процесу" type="string" readable="false"></activiti:formProperty>
@@ -193,8 +193,11 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sActionDKO" name="Виконання завдання(свіфт-платіж сформовано)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=false ,bPrintform=true" type="string" default="РОЗПОРЯДЖЕННЯ"></activiti:formProperty>
+        <activiti:formProperty id="sActionDKO" name="Виконання завдання - формування свіфт-платежy" type="enum" required="true">
+          <activiti:value id="Yes" name="Виконано"></activiti:value>
+          <activiti:value id="No" name="Неможливо сформувати свіфт-платіж"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -216,8 +219,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, false)</script>
     <scriptTask id="scripttask7" name="права ДУКБО степ 5" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>//переключение степа
 var snID_Process_Activiti = execution.getProcessInstanceId()
-var sKey_Step= 'step_5
-'
+var sKey_Step= 'step_5'
 var oResultSetDoc =
 documentStepService.setDocumentStep(snID_Process_Activiti, sKey_Step)
 
@@ -247,8 +249,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step, true)</script>
         <activiti:formProperty id="sBensIban" name="BEN'S IBAN:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOfBeneciary" name="NAME OF BENEFICIARY:" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIntermediaryBank" name="INTERMEDIARY BANK:" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Akordbank/_doc_akordbank_MPS.html] ; ;bVisible=true" type="string" default="РОЗПОРЯДЖЕННЯ" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sActionDUBKO" name="Виконання завдання(відображення операції в ОДБ)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sActionDUBKO" name="Виконання завдання - Відображення операції в ОДБ" type="enum" required="true">
+          <activiti:value id="Yes" name="Виконано"></activiti:value>
+          <activiti:value id="No" name="Неможливо виконати"></activiti:value>
+        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
     </userTask>
