@@ -36,7 +36,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Прийом і перевірка пакету документів">
+    <userTask id="usertask1" name="Прийом і перевірка пакету документів" activiti:candidateGroups="sale">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -54,7 +54,7 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Передача документів начальнику ">
+    <userTask id="usertask2" name="Передача документів начальнику " activiti:candidateGroups="sale">
       <extensionElements>
         <activiti:formProperty id="sStatus" name="Обробка заяви " type="enum" required="true">
           <activiti:value id="sAccept" name="Документи передані для виконання"></activiti:value>
@@ -68,9 +68,9 @@
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask3" name="Запис у бланку проходження документа ">
+    <userTask id="usertask3" name="Запис у бланку проходження документа " activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="tring" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" writable="false"></activiti:formProperty>
