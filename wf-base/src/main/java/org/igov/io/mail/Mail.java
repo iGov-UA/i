@@ -117,7 +117,7 @@ public class Mail extends Abstract_Mail {
         LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
     }
 
-    public void sendOld() throws EmailException {
+    private void sendOld() throws EmailException {
         LOG.info("sendOld started...");
         LOG.info("init");
         try {
@@ -208,7 +208,8 @@ public class Mail extends Abstract_Mail {
             oMimeBodyPart.setText(sBody, DEFAULT_ENCODING);
             //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
-            getoMultiparts().addBodyPart(oMimeBodyPart);
+            getoMultiparts().addBodyPart(oMimeBodyPart, 0);
+            //getoMultiparts().addBodyPart(oMimeBodyPart);
             LOG.info("sBodylength()={}", sBody != null ? sBody.length() : "null");
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
