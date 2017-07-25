@@ -59,7 +59,7 @@
         <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sStatus" name="Обробка заяви " type="enum" required="true">
           <activiti:value id="sAccept" name="Документи передані для виконання"></activiti:value>
-          <activiti:value id="sRejec" name="Відмова громадянину у разі неповного пакета документів, невідповідністі поданих документів, недостовірних відомостей"></activiti:value>
+          <activiti:value id="sReject" name="Відмова громадянину у разі неповного пакета документів, невідповідністі поданих документів, недостовірних відомостей"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="Обов'язкове поле для введення информации" type="markers" default="{&quot;motion&quot;: {&quot;RequiredFieldsOnCondition_01&quot;: {&quot;aField_ID&quot;: [&quot;sComment&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;sStatus&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'sReject'&quot;}}}"></activiti:formProperty>
@@ -160,9 +160,6 @@
    [pattern/mail/new_design/_common_signature_end.html]
    [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
-        </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" sourceRef="usertask3" targetRef="servicetask3"></sequenceFlow>
@@ -231,10 +228,9 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
    [pattern/mail/new_design/_common_content_start.html]
    <p>
-    Ваше звернення стосовно довідки щодо підтримання належного санітарного стану пройшла перевірку і направлена на опрацювання.<br />
-    Спеціалісти повинні дати відповідь протягом 5 календарних днів з дня реєстрації заяви.<br /> 
-    <p>Номер Вашого замовлення: ${number_cnap}</p>
-   </p>
+   Ваше звернення стосовно довідки щодо підтримання належного санітарного стану пройшла перевірку і направлена на опрацювання.<br>
+    Спеціалісти повинні дати відповідь протягом 5 календарних днів з дня реєстрації заяви.<br>  
+    </p>
    [pattern/mail/new_design/_common_content_end.html] 
    [pattern/mail/new_design/_common_signature_start.html]
    ${sNameOrgan},<br>
