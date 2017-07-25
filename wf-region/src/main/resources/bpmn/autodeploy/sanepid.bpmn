@@ -32,7 +32,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[jlypovetskaia@gmail.com]]></activiti:expression>
+          <activiti:string><![CDATA[alexander.polovenko@gmail.com]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Довідка щодо підтримання належного санітарного стану.]]></activiti:string>
@@ -62,7 +62,7 @@
           <activiti:value id="sReject" name="Відмова громадянину у разі неповного пакета документів, невідповідністі поданих документів, недостовірних відомостей"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="Обов'язкове поле для введення информации" type="markers" default="{&quot;motion&quot;: {&quot;RequiredFieldsOnCondition_01&quot;: {&quot;aField_ID&quot;: [&quot;sComment&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;sStatus&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'sReject'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="${markerService.loadFromFile('dpss/sanepid_ut.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
