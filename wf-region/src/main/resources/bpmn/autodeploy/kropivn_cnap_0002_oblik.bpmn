@@ -12,6 +12,13 @@
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="fax" name="Факс" type="string"></activiti:formProperty>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDovOsoba" name="Подаєте заяву як" type="enum" required="true">
+          <activiti:value id="personal" name="особисто"></activiti:value>
+          <activiti:value id="agent" name="уповноважена особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDocAgent" name="Довіреність на право представляти інтереси суб'єкта господарювання в органах місцевого самоврядування ; ;bNew=true" type="file"></activiti:formProperty>
+        </activiti:formProperty>
         <activiti:formProperty id="sSubjectGosp" name="Вкажіть тип особи" type="enum" required="true">
           <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
@@ -49,8 +56,7 @@
         <activiti:formProperty id="sWorkholiday_from" name="Початок роботи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkholiday_to" name="Закінчення роботи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDocAgent" name="Якщо Ви уповноважена особа, будь ласка завантажте скан-копію довіреності ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви" type="string"></activiti:formProperty>        
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -65,6 +71,7 @@
         <activiti:formProperty id="markers7" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="маркер якщо є вихідні" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sHolDay&quot;,&quot;sWorkholiday_from&quot;,&quot;sWorkholiday_to&quot;,&quot;sWorkdinhol_from&quot;,&quot;sWorkdinhol_to&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sHoliday&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="маркер якщо фоп" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sFOP&quot;,&quot;sFopinn&quot;,&quot;sFopAddress&quot;,&quot;sFopPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sDovOsoba&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectDov&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про успішне подання звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
