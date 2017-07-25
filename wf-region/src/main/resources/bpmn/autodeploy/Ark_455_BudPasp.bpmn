@@ -17,7 +17,7 @@
         
         <activiti:formProperty id="markersLine_Z" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Z&quot;:{&quot;aElement_ID&quot;:[&quot;place&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Площа земельної ділянки (Га.)" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="area" name="Площа земельної ділянки (га.)" type="double" required="true"></activiti:formProperty>
         <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" required="true">
           <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
           <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
@@ -33,15 +33,17 @@
           <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
           <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="MarkerSpivvlasn" name="mark" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;doc4&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;spivvlasn&quot;},&quot;sCondition&quot;:&quot;[sCond]=='yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="MarkerSpivvlasn" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_455_Vlasn.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;sTextFiles&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTextFiles" name=" ; ;labelType=info" type="label" default="Обов'язково завантажте всі необхідні документи! Якщо один документ в кількох зображеннях, завантажте PDF файлом або ZIP архівом."></activiti:formProperty>
         <activiti:formProperty id="fPassport" name="Паспорт;(завантажте перші заповнені сторінки, та сторінку з місцем реєстрації);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fVlasn" name="Документ про право власності або користування земельною ділянкою; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fZgoda" name="Засвідчена згода співвласників земельної ділянки (житлового будинку) на забудову;(обов'язково має бути посвідчена нотаріусом);bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sTextEskiz" name=" ; ;labelType=info" type="label" default="Увага! Ескіз має містити місце розташування будівель та споруд на земельній ділянці, відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд, фасади та плани поверхів об`єктів із зазначенням габаритних розмірів, перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо. УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів."></activiti:formProperty>
-        <activiti:formProperty id="fEskiz" name="Ескізне зображення забудови ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTextEskiz" name=" ; ;labelType=info" type="label" default="Увага!&lt;br&gt; Ескіз має містити:&lt;br&gt;- місце розташування будівель та споруд на земельній ділянці,&lt;br&gt;- відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд,&lt;br&gt;- фасади та плани поверхів об`єктів із зазначенням габаритних розмірів,&lt;br&gt;- перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо.&lt;br&gt; УВАГА! Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів."></activiti:formProperty>
+        <activiti:formProperty id="fEskiz" name="Ескізні наміри забудови ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="fZemBudSxem" name="Схема ділянки з розташуванням об'єктів будівництва;(завантажте окремо схему ділянки і позначте на ній існуючі будівлі та будівлі що будуть збудовані);bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markerFlag" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_455_flag.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
@@ -142,6 +144,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="fVlasn" name="Документ про право власності або користування земельною ділянкою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fZgoda" name="Згода співвласників земельної ділянки (житлового будинку) на забудову; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fEskiz" name="Ескізне зображення забудови ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemBudSxem" name="Схема ділянки з розташуванням об'єктів будівництва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно. Передати документи до відділу Архітектури!"></activiti:value>
@@ -290,6 +294,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="fVlasn" name="Документ про право власності або користування земельною ділянкою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fZgoda" name="Згода співвласників земельної ділянки (житлового будинку) на забудову; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fEskiz" name="Ескізне зображення забудови ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemBudSxem" name="Схема ділянки з розташуванням об'єктів будівництва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="ArkDecide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="ArkAccept" name="Заява оформлена вірно. Надати будівельний паспорт."></activiti:value>
@@ -346,6 +351,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="fVlasn" name="Документ про право власності або користування земельною ділянкою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fZgoda" name="Згода співвласників земельної ділянки (житлового будинку) на забудову; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fEskiz" name="Ескізне зображення забудови ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemBudSxem" name="Схема ділянки з розташуванням об'єктів будівництва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_AV" name="Відповідь відділу архітектури" type="markers" default="{&quot;attributes&quot;:{&quot;Line_AV&quot;:{&quot;aElement_ID&quot;:[&quot;ArkDecide&quot;],&quot;sValue&quot;:&quot;Відповідь відділу архітектури&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="ArkDecide" name="Результат опрацювання" type="enum" writable="false">
@@ -361,7 +367,7 @@ ${sNameOrgan}<br />
           <activiti:value id="Cnap2Accept" name="Заяву задоволено. Послугу надоно"></activiti:value>
           <activiti:value id="Cnap2Reject" name="Відмова в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Cnap2Comment" name="Якщо заявнику выдмовлено у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Cnap2Comment" name="Якщо заявнику відмовлено у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
