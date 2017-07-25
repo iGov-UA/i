@@ -3,20 +3,26 @@
   <process id="sanepid" name="Довідка щодо підтримання належного санітарного стану" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної первинної допомоги" type="select" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="У давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="TextArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="TextArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_02" name="У давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="trusted_person" name="Ім’я, по батькові та прізвище керівника юридичної особи/ фізичної особи-підприємця/ уповноваженої особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocationLive" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateCreateProcess" name="Вкажіть сьогоднішню дату ; ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ" type="markers" default="{&amp;quot;attributes&amp;quot;:{&amp;quot;Line_01&amp;quot;:{&amp;quot;aElement_ID&amp;quot;:[&amp;quot;sID_SubjectOrgan_OKPO_01&amp;quot;],&amp;quot;sValue&amp;quot;:&amp;quot;Дані з ЄДРПОУ - 01&amp;quot;}}}" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -26,17 +32,17 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+          <activiti:expression><![CDATA[jlypovetskaia@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Довідка щодо підтримання належного санітарного стану.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[pattern/mail/new_design/_common_employee_notify.html]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="Прийом і перевірка пакету документів">
+    <userTask id="usertask1" name="Прийом і перевірка пакету документів" activiti:candidateGroups="sale">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -54,23 +60,23 @@
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="Передача документів начальнику ">
+    <userTask id="usertask2" name="Передача документів начальнику " activiti:candidateGroups="sale">
       <extensionElements>
         <activiti:formProperty id="sStatus" name="Обробка заяви " type="enum" required="true">
           <activiti:value id="sAccept" name="Документи передані для виконання"></activiti:value>
           <activiti:value id="sReject" name="Відмова громадянину у разі неповного пакета документів, невідповідністі поданих документів, недостовірних відомостей"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers_01" name="Обов'язкове поле для введення информации" type="markers" default="{&quot;motion&quot;: {&quot;RequiredFieldsOnCondition_01&quot;: {&quot;aField_ID&quot;: [&quot;sComment&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;sStatus&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'sReject'&quot;}}}" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="usertask1" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
-    <userTask id="usertask3" name="Запис у бланку проходження документа ">
+    <userTask id="usertask3" name="Запис у бланку проходження документа " activiti:candidateGroups="sale">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="tring" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" writable="false"></activiti:formProperty>
@@ -134,18 +140,20 @@
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p align="left">
-${substance_2}.<br />
-</p>
-<p align="left">
-Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
-При собі треба мати:<br/> 
-1. Документ, що посвідчує особу.<br/> 
-2. Для уповоноваженої особи - довіренність.<br/>
-3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
-4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
-</p>]]></activiti:expression>
+   [pattern/mail/new_design/_common_content_start.html]
+   <p>
+    Ви або уповноважена Вами особа (при наявності довіреності) можете отримати особисто під підпис у ЦНАП.<br/> 
+    При собі треба мати:<br/> 
+    1. Документ, що посвідчує особу.<br/> 
+    2. Для уповоноваженої особи - довіренність.<br/>
+    3. Оригінали документів, що були завантажені при подачі заяви на сайті.<br/>
+    4. Підписані завірені печаткою заяви, які знаходяться в прикріплених файлах.
+   </p>
+   [pattern/mail/new_design/_common_content_end.html] 
+   [pattern/mail/new_design/_common_signature_start.html]
+   ${sNameOrgan},<br>
+   [pattern/mail/new_design/_common_signature_end.html]
+   [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
@@ -177,15 +185,17 @@ ${substance_2}.<br />
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p align="left"> Ваше звернення №[sID_Order] щодо ${substance_3} довідки щодо підтримання належного санітарного стану.<br/>
-Повідомлення про результат послуги буде спрямоване на Ваш e-mail.</p>
-<br />
-${sPhoneOrgan}<br />
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+   [pattern/mail/new_design/_common_content_start.html]
+   <p>
+    Ваше звернення №[sID_Order] стосовно довідки щодо підтримання належного санітарного стану прийнято.<br/>
+	Повідомлення про результат послуги буде спрямоване на Ваш e-mail.<br>
+    ${sPhoneOrgan}
+   </p>
+   [pattern/mail/new_design/_common_content_end.html] 
+   [pattern/mail/new_design/_common_signature_start.html]
+   ${sNameOrgan},<br>
+   [pattern/mail/new_design/_common_signature_end.html]
+   [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -214,17 +224,17 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p align="left">Ваше звернення щодо ${substance_3} довідки щодо підтримання належного санітарного стану.<br />
-Спеціалісти повинні дати відповідь протягом 5 календарних днів з дня реєстрації заяви.<br /> 
-<p>Номер Вашого замовлення: ${number_cnap}</p>.
-</p>
-<br />
-${sPhoneOrgan}<br />
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan}<br />
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+   [pattern/mail/new_design/_common_content_start.html]
+   <p>
+    Ваше звернення стосовно довідки щодо підтримання належного санітарного стану пройшла перевірку і направлена на опрацювання.<br />
+    Спеціалісти повинні дати відповідь протягом 5 календарних днів з дня реєстрації заяви.<br /> 
+    <p>Номер Вашого замовлення: ${number_cnap}</p>
+   </p>
+   [pattern/mail/new_design/_common_content_end.html] 
+   [pattern/mail/new_design/_common_signature_start.html]
+   ${sNameOrgan},<br>
+   [pattern/mail/new_design/_common_signature_end.html]
+   [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -251,7 +261,7 @@ ${sNameOrgan}<br />
         <omgdc:Bounds height="40.0" width="40.0" x="603.0" y="105.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="60.0" width="105.0" x="813.0" y="96.0"></omgdc:Bounds>
+        <omgdc:Bounds height="63.0" width="105.0" x="815.0" y="94.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="723.0" y="25.0"></omgdc:Bounds>
@@ -292,7 +302,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="723.0" y="42.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
-        <omgdi:waypoint x="918.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="125.0"></omgdi:waypoint>
         <omgdi:waypoint x="943.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
@@ -313,7 +323,7 @@ ${sNameOrgan}<br />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
         <omgdi:waypoint x="781.0" y="125.0"></omgdi:waypoint>
-        <omgdi:waypoint x="813.0" y="126.0"></omgdi:waypoint>
+        <omgdi:waypoint x="815.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
