@@ -27,10 +27,10 @@
           <activiti:value id="sEnumVtrataGodyvalnuka" name="за втрати годувальника"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFilePassport" name="Паспорт (сканкопія);1,2 сторінка та сторінка з місцем реєстрації, завантажте ZIP архівом або PDF файлом;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка; за наявності" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileMsekInval" name="Довідка МСЕК при призначенні інвалідності ; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileSvidotSmert" name="Cвідотство про смерть; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Місце роботи;назву підприємства прописати в лапках; ;bNew=true" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка; за наявності, завантажте ZIP архівом або PDF файлом" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileMsekInval" name="Довідка МСЕК при призначенні інвалідності ;завантажте ZIP архівом або PDF файлом ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvidotSmert" name="Cвідотство про смерть; завантажте ZIP архівом або PDF файлом;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Місце роботи;Написати повну назву підприємства в лапках (буде відображатися у довідці); ;bNew=true" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з ; ;bNew=true" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensreq.json')}"></activiti:formProperty>
@@ -56,16 +56,7 @@
           <activiti:string><![CDATA[Нове звернення. Довідка про заробітну плату на призначення (перерахунок) пенсії]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-У Вас в черзі на обробку нове звернення щодо надання довідки про заробітну плату на призначення (перерахунок) пенсії.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},<br>
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -92,10 +83,13 @@ ${sNameOrgan},<br>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-			<p>
-				Ваша заявка на отримання архівної довідки успішно зареєстрована [sID_Order].<br>
-				Спеціалісти ${sNameOrgan} повинні дати відповідь найближчим часом.
-			</p>
+			<p>				
+                       Ваше звернення в  ${sNameOrgan} на отримання архівної довідки успішно зареєстроване [sID_Order].<br>
+                    <p>     
+                    Повідомлення про результат опрацювання запиту буде спрямоване на Ваш e-mail. За наявності питань можете звернутись за наступними контактами<br></p>
+                     ${sPhoneOrgan}<br>			
+                     ${sAddress}<br>
+			${sWorkTime}<br><br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -108,16 +102,19 @@ ${sNameOrgan},<br>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVariantDovidk" name="Прошу надати" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClientFio" name="Автор звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспорті;Тип, серія та номер документу, дата і орган, що його видав ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nFilePassport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameCompany" name="Місце роботи;назву підприємства прописати в лапках; ;bNew=true" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFilePassport" name="Паспорт (сканкопія);1,2 сторінка та сторінка з місцем реєстрації, завантажте ZIP архівом або PDF файлом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileTrudBook" name="Трудова книжка; за наявності, завантажте ZIP архівом або PDF файлом" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileMsekInval" name="Довідка МСЕК при призначенні інвалідності ;завантажте ZIP архівом або PDF файлом ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFileSvidotSmert" name="Cвідотство про смерть; завантажте ZIP архівом або PDF файлом;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnumVudPensii" name="Призначення пенсії за" type="enum" writable="false">
@@ -126,14 +123,17 @@ ${sNameOrgan},<br>
           <activiti:value id="sEnumVtrataGodyvalnuka" name="за втрати годувальника"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="date"></activiti:formProperty>
         <activiti:formProperty id="asDecide" name="Результат звернення" type="enum" required="true">
-          <activiti:value id="accept" name="З документами все гаразд, заява зареєстрована"></activiti:value>
-          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації у звязку з відсутністю необхідних документів"></activiti:value>
+          <activiti:value id="accept" name="Заява зареєстрована -надано повний перелік документів"></activiti:value>
+          <activiti:value id="reject" name="Відмовити у розгляді без реєстрації, у звязку з відсутністю необхідних документів"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Комментарії (у разі наявності)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="принтформа " type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_13&quot;:{&quot;aElement_ID&quot;:[&quot;fiz_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asChoiceObject&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sEnumFiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensreq.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensshow.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBodyArhive" name="[pattern/print/archiv_1577_pererahpen_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -160,7 +160,7 @@ ${sNameOrgan},<br>
 <p>Причина в наступному:</p>
 <p>${sComment}</p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
-<br />
+${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -196,8 +196,8 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення щодо отримання довідки про заробітну плату на призначення (перерахунок) пенсії - відправлене у державний трудовий архів.<br />
-Спеціалісти з архівної установи повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви. Однак строк може становити 45 днів, згідно п. 4.2.12 «Правил роботи архівних установ України», які затверджені наказом Міністерства юстиції  України від 08.04.2013 г. № 656/5, з обов’язковим інформуванням заявника. Першочергово виконуються запити осіб, які мають встановлені законодавством пільги <br /> 
-<p>Номер Вашого замовлення: ${sExtensionNumber}</p><br /> 
+Спеціалісти з архівної установи повинні дати відповідь протягом 30-ти календарних днів з дня реєстрації заяви. Однак строк може становити 45 днів, згідно п. 4.2.12 «Правил роботи архівних установ України», які затверджені наказом Міністерства юстиції  України від 08.04.2013 г. № 656/5. Першочергово виконуються запити осіб, які мають встановлені законодавством пільги <br /> 
+<p>Реєстраційний номер Вашого звернення: ${sExtensionNumber}</p><br /> 
 ${sPhoneOrgan}<br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -222,21 +222,28 @@ ${sNameOrgan},<br>
     </sequenceFlow>
     <userTask id="usertask2" name="Обробка данних співробітником архіву" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sVariantDovidk" name="Прошу надати" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact" name="Адреса заявника" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensreq.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('archiv_1577_pererahpensshow.json')}"></activiti:formProperty>
         <activiti:formProperty id="sExtensionNumber" name="Реєстраційний номер ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asStatus" name="Рішення" type="enum" required="true">
-          <activiti:value id="accept" name="Рішення готове. Запросити громадянина до ЦНАПу"></activiti:value>
-          <activiti:value id="reject" name="Відправити заявнику копію рішення у разі негативного рішення управління"></activiti:value>
+        <activiti:formProperty id="sDateRegistration" name="Дата реєстрації ЦНАП" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asStatus" name="Результат звернення " type="enum" required="true">
+          <activiti:value id="accept" name="Сповістити громадянина про можливість отримання довідки. Запросити громадянина до ЦНАПу"></activiti:value>
+          <activiti:value id="reject" name="Сповістити громадянина, що довідка не може бути надана"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRishen" name="Сканкопія рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sComment1" name="Комментарії (у разі наявності)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRishen" name="Сканкопія рішення; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
@@ -259,8 +266,7 @@ ${sNameOrgan},<br>
 На жаль, Ваше звернення про отрамання довідки про заробітну плату на призначення (перерахунок) пенсії було відхилено.</p>
 <p>Причина в наступному:</p>
 <p>${sComment}</p>
-<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p>
-<br />
+<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="#current-page">iGov.org.ua</a></p><br />
 ${sPhoneOrgan}<br />
 ${sAddress}<br />
 ${sWorkTime}<br />
