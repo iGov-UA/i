@@ -421,8 +421,14 @@ var timerEnd=year+'-'+month+'-'+day+'T'+'19'+':'+'00'+':'+seconds
 execution.setVariable('sEndDay', timerEnd)</script>
     </scriptTask>
     <sequenceFlow id="flow45" sourceRef="scripttask3" targetRef="servicetask7"></sequenceFlow>
-    <serviceTask id="servicetask7" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Pered splatoyu posluhy prosymo pereviryty svoyu cherhu za telefonamy 097 470 05 05 abo 066 470 05 05 abo 073 470 05 05]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>

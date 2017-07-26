@@ -11,7 +11,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fax" name="Факс" type="string"></activiti:formProperty>        
+        <activiti:formProperty id="fax" name="Факс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSubjectGosp" name="Вкажіть тип особи" type="enum" required="true">
           <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
@@ -51,6 +51,7 @@
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocAgent" name="Якщо Ви уповноважена особа, будь ласка завантажте скан-копію довіреності ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sFOPPIB" name="Фізична особа-підприємець; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -138,10 +139,10 @@
         <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sSubjectRegistration" name="Місце державної реєстрації" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації" type="date" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNameObject" name="Назва об’єкта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта " type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sStartData" name="Початок роботи об'єкта" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameObject" name="Назва об’єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStartData" name="Початок роботи об'єкта; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="nArea_total" name="Площа об’єкта  загальна, кв.м" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nArea_prod" name="Площа об’єкта торговельна (виробнича), кв.м" type="double" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nWorkplaces" name="Кількість робочих місць, од." type="long" writable="false"></activiti:formProperty>
@@ -156,6 +157,11 @@
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocAgent" name="Довіреність ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFOPPIB" name="Фізична особа-підприємець; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectGosp" name="Вкажіть тип особи; ;bVisible=false" type="enum" required="true">
+          <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="markers10" name="Режим роботи об'єкта " type="markers" default="{&quot;attributes&quot;:{&quot;Line_10&quot;:{&quot;aElement_ID&quot;:[&quot;sWork_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="Режим роботи об'єкта у вихідні дні" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;sWorkholiday_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта у вихідні дні&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_12&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
@@ -173,6 +179,7 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kropivn_cnap_0002_kartka.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/kropivn_cnap_0002_dovidka.html]; ;bVisible=false ,bPrintform=true" type="string" default="Довідка " writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/kropivn_cnap_0002_dovidka.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markers20" name="ФОП для принтформи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sFOPPIB&quot;],&quot;asID_Field_sValue&quot;:[&quot;Фізична особа-підприємець&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask3" name="Повідомлення про відмову" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
