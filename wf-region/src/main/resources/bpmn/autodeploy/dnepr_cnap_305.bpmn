@@ -524,11 +524,7 @@ ${sPhoneOrgan}.<br />
           <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${doc1},${doc2},${doc3},${doc4},${doc5},${doc6},${doc7}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow45" name="ПОШТА" sourceRef="exclusivegateway7" targetRef="usertask4">

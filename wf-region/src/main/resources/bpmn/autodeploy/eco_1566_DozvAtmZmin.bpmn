@@ -14,8 +14,8 @@
         <activiti:formProperty id="sDaniAdress1" name="Адреса заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileObgrunt" name="Документи, в яких обґрунтовуються обсяги викидів забруднюючих речовин, підготовлених відповідно до Інструкції " type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої держадміністрації про наявність або відсутність зауважень громадських організацій" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fileObgrunt" name="Документи, в яких обґрунтовуються обсяги викидів забруднюючих речовин, підготовлених відповідно до Інструкції ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої держадміністрації про наявність або відсутність зауважень громадських організацій; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamNarochno" name="Нарочно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
@@ -102,11 +102,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -134,11 +130,7 @@
           <activiti:value id="sEnamS5" name="Працівник №5"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="test_ECO">
@@ -163,11 +155,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow7" sourceRef="usertask4" targetRef="usertask2"></sequenceFlow>
@@ -274,11 +262,7 @@ ${sPhoneOrgan}</p>
           <activiti:value id="sEnamPost" name="Відповідь надіслано поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${fileObgrunt},${fileMDA_Povid}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>

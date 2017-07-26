@@ -21,7 +21,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Ідентифікаційний код; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameUr" name="Повне найменування закладу освіти" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="nTeacher" name="Кількість вчителів" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNamePostCompany" name="Посада керівника підприємства" type="string" required="true"></activiti:formProperty>
@@ -144,11 +144,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_925_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_inn}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+    
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="usertask1_yellow" targetRef="exclusivegateway1"></sequenceFlow>
@@ -284,11 +280,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_925_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_inn}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
@@ -436,11 +428,7 @@
         <activiti:formProperty id="sBody_1" name="[pattern/print/license/rivne_oda_925_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameGovServise" name="Назва послуги; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${bankId_scan_inn}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="usertask3_green" targetRef="servicetask8"></sequenceFlow>

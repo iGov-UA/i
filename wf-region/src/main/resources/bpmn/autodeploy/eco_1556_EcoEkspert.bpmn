@@ -355,11 +355,7 @@ ${sNameOrgan}&lt;br /&gt;
           <activiti:value id="sEnamPost" name="Відповідь надіслано поштою"></activiti:value>
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression>${fileObgrunt},${fileMDA_Povid}</activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="servicetask4" targetRef="usertask3"></sequenceFlow>

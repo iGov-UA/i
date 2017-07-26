@@ -23,12 +23,7 @@
         <activiti:formProperty id="oPrescription1" name="Приписи про усунення порушення" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tTestReq.json')}"></activiti:formProperty>
         <activiti:formProperty id="oPrescription2" name="Приписи про зупинення робіт" type="table" default="${markerService.loadFromFile('KMDA/DABI_tables/tPrescription1.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="table_marker" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;oPrescription1&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asHowInspection&quot;},&quot;sCondition&quot;:&quot;[sCond] == 'sEnumSchedule'&quot;}}}"></activiti:formProperty>
-        
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask6"></sequenceFlow>

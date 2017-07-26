@@ -12,10 +12,10 @@
         <activiti:formProperty id="sMphone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEmail" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress_obj" name="Адреса розміщення об'єкта оренди" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_restr_svid" name="Сканкопія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_dovir" name="Сканкопія документу що підтверджує повнаження особи що звернулась (довіреність)" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_podatkov" name="Сканкопія довідки з податкової про відсутність заборгованості перед податковою" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="file_biznes_prop" name="Бізнес-пропозиція" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_restr_svid" name="Сканкопія свідоцтва про державну реєстрацію суб'єкта підприємницької діяльності; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_dovir" name="Сканкопія документу що підтверджує повнаження особи що звернулась (довіреність); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_podatkov" name="Сканкопія довідки з податкової про відсутність заборгованості перед податковою; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_biznes_prop" name="Бізнес-пропозиція; ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -85,11 +85,7 @@ ${sSubzvern}<br />
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="string" default="Якщо заявка прийнята і завантажений проект рішення, вона буде передана на опрацювання до профільної комісії. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/novopskov/novopscov_silrada_454_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_restr_svid},${file_dovir},${file_podatkov},${file_biznes_prop}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -165,11 +161,7 @@ ${sSubzvern}<br />
         <activiti:formProperty id="Komment_rishenia2" name="Коментар по рішенню після опрацювання в комітеті і затвердження рішення радою" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="string" default="Рішення передане в секретаріат"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${file_restr_svid},${file_dovir},${file_podatkov},${file_biznes_prop}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow8" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>

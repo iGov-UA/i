@@ -23,7 +23,7 @@
         <activiti:formProperty id="sObjectAddress" name="Поштова/будівельна адреса об’єкта будівництва" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="nWorksNotifChange" name="Зміни в Повідомленні про виконання підготовчих робіт" type="file" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWorksNotifChange" name="Зміни в Повідомленні про виконання підготовчих робіт; ;bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker1_required" name="Required" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_req.json')}"></activiti:formProperty>
         <activiti:formProperty id="marker1_valid" name="Validation" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_valid.json')}"></activiti:formProperty>
@@ -55,11 +55,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker2_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow18" sourceRef="parallelgateway1" targetRef="usertask_step3"></sequenceFlow>
@@ -86,11 +82,7 @@
         <activiti:formProperty id="sID_NumberASKOD" name="Реєстраційний номер вхідного документу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocEmpComment" name="Коментар" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker3_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+     
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow16" sourceRef="parallelgateway1" targetRef="usertask_step4"></sequenceFlow>
@@ -121,11 +113,7 @@
         <activiti:formProperty id="sAssigneeName" name="Відповідальний виконавець" type="string"></activiti:formProperty>       
         <activiti:formProperty id="sPermitBossComment" name="Коментар" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker4_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask_step6" name="6. Перевірка повноти даних та приняття рішення">
@@ -199,11 +187,7 @@
             <activiti:expression><![CDATA[sLoginAsignee]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -289,11 +273,7 @@
         <activiti:formProperty id="sAssigneeName" name="Відповідальний виконавець" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPermitBossComment" name="Коментар Керівника Управління дозвільних процедур" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker4_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <userTask id="usertask_step14" name="14. Реєстрація вихідного документа" activiti:candidateGroups="kyiv_dabi_doc">
@@ -362,11 +342,7 @@
         <activiti:formProperty id="sPermitEmpComment" name="Коментар співробітника Відділу дозвільних документів" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_NumberOutputDoc" name="Реєстраційний номер вихідного документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker6_visible" name="Show-hide" type="markers" default="${markerService.loadFromFile('KMDA/dabi_works_notif_change_vis.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow39" sourceRef="usertask_step14" targetRef="scripttask1"></sequenceFlow>
@@ -389,11 +365,7 @@
     <userTask id="usertask_Upload_file" name="Upload File" activiti:candidateGroups="kyiv_dabi_doc">
       <extensionElements>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nWorksNotifChange}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer3" name="Timer" attachedToRef="usertask_Upload_file" cancelActivity="true">

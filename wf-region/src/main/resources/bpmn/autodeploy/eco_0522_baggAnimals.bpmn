@@ -24,7 +24,7 @@
         <activiti:formProperty id="sOffers" name="Пропозиції про місце та спосіб зберігання зібраного наукового та колекційного матеріалу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="відомості про чисельність видів тварин" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;nFaunaQuantity&quot;],&quot;sValue&quot;:&quot;Відомості про чисельність видів тварин чи рослин&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nFaunaQuantity" name="Види тварин чи рослин; Чисельність" type="table" default="${markerService.loadFromFile('table/eco/eco_0522_baggAnimals_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="nFile1" name="Погодження з постійним користувачем природних ресурсів;У разі добування (збирання) тварин і рослин, занесених до Червоної книги України, на територіях заповідників, національних природних парків та інших установ природно-заповідного фонду України" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Погодження з постійним користувачем природних ресурсів;У разі добування (збирання) тварин і рослин, занесених до Червоної книги України, на територіях заповідників, національних природних парків та інших установ природно-заповідного фонду України;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="asDelivery" name="Оберіть спосіб отримання дозволу" type="enum" required="true">
           <activiti:value id="sEnumSelf" name="особисто заявникові або представнику за довіреністю"></activiti:value>
           <activiti:value id="sEnumPost" name="надіслати поштою"></activiti:value>
@@ -265,15 +265,11 @@
           <activiti:value id="sEnumPost" name="Відправити повідомлення про відправку дозволу поштою"></activiti:value>
           <activiti:value id="sEnumReject" name="Відправити лист про відмову у видачі дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="nFilePermit" name="Скан-копія дозволу" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFilePermit" name="Скан-копія дозволу; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileReject" name="Скан-копія листа з відмовою; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="requiredFields2" type="markers" default="${markerService.loadFromFile('eco/eco_0522_baggAnimals_4.json')}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFile1},${nFaunaQuantity}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+   
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2_yellow"></sequenceFlow>

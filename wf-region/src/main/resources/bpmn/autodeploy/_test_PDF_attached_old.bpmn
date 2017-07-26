@@ -10,7 +10,7 @@
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFileMail" name="Файл для мейла (старый листнер)" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileMail" name="Файл для мейла (старый листнер); ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="User Task" activiti:candidateGroups="sales">
@@ -23,7 +23,7 @@
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
 
-        <activiti:formProperty id="nFileUT1" name="Рахунок для сплати" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFileUT1" name="Рахунок для сплати; ;bNew=true" type="file"></activiti:formProperty>
 
 
         <activiti:formProperty id="sBody" name="[pattern/print/testPrint2.html]; ;bVisible=false" type="" default="Форма заяви" writable="false"></activiti:formProperty>
@@ -32,11 +32,7 @@
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/testPrint2.html"  type="file" writable="false"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskInheritance}">
-          <activiti:field name="aFieldInheritedAttachmentID">
-            <activiti:expression><![CDATA[${nFileMail}]]></activiti:expression>
-          </activiti:field>
-        </activiti:taskListener>
+       
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask1" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
