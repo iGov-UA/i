@@ -63,9 +63,9 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;sComment &quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;sStatus&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'sReject '&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="Ініціали та прізвище відповідальної особи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFioAdmin" name="Ініціали та прізвище відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Дата надходження заяви" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dpss/dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -89,8 +89,8 @@
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFile_dov" name="Завантажте скановану довідку щодо підтримання належного санітарного стану; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="adminFio" name="Ініціали та прізвище відповідальної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Вкажіть дату реєстрації (у форматі ДД/ММ/РРРР)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFioAdmin" name="Ініціали та прізвище відповідальної особи" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="date_registrastion" name="Дата надходження заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dpss/dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dpss/dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
       </extensionElements>
@@ -269,7 +269,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdc:Bounds height="60.0" width="105.0" x="170.0" y="96.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="467.0" y="98.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="467.0" y="99.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
         <omgdc:Bounds height="40.0" width="40.0" x="603.0" y="105.0"></omgdc:Bounds>
@@ -321,7 +321,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
         <omgdi:waypoint x="415.0" y="126.0"></omgdi:waypoint>
-        <omgdi:waypoint x="467.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="467.0" y="126.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="643.0" y="125.0"></omgdi:waypoint>
@@ -332,7 +332,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <omgdi:waypoint x="815.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="572.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="572.0" y="126.0"></omgdi:waypoint>
         <omgdi:waypoint x="603.0" y="125.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
