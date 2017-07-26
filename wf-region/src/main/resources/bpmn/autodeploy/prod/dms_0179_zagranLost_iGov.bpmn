@@ -155,8 +155,14 @@ ${sNameOrgan},<br>
       </extensionElements>
     </endEvent>
     <sequenceFlow id="flow41" sourceRef="parallelgateway3" targetRef="servicetask6"></sequenceFlow>
-    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask3" name="біометричний не терміновий" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
+       <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Pered splatoyu posluhy prosymo pereviryty svoyu cherhu za telefonamy 097 470 05 05 abo 066 470 05 05 abo 073 470 05 05]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
