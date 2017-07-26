@@ -56,16 +56,7 @@
           <activiti:string><![CDATA[Нове звернення. Довідка про заробітну плату на призначення (перерахунок) пенсії]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-У Вас в черзі на обробку нове звернення щодо надання довідки про заробітну плату на призначення (перерахунок) пенсії.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},<br>
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -111,9 +102,9 @@ ${sNameOrgan},<br>
     <userTask id="usertask1" name="Перевірка документів" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVariantDovidk" name="Прошу надати" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sClientFio" name="Автор звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспорт; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sClientFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспорт" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
@@ -238,7 +229,7 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact" name="Адреса заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact" name="Адреса заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameCompany" name="Місце роботи; ;bNew=true" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyS" name="Період роботи на підприємстві з; ;bNew=true" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPeriodWorkInCompanyF" name="Період роботи на підприємстві по; ;bNew=true" type="date" writable="false"></activiti:formProperty>
