@@ -90,8 +90,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -108,8 +110,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -161,8 +161,10 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -179,8 +181,6 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -207,7 +207,7 @@ execution.setVariable('processDefinitionId', splittedProcessDefinitionId)
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers6" name="якщо пройшов" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDoc2" name="Висновок" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -297,8 +297,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження; ;writable=false;(Село, місто, район, область)" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -315,8 +317,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження; ;writable=false;(Село, місто, район, область)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -337,6 +337,7 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок СБ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCorresponds2" name="Погодити кандидатуру ?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -365,7 +366,169 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[Результат співбесіди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! Вітаємо! Ви успішно пройшли всі етапи співбесід. Найближчим часом з Вами зв'яжеться наш менеджер]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=600" name="viewport" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title> </title>
+    <style type="text/css">
+
+        body {
+            width:100%!important;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
+        }
+        a:link {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+        a:visited {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+			hr {
+			border-bottom: 1px dotted #c2c2c2; 
+			border-top:none;
+			border-left:none;
+			border-right:none;
+			height: 1px; 
+		}
+    </style>
+</head>
+
+<body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+  <tbody>
+      <tr>
+          <td style="text-align: center">
+                <span style="color:#58889D; font-size:5px;"></span>
+          </td>
+      </tr>
+      <tr>
+          <td style="  padding-bottom: 0; mso-table-lspace:0pt !important; mso-table-rspace:0pt !important" height="0"></td>
+      </tr>
+  </tbody>
+</table>                
+
+<!-- main table -->
+<table style="margin:0; padding:0;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td align="center">
+
+            <!-- main content starts here-->
+            <center style="width: 100%;max-width: 600px !important;-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-moz-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+
+                <!--[if gte mso 9]>
+                <table border="0" cellpadding="0" cellspacing="0" 
+                      style="margin:0;padding:0;width: 100%;max-width: 600px;box-shadow:  10px 10px 4px rgba(0,0,0,0.1);-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+                    <tr>
+                        <td>
+                <![endif]-->
+
+                <!-- header logo -->
+                <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 47px; text-align: left; background-color:transparent ;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
+                            </td>
+							
+
+                        </tr>
+                    </tbody>
+                </table> <!-- contents section 1/5 end-->
+
+
+                <!--  main content  -->
+                <table style="margin:0;padding-left: 0;padding-right: 0;-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;" 
+						width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 0;background-color: #FFFFFF;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;padding:10px">
+								<table style="margin:0; padding:0; text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+
+                                            <tr>					
+    <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+          <b>Шановна(ий) value{[bankIdfirstName]} value{[bankIdmiddleName]}!</b>
+        </p>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td style="overflow:hidden; margin:0; padding:20px 35px 20px 35px; font:16px Arial, sans-serif!important; text-align: left; padding-bottom: 35px;&#10; mso-table-lspace:0pt !important;&#10; mso-table-rspace:0pt !important">
+	
+	
+Вітаємо! Ви успішно пройшли всі етапи співбесід. Найближчим часом з Вами зв'яжеться наш менеджер
+          
+
+	        </td>
+      </tr>
+   </tbody>
+</table>
+	
+						<tr>
+                            <td style="padding: 20px 35px 25px;&#10;background-color: #191970;&#10;-webkit-border-bottom-left-radius: 15px;&#10;-moz-border-bottom-left-radius: 15px;&#10;                                        border-bottom-left-radius: 15px;&#10;-webkit-border-bottom-right-radius: 15px;&#10;                                        -moz-border-bottom-right-radius: 15px;&#10;                                        border-bottom-right-radius: 15px;&#10;                                        mso-table-lspace:0pt !important;&#10;                                        mso-table-rspace:0pt !important;">
+
+                                <table style="margin:0; padding: 0; text-align: left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 0;&#10;mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+                                                <p style="font:15px Arial, sans-serif!important; color:white; margin: 0; padding: 0; line-height: 22px !important;">
+                                                    З повагою, <br>                                                 
+													
+													Управління по роботі з персоналом ConcordBank <br>   
+																								
+                                                </p>
+												 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+						
+						                    </tbody>
+                </table>
+
+                <!--[if gte mso 9]>
+                        </td>
+                    </tr>
+                </table>
+                <![endif]-->
+            </center>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- internal padding bottom -->
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+                <tbody><tr>
+                    <td style="line-height:0;&#10;                                            font-size:0;&#10;                                            padding-bottom: 0;&#10;                                            mso-table-lspace:0pt !important;&#10;                                            mso-table-rspace:0pt !important" height="100">
+
+                    </td>
+                </tr>   
+</tbody></table>   
+
+
+<style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>
+          ]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -384,7 +547,170 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[Результат співбесіди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=600" name="viewport" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title> </title>
+    <style type="text/css">
+
+        body {
+            width:100%!important;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
+        }
+        a:link {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+        a:visited {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+			hr {
+			border-bottom: 1px dotted #c2c2c2; 
+			border-top:none;
+			border-left:none;
+			border-right:none;
+			height: 1px; 
+		}
+    </style>
+</head>
+
+<body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+  <tbody>
+      <tr>
+          <td style="text-align: center">
+                <span style="color:#58889D; font-size:5px;"></span>
+          </td>
+      </tr>
+      <tr>
+          <td style="  padding-bottom: 0; mso-table-lspace:0pt !important; mso-table-rspace:0pt !important" height="0"></td>
+      </tr>
+  </tbody>
+</table>                
+
+<!-- main table -->
+<table style="margin:0; padding:0;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td align="center">
+
+            <!-- main content starts here-->
+            <center style="width: 100%;max-width: 600px !important;-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-moz-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+
+                <!--[if gte mso 9]>
+                <table border="0" cellpadding="0" cellspacing="0" 
+                      style="margin:0;padding:0;width: 100%;max-width: 600px;box-shadow:  10px 10px 4px rgba(0,0,0,0.1);-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+                    <tr>
+                        <td>
+                <![endif]-->
+
+                <!-- header logo -->
+                <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 47px; text-align: left; background-color:transparent ;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
+                            </td>
+							
+
+                        </tr>
+                    </tbody>
+                </table> <!-- contents section 1/5 end-->
+
+
+                <!--  main content  -->
+                <table style="margin:0;padding-left: 0;padding-right: 0;-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;" 
+						width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 0;background-color: #FFFFFF;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;padding:10px">
+								<table style="margin:0; padding:0; text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+
+                                            <tr>					
+    <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+          <b>Шановна(ий) value{[bankIdfirstName]} value{[bankIdmiddleName]}!</b>
+        </p>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td style="overflow:hidden; margin:0; padding:20px 35px 20px 35px; font:16px Arial, sans-serif!important; text-align: left; padding-bottom: 35px;&#10; mso-table-lspace:0pt !important;&#10; mso-table-rspace:0pt !important">
+	
+	
+Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)
+          
+
+	        </td>
+      </tr>
+   </tbody>
+</table>
+	
+						<tr>
+                            <td style="padding: 20px 35px 25px;&#10;background-color: #191970;&#10;-webkit-border-bottom-left-radius: 15px;&#10;-moz-border-bottom-left-radius: 15px;&#10;                                        border-bottom-left-radius: 15px;&#10;-webkit-border-bottom-right-radius: 15px;&#10;                                        -moz-border-bottom-right-radius: 15px;&#10;                                        border-bottom-right-radius: 15px;&#10;                                        mso-table-lspace:0pt !important;&#10;                                        mso-table-rspace:0pt !important;">
+
+                                <table style="margin:0; padding: 0; text-align: left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 0;&#10;mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+                                                <p style="font:15px Arial, sans-serif!important; color:white; margin: 0; padding: 0; line-height: 22px !important;">
+                                                    З повагою, <br>                                                 
+													
+													Управління по роботі з персоналом ConcordBank <br>   
+																								
+                                                </p>
+												 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+						
+						                    </tbody>
+                </table>
+
+                <!--[if gte mso 9]>
+                        </td>
+                    </tr>
+                </table>
+                <![endif]-->
+            </center>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- internal padding bottom -->
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+                <tbody><tr>
+                    <td style="line-height:0;&#10;                                            font-size:0;&#10;                                            padding-bottom: 0;&#10;                                            mso-table-lspace:0pt !important;&#10;                                            mso-table-rspace:0pt !important" height="100">
+
+                    </td>
+                </tr>   
+</tbody></table>   
+
+
+<style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>
+          
+          ]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -401,7 +727,173 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[Результат перевірки]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! На жаль, Ви не пройшли перевірку службою безпеки. Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансію і участь в процедурі співбесіди.]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=600" name="viewport" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title> </title>
+    <style type="text/css">
+
+        body {
+            width:100%!important;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
+        }
+        a:link {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+        a:visited {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+			hr {
+			border-bottom: 1px dotted #c2c2c2; 
+			border-top:none;
+			border-left:none;
+			border-right:none;
+			height: 1px; 
+		}
+    </style>
+</head>
+
+<body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+  <tbody>
+      <tr>
+          <td style="text-align: center">
+                <span style="color:#58889D; font-size:5px;"></span>
+          </td>
+      </tr>
+      <tr>
+          <td style="  padding-bottom: 0; mso-table-lspace:0pt !important; mso-table-rspace:0pt !important" height="0"></td>
+      </tr>
+  </tbody>
+</table>                
+
+<!-- main table -->
+<table style="margin:0; padding:0;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td align="center">
+
+            <!-- main content starts here-->
+            <center style="width: 100%;max-width: 600px !important;-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-moz-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+
+                <!--[if gte mso 9]>
+                <table border="0" cellpadding="0" cellspacing="0" 
+                      style="margin:0;padding:0;width: 100%;max-width: 600px;box-shadow:  10px 10px 4px rgba(0,0,0,0.1);-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+                    <tr>
+                        <td>
+                <![endif]-->
+
+                <!-- header logo -->
+                <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 47px; text-align: left; background-color:transparent ;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
+                            </td>
+							
+
+                        </tr>
+                    </tbody>
+                </table> <!-- contents section 1/5 end-->
+
+
+                <!--  main content  -->
+                <table style="margin:0;padding-left: 0;padding-right: 0;-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;" 
+						width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 0;background-color: #FFFFFF;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;padding:10px">
+								<table style="margin:0; padding:0; text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+
+                                            <tr>					
+    <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+          <b>Шановна(ий) value{[bankIdfirstName]} value{[bankIdmiddleName]}!</b>
+        </p>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td style="overflow:hidden; margin:0; padding:20px 35px 20px 35px; font:16px Arial, sans-serif!important; text-align: left; padding-bottom: 35px;&#10; mso-table-lspace:0pt !important;&#10; mso-table-rspace:0pt !important">
+	
+	
+На жаль, Ви не пройшли перевірку службою безпеки. Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансію і участь в процедурі співбесіди.
+                    
+
+	        </td>
+      </tr>
+   </tbody>
+</table>
+	
+						<tr>
+                            <td style="padding: 20px 35px 25px;&#10;background-color: #191970;&#10;-webkit-border-bottom-left-radius: 15px;&#10;-moz-border-bottom-left-radius: 15px;&#10;                                        border-bottom-left-radius: 15px;&#10;-webkit-border-bottom-right-radius: 15px;&#10;                                        -moz-border-bottom-right-radius: 15px;&#10;                                        border-bottom-right-radius: 15px;&#10;                                        mso-table-lspace:0pt !important;&#10;                                        mso-table-rspace:0pt !important;">
+
+                                <table style="margin:0; padding: 0; text-align: left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 0;&#10;mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+                                                <p style="font:15px Arial, sans-serif!important; color:white; margin: 0; padding: 0; line-height: 22px !important;">
+                                                    З повагою, <br>                                                 
+													
+													Управління по роботі з персоналом ConcordBank <br>   
+																								
+                                                </p>
+												 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+						
+						                    </tbody>
+                </table>
+
+                <!--[if gte mso 9]>
+                        </td>
+                    </tr>
+                </table>
+                <![endif]-->
+            </center>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- internal padding bottom -->
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+                <tbody><tr>
+                    <td style="line-height:0;&#10;                                            font-size:0;&#10;                                            padding-bottom: 0;&#10;                                            mso-table-lspace:0pt !important;&#10;                                            mso-table-rspace:0pt !important" height="100">
+
+                    </td>
+                </tr>   
+</tbody></table>   
+
+
+<style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>
+          
+          
+          
+          
+          ]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -418,7 +910,171 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:string><![CDATA[Результат співбесіди]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[Шановна(ий) ${bankIdfirstName}! Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)]]></activiti:expression>
+          <activiti:expression><![CDATA[
+          <!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="width=600" name="viewport" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+    <title> </title>
+    <style type="text/css">
+
+        body {
+            width:100%!important;
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+            margin:0;
+            padding:0;
+        }
+        a:link {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+        a:visited {
+
+            border-bottom: 1px dotted #449DCD;
+            text-decoration: none;
+            color:#449DCD;
+            cursor:pointer;
+            }
+			hr {
+			border-bottom: 1px dotted #c2c2c2; 
+			border-top:none;
+			border-left:none;
+			border-right:none;
+			height: 1px; 
+		}
+    </style>
+</head>
+
+<body style="background: #e4e4e4;&#10;              -webkit-font-smoothing:antialiased;&#10;              width:100% !important;&#10;              -webkit-text-size-adjust:none;" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+  <tbody>
+      <tr>
+          <td style="text-align: center">
+                <span style="color:#58889D; font-size:5px;"></span>
+          </td>
+      </tr>
+      <tr>
+          <td style="  padding-bottom: 0; mso-table-lspace:0pt !important; mso-table-rspace:0pt !important" height="0"></td>
+      </tr>
+  </tbody>
+</table>                
+
+<!-- main table -->
+<table style="margin:0; padding:0;" width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td align="center">
+
+            <!-- main content starts here-->
+            <center style="width: 100%;max-width: 600px !important;-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-moz-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+
+                <!--[if gte mso 9]>
+                <table border="0" cellpadding="0" cellspacing="0" 
+                      style="margin:0;padding:0;width: 100%;max-width: 600px;box-shadow:  10px 10px 4px rgba(0,0,0,0.1);-webkit-box-shadow: 10px 10px 4px rgba(0,0,0,0.1);-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;">
+                    <tr>
+                        <td>
+                <![endif]-->
+
+                <!-- header logo -->
+                <table style="margin:0;&#10;                                                                         padding:0; &#10;                                                                         border-collapse:collapse; &#10;                                                                         mso-table-lspace:0pt !important; &#10;                                                                         mso-table-rspace:0pt !important;" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="line-height:0; font-size:0; padding: 5px 10px 5px 47px; text-align: left; background-color:transparent ;mso-table-lspace: 0pt !important;mso-table-rspace:0pt !important">
+								<img height="88" width="100" src="https://delta.test.igov.org.ua/wf/VAADIN/themes/activiti/img/concord2.png" alt="ConcordBank" id="new0" data-editable-image="new0">
+                            </td>
+							
+
+                        </tr>
+                    </tbody>
+                </table> <!-- contents section 1/5 end-->
+
+
+                <!--  main content  -->
+                <table style="margin:0;padding-left: 0;padding-right: 0;-webkit-border-bottom-left-radius: 15px;-moz-border-bottom-left-radius: 15px;border-bottom-left-radius: 15px;-webkit-border-bottom-right-radius: 15px;-moz-border-bottom-right-radius: 15px;border-bottom-right-radius: 15px;" 
+						width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+                    <tbody>
+                        <tr>
+                            <td style="padding-bottom: 0;background-color: #FFFFFF;mso-table-lspace:0pt !important;mso-table-rspace:0pt !important;padding:10px">
+								<table style="margin:0; padding:0; text-align: center" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+
+                                            <tr>					
+    <td style="padding: 35px 35px 0;&#10; mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+        <p style="font:24px Arial, sans-serif!important;&#10;                                                          overflow: hidden;&#10;                                                          color:#000;&#10;                                                          margin:0;&#10;                                                          padding:0 0 20px;&#10;                                                          line-height: 28px !important;">
+          <b>Шановна(ий) value{[bankIdfirstName]} value{[bankIdmiddleName]}!</b>
+        </p>
+    </td>
+</tr>
+
+
+
+<tr>
+    <td style="overflow:hidden; margin:0; padding:20px 35px 20px 35px; font:16px Arial, sans-serif!important; text-align: left; padding-bottom: 35px;&#10; mso-table-lspace:0pt !important;&#10; mso-table-rspace:0pt !important">
+	
+	
+Дякуємо за увагу надану нашій організації, відгук на оголошення про вакансії і участь в процедурі співбесіди. Змушені повідомити, що керівництвом було прийнято рішення на користь іншого кандидата. Ми зберегли резюме і зв'яжемося з Вами в разі відкриття нових вакансій (за умови актуальності вакансії для Вас)
+                    
+
+	        </td>
+      </tr>
+   </tbody>
+</table>
+	
+						<tr>
+                            <td style="padding: 20px 35px 25px;&#10;background-color: #191970;&#10;-webkit-border-bottom-left-radius: 15px;&#10;-moz-border-bottom-left-radius: 15px;&#10;                                        border-bottom-left-radius: 15px;&#10;-webkit-border-bottom-right-radius: 15px;&#10;                                        -moz-border-bottom-right-radius: 15px;&#10;                                        border-bottom-right-radius: 15px;&#10;                                        mso-table-lspace:0pt !important;&#10;                                        mso-table-rspace:0pt !important;">
+
+                                <table style="margin:0; padding: 0; text-align: left" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding-bottom: 0;&#10;mso-table-lspace:0pt !important;&#10;mso-table-rspace:0pt !important">
+                                                <p style="font:15px Arial, sans-serif!important; color:white; margin: 0; padding: 0; line-height: 22px !important;">
+                                                    З повагою, <br>                                                 
+													
+													Управління по роботі з персоналом ConcordBank <br>   
+																								
+                                                </p>
+												 
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+						
+						                    </tbody>
+                </table>
+
+                <!--[if gte mso 9]>
+                        </td>
+                    </tr>
+                </table>
+                <![endif]-->
+            </center>
+        </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- internal padding bottom -->
+<table style="margin:0; padding:0" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="">
+                <tbody><tr>
+                    <td style="line-height:0;&#10;                                            font-size:0;&#10;                                            padding-bottom: 0;&#10;                                            mso-table-lspace:0pt !important;&#10;                                            mso-table-rspace:0pt !important" height="100">
+
+                    </td>
+                </tr>   
+</tbody></table>   
+
+
+<style type="text/css" data-br=""> div[data-editable] br { display: block; margin: 12px 0; } </style></body></html>  
+          
+          
+          ]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -438,8 +1094,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -456,8 +1114,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
@@ -478,8 +1134,9 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="sTable3" name="Освіта; ;writable=false" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="факт місце" type="markers" default="${markerService.loadFromFile('conkord/_doc_concord_aplication_candidate_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDoc1" name="Сканкопія паспорта кандидата; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDoc2" name="Висновок СБ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_Group_Activiti" name="id группы ; ;bVisible=false"></activiti:formProperty>
-        <activiti:formProperty id="sDoc3" name="документ" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sDoc3" name="документ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/iDoc/Concord/_doc_concord_aplication_candidate.html] ; ;bVisible=false" type="string" default="Анкета кандидата" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${DocumentInit_iDoc}"></activiti:taskListener>
       </extensionElements>
@@ -536,8 +1193,10 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса для зворотнього зв'язку; ;writable=false" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual3" name="Проживаєте за місцем реєстрації?; ;writable=false" type="enum" default="yes" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -554,8 +1213,6 @@ sKey_GroupPostfix, sKey_GroupPostfix_New, sKey_Step)
           <activiti:value id="affiliation" name="Всиновлення (скасування всиновлення)"></activiti:value>
           <activiti:value id="alteration" name="Батько змінив своє ім’я або дані про нього були вилучені з актового запису про народження"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sPlaceBirth1" name="Місце народження;(Село, місто, район, область);writable=false;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону; ;writable=false" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="asMilitary" name="Відношення до військової служби; ;writable=false" type="enum" required="true">
           <activiti:value id="no" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="yes" name="перебуваю на обліку"></activiti:value>
