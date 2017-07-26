@@ -181,7 +181,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       function getPasportLastFourNumbers(str) {
         if(!str || str === "") return "";
         var passport = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0];
-        var idCard = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\d{9}/gi));
+        var idCard = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\d{9}/gi))[0];
 
         if(passport){
           return passport.match(new RegExp(/\d{4,4}$/))[0]
