@@ -113,7 +113,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	для отримання ID-картки замість вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
-	Дата та час візиту:  ${format_date_of_visit}.
+	Дата та час візиту:  ${date_of_visit}.
 </p>
 <p>
 	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="https://dmsu.gov.ua/services/payment.html" target="_blank">посиланням</a>.<br>
@@ -166,7 +166,7 @@ ${sNameOrgan},<br>
 	для отримання ID-картки замість вклеювання фотокарток при досягненні особою віку 25 або 45 років
 </p>
 <p>
-	Дата та час візиту:  ${format_date_of_visit}.
+	Дата та час візиту:  ${date_of_visit}.
 </p>
 <p>
 	Реквізити для сплати адмінсбору за оформлення ID-картки доступні за <a href="https://dmsu.gov.ua/services/payment.html" target="_blank">посиланням</a>.<br>
@@ -362,8 +362,14 @@ execution.setVariable('sEndDay', timerEnd)</script>
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay == null}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Pered splatoyu posluhy prosymo pereviryty svoyu cherhu za telefonamy 097 470 05 05 abo 066 470 05 05 abo 073 470 05 05]]></activiti:expression>
+        </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
