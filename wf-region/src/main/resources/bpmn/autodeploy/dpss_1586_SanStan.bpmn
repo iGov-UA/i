@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="sanepid" name="Довідка щодо підтримання належного санітарного стану" isExecutable="true">
+  <process id="dpss_1586_SanStan" name="Довідка щодо підтримання належного санітарного стану" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть найближчий центр надання безоплатної первинної допомоги" type="select" required="true"></activiti:formProperty>
@@ -63,6 +63,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину для доопрацювання" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker1" name="Обов'язковість полів" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_1&quot;: {&quot;aField_ID&quot;: [&quot;sComment &quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;sStatus&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'sReject '&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern\print\dpss\dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody1" name="[pattern\print\dpss\dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
