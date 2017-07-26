@@ -180,7 +180,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       function getPasportLastFourNumbers(str) {
         if(!str || str === "") return "";
-        return str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0].match(new RegExp(/\d{4,4}$/))[0];
+        var passport = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0];
+        var idCard = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\d{9}/gi));
+
+        if(passport){
+          return passport.match(new RegExp(/\d{4,4}$/))[0]
+        } else if (idCard){
+          return idCard.match(new RegExp(/\d{4,4}$/))[0]
+        }
+        return '';
       }
 
       scope.unreadyRequestDMS = function () {
