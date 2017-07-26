@@ -804,6 +804,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             {
                 LOG.info("sRequestBody errored {}", sRequestBody);
                 LOG.info("sRequestBody errored {}", sResponseBody);
+                LOG.info("Error {}", ex);
             }
         }
         
