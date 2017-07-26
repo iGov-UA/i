@@ -131,7 +131,7 @@
           <activiti:value id="accept" name="надано експлуатаційний дозвіл"></activiti:value>
           <activiti:value id="reject" name="відмовлено у наданні експлуатаційного дозволу"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="rishen" name="Завантажте копію рішення ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="comment_2" name="У разі відмови у наданні дозволу внесіть, будь ласка, коментар" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapkaVet" name="Начальнику управління ветеринарної медицини в  ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asDozvil" name="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків ; ;bVisible=false" type="string" default="що здійснюють виробництво харчових продуктів, підконтрольних ветеринарній службі, та для агропродовольчих ринків"></activiti:formProperty>
@@ -615,9 +615,7 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow81" sourceRef="usertask1" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow82" sourceRef="exclusivegateway5" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow83" name="видхілення" sourceRef="exclusivegateway5" targetRef="servicetask9">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}
-
-]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_256">
@@ -765,7 +763,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="594.0" y="155.0"></omgdi:waypoint>
         <omgdi:waypoint x="446.0" y="155.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="13.0" width="100.0" x="476.0" y="138.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="56.0" x="476.0" y="138.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
