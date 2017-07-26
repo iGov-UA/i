@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_test_queue_Qlogic" name="Тестування електронної черги Qlogic" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить місце реєстрації особи, яка буде отримувати довідку" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="text1" name=" " type="label" default="Очередь 1 Qlogic для Центральний ЦНАП м.Маріуполь"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay1" name="sID_Type_visitDay1" type="string" default="Qlogic"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay1" name="nID_ServiceCustomPrivate_visitDay1" type="string" default="100"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="visitDay1" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="text2" name=" " type="label" default="Очередь 2 Qlogic для Лівобережний ЦНАП м.Маріуполь"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_queue2" name="sID_Type_queue2" type="string" default="Qlogic"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_queue2" name="nID_ServiceCustomPrivate_queue2" type="string" default="200"></activiti:formProperty>
+        <activiti:formProperty id="queue2" name="queue2" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваша електронна пошта" type="string"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask0" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
+    <userTask id="usertask4" name="обробка 1" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить місце реєстрації особи, яка буде отримувати довідку" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
+        <activiti:formProperty id="text1" name=" " type="label" default="Очередь 1 Qlogic для Центральний ЦНАП м.Маріуполь"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay1" name="sID_Type_visitDay1" type="string" default="Qlogic"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay1" name="nID_ServiceCustomPrivate_visitDay1" type="string" default="100"></activiti:formProperty>
+        <activiti:formProperty id="visitDay1" name="visitDay1" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="text2" name=" " type="label" default="Очередь 2 Qlogic для Лівобережний ЦНАП м.Маріуполь"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_queue2" name="sID_Type_queue2" type="string" default="Qlogic"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_queue2" name="nID_ServiceCustomPrivate_queue2" type="string" default="200"></activiti:formProperty>
+        <activiti:formProperty id="queue2" name="queue2" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса органу" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="usertask4"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="usertask4" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__test_queue_Qlogic">
+    <bpmndi:BPMNPlane bpmnElement="_test_queue_Qlogic" id="BPMNPlane__test_queue_Qlogic">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="203.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask0" id="BPMNShape_servicetask0">
+        <omgdc:Bounds height="61.0" width="105.0" x="610.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="500.0" y="203.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="120.0" y="193.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="55.0" width="151.0" x="280.0" y="193.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="85.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="225.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="431.0" y="220.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="220.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
