@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_dfs_dovidka_nodebts" name="Довідка про відсутність заборгованості з платежів до бюджету, що контролюються органами державної фіскальної служби" isExecutable="true">
+  <process id="dfs_376_RefNoDebt" name="Довідка про відсутність заборгованості з платежів до бюджету, що контролюються органами державної фіскальної служби" isExecutable="true">
     <documentation>Рефакторинг 27.04.16 Ставицкий В.Д.
     	Рефакторинг с 07.10.16 по 19.10.16 Ставицкий В.Д. - Перевод на подписание принтформы ЕЦП, добавление принтформы в дашборд + маркеры принтформы
     	Смоктий О. Д. 2017-07-13
@@ -109,6 +109,8 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask1" name="надання адміністративної послуги" activiti:candidateGroups="dfs_dnepr_nodebts_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+      <activiti:formProperty id="form_signed" name="Заявлення на реєстрацію" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="Орган обслуговування" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -135,8 +137,8 @@
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment_1" name="Укажіть причину відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_user.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Print" name="Маркер принтформы" type="markers" default="${markerService.loadFromFile('dfs/dnepr_dfs_dovidka_nodebts_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_376_RefNoDebt_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Print" name="Маркер принтформы" type="markers" default="${markerService.loadFromFile('dfs/dfs_376_RefNoDebt_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_dovidka_nodebts.html] ; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Автор звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAdresECP" name="адрес ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -251,8 +253,8 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dfs_dovidka_nodebts">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dfs_dovidka_nodebts" id="BPMNPlane_dnepr_dfs_dovidka_nodebts">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dfs_376_RefNoDebt">
+    <bpmndi:BPMNPlane bpmnElement="dfs_376_RefNoDebt" id="BPMNPlane_dfs_376_RefNoDebt">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="62.0" y="55.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
