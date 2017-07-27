@@ -116,6 +116,9 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
     
+    <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ);bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -144,10 +147,16 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
        
+           <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ);bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="ОПРАЦЮВАННЯ" activiti:candidateGroups="test_ECO">
       <extensionElements>
+      
+          <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ);bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>
@@ -257,6 +266,10 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow10" name="Відмова" sourceRef="exclusivegateway1" targetRef="servicetask5"></sequenceFlow>
     <userTask id="usertask3" name="ВИДАЧА" activiti:candidateGroups="test_ECO">
       <extensionElements>
+      
+          <activiti:formProperty id="fileObgrunt" name="Обґрунтування обсягів викидів забруднюючих речовин, підготовлених відповідно до Інструкції;(завантажте ZIP архівом або PDF файлом);bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fileMDA_Povid" name="Повідомлення місцевої з держадміністрації про наявність або відсутність зауважень від громадських організацій;(лист який надсилає адміністрація через 30 днів після публікації про викиди в ЗМІ);bNew=true" type="file" writable="false"></activiti:formProperty>
+      
         <activiti:formProperty id="sRegistr" name="Реєстраційний номер заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameUrOsob" name="Повна назва Юридичної особи; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEdrpou" name="Номер ЄДРПОУ; ;writable=false" type="long"></activiti:formProperty>

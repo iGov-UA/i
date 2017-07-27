@@ -1,25 +1,65 @@
 {
-	"motion" : {
-		"ShowFieldsOnCondition_1" : {
-			"aField_ID" : ["nFile_restr_svid", "nFile_kor_zeml", "nFile_sxem_rozm", "nFile_eskiz_fasad", "nFile_ustr_terit", "nFile_ingen_merez"], 
-			"asID_Field" : {
-				"sClient" : "asPurpose"
-			}, 
-			"sCondition" : "[sClient] == 'getPassport'"
-		}, 
-		"ShowFieldsOnCondition_2" : {
-			"aField_ID" : ["nFile_Passport", "dStartPassprot", "dContine", "sNumberPassport"], 
-			"asID_Field" : {
-				"sClient" : "asPurpose"
-			}, 
-			"sCondition" : "[sClient] == 'continPassport'"
-		}, 
-		"ShowFieldsOnCondition_3" : {
-			"aField_ID" : ["nFile_Passport", "dStartPassprot", "sNumberPassport", "nFile_restr_svid", "nFile_kor_zeml", "nFile_sxem_rozm", "nFile_eskiz_fasad", "nFile_ustr_terit", "nFile_ingen_merez"], 
-			"asID_Field" : {
-				"sClient" : "asPurpose"
-			}, 
-			"sCondition" : "[sClient] == 'editPassport'"
-		}
-	}
+  "motion": {
+    "ShowFieldsOnCondition_111": {
+      "aField_ID": [
+        "nFile_kor_zeml",
+        "nFile_sxem_rozm",
+        "nFile_ustr_terit",
+        "chekIngener",
+        "chekTsPeresuvn"
+      ],
+      "asID_Field": {
+        "sClient": "asPurpose"
+      },
+      "sCondition": "[sClient] == 'getPassport'"
+    },
+    "ShowFieldsOnCondition_222": {
+      "aField_ID": [
+        "nFile_Passport",
+        "dStartPassprot",
+        "dContine",
+        "sNumberPassport"
+      ],
+      "asID_Field": {
+        "sClient": "asPurpose"
+      },
+      "sCondition": "[sClient] == 'continPassport'"
+    },
+    "ShowFieldsOnCondition_333": {
+      "aField_ID": [
+        "nFile_Passport",
+        "dStartPassprot",
+        "sNumberPassport",
+        "nFile_kor_zeml",
+        "nFile_sxem_rozm",
+        "nFile_ustr_terit",
+        "chekIngener",
+        "chekTsPeresuvn"
+      ],
+      "asID_Field": {
+        "sClient": "asPurpose"
+      },
+      "sCondition": "[sClient] == 'editPassport'"
+    },
+    "ShowFieldsOnCondition_112": {
+      "aField_ID": [
+        "nFile_eskiz_fasad"
+      ],
+      "asID_Field": {
+        "sClient": "asPurpose",
+        "sClient2": "chekTsPeresuvn"
+      },
+      "sCondition": "([sClient] == 'getPassport'||[sClient] == 'editPassport')&&[sClient2] == 'yes'"
+    },
+    "ShowFieldsOnCondition_113": {
+      "aField_ID": [
+        "nFile_ingen_merez"
+      ],
+      "asID_Field": {
+        "sClient": "asPurpose",
+        "sClient2": "chekIngener"
+      },
+      "sCondition": "([sClient] == 'getPassport'||[sClient] == 'editPassport')&&[sClient2] == 'yes'"
+    }
+  }
 }

@@ -25,7 +25,7 @@
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основной КВЭД" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата получения информации из ЕГРПОУ" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="Userfile" name="Загрузите файл" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Userfile" name="Загрузите файл; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -59,7 +59,7 @@
         <activiti:formProperty id="bankIdinn" name="ИНН" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата рождения" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕГРПОУ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="BirthDate" name="Введите дату рождения" type="date"></activiti:formProperty>
+        <activiti:formProperty id="BirthDate" name="Введите дату рождения" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адрес" type="textArea"></activiti:formProperty>
@@ -75,8 +75,8 @@
         <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="DocUr1" name="Вложение 2 для юрлица; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="marker_fiz" name="Показать поле с вложением для физлица " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;DocFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker_ur" name="Показать поле с вложением для юрлица" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ur&quot;:{&quot;aField_ID&quot;:[&quot;DocUr&quot;,&quot;DocUr1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ur'&quot;}}}"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="marker_ur" name="Показать поля с вложением для юрлица" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ur&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;, &quot;sFullName_SubjectOrgan_01&quot;, &quot;sShortName_SubjectOrgan_01&quot;, &quot;sLocation_SubjectOrgan_01&quot;, &quot;sCEOName_SubjectOrgan_01&quot;, &quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;, &quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;, &quot;sDateActual_SubjectOrgan_01&quot;, &quot;DocUr&quot;,&quot;DocUr1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Userfile" name="Файл пользователя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="scripttask1">
