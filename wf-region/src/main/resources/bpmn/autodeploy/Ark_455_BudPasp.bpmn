@@ -40,7 +40,9 @@
         <activiti:formProperty id="sTextEskiz" name=" ; ;labelType=info" type="label" default="Увага!&lt;br&gt; Ескіз має містити:&lt;br&gt;- місце розташування будівель та споруд на земельній ділянці,&lt;br&gt;- відстані до меж сусідніх земельних ділянок та розташованих на них об`єктів, інженерних мереж і споруд,&lt;br&gt;- фасади та плани поверхів об`єктів із зазначенням габаритних розмірів,&lt;br&gt;- перелік систем інженерного забезпечення, у тому числі автономного, що планується до застосування, тощо.&lt;br&gt;&lt;br&gt; Ескізні наміри можуть бути виготовлені самостійно (згідно з перерахованими вище параметрами), або з залученням фахівців-архитекторів."></activiti:formProperty>
         <activiti:formProperty id="fEskiz" name="Ескізні наміри забудови ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fZemBudSxem" name="Схема ділянки з розташуванням об'єктів будівництва;(завантажте окремо схему ділянки і позначте на ній існуючі будівлі та будівлі що будуть збудовані);bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sArkFlag" name="перемикач регіонів; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerFlag" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_455_flag.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="перемикач регіонів; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
@@ -250,10 +252,10 @@ ${sNameOrgan}<br />
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow9" name="ЦНАП-Архітектура-ЦНАП" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sArkFlag=='CnArCn'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sFlag=='CnArCn'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow12" name="ЦНАП-ЦНАП" sourceRef="exclusivegateway2" targetRef="usertask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sArkFlag=='CnCn'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sFlag=='CnCn'}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="exclusivegateway2"></sequenceFlow>
@@ -370,7 +372,7 @@ ${sNameOrgan}<br />
           <activiti:value id="Cnap2Reject" name="Відмова в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Cnap2Comment" name="Якщо заявнику відмовлено у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sArkFlag" name="Пошта держслужбовця; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
