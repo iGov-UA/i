@@ -22,8 +22,11 @@ import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.*;
+import org.activiti.engine.runtime.ProcessInstance;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.model.action.event.HistoryEvent_Service_StatusType;
@@ -45,10 +48,13 @@ import org.igov.util.ToolJS;
 import org.igov.util.ToolLuna;
 import org.igov.util.cache.CachedInvocationBean;
 import org.igov.util.cache.SerializableResponseEntity;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,9 +68,18 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import org.activiti.engine.runtime.ProcessInstance;
+import javax.mail.internet.MimeMultipart;
+import org.apache.commons.mail.EmailException;
 
 import static org.igov.io.fs.FileSystemData.getFiles_PatternPrint;
+
+import org.igov.model.core.GenericEntityDao;
+import org.igov.model.document.DocumentStepSubjectRight;
+import org.igov.model.document.DocumentStepSubjectRightDao;
+import org.igov.model.flow.FlowSlot;
+import org.igov.model.subject.SubjectContact;
+import org.igov.model.subject.SubjectContactDao;
+import org.igov.model.subject.SubjectOrganDepartment;
 
 import org.igov.service.business.subject.ProcessInfoShortVO;
 import org.igov.service.business.subject.SubjectRightBPService;
@@ -73,6 +88,9 @@ import org.igov.service.business.subject.SubjectRightBPVO;
 import static org.igov.util.Tool.sO;
 
 import org.json.simple.JSONValue;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 
 //import org.igov.service.business.access.BankIDConfig;
 /**
@@ -95,6 +113,11 @@ public class ActionTaskService {
     private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED = "OpenedAssigned";
     private static final String THE_STATUS_OF_TASK_IS_OPENED = "Opened";
     private static final String THE_STATUS_OF_TASK_IS_DOCUMENTS = "Documents";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_ASSIGNED_DOCUMENT = "OpenedAssigneDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_PROCESSED_DOCUMENT = "OpenedUnassigneProcessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_UNPROCESSED_DOCUMENT = "OpenedUnassigneUnprocessedDocument";
+    private static final String THE_STATUS_OF_TASK_IS_OPENED_UNASSIGNED_WITHOUTECP_DOCUMENT = "OpenedUnassigneWithoutECPDocument";
+    private static final String THE_STATUS_OF_TASK_IS_DOCUMENT_CLOSED = "DocumentClosed";
 
     static final Comparator<FlowSlotTicket> FLOW_SLOT_TICKET_ORDER_CREATE_COMPARATOR = new Comparator<FlowSlotTicket>() {
         @Override
@@ -104,30 +127,39 @@ public class ActionTaskService {
     };
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskService.class);
+    
     @Autowired
     private RuntimeService oRuntimeService;
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
     @Autowired
-    private TaskService oTaskService;
+    private TaskService oTaskService;    
     @Autowired
-    private HistoryEventService oHistoryEventService;
+    private HistoryEventService oHistoryEventService;    
     @Autowired
-    private RepositoryService oRepositoryService;
+    private RepositoryService oRepositoryService;    
     @Autowired
-    private FormService oFormService;
+    private FormService oFormService;    
     @Autowired
-    private IdentityService oIdentityService;
+    private IdentityService oIdentityService;    
     @Autowired
-    private HistoryService oHistoryService;
+    private HistoryService oHistoryService;    
     @Autowired
-    private GeneralConfig oGeneralConfig;
+    private GeneralConfig oGeneralConfig;    
     @Autowired
-    private FlowSlotTicketDao oFlowSlotTicketDao;
+    private FlowSlotTicketDao oFlowSlotTicketDao;   
     @Autowired
-    private CachedInvocationBean oCachedInvocationBean;
+    private CachedInvocationBean oCachedInvocationBean;    
     @Autowired
-    SubjectRightBPService oSubjectRightBPService;
-
+    private SubjectRightBPService oSubjectRightBPService;    
+    @Autowired
+    private DocumentStepSubjectRightDao oDocumentStepSubjectRightDao;
+    @Autowired
+    @Qualifier("subjectOrganDepartmentDao")
+    private GenericEntityDao<Long, SubjectOrganDepartment> subjectOrganDepartmentDao;
+    @Autowired
+    private ApplicationContext context;
+    @Autowired
+    private SubjectContactDao oSubjectContactDao; 
+    
     public static String parseEnumValue(String sEnumName) {
         LOG.info("(sEnumName={})", sEnumName);
         String res = StringUtils.defaultString(sEnumName);
@@ -318,7 +350,8 @@ public class ActionTaskService {
         return taskQuery;
     }
 
-    public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+   public void cancelTasksInternal(Long nID_Order, String sInfo) throws CommonServiceException, CRCInvalidException, RecordNotFoundException, TaskAlreadyUnboundException {
+        LOG.info("cancelTasksInternal started...");
         String nID_Process = getOriginalProcessInstanceId(nID_Order);
         getTasksByProcessInstanceId(nID_Process);
         LOG.info("(nID_Order={},nID_Process={},sInfo={})", nID_Order, nID_Process, sInfo);
@@ -341,6 +374,31 @@ public class ActionTaskService {
                 LOG.info("QueueDataFormType throw an error: " + ex);
             }
             if (nID_FlowSlotTicket != null) {
+                FlowSlotTicket flowSlotTicket = oFlowSlotTicketDao.findByIdExpected(nID_FlowSlotTicket);
+                List<FlowSlot> aFlowSlot = flowSlotTicket.getaFlowSlot();
+                DateTimeFormatter dtf = org.joda.time.format.DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+                for(FlowSlot oFlowSlot : aFlowSlot){
+                    LOG.info("oFlowSlot name: {}", oFlowSlot.getFlow().getName());
+                    LOG.info("oFlowSlot date: {}", oFlowSlot.getsDate());
+                    HistoricVariableInstance historicVariableInstance = oHistoryService
+                            .createHistoricVariableInstanceQuery()
+                            .processInstanceId(nID_Process)
+                            .variableName("email").singleResult();
+                    LOG.info("email {}", historicVariableInstance.getValue());
+                    try{
+                        Mail oMail = context.getBean(Mail.class);
+                        oMail._To((String)historicVariableInstance.getValue())
+                        ._Head("Ви скасували Ваш візит")
+                        ._Body("Ви скасували Ваш візит. Деталі: " + oFlowSlot.getFlow().getName() + " " + dtf.print(oFlowSlot.getsDate()))
+                        ._oMultiparts(new MimeMultipart());
+                        oMail.send();
+                    }
+                    catch(EmailException | BeansException ex){
+                        LOG.info("Error during mail sending: {}", ex.getMessage());
+                    }
+                    break;
+                }
+
                 LOG.info("(nID_Order={},nID_FlowSlotTicket={})", nID_Order, nID_FlowSlotTicket);
                 if (!oFlowSlotTicketDao.unbindFromTask(nID_FlowSlotTicket)) {
                     throw new TaskAlreadyUnboundException("\u0417\u0430\u044f\u0432\u043a\u0430 \u0443\u0436\u0435 \u043e\u0442\u043c\u0435\u043d\u0435\u043d\u0430");

@@ -81,10 +81,13 @@ import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
+import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.ActionEventHistoryService;
 
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
+import org.igov.util.ToolFS;
+
 
 /**
  * @author BW
@@ -95,7 +98,9 @@ import static org.igov.util.Tool.sO;
 public class ActionTaskCommonController {//extends ExecutionBaseResource
 
     private static final Logger LOG = LoggerFactory.getLogger(ActionTaskCommonController.class);
-
+    
+    @Autowired
+    AccessKeyService accessCover;
     @Autowired
     private HttpRequester httpRequester;
     @Autowired
@@ -332,6 +337,60 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return res;
     }
 
+
+
+    @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
+    @RequestMapping(value = "/taskCancelNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/html;charset=UTF-8")
+    public @ResponseBody
+    String taskCancelNew(
+            @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
+            @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
+            @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
+            @ApiParam(value = "ключ для аутентификации", required = false) @RequestParam(value = "sAccessKey", required = false) String sAccessKey,
+            @ApiParam(value = "тип доступа", required = false) @RequestParam(value = "sAccessContract", required = false) String sAccessContract
+    ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
+        LOG.info("cancelTaskNew started");
+        LOG.info("cancelTaskNew nID_Order {}", nID_Order);
+        LOG.info("cancelTaskNew sInfo {}", sInfo);
+        LOG.info("cancelTaskNew bSimple {}", bSimple);
+        LOG.info("cancelTaskNew sAccessKey {}", sAccessKey);
+        LOG.info("cancelTaskNew sAccessContract {}", sAccessContract);
+
+        String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
+        LOG.info("sID_Order {}", sID_Order);
+
+        BufferedReader oBufferedReader
+                = new BufferedReader(new InputStreamReader(
+                        ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
+
+        StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost());
+        oStringBuilder_URL.append("/wf/service/action/task/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+
+        if (sInfo != null) {
+            oStringBuilder_URL.append("&sInfo=".concat(sInfo));
+        }
+
+        oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
+        oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
+        String sResultURL = oStringBuilder_URL.toString();
+
+        String sBody = org.apache.commons.io.IOUtils.toString(oBufferedReader);
+
+        if (sID_Order != null) {
+            sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
+        }
+
+        sAccessKey = accessCover.getAccessKey(sResultURL);
+        sResultURL = sResultURL + ("&sAccessKey=".concat(sAccessKey));
+
+        LOG.info("sResultURL is {}", sResultURL);
+        if (sResultURL != null) {
+            sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
+        }
+
+        return sBody;
+    }
+
     /**
      * Отмена задачи (в т.ч. электронной очереди)
      *
@@ -394,6 +453,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
         }
     }
+
 
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть
