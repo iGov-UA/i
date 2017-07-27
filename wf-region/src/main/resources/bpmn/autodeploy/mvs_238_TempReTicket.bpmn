@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="common_mreo_22" name="Тимчасовий реєстраційний талон за заявою власника транспортного засобу" isExecutable="true">
+  <process id="mvs_238_TempReTicket" name="Тимчасовий реєстраційний талон за заявою власника транспортного засобу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище власника" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я " type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові " type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
+       <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; зазначена в громадянському паспорті" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdbirthDay" name="Дата народження" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть сервісний центр, де Ви б бажали отримати послугу" type="select" default="0"></activiti:formProperty>
@@ -67,7 +66,10 @@
         <activiti:formProperty id="sDetail6" name="Об'єм двигуна (см. куб)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву;bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
@@ -142,6 +144,9 @@
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="sNotifyEvent_AfterSubmit; ;bVisible=false" type="string" default="Електроний лист заявнику успішно відправлено.  В разі надання послуги заявка перейшла в чергу Необроблених з новим статусом - 'Надання послуги' "></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
        
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -155,6 +160,9 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="common_mreo_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file1" name="Копія тех.паспорта ; при наявності більш ніж однієї копії, файли можуть бути завантажені у вигляді ZIP-архіву;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -471,8 +479,8 @@ ${sMail_Signature}
     <sequenceFlow id="flow46" sourceRef="servicetask12" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="startevent1" targetRef="servicetask10"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_common_mreo_22">
-    <bpmndi:BPMNPlane bpmnElement="common_mreo_22" id="BPMNPlane_common_mreo_22">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_mvs_238_TempReTicket">
+    <bpmndi:BPMNPlane bpmnElement="mvs_238_TempReTicket" id="BPMNPlane_mvs_238_TempReTicket">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="128.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
