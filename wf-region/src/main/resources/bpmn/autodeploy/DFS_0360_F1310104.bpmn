@@ -72,7 +72,8 @@
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-    
+     <activiti:formProperty id="oFile_XML_SWinEd" name="File; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachments}">
@@ -115,7 +116,8 @@
             <activiti:expression>${bankIdinn}</activiti:expression>
           </activiti:field>
         </activiti:taskListener>
-      
+       <activiti:formProperty id="oFile_XML_SWinEd" name="File; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
