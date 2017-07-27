@@ -338,14 +338,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     }
 
 
+
     @ApiOperation(value = "Промежуточный сервис отмены задачи (в т.ч. электронной очереди)")
-    @RequestMapping(value = "/cancelTaskNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/html;charset=UTF-8")
-    public @ResponseBody String  cancelTaskNew(
+    @RequestMapping(value = "/taskCancelNew", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/html;charset=UTF-8")
+    public @ResponseBody
+    String taskCancelNew(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
             @ApiParam(value = "ключ для аутентификации", required = false) @RequestParam(value = "sAccessKey", required = false) String sAccessKey,
-            @ApiParam(value = "закрывать ли таску", required = false) @RequestParam(value = "bCancel", required = false) Boolean bCancel,
             @ApiParam(value = "тип доступа", required = false) @RequestParam(value = "sAccessContract", required = false) String sAccessContract
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
         LOG.info("cancelTaskNew started");
@@ -354,48 +355,42 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         LOG.info("cancelTaskNew bSimple {}", bSimple);
         LOG.info("cancelTaskNew sAccessKey {}", sAccessKey);
         LOG.info("cancelTaskNew sAccessContract {}", sAccessContract);
-        
+
         String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
         LOG.info("sID_Order {}", sID_Order);
-        
+
         BufferedReader oBufferedReader
-                    = new BufferedReader(new InputStreamReader(
-                            ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
-        
-        StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost()); 
-        oStringBuilder_URL.append("/wf/service/action/task/cancelTaskNew?").append("nID_Order=".concat(nID_Order.toString()));
-        
-        if(sInfo != null){
+                = new BufferedReader(new InputStreamReader(
+                        ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
+
+        StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost());
+        oStringBuilder_URL.append("/wf/service/action/task/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+
+        if (sInfo != null) {
             oStringBuilder_URL.append("&sInfo=".concat(sInfo));
         }
-        
+
         oStringBuilder_URL.append("&bSimple=".concat(bSimple.toString()));
         oStringBuilder_URL.append("&sAccessContract=".concat(sAccessContract));
-        oStringBuilder_URL.append("&bCancel=".concat("true"));
         String sResultURL = oStringBuilder_URL.toString();
-        
-        String sBody =  org.apache.commons.io.IOUtils.toString(oBufferedReader);
-        
+
+        String sBody = org.apache.commons.io.IOUtils.toString(oBufferedReader);
+
         if (sID_Order != null) {
-                sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
+            sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
         }
-        
+
         sAccessKey = accessCover.getAccessKey(sResultURL);
         sResultURL = sResultURL + ("&sAccessKey=".concat(sAccessKey));
-           
+
         LOG.info("sResultURL is {}", sResultURL);
-        if(sResultURL != null){
+        if (sResultURL != null) {
             sBody = sBody.replaceAll("\\[sURL\\]", sResultURL);
         }
-        
-        if(bCancel){
-             cancelTask(nID_Order, sInfo, bSimple);
-        }
-        
+
         return sBody;
     }
-    
-    
+
     /**
      * Отмена задачи (в т.ч. электронной очереди)
      *
