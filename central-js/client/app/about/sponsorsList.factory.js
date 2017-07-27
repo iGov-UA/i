@@ -206,12 +206,12 @@
 
     return {
       getAll: function () {
-        return aSponsors;
+        return angular.copy(aSponsors);
       },
       getActual: function () {
-        return aSponsors.filter(function (item) {
+        return angular.copy(aSponsors.filter(function (item) {
           return item.isActual;
-        })
+        }));
       }
     }
 

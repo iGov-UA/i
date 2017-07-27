@@ -1,4 +1,4 @@
-angular.module('app').controller('FooterController', function ($scope, SponsorsList) {
+angular.module('app').controller('FooterController', function ($scope, SponsorsList, $state) {
 
   $scope.adsset = SponsorsList.getActual();
 
@@ -15,6 +15,10 @@ angular.module('app').controller('FooterController', function ($scope, SponsorsL
 
     return result;
   }
+
+  $scope.hideSponsorsList = function () {
+    return $state.current.name === 'index.about' || $state.current.name === 'index.test'
+  };
 
   var indexes = [];
   $scope.adsset.forEach(function (item, i, arr) {
