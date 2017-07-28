@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="KMVProcess" name="My process" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="email" name="E-Mail;На данный адрес вы получите результат процесса" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum" required="true">
+          <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
+          <activiti:value id="Ur" name="Юрлицо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="marker_fizdop" name="Показать дополнительные поля по физлицу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fizdop&quot;:{&quot;aField_ID&quot;:[&quot;bankIdlastName&quot;, &quot;bankIdfirstName&quot;, &quot;bankIdmiddleName&quot;, &quot;bankIdinn&quot;, &quot;bankIdbirthDay&quot;, &quot;BirthDate&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_urdop" name="Показать дополнительные поля по юрлицу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_urdop&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;, &quot;sFullName_SubjectOrgan_01&quot;, &quot;sShortName_SubjectOrgan_01&quot;, &quot;sLocation_SubjectOrgan_01&quot;, &quot;sCEOName_SubjectOrgan_01&quot;, &quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;, &quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;, &quot;sDateActual_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="costumerDef" name="Определение клиента" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Фамилия" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Имя" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Отчество" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ИНН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата рождения" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕГРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="BirthDate" name="Введите дату рождения" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адрес" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="Фио руководителя" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основной КВЭД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата получения информации из ЕГРПОУ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Userfile" name="Загрузите файл; ;bNew=true" type="file"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask1" name="Автоматическое e-mail уведомление об отказе запуска процесса" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@idoc.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[iDoc - Отказ от запуска процесса]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Отказ от запуска процесса<br />
+Спасибо за сотрудничество]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow2" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarGetProc== 'N'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask1" name="Тип клиента" activiti:candidateGroups="sale">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Фамилия" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Имя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Отчество" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ИНН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата рождения" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Код ЕГРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="BirthDate" name="Введите дату рождения" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Полное наименование" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Краткое наименование" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адрес" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="Фио руководителя" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основной КВЭД" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата получения информации из ЕГРПОУ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="eVarTypeClient" name="Тип клиента" type="enum" required="true">
+          <activiti:value id="Fiz" name="Физ лицо"></activiti:value>
+          <activiti:value id="Ur" name="Юрлицо"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="DocFiz" name="Вложение для физлица; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="DocUr" name="Вложение для юрлица; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="DocUr1" name="Вложение 2 для юрлица; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="marker_fiz" name="Показать поле с вложением для физлица " type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_fiz&quot;:{&quot;aField_ID&quot;:[&quot;DocFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_ur" name="Показать поля с вложением для юрлица" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ur&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;, &quot;sFullName_SubjectOrgan_01&quot;, &quot;sShortName_SubjectOrgan_01&quot;, &quot;sLocation_SubjectOrgan_01&quot;, &quot;sCEOName_SubjectOrgan_01&quot;, &quot;sID_SubjectActionKVED_SubjectOrgan_01&quot;, &quot;sNote_ID_SubjectActionKVED_SubjectOrgan_01&quot;, &quot;sDateActual_SubjectOrgan_01&quot;, &quot;DocUr&quot;,&quot;DocUr1&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;eVarTypeClient&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'Ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Userfile" name="Файл пользователя; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarGetProc== 'Y'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask2" name="E-mail уведомление физ лица с одним вложением" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@idoc.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[iDoc - Процесс запущен для физлица.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Процесс запущен для  физ лица.<br />
+<br />Письмо содержит 1 вложение.
+<br />
+${costumerDef}
+Спасибо за сотрудничество.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${DocFiz}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="E-mail уведомление юр лица с двумя вложениями" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@idoc.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[iDoc - Процесс запущен для юрлица.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[Процесс запущен для  юр лица.<br />
+<br />Письмо содержит 2 вложения.
+<br />
+${costumerDef}
+Спасибо за сотрудничество.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${DocUr}, ${DocUr1}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway2" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Fiz'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="exclusivegateway2" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${eVarTypeClient== 'Ur'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow10" sourceRef="exclusivegateway3" targetRef="endevent2"></sequenceFlow>
+    <userTask id="usertask2" name="Запускаем процесс?" activiti:candidateGroups="sale">
+      <extensionElements>
+        <activiti:formProperty id="eVarGetProc" name="Запуск Процесса" type="enum" required="true">
+          <activiti:value id="Y" name="Yes"></activiti:value>
+          <activiti:value id="N" name="No"></activiti:value>
+        </activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="servicetask3" targetRef="exclusivegateway3"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Customer definition" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>// Запись текста в соответствующую переменную
+
+var typecl=execution.getVariable('eVarTypeClient');
+
+if (typecl == 'Fiz') {
+    execution.setVariable('costumerDef', 'Процесс для физлица')
+}
+if (typecl == 'Ur') {
+   execution.setVariable('costumerDef', 'Процесс для юрлица')
+}</script>
+    </scriptTask>
+    <sequenceFlow id="flow15" sourceRef="scripttask1" targetRef="usertask1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_KMVProcess">
+    <bpmndi:BPMNPlane bpmnElement="KMVProcess" id="BPMNPlane_KMVProcess">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="220.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="300.0" y="217.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="65.0" width="217.0" x="212.0" y="310.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="303.0" y="410.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="419.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="88.0" width="131.0" x="672.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="87.0" width="131.0" x="672.0" y="254.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="568.0" y="217.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="860.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="948.0" y="213.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="121.0" x="130.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="337.0" y="76.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="320.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="320.0" y="375.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="410.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="320.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="389.0" y="131.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="524.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="568.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="588.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="588.0" y="169.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="174.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="588.0" y="257.0"></omgdi:waypoint>
+        <omgdi:waypoint x="588.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="672.0" y="297.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="900.0" y="230.0"></omgdi:waypoint>
+        <omgdi:waypoint x="948.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="95.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="130.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="251.0" y="237.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="237.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="803.0" y="174.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="190.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="803.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="389.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="471.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

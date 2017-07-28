@@ -1,4 +1,4 @@
-angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory) {
+angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory, $rootScope) {
 
   return {
     restrict: 'EA',
@@ -75,6 +75,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sSubjectPassport: scope.formData.params.bankIdPassport.value ? getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value) : '',
               sSubjectPhone: scope.formData.params.phone.value || ''
             };
+            $rootScope.$broadcast("slot-picker-start-processing");
             $http.post('/api/service/flow/DMS/setSlotHold', data).
             success(function(data, status, headers, config) {
               scope.ngModel = JSON.stringify({
@@ -85,6 +86,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               if(scope.$parent.slotsCache.showConfirm){
                 dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
               };
+              $rootScope.$broadcast("slot-picker-stop-processing");
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
             error(function(data, status, headers, config) {
@@ -100,6 +102,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
               }
               scope.selected.slot = null;
+              $rootScope.$broadcast("slot-picker-stop-processing");
               scope.loadList();
             });
           }
@@ -180,7 +183,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       function getPasportLastFourNumbers(str) {
         if(!str || str === "") return "";
-        return str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi))[0].match(new RegExp(/\d{4,4}$/))[0];
+        var passport = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\S{2} {0,1}\d{6}/gi));
+        var idCard = str.replace(new RegExp(/\s+/g), ' ').match(new RegExp(/\d{9}/gi));
+
+        if(passport){
+          return passport[0].match(new RegExp(/\d{4,4}$/))[0]
+        } else if (idCard){
+          return idCard[0].match(new RegExp(/\d{4,4}$/))[0]
+        }
+        return '';
       }
 
       scope.unreadyRequestDMS = function () {

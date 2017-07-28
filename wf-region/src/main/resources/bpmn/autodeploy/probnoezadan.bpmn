@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="probnoezadan" name="Пробное задание Юлии Липовецкой" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSelectAgeCheck" name="Виберіть будь-ласка свій вік" type="enum" required="true">
+          <activiti:value id="pidlitok" name="до 20"></activiti:value>
+          <activiti:value id="seredniy" name="до 40"></activiti:value>
+          <activiti:value id="zrilyy" name="більше 40"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asSelectSexCheck" name="Виберіть будь-ласка свою стать" type="enum" required="true">
+          <activiti:value id="man" name="мужчина"></activiti:value>
+          <activiti:value id="girl" name="женщина"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="application_vopros1" name="Будь-ласка введіть свою найулюбленішу марку автомобіля" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="application_vopros2" name="Будь-ласка введіть свого найулюбленішого дизайнера одягу!" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_01" name="показати питання 1, якщо це чоловік" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_Hide_01_01&quot;: {&quot;aField_ID&quot;: [&quot;application_vopros1&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'man'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_01_02" name="показати питання 2, якщо це жінка  " type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_Hide_01_02&quot;: {&quot;aField_ID&quot;: [&quot;application_vopros2&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;asSelectSexCheck&quot;}, &quot;sCondition&quot;: &quot;[sClient]== 'girl'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса" type="string" required="true"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Обробити данні" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var SelectSexCheck = execution.getVariable('asSelectSexCheck')
+if (SelectSexCheck=='man')
+execution.setVariable ('sHello', 'Доброго дня, мужчина!')
+if (SelectSexCheck=='girl')
+execution.setVariable ('sHello', 'Доброго дня, дівчино!')
+
+</script>
+    </scriptTask>
+    <serviceTask id="servicetask2" name="Відправити лист " activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[tests@gmail.com]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Ваші відповіді прийняті.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${vFile}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[${sHello}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask3" name="Продивитись відповіді" activiti:candidateGroups="sale">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info2" name="Результат вибраного до 40 років" type="label" default="до 40 років" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSelectSexCheck" name="Результат вибраної статі" type="enum" required="true">
+          <activiti:value id="man" name="Чоловік"></activiti:value>
+          <activiti:value id="girl" name="Жінка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="vFile" name="Документ з рекомендаціями; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHello" name="Ексклюзивне вітання; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow12" sourceRef="scripttask1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <userTask id="usertask4" name="Продивитись відповіді" activiti:candidateGroups="sale">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info3" name="Результат вибраного більше 40" type="label" default="більше 40 років" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSelectSexCheck" name="Результат вибраної статі" type="enum" required="true">
+          <activiti:value id="man" name="Чоловік"></activiti:value>
+          <activiti:value id="girl" name="Жінка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="vFile" name="Документ з рекомендаціями; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHello" name="Ексклюзивне вітання; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="usertask5" name="Продивитись відповіді " activiti:candidateGroups="sale">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По-батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="Info1" name="Результат вибраного до 20 років" type="label" default="до 20 років" writable="false" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSelectSexCheck" name="Результат вибраної статі" type="enum" required="true">
+          <activiti:value id="man" name="Чоловік"></activiti:value>
+          <activiti:value id="girl" name="Жінка"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="vFile" name="Документ з рекомендаціями; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-mail адреса" type="string" readable="false"></activiti:formProperty>
+        <activiti:formProperty id="sHello" name="Ексклюзивне вітання; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="exclusivegateway1"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow18" sourceRef="usertask5" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="exclusivegateway2" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="exclusivegateway1" targetRef="usertask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectAgeCheck=='pidlitok'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="exclusivegateway1" targetRef="usertask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectAgeCheck=='seredniy'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="usertask4" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="exclusivegateway1" targetRef="usertask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asSelectAgeCheck=='zrilyy'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_probnoezadan">
+    <bpmndi:BPMNPlane bpmnElement="probnoezadan" id="BPMNPlane_probnoezadan">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="101.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="401.0" y="91.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="541.0" y="91.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="691.0" y="101.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="171.0" y="91.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask4" id="BPMNShape_usertask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="171.0" y="181.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="171.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="92.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="331.0" y="98.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="506.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="541.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="646.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="691.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="36.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="92.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="276.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="351.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="351.0" y="98.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="276.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="331.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="371.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="401.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="112.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="111.0" y="28.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="28.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="132.0" y="118.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="118.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="276.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="351.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="351.0" y="138.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="112.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="112.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="171.0" y="208.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

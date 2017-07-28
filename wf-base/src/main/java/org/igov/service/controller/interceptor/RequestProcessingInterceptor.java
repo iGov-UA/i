@@ -792,8 +792,22 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             LOG.warn("sResponseBody=null!!! (sRequestBody={},mParamRequest={})", sCut(nLen, sRequestBody), mParamRequest);
         }
         Map<String, String> mParam = new HashMap<>();
-        JSONObject omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
-        JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+        JSONObject omRequestBody = null;
+        JSONObject omResponseBody = null;
+        
+        try{
+            omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+            omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
+        }catch(ParseException ex){
+            if(sRequestBody.contains("dms_0025_ID2545_iGov")||sRequestBody.contains("common_zags_1") ||
+               sRequestBody.contains("dms_0176_Zagran_iGov")||sRequestBody.contains("DFS_F1301801"))
+            {
+                LOG.info("sRequestBody errored {}", sRequestBody);
+                LOG.info("sRequestBody errored {}", sResponseBody);
+                LOG.info("Error {}", ex);
+            }
+        }
+        
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
         //String osnID_Process = omResponseBody.containsKey("id"); //разобраться чего получаем нал в некоторых случаях
