@@ -30,6 +30,8 @@ public class JobEscalation extends IAutowiredSpringJob {
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!
             escalationService.runEscalationAll();
+            LOG.info("Executed Job={} - complete at {} by context.getTrigger().getName()={}",
+                context.getTrigger().getFullJobName(), new Date(), context.getTrigger().getFullName());
         } catch (CommonServiceException oException) {
             LOG.error("Bad: ", oException.getMessage());
             LOG.debug("FAIL:", oException);

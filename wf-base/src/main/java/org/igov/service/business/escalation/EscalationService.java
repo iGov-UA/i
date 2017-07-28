@@ -23,6 +23,7 @@ import org.igov.util.ToolLuna;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +72,7 @@ public class EscalationService {
     private int nFails = 0;
 
     public void runEscalationAll() throws CommonServiceException {
+        LOG.info("runEscalationAll started at {}", new Date());
         nFailsTotal = 0;
         String sSelfHost = oGeneralConfig.getSelfHost(); //REGIONAL_SERVER_PATH
         try {
@@ -86,6 +88,7 @@ public class EscalationService {
                     throw new Exception("Has fails! (nFailsTotal=" + nFailsTotal + ")");
                 }
             }
+            LOG.info("runEscalationAll ended at {}", new Date());
         } catch (Exception oException) {
             //LOG.error("FAIL: ", oException);
             LOG.error("FAIL: {} (nFailsTotal={})", oException.getMessage(), nFailsTotal);
