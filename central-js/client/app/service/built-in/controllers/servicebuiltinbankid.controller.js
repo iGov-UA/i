@@ -1,12 +1,12 @@
 angular.module('app').controller('ServiceBuiltInBankIDController',
-    function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
-              FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
-              BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
-              PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
-              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
-              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService) {
+  function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
+            FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
+            BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
+            PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
+            ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
+            ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService) {
 
-      'use strict';
+    'use strict';
 
       FieldMotionService.reset();
       iGovMarkers.reset();
@@ -327,6 +327,16 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         if (!$scope.validateForm(form)) {
           $scope.isSending = false;
           return false;
+        }
+
+        for( var pay in $scope.data.formData.params ) {
+          if($scope.data.formData.params.hasOwnProperty(pay) && pay.indexOf('sID_Pay_MasterPass') === 0) {
+            if(!$scope.data.formData.params[pay].value) {
+              $scope.createPayment();
+              return false;
+            } else
+                break;
+          }
         }
 
         /**
@@ -1030,12 +1040,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       };
 
       // отправка POST-запроса и открытие страницы в новой вкладке
-      function openUrl(url, post) {
+      function openUrl(url, post, target) {
         if (post) {
           var form = $('<form/>', {
             action: url,
             method: 'POST',
-            target: '_blank',
+            target: target ? target : '_blank',
             style: {
               display: 'none'
             }
@@ -1163,5 +1173,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.isSetClasses = function (field) {
         return LabelService.isLabelHasClasses(field)
-      }
-});
+      };
+
+      $scope.$on('slot-picker-start-processing', function () {
+        $scope.isSending = true;
+      });
+
+      $scope.$on('slot-picker-stop-processing', function () {
+        $scope.isSending = false;
+      });
+  });

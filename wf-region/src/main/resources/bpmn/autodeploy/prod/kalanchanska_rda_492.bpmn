@@ -202,6 +202,9 @@
         <activiti:formProperty id="marker_StartTask_Print" name="Під прінт форму" type="markers" default="${markerService.loadFromFile('chernobyl/kalanchanska_rda_492_StartTask_Print.json')}"></activiti:formProperty>
        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        
+         <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow11" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>

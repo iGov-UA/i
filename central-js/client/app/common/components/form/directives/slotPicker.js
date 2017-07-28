@@ -1,4 +1,4 @@
-angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory) {
+angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFactory, $rootScope) {
 
   return {
     restrict: 'EA',
@@ -75,6 +75,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sSubjectPassport: scope.formData.params.bankIdPassport.value ? getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value) : '',
               sSubjectPhone: scope.formData.params.phone.value || ''
             };
+            $rootScope.$broadcast("slot-picker-start-processing");
             $http.post('/api/service/flow/DMS/setSlotHold', data).
             success(function(data, status, headers, config) {
               scope.ngModel = JSON.stringify({
@@ -85,27 +86,24 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               if(scope.$parent.slotsCache.showConfirm){
                 dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
               };
+              $rootScope.$broadcast("slot-picker-stop-processing");
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
             error(function(data, status, headers, config) {
               console.error('Error reserved slot ' + angular.toJson(data));
-              var err = data.message.split(": response=");
+              var err = data.message ? data.message.split(": response=") : [];
               if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
-                var needReload = false;
                 if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
-                  needReload = true;
                   dialogs.error('Помилка', 'Обраний Вами час вже недоступний. Повторіть, будь ласка, спробу пізніше або оберіть інший час та дату.')
                 } else {
-                  needReload = true;
                   dialogs.error('Помилка', err[1])
                 }
-                scope.selected.slot = null;
-                if(needReload){
-                  scope.loadList();
-                }
               } else {
-                dialogs.error('Помилка', data.message);
+                dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
               }
+              scope.selected.slot = null;
+              $rootScope.$broadcast("slot-picker-stop-processing");
+              scope.loadList();
             });
           }
         } else if (isQueueDataType.iGov) {
