@@ -65,6 +65,10 @@
         <activiti:formProperty id="markerFlag" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_1476_flag.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="перемикач регіонів; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
         
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
@@ -77,7 +81,29 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var x =' '</script>
+      <script>
+        var Sub =' ';
+        var Adr =' ';
+        var Ind =' ';
+        
+        if ((execution.getVariable('asOsoba')) === 'sEnamFop') {
+	      var ScLN = execution.getVariable('bankIdlastName');
+          var ScFN = execution.getVariable('bankIdfirstName');
+          var ScMN = execution.getVariable('bankIdmiddleName');
+          Sub = ScLN + ' ' + ScFN + ' ' + ScMN;
+          
+          Adr = execution.getVariable('sAdressRegistration');
+          Ind = execution.getVariable('bankIdinn');
+        }
+        if ((execution.getVariable('asOsoba')) === 'sEnamUrK') {
+	      Sub = execution.getVariable('sFullName_SubjectOrgan_01');
+	      Adr = execution.getVariable('sLocation_SubjectOrgan_01');
+          Ind = execution.getVariable('sID_SubjectOrgan_OKPO_01');
+	    }
+        execution.setVariable('scrSubject', Sub)
+        execution.setVariable('scrAdress', Adr)
+        execution.setVariable('scrIdentN', Ind)
+      </script>
     </scriptTask>
     <serviceTask id="servicetask1" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -180,7 +206,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="nFile_ingen_merez" name="Технічні умови щодо інженерного забезпечення, отримані  замовником  у  балансоутримувача  відповідних інженерних мереж; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Passport" name="Копія паспорта прив’язки тимчасової споруди ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
-        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно. Передати документи до відділу Архітектури!"></activiti:value>
           <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
@@ -188,9 +213,12 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
         
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/Ark_1476_TumchSpor.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -382,10 +410,12 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="markerArkDash" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_Arc_Dash.json')}"></activiti:formProperty>
         <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/zovtyvodu_cnap_430_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/Ark_1476_TumchSpor.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerPassportPrin" name="Continue Passprot Prin" type="markers" default="${markerService.loadFromFile('architecture/PassportTemporaryStructures_Print.json')}"></activiti:formProperty>
-        
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -471,6 +501,9 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="Cnap2Comment" name="Якщо заявнику відмовлено у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
