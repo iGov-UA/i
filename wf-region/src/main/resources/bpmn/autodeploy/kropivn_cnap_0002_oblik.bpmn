@@ -23,7 +23,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFOP" name="ПІБ фізичної особи-підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFopinn" name="ІПН фізичної особи-підприємця" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП(серія, номер паспорту)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
@@ -35,7 +35,7 @@
         <activiti:formProperty id="sSubjectRegistration" name="Місце державної реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об’єкта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта " type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта " type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sStartData" name="Початок роботи об'єкта" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="nArea_total" name="Площа об’єкта  загальна, кв.м" type="double" required="true"></activiti:formProperty>
@@ -125,7 +125,7 @@
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка звернення в ЦНАП" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Обробка звернення в ЦНАП" activiti:candidateGroups="cnap_Kropivn_KropivnytskyiT">
       <extensionElements>
         <activiti:formProperty id="cFizUr" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="zaporozhye_rda_249" name="Запоріжжя - Отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу" isExecutable="true">
+  <process id="zaporozhye_rda_249" name="Отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="info_1" name="Зверніть увагу" type="label" default="Ця послуга надається тільки в районної адміністрації Запорізької міської ради по Ленінському району"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Вам буде зручно отримати відповідь" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
@@ -43,6 +43,11 @@
         <activiti:formProperty id="markers6" name="шість власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_6&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'six'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="сім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_7&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanPassportOwner7&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'seven'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="вісім власника" type="markers" default="{&quot;motion&quot;: {&quot;ShowFieldsOnCondition_8&quot;: {&quot;aField_ID&quot;: [&quot;bankId_scan_passport&quot;,&quot;scanPassportOwner2&quot;,&quot;scanPassportOwner3&quot;,&quot;scanPassportOwner4&quot;,&quot;scanPassportOwner5&quot;,&quot;scanPassportOwner6&quot;,&quot;scanPassportOwner7&quot;,&quot;scanPassportOwner8&quot;], &quot;asID_Field&quot;: {&quot;sClient&quot;: &quot;numberOfOwners&quot;},&quot;sCondition&quot;: &quot;[sClient] == 'eight'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва міської ради; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса міської ради; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон міської ради; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Часи роботи органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення чиновнику про новий запит" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -51,19 +56,13 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:string><![CDATA[lenra@commit.zp.ua]]></activiti:string>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<strong>Шановний колего!</strong><br /><br />
-У Вас в черзі на обробку нове звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.<br />
-Заявник: ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}<br />
-Відпрацюйте це звернення на <a href="https://region.igov.org.ua" target="_blank">порталі</a>
-[pattern/mail/_common_signature.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -76,19 +75,25 @@
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Реєстрація звернення на отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
+          <activiti:expression><![CDATA[Ваше звернення успішно зареєстроване]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p> Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу зареєстроване у системі.<br/>
-Повідомлення про результат розгляду звернення буде спрямоване на Ваш e-mail.</p>
-<br />
-Телефон для довідок: (061) 224-87-04<br />
-[pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p>
+			Ваше звернення № [sID_Order]  щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу успішно зареєстроване.<br />
+			Ви отримаєте відповідь протягом найближчого часу.
+			</p>
+			<p>Контакти підрозділу , який буде займатися обробкою Вашого звернення:</p>
+			<p>${sNameOrgan}.<br />
+			${sAddress}<br />
+			${sWorkTime}<br />
+			${sPhoneOrgan}</p>
+ 			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -121,7 +126,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Якщо ви відмовляєте замовнику, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/zaporozhye_rda_249_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner2" name="Копія паспорта 2-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner3" name="Копія паспорта 3-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -130,9 +134,7 @@
         <activiti:formProperty id="scanPassportOwner6" name="Копія паспорта 6-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner7" name="Копія паспорта 7-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="scanPassportOwner8" name="Копія паспорта 8-го власника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
@@ -152,17 +154,22 @@
           <activiti:string><![CDATA[Звернення на тему: отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу - прийнято в роботу.<br />
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+			<p>
+			Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу - прийнято в роботу.<br />
 Відповідь Ви отримаєте протягом десяти робочих днів.<br /> 
-</p>
-<br />
-Телефон для довідок: (061) 224-87-04
-[pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+			</p>
+			<p>Контакти підрозділу, який буде займатися обробкою Вашого звернення:</p>
+			<p>${sNameOrgan}.<br />
+			${sAddress}<br />
+			${sWorkTime}<br />
+			${sPhoneOrgan}</p>
+ 			[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -181,19 +188,17 @@
           <activiti:string><![CDATA[Звернення на тему: отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-На жаль, Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу було відхилено.</p>
-<p>Причина в наступному: 
-                                    </p>
-<p>${decisionComment}</p>
-<p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
-<br />
-Телефон для довідок: (061) 224-87-04
-[pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+По вашому зверненню № [sID_Order] винесено відмову.<br />
+На жаль, Ваше звернення щодо отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу було відхилено.<br />
+<p>Причина відмови: ${decisionComment}</p>
+Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -239,31 +244,19 @@
           <activiti:string><![CDATA[Звернення на тему: отримання копії свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/_common_header.html]
-<b>Шановний(-а) ${bankIdfirstName} ${bankIdmiddleName}.</b><br /><br />
-<p>
-
-</p>
-<p>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
 Ваша копія свідоцтва про право власності на житло для подальшого оформлення дублікату втраченого документу готова.<br/> 
 Ви зможете її отримати за адресою:<br/> 
-м. Запоріжжя, вул. Бородінська, 1а<br/>
-Кабінет №314<br/>
-Часи прийому:<br/>
-Понеділок з 14.00 до 17.00<br/>
-Вівторок з 9.00 до 11.40<br/>
-Середа з 9.00 до 11.00<br/>
-<br/>
-При собі треба мати оригінал паспорту.
-</p>
-Телефон для довідок: (061) 224-87-04
-<br />
-<br />
-[pattern/mail/_common_signature_start.html]
-Районна адміністрація Запорізької міської ради по Ленінському району,<br />
-[pattern/mail/_common_signature_end.html]
-[pattern/mail/_common_feedback.html]
-[pattern/mail/_common_footer.html]]]></activiti:expression>
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br/>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -319,14 +312,14 @@
         <omgdi:waypoint x="572.0" y="242.0"></omgdi:waypoint>
         <omgdi:waypoint x="572.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="581.0" y="238.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="581.0" y="238.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="552.0" y="222.0"></omgdi:waypoint>
         <omgdi:waypoint x="485.0" y="222.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="497.0" y="181.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="497.0" y="181.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
