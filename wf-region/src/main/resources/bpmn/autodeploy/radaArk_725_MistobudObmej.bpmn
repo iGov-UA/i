@@ -32,8 +32,8 @@
           <activiti:value id="vlasnik" name="Замовник-забудовник"></activiti:value>
           <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="doc6" name="Копія довіреності;у разі звернення довіреної особи;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="Message1" name="Увага" type="label" default="додайте необхідні файли!"></activiti:formProperty>
+        <activiti:formProperty id="doc6" name="Копія довіреності;у разі звернення довіреної особи;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc1" name="Копія документа про право власності на земельну ділянку; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc2" name="Ситуатаційний план (схема) щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc3" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500;За необхідності, можна замовити за посиланням https://igov.org.ua/service/734/general" type="file" required="true"></activiti:formProperty>
@@ -242,6 +242,14 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
        
+       <activiti:formProperty id="doc6" name="Копія довіреності;у разі звернення довіреної особи;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Копія документа про право власності на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Ситуатаційний план (схема) щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc3" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500;За необхідності, можна замовити за посиланням https://igov.org.ua/service/734/general" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc4" name="Фотофіксація земельної ділянки;у довільній формі;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc5" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc7" name="Копія сертифіката організації, що надала розрахунок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+      
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow21" name="ВІДМОВА" sourceRef="exclusivegateway2" targetRef="servicetask8">
@@ -374,6 +382,14 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html]; ;bVisible=false" type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
     
+     <activiti:formProperty id="doc6" name="Копія довіреності;у разі звернення довіреної особи;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Копія документа про право власності на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Ситуатаційний план (схема) щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc3" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500;За необхідності, можна замовити за посиланням https://igov.org.ua/service/734/general" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc4" name="Фотофіксація земельної ділянки;у довільній формі;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc5" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc7" name="Копія сертифіката організації, що надала розрахунок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+      
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask10" name="Повідомлення Архітектури" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -436,6 +452,14 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html] ; ;bVisible=false" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
        
+        <activiti:formProperty id="doc6" name="Копія довіреності;у разі звернення довіреної особи;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc1" name="Копія документа про право власності на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc2" name="Ситуатаційний план (схема) щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc3" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500;За необхідності, можна замовити за посиланням https://igov.org.ua/service/734/general" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc4" name="Фотофіксація земельної ділянки;у довільній формі;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc5" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc7" name="Копія сертифіката організації, що надала розрахунок; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+      
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask11" name="Повідомлення працівника ЦНАПУ після ДГК" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -470,6 +494,8 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="commentDGK" name="Коментар в разі відмови" type="textArea" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
     
+     <activiti:formProperty id="result" name="Відповідь; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>
