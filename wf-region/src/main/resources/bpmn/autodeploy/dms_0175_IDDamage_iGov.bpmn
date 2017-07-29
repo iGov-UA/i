@@ -113,7 +113,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	для обміну паспорта громадянина України у разі непридатності для користування.
 </p>
 <p>
-	Дата та час візиту: ${date_of_visit}.
+	Дата та час візиту: ${format_date_of_visit}.
 </p>
 <p>
 	<b>Вам необхідно зробити два платежу:</b> 
@@ -156,11 +156,11 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
-       <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Pered splatoyu posluhy prosymo pereviryty svoyu cherhu za telefonamy 097 470 05 05 abo 066 470 05 05 abo 073 470 05 05]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -178,7 +178,7 @@ ${sNameOrgan},<br>
 	для обміну паспорта громадянина України у разі непридатності для користування.
 </p>
 <p>
-	Дата та час візиту: ${date_of_visit}.
+	Дата та час візиту: ${format_date_of_visit}.
 </p>
 <p>
 	<b>Вам необхідно зробити два платежу:</b> 
@@ -580,14 +580,14 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="530.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="787.0" y="307.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="541.0" y="269.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="541.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="551.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="626.0" y="217.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="550.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="550.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">

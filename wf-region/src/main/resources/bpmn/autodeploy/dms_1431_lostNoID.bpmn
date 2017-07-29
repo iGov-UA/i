@@ -56,7 +56,7 @@
     <serviceTask id="servicetask4" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>zhigan.roman@gmail.com</activiti:expression>
+          <activiti:expression><![CDATA[zhigan.roman@gmail.com]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -65,7 +65,7 @@
           <activiti:string><![CDATA[Нове звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -73,7 +73,7 @@
     <serviceTask id="servicetask3" name="E-Mail підтвердження отримання запиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -82,28 +82,28 @@
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-									&lt;p&gt;
+									<p>
 Спеціалісти ${sOrganType} оброблять Вашу заявку та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час. 
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+                                    <p>[cancelTask]</p>
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},&lt;br&gt;
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -157,7 +157,7 @@ ${sNameOrgan},&lt;br&gt;
     <serviceTask id="servicetask5" name="E-Mail відмова в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -166,36 +166,36 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-                                    &lt;p&gt;
-										На жаль, Вам відмовлено у надані послуги.&lt;br&gt;
-                                        При необхідності видачі паспорта громадянина України замість утраченого або викраденого Ви можете подати ще одну заявку на порталі &lt;a href="https://igov.org.ua/"&gt;iGov.org.ua&lt;/a&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-											&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися:&lt;br&gt;
+                                    <p>
+										На жаль, Вам відмовлено у надані послуги.<br>
+                                        При необхідності видачі паспорта громадянина України замість утраченого або викраденого Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
+									</p>
+									<p>
+										Коментар Державного службовця:<br>
+											<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися:<br>
 										${sPhoneOrgan}
-									&lt;/p&gt;
+									</p>
 									
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},&lt;br&gt;
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidhileno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -209,7 +209,7 @@ ${sNameOrgan},&lt;br&gt;
     <serviceTask id="servicetask6" name="E-Mail призначення візиту" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -218,65 +218,65 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-                                    &lt;p&gt;
-                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.&lt;br&gt;
-										Для того щоб закінчити процедуру подачі заяви про видачу паспорта громадянина України замість утраченого або викраденого необхідно:&lt;br&gt;
-										&lt;ul&gt;
-										&lt;li&gt;У будь-якому банку сплатити Державне мито у розмірі 34 грн і отримати квитанцію про сплату.&lt;/li&gt;
-										&lt;li&gt;Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.&lt;/li&gt;
-										&lt;li&gt;Заповнити та підписати заяву для видачі паспорту згідно зразка.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Реквізити для сплати:&lt;/b&gt;&lt;br&gt;
-										&lt;i&gt;${sRecviziti}&lt;br&gt;
-										Призначення платежу: Державне мито за оформлення та видачу втраченого паспорта громадянина України​&lt;/i&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Деталі зустрічі:&lt;/b&gt;&lt;br&gt;
-										День та час - ${date_of_visit}
-									&lt;/p&gt;
-									&lt;p&gt;
-										&lt;b&gt;Необхідні документи, які треба принести до ${sOrganType} для видачі паспорта громадянина України замість утраченого або викраденого:&lt;/b&gt;&lt;br/&gt;
-										&lt;ul&gt;
-										&lt;li&gt;оригінали свідоцтва про шлюб (розлучення) та свідоцтва про народження (за наявності);&lt;/li&gt;
-										&lt;li&gt;чотири фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);&lt;/li&gt;
-										&lt;li&gt;довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);&lt;/li&gt;
-									&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;	
-										&lt;b&gt;Зверніть увагу:&lt;/b&gt; 
-										&lt;ul&gt;
-										&lt;li&gt;За втрату паспорта громадянина України Вас може бути притягнено до адміністративної відповідальності за ст. 198 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на оплату штрафу.&lt;/li&gt;
-										&lt;/ul&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										Коментар Державного службовця:&lt;br&gt;
-										&lt;b&gt;&lt;i&gt;${decisionComment}&lt;/i&gt;&lt;/b&gt;
-									&lt;/p&gt;
-									&lt;p&gt;
-										При вниникненні питань Ви можете звернутися:&lt;br&gt;
+                                    <p>
+                                        Спеціалісти ${sOrganType} успішно опрацювли Вашу заяву.<br>
+										Для того щоб закінчити процедуру подачі заяви про видачу паспорта громадянина України замість утраченого або викраденого необхідно:<br>
+										<ul>
+										<li>У будь-якому банку сплатити Державне мито у розмірі 34 грн і отримати квитанцію про сплату.</li>
+										<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab205}.</li>
+										<li>Заповнити та підписати заяву для видачі паспорту згідно зразка.</li>
+										</ul>
+									</p>
+									<p>
+										<b>Реквізити для сплати:</b><br>
+										<i>${sRecviziti}<br>
+										Призначення платежу: Державне мито за оформлення та видачу втраченого паспорта громадянина України​</i>
+									</p>
+									<p>
+										<b>Деталі зустрічі:</b><br>
+										День та час - ${format_date_of_visit}
+									</p>
+									<p>
+										<b>Необхідні документи, які треба принести до ${sOrganType} для видачі паспорта громадянина України замість утраченого або викраденого:</b><br/>
+										<ul>
+										<li>оригінали свідоцтва про шлюб (розлучення) та свідоцтва про народження (за наявності);</li>
+										<li>чотири фотокартки розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах);</li>
+										<li>довідку про взяття на облік внутрішньо переміщеної особи (для внутрішньо переміщених осіб);</li>
+									</ul>
+									</p>
+									<p>	
+										<b>Зверніть увагу:</b> 
+										<ul>
+										<li>За втрату паспорта громадянина України Вас може бути притягнено до адміністративної відповідальності за ст. 198 КУпАП (санкція – штраф від 17 до 51 грн.). Майте з собою гроші на оплату штрафу.</li>
+										</ul>
+									</p>
+									<p>
+										Коментар Державного службовця:<br>
+										<b><i>${decisionComment}</i></b>
+									</p>
+									<p>
+										При вниникненні питань Ви можете звернутися:<br>
 										${sPhoneOrgan}
-									&lt;/p&gt;
-                                    &lt;p&gt;[cancelTask]&lt;/p&gt;
+									</p>
+                                    <p>[cancelTask]</p>
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},&lt;br&gt;
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Ochikuemo vizit. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -345,7 +345,7 @@ ${sNameOrgan},&lt;br&gt;
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -354,19 +354,19 @@ ${sNameOrgan},&lt;br&gt;
           <activiti:string><![CDATA[Звернення на тему: Видача паспорта громадянина України замість утраченого або викраденого]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-                                    &lt;p&gt;
-                              		Ви отримали послугу "Видача паспорта громадянина України замість утраченого або викраденого".&lt;br&gt;
+                                    <p>
+                              		Ви отримали послугу "Видача паспорта громадянина України замість утраченого або викраденого".<br>
                               		Якщо для замовлення послуги Ви використовували BankID, то після отримання паспорту завітайте у будь-яке відділення вашого банку та актуалізуйте свої дані. Це допоможе безперешкодно отримувати електронні послуги в майбутньому.
-                              		&lt;/p&gt;
-                              		&lt;p&gt;
+                              		</p>
+                              		<p>
                               	[pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},&lt;br&gt;      
+${sNameOrgan},<br>      
 [pattern/mail/new_design/_common_signature_end.html]  
-[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -446,7 +446,7 @@ ${sNameOrgan},&lt;br&gt;
         <omgdi:waypoint x="588.0" y="230.0"></omgdi:waypoint>
         <omgdi:waypoint x="781.0" y="230.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="597.0" y="187.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="597.0" y="187.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -461,7 +461,7 @@ ${sNameOrgan},&lt;br&gt;
         <omgdi:waypoint x="568.0" y="250.0"></omgdi:waypoint>
         <omgdi:waypoint x="568.0" y="282.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="460.0" y="241.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="460.0" y="241.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -476,7 +476,7 @@ ${sNameOrgan},&lt;br&gt;
         <omgdi:waypoint x="736.0" y="436.0"></omgdi:waypoint>
         <omgdi:waypoint x="783.0" y="436.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="86.0" x="709.0" y="394.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="86.0" x="709.0" y="394.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -484,7 +484,7 @@ ${sNameOrgan},&lt;br&gt;
         <omgdi:waypoint x="716.0" y="494.0"></omgdi:waypoint>
         <omgdi:waypoint x="817.0" y="494.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="83.0" x="728.0" y="476.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="83.0" x="728.0" y="476.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
