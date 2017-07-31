@@ -202,6 +202,12 @@
         image: 'assets/images/ads/opendatabot.png',
         isActual: true
       }
+      ,{
+        url: 'https://www.lifecell.ua/',
+        alt: 'https://www.lifecell.ua/',
+        image: 'assets/images/ads/lifecell.png',
+        isActual: true
+      }
     ];
 
     return {
