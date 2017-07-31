@@ -58,6 +58,7 @@ angular.module('app').controller('FooterController', function ($scope, SponsorsL
       }
     } else {
       oFooter.css({
+        top: 0,
         left: (this.innerWidth - oFooter[0].scrollWidth)/2 < 0 ? 0 : (this.innerWidth - oFooter[0].scrollWidth)/2,
         position:'relative'
       });
