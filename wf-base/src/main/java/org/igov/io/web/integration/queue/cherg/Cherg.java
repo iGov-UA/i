@@ -24,7 +24,9 @@ import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides integration with Queue management system cherg.net
@@ -42,10 +44,14 @@ public class Cherg {
     private String urlFreeTime = "/freetime";
     private String urlSetReserve = "/set_reserve";
     private String urlConfirmReserve = "/confirm_reserve";
+    private String urlCancelReserve = "/cancel_reserve";
     private String urlWorkdays = "/workdays";
     private String login;
     private String password;
     private String basicAuthHeader;
+
+    //static HashMap mDMS_SlotReserve = new HashMap();
+    private static volatile ConcurrentHashMap<String, String> mDMS_SlotReserve = new ConcurrentHashMap();
 
     final static private Logger LOG = LoggerFactory.getLogger(Cherg.class);
 
@@ -211,7 +217,14 @@ public class Cherg {
         mParam.add("lastname", lastName);
         mParam.add("name", name);
         mParam.add("patronymic", patronymic);
-
+        
+        String sID_Reserve=null;
+        sID_Reserve = (String) mDMS_SlotReserve.get(serviceId+"_"+phone);
+        if(sID_Reserve!=null){
+            cancelReserve(sID_Reserve);
+            mDMS_SlotReserve.remove(serviceId+"_"+phone);
+        }
+        
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(new MediaType("application", "x-www-form-urlencoded", StandardCharsets.UTF_8));
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
@@ -244,7 +257,11 @@ public class Cherg {
         } else {
             result = new JSONObject();
         }
-
+        
+        sID_Reserve=(String)result.get("reserve_id");
+        //cancelReserve(String nReservationId)
+        mDMS_SlotReserve.put(serviceId+"_"+phone, sID_Reserve);        
+        
         LOG.info("Result:{}", dates);
         return result;
 
@@ -292,4 +309,49 @@ public class Cherg {
         return result;
 
     }
+    
+    
+    public JSONObject cancelReserve(String nReservationId) throws Exception {
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
+
+        mParam.add("reserve_id", nReservationId);
+
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+        oHttpHeaders.set("Authorization", this.basicAuthHeader);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlCancelReserve)
+                ._Data(mParam)
+                ._Header(oHttpHeaders)
+                ._Send();
+        String sReturn = oHttpEntityCover.sReturn();
+        if (!oHttpEntityCover.bStatusOk()) {
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
+                    urlBasePart + urlFreeTime,
+                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        }
+
+        JSONParser parser = new JSONParser();
+        JSONObject response = (JSONObject) parser.parse(sReturn);
+        if (!response.get("status-code").equals("0")) {
+            LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response=" +
+                    response.get("status-code") + " " + response.get("status-detail"));
+        }
+        JSONArray dates = (JSONArray) response.get("data");
+        JSONObject result;
+        Iterator<JSONObject> datesIterator = dates.iterator();
+        if (datesIterator.hasNext()) {
+            result = datesIterator.next();
+        } else {
+            result = new JSONObject();
+        }
+
+        LOG.info("Result:{}", dates);
+        return result;
+
+    }    
+    
 }
