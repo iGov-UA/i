@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="DFS_F1301801" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
+  <process id="DFS_1561_RequestPhysHum" name="Запит щодо отримання відомостей з Державного реєстру фізичних осіб – платників податків про суми виплачених доходів та утриманих податків" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sWarning0" name=" ; ;labelType=info" type="label" default="Вам необхідно скористатися Вашим &lt;b&gt; персональним електронно-цифровим підписом або підписом підприємця&lt;/b&gt;. Ви не можете скористатися ЕЦП представника юридичної особи."></activiti:formProperty>
@@ -77,7 +77,8 @@
           </activiti:field>
         </activiti:taskListener>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-    
+     <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
+       
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask2" name="Відправка Запиту громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -147,6 +148,7 @@
             <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
        
       </extensionElements>
     </userTask>
@@ -293,7 +295,8 @@ execution.setVariable('sCounter', src)</script>
              <activiti:expression><![CDATA[ ]]></activiti:expression>		
           </activiti:field>
         </activiti:taskListener>
-      
+       <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
+       
       </extensionElements>
     </userTask>
     <boundaryEvent id="boundarytimer2" name="Timer" attachedToRef="usertask3" cancelActivity="true">
@@ -303,8 +306,8 @@ execution.setVariable('sCounter', src)</script>
     </boundaryEvent>
     <sequenceFlow id="flow26" sourceRef="boundarytimer2" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_F1301801">
-    <bpmndi:BPMNPlane bpmnElement="DFS_F1301801" id="BPMNPlane_DFS_F1301801">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_1561_RequestPhysHum">
+    <bpmndi:BPMNPlane bpmnElement="DFS_1561_RequestPhysHum" id="BPMNPlane_DFS_1561_RequestPhysHum">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="41.0" width="41.0" x="30.0" y="126.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
