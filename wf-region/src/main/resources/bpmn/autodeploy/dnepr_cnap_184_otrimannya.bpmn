@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_184_otrimannya" name="Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій О.Д. Последние правки: 13.07.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 01.08.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
       <activiti:formProperty id="sLabeECP" name=" ; ;labelType=info" type="label" default="Увага!  Щоб скористатися цією послугою, потрібно використати власний &lt;a href=&quot;https://goo.gl/1OioXt &quot; target=&quot;_blank&quot;&gt;електронно-цифровий підпис (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що вас обслуговує)"></activiti:formProperty>
@@ -44,7 +44,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="sConfidant_pib" name="Прізвище Ім'я та По батькові довіреної особи" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sConfidant_passport" name="Паспортні дані довіреної особи (серія, номер, дата, ким виданий)" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sObect_For_Dozvil" name="Укажіть об’єкт, на який потрібно надати дозвіл" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sObect_For_Dozvil" name="Укажіть об’єкт, на який потрібно надати дозвіл; (вид, розміри, площа місця розташування)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_2" name="Адреса об’єкта, на який видається дозвіл" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sStrokReklami" name="Надати дозвіл на строк (роки)" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" default=" "></activiti:formProperty>
@@ -142,6 +142,7 @@
         <activiti:formProperty id="markers22" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_otrimannya_21.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Опис документів" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dnepr_cnap_184_pogodzennya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Погоджувальна частина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява;File title;sPrintFormFileAsPDF=pattern/print/dnepr_cnap_184_print.html,sFileName=Zayava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -229,6 +230,7 @@
         <activiti:formProperty id="sAddPrintSpisok" name="формулювання у email додаткового додатку (М 1:500) ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_184_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_184_opis_docs_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Опис документів" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/dnepr_cnap_184_pogodzennya.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Погоджувальна частина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
