@@ -219,6 +219,10 @@ execution.setVariable('rNum', per2)
         <activiti:formProperty id="sBody_2" name="[pattern/print/ternopil/tern_rcnap-208_vnutr.html]; ;bVisible=false" type="string" default="Внутрішній лист" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
      
+      <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки в масштабі 1:2000; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Документ, що посвідчує дозвіл на виділення земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -339,7 +343,10 @@ execution.setVariable('rNum', per2)
         <activiti:formProperty id="comment1" name="Якщо громадянину відмовлено, вкажіть причину у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="result" name="Додайте скановану копію довідки або відмови; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-      
+       <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dilianka" name="Викопіювання земельної ділянки в масштабі 1:2000; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="dovidka" name="Документ, що посвідчує дозвіл на виділення земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow22" sourceRef="usertask2" targetRef="exclusivegateway1"></sequenceFlow>

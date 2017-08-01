@@ -9,8 +9,7 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
+      <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asSubekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
@@ -35,9 +34,12 @@
         <activiti:formProperty id="sPib_fiz" name="П.І.Б. фізичної особи–підприємця" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdres_1" name="Місцезнаходження юридичної особи" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="workPhone" name="Телефон юридичної особи" type="string" default="+380"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="район; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="пошта району; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerkVet" name="пошта ветеринарів; ;bVisible=false" type="string"></activiti:formProperty>
@@ -53,6 +55,12 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <userTask id="usertask1" name="прийняття рішення про надання послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+      <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+      
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
@@ -101,6 +109,13 @@
     </userTask>
     <userTask id="usertask2" name="надання адміністративної послуги" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+      
+       <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+      
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
@@ -327,6 +342,11 @@ ${sNameOrgan}<br />
     </serviceTask>
     <userTask id="usertask3" name="Надання послуги ВетМед" activiti:candidateGroups="vet_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+       <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>
@@ -397,6 +417,12 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow64" sourceRef="servicetask12" targetRef="usertask4"></sequenceFlow>
     <userTask id="usertask4" name="Обробка ЦНАП (2 етап)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+       <activiti:formProperty id="bankId_scan_passport" name="сканована копія паспорту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_pidpriemci" name="Довідка про здатність провадити відповідну діяльність; в якій зазначається інформація про наявність кваліфікованого персоналу, технологічного обладнання, перелік товарів, що виготовляються або реалізуються, за підписом заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_provender" name="Перелік добавок, преміксів і кормів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="perelic_animals" name="Перелік продуктів тваринного походження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+      
         <activiti:formProperty id="sNameOrgan" name="Район" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Серія та номер паспорту" type="string" writable="false"></activiti:formProperty>

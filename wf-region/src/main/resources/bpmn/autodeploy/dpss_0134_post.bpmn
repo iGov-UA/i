@@ -72,6 +72,14 @@
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="Обробка даних ДПСС" activiti:candidateGroups="dpss_dnepr">
       <extensionElements>
+       <activiti:formProperty id="file1" name="Клопотання керівника установи (підприємства) на проведення діагностичних досліджень або експериментальних робіт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file2" name="Акти комісії з контролю біологічної безпеки установи та територіальної режимної комісії щодо дотримання та виконання вимог техніки безпеки, протиепідемічного режиму, особистої гігієни, тощо з додаванням план-схеми лабораторії з зазначенням руху заразного або підозрілого на його вміст матеріалу (патогенних мікроорганізмів) в процесі дослідження та переліку мікроорганізмів, з якими проводяться роботи в лабораторії, відомостей про підготовку персоналу і щеплення, наявності та порядок використання засобів індивідуального захисту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file3" name="Висновок головного державного санітарного лікаря території щодо наявності умов для проведення даного виду робіт та можливості видачі дозволу на роботу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file6" name="Документ дозвільного характеру, який підлягає переоформленню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file7" name="Документ, який засвідчує настання підстави для переоформлення документу дозвільного характеру;(зміна найменування суб'єкта господарювання - юридичної особи або прізвища, імені, по батькові фізичної особи - підприємця, зміна місцезнаходження суб'єкта господарювання та інші підстави, встановлені Законом); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file8" name="Бланк документу дозвільного характеру, який непридатний для використання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file9" name="Документ дозвільного характеру, який підлягає анулюванню; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="adress" name="Місцезнаходження юридичної особи / місце проживання фізичної особи - підприємця" type="string" writable="false"></activiti:formProperty>
@@ -114,7 +122,7 @@
         <activiti:formProperty id="substance_3" name="Суть заяви в контексті листа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="document" name="Назва документу; ;bVisible=false" type="string" default="дозвіл на всі види досліджень та експериментальні роботи з мікроорганізмами ІІІ-IV групи патогенності (небезпеки) або матеріалом підозрілим на їх вміст"></activiti:formProperty>
         <activiti:formProperty id="term" name="Строк виконання; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="status" name="Обробка заяви" type="enum">
+        <activiti:formProperty id="status" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="attr1_wait" name="Дозвіл (санітарний паспорт) або рішення про анулювання або про відмову готове до передачі в ЦНАП"></activiti:value>
           <activiti:value id="attr2_finish" name="Відмова громадянину у видачі дозволу"></activiti:value>
         </activiti:formProperty>
