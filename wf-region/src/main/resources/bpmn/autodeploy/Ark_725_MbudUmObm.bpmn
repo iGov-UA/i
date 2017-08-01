@@ -45,19 +45,26 @@
         <activiti:formProperty id="sZemPrizn" name="Цільове призначення земельної ділянки" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;fZemVlasn&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="fZemVlasn" name="Документ про право власності на земельну ділянку; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fZemVlasn" name="Право власності на земельну ділянку; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fSPlan" name="Ситуатаційний план (схема), щодо місцезнаходження земельної ділянки;(може бути складений у довільній формі) ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fVukopiuv" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500;За необхідності, можна замовити за посиланням https://igov.org.ua/service/734/general ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVukopiuv" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabe2000" name=" ; ;labelType=info" type="label" default="Викопіювання можна замовити за посиланням - &lt;a href=&quot;https://igov.org.ua/service/734/general &quot; target=&quot;_blank&quot;&gt;Викопіювання 1:500&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="fZemFoto" name="Фотофіксація земельної ділянки;(фотографії місця будівництва з навколишнім оточенням);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fMistRozr" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         
+        <activiti:formProperty id="markerFlag" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_725_flag.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="перемикач регіонів; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
+        
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
+                
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nRegion" name="Регион; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArkhPost" name="Пошта департамента архітектури або ГоловАПУ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
@@ -66,7 +73,29 @@
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var x = 5</script>
+      <script>
+        var Sub =' ';
+        var Adr =' ';
+        var Ind =' ';
+        
+        if ((execution.getVariable('asOsoba')) === 'sEnamFop') {
+	      var ScLN = execution.getVariable('bankIdlastName');
+          var ScFN = execution.getVariable('bankIdfirstName');
+          var ScMN = execution.getVariable('bankIdmiddleName');
+          Sub = ScLN + ' ' + ScFN + ' ' + ScMN;
+          
+          Adr = execution.getVariable('sAdressRegistration');
+          Ind = execution.getVariable('bankIdinn');
+        }
+        if ((execution.getVariable('asOsoba')) === 'sEnamUrK') {
+	      Sub = execution.getVariable('sFullName_SubjectOrgan_01');
+	      Adr = execution.getVariable('sLocation_SubjectOrgan_01');
+          Ind = execution.getVariable('sID_SubjectOrgan_OKPO_01');
+	    }
+        execution.setVariable('scrSubject', Sub)
+        execution.setVariable('scrAdress', Adr)
+        execution.setVariable('scrIdentN', Ind)
+      </script>
     </scriptTask>
     <serviceTask id="servicetask1" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -121,39 +150,56 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="ЦНАП обробка" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Адреса земельної ділянки" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="assignment" name="Наміри забудови" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="object" name="Об`єкт забудови відповідно до намірів забудови;будинок, АЗС, т.і." type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;zgoda&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;user&quot;},&quot;sCondition&quot;:&quot;[sCond]=='koristuvach'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="finNo" name="Номер довідки фінансово-економічного департаменту про розмір пайової участі на розвиток соціальної та інженерно-транспортної інфраструктури" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="finDate" name="Дата довідки фінансово-економічного департаменту про розмір пайової участі на розвиток соціальної та інженерно-транспортної інфраструктури" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="user" name="Заяву подає" type="enum" writable="false">
-          <activiti:value id="vlasnik" name="Замовник-забудовник"></activiti:value>
-          <activiti:value id="koristuvach" name="Довірена особа"></activiti:value>
+        <activiti:formProperty id="asNZabudovu" name="Наміри забудови" type="enum" writable="false">
+          <activiti:value id="sEnamNewBuild" name="нове будівництво"></activiti:value>
+          <activiti:value id="sEnamReconstruction" name="реконструкція"></activiti:value>
+          <activiti:value id="sEnamOverhaul" name="капітальний ремонт"></activiti:value>
+          <activiti:value id="sEnamRestanration" name="реставрація"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        
+        <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
+          <activiti:value id="sEnamFop" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_B" name="Інформація про об'єкт і землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_B&quot;:{&quot;aElement_ID&quot;:[&quot;sObject&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт і землю&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sObject" name="Назва об'єкта забудови; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjAdress" name="Адреса будівництва або місце розташування об'єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dZemPl" name="Площа земельної ділянки (Га.); ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZemPrizn" name="Цільове призначення земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="fZemVlasn" name="Право власності на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSPlan" name="Ситуатаційний план (схема), щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVukopiuv" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemFoto" name="Фотофіксація земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fMistRozr" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
+          <activiti:value id="accept" name="Заява оформлена вірно. Передати документи до відділу Архітектури!"></activiti:value>
+          <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sArchName" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="decide1" name="Результат перевірки документів" type="enum" required="true">
-          <activiti:value id="accept" name="Документи пройшли перевірку і передані до архітектури"></activiti:value>
-          <activiti:value id="reject" name="В опрацюванні заявки відмовлено"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/MistUmovi.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/MistUmovi.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява на підготовку містобудівних умов" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="comment1" name="Примітка:" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="doc6" name="Копія довіреності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc1" name="Копія документа про право власності на земельну ділянку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc2" name="Ситуатаційний план (схема) щодо місцезнаходження земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc3" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc4" name="Фотофіксація земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc5" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="doc7" name="Копія сертифіката організації, що надала розрахунок ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/Ark_725_MbudUmObm.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -287,35 +333,45 @@ ${sNameOrgan}<br />
     </serviceTask>
     <userTask id="usertask2" name="Архітектура обробка" activiti:candidateGroups="arkh_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="asNZabudovu" name="Наміри забудови" type="enum" writable="false">
+          <activiti:value id="sEnamNewBuild" name="нове будівництво"></activiti:value>
+          <activiti:value id="sEnamReconstruction" name="реконструкція"></activiti:value>
+          <activiti:value id="sEnamOverhaul" name="капітальний ремонт"></activiti:value>
+          <activiti:value id="sEnamRestanration" name="реставрація"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_Z" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Z&quot;:{&quot;aElement_ID&quot;:[&quot;place&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="place" name="Адреса земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="area" name="Площа земельної ділянки (Га.); ;writable=false" type="double" required="true"></activiti:formProperty>
-        <activiti:formProperty id="vlasnist" name="Документ, що посвідчує право власності або користування земельною ділянкою, або договор суперфіцію" type="enum" writable="false">
-          <activiti:value id="vlasnist1" name="договір купівлі-продажу приватизованої земельної ділянки"></activiti:value>
-          <activiti:value id="vlasnist2" name="договір дарування приватизованої земельної ділянки"></activiti:value>
-          <activiti:value id="vlasnist3" name="договір міни приватизованої земельної ділянки"></activiti:value>
-          <activiti:value id="vlasnist4" name="свідоцтво про право власності на земельну ділянку"></activiti:value>
-          <activiti:value id="vlasnist5" name="державний акт на право власності на земельну ділянку"></activiti:value>
-          <activiti:value id="vlasnist6" name="державний акт на право постійного користування земельною ділянкою"></activiti:value>
-          <activiti:value id="vlasnist7" name="договір оренди земельної ділянки"></activiti:value>
-          <activiti:value id="vlasnist8" name="договір суперфіція"></activiti:value>
-          <activiti:value id="vlasnist9" name="витяг з Державного реєстру речових прав на земельну ділянку"></activiti:value>
+        
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
+          <activiti:value id="sEnamFop" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="spivvlasn" name="Ви одноосібний власник ділянки?" type="enum" writable="false">
-          <activiti:value id="yes" name="ні, є інші співвласники"></activiti:value>
-          <activiti:value id="no" name="так, ділянка належить лише мені"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="fPassport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fVlasn" name="Документ про право власності або користування земельною ділянкою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fZgoda" name="Згода співвласників земельної ділянки (житлового будинку) на забудову; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fEskiz" name="Ескізне зображення забудови ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_B" name="Інформація про об'єкт і землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_B&quot;:{&quot;aElement_ID&quot;:[&quot;sObject&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт і землю&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sObject" name="Назва об'єкта забудови; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObjAdress" name="Адреса будівництва або місце розташування об'єкта; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="dZemPl" name="Площа земельної ділянки (Га.); ;writable=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="sZemPrizn" name="Цільове призначення земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="fZemVlasn" name="Право власності на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSPlan" name="Ситуатаційний план (схема), щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVukopiuv" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemFoto" name="Фотофіксація земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fMistRozr" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="ArkDecide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="ArkAccept" name="Заява оформлена вірно. Надати будівельний паспорт."></activiti:value>
           <activiti:value id="ArkReject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
@@ -323,8 +379,13 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="ArkComment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="ArkVidpovid" name="Відповідь; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerArkDash" name="markers" type="markers" default="${markerService.loadFromFile('architecture/Ark_Arc_Dash.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="scrIdentN" name="scrIdentN; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArchShapka" name="Шапка заяви; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/BudPass.html]; ;bVisible=false" type="string" default="Заява на виготовлення будівельного паспорта" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/architecture/Ark_725_MbudUmObm.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -356,17 +417,39 @@ ${sNameOrgan}<br />
     </serviceTask>
     <userTask id="usertask3" name="ЦНАП відповідь" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="asNZabudovu" name="Наміри забудови" type="enum" writable="false">
+          <activiti:value id="sEnamNewBuild" name="нове будівництво"></activiti:value>
+          <activiti:value id="sEnamReconstruction" name="реконструкція"></activiti:value>
+          <activiti:value id="sEnamOverhaul" name="капітальний ремонт"></activiti:value>
+          <activiti:value id="sEnamRestanration" name="реставрація"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdAddressFactual" name="Адреса реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fPassport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fVlasn" name="Документ про право власності або користування земельною ділянкою; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fZgoda" name="Згода співвласників земельної ділянки (житлового будинку) на забудову; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fEskiz" name="Ескізне зображення забудови ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
+          <activiti:value id="sEnamFop" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Адреса реєстрації заявника; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="fZemVlasn" name="Право власності на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fSPlan" name="Ситуатаційний план (схема), щодо місцезнаходження земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVukopiuv" name="Викопіювання з топографо-геодезичного плану М 1:2000 або М 1:500; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemFoto" name="Фотофіксація земельної ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fMistRozr" name="Містобудівний розрахунок з техніко-економічними показниками запланованого об`єкта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_AV" name="Відповідь відділу архітектури" type="markers" default="{&quot;attributes&quot;:{&quot;Line_AV&quot;:{&quot;aElement_ID&quot;:[&quot;ArkDecide&quot;],&quot;sValue&quot;:&quot;Відповідь відділу архітектури&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="ArkDecide" name="Результат опрацювання" type="enum" writable="false">
           <activiti:value id="ArkAccept" name="Відділ архітектури задовольнив заяву"></activiti:value>
@@ -380,7 +463,7 @@ ${sNameOrgan}<br />
           <activiti:value id="Cnap2Reject" name="Відмова в наданні послуги"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Cnap2Comment" name="Якщо заявнику выдмовлено у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string" default="CnCn"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
