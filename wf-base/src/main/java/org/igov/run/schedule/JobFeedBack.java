@@ -28,32 +28,30 @@ public class JobFeedBack extends IAutowiredSpringJob {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        
         LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
-        try {
-        	 LOG.info("getFeedBackCountBefore : "+BpServiceHandler.getFeedBackCount());
-            BpServiceHandler.setFeedBackCount(0L);
-            LOG.info("getFeedBackCountAfter : "+BpServiceHandler.getFeedBackCount());
-            escalationService.runEscalationAll();
-        } catch (CommonServiceException oException) {
-            LOG.error("Bad: ", oException.getMessage());
-            LOG.debug("FAIL:", oException);
-        }
+        LOG.info("getFeedBackCountBefore : " + BpServiceHandler.getFeedBackCount());
+        BpServiceHandler.setFeedBackCount(0L);
+        LOG.info("getFeedBackCountAfter : " + BpServiceHandler.getFeedBackCount());
+        
         LocalDate today = LocalDate.now();
-        LOG.info("1111111today: "+today);
+        LOG.info("1111111today: " + today);
         LocalDate deadline = today.minusDays(20);
-        LOG.info("2222222deadline: "+deadline);
+        LOG.info("2222222deadline: " + deadline);
         Date date = java.sql.Date.valueOf(deadline);
-        LOG.info("2222222date: "+date);
+        LOG.info("2222222date: " + date);
+        
         List<HistoricProcessInstance> feedbackProcces = historyService.createHistoricProcessInstanceQuery()
                 .processDefinitionId(BpServiceHandler.PROCESS_FEEDBACK)
                 .startedBefore(date).unfinished().list();
-              LOG.info("3333333feedbackProcces: " + feedbackProcces);    
-             LOG.info("44444444List feedbackProcces: " + feedbackProcces.size());   
+        LOG.info("3333333feedbackProcces: " + feedbackProcces);
+        LOG.info("44444444List feedbackProcces: " + feedbackProcces.size());
+        
         for (HistoricProcessInstance feedbackProcce : feedbackProcces) {
             LOG.info("555555555Delete feedbackProcce.getId(): " + feedbackProcce.getId());
             runtimeService.deleteProcessInstance(feedbackProcce.getId(), " deprecated");
-            
+
         }
     }
 }
