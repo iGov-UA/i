@@ -65,6 +65,9 @@
         <activiti:formProperty id="sPosluga_nameZV" name="назва послугиЗВ; ;bVisible=false" type="string" default="надання містобудівних умов та обмежень забудови земельної ділянки"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var x = 5</script>
+    </scriptTask>
     <serviceTask id="servicetask1" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -97,7 +100,7 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.<br />
-Ви отримаєте відповідь протягом 10 робочих днів.<br /><br />
+Ви отримаєте відповідь протягом 7 робочих днів.<br /><br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br />
@@ -195,6 +198,31 @@ ${sNameOrgan}<br />
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
           <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask10" name="Контроль відмов ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Контроль відмов ЦНАП. ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+По зверненню №[sID_Order] винесено відмову.<br />
+Заява не пройшла перевірку в ЦНАПі.<br />
+<p>Причина відмови: ${comment}</p>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -405,6 +433,34 @@ ${sNameOrgan}<br />
         </activiti:field>
       </extensionElements>
     </serviceTask>
+    <serviceTask id="servicetask11" name="Контроль відмов Архітектура" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Контроль відмов Архітектура. ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+По зверненню №[sID_Order] винесено відмову.<br />
+Заява не пройшла перевірку у відділі Архітектури.<br />
+<p>Причина відмови: ${Сnap2Comment}</p>
+${sAddress}<br />
+${sWorkTime}<br />
+${sPhoneOrgan}<br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask8" name="Відповідь ОК" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -449,7 +505,7 @@ ${sNameOrgan}<br/>
     <sequenceFlow id="flow18" sourceRef="servicetask7" targetRef="parallelgateway4"></sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="usertask2" targetRef="servicetask9"></sequenceFlow>
     <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
-    <serviceTask id="servicetask10" name="Контроль відмов ЦНАП" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
+    
     <sequenceFlow id="flow20" sourceRef="parallelgateway1" targetRef="servicetask10"></sequenceFlow>
     <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow21" sourceRef="servicetask10" targetRef="parallelgateway2"></sequenceFlow>
@@ -458,13 +514,9 @@ ${sNameOrgan}<br/>
     <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
     <sequenceFlow id="flow24" sourceRef="parallelgateway3" targetRef="servicetask7"></sequenceFlow>
     <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
-    <serviceTask id="servicetask11" name="Контроль відмов Архітектура" activiti:delegateExpression="#{MailTaskWithoutAttachment}"></serviceTask>
     <sequenceFlow id="flow25" sourceRef="parallelgateway3" targetRef="servicetask11"></sequenceFlow>
     <sequenceFlow id="flow26" sourceRef="servicetask11" targetRef="parallelgateway4"></sequenceFlow>
     <sequenceFlow id="flow27" sourceRef="parallelgateway4" targetRef="endevent2"></sequenceFlow>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var x = 5</script>
-    </scriptTask>
     <sequenceFlow id="flow28" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Ark_725_MbudUmObm">
