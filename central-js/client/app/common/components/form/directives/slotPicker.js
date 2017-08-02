@@ -40,6 +40,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       var sID_Type_ID = 'sID_Type_' + scope.property.id;
       var nID_ServiceCustomPrivate_ID = 'nID_ServiceCustomPrivate_' + scope.property.id;
+      var sOrganizatonGuid_ID = 'sOrganizatonGuid_' + scope.property.id;
+      var sServiceCenterId_ID = 'sServiceCenterId_' + scope.property.id;
+      var sServiceId_ID = 'sServiceId_' + scope.property.id;
       var isQueueDataType = {
         iGov: !scope.formData.params[sID_Type_ID] || (scope.formData.params[sID_Type_ID] && (scope.formData.params[sID_Type_ID].value === 'iGov' || scope.formData.params[sID_Type_ID].value === '')),
         DMS: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'DMS',
@@ -50,6 +53,22 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         if (!scope.formData.params[nID_ServiceCustomPrivate_ID] ||
           scope.formData.params[nID_ServiceCustomPrivate_ID].value === null ||
           scope.formData.params[nID_ServiceCustomPrivate_ID].value === ''){
+          console.warn('Field ' + nID_ServiceCustomPrivate_ID + ' is EMPTY');
+          return true;
+        }
+        return false;
+      }
+
+      function areInvalidQlogicParameters() {
+        if ((!scope.formData.params[sOrganizatonGuid_ID] ||
+            scope.formData.params[sOrganizatonGuid_ID].value === null ||
+            scope.formData.params[sOrganizatonGuid_ID].value === '') ||
+          (!scope.formData.params[sServiceCenterId_ID] ||
+            scope.formData.params[sServiceCenterId_ID].value === null ||
+            scope.formData.params[sServiceCenterId_ID].value === '') ||
+          (!scope.formData.params[sServiceId_ID] ||
+            scope.formData.params[sServiceId_ID].value === null ||
+            scope.formData.params[sServiceId_ID].value === '')){
           console.warn('Field ' + nID_ServiceCustomPrivate_ID + ' is EMPTY');
           return true;
         }
