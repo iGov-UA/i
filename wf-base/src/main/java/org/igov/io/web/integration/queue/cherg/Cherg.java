@@ -253,13 +253,11 @@ public class Cherg {
         Iterator<JSONObject> datesIterator = dates.iterator();
         if (datesIterator.hasNext()) {
             result = datesIterator.next();
+            String sID_Reserve_New =(String)result.get("reserve_id");
+            mDMS_SlotReserve.put(serviceId+"_"+phone, sID_Reserve_New);        
         } else {
             result = new JSONObject();
-        }
-        
-        sID_Reserve=(String)result.get("reserve_id");
-        
-        mDMS_SlotReserve.put(serviceId+"_"+phone, sID_Reserve);        
+        }  
         
         LOG.info("Result:{}", dates);
         return result;
