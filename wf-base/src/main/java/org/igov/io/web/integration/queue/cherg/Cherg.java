@@ -214,6 +214,7 @@ public class Cherg {
         mParam.add("lastname", lastName);
         mParam.add("name", name);
         mParam.add("patronymic", patronymic);
+        
         String sKey = serviceId + "_" + phone;
         String sID_Reserve = (String) mDMS_SlotReserve.get(sKey);
         if (sID_Reserve != null) {
@@ -250,8 +251,10 @@ public class Cherg {
         Iterator<JSONObject> datesIterator = dates.iterator();
         if (datesIterator.hasNext()) {
             result = datesIterator.next();
+            String reserve_id_ = (String)result.get("reserve_id");
             String sID_Reserve_New = ((Map<String, String>) dates.get(0)).get("reserve_id");
-            mDMS_SlotReserve.put(serviceId + "_" + phone, sID_Reserve_New);
+            mDMS_SlotReserve.put(sKey, sID_Reserve_New);
+            LOG.info("reserve_id_ = {} sID_Reserve_New = {} mDMS_SlotReserve:{}",reserve_id_, sID_Reserve_New, mDMS_SlotReserve);
         } else {
             result = new JSONObject();
         }
