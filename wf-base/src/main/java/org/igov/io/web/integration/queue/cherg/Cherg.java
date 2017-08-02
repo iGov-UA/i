@@ -217,12 +217,11 @@ public class Cherg {
         mParam.add("lastname", lastName);
         mParam.add("name", name);
         mParam.add("patronymic", patronymic);
-        
-        String sID_Reserve=null;
-        sID_Reserve = (String) mDMS_SlotReserve.get(serviceId+"_"+phone);
+        String sKey = serviceId+"_"+phone;
+        String sID_Reserve = (String) mDMS_SlotReserve.get(sKey);
         if(sID_Reserve!=null){
             cancelReserve(sID_Reserve);
-            mDMS_SlotReserve.remove(serviceId+"_"+phone);
+            mDMS_SlotReserve.remove(sKey);
         }
         
         HttpHeaders oHttpHeaders = new HttpHeaders();
@@ -259,7 +258,7 @@ public class Cherg {
         }
         
         sID_Reserve=(String)result.get("reserve_id");
-        //cancelReserve(String nReservationId)
+        
         mDMS_SlotReserve.put(serviceId+"_"+phone, sID_Reserve);        
         
         LOG.info("Result:{}", dates);
