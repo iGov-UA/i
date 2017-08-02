@@ -294,7 +294,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
           sURL = '/api/service/flow/' + scope.serviceData.nID;
         } else if(isQueueDataType.QLogic){
-          //debugger;
+          if (areInvalidQlogicParameters()) {
+            return;
+          }
+
+          data = {
+            nID_Server: scope.serviceData.nID_Server,
+            sOrganizatonGuid: this.formData.params[sOrganizatonGuid_ID].value,
+            sServiceCenterId: this.formData.params[sServiceCenterId_ID].value,
+            sServiceId: this.formData.params[sServiceId_ID].value
+          };
+          sURL = '/api/service/flow/Qlogic/getSlots';
 
         } else {
           scope.slotsLoading = false;
@@ -332,7 +342,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               })
             }
           } else if (isQueueDataType.QLogic){
-            //debugger;
+            scope.slotsData = convertSlotsDataQlogic(response.data);
           }
           scope.slotsLoading = false;
         });
@@ -369,6 +379,40 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           return Date.parse(a.sDate) - Date.parse(b.sDate);
         });
         return result;
+      }
+
+      function convertSlotsDataQlogic(data) {
+        var aDay = [];
+        var nSlotID = 1;
+        angular.forEach(data.aDate, function (oDate) {
+          var aCreatedDate = aDay.filter(function (el) {
+            return el.sDate === oDate.date;
+          });
+          if(aCreatedDate.length && aCreatedDate.length > 0){
+            aCreatedDate[0].aSlot.push({
+              bFree: true,
+              nID: nSlotID,
+              nMinutes: oDate.length,
+              sTime: oDate.time
+            })
+          } else {
+            aDay.push({
+              aSlot:[{
+                bFree: true,
+                nID: nSlotID,
+                nMinutes: oDate.length,
+                sTime: oDate.time
+              }],
+              sDate: oDate.date,
+              bHasFree: true
+            })
+          }
+          nSlotID++;
+        });
+
+        return {
+          aDay: aDay
+        };
       }
 
       if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin && angular.isDefined(departmentParam))){

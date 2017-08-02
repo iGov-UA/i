@@ -96,3 +96,15 @@ module.exports.setSlotDMS = function (req, res) {
     }, null, sHost);
   });
 };
+
+module.exports.getSlotsQlogic = function (req, res) {
+  var nID_Server = req.query.nID_Server;
+  var oParams = {
+    sOrganizatonGuid: req.query.sOrganizatonGuid,
+    sServiceCenterId: req.query.sServiceCenterId,
+    sServiceId: req.query.sServiceId
+  };
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendGetRequest(req, res, '/service/action/flow/Qlogic/getSlots', oParams, null, sHost);
+  });
+};
