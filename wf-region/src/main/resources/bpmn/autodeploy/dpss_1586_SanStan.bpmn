@@ -7,24 +7,34 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asVybor" name="Оберіть свій статус" type="enum" required="true">
-          <activiti:value id="sBoss" name="Керівник"></activiti:value>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" required="true">
+          <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asVybor" name="Звернення подаю " type="enum" required="true">
+          <activiti:value id="sBoss" name="Особисто"></activiti:value>
           <activiti:value id="sOsoba" name="Уповноважена особа"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_Object" name="Повне найменування об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="Повне найменування виду діяльності згідно з КВЕД" type="label" default="&quot; &quot;" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Введіть у давальному відмінку  ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocationLive" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місце знаходження юридичної особи" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Місце проживання фізичної особи-підприємця" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFile_dovirenist" name="Копія довіреності; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_03" name="Показати поле для завантаження файлу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_03&quot;:{&quot;aField_ID&quot;:[&quot;sFile_dovirenist&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asVybor&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sOsoba' || [sClient]=='Уповноважена особа'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_04" name="Обов'язковість полів" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Hide_01_04&quot;:{&quot;aField_ID&quot;:[&quot;sFile_dovirenist&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asVybor&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sOsoba' || [sClient]=='Уповноважена особа'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_Object" name="Повне найменування об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="Повне найменування виду діяльності згідно з КВЕД" type="label" default="&quot; &quot;" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocationLive" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDateCreateProcess" name="Вкажіть сьогоднішню дату ; ;bVisible=false" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_05" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_05&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_06" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_06&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01__07" name="Обов'язкове поля юрособи" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Hide_01__07&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01__08" name="Обов'язкове поля фізособи" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Hide_01__08&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органа; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адрес органа; ;bVisible=false" type="string"></activiti:formProperty>
@@ -55,17 +65,19 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_Object" name="Повне найменування об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Введіть у давальному відмінку  П.І.Б. фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLocationLive" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asVybor" name="Оберіть свій статус" type="enum" writable="false">
-          <activiti:value id="sBoss" name="Керівник"></activiti:value>
+        <activiti:formProperty id="asVybor" name="Звернення подаю" type="enum" writable="false">
+          <activiti:value id="sBoss" name="Особисто"></activiti:value>
           <activiti:value id="sOsoba" name="Уповноважена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="clFio" name="Ім’я, по батькові та прізвище керівника юридичної особи/ фізичної особи-підприємця/ уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження юридичної особи" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Місце проживання фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами" type="file" writable="false"></activiti:formProperty>
@@ -73,12 +85,19 @@
           <activiti:value id="sAccept" name="Документи передані для виконання"></activiti:value>
           <activiti:value id="sReject" name="Відмова у отриманні послуги"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="subekt" name="Оберіть суб'єкт підприємницької діяльності" type="enum" writable="false">
+          <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
+          <activiti:value id="ur" name="Юридична особа"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="clFioFiz" name="П.І.Б фізичної особи-підприємця" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFioUr" name="П.І.Б керівника юридичної особи/ уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_09" name="Показать ПІБ юрособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_09&quot;:{&quot;aField_ID&quot;:[&quot;clFioUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_10" name="Показать ПІБ фізособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_10&quot;:{&quot;aField_ID&quot;:[&quot;clFioFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину " type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_01" name="Додаткове поле" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_01&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asStatus&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sReject' || [sClient]=='Відмова у отриманні послуги'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_02" name="Обов'язковість полів" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asStatus&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sReject' || [sClient]=='Відмова у отриманні послуги'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="Ініціали та прізвище відповідальної особи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Дата надходження заяви" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява громадянина;File title;pattern/print/dpss/dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dpss/dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFile_dovirenist" name="Копія довіреності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -92,24 +111,26 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ, ідентифікаційний номер фізичної особи-підприємця, платника податків та інших обов’язкових платежів" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_Object" name="Повне найменування об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи/ ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Введіть або виправте у давальному відмінку  П.І.Б. фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sLocationLive" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asVybor" name="Оберіть свій статус" type="enum" writable="false">
           <activiti:value id="sBoss" name="Керівник"></activiti:value>
           <activiti:value id="sOsoba" name="Уповноважена особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="clFio" name="Ім’я, по батькові та прізвище керівника юридичної особи/ фізичної особи-підприємця/ уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження юридичної особи/ місце проживання фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місцезнаходження юридичної особи" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Місце проживання фізичної особи-підприємця" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFile_dov" name="Завантажте скановану довідку щодо підтримання належного санітарного стану; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="number_cnap" name="Реєстраційний номер" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFioAdmin" name="Ініціали та прізвище відповідальної особи" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="date_registrastion" name="Дата надходження заяви" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFile_dovirenist" name="Копія довіреності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява громадянина;File title;pattern/print/dpss/dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dpss/dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
