@@ -16,12 +16,12 @@
           <activiti:value id="sBoss" name="Особисто"></activiti:value>
           <activiti:value id="sOsoba" name="Уповноважена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_Object" name="Повне найменування об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="Повне найменування виду діяльності згідно з КВЕД" type="label" default="&quot; &quot;" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Введіть або виправте у давальному відмінку повне найменування юридичної особи" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Введіть у давальному відмінку  ім’я, по батькові та прізвище фізичної особи-підприємця" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_02" name="Введіть у давальному відмінку  П.І.Б. фізичної особи-підприємця" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocationLive" name="Місцезнаходження (адреса) об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Місце знаходження юридичної особи" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Місце проживання фізичної особи-підприємця" type="textArea"></activiti:formProperty>
@@ -41,7 +41,8 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers_01" name="лінія ЄДРПОУ" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані з ЄДРПОУ&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_11" name="Заповнення прінтформи юрособи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Hide_01_11&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;,&quot;clFioFiz&quot;],&quot;asID_Field_sValue&quot;:[&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_12" name="Заповнення прінтформи фізособи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Hide_01_12&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;,&quot;clFioUr&quot;],&quot;asID_Field_sValue&quot;:[&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про доставку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -90,7 +91,7 @@
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="clFioFiz" name="П.І.Б фізичної особи-підприємця" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFioUr" name="П.І.Б керівника юридичної особи/ уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="clFioUr" name="П.І.Б керівника юридичної особи або уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_09" name="Показать ПІБ юрособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_09&quot;:{&quot;aField_ID&quot;:[&quot;clFioUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_10" name="Показать ПІБ фізособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_10&quot;:{&quot;aField_ID&quot;:[&quot;clFioFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину " type="textArea"></activiti:formProperty>
