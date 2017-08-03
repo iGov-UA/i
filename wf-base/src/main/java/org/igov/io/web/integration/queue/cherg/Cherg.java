@@ -26,14 +26,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Provides integration with Queue management system cherg.net
- * API specified at http://tapi.cherg.net/
- * Created by Dmytro Tsapko on 14.08.2016.
+ * Provides integration with Queue management system cherg.net API specified at
+ * http://tapi.cherg.net/ Created by Dmytro Tsapko on 14.08.2016.
  */
-
 @Component
 public class Cherg {
 
@@ -91,7 +90,7 @@ public class Cherg {
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlFreeTime)
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
@@ -120,7 +119,7 @@ public class Cherg {
     }
 
     public JSONArray getSlotFreeDaysArray(Integer nID_Service_Private) throws Exception {
-        if (nID_Service_Private == null) { 
+        if (nID_Service_Private == null) {
             LOG.error("service_id=={}", nID_Service_Private);
             throw new IllegalArgumentException("nID_Service_Private is null");
         }
@@ -132,12 +131,12 @@ public class Cherg {
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlWorkdays)
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
                 ._Send();
-        
+
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
@@ -145,8 +144,8 @@ public class Cherg {
                     mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
             //throw new Exception("[sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
             //       + oHttpEntityCover.nStatus());
-            sReturn=null;
-        } else if ( sReturn == null ) {
+            sReturn = null;
+        } else if (sReturn == null) {
             LOG.error("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
                     + oHttpEntityCover.nStatus());
             //throw new Exception("Response is null for: [sendRequest](sURL=" + urlBasePart + urlWorkdays + "): nStatus()="
@@ -156,27 +155,27 @@ public class Cherg {
         JSONParser oJSONParser = new JSONParser();
         JSONObject oJSONObjectGot;
         JSONArray oaJSONArrayReturn = new JSONArray();
-        if(sReturn!=null){
+        if (sReturn != null) {
             try {
 
                 oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
 
-                JSONArray oaJSONArray =  new JSONArray();
+                JSONArray oaJSONArray = new JSONArray();
                 if (!oJSONObjectGot.get("status-code").equals("0")) {
-                   LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
-                }else{
-                   oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
-                   LOG.info("Workdays all days:{}", oaJSONArray);
+                    LOG.error("code=={}, detail=={}", oJSONObjectGot.get("status-code"), oJSONObjectGot.get("status-detail"));
+                } else {
+                    oaJSONArray = (JSONArray) oJSONObjectGot.get("data");
+                    LOG.info("Workdays all days:{}", oaJSONArray);
                 }
 
                 oaJSONArrayReturn = new JSONArray();
-                for(Object o:oaJSONArray) {
-                   JSONObject oJSONObject = (JSONObject) o;
-                   String sDate = oJSONObject.get("date").toString();
-                   String snDateType = oJSONObject.get("work_day").toString();
-                   if ( snDateType.equals("1")) {
-                       oaJSONArrayReturn.add(sDate);
-                   }
+                for (Object o : oaJSONArray) {
+                    JSONObject oJSONObject = (JSONObject) o;
+                    String sDate = oJSONObject.get("date").toString();
+                    String snDateType = oJSONObject.get("work_day").toString();
+                    if (snDateType.equals("1")) {
+                        oaJSONArrayReturn.add(sDate);
+                    }
                 }
 
             } catch (ParseException e) {
@@ -188,19 +187,17 @@ public class Cherg {
 
         return oaJSONArrayReturn;
     }
-    
+
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
         JSONArray oaJSONArray = new JSONArray();
-        if(generalConfig.isQueueManagementSystem()){
+        if (generalConfig.isQueueManagementSystem()) {
             oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
         }
-        
-        
-        
-	JSONObject oJSONObjectReturn = new JSONObject();
-	oJSONObjectReturn.put("aDate", oaJSONArray);
+
+        JSONObject oJSONObjectReturn = new JSONObject();
+        oJSONObjectReturn.put("aDate", oaJSONArray);
         LOG.info("Workdays only work days:{}", oJSONObjectReturn.toJSONString());
-        
+
         return oJSONObjectReturn.toString();
 
     }
@@ -218,17 +215,17 @@ public class Cherg {
         mParam.add("name", name);
         mParam.add("patronymic", patronymic);
         
-        String sID_Reserve=null;
-        sID_Reserve = (String) mDMS_SlotReserve.get(serviceId+"_"+phone);
-        if(sID_Reserve!=null){
+        String sKey = serviceId + "_" + phone;
+        String sID_Reserve = (String) mDMS_SlotReserve.get(sKey);
+        if (sID_Reserve != null) {
             cancelReserve(sID_Reserve);
-            mDMS_SlotReserve.remove(serviceId+"_"+phone);
+            mDMS_SlotReserve.remove(sKey);
         }
-        
+
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(new MediaType("application", "x-www-form-urlencoded", StandardCharsets.UTF_8));
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlSetReserve)
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
@@ -246,22 +243,22 @@ public class Cherg {
         JSONObject response = (JSONObject) parser.parse(sReturn);
         if (!response.get("status-code").equals("0")) {
             LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response=" +
-                    response.get("status-code") + " " + response.get("status-detail"));
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response="
+                    + response.get("status-code") + " " + response.get("status-detail"));
         }
         JSONArray dates = (JSONArray) response.get("data");
         JSONObject result;
         Iterator<JSONObject> datesIterator = dates.iterator();
         if (datesIterator.hasNext()) {
             result = datesIterator.next();
+            String reserve_id_ = (String)result.get("reserve_id");
+            String sID_Reserve_New = ((Map<String, String>) dates.get(0)).get("reserve_id");
+            mDMS_SlotReserve.put(sKey, sID_Reserve_New);
+            LOG.info("reserve_id_ = {} sID_Reserve_New = {} mDMS_SlotReserve:{}",reserve_id_, sID_Reserve_New, mDMS_SlotReserve);
         } else {
             result = new JSONObject();
         }
-        
-        sID_Reserve=(String)result.get("reserve_id");
-        //cancelReserve(String nReservationId)
-        mDMS_SlotReserve.put(serviceId+"_"+phone, sID_Reserve);        
-        
+
         LOG.info("Result:{}", dates);
         return result;
 
@@ -275,7 +272,7 @@ public class Cherg {
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlConfirmReserve)
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
@@ -293,8 +290,8 @@ public class Cherg {
         JSONObject response = (JSONObject) parser.parse(sReturn);
         if (!response.get("status-code").equals("0")) {
             LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response=" +
-                    response.get("status-code") + " " + response.get("status-detail"));
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response="
+                    + response.get("status-code") + " " + response.get("status-detail"));
         }
         JSONArray dates = (JSONArray) response.get("data");
         JSONObject result;
@@ -309,8 +306,7 @@ public class Cherg {
         return result;
 
     }
-    
-    
+
     public JSONObject cancelReserve(String nReservationId) throws Exception {
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
 
@@ -319,7 +315,7 @@ public class Cherg {
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         oHttpHeaders.set("Authorization", this.basicAuthHeader);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlCancelReserve)
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
@@ -337,8 +333,8 @@ public class Cherg {
         JSONObject response = (JSONObject) parser.parse(sReturn);
         if (!response.get("status-code").equals("0")) {
             LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response=" +
-                    response.get("status-code") + " " + response.get("status-detail"));
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response="
+                    + response.get("status-code") + " " + response.get("status-detail"));
         }
         JSONArray dates = (JSONArray) response.get("data");
         JSONObject result;
@@ -352,6 +348,6 @@ public class Cherg {
         LOG.info("Result:{}", dates);
         return result;
 
-    }    
-    
+    }
+
 }
