@@ -16,7 +16,7 @@
           <activiti:value id="sBoss" name="Особисто"></activiti:value>
           <activiti:value id="sOsoba" name="Уповноважена особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ; тільки цифрові позначення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Ідентифікаційний код згідно з ЄДРПОУ" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_Object" name="Повне найменування об’єкта, на який видається документ" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Вид діяльності згідно з КВЕД; тільки цифрові позначення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" name="Повне найменування виду діяльності згідно з КВЕД" type="label" default="&quot; &quot;" writable="false"></activiti:formProperty>
@@ -27,7 +27,7 @@
         <activiti:formProperty id="sLocation_SubjectOrgan_02" name="Місце проживання фізичної особи-підприємця" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFile_dog" name="Копія договору на вивіз твердих побутових відходів з підприємством, відповідальним за поводження з твердими побутовими відходами; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sFile_dovirenist" name="Копія довіреності; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_03" name="Показати поле для завантаження файлу" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_03&quot;:{&quot;aField_ID&quot;:[&quot;sFile_dovirenist&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asVybor&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sOsoba' || [sClient]=='Уповноважена особа'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_04" name="Обов'язковість полів" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Hide_01_04&quot;:{&quot;aField_ID&quot;:[&quot;sFile_dovirenist&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asVybor&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sOsoba' || [sClient]=='Уповноважена особа'&quot;}}}"></activiti:formProperty>
@@ -41,8 +41,6 @@
         <activiti:formProperty id="sPhoneOrgan" name="Телефон для довідок; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Час роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта держслужбовця; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="marker_Hide_01_11" name="Заповнення прінтформи юрособи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Hide_01_11&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;,&quot;clFioFiz&quot;],&quot;asID_Field_sValue&quot;:[&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker_Hide_01_12" name="Заповнення прінтформи фізособи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_Hide_01_12&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;,&quot;clFioUr&quot;],&quot;asID_Field_sValue&quot;:[&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;,&quot;[ ]&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про доставку заяви" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -90,10 +88,9 @@
           <activiti:value id="fiz" name="Фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="clFioFiz" name="П.І.Б фізичної особи-підприємця" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="clFioUr" name="П.І.Б керівника юридичної особи або уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="marker_Hide_01_09" name="Показать ПІБ юрособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_09&quot;:{&quot;aField_ID&quot;:[&quot;clFioUr&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="marker_Hide_01_10" name="Показать ПІБ фізособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_10&quot;:{&quot;aField_ID&quot;:[&quot;clFioFiz&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_05" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_05&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_06" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_06&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="clFio" name="П.І.Б керівника юридичної особи/фізичної особи-підприємця/уповноваженої особи" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sComment" name="Коментар з зауваженнями громадянину " type="textArea"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_01" name="Додаткове поле" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_01&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asStatus&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sReject' || [sClient]=='Відмова у отриманні послуги'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="marker_Hide_01_02" name="Обов'язковість полів" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Hide_01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asStatus&quot;},&quot;sCondition&quot;:&quot;[sClient]=='sReject' || [sClient]=='Відмова у отриманні послуги'&quot;}}}"></activiti:formProperty>
@@ -102,6 +99,8 @@
         <activiti:formProperty id="PrintForm_1" name="Заява громадянина;File title;pattern/print/dpss/dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dpss/dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFile_dovirenist" name="Копія довіреності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_11" name="Заповнення прінтформи юрособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_01_11&quot;:{&quot;aElement_ID&quot;:[&quot;sFullName_SubjectOrgan_01_pf&quot;,&quot;sID_SubjectOrgan_OKPO_01_pf&quot;,&quot;sLocation_SubjectOrgan_01_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_12" name="Заповнення прінтформи фізособи" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_01_12&quot;:{&quot;aElement_ID&quot;:[&quot;sFullName_SubjectOrgan_02_pf&quot;,&quot;bankIdinn_pf&quot;,&quot;sLocation_SubjectOrgan_02_pf&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sCond]=='fiz'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -135,6 +134,8 @@
         <activiti:formProperty id="sFile_dovirenist" name="Копія довіреності; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява громадянина;File title;pattern/print/dpss/dpss_1586_SanStan.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dpss/dpss_1586_SanStan.html]; ;bVisible=false" type="string" default="Форма заяви громодянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_05" name="Якщо  юридична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_05&quot;:{&quot;aField_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;,&quot;sFullName_SubjectOrgan_01&quot;,&quot;sLocation_SubjectOrgan_01&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'ur'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker_Hide_01_06" name="Якщо  фізична особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide_01_06&quot;:{&quot;aField_ID&quot;:[&quot;bankIdinn&quot;,&quot;sFullName_SubjectOrgan_02&quot;,&quot;sLocation_SubjectOrgan_02&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;subekt&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fiz'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
