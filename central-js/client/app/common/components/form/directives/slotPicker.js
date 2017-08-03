@@ -105,7 +105,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               });
               if(scope.$parent.slotsCache.showConfirm){
                 dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
-              };
+              }
               $rootScope.$broadcast("slot-picker-stop-processing");
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
@@ -163,7 +163,16 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             });
           }
         } else if (isQueueDataType.QLogic){
-          //debugger;
+          if(newValue){
+            scope.ngModel = JSON.stringify({
+              sOrganizatonGuid: scope.formData.params[sOrganizatonGuid_ID].value,
+              sServiceCenterId: scope.formData.params[sServiceCenterId_ID].value,
+              sServiceId: scope.formData.params[sServiceId_ID].value,
+              sDate: scope.selected.date.sDate,
+              sTime: scope.selected.slot.sTime
+            });
+          }
+
         }
       }
       function checkParamsOfSlot(slotId){
@@ -415,7 +424,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         };
       }
 
-      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin && angular.isDefined(departmentParam))){
+      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin) && angular.isDefined(departmentParam) && isQueueDataType.DMS){
         scope.$watch('formData.params.sID_Public_SubjectOrganJoin.value', function (newValue, oldValue) {
           if (newValue == oldValue)
             return;
@@ -461,6 +470,33 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       }
 
       scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
+      });
+
+      scope.$watch('formData.params.' + sOrganizatonGuid_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
+      });
+
+      scope.$watch('formData.params.' + sServiceCenterId_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
+      });
+
+      scope.$watch('formData.params.' + sServiceId_ID + '.value', function (newValue, oldValue) {
         if (newValue == oldValue)
           return;
         if (newValue){

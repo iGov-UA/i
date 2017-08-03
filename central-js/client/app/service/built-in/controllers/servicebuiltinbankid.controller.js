@@ -554,6 +554,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         fixTableFiles(aFormProperties);
         $scope.fixForm(form, aFormProperties);
         var aReservedSlotsDMS = [];
+        var aReservedSlotsQlogic = [];
         var aQueueOfIGov = [];
         if (aFormProperties && aFormProperties !== null) {
           angular.forEach(aFormProperties, function (oProperty) {
@@ -565,6 +566,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
               angular.forEach(aFormProperties, function (checkField) {
                 if (checkField.id === ('sID_Type_' + oProperty.id) && checkField.value === 'DMS') {
                   aReservedSlotsDMS.push(oProperty.id);
+                  needSend = false;
+                } else if (checkField.id === ('sID_Type_' + oProperty.id) && checkField.value === 'Qlogic') {
+                  aReservedSlotsQlogic.push(oProperty.id);
                   needSend = false;
                 }
               });
@@ -605,6 +609,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
         if (aReservedSlotsDMS.length > 0) {
           setSlotsDMS(aReservedSlotsDMS, 0, aFormProperties);
+        } else if (aReservedSlotsQlogic.length > 0) {
+          setSlotsQlogic(aReservedSlotsQlogic, 0, aFormProperties);
         } else {
           submitActivitiForm(aFormProperties);
         }
@@ -617,7 +623,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           nID_Server: oServiceData.nID_Server,
           nID_SlotHold: parseInt(reserve.reserve_id)
         }).success(function (data, status, headers, config) {
-          console.log(data);
+          console.log(angular.toJson(data));
 
           $scope.data.formData.params[aQueueIDs[iteration]].value = JSON.stringify({
             sID_Type: "DMS",
@@ -633,12 +639,48 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
             submitActivitiForm(aFormProperties);
           }
         }).error(function (data, status, headers, config) {
-          console.error(data);
+          console.error(angular.toJson(data));
           ErrorsFactory.push({
             type: 'danger',
             text: 'Неможливо зарезервувати час в електронній черзі ДМС.'
           })
         });
+      }
+
+      function setSlotsQlogic(aQueueIDs, iteration, aFormProperties) {
+        var reserve = JSON.parse($scope.data.formData.params[aQueueIDs[iteration]].value);
+
+        $http.post('/api/service/flow/Qlogic/setSlot', {
+          nID_Server: oServiceData.nID_Server,
+          sOrganizatonGuid: reserve.sOrganizatonGuid,
+          sServiceCenterId: reserve.sServiceCenterId,
+          sServiceId: reserve.sServiceId,
+          sDate: reserve.sDate,
+          sTime: reserve.sTime
+        }).success(function (data, status, headers, config) {
+          console.log(angular.toJson(data));
+          $scope.data.formData.params[aQueueIDs[iteration]].value = JSON.stringify({
+            sID_Type: "Qlogic",
+            oTicket: data,
+            sDate: config.data.sDate + ' ' + config.data.sTime + ':00.00',
+            sOrganizatonGuid: config.data.sOrganizatonGuid,
+            sServiceCenterId: config.data.sServiceCenterId,
+            sServiceId: config.data.sServiceId
+          });
+
+          if (iteration < aQueueIDs.length - 1) {
+            setSlotsQlogic(aQueueIDs, iteration + 1, aFormProperties);
+          } else {
+            submitActivitiForm(aFormProperties);
+          }
+        }).error(function (data, status, headers, config) {
+          console.error(angular.toJson(data));
+          ErrorsFactory.push({
+            type: 'danger',
+            text: 'Неможливо зарезервувати час в електронній черзі.'
+          })
+        });
+
       }
 
       function submitActivitiForm(aFormProperties) {

@@ -99,12 +99,24 @@ module.exports.setSlotDMS = function (req, res) {
 
 module.exports.getSlotsQlogic = function (req, res) {
   var nID_Server = req.query.nID_Server;
-  var oParams = {
-    sOrganizatonGuid: req.query.sOrganizatonGuid,
-    sServiceCenterId: req.query.sServiceCenterId,
-    sServiceId: req.query.sServiceId
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
-    activiti.sendGetRequest(req, res, '/service/action/flow/Qlogic/getSlots', oParams, null, sHost);
+    activiti.sendGetRequest(req, res, '/service/action/flow/Qlogic/getSlots', {
+      sOrganizatonGuid: req.query.sOrganizatonGuid,
+      sServiceCenterId: req.query.sServiceCenterId,
+      sServiceId: req.query.sServiceId
+    }, null, sHost);
+  });
+};
+
+module.exports.setSlotQlogic = function (req, res) {
+  var nID_Server = req.body.nID_Server;
+  activiti.getServerRegionHost(nID_Server, function(sHost){
+    activiti.sendGetRequest(req, res, '/service/action/flow/Qlogic/setSlot', {
+      sOrganizatonGuid: req.body.sOrganizatonGuid,
+      sServiceCenterId: req.body.sServiceCenterId,
+      sServiceId: req.body.sServiceId,
+      sDate: req.body.sDate,
+      sTime: req.body.sTime
+    }, null, sHost);
   });
 };
