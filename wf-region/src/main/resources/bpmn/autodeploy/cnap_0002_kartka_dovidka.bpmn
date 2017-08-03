@@ -136,8 +136,8 @@
         <activiti:formProperty id="fax" name="Факс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFOP" name="Прізвище, ім'я, по батькові ФОП; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFopinn" name="Ідентифікаційний податковий номер ФОП; ;writable=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП(серія, номер паспорту); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП;(поштовий індекс, місто, вулиця, номер дому, номер квартири); ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП;(серія, номер, яким органом і коли виданий); ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Скорочене найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -175,7 +175,8 @@
         <activiti:formProperty id="markers12" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_12&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Дані юр особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_13&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_14&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers18" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'&quot;}}}"></activiti:formProperty>      
+        <activiti:formProperty id="markers20" name="маркер зауваження якщо fop" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_20&quot;:{&quot;aField_ID&quot;:[&quot;sFOP&quot;,&quot;sFopinn&quot;,&quot;FopAddress&quot;,&quot;sFopPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>          
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="З документами все гаразд, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="reject" name="Відмовити у розгляді звернення у зв'язку з відсутністю необхідних документів"></activiti:value>
