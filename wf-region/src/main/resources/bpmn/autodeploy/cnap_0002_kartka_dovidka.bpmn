@@ -9,7 +9,7 @@
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані (серія, номер паспорту)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail для зворотнього зв'язку" type="string" default="example@gmail.com" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="fax" name="Факс" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDovosoba" name="Звернення подаю" type="enum" required="true">
@@ -21,7 +21,7 @@
           <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFOP" name="ПІБ фізичної особи-підприємця" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFOP" name="ПІБ фізичної особи-підприємця" type="string" default="Іванов Іван Іванович" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFopinn" name="ІПН фізичної особи-підприємця" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП(серія, номер паспорту)" type="textArea" required="true"></activiti:formProperty>
@@ -36,12 +36,12 @@
         <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об’єкта" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта " type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sStartData" name="Початок роботи об'єкта" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nArea_total" name="Площа об’єкта  загальна, кв.м" type="double" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nArea_prod" name="Площа об’єкта торговельна (виробнича), кв.м" type="double" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nWorkplaces" name="Кількість робочих місць, од." type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nSeats" name="Кількість посадкових місць (для об’єктів ресторанного господарства)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStartData" name="Початок роботи об'єкта; ;bVisible=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nArea_total" name="Площа об’єкта  загальна, кв.м; ;bVisible=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="nArea_prod" name="Площа об’єкта торговельна (виробнича), кв.м; ;bVisible=false" type="double"></activiti:formProperty>
+        <activiti:formProperty id="nWorkplaces" name="Кількість робочих місць, од.; ;bVisible=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="nSeats" name="Кількість посадкових місць (для об’єктів ресторанного господарства); ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sWork_from" name="Початок роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_to" name="Закінчення роботи" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWorkdin_from" name="Початок перерви" type="string"></activiti:formProperty>
@@ -50,7 +50,7 @@
           <activiti:value id="yes" name="є"></activiti:value>
           <activiti:value id="non" name="немає"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sHolDay" name="Вкажіть будь-ласка вихідні дні" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sHolDay" name="Вкажіть вихідні дні" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkholiday_from" name="Початок роботи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkholiday_to" name="Закінчення роботи" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви" type="string"></activiti:formProperty>
@@ -133,10 +133,10 @@
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fax" name="Факс" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFOP" name="ПІБ фізичної особи-підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFopinn" name="ІПН фізичної особи-підприємця" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП(серія, номер паспорту)" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFOP" name="ПІБ фізичної особи-підприємця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFopinn" name="ІПН фізичної особи-підприємця; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП(серія, номер паспорту); ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Скорочене найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -144,16 +144,16 @@
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectActionKVED_SubjectOrgan_01" name="Основний КВЕД" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNote_ID_SubjectActionKVED_SubjectOrgan_01" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sSubjectRegistration" name="Місце державної реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSubjectRegistration" name="Місце державної реєстрації; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об’єкта; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sStartData" name="Початок роботи об'єкта; ;writable=false" type="date"></activiti:formProperty>
-        <activiti:formProperty id="nArea_total" name="Площа об’єкта  загальна, кв.м" type="double" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nArea_prod" name="Площа об’єкта торговельна (виробнича), кв.м" type="double" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nWorkplaces" name="Кількість робочих місць, од." type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nSeats" name="Кількість посадкових місць (для об’єктів ресторанного господарства)" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStartData" name="Початок роботи об'єкта" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nArea_total" name="Площа об’єкта  загальна, кв.м" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nArea_prod" name="Площа об’єкта торговельна (виробнича), кв.м" type="double" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nWorkplaces" name="Кількість робочих місць, од." type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nSeats" name="Кількість посадкових місць (для об’єктів ресторанного господарства)" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWork_from" name="Початок роботи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWork_to" name="Закінчення роботи" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sWorkdin_from" name="Початок перерви" type="string" writable="false"></activiti:formProperty>
