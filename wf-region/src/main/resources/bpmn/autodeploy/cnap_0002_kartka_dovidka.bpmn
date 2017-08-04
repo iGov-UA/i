@@ -23,8 +23,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sFOP" name="Прізвище, ім'я, по батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFopinn" name="Ідентифікаційний податковий номер" type="long" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП;(серія, номер, яким органом і коли виданий)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП;(поштовий індекс, місто, вулиця, номер дому, номер квартири)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП;(серія, номер, яким органом і коли виданий)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Скорочене найменування юридичної особи" type="string" required="true"></activiti:formProperty>
@@ -55,7 +55,7 @@
         <activiti:formProperty id="sWorkholiday_to" name="Закінчення роботи;(у форматі гг:хх)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви;(у форматі гг:хх)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви;(у форматі гг:хх)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sSupportingdoc" name="Документи, що підтверджують вказану інформацію;(завантажте скан-копії документів у форматі zip archive); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSupportingdoc" name="Документи, що підтверджують вказану інформацію;(завантажте скан-копії документів zip архівом); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sFoppib" name="Фізична особа-підприємець; ;bVisible=false" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -71,10 +71,10 @@
         <activiti:formProperty id="markers7" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_7&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers8" name="маркер якщо є вихідні" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_8&quot;:{&quot;aField_ID&quot;:[&quot;sHolDay&quot;,&quot;sWorkholiday_from&quot;,&quot;sWorkholiday_to&quot;,&quot;sWorkdinhol_from&quot;,&quot;sWorkdinhol_to&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sHoliday&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers9" name="маркер якщо фоп" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_9&quot;:{&quot;aField_ID&quot;:[&quot;sFOP&quot;,&quot;sFopinn&quot;,&quot;sFopAddress&quot;,&quot;sFopPassport&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name="ФОП для принтформи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_15&quot;:{&quot;aField_ID&quot;:[&quot;sFoppib&quot;],&quot;asID_Field_sValue&quot;:[&quot;Фізична особа-підприємець&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_16&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDovosoba&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers17" name="Обов'язково довіреність якщо уповн.особа" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_17&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDovosoba&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers19" name="Обов'зково заповнення вих дні" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sHolDay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sHoliday&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers10" name="ФОП для принтформи" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_10&quot;:{&quot;aField_ID&quot;:[&quot;sFoppib&quot;],&quot;asID_Field_sValue&quot;:[&quot;Фізична особа-підприємець&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sSubjectGosp&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'fop'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDovosoba&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="Обов'язково довіреність якщо уповн.особа" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDovosoba&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers13" name="Обов'зково заповнення вих дні" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sHolDay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sHoliday&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Звернення зареєстроване" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -137,8 +137,8 @@
         <activiti:formProperty id="fax" name="Факс" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFOP" name="Прізвище, ім'я, по батькові ФОП; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFopinn" name="Ідентифікаційний податковий номер ФОП; ;writable=false" type="long"></activiti:formProperty>
-        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFopAddress" name="Адреса реєстрації ФОП; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sFopPassport" name="Паспортні дані ФОП; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShortName_SubjectOrgan_01" name="Скорочене найменування юридичної особи" type="string" writable="false"></activiti:formProperty>
@@ -166,18 +166,18 @@
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocAgent" name="Довіреність; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSupportingdoc" name="Документи, що підтверджують вказану інформацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSupportingdoc" name="Документи, що підтверджують вказану інформацію;(завантажте скан-копії документів zip архівом); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoppib" name="Фізична особа-підприємець; ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubjectGosp" name="Вкажіть тип особи; ;bVisible=false" type="enum" required="true">
           <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers10" name="Режим роботи об'єкта " type="markers" default="{&quot;attributes&quot;:{&quot;Line_10&quot;:{&quot;aElement_ID&quot;:[&quot;sWork_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта &quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="Режим роботи об'єкта у вихідні дні" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;sWorkholiday_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта у вихідні дні&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers12" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_12&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="Дані юр особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_13&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers14" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_14&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers18" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_18&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers14" name="Режим роботи об'єкта " type="markers" default="{&quot;attributes&quot;:{&quot;Line_14&quot;:{&quot;aElement_ID&quot;:[&quot;sWork_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта &quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers15" name="Режим роботи об'єкта у вихідні дні" type="markers" default="{&quot;attributes&quot;:{&quot;Line_15&quot;:{&quot;aElement_ID&quot;:[&quot;sWorkholiday_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта у вихідні дні&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers16" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_16&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers17" name="Дані юр особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_17&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers18" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_18&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers19" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_19&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Передача звернення в профільний відділ"></activiti:value>
           <activiti:value id="reject" name="Відмовити у розгляді звернення у зв'язку з відсутністю необхідних документів"></activiti:value>
@@ -316,7 +316,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDocAgent" name="Довіреність; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSupportingdoc" name="Документи, що підтверджують вказану інформацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSupportingdoc" name="Документи, що підтверджують вказану інформацію;(завантажте скан-копії документів zip архівом); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sFoppib" name="Фізична особа-підприємець; ;bVisible=false" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSubjectGosp" name="Вкажіть тип особи; ;bVisible=false" type="enum" required="true">
           <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
@@ -327,7 +327,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="markers22" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers23" name="Дані юр особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers24" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers28" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_28&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept_2" name="З документами все гаразд, об'єкт внесено до електронного обліку об’єктів"></activiti:value>
           <activiti:value id="reject_2" name="Відмовити у розгляді звернення у зв'язку з відсутністю необхідних документів"></activiti:value>
@@ -350,101 +350,110 @@ ${sNameOrgan}<br />
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="usertask2"></sequenceFlow>
-    <sequenceFlow id="flow18" name="${decide_2=='accept_2'}" sourceRef="usertask2" targetRef="servicetask4">
+    <sequenceFlow id="flow18" name="${decide_2=='accept_2'}" sourceRef="parallelgateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_2=='accept_2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow19" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow21" name="${decide_2=='reject_2'}" sourceRef="usertask2" targetRef="servicetask3">
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow22" sourceRef="usertask2" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow23" name="${decide_2=='reject_2'}" sourceRef="parallelgateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide_2=='reject_2'}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_cnap_0002_kartka_dovidka">
     <bpmndi:BPMNPlane bpmnElement="cnap_0002_kartka_dovidka" id="BPMNPlane_cnap_0002_kartka_dovidka">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="16.0" y="80.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="85.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="66.0" width="121.0" x="83.0" y="65.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="121.0" x="170.0" y="65.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="126.0" y="176.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="245.0" y="196.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="68.0" width="110.0" x="230.0" y="64.0"></omgdc:Bounds>
+        <omgdc:Bounds height="68.0" width="110.0" x="341.0" y="64.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="61.0" width="108.0" x="380.0" y="67.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="108.0" x="590.0" y="68.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="65.0" width="108.0" x="231.0" y="161.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="108.0" x="342.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
-        <omgdc:Bounds height="40.0" width="40.0" x="413.0" y="173.0"></omgdc:Bounds>
+        <omgdc:Bounds height="40.0" width="40.0" x="623.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="65.0" width="105.0" x="91.0" y="266.0"></omgdc:Bounds>
+        <omgdc:Bounds height="65.0" width="105.0" x="210.0" y="278.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="64.0" width="105.0" x="381.0" y="267.0"></omgdc:Bounds>
+        <omgdc:Bounds height="64.0" width="105.0" x="591.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
-        <omgdc:Bounds height="61.0" width="108.0" x="231.0" y="268.0"></omgdc:Bounds>
+        <omgdc:Bounds height="61.0" width="108.0" x="442.0" y="280.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="375.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="51.0" y="97.0"></omgdi:waypoint>
-        <omgdi:waypoint x="83.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="170.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="204.0" y="98.0"></omgdi:waypoint>
-        <omgdi:waypoint x="230.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="291.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="341.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
-        <omgdi:waypoint x="340.0" y="98.0"></omgdi:waypoint>
-        <omgdi:waypoint x="380.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="451.0" y="98.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="98.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
-        <omgdi:waypoint x="434.0" y="128.0"></omgdi:waypoint>
-        <omgdi:waypoint x="433.0" y="173.0"></omgdi:waypoint>
+        <omgdi:waypoint x="644.0" y="129.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="193.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
-        <omgdi:waypoint x="413.0" y="193.0"></omgdi:waypoint>
-        <omgdi:waypoint x="339.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="623.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="213.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="89.0" x="340.0" y="161.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="89.0" x="550.0" y="181.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
-        <omgdi:waypoint x="433.0" y="213.0"></omgdi:waypoint>
-        <omgdi:waypoint x="433.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="643.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="95.0" x="400.0" y="224.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="610.0" y="244.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="381.0" y="299.0"></omgdi:waypoint>
-        <omgdi:waypoint x="339.0" y="298.0"></omgdi:waypoint>
+        <omgdi:waypoint x="591.0" y="312.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="310.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="231.0" y="298.0"></omgdi:waypoint>
-        <omgdi:waypoint x="196.0" y="298.0"></omgdi:waypoint>
+        <omgdi:waypoint x="375.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="315.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="171.0" y="330.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="315.0" y="330.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
-        <omgdi:waypoint x="143.0" y="266.0"></omgdi:waypoint>
-        <omgdi:waypoint x="143.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="278.0"></omgdi:waypoint>
+        <omgdi:waypoint x="262.0" y="231.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
-        <omgdi:waypoint x="231.0" y="193.0"></omgdi:waypoint>
-        <omgdi:waypoint x="161.0" y="193.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="213.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="213.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="285.0" y="268.0"></omgdi:waypoint>
-        <omgdi:waypoint x="285.0" y="226.0"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="442.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="415.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="395.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="396.0" y="246.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="242.0" y="226.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="346.0" y="258.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
