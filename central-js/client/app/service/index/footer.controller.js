@@ -112,12 +112,12 @@ angular.module('app').controller('FooterController', function ($scope) {
       height: 50
     }*/
 
-    ,{
-      url: 'https://privatbank.ua',
-      alt: 'privatbank',
-      image: 'assets/images/ads/privatbank.png',
-      height: 50
-    }
+    // ,{
+    //   url: 'https://privatbank.ua',
+    //   alt: 'privatbank',
+    //   image: 'assets/images/ads/privatbank.png',
+    //   height: 50
+    // }
 
     /*,{
       url: 'https://www.ria.com',
