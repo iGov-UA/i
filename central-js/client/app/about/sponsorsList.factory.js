@@ -113,12 +113,6 @@
         isActual: false
       }
       ,{
-        url: 'https://privatbank.ua',
-        alt: 'privatbank',
-        image: 'assets/images/ads/privatbank.png',
-        isActual: true
-      }
-      ,{
         url: 'https://www.ria.com',
         alt: 'ria',
         image: 'assets/images/ads/ria.png',
