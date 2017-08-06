@@ -56,7 +56,6 @@
         <activiti:formProperty id="sWorkholiday_to" name="Закінчення роботи;(у форматі гг:хх)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_from" name="Початок перерви;(у форматі гг:хх)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWorkdinhol_to" name="Закінчення перерви;(у форматі гг:хх)" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDocObject" name="Правовстановлюючі документи на об'єкт або договір оренди;(zip архівом); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sFoppib" name="Фізична особа-підприємець; ;bVisible=false" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -76,6 +75,7 @@
         <activiti:formProperty id="markers11" name="маркер якщо довірена особа" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_11&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDovosoba&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="Обов'язково довіреність якщо уповн.особа" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_12&quot;:{&quot;aField_ID&quot;:[&quot;sDocAgent&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDovosoba&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'agent'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Обов'зково заповнення вих дні" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_13&quot;:{&quot;aField_ID&quot;:[&quot;sHolDay&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sHoliday&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sSupDoc" name="Скан-копія договору оренди або правовстановлюючих документів на об'єкт;(завантажте у форматі zip архів); ;bNew=true" type="file" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Звернення зареєстроване" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -151,7 +151,6 @@
         <activiti:formProperty id="sSubjectRegistration" name="Місце державної реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sSvidoctvo" name="Свідоцтво про державну реєстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocObject" name="Документи на об'єкт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об’єкта; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта; ;writable=false" type="string"></activiti:formProperty>
@@ -190,6 +189,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте замовнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sShapkaUprRoz" name="шапка принт форми1; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSupDoc" name="Договір оренди або правовстановлюючі документи на об'єкт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -234,7 +234,7 @@ ${sNameOrgan}<br />
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-Картка обліку об'єкта та довідка про розміщення об'єкта готова. <br />
+Картка обліку об'єкта та довідка про розміщення об'єкта готові. <br />
 <br />
 Для отримання при собі треба мати оригінал паспорта і довіреність (для уповноваженої особи) та звернутись за адресою:<br />
 ${sAddress}<br />
@@ -274,7 +274,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення № [sID_Order] щодо видачі картки обліку об'єкта та довідки про розміщення об'єкта прийнято до розгляду.<br />
+Ваше звернення № [sID_Order] щодо видачі картки обліку об'єкта та довідки про розміщення об'єкта передано до профільного управління.<br />
 <br />
 Ви отримаєте відповідь протягом 5 днів. <br />
 
@@ -309,7 +309,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sSubjectRegistration" name="Місце державної реєстрації; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateRegistration" name="Дата державної реєстрації; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sSvidoctvo" name="Свідоцтво про державну реєстрацію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDocObject" name="Документи на об'єкт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameObject" name="Назва об’єкта; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressObject" name="Адреса розміщення об’єкта; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sSpecialObject" name="Спеціалізація об’єкта; ;writable=false" type="string"></activiti:formProperty>
@@ -333,12 +332,12 @@ ${sNameOrgan}<br />
           <activiti:value id="fop" name="Фізична особа-підприємець"></activiti:value>
           <activiti:value id="ur" name="Юридична особа"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markers20" name="Режим роботи об'єкта " type="markers" default="{&quot;attributes&quot;:{&quot;Line_20&quot;:{&quot;aElement_ID&quot;:[&quot;sWork_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта &quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="Режим роботи об'єкта у вихідні дні" type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sWorkholiday_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта у вихідні дні&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers22" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers23" name="Дані юр особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers24" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers25" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_25&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject_2'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers21" name="Режим роботи об'єкта " type="markers" default="{&quot;attributes&quot;:{&quot;Line_21&quot;:{&quot;aElement_ID&quot;:[&quot;sWork_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта &quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers22" name="Режим роботи об'єкта у вихідні дні" type="markers" default="{&quot;attributes&quot;:{&quot;Line_22&quot;:{&quot;aElement_ID&quot;:[&quot;sWorkholiday_from&quot;],&quot;sValue&quot;:&quot;Режим роботи об'єкта у вихідні дні&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers23" name="Відомості про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_23&quot;:{&quot;aElement_ID&quot;:[&quot;sNameObject&quot;],&quot;sValue&quot;:&quot;Відомості про об'єкт&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers24" name="Дані юр особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_24&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Дані юридичної особи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers25" name="Дані Фізичної особи-підприємця" type="markers" default="{&quot;attributes&quot;:{&quot;Line_25&quot;:{&quot;aElement_ID&quot;:[&quot;sFOP&quot;],&quot;sValue&quot;:&quot;Дані Фізичної особи-підприємця&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers26" name="Обов'язково коментар якщо відмова" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_26&quot;:{&quot;aField_ID&quot;:[&quot;comment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;decide_2&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'reject_2'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="decide_2" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept_2" name="Картка обліку об'єкта та довідка про розміщення об'єкта готові"></activiti:value>
           <activiti:value id="reject_2" name="Відмовити у зв'язку з відсутністю необхідних документів"></activiti:value>
@@ -350,6 +349,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/cnap_0002_kartka_dovidka_2.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/cnap_0002_kartka_dovidka_3.html]; ;bVisible=false ,bPrintform=true" type="string" default="Довідка " writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/cnap_0002_kartka_dovidka_3.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSupDoc" name="Договір оренди або правовстановлюючі документи на об'єкт; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow14" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
