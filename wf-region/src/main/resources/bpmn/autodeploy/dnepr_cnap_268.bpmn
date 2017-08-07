@@ -66,6 +66,7 @@
         <activiti:formProperty id="markers5" name="маркер якщо поділ нерухомого майна" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sDocDivideHouse&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDivideHouse&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="маркер якщо земельна ділянка" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sDivideZemlya&quot;,&quot;sOwnershipZemlya&quot;,&quot;sShemaZemlya&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sObject&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'zemlya'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers7" name="маркер якщо поділ нерухомого майна" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_7&quot;:{&quot;aField_ID&quot;:[&quot;sDocDivideZemlya&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sDivideZemlya&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yes'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show fields" type="markers" default="${markerService.loadFromFile('dneprCnap/dnepr_cnap_268.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="перевірка документів і вхідних даних" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -116,7 +117,6 @@
         <activiti:formProperty id="sListDocumentsLetter" name="перелік документів у лист; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocumentsPrint" name="перелік документів у заяву; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dnepr_cnap_268_print.html]; ;bVisible=false" type="string" default="заява" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="bankId_scan_passport" name="Сканований паспорт громадянина ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDocConfidant" name="Довіреність на право представляти інтереси субʼєкта господарювання в органах місцевого самоврядування ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vipiska" name="Копія виписки з Єдиного державного реєстру ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -128,9 +128,7 @@
         <activiti:formProperty id="sDocDivideZemlya" name="Схема розподілу земельної ділянки виконана ліцензованою організацією з підписом виконавця та печаткою організації ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPravoObect" name="Копія правовстановлюючого документа на об'єкт нерухомого майна (наприклад: договір купівлі-продажу, дарування об'єкту) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDovidka" name="Довідка фінансового управління про сплату пайової участі у створенні соціальної та інженерно-транспортної інфраструктури міста; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -452,14 +450,14 @@ execution.setVariable('sWordsLetter', per11)
         <omgdi:waypoint x="585.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="585.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="69.0" x="595.0" y="225.0"></omgdc:Bounds>
+          <omgdc:Bounds height="13.0" width="68.0" x="595.0" y="225.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="565.0" y="205.0"></omgdi:waypoint>
         <omgdi:waypoint x="461.0" y="205.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="465.0" y="185.0"></omgdc:Bounds>
+          <omgdc:Bounds height="39.0" width="100.0" x="465.0" y="185.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
