@@ -115,7 +115,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     @Value("${asID_BP_SendMail}")
     private String[] asID_BP_SendMail;
 
-    private JSONParser oJSONParser = new JSONParser();
+    //private JSONParser oJSONParser = new JSONParser();
 
     @Override
     public boolean preHandle(HttpServletRequest oRequest,
@@ -150,6 +150,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
     private void documentHistoryPostProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse, boolean bFinish) {
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
+        JSONParser oJSONParser = new JSONParser();
         try {
             Map<String, String> mRequestParam = new HashMap<>();
             Enumeration<String> paramsName = oRequest.getParameterNames();
@@ -305,6 +306,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
     private void documentHistoryPreProcessing(HttpServletRequest oRequest, HttpServletResponse oResponse) {
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
+        JSONParser oJSONParser = new JSONParser();
         try {
 
             Map<String, String> mRequestParam = new HashMap<>();
@@ -780,7 +782,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     private void saveNewTaskInfo(String sRequestBody, String sResponseBody, Map<String, String> mParamRequest)
             throws Exception {
-
+        JSONParser oJSONParser = new JSONParser();
         LOG.info("saveNewTaskInfo started in " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date()));
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
         
@@ -797,8 +799,19 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         
         try{
             omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
+        }catch(Exception ex){
+            if(sRequestBody.contains("dms_0025_ID2545_iGov")||sRequestBody.contains("common_zags_1") ||
+               sRequestBody.contains("dms_0176_Zagran_iGov")||sRequestBody.contains("DFS_F1301801"))
+            {
+                LOG.info("sRequestBody errored {}", sRequestBody);
+                LOG.info("sRequestBody errored {}", sResponseBody);
+                LOG.info("Error {}", ex);
+            }
+        }
+        
+        try{
             omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
-        }catch(ParseException ex){
+        }catch(Exception ex){
             if(sRequestBody.contains("dms_0025_ID2545_iGov")||sRequestBody.contains("common_zags_1") ||
                sRequestBody.contains("dms_0176_Zagran_iGov")||sRequestBody.contains("DFS_F1301801"))
             {
@@ -811,7 +824,8 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
         mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
 
         //String osnID_Process = omResponseBody.containsKey("id"); //разобраться чего получаем нал в некоторых случаях
-        String snID_Process = String.valueOf(omResponseBody.containsKey("id")?omResponseBody.get("id"):omResponseBody.get("snID_Process")); //разобраться чего получаем нал в некоторых случаях
+       
+        String snID_Process = String.valueOf(omResponseBody.containsKey("id") ? omResponseBody.get("id") : omResponseBody.get("snID_Process")); //разобраться чего получаем нал в некоторых случаях
         //if(snID_Process) //{"snID_Process":"23285433","nID_Task":"23285483"}
         if(sRequestBody != null && sRequestBody.contains("sCancelInfo")){
             runtimeService.setVariable(snID_Process, "sCancelInfo", String.format("Заявка актуальна"));
@@ -888,6 +902,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     //(#1234) added additional parameter snClosedTaskId
     private void saveClosedTaskInfo(String sRequestBody, String snClosedTaskId, boolean bSaveHistory) throws Exception {
+        JSONParser oJSONParser = new JSONParser();
         LOG.info("Method saveClosedTaskInfo started");
         int nLen = generalConfig.isSelfTest() ? 300 : 200;
         
@@ -925,6 +940,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
      */
     private void saveUpdatedTaskInfo(String sResponseBody, Map<String, String> mRequestParam) throws Exception {
         Map<String, String> mParam = new HashMap<>();
+        JSONParser oJSONParser = new JSONParser();
         JSONObject omResponseBody = (JSONObject) oJSONParser.parse(sResponseBody);
         String snID_Task = (String) omResponseBody.get("taskId");
         if (snID_Task == null && mRequestParam.containsKey("taskId")) {
