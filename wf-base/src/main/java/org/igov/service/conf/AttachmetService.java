@@ -210,7 +210,13 @@ public class AttachmetService implements CustomRegexPattern{
     public MultipartFile getAttachment(String nID_Process, String sID_Field, String sKey, String sID_StorageType)
             throws ParseException, RecordInmemoryException, IOException, ClassNotFoundException, CRCInvalidException, RecordNotFoundException {
         MultipartFile oMultipartFile = null;
-
+        
+        LOG.info("getAttachment started....");
+        LOG.info("nID_Process {}", nID_Process);
+        LOG.info("sID_Field {}", sID_Field);
+        LOG.info("sKey {}", sKey);
+        LOG.info("sID_StorageType {}", sID_StorageType);
+        
         byte[] aResultArray = null;
         String sFileName = null;
         String sVersion = "";
@@ -250,21 +256,24 @@ public class AttachmetService implements CustomRegexPattern{
                 LOG.info("result file is null");
             }
         }
-        if (sID_StorageType.equals("Mongo")) {
+        if ("Mongo".equals(sID_StorageType)) {
             aResultArray = oBytesDataStaticStorage.getData(sKey);
-            byteArrayInputStream = new ByteArrayInputStream(aResultArray);
-            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
+            
             if (aResultArray != null) {
                 LOG.info("Mongo byte array isn't null");
             }
+            
+            byteArrayInputStream = new ByteArrayInputStream(aResultArray);
+            oMultipartFile = new VariableMultipartFile(byteArrayInputStream, sVersion, sFileName, sContentType);
         }
-        if (sID_StorageType.equals("Redis")) {
+        if ("Redis".equals(sID_StorageType)) {
             aResultArray = oBytesDataInmemoryStorage.getBytes(sKey);
-            oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
-
+            
             if (aResultArray != null) {
                 LOG.info("Redis byte array isn't null");
             }
+            
+            oMultipartFile = getByteArrayMultipartFileFromStorageInmemory(aResultArray); //приводим
         }
 
         return oMultipartFile;
