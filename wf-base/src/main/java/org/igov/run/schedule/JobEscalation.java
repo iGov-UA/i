@@ -25,7 +25,7 @@ public class JobEscalation extends IAutowiredSpringJob {
 
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        LOG.info("In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
+        LOG.info("In JobEscalation - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
         try {
             //TODO: ��� ����� �������� ����� ������� ���������!

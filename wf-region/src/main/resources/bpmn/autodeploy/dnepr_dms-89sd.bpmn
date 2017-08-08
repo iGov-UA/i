@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89sd" name="Зняття з реєстрації особи у зв'язку зі смертю" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 04.04.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 28.07.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
@@ -27,7 +27,7 @@
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть, дата видачі документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -45,8 +45,10 @@
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAdd_FormaA" name="Додаток до email; ;bVisible=false" type="string" default=" &lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;&lt;/li&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sHide_FormaA" name="Признак приховання документів в списку Форми А ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -78,6 +80,11 @@ if (year=='2017') {
 
 execution.setVariable('sMinPay', minpay)
 execution.setVariable('sMaxPay', maxpay)
+
+if (execution.getVariable('sHide_FormaA')=='True') {
+	execution.setVariable('sAdd_FormaA', ' ')
+}
+
 	  </script>
     </scriptTask>
     <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
@@ -90,11 +97,11 @@ execution.setVariable('sMaxPay', maxpay)
 
 	  </script>
     </scriptTask>
-    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="scripttask1" targetRef="scripttask3"></sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${sMailClerk}</activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -103,7 +110,7 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:string><![CDATA[Нове звернення на тему: Зняття з реєстрації особи у зв'язку зі смертю]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -111,7 +118,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask3" name="Повідомлення громадянина  про успішну реєстрацію звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -127,6 +134,7 @@ execution.setVariable('sMaxPay', maxpay)
 					Адреса ${sOrganType}: ${sAddress}.<br> 
 					${sPhoneOrgan}<br>
 				</p>
+				<br>
 				<p>[cancelTask]</p> 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -135,13 +143,13 @@ execution.setVariable('sMaxPay', maxpay)
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] zareyestrovano. Detalno na igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareyestrovano. Detalno na igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -187,8 +195,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}">
-        </activiti:taskListener>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
@@ -199,7 +206,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask5" name="Повідомлення громадянина про відхилення звернення + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -229,13 +236,13 @@ execution.setVariable('sMaxPay', maxpay)
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] vidkhyleno. Detalno na igov.org.ua/journal abo u Vashomu email</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] vidkhyleno. Detalno na igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -249,7 +256,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask9" name="Повідомлення громадянина про призначення візиту Днепр + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -284,8 +291,8 @@ execution.setVariable('sMaxPay', maxpay)
 						<li>оригінал та копію паспорту того, хто подавав заяву;</li>
 						<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
 						<li>оригінал та копію свідоцтва про смерть;</li>	
-						<li>оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;</li>	
 						<li>заяву про зняття з реєстрації місця проживання, що знаходиться у додатках до листа;</li>									
+						${sAdd_FormaA}
 					</ul>
 				</p>
 				<p>
@@ -293,8 +300,10 @@ execution.setVariable('sMaxPay', maxpay)
 					<b><i>${sDecisionComment}</i></b>
 				</p>
 				<p>
-					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+					При вниникненні питань Ви можете звернутися: <br>
+					${sPhoneOrgan}
 				</p>
+				<br>
 				<p>[cancelTask]</p>
 
 			[pattern/mail/new_design/_common_content_end.html]
@@ -304,13 +313,13 @@ execution.setVariable('sMaxPay', maxpay)
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>${PrintForm_3},${PrintForm_4}</activiti:expression>
+          <activiti:expression><![CDATA[${PrintForm_3},${PrintForm_4}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -321,7 +330,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask6" name="Повідомлення громадянина про призначення візиту + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -356,7 +365,7 @@ execution.setVariable('sMaxPay', maxpay)
 					<li>оригінал та копію паспорту того, хто подавав заяву;</li>
 					<li>квитанцію про сплату адміністративного збору з мокрою печаткою банку;</li>
 					<li>оригінал та копію свідоцтва про смерть;</li>	
-					<li>оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;</li>	
+					${sAdd_FormaA}
 				</ul>
 			</p>
 			<p>
@@ -364,8 +373,10 @@ execution.setVariable('sMaxPay', maxpay)
 				<b><i>${sDecisionComment}</i></b>
 			</p>
 			<p>
-				При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
+				При вниникненні питань Ви можете звернутися: <br>
+				${sPhoneOrgan}
 			</p>
+			<br>
 			<p>[cancelTask]</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -374,13 +385,13 @@ execution.setVariable('sMaxPay', maxpay)
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno, оchikuemo na Vash vizyt. Vam nadislano email z rekvizytamy ta sumoyu oplaty, neobkhidnymy dokumentamy. Detalno igov.org.ua/journal]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -441,7 +452,7 @@ execution.setVariable('sMaxPay', maxpay)
     <serviceTask id="servicetask2" name="Фідбек + СМС" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression>${email}</activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -465,13 +476,13 @@ execution.setVariable('sMaxPay', maxpay)
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
-          <activiti:expression>${phone}</activiti:expression>
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression>Vashe zvernennya [sID_Order] opratsovano, otsinit yakist nadannya posluhy (formu nadislano v email). Detalno igov.org.ua/journal</activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] opratsovano, otsinit yakist nadannya posluhy (formu nadislano v email). Detalno igov.org.ua/journal]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression>" "</activiti:expression>
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -484,6 +495,10 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow38" name="${sIsCancellCustomeVizite=='False'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite=='False'}]]></conditionExpression>
     </sequenceFlow>
+    <scriptTask id="scripttask3" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('sDateCreate', new Date().format("dd.MM.yyyy").toString())</script>
+    </scriptTask>
+    <sequenceFlow id="flow39" sourceRef="scripttask3" targetRef="servicetask4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-89sd">
     <bpmndi:BPMNPlane bpmnElement="dnepr_dms-89sd" id="BPMNPlane_dnepr_dms-89sd">
@@ -500,7 +515,10 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdc:Bounds height="35.0" width="35.0" x="51.0" y="216.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="27.0"></omgdc:Bounds>
+        <omgdc:Bounds height="66.0" width="105.0" x="108.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="65.0" width="105.0" x="880.0" y="193.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
         <omgdc:Bounds height="73.0" width="110.0" x="248.0" y="106.0"></omgdc:Bounds>
@@ -541,11 +559,11 @@ execution.setVariable('sMaxPay', maxpay)
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="509.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="65.0" width="105.0" x="880.0" y="193.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
         <omgdc:Bounds height="40.0" width="40.0" x="912.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="71.0" width="131.0" x="237.0" y="7.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="75.0" y="142.0"></omgdi:waypoint>
@@ -557,13 +575,11 @@ execution.setVariable('sMaxPay', maxpay)
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="160.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="160.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="180.0" y="54.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="76.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
-        <omgdi:waypoint x="285.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="54.0"></omgdi:waypoint>
-        <omgdi:waypoint x="303.0" y="106.0"></omgdi:waypoint>
+        <omgdi:waypoint x="213.0" y="43.0"></omgdi:waypoint>
+        <omgdi:waypoint x="237.0" y="42.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
         <omgdi:waypoint x="358.0" y="142.0"></omgdi:waypoint>
@@ -581,7 +597,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="645.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="753.0" y="226.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -607,7 +623,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="625.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="262.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="517.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="100.0" x="517.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -623,7 +639,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="713.0" y="480.0"></omgdi:waypoint>
         <omgdi:waypoint x="712.0" y="509.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="86.0" x="654.0" y="450.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="86.0" x="654.0" y="450.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -632,7 +648,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="540.0" y="589.0"></omgdi:waypoint>
         <omgdi:waypoint x="608.0" y="589.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="83.0" x="526.0" y="450.0"></omgdc:Bounds>
+          <omgdc:Bounds height="48.0" width="83.0" x="526.0" y="450.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -650,7 +666,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="843.0" y="407.0"></omgdi:waypoint>
         <omgdi:waypoint x="915.0" y="407.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="823.0" y="268.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="823.0" y="268.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -658,8 +674,12 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="1017.0" y="309.0"></omgdi:waypoint>
         <omgdi:waypoint x="1018.0" y="330.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="941.0" y="262.0"></omgdc:Bounds>
+          <omgdc:Bounds height="64.0" width="100.0" x="941.0" y="262.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="302.0" y="78.0"></omgdi:waypoint>
+        <omgdi:waypoint x="303.0" y="106.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

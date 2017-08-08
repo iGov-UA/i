@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89" name="Реєстрація місця проживання особи (із опцією одночасного зняття з реєстрації з попереднього місця)" isExecutable="true">
-    <documentation>Смоктій К.В.  (получено на сопровождение от Жигана Ромы) Последние правки: 04.04.2017</documentation>
+    <documentation>Смоктій К.В.  (получено на сопровождение от Жигана Ромы) Последние правки: 28.07.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї особи, що подає звернення! &lt;/b&gt;"></activiti:formProperty>
@@ -80,7 +80,7 @@
         <activiti:formProperty id="nDocNaim" name="Договір найму / піднайму / оренди;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nOther" name="Документ, на основі якого буде здійснюватись реєстрація;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
-        <activiti:formProperty id="date_today" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
       </extensionElements>
@@ -145,6 +145,7 @@ execution.setVariable('sMaxPay', maxpay)
 					<b> Адреса ${sOrganType}</b>: ${sAddress}.<br> 
 					${sPhoneOrgan}<br>
 				</p>
+				<br>
 				<p>[cancelTask]</p> 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -371,6 +372,7 @@ execution.setVariable('sMaxPay', maxpay)
 				<p>
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 				</p>
+				<br>
 				<p>[cancelTask]</p> 
 
 			[pattern/mail/new_design/_common_content_end.html]
@@ -461,6 +463,7 @@ execution.setVariable('sMaxPay', maxpay)
 				<p>
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 				</p>
+				<br>
 				<p>[cancelTask]</p> 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -608,8 +611,8 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow39" name="${sIsCancellCustomeVizite!='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite!='False'}]]></conditionExpression>
     </sequenceFlow>
-    <scriptTask id="scripttask3" name="Script Task" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('date_today', new Date().format("dd.MM.yyyy").toString())</script>
+    <scriptTask id="scripttask3" name="Script Task (groovy)" scriptFormat="groovy" activiti:autoStoreVariables="false">
+      <script>execution.setVariable('sDateCreate', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask3" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow41" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
