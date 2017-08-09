@@ -21,7 +21,7 @@
         <activiti:formProperty id="sHCORP" name="Корпус;за місцем реєстрації;writable=true,sID_Field_SWinEd=HCORP" type="string"></activiti:formProperty>
         <activiti:formProperty id="sHAPT" name="Номер квартири;за місцем реєстрації;writable=true,sID_Field_SWinEd=HAPT" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning1&quot;],&quot;sValue&quot;:&quot;Період, за який будуть надані відомості&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sWarning1" name=" ; ;labelType=info" type="label" default="Дані про суми виплачених доходів та утриманих податків доступні з 1 кварталу 2014 року до 1 кварталу 2017 року включно. Відомості за 2 квартал 2017 року будуть доступні з 18 серпня 2017 року. Просимо враховувати це при виборі періоду, за який бажаєте отримати інформацію"></activiti:formProperty>
+        <activiti:formProperty id="sWarning1" name=" ; ;labelType=info" type="label" default="Дані про суми виплачених доходів та утриманих податків доступні з 1 кварталу 2015 року до 1 кварталу 2017 року включно. Відомості за 2 квартал 2017 року будуть доступні з 18 серпня 2017 року. Просимо враховувати це при виборі періоду, за який бажаєте отримати інформацію"></activiti:formProperty>
         <activiti:formProperty id="asStartPeriod" name="Квартал;початок періоду за який бажаєте отримати відомості;writable=true,sID_Field_SWinEd=R01G01" type="enum" required="true">
           <activiti:value id="1" name="1"></activiti:value>
           <activiti:value id="2" name="2"></activiti:value>
@@ -61,6 +61,7 @@
         <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1401801" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_XML_SWinEd_Answer_1" name="Название шаблона с ответом" type="string" default="F1301801" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом."></activiti:formProperty>
       </extensionElements>
@@ -292,7 +293,7 @@ execution.setVariable('sCounter', src)</script>
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sFile_XML_SWinEd_Filter">		
-             <activiti:expression><![CDATA[ ]]></activiti:expression>		
+             <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer_1}]]></activiti:expression>	
           </activiti:field>
         </activiti:taskListener>
        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
