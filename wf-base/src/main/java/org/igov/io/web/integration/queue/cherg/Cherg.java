@@ -217,6 +217,9 @@ public class Cherg {
         
         String sKey = serviceId + "_" + phone;
         String sID_Reserve = (String) mDMS_SlotReserve.get(sKey);
+        
+        LOG.info("mDMS_SlotReserve {}");
+        
         if (sID_Reserve != null) {
             cancelReserve(sID_Reserve);
             mDMS_SlotReserve.remove(sKey);
