@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="MERT_1570_LicenLikZas" name="Ліцензія для виробництва або торгівлі лікарськими засобами" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="asLicenz" name="Тип ліцензії, який ви хочете отримати" type="enum" required="true">
+          <activiti:value id="sEnamAptVur" name="Виробництво (виготовлення) лікарських засобів в умовах аптеки"></activiti:value>
+          <activiti:value id="sEnamOptTorg" name="Оптова торгівля лікарськими засобами"></activiti:value>
+          <activiti:value id="sEnamRozdrTorg" name="Роздрібна торгівля лікарськими засобами"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asVidpov" name="Оберіть як ви хочете отримати відповідь" type="enum" required="true">
+          <activiti:value id="sEnamSam" name="Забрати самостійно"></activiti:value>
+          <activiti:value id="sEnamPost" name="Поштовим відправленням за місцезнаходженням/місцем проживання"></activiti:value>
+          <activiti:value id="sEnamElectro" name="В електронному вигляді"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Ваші паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail;(на цей e-mail  Ви отримаєте результат обробки Вашого звернення)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrKPFop_OpenData_MERT.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
+          <activiti:value id="sEnamFop" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа(подає керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа(подає представник)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAdressRegistration" name="Ваша адреса реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса;(індекс, місто, вулиця, будинок, офіс)" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="Kphone" name="Контактний телефон керівника" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_K" name="Коди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_K&quot;:{&quot;aElement_ID&quot;:[&quot;asFormVl&quot;],&quot;sValue&quot;:&quot;Коди&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asFormVl" name="Форма власності" type="enum" required="true">
+          <activiti:value id="sEnamPriv" name="10 Приватна"></activiti:value>
+          <activiti:value id="sEnamKolect" name="20 Колективна"></activiti:value>
+          <activiti:value id="sEnamDerj" name="30 Державна"></activiti:value>
+          <activiti:value id="sEnamZagDerj" name="31 Загальнодержавна"></activiti:value>
+          <activiti:value id="sEnamKomun" name="32 Комунальна"></activiti:value>
+          <activiti:value id="sEnamInoz" name="40 Власність іноземної держави"></activiti:value>
+          <activiti:value id="sEnamUrInoz" name="50 Власність міжнародної організації або іноземної юридичної особи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sLabeOrgPrav" name=" ; ;labelType=info" type="label" default="Перелік кодів організаційно правової форми - &lt;a href=&quot;http://zakon3.rada.gov.ua/rada/show/v0271832-14/paran12#n12 &quot; target=&quot;_blank&quot;&gt;Статистичний класифікатор організаційних форм суб'єктів економіки&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="sOrgPravForm" name="Код організаційно правової форми;(введіть число)" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabeKVED" name=" ; ;labelType=info" type="label" default="&lt;div style=&quot;text-align:center&quot;&gt;Позначте галочкою КВЕДи які відповідають вашій діяльності&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="chek2110" name="21.10 Виробництво основних фармацевтичних продуктів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chek2120" name="21.20 Виробництво фармацевтичних препаратів і матеріалів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chek4646" name="46.46 Оптова торгівля фармацевтичними товарами;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chek4773" name="47.73 Роздрібна торгівля фармацевтичними товарами в спеціалізованих магазинах;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_MD" name="Інфформація про заклад" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeZaklad&quot;],&quot;sValue&quot;:&quot;Інфформація про заклад&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLabeZaklad" name=" ; ;labelType=info" type="label" default="&lt;p&gt;&lt;span&gt;В столбці 'Місце провадження господарської діяльності' зазначається:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для виробництва (виготовлення) лікарських засобів в умовах аптеки - аптека із зазначенням її номера, найменування (за наявності);&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для оптової торгівлі лікарськими засобами - аптечний склад (база) із зазначенням його номера, найменування (за наявності), загальної площі та площі виробничих приміщень;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для роздрібної торгівлі лікарськими засобами - аптека із зазначенням її номера, найменування (за наявності), аптечний пункт із зазначенням його номера, найменування (за наявності), номера та найменування (за наявності) аптеки, структурним підрозділом якої він є, лікувально-профілактичного закладу, в якому він розташований.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;"></activiti:formProperty>
+        <activiti:formProperty id="AptekaTable" name="Місце провадження господарської діяльності; ;bNew=true" type="table" default="${markerService.loadFromFile('table/mert/1570_LicenLikZas.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_F" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeVidomost&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLabeVidomost" name=" ; ;labelType=info" type="label" default="Вам необхіжно додати ВІДОМОСТІ про наявність матеріально-технічної бази та кваліфікованого персоналу, необхідних для провадження господарської діяльності з оптової торгівлі лікарськими засобами."></activiti:formProperty>
+        <activiti:formProperty id="asVidomost" name="Оберіть як ви хочете надати відомості" type="enum" required="true">
+          <activiti:value id="sEnamElectr" name="Хочу заповнити електронну форму"></activiti:value>
+          <activiti:value id="sEnamFile" name="Хочу завантажити вже заповнену форму як файл"></activiti:value>
+          <activiti:value id="sEnamBlankFile" name="Хочу завантажити бланк для заповнення, щоб потім завантажити файлом"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markerVidomost1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1570_LicenLikZas1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sLabeWord" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Завантажити бланк - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7Q2dfODh2VHF6SjQ/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;У форматі Word&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="sLabePDF" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;  Завантажити бланк - &lt;a href=&quot;https://drive.google.com/file/d/0B7zchMPpg3QaRUpudUJ2OXEtUkE/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;У форматі PDF&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="nFile_Vidomost" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegRob" name="Режим роботи аптечних закладів" type="string" required="true"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var sum = 23.11;</script>
+    </scriptTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <serviceTask id="servicetask1" name="Лист чиновнику" activiti:delegateExpression="{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <serviceTask id="servicetask2" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
+    <userTask id="usertask1" name="Обробка"></userTask>
+    <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="{MailTaskWithoutAttachment}"></serviceTask>
+    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="servicetask3"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_MERT_1570_LicenLikZas">
+    <bpmndi:BPMNPlane bpmnElement="MERT_1570_LicenLikZas" id="BPMNPlane_MERT_1570_LicenLikZas">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="120.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="270.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="400.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="530.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="680.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="830.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="120.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="225.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="375.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="505.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="635.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="680.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="785.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="830.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

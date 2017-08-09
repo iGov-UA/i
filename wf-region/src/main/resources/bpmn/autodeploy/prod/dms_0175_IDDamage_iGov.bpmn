@@ -154,9 +154,9 @@ ${sNameOrgan},<br>
     </serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask2" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
+    <serviceTask id="servicetask2" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
-       <activiti:field name="sPhone_SMS">
+        <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -383,7 +383,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
     <sequenceFlow id="flow45" sourceRef="exclusivegateway6" targetRef="scripttask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${visitDay == null}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask7" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask7" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>

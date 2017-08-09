@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця" isExecutable="true">
-    <documentation>AGVersion: 2017.04.24
+    <documentation>AGVersion: 2017.08.08
 		+ файлы по новой схеме
 		- цветные метки
 		- линии разделительные
@@ -922,6 +922,18 @@
 				execution.setVariable('sVarPayGetSchet','31416501700020')             
 				execution.setVariable('sVarSumPay','160.00')
            }
+		if (sVarCNAP=='ternopilT_jur')
+		   {
+				execution.setVariable('sID_Merchant','i85624152037')
+				execution.setVariable('sVarBankOut','ПАТ КБ ПРИВАТБАНК')             
+				execution.setVariable('sVarBankOplata','ГУДКСУ у Тернопільській області')             
+				execution.setVariable('sVarBankMFO','838012')             
+				execution.setVariable('sVarPayCode','22010300')             
+				execution.setVariable('sVarWhoPayGetCode','37977726')
+				execution.setVariable('sVarWhoPayGet','УК в м. Тернопіль')             
+				execution.setVariable('sVarPayGetSchet','31412501700002')             
+				execution.setVariable('sVarSumPay','160.00')
+			}		   
 	   </script>
     </scriptTask>
     <userTask id="usertask2_red" name="Надання платної послуги" activiti:assignee="${user_last}">

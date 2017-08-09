@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89sd" name="Зняття з реєстрації особи у зв'язку зі смертю" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 28.07.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 08.08.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації померлого" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Ваш документ; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що Вас посвідчує" type="enum" default="sEnumElement_Passport" required="true">
+          <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
+          <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
+          <activiti:value id="sEnumElement_Other" name="Інший документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника; Серія та номер документу, дата і орган, що його видав" type="textArea" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження; Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
@@ -22,7 +29,6 @@
         <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого" type="string" default="Україна" required="true"></activiti:formProperty>
         <activiti:formProperty id="sChildDoc" name="Документ померлого; Тип, серія та номер документу, дата і орган, що його видав" type="textArea" default="паспорт "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації померлого;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації померлого" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_death" name="Дата смерті;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть, дата видачі документа" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
@@ -49,7 +55,10 @@
         <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdd_FormaA" name="Додаток до email; ;bVisible=false" type="string" default=" &lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;&lt;/li&gt;"></activiti:formProperty>
         <activiti:formProperty id="sHide_FormaA" name="Признак приховання документів в списку Форми А ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -161,7 +170,12 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що посвідчує заявника" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
+          <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
+          <activiti:value id="sEnumElement_Other" name="Інший документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
@@ -178,6 +192,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації померлого; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
           <activiti:value id="sDecline" name="Відмовити в наданні послуги"></activiti:value>
@@ -194,6 +209,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="sNewAddress" name="Поле для прінтформи ; ;bVisible=false" type="string" default="помер ${sDate_of_death}"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -404,7 +420,12 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBankIdPassport" name="Паспортні дані; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="asEnumTypeDocument" name="Тип документа, що посвідчує заявника" type="enum" writable="false">
+          <activiti:value id="sEnumElement_Passport" name="Паспорт"></activiti:value>
+          <activiti:value id="sEnumElement_ID_Passport" name="ID-карта (паспорт)"></activiti:value>
+          <activiti:value id="sEnumElement_Other" name="Інший документ"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
@@ -423,6 +444,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює зняття з реєстрації ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат зустрічі" type="enum" required="true">
           <activiti:value id="sReestr" name="Померлого знято з реєстрації"></activiti:value>
           <activiti:value id="sNejav" name="Громадянин не з'явився"></activiti:value>
@@ -436,6 +458,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBkDeath.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Поле для прінтформи ; ;bVisible=false" type="string" default="помер ${sDate_of_death}"></activiti:formProperty>
         <activiti:formProperty id="nSvidDeath" name="Свідоцтво про смерть;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
