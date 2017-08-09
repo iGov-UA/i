@@ -269,7 +269,17 @@ public class Cherg {
 
     public JSONObject confirmReserve(String nReservationId) throws Exception {
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
-
+        String sKey_Delete = null;
+        
+        for(String sKey : mDMS_SlotReserve.keySet()){
+            if(((String)mDMS_SlotReserve.get(sKey)).equals(nReservationId)){
+                sKey_Delete = sKey;
+            }
+        }
+        
+        mDMS_SlotReserve.remove(sKey_Delete);
+        
+        
         mParam.add("reserve_id", nReservationId);
 
         HttpHeaders oHttpHeaders = new HttpHeaders();
