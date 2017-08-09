@@ -3,7 +3,6 @@
   <process id="common_zags_1" name="Заява про державну реєстрацію шлюбу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
@@ -12,8 +11,8 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть бажаний відділ ДРАЦС" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asMarriageType" name="Оберіть бажаний тип церемонії; від цього залежить вартість і тривалість церемонії" type="enum" required="true">
-          <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість - 140 грн. )"></activiti:value>
-          <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість - 337 грн.)"></activiti:value>
+          <activiti:value id="sEnum1" name="Скорочений обряд (15 хвилин, вартість ще не визначено (раніше була 140 грн.))"></activiti:value>
+          <activiti:value id="sEnum2" name="Повний обряд (45 хвилин, вартість ще не визначено (раніше була 337 грн.))"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sText6" name="Реквізити для сплати обраного типу обряду; ;labelType=info" type="label" default="Реквізити для сплати обраного типу обряду Ви отримаєте в електронному листі після перевірки данних реєстратором"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
@@ -59,7 +58,6 @@
         <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nDiffDaysForStartDate_visitDate1" name="nDiffDaysForStartDate_visitDate1 ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        
         <activiti:formProperty id="date_of_visit" name="Бажана дата обряду ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="visitDate1" name="Оберіть дату та час проведення обряду" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" " type="label" default="Якщо Ви не знайшли в обраному відділі ДРАЦС зручну дату та час, Ви можете обрати будь-який інший відділ ДРАЦС"></activiti:formProperty>
@@ -246,13 +244,13 @@
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -375,17 +373,89 @@
           <activiti:value id="reject2" name="Громадяни не з'явилися для отримання послуги. Закрити заявку."></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
+    <serviceTask id="servicetask22" name="Повідомлення громадянина про необхідніст підпису та сплати послуги (скорочений, без суми)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
+
+Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
+Примітка співробітника: ${comment}<br>
+<br>
+Тепер вам обом впродовж одного робочого дня з моменту отримання цього листа потрібно підписати заповнений бланк. Ви можете обрати один з двох варіантів, який Вам зручніше.<br><br>
+
+<b>Варіант 1. Ви можете підписати заяву в електронній формі.</b><br>
+Завантажте на свій комп’ютер файл, який додано до цього листа, та підпишіть його за допомогою електронно-цифрового підпису (ЕЦП). Якщо у Вас немає ЕЦП, за цим <a href="https://goo.gl/1OioXt" target="_blank">посиланням</a> Ви можете знайти перелік організацій, де Ви можете його отримати (в тому числі безкоштовно).<br>
+<br>
+На документі має бути накладено два електронні підписи – нареченого та нареченої. Якщо Ви не знаєте, як накласти ЕЦП на документ, за цим <a href="https://www.youtube.com/watch?v=tnBUGbqvYLs&feature=youtu.be" target="_blank">посиланням Ви знайдете відеоінструкцію</a>, як це можна зробити на прикладі одного сервісу.<br>
+<br>
+Після цього Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити цей файл співробітнику відділу ДРАЦС:
+<ul>
+<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;</li>
+<li>в полі залиште коментар, який побачить співробітник відділу ДРАЦС;</li>
+<li>нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;</li>
+<li>натисніть кнопку “Відправити”.</li>
+</ul>
+
+Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна виправити.<br>
+<br>
+<b>Варіант 2. Відвідати ДРАЦС та підписати заяву у паперовій формі.</b><br>
+Впродовж одного робочого дня відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
+<br>
+Під час візиту до ДРАЦСу обов'язково при собі мати:<br>
+1. Квитанцію про сплату держ.мита (якщо Ви сплатили онлайн на порталі - необов’язково).<br>
+2. Квитанцію про сплату вартості обряду.<br>
+3. Оригінали паспортів нареченого та нареченої.<br>
+4. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, які набрали законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним).<br>
+5. У разі скорочення місячного строку реєстрації шлюбу з поважних причин - відповідний документ (медична довідка про вагітність нареченої, засвідчена належним чином; свідоцтво про народження спільної дитини; медична довідка, що підтверджує безпосередню загрозу для життя нареченого або нареченої).<br>
+<br>
+Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим <a href="https://goo.gl/rujywk" target="_blank">посиланням</a>
+<br><br>
+Також Вам необхідно сплатити послугу “Організація та проведення індивідуального обряду державної реєстрації шлюбу” згідно з обраним типом при заповнені заяви (повний або скорочений).<br>
+Платіжний документ про сплату послуги Ви повині надати до відділу ДРАЦС не пізніше дня реєстрації Вашого шлюбу.<br>
+<br>
+
+<b>Реквізити та сума для сплати вартості церемонії скороченого обряду (15 хвилин): </b><br>
+<b><i>У зв'язку зі зміною тарифів реквізити та вартість церемонії не визначено на тепершній час. Чекайте повідомлення від співробітників ДРАЦС з зазначеними реквізитами та сумою. До дня проведення церемонії реквізити та сума будуть визначені! </i></b><br><br>
+Призначення платежу: <b>Надання платних послуг. Код відділу ${sCodeDRACS}, код послуги 4.1.1.</b><br>
+<br>
+Телефон для довідок: ${sPhoneOrgan} <br> 
+[pattern/mail/new_design/_common_content_end.html]                                
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature} <br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno pidpysaty zayavu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask2" name="Повідомлення громадянина про необхідніст підпису та сплати послуги (скорочений 140 грн.)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -561,7 +631,7 @@ ${sMail_Signature}<br>
     <sequenceFlow id="flow38" sourceRef="servicetask10" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="usertask2" targetRef="servicetask8"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow40" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow40" sourceRef="servicetask22" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow41" name="${decide == 'accept'}" sourceRef="exclusivegateway2" targetRef="usertask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
@@ -672,14 +742,13 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow42" name="${decide == 'accept2'}" sourceRef="exclusivegateway2" targetRef="usertask3_yellow">
@@ -745,9 +814,7 @@ ${sMail_Signature}<br>
           <activiti:value id="accept" name="Реєстрація відбулась"></activiti:value>
           <activiti:value id="reject" name="Реєстрацію перенесено або скасовано. Звільнити місце в електронній черзі"></activiti:value>
         </activiti:formProperty>
-        
-		<activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      
+        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -964,16 +1031,14 @@ execution.setVariable('sCountPayment', src)</script>
         <activiti:formProperty id="sBody_2" name="[pattern/print/minust/check_zags_1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="чек оплати онлайн" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-		<activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageTerm" name="Копія документу, що підтверджує поважні причини для скорочення місячного строку реєстрації шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow69" sourceRef="servicetask1" targetRef="scripttask3"></sequenceFlow>
@@ -997,6 +1062,79 @@ execution.setVariable('sCountPayment', src)</script>
     </scriptTask>
     <sequenceFlow id="flow73" sourceRef="scripttask2" targetRef="servicetask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway8" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask21" name="Повідомлення громадянина про необхідніст підпису та сплати послуги (повний, без суми)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Державна реєстрація шлюбу]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start_noBankIDname.html]
+
+Співробітник ДРАЦС успішно прийняв та перевірив Вашу заявку на реєстрацію шлюбу.<br> 
+Примітка співробітника: ${comment}<br>
+<br>
+Тепер вам обом впродовж одного робочого дня з моменту отримання цього листа потрібно підписати заповнений бланк. Ви можете обрати один з двох варіантів, який Вам зручніше.<br><br>
+
+<b>Варіант 1. Ви можете підписати заяву в електронній формі.</b><br>
+Завантажте на свій комп’ютер файл, який додано до цього листа, та підпишіть його за допомогою електронно-цифрового підпису (ЕЦП). Якщо у Вас немає ЕЦП, за цим <a href="https://goo.gl/1OioXt" target="_blank">посиланням</a> Ви можете знайти перелік організацій, де Ви можете його отримати (в тому числі безкоштовно).<br>
+<br>
+На документі має бути накладено два електронні підписи – нареченого та нареченої. Якщо Ви не знаєте, як накласти ЕЦП на документ, за цим <a href="https://www.youtube.com/watch?v=tnBUGbqvYLs&feature=youtu.be" target="_blank">посиланням Ви знайдете відеоінструкцію</a>, як це можна зробити на прикладі одного сервісу.<br>
+<br>
+Після цього Вам потрібно зайти у розділ <a href=" https://igov.org.ua/search?sID_Order=[sID_Order]" target="_blank">Мій журнал</a> та відправити цей файл співробітнику відділу ДРАЦС:
+<ul>
+<li>праворуч Вашого звернення натисніть на посилання “Детальніше” Ви опинитесь на сторінці діалогу с співробітником відділу ДРАЦС;</li>
+<li>в полі залиште коментар, який побачить співробітник відділу ДРАЦС;</li>
+<li>нижче поля натисніть “Додати файл” та оберіть файл, який Ви підписали заздалегіть;</li>
+<li>натисніть кнопку “Відправити”.</li>
+</ul>
+
+Після цього Ваша підписана заява потрапить у обраний Вами відділ ДРАЦС та буде перевірена співробітником. Якщо виникнуть зауваження - Ви отримаєте повідомлення з посиланням де їх можна виправити.<br>
+<br>
+<b>Варіант 2. Відвідати ДРАЦС та підписати заяву у паперовій формі.</b><br>
+Впродовж одного робочого дня відвідайте обраний відділ ДРАЦС за адресою: ${sAddress} та підпишить паперову форму заяви.<br>
+<br>
+Під час візиту до ДРАЦСу обов'язково при собі мати:<br>
+1. Квитанцію про сплату держ.мита (якщо Ви сплатили онлайн на порталі - необов’язково).<br>
+2. Квитанцію про сплату вартості обряду.<br>
+3. Оригінали паспортів нареченого та нареченої.<br>
+4. Оригінал документів , що підтверджують припинення попереднього шлюбу (свідоцтво про розірвання шлюбу; рішення суду про розірвання шлюбу; рішення суду про визнання шлюбу недійсним, які набрали законної сили; свідоцтво про смерть одного з подружжя; висновок відділу державної реєстрації актів цивільного стану про анулювання актового запису про шлюб, який є недійсним).<br>
+5. У разі скорочення місячного строку реєстрації шлюбу з поважних причин - відповідний документ (медична довідка про вагітність нареченої, засвідчена належним чином; свідоцтво про народження спільної дитини; медична довідка, що підтверджує безпосередню загрозу для життя нареченого або нареченої).<br>
+<br>
+Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим <a href="https://goo.gl/rujywk" target="_blank">посиланням</a>
+<br><br>
+Також Вам необхідно сплатити послугу “Організація та проведення індивідуального обряду державної реєстрації шлюбу” згідно з обраним типом при заповнені заяви (повний або скорочений).<br>
+Платіжний документ про сплату послуги Ви повині надати до відділу ДРАЦС не пізніше дня реєстрації Вашого шлюбу.<br>
+<br>
+
+<b>Реквізити та сума для сплати вартості церемонії повного обряду (45 хвилин): </b><br>
+<b><i>У зв'язку зі зміною тарифів реквізити та вартість церемонії не визначено на тепершній час. Чекайте повідомлення від співробітників ДРАЦС з зазначеними реквізитами та сумою. До дня проведення церемонії реквізити та сума будуть визначені! </i></b><br><br>
+Призначення платежу: <b>Надання платних послуг. Код відділу ${sCodeDRACS}, код послуги 4.1.1.</b><br>
+<br>
+Телефон для довідок: ${sPhoneOrgan} <br>                                 
+[pattern/mail/new_design/_common_content_end.html] 
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature} <br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] rozglyanuto. Vam neobhidno pidpysaty zayavu. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <serviceTask id="servicetask20" name="Повідомлення громадянина про необхідніст підпису та сплати послуги (повний 337 грн.)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -1075,13 +1213,13 @@ ${sMail_Signature} <br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow74" name="${asMarriageType == 'sEnum2'}" sourceRef="exclusivegateway8" targetRef="servicetask20">
+    <sequenceFlow id="flow74" name="${asMarriageType == 'sEnum2'}" sourceRef="exclusivegateway8" targetRef="servicetask21">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asMarriageType == 'sEnum2'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow75" name="${asMarriageType == 'sEnum1'}" sourceRef="exclusivegateway8" targetRef="servicetask2">
+    <sequenceFlow id="flow75" name="${asMarriageType == 'sEnum1'}" sourceRef="exclusivegateway8" targetRef="servicetask22">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asMarriageType == 'sEnum1'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow76" sourceRef="servicetask20" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow76" sourceRef="servicetask21" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow77" name="${asEnjoyingPaymentMethod == 'sEnum1'||asEnjoyingPaymentMethod == 'sEnum3'}" sourceRef="exclusivegateway6" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingPaymentMethod == 'sEnum1'||asEnjoyingPaymentMethod == 'sEnum3'}]]></conditionExpression>
     </sequenceFlow>
@@ -1128,7 +1266,7 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
         <omgdc:Bounds height="35.0" width="35.0" x="970.0" y="1347.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="65.0" width="220.0" x="1036.0" y="862.0"></omgdc:Bounds>
+        <omgdc:Bounds height="87.0" width="220.0" x="1170.0" y="942.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
         <omgdc:Bounds height="55.0" width="202.0" x="1342.0" y="762.0"></omgdc:Bounds>
@@ -1218,10 +1356,16 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="965.0" y="787.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask20" id="BPMNShape_servicetask20">
-        <omgdc:Bounds height="63.0" width="213.0" x="725.0" y="864.0"></omgdc:Bounds>
+        <omgdc:Bounds height="87.0" width="213.0" x="440.0" y="900.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
         <omgdc:Bounds height="55.0" width="143.0" x="463.0" y="84.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask21" id="BPMNShape_servicetask21">
+        <omgdc:Bounds height="87.0" width="202.0" x="699.0" y="840.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask22" id="BPMNShape_servicetask22">
+        <omgdc:Bounds height="80.0" width="191.0" x="1047.0" y="844.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="111.0"></omgdi:waypoint>
@@ -1264,7 +1408,7 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
         <omgdi:waypoint x="988.0" y="1252.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="1146.0" y="927.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1142.0" y="924.0"></omgdi:waypoint>
         <omgdi:waypoint x="1145.0" y="1041.0"></omgdi:waypoint>
         <omgdi:waypoint x="1005.0" y="1041.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
@@ -1411,8 +1555,8 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow74" id="BPMNEdge_flow74">
         <omgdi:waypoint x="965.0" y="807.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="807.0"></omgdi:waypoint>
-        <omgdi:waypoint x="831.0" y="864.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="807.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="840.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="865.0" y="774.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
@@ -1420,14 +1564,13 @@ execution.setVariable('sWeddingDay', timeVisit)</script>
       <bpmndi:BPMNEdge bpmnElement="flow75" id="BPMNEdge_flow75">
         <omgdi:waypoint x="1005.0" y="807.0"></omgdi:waypoint>
         <omgdi:waypoint x="1144.0" y="807.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1146.0" y="862.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1142.0" y="844.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="1021.0" y="774.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow76" id="BPMNEdge_flow76">
-        <omgdi:waypoint x="938.0" y="895.0"></omgdi:waypoint>
-        <omgdi:waypoint x="985.0" y="895.0"></omgdi:waypoint>
+        <omgdi:waypoint x="800.0" y="927.0"></omgdi:waypoint>
         <omgdi:waypoint x="985.0" y="1021.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow77" id="BPMNEdge_flow77">
