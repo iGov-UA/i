@@ -1397,6 +1397,7 @@ public class ActionFlowController {
         JSONArray oaSlot = null;
 
         JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+        JSONArray timesArr = new JSONArray();
         for (Object o : oaJSONArray) {
         	JSONObject oJSONObject = (JSONObject) o;
             String datePart = (String) oJSONObject.get("DatePart");
@@ -1414,7 +1415,6 @@ public class ActionFlowController {
 
 	            JSONParser parser = new JSONParser();
 	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
-	            JSONArray timesArr = new JSONArray();
 	            if (response.containsKey("d")){
 	            	JSONArray times = (JSONArray) response.get("d");
 	            	for (Object o1 : times) {
@@ -1429,6 +1429,7 @@ public class ActionFlowController {
 	                    	Map<String, Object> currRes = new HashMap<String, Object>();
 	                    	currRes.put("date", formattedDate);
 	                    	currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
+	                    	currRes.put("countJobsAllow", countJobsAllow);
 	                    	Duration delta = dStopTime.minus(dStartTime);
 	                    	currRes.put("length", delta.getSeconds() / 60);
 	                    	timesArr.add(currRes);
@@ -1436,9 +1437,9 @@ public class ActionFlowController {
 
 	            	}
 	            }
-	            oJSONObjectReturn.put("aDate", timesArr);
             }
         }
+        oJSONObjectReturn.put("aDate", timesArr);
 
         return oJSONObjectReturn.toString();
     }
@@ -1485,7 +1486,7 @@ public class ActionFlowController {
 
         return res.toString();
     }
-    
+
     @RequestMapping(value = "/Qlogic/getOrganizationState", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getOrganizationState(
