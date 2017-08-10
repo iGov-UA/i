@@ -402,7 +402,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               bFree: true,
               nID: nSlotID,
               nMinutes: oDate.length,
-              sTime: oDate.time
+              sTime: oDate.time,
+              nAllowSlots: oDate.countJobsAllow
             })
           } else {
             aDay.push({
@@ -410,7 +411,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 bFree: true,
                 nID: nSlotID,
                 nMinutes: oDate.length,
-                sTime: oDate.time
+                sTime: oDate.time,
+                nAllowSlots: oDate.countJobsAllow
               }],
               sDate: oDate.date,
               bHasFree: true
