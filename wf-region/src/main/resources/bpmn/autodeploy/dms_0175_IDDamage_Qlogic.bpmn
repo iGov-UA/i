@@ -37,8 +37,10 @@
     <scriptTask id="scripttask2" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src=execution.getVariable('visitDay')
 var date_of_visit=src.substr(src.indexOf('"sDate":"')+9,16);
-var tickNum=src.substr(src.indexOf('"ticket_number":"')+17,3);
-var tickCode=src.substr(src.indexOf('"ticket_code":"')+15,src.indexOf('"',src.indexOf('"ticket_code":"')+15)-(src.indexOf('"ticket_code":"')+15));
+
+var tickNum=src.substr(src.indexOf('"receiptNum":')+13,src.indexOf(',',src.indexOf('"receiptNum":')+13)-(src.indexOf('"receiptNum":')+13))
+var tickCode=src.substr(src.indexOf('"id":"')+6,src.indexOf('"',src.indexOf('"id":"')+6)-(src.indexOf('"id":"')+6))
+
 execution.setVariable('sNotification_day', date_of_visit)
 execution.setVariable('sTicketNumber', tickNum)
 execution.setVariable('sTicketCode', tickCode)
@@ -82,7 +84,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Pered splatoyu posluhy prosymo pereviryty svoyu cherhu za telefonamy 097 470 05 05 abo 066 470 05 05 abo 073 470 05 05]]></activiti:expression>
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareiestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -131,9 +133,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	</ul>
 </p>
 <p>Після подання документів Ви зможете перевіряти готовність ID-картки за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
-<p>Якщо Вам потрібно скасувати заявку,  зверніться,  будь ласка, за телефонами: 097 470 05 05; 066 470 05 05; 073 470 05 05<br>
-При цьому потрібно буде вказати код талону = ${sTicketCode}.
-</p>
+<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan},<br>
@@ -143,7 +143,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
-    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_kiev">
+    <userTask id="usertask2" name="Заявка прийнята ДМС" activiti:candidateGroups="id_card_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
