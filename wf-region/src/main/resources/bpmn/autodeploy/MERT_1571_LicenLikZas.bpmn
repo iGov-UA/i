@@ -119,16 +119,13 @@
         <activiti:formProperty id="lPrimN1" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex1" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Vidomost1" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
-        
+        <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot;&quot;}}}"></activiti:formProperty>
         
         <activiti:formProperty id="asNewZakl2" name="Хочете внести інформацію про ще один заклад?" type="enum" required="true">
           <activiti:value id="sEnamNewYes" name="Так, додати аптечний заклад"></activiti:value>
           <activiti:value id="sEnamNewNo" name="Ні"></activiti:value>
         </activiti:formProperty>
-        
         
         <activiti:formProperty id="sLabeApt2" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №2&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="asAptZakl2" name="Вид аптечного закладу" type="enum" required="true">
@@ -169,10 +166,145 @@
         
         <activiti:formProperty id="markerZaklad2" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad2.json')}"></activiti:formProperty>
         
+        <activiti:formProperty id="markersLine_MD2" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD2&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl3&quot;],&quot;sValue&quot;:&quot;&quot;}}}"></activiti:formProperty>
+        
         <activiti:formProperty id="asNewZakl3" name="Хочете внести інформацію про ще один заклад?" type="enum" required="true">
           <activiti:value id="sEnamNewYes" name="Так, додати аптечний заклад"></activiti:value>
           <activiti:value id="sEnamNewNo" name="Ні"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeApt3" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №3&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="asAptZakl3" name="Вид аптечного закладу" type="enum" required="true">
+          <activiti:value id="sEnamAptek3" name="Аптека"></activiti:value>
+          <activiti:value id="sEnamAptpunkt3" name="Аптечний пункт"></activiti:value>
+          <activiti:value id="sEnamAptSklad3" name="Аптечний склад"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekRozdr3" name="Роздрібна торгівля;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekVurob3" name="Виробництво;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAptPidpor3" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeAptAdr3" name=" ; ;labelType=info" type="label" default="Деталізована адреса аптечного закладу №3"></activiti:formProperty>
+        <activiti:formProperty id="sOblast3" name="Область" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asNPTipe3" name="Тип населеного пункту" type="enum" required="true">
+          <activiti:value id="sEnamMist" name="Місто"></activiti:value>
+          <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
+          <activiti:value id="sEnamSelo" name="Село"></activiti:value>
+          <activiti:value id="sEnamSeluse" name="Селище"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRainNP3" name="Район до якого належить населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameNP3" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVulitsa3" name="Назва вулиці;(проспекту, провулку, алеї, площі, бульвару)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBudN3" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipePrim3" name="Тип приміщення" type="enum" required="true">
+          <activiti:value id="sEnamOfise" name="Офіс"></activiti:value>
+          <activiti:value id="sEnamKvart" name="Квартира"></activiti:value>
+          <activiti:value id="sEnamPrimish" name="Приміщення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lPrimN3" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lPostIndex3" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Vidomost3" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerZaklad3" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad3.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_MD3" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD3&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl3&quot;],&quot;sValue&quot;:&quot;&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="asNewZakl4" name="Хочете внести інформацію про ще один заклад?" type="enum" required="true">
+          <activiti:value id="sEnamNewYes" name="Так, додати аптечний заклад"></activiti:value>
+          <activiti:value id="sEnamNewNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeApt4" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №4&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="asAptZakl4" name="Вид аптечного закладу" type="enum" required="true">
+          <activiti:value id="sEnamAptek4" name="Аптека"></activiti:value>
+          <activiti:value id="sEnamAptpunkt4" name="Аптечний пункт"></activiti:value>
+          <activiti:value id="sEnamAptSklad4" name="Аптечний склад"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekRozdr4" name="Роздрібна торгівля;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekVurob4" name="Виробництво;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAptPidpor4" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeAptAdr4" name=" ; ;labelType=info" type="label" default="Деталізована адреса аптечного закладу №4"></activiti:formProperty>
+        <activiti:formProperty id="sOblast4" name="Область" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asNPTipe4" name="Тип населеного пункту" type="enum" required="true">
+          <activiti:value id="sEnamMist" name="Місто"></activiti:value>
+          <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
+          <activiti:value id="sEnamSelo" name="Село"></activiti:value>
+          <activiti:value id="sEnamSeluse" name="Селище"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRainNP4" name="Район до якого належить населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameNP4" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVulitsa4" name="Назва вулиці;(проспекту, провулку, алеї, площі, бульвару)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBudN4" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipePrim4" name="Тип приміщення" type="enum" required="true">
+          <activiti:value id="sEnamOfise" name="Офіс"></activiti:value>
+          <activiti:value id="sEnamKvart" name="Квартира"></activiti:value>
+          <activiti:value id="sEnamPrimish" name="Приміщення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lPrimN4" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lPostIndex4" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Vidomost4" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerZaklad4" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad4.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_MD4" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD3&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl3&quot;],&quot;sValue&quot;:&quot;&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="asNewZakl5" name="Хочете внести інформацію про ще один заклад?" type="enum" required="true">
+          <activiti:value id="sEnamNewYes" name="Так, додати аптечний заклад"></activiti:value>
+          <activiti:value id="sEnamNewNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeApt5" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №5&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="asAptZakl5" name="Вид аптечного закладу" type="enum" required="true">
+          <activiti:value id="sEnamAptek5" name="Аптека"></activiti:value>
+          <activiti:value id="sEnamAptpunkt5" name="Аптечний пункт"></activiti:value>
+          <activiti:value id="sEnamAptSklad5" name="Аптечний склад"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekRozdr5" name="Роздрібна торгівля;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekVurob5" name="Виробництво;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAptPidpor5" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeAptAdr5" name=" ; ;labelType=info" type="label" default="Деталізована адреса аптечного закладу №5"></activiti:formProperty>
+        <activiti:formProperty id="sOblast5" name="Область" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asNPTipe5" name="Тип населеного пункту" type="enum" required="true">
+          <activiti:value id="sEnamMist" name="Місто"></activiti:value>
+          <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
+          <activiti:value id="sEnamSelo" name="Село"></activiti:value>
+          <activiti:value id="sEnamSeluse" name="Селище"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRainNP5" name="Район до якого належить населений пункт" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameNP5" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVulitsa5" name="Назва вулиці;(проспекту, провулку, алеї, площі, бульвару)" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBudN5" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipePrim5" name="Тип приміщення" type="enum" required="true">
+          <activiti:value id="sEnamOfise" name="Офіс"></activiti:value>
+          <activiti:value id="sEnamKvart" name="Квартира"></activiti:value>
+          <activiti:value id="sEnamPrimish" name="Приміщення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lPrimN5" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lPostIndex5" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Vidomost5" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markerZaklad5" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad5.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_MD5" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD3&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl3&quot;],&quot;sValue&quot;:&quot;&quot;}}}"></activiti:formProperty>
         
         
         <activiti:formProperty id="sPosluga_name" name="назва послуги ; ;bVisible=false" type="string" default="Ліцензія для виробництва або торгівлі лікарськими засобами"></activiti:formProperty>
