@@ -17,9 +17,9 @@
         "nFile_Vidomost2"
       ],
       "asID_Field": {
-        "sCond": "asNewZakl2"
+        "sCondZ": "asNewZakl2"
       },
-      "sCondition": "[sCond]=='sEnamNewYes'||[sCond] == 'Так, додати аптечний заклад'"
+      "sCondition": "[sCondZ]=='sEnamNewYes'||[sCondZ] == 'Так, додати аптечний заклад'"
     },
     "ShowFieldsOnCondition_AptZakl2": {
       "aField_ID": [
@@ -27,27 +27,30 @@
         "chekVurob2"
       ],
       "asID_Field": {
-        "sCond": "asAptZakl2"
+        "sCond": "asAptZakl2",
+        "sCondZ": "asNewZakl2"
       },
-      "sCondition": "[sCond]=='sEnamAptek2'||[sCond] == 'Аптека'"
+      "sCondition": "([sCond]=='sEnamAptek2'||[sCond] == 'Аптека')&&([sCondZ]=='sEnamNewYes'||[sCondZ] == 'Так, додати аптечний заклад')"
     },
     "ShowFieldsOnCondition_AptPunkt2": {
       "aField_ID": [
         "sAptPidpor2"
       ],
       "asID_Field": {
-        "sCond": "asAptZakl2"
+        "sCond": "asAptZakl2",
+        "sCondZ": "asNewZakl2"
       },
-      "sCondition": "[sCond]=='sEnamAptpunkt2'||[sCond] == 'Аптечний пункт'"
+      "sCondition": "([sCond]=='sEnamAptpunkt2'||[sCond] == 'Аптечний пункт')&&([sCondZ]=='sEnamNewYes'||[sCondZ] == 'Так, додати аптечний заклад')"
     },
     "ShowFieldsOnCondition_ApRaion2": {
       "aField_ID": [
         "sRainNP2"
       ],
       "asID_Field": {
-        "sCond": "asNPTipe2"
+        "sCond": "asNPTipe2",
+        "sCondZ": "asNewZakl2"
       },
-      "sCondition": "[sCond]=='sEnamSMT'||[sCond]=='СМТ'||[sCond]=='sEnamSelo'||[sCond]=='Село'||[sCond]=='sEnamSeluse'||[sCond] == 'Селище'"
+      "sCondition": "([sCond]=='sEnamSMT'||[sCond]=='СМТ'||[sCond]=='sEnamSelo'||[sCond]=='Село'||[sCond]=='sEnamSeluse'||[sCond] == 'Селище')&&([sCondZ]=='sEnamNewYes'||[sCondZ] == 'Так, додати аптечний заклад')"
     }
   }
 }
