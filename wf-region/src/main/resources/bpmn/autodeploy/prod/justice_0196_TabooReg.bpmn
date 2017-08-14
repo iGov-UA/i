@@ -255,16 +255,15 @@
         </activiti:formProperty>
         <activiti:formProperty id="sVarPomNum" name="Номер приміщення; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asDecisionMain" name="Результат обробки звернення:" type="enum" required="true">
-          <activiti:value id="acceptMain" name="Успішна реєстрація заяви (проведена онлайн)"></activiti:value>
-          <activiti:value id="rejectMain" name="Відмова в реєстрації"></activiti:value>
+          <activiti:value id="rejectMain" name="Запросити заявника для проведення реєстрації"></activiti:value>
+          <activiti:value id="acceptMain" name="Реєстрація заяви проведена онлайн"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markers_Hide_ut01_01" name="показати строки якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide_ut01_02" name="показати строки якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers_Req_ut01_01" name="обов'язково якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers_Req_ut01_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_01&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="fDecisionDoc" name="Копія картки прийому заяви; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="Причина відмови" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Додатковий коментар, до стандартного запрошення" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/justice/justice_0196_TabooReg_print_20170519.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
