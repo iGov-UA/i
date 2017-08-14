@@ -1092,25 +1092,48 @@
         };
 
         $scope.nID_FlowSlotTicket_FieldQueueData = function (sValue) {
+          var oValue;
+          try{
+            oValue = angular.fromJson(sValue);
+          } catch (err) {
+            oValue = sValue;
+          }
           var nID_FlowSlotTicket = 0;
-          try {
-            var nAt = sValue.indexOf(":");
-            var nTo = sValue.indexOf(",");
-            nID_FlowSlotTicket = sValue.substring(nAt + 1, nTo);;
-          } catch (_) {
-            nID_FlowSlotTicket = 1;
+          if(oValue.sID_Type && oValue.sID_Type === 'Qlogic'){
+            nID_FlowSlotTicket = oValue.sDate.substring(0, oValue.sDate.indexOf(":") + 3);
+            if(oValue.oTicket && oValue.oTicket['receiptNum']){
+              nID_FlowSlotTicket = nID_FlowSlotTicket + ' Талон №' + oValue.oTicket['receiptNum'];
+            }
+          } else {
+            try {
+              var nAt = sValue.indexOf(":");
+              var nTo = sValue.indexOf(",");
+              nID_FlowSlotTicket = sValue.substring(nAt + 1, nTo);;
+            } catch (_) {
+              nID_FlowSlotTicket = 1;
+            }
           }
           return nID_FlowSlotTicket;
         };
 
         $scope.sDate_FieldQueueData = function (sValue) {
+          var oValue;
+          try{
+            oValue = angular.fromJson(sValue);
+          } catch (err) {
+            oValue = sValue;
+          }
           var sDate = "Дата назначена!";
-          try {
-            var nAt = sValue.indexOf("sDate");
-            var nTo = sValue.indexOf("}");
-            sDate = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
-          } catch (_) {
-            sDate = "Дата назначена!";
+          if(oValue.sID_Type && oValue.sID_Type === 'Qlogic'){
+            sDate = oValue.sDate.substring(0, oValue.sDate.indexOf(":") + 3);
+          } else {
+            try {
+              var nAt = sValue.indexOf("sDate");
+              var nTo = sValue.indexOf("}");
+              sDate = sValue.substring(nAt + 5 + 1 + 1 + 1, nTo - 1 - 6);
+            } catch (_) {
+              sDate = "Дата назначена!";
+            }
           }
           return sDate;
         };
