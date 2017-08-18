@@ -100,9 +100,8 @@
         <activiti:formProperty id="sText1" name=" ; ;labelType=info" type="label" default="Якщо ви обрали отримати відповідь поштою, вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 23.11"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
+        <activiti:formProperty id="asLust" name="Вартість поштового відправлення" type="enum" writable="false" default="sEnamLustKur">
+          <activiti:value id="sEnamLustKur" name="Доставка листа 43.56 гривень"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLabeRegistr2" name=" ; ;labelType=warning" type="label" default="УВАГА! Для АНД, Індустіального, Соборного і Центрального району, довідки видаються тільки, якщо інформація про вас вже внесена в реєстр фізичних осіб (тобто, якщо ви вже отримували довідку у відділах реєстрації фіз. осіб).&lt;br&gt; Якщо в реєстрі не має інформації про зареєстрованих за вашою адресою осіб, вам буде відмовлено!"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all" name=" ; ;bNew=true" type="file"></activiti:formProperty>
@@ -122,7 +121,7 @@
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="23.11"></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="43.56 "></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Довідка про склад сім'ї"></activiti:formProperty>
@@ -132,13 +131,6 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-var typeMail = execution.getVariable('asLust');
-var sum = 23.11;
-if (typeMail === 'sEnamLustKur') {
-	sum =  43.47;
-}
-execution.setVariable('sSum', sum);
-
 var mail = '';
 var adres = '';
 var adresPost = '';
