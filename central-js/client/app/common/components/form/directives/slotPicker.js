@@ -42,7 +42,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       var nID_ServiceCustomPrivate_ID = 'nID_ServiceCustomPrivate_' + scope.property.id;
       var isQueueDataType = {
         iGov: !scope.formData.params[sID_Type_ID] || (scope.formData.params[sID_Type_ID] && (scope.formData.params[sID_Type_ID].value === 'iGov' || scope.formData.params[sID_Type_ID].value === '')),
-        DMS: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'DMS'
+        DMS: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'DMS',
+        QLogic: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'Qlogic'
       };
 
       function isInvalidServiceCustomPrivate() {
@@ -142,6 +143,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
             });
           }
+        } else if (isQueueDataType.QLogic){
+          //debugger;
         }
       }
       function checkParamsOfSlot(slotId){
@@ -270,9 +273,10 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             data.nDiffDaysForStartDate = nDiffDaysForStartDateParam.value;
           }
 
-
-
           sURL = '/api/service/flow/' + scope.serviceData.nID;
+        } else if(isQueueDataType.QLogic){
+          //debugger;
+
         } else {
           scope.slotsLoading = false;
           ErrorsFactory.push({
@@ -308,6 +312,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 })
               })
             }
+          } else if (isQueueDataType.QLogic){
+            //debugger;
           }
           scope.slotsLoading = false;
         });
