@@ -46,12 +46,11 @@
         <activiti:formProperty id="markersLine_F" name="Додаткові документи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;bankId_scan_passport&quot;],&quot;sValue&quot;:&quot;Додаткові документи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fVutiag" name="Витяг про реєстрацію юридичної особи; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="fGrafPlan" name="План розташування ділянки;(викопіювання з кадастрової карти\плану або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки);bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fZemProekt" name="Проект землеустрою ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="fGroshOcin" name="Технічна документація щодо грошової оцінки ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemProekt" name="Проект землеустрою ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fGroshOcin" name="Технічна документація щодо грошової оцінки ділянки; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="fNeruh" name="Право власності на нерухомість;(додайте документи що посвідчують право власності на нерухомість розміщену на ділянці) ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fZgodaKorustuv" name="Письмова згода землекористувача;(має бути засвідчена нотаріально);bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="fZgodaKorustuv" name="Письмова згода землекористувача;(має бути засвідчена нотаріально);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerFiles" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/0127_files.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markerFlag" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/0127_flag.json')}"></activiti:formProperty>
@@ -183,18 +182,23 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVutiag" name="Витяг про реєстрацію юридичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGrafPlan" name="План розташування ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemProekt" name="Проект землеустрою ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGroshOcin" name="Технічна документація щодо грошової оцінки ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fNeruh" name="Право власності на нерухомість; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZgodaKorustuv" name="Письмова згода землекористувача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="decide" name="Рішення про долю звернення" type="enum" required="true">
           <activiti:value id="accept" name="Передати документи спеціалістам"></activiti:value>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар адміністратора у разі відмови у реєстрації звернення" type="textArea"></activiti:formProperty>
+        
         <activiti:formProperty id="navischo" name="ціль відведення; ;bVisible=false" type="string" default="в оренду терміном на ${term} років"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_319.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/ZemRada_0127_ZemOrend.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
@@ -342,6 +346,14 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVutiag" name="Витяг про реєстрацію юридичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGrafPlan" name="План розташування ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemProekt" name="Проект землеустрою ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGroshOcin" name="Технічна документація щодо грошової оцінки ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fNeruh" name="Право власності на нерухомість; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZgodaKorustuv" name="Письмова згода землекористувача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="decideSpec" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="ponovleno" name="Дозвіл надано"></activiti:value>
           <activiti:value id="vidmovleno" name="Відмовлено у наданні дозволу"></activiti:value>
@@ -351,12 +363,9 @@
         <activiti:formProperty id="decisionComment1" name="Коментар при відмові у наданні послуги чи поновленні договору для адміністратора ЦНАП" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="navischo" name="ціль відведення; ;bVisible=false" type="string" default="в оренду терміном на ${term} років"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_319.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/Zemelni_Poslugi/ZemRada_0127_ZemOrend.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -397,6 +406,14 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVutiag" name="Витяг про реєстрацію юридичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGrafPlan" name="План розташування ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemProekt" name="Проект землеустрою ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGroshOcin" name="Технічна документація щодо грошової оцінки ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fNeruh" name="Право власності на нерухомість; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZgodaKorustuv" name="Письмова згода землекористувача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="decideSpec" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="ponovleno" name="Дозвіл надано"></activiti:value>
           <activiti:value id="vidmovleno" name="Відмовлено у наданні дозволу"></activiti:value>
@@ -404,10 +421,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment1" name="Коментар до рішення для адміністратора ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення для громадянина" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
@@ -620,7 +633,13 @@ ${sNameOrgan}.<br />
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         
-        
+        <activiti:formProperty id="bankId_scan_passport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVutiag" name="Витяг про реєстрацію юридичної особи; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGrafPlan" name="План розташування ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZemProekt" name="Проект землеустрою ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fGroshOcin" name="Технічна документація щодо грошової оцінки ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fNeruh" name="Право власності на нерухомість; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fZgodaKorustuv" name="Письмова згода землекористувача; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersVisitDash" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('AK/Novopskov/NpscOcheredDagbord.json')}"></activiti:formProperty>
@@ -635,10 +654,6 @@ ${sNameOrgan}.<br />
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення для громадянина" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="docToSend" name="Завантажте копію документа для відправлення заявнику ; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="scrSubject" name="scrSubject; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="scrAdress" name="scrAdress; ;bVisible=false" type="string"></activiti:formProperty>
