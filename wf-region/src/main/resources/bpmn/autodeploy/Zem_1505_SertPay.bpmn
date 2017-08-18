@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="novopscov_rda_cnap556" name="Сертифікат на право на земельну частку (пай)" isExecutable="true">
+  <process id="Zem_1505_SertPay" name="Сертифікат на право на земельну частку (пай)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0" required="true"></activiti:formProperty>
@@ -8,26 +8,33 @@
           <activiti:value id="sEnumSud" name="Видати за рішенням суду"></activiti:value>
           <activiti:value id="sEnumDubl" name="Видати дублікат взамін втраченого"></activiti:value>
         </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Індивідуальний податковий номер (ІПН)" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Сканкопія паспорта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Мобільний телефон" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail для зворотного зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAdress_zemli" name="Розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про землю і сертифікат" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sAdress_zemli&quot;],&quot;sValue&quot;:&quot;Інформація про землю і сертифікат&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sAdress_zemli" name="Адреса розташування земельної ділянки" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sSud_nazva" name="Назва суду що видав рішення про право на пай" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRish_rekv" name="Реквізити рішення суду;(Вкажіть в форматі:№ХХХХХХХХХ від ХХ.ХХ.ХХХХ)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_rishenia" name="Сканкопія рішення суду ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sSertRecv" name="Реквізити втраченого сертифіката;(Вкажіть в форматі: СеріяХХ №ХХХХХХХХХ від ХХ.ХХ.ХХХХ)" type="string" default="Серія__ №_______ від __.__.____" required="true"></activiti:formProperty>
         <activiti:formProperty id="sObstavini" name="Обставини за яких втрачено сертефікат" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_ogolosh" name="Копія оголошення у друкованому ЗМІ про втрату сертефікату ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="file_polise" name="Документ що підтверджує звернення в поліцію;(довідка або копія заяви про зникнення сертифікату);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="file_kadastr" name="Довідка з держземагенства щодо дійсності одержання сертифікату ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="marker1" name="marker" type="markers" default="${markerService.loadFromFile('zemlja/nov_556.json')}"></activiti:formProperty>
-        <activiti:formProperty id="file_dovir" name="Копія довіреності на представника в разі портеби ; ;bNew=true" type="file"></activiti:formProperty>
+                
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -113,15 +120,12 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="sNotifyEvent_AfterSubmit" name="супровідний текст; ;bVisible=false" type="string" default="Якщо заява оформлена вірно, робота по заявці перейде у стадію видачі сертифікату. У разі відмови робота по цій заявці завершена."></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/novopskov/novopscov_556_print.html]; ;bVisible=false" type="string" default="Форма заяви громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="bankId_scan_passport" name="Скан паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file_rishenia" name="Сканкопія рішення суду ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file_ogolosh" name="Копія оголошення у друкованому ЗМІ про втрату сертефікату ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="file_polise" name="Документ що підтверджує звернення в поліцію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="file_kadastr" name="Довідка з держземагенства щодо дійсності одержання сертифікату ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="file_dovir" name="Копія довіреності на представника в разі портеби ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-                
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
@@ -204,7 +208,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
     <sequenceFlow id="flow7" name="${variants1 == 'dok_ok'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask3" name="Видача рішення" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3" name="Видача відповіді" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAdress" name="Адреса реєстрації заявника" type="string" writable="false"></activiti:formProperty>
@@ -259,8 +263,8 @@ ${sNameOrgan}.<br />
     <sequenceFlow id="flow17" sourceRef="servicetask5" targetRef="usertask3"></sequenceFlow>
     <sequenceFlow id="flow18" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_novopscov_rda_cnap556">
-    <bpmndi:BPMNPlane bpmnElement="novopscov_rda_cnap556" id="BPMNPlane_novopscov_rda_cnap556">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Zem_1505_SertPay">
+    <bpmndi:BPMNPlane bpmnElement="Zem_1505_SertPay" id="BPMNPlane_Zem_1505_SertPay">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -310,14 +314,14 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="616.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="535.0" y="217.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="549.0" y="167.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="549.0" y="167.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="636.0" y="237.0"></omgdi:waypoint>
         <omgdi:waypoint x="636.0" y="302.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="638.0" y="225.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="638.0" y="225.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -328,7 +332,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="235.0" y="329.0"></omgdi:waypoint>
         <omgdi:waypoint x="205.0" y="329.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="207.0" y="340.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="207.0" y="340.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -342,7 +346,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="357.0" y="265.0"></omgdi:waypoint>
         <omgdi:waypoint x="357.0" y="235.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="260.0" y="226.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="260.0" y="226.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
