@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="Zem_283_VlasnNerosZD" name="Отримання рішення про передачу у власність нерозподілених(невитребуваних) земельних ділянок" isExecutable="true">
+  <process id="Zem_0283_VlasnNerosZD" name="Отримання рішення про передачу у власність нерозподілених(невитребуваних) земельних ділянок" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган який надасть вам відповідь" type="select" default="0" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я заявника" type="string" required="true"></activiti:formProperty>
@@ -13,7 +12,6 @@
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="marker_ur_fiz" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFizFop_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" required="true">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
@@ -21,25 +19,20 @@
           <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
           <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="nFile_FizPasport" name="Паспорт заявника;(завантажте першу, другу сторінку та сторінку де зазначене місце реєстрації) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_FOPRegistr" name="Витяг про реєстрацію ФОП; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса;(індекс, місто, вулиця, будинок, офіс)" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
-        
         <activiti:formProperty id="nFile_StatVutiag" name="Витяг зі статуту;(відскануйте частину статуту що дає вам право отримувати такі ділянки) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження;(завантажте сканкопію документа, що підтверджує ваше право подавати заяву від юридичної особи) ;bNew=true" type="file" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_Z" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Z&quot;:{&quot;aElement_ID&quot;:[&quot;sZemNom&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sZemNom" name="Кадастровий номер земельної ділянки;(введіть у форматі 1234567890:12:123:1234)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sZemKSP" name="Назва колишнього Колгоспно сільського підприємства" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dZemPlosh" name="Площа ділянки (га)" type="double" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;nFile_VukMap&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="nFile_VukMap" name="Мапа з розташуванням ділянки;(викопіювання з кадастрової карти або інші графічні матеріали) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Pay" name="Сертифікат на право на земельну ділянку;(пай) ;bNew=true" type="file" required="true"></activiti:formProperty>
@@ -50,7 +43,6 @@
         </activiti:formProperty>
         <activiti:formProperty id="nFile_VlasnBud" name="Право власності на об'єкт нерухомого майна;(у разі наявності на ділянці будівель чи споруд) ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="marker_files" name="markers" type="markers" default="${markerService.loadFromFile('Zemelni_Poslugi/zem_283_F.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -113,14 +105,12 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
     <userTask id="usertask1" name="ЦНАП перевірка" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        
         <activiti:formProperty id="markersLine_fio" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_fio&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="marker_ur_fiz" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFizFop_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
@@ -128,24 +118,19 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
           <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="nFile_FizPasport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_FOPRegistr" name="Витяг про реєстрацію ФОП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="nFile_StatVutiag" name="Витяг зі статуту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_Z" name="Інформація про землю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Z&quot;:{&quot;aElement_ID&quot;:[&quot;sZemNom&quot;],&quot;sValue&quot;:&quot;Інформація про землю&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sZemNom" name="Кадастровий номер земельної ділянки; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sZemKSP" name="Назва колишнього Колгоспно сільського підприємства; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="dZemPlosh" name="Площа ділянки (га); ;writable=false" type="double"></activiti:formProperty>
-        
         <activiti:formProperty id="nFile_VukMap" name="Мапа з розташуванням ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Pay" name="Сертифікат на право на земельну ділянку; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ProgZem" name="Проект землеустрою щодо відведення ділянки; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -154,9 +139,6 @@ ${sNameOrgan}<br />
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="nFile_VlasnBud" name="Право власності на об'єкт нерухомого майна; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
-        
-        
         <activiti:formProperty id="decide" name="Обробка заяви" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно"></activiti:value>
           <activiti:value id="reject" name="Відмова. Заява оформлена НЕ вірно"></activiti:value>
@@ -250,7 +232,6 @@ ${sPhoneOrgan}.<br />
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Контактний e-mail" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="marker_ur_fiz" name="markers" type="markers" default="${markerService.loadFromFile('AK/UrFizFop_OpenData_DovFile.json')}"></activiti:formProperty>
         <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
           <activiti:value id="sEnamFiz" name="Фізична особа"></activiti:value>
@@ -258,19 +239,15 @@ ${sPhoneOrgan}.<br />
           <activiti:value id="sEnamUrK" name="Юридична особа (подає керівник)"></activiti:value>
           <activiti:value id="sEnamUrP" name="Юридична особа (подає представник)"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="nFile_FizPasport" name="Паспорт заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_FOPRegistr" name="Витяг про реєстрацію ФОП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="nFile_StatVutiag" name="Витяг зі статуту; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_UODovirenist" name="Документ що підтверджує повноваження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="Rishenia" name="Результат опрацювання заяви" type="enum" required="true">
           <activiti:value id="Pruiniato" name="Рішення прийнято"></activiti:value>
           <activiti:value id="Vidmova" name="Відмова, рішення НЕ прийнято"></activiti:value>
@@ -371,8 +348,8 @@ ${sNameOrgan}<br/>
     <sequenceFlow id="flow12" sourceRef="servicetask6" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask5" targetRef="endevent2"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Zem_283_VlasnNerosZD">
-    <bpmndi:BPMNPlane bpmnElement="Zem_283_VlasnNerosZD" id="BPMNPlane_Zem_283_VlasnNerosZD">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Zem_0283_VlasnNerosZD">
+    <bpmndi:BPMNPlane bpmnElement="Zem_0283_VlasnNerosZD" id="BPMNPlane_Zem_0283_VlasnNerosZD">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -432,14 +409,14 @@ ${sNameOrgan}<br/>
         <omgdi:waypoint x="512.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="481.0" y="221.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="380.0" y="181.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="74.0" x="380.0" y="181.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
         <omgdi:waypoint x="552.0" y="220.0"></omgdi:waypoint>
         <omgdi:waypoint x="584.0" y="220.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="586.0" y="181.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="586.0" y="181.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -454,14 +431,14 @@ ${sNameOrgan}<br/>
         <omgdi:waypoint x="512.0" y="370.0"></omgdi:waypoint>
         <omgdi:waypoint x="481.0" y="370.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="380.0" y="330.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="69.0" x="380.0" y="330.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="552.0" y="370.0"></omgdi:waypoint>
         <omgdi:waypoint x="584.0" y="370.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="586.0" y="330.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="79.0" x="586.0" y="330.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
