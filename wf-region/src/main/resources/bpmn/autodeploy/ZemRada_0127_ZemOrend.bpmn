@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="ZemRada_127_ZemOrend" name="Надання дозволу на відведення земельної ділянки в оренду" isExecutable="true">
+  <process id="ZemRada_0127_ZemOrend" name="Надання дозволу на відведення земельної ділянки в оренду" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0" required="true"></activiti:formProperty>
@@ -22,8 +22,6 @@
         <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально;У разі вилучення земельної ділянки, що перебуває у користуванні у інших осіб ;bNew=true" type="file"></activiti:formProperty>
-        
-        
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -99,7 +97,6 @@
           <activiti:value id="digital" name="Електронна копія"></activiti:value>
           <activiti:value id="physical" name="Фізична копія"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="decide" name="Рішення про долю звернення" type="enum" required="true">
           <activiti:value id="accept" name="Передати документи спеціалістам"></activiti:value>
           <activiti:value id="reject" name="Відмовити в реєстрації звернення"></activiti:value>
@@ -108,14 +105,11 @@
         <activiti:formProperty id="navischo" name="ціль відведення; ;bVisible=false" type="string" default="в оренду терміном на ${term} років"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_319.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="exclusivegateway3"></sequenceFlow>
@@ -243,13 +237,11 @@
         <activiti:formProperty id="navischo" name="ціль відведення; ;bVisible=false" type="string" default="в оренду терміном на ${term} років"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/kuznetsovsk/kuznetsovsk_319.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="Шапка; ;bVisible=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow28" sourceRef="usertask2" targetRef="usertask4_green"></sequenceFlow>
@@ -274,13 +266,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="decisionComment1" name="Коментар до рішення для адміністратора ЦНАП" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decisionComment" name="Коментар до рішення для громадянина" type="textArea"></activiti:formProperty>
-        
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow9" sourceRef="usertask4_green" targetRef="exclusivegateway2"></sequenceFlow>
@@ -478,9 +468,7 @@ ${sNameOrgan}.<br />
         <activiti:formProperty id="vik" name="Викопіювання з кадастрової карти (плану) або інші графічні матеріали, на яких зазначено бажане місце розташування та розмір земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="vlasn" name="Документи на право власності на нерухоме майно, розміщене на земельній ділянці ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="zgoda" name="Письмова згода землекористувача, засвідчена нотаріально; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow31" name="якщо не Кузнецовськ та успішна реєстрація" sourceRef="exclusivegateway3" targetRef="servicetask10">
@@ -490,8 +478,8 @@ ${sNameOrgan}.<br />
     <sequenceFlow id="flow33" sourceRef="usertask3" targetRef="exclusivegateway2"></sequenceFlow>
     <sequenceFlow id="flow34" sourceRef="startevent1" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_ZemRada_127_ZemOrend">
-    <bpmndi:BPMNPlane bpmnElement="ZemRada_127_ZemOrend" id="BPMNPlane_ZemRada_127_ZemOrend">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ZemRada_0127_ZemOrend">
+    <bpmndi:BPMNPlane bpmnElement="ZemRada_0127_ZemOrend" id="BPMNPlane_ZemRada_0127_ZemOrend">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="1.0" y="169.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -562,7 +550,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="573.0" y="206.0"></omgdi:waypoint>
         <omgdi:waypoint x="573.0" y="268.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="95.0" x="467.0" y="244.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="467.0" y="244.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
@@ -573,7 +561,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="593.0" y="186.0"></omgdi:waypoint>
         <omgdi:waypoint x="679.0" y="187.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="592.0" y="145.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="592.0" y="145.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
@@ -596,7 +584,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="1210.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="1059.0" y="341.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1092.0" y="313.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1092.0" y="313.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
@@ -608,7 +596,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="1210.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="1347.0" y="340.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1271.0" y="299.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1271.0" y="299.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
@@ -620,7 +608,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="1210.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="1210.0" y="347.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="1193.0" y="304.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="1193.0" y="304.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -632,7 +620,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="700.0" y="288.0"></omgdi:waypoint>
         <omgdi:waypoint x="751.0" y="288.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="583.0" y="206.0"></omgdc:Bounds>
+          <omgdc:Bounds height="56.0" width="100.0" x="583.0" y="206.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
