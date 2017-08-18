@@ -40,15 +40,35 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       var sID_Type_ID = 'sID_Type_' + scope.property.id;
       var nID_ServiceCustomPrivate_ID = 'nID_ServiceCustomPrivate_' + scope.property.id;
+      var sOrganizatonGuid_ID = 'sOrganizatonGuid_' + scope.property.id;
+      var sServiceCenterId_ID = 'sServiceCenterId_' + scope.property.id;
+      var sServiceId_ID = 'sServiceId_' + scope.property.id;
       var isQueueDataType = {
         iGov: !scope.formData.params[sID_Type_ID] || (scope.formData.params[sID_Type_ID] && (scope.formData.params[sID_Type_ID].value === 'iGov' || scope.formData.params[sID_Type_ID].value === '')),
-        DMS: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'DMS'
+        DMS: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'DMS',
+        QLogic: scope.formData.params[sID_Type_ID] && scope.formData.params[sID_Type_ID].value === 'Qlogic'
       };
 
       function isInvalidServiceCustomPrivate() {
         if (!scope.formData.params[nID_ServiceCustomPrivate_ID] ||
           scope.formData.params[nID_ServiceCustomPrivate_ID].value === null ||
           scope.formData.params[nID_ServiceCustomPrivate_ID].value === ''){
+          console.warn('Field ' + nID_ServiceCustomPrivate_ID + ' is EMPTY');
+          return true;
+        }
+        return false;
+      }
+
+      function areInvalidQlogicParameters() {
+        if ((!scope.formData.params[sOrganizatonGuid_ID] ||
+            scope.formData.params[sOrganizatonGuid_ID].value === null ||
+            scope.formData.params[sOrganizatonGuid_ID].value === '') ||
+          (!scope.formData.params[sServiceCenterId_ID] ||
+            scope.formData.params[sServiceCenterId_ID].value === null ||
+            scope.formData.params[sServiceCenterId_ID].value === '') ||
+          (!scope.formData.params[sServiceId_ID] ||
+            scope.formData.params[sServiceId_ID].value === null ||
+            scope.formData.params[sServiceId_ID].value === '')){
           console.warn('Field ' + nID_ServiceCustomPrivate_ID + ' is EMPTY');
           return true;
         }
@@ -85,7 +105,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               });
               if(scope.$parent.slotsCache.showConfirm){
                 dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
-              };
+              }
               $rootScope.$broadcast("slot-picker-stop-processing");
               console.info('Reserved slot: ' + angular.toJson(data));
             }).
@@ -142,6 +162,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
             });
           }
+        } else if (isQueueDataType.QLogic){
+          if(newValue){
+            scope.ngModel = JSON.stringify({
+              sOrganizatonGuid: scope.formData.params[sOrganizatonGuid_ID].value,
+              sServiceCenterId: scope.formData.params[sServiceCenterId_ID].value,
+              sServiceId: scope.formData.params[sServiceId_ID].value,
+              sDate: scope.selected.date.sDate,
+              sTime: scope.selected.slot.sTime
+            });
+          }
+
         }
       }
       function checkParamsOfSlot(slotId){
@@ -270,9 +301,20 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             data.nDiffDaysForStartDate = nDiffDaysForStartDateParam.value;
           }
 
-
-
           sURL = '/api/service/flow/' + scope.serviceData.nID;
+        } else if(isQueueDataType.QLogic){
+          if (areInvalidQlogicParameters()) {
+            return;
+          }
+
+          data = {
+            nID_Server: scope.serviceData.nID_Server,
+            sOrganizatonGuid: this.formData.params[sOrganizatonGuid_ID].value,
+            sServiceCenterId: this.formData.params[sServiceCenterId_ID].value,
+            sServiceId: this.formData.params[sServiceId_ID].value
+          };
+          sURL = '/api/service/flow/Qlogic/getSlots';
+
         } else {
           scope.slotsLoading = false;
           ErrorsFactory.push({
@@ -308,6 +350,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 })
               })
             }
+          } else if (isQueueDataType.QLogic){
+            scope.slotsData = convertSlotsDataQlogic(response.data);
           }
           scope.slotsLoading = false;
         });
@@ -346,7 +390,43 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         return result;
       }
 
-      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin && angular.isDefined(departmentParam))){
+      function convertSlotsDataQlogic(data) {
+        var aDay = [];
+        var nSlotID = 1;
+        angular.forEach(data.aDate, function (oDate) {
+          var aCreatedDate = aDay.filter(function (el) {
+            return el.sDate === oDate.date;
+          });
+          if(aCreatedDate.length && aCreatedDate.length > 0){
+            aCreatedDate[0].aSlot.push({
+              bFree: true,
+              nID: nSlotID,
+              nMinutes: oDate.length,
+              sTime: oDate.time,
+              nAllowSlots: oDate.countJobsAllow
+            })
+          } else {
+            aDay.push({
+              aSlot:[{
+                bFree: true,
+                nID: nSlotID,
+                nMinutes: oDate.length,
+                sTime: oDate.time,
+                nAllowSlots: oDate.countJobsAllow
+              }],
+              sDate: oDate.date,
+              bHasFree: true
+            })
+          }
+          nSlotID++;
+        });
+
+        return {
+          aDay: aDay
+        };
+      }
+
+      if(angular.isDefined(scope.formData.params.sID_Public_SubjectOrganJoin) && angular.isDefined(departmentParam) && isQueueDataType.DMS){
         scope.$watch('formData.params.sID_Public_SubjectOrganJoin.value', function (newValue, oldValue) {
           if (newValue == oldValue)
             return;
@@ -392,6 +472,33 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       }
 
       scope.$watch('formData.params.' + nID_ServiceCustomPrivate_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
+      });
+
+      scope.$watch('formData.params.' + sOrganizatonGuid_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
+      });
+
+      scope.$watch('formData.params.' + sServiceCenterId_ID + '.value', function (newValue, oldValue) {
+        if (newValue == oldValue)
+          return;
+        if (newValue){
+          resetData();
+          scope.loadList();
+        }
+      });
+
+      scope.$watch('formData.params.' + sServiceId_ID + '.value', function (newValue, oldValue) {
         if (newValue == oldValue)
           return;
         if (newValue){

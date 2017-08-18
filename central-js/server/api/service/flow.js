@@ -12,4 +12,7 @@ router.get('/DMS/getSlots', flow.getSlotsDMS);
 router.post('/DMS/setSlotHold', flow.setSlotHoldDMS);
 router.post('/DMS/setSlot', flow.setSlotDMS);
 
+router.get('/Qlogic/getSlots', flow.getSlotsQlogic);
+router.post('/Qlogic/setSlot', flow.setSlotQlogic);
+
 module.exports = router;
