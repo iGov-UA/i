@@ -58,22 +58,20 @@
         <activiti:formProperty id="nPurBaseRate" name="з основною ставкою" type="double"></activiti:formProperty>
         <activiti:formProperty id="nPurRate7" name="зі ставкою 7 %" type="double"></activiti:formProperty>
         <activiti:formProperty id="nPurRateZero" name="з нульовою ставкою та/або без податку на додану вартість" type="double"></activiti:formProperty>
-       
         <activiti:formProperty id="nDiffPoz" name="Позитивне значення різниці;між сумою податкового зобов'язання та сумою податкового кредиту поточного звітного (податкового) періоду (рядок 9 - рядок 17 декларації) (позитивне значення), яке сплачується до державного бюджету" type="double"></activiti:formProperty>
         <activiti:formProperty id="nDiffNeg" name="Від'ємне значення різниці; між сумою податкового зобов'язання та сумою податкового кредиту поточного звітного (податкового) періоду (рядок 17 - рядок 9 декларації) (позитивне значення)" type="double"></activiti:formProperty>
         <activiti:formProperty id="nSum 200(1)" name="з рядка 19 сума перевищення від'ємного значення над сумою;обчисленою відповідно до пункту 200(1).3 статті 200(1) розділу V Кодексу" type="double"></activiti:formProperty>
-       
         <activiti:formProperty id="saGo" name="Платник ПДВ; ;sID_CheckboxTrue=yes&quot;" type="enum" default="no" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
-       
+        </activiti:formProperty>
         <activiti:formProperty id="markers1" name="Лінія I. ПОДАТКОВІ ЗОБОВ'ЯЗАННЯ" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;markers2&quot;],&quot;sValue&quot;:&quot;I. ПОДАТКОВІ ЗОБОВ'ЯЗАННЯ &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="Лінія Звітний(податковий) період" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sYear&quot;],&quot;sValue&quot;:&quot;Звітний (податковий) період &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="Лінія II. ПОДАТКОВИЙ КРЕДИТ" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;nTotalTax&quot;],&quot;sValue&quot;:&quot;II. ПОДАТКОВИЙ КРЕДИТ &quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Лінія III. РОЗРАХУНКИ  ЗА ЗВІТНИЙ ПЕРІОД" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;nDiffPoz&quot;],&quot;sValue&quot;:&quot;III. РОЗРАХУНКИ  ЗА ЗВІТНИЙ ПЕРІОД &quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
-    <userTask id="usertask1" name="Проверка принтформы">
+    <userTask id="usertask1" name="Проверка принтформы" activiti:candidateGroups="dfsu_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Найменування контролюючого органу, до якого подається звітність" type="select" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sOsoba" name="Тип компанії" type="enum" writable="false">
