@@ -10,7 +10,7 @@
     $scope.export = {};
     $scope.export.from = '2016-11-18';
     $scope.export.to = '2016-11-25';
-    $scope.export.sBP = 'dnepr_spravka_o_doxodax';
+    $scope.export.sBP = 'dfs_0655_spravkaDoxod_onlyDnepr';
     $scope.exportURL = "/reports";
     $scope.export.bExportAll  = false;
 
