@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dfs_673" name="Отримання довідки про доходи фізичних осіб" isExecutable="true">
-    <documentation>24.05.16 Рефакторинг: на основі dnepr_spravka_o_doxodax: Ставицький В.Д
+  <process id="dfs_0655_spravkaDoxod" name="Отримання довідки про доходи фізичних осіб" isExecutable="true">
+    <documentation>
+    	24.05.16 Рефакторинг: на основі dnepr_spravka_o_doxodax: Ставицький В.Д
 		15.09.16 Рефакторинг: Добавление маркеров на все стадии, переделка принтформы, добавление даты создание процесса
-		10.01.17 Рефакторинг: переход на новые мейлы, доработка маркера с копирование адреса проживания</documentation>
+		10.01.17 Рефакторинг: переход на новые мейлы, доработка маркера с копирование адреса проживания
+		22.08.17 Переименование dfs_673 в dfs_0655_spravkaDoxod
+	</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="infoZapit" name="Зверніть увагу" type="label" default="Для отримання послуги Вам необхідно:&lt;ol&gt;&lt;li&gt;Завантажити та роздрукувати &lt;a href=&quot;https://1drv.ms/w/s!AkxiXv48JoWulgAH_3HytrIzbtGA&quot; target=&quot;_blank&quot;&gt;бланк запиту&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Заповнити відповідні поля згідно &lt;a href=&quot;https://1drv.ms/i/s!AkxiXv48JoWulgOMiijWVFh0vo1B&quot; target=&quot;_blank&quot;&gt;зразка&lt;/a&gt;&lt;/li&gt;&lt;li&gt;Відсканувати та підписати документ за допомогою ЕЦП.&lt;/li&gt;&lt;li&gt;Прикріпити підписаний запит&lt;/li&gt;&lt;/ol&gt;&lt;br /&gt;Довідник, як отримати ЕЦП, за цим &lt;a href=&quot;https://docs.google.com/document/d/1Bai40Xw-XUcJfYR96CQD7-gSjsCtAlC3DMqbbcI-fxw/edit&quot; target=&quot;_blank&quot;&gt;посиланням&lt;/a&gt;.&lt;br /&gt;Один з варіантів накладення ЕЦП на файл &lt;a href=&quot;https://papka24.com.ua/&quot; target=&quot;_blank&quot;&gt;papka24.com.ua&lt;/a&gt;"></activiti:formProperty>
@@ -23,6 +26,7 @@
         <activiti:formProperty id="dStart" name="Період, за який Ви хочете отримати довідку, з; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAim" name="Довідку буде надано до; наприклад: віддлення банку, Пенсійного фонду, УПСЗН тощо" type="string" required="true"></activiti:formProperty>
+
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -33,7 +37,8 @@
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_673_start.json')}"></activiti:formProperty>
+
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <scriptTask id="scripttask1" name="User Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
@@ -118,11 +123,11 @@
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aComment" name="Причина відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_673_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_0655_spravkaDoxod_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_673_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_user.json')}"></activiti:formProperty>
          <activiti:formProperty id="nFileZapit" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -241,8 +246,8 @@
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dfs_673">
-    <bpmndi:BPMNPlane bpmnElement="dfs_673" id="BPMNPlane_dfs_673">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dfs_0655_spravkaDoxod">
+    <bpmndi:BPMNPlane bpmnElement="dfs_0655_spravkaDoxod" id="BPMNPlane_dfs_0655_spravkaDoxod">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
