@@ -4,7 +4,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) 
     var user = Auth.getCurrentUser();
 
     var dataArray = {
-      'sID_BP': exportParams.sBP, //'dnepr_spravka_o_doxodax',
+      'sID_BP': exportParams.sBP, //'dfs_0655_spravkaDoxod_onlyDnepr',
       'sID_State_BP': null,//'usertask1'
       'sDateAt': exportParams.from,
       'sDateTo': exportParams.to,
