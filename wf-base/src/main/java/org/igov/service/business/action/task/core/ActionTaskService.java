@@ -92,6 +92,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 
+import static org.igov.service.business.flow.FlowService.bFlowOut;
+
 //import org.igov.service.business.access.BankIDConfig;
 /**
  *
@@ -2154,7 +2156,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         LOG.info("(sDate={})" + sDate);
         String sID_Type = QueueDataFormType.get_sID_Type(m);
         LOG.info("(sID_Type={})", sID_Type);
-        if ("DMS".equals(sID_Type)) {
+        if (bFlowOut(sID_Type)) {
             //}else if("iGov".equals(sID_Type)){
             String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
             LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
