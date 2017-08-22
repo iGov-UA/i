@@ -96,6 +96,10 @@ public class FlowService implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
+    public static boolean bFlowOut(String sFlowType) {
+        return "DMS".equals(sFlowType) || "Qlogic".equals(sFlowType);
+    }
+
     public Days getFlowSlots(Long nID_Service, Long nID_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment,
             DateTime startDate, DateTime endDate, boolean bAll,
             int nFreeDays, int nSlots) {
@@ -918,7 +922,7 @@ public class FlowService implements ApplicationContextAware {
                                 LOG.info("(sDate={})", sDate);
                                 String sID_Type = QueueDataFormType.get_sID_Type(m);
                                 LOG.info("(sID_Type={})", sID_Type);
-                                if ("DMS".equals(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
+                                if (bFlowOut(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
                                     bQueueDMS = true;
                                     LOG.info("Found DMS flow slot tickets.");
                                     String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";

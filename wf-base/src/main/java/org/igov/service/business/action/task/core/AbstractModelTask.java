@@ -44,6 +44,8 @@ import org.igov.service.exception.CRCInvalidException;
 import org.igov.service.exception.RecordNotFoundException;
 import org.json.simple.JSONArray;
 
+import static org.igov.service.business.flow.FlowService.bFlowOut;
+
 public abstract class AbstractModelTask {
 
     public static final String LIST_KEY_PREFIX = "lst";
@@ -701,7 +703,7 @@ public abstract class AbstractModelTask {
                 String sID_Type = QueueDataFormType.get_sID_Type(m);
                 LOG.info("(sID_Type={})", sID_Type);
 
-                if ("DMS".equals(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
+                if (bFlowOut(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
                     String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
                     LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
                     String sTicket_Number = (String) m.get("ticket_number");
