@@ -7,7 +7,10 @@
     <!-- Общие стили  -->
     <style type="text/css">
       article.PrintFormClaim {
-        font: 300 14pt/16pt Times, 'Times New Roman', serif; /* Шрифт с засечками */
+        padding: 1cm 1.0cm 1cm 2.0cm;
+        line-height: 1.15;
+        font-size: 14pt;
+        font-family: 'Times New Roman', Times, serif; /* Шрифт с засечками */
         text-align: justify;
         -webkit-hyphens: auto;
         -moz-hyphens: auto;
@@ -262,7 +265,7 @@
       }
 
       .under_field { /* Блок с подписью */
-        margin: 0 0 15px 0;
+        margin: 0 0 17px 0;
         border-bottom: 1px solid black;
         position: relative;
         display: inline-block;
@@ -280,9 +283,8 @@
         bottom: -1px;
         background-color: white;
       }
-
-      /*если надо подчеркнуть*/
-      .under_field>u {
+      
+      .under_field>u { /*если надо подчеркнуть*/
         padding: 0 10px;
         text-decoration: none;
         background: white;
@@ -291,15 +293,14 @@
         left: 0;
       }
 
-      /*текст снизу*/
-      .under_field>span {
+      .under_field>span { /*текст снизу*/
         position: absolute;
         left: 0;
         right: 0;
         text-align: center;
         color: #606060;
-        bottom: -16px;
-        font-size: 11px;
+        bottom: -18px;
+        font-size: 8pt;
       }
 
       /* линия отреза */
@@ -462,8 +463,7 @@
     <!-- Стили печати -->
     <style type="text/css">
       @media screen {
-        body article.PrintFormClaim {
-          padding: 1cm 1.5cm 1cm 2.5cm;
+        article.PrintFormClaim {
           width: 21cm;
           min-height: 100%;
           height: 100%;
@@ -507,7 +507,7 @@
       <br> <br>
       <div class="ml-9">
         <div class="under_field w100p ta-l">
-          <u>[sFIO]</u>
+          <u id="tegFIO"></u>
           <span>(ПІБ)</span>
         </div>
         <br>
@@ -534,8 +534,8 @@
         та утриманих податків/джерела виплачених доходів та утриманих податків за період
       </div>
       <div class="ta-l">
-        з <em>[dStart1]</em>
-        по <em>[dStop1]</em> 
+        з <em>[dStart]</em>
+        по <em>[dStop]</em> 
       </div>
       <div class="ta-c w100p">
         <div class="under_multifield w100p ta-l">
@@ -549,7 +549,7 @@
       <div class="ta-j">
       	Паспортні дані
       </div>
-      <div class="under_multifield w100p ta-j pl-paragraph">
+      <div class="under_multifield w100p ta-j ">
         <u>[bankIdPassport]</u>
       </div>      
       
@@ -571,5 +571,18 @@
         </div>          
       </div>
     </article>
+    
+    <script>
+      var bankIdlastName = "[bankIdlastName]";
+      var bankIdfirstName = "[bankIdfirstName]";
+      var bankIdmiddleName = "[bankIdmiddleName]";
+      var sFIO = "[sFIO]";
+
+      sFIO = (sFIO != "") ? sFIO :
+      bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
+
+      document.getElementById("tegFIO").textContent = sFIO;
+    </script>
+    
   </body>
 </html>
