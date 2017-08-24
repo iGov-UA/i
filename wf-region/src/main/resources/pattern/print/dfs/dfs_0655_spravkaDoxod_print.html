@@ -8,9 +8,9 @@
     <style type="text/css">
       article.PrintFormClaim {
         padding: 1cm 1.0cm 1cm 2.0cm;
-        line-height: 1.15;
+        line-height: 1.5;
         font-size: 14pt;
-        font-family: 'Times New Roman', Times, serif; /* Шрифт с засечками */
+        font-family: 'Times', 'Times New Roman', 'Arial', 'serif';
         text-align: justify;
         -webkit-hyphens: auto;
         -moz-hyphens: auto;
@@ -260,7 +260,7 @@
         text-decoration: none;
         border-bottom: 1px solid black;
         position: relative;
-        bottom: -1px;
+        bottom: 1px;
         line-height: 125%;
       }
 
@@ -291,6 +291,7 @@
         display: inline-block;
         position: relative;
         left: 0;
+        bottom: 1px;
       }
 
       .under_field>span { /*текст снизу*/
@@ -501,11 +502,11 @@
   <body>
     <article class="PrintFormClaim">
 
-      <div class="ta-j ml-9">
+      <div class="ta-j ml-11">
         Начальнику [sNameOrgan673]<br> [sFIOGolova673]
       </div>
       <br> <br>
-      <div class="ml-9">
+      <div class="ml-11">
         <div class="under_field w100p ta-l">
           <u id="tegFIO"></u>
           <span>(ПІБ)</span>
@@ -534,8 +535,8 @@
         та утриманих податків/джерела виплачених доходів та утриманих податків за період
       </div>
       <div class="ta-l">
-        з <em>[dStart]</em>
-        по <em>[dStop]</em> 
+        з <em id="tegStart"></em>
+        по <em id="tegStop"></em> 
       </div>
       <div class="ta-c w100p">
         <div class="under_multifield w100p ta-l">
@@ -577,11 +578,17 @@
       var bankIdfirstName = "[bankIdfirstName]";
       var bankIdmiddleName = "[bankIdmiddleName]";
       var sFIO = "[sFIO]";
+      
+      var dStart = "[dStart]";
+      var dStop = "[dStop]";
+      
 
-      sFIO = (sFIO != "") ? sFIO :
+      sFIO = (sFIO != ("["+"sFIO"+"]")) ? sFIO :
       bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
 
       document.getElementById("tegFIO").textContent = sFIO;
+      document.getElementById("tegStart").textContent = dStart.replace(/\//g,".");
+      document.getElementById("tegStop").textContent = dStop.replace(/\//g,".");
     </script>
     
   </body>
