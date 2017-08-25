@@ -7,9 +7,9 @@
     <!-- Общие стили  -->
     <style type="text/css">
       article.PrintFormClaim {
-        padding: 1cm 1.0cm 1cm 2.0cm;
+        padding: 0 0 0 2.0cm;
         line-height: 1.5;
-        font-size: 14pt;
+        font-size: 13pt;
         font-family: 'Times', 'Times New Roman', 'Arial', 'serif';
         text-align: justify;
         -webkit-hyphens: auto;
@@ -92,10 +92,6 @@
         width: 15px;
       }
 
-      .smallText {
-        font-size: 12pt;
-        line-height: 1.1;
-      }
     </style>
 
     <!-- Стили таблиц -->
@@ -141,7 +137,7 @@
       article.PrintFormClaim tr.small-text>th, article.PrintFormClaim tr.small-text>td,
       article.PrintFormClaim tr>th.small-text, article.PrintFormClaim tr>td.small-text,
       article.PrintFormClaim .small-text {
-        font-size: 10pt;
+        font-size: 9pt;
       }
 
       /* Выравнимание текста по вертикали*/
@@ -311,7 +307,7 @@
         text-align: center;
         color: #606060;
         bottom: -20px;
-        font-size: 10pt;
+        font-size: 9pt;
       }
 
       /* линия отреза */
@@ -499,6 +495,20 @@
 	*/
       /* Настройки печати должны помещаться в блок @media print */
       @media print {
+      	article.PrintFormClaim { font-size: 14pt; }
+      	
+      	.under_multifield>u { bottom: -1px; }
+      	
+	    /* Мелкий шрифт */
+	    article.PrintFormClaim table.small-text th, article.PrintFormClaim table.small-text td,
+	    article.PrintFormClaim tr.small-text>th, article.PrintFormClaim tr.small-text>td,
+	    article.PrintFormClaim tr>th.small-text, article.PrintFormClaim tr>td.small-text,
+	    article.PrintFormClaim .small-text,
+        .under_field>span { /*текст снизу*/
+	        font-size: 10pt;
+     	}	
+	      
+      
         /* @page { margin: 1.0cm 0.5cm 1.0cm 0.5cm;} */
 
         article.PrintFormClaim section {
@@ -514,13 +524,8 @@
           content: " (" attr(href) ")";
           color: blue;
         }
-        section, h1, p, ul, img { page-break-inside: avoid;}
-
-        p {
-          page-break-inside: avoid;
-          orphans: 3;
-          widows: 2;
-        }
+        article, h1, p, ul, img, p { page-break-inside: avoid;}
+        p { orphans: 3; widows: 2; }
       }
     </style>
 
@@ -561,13 +566,10 @@
       
       <br /><br />
       <div class="claimBlock">ЗАЯВА</div>
-
-      <br>
+      
       <div class="ta-j pl-paragraph">
         Прошу надати мені відомості з ДРФО платників податків про суми виплачених доходів 
         та утриманих податків/джерела виплачених доходів та утриманих податків за період
-      </div>
-      <div class="ta-l">
         з <em id="tegStart"></em>
         по <em id="tegStop"></em> 
       </div>
@@ -576,7 +578,7 @@
           <b>для надання</b>
           <u>[sAim]</u>
         </div>
-        <div class="pl-150 small-text line05">
+        <div class="small-text line05">
           (наприклад: віддлення банку, Пенсійного фонду, працевлаштування, УПСЗН тощо).
         </div>
       </div>
