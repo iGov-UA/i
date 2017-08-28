@@ -17,11 +17,16 @@
         <activiti:formProperty id="region" name="Регион ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="clerkPost" name="почта чиновника ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" required="true"></activiti:formProperty>
-         <activiti:formProperty id="asCh1" name="Вибір звернення" type="enum">
+        <activiti:formProperty id="asCh1" name="Вибір звернення" type="enum">
           <activiti:value id="sSezTorgChrstmsTrees" name="Сезонна торгівля ялинками"></activiti:value>
           <activiti:value id="sSezTorgKvsnptkmrzh" name="Торгівля квасом, безалкогольними напоями і морозивом"></activiti:value>
           <activiti:value id="sSezTorgSelHozBsht" name="Торгівля баштанною продукцією"></activiti:value>
-         </activiti:formProperty>
+          <activiti:value id="sSezTorgHandmade" name="Торгівля продукцією власного виробництва"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="Marker1" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;chrstmstrees&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgChrstmsTrees'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Marker2" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;kvsnptkmrzh&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgKvsnptkmrzh'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Marker3" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;selhozbsht&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgSelHozBsht'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Marker4" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;handmade&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgHandmade'&quot;}}}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask6" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -82,7 +87,7 @@
           <activiti:value id="reject" name="Документи не пройшли перевірку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Ви можете додати коментар за результатами перевірки документів" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/kherson_mvk_seztorg_chrstmstrees.html] ; ;bVisible=false, bPrintform=true" type="string" default="Заява щодо розміщення об`єктів торгівлі" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mvk/kherson_mvk_seztorg.html] ; ;bVisible=false, bPrintform=true" type="string" default="Заява щодо розміщення об`єктів торгівлі" writable="false"></activiti:formProperty>
         <activiti:formProperty id="dergReestracia" name="Завантажте копію свідоцтва про державну реєстрацію суб’єкта господарювання; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="EP" name="Завантажте Витяг з реєстру платників єдиного податку ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -91,9 +96,6 @@
           <activiti:value id="sSezTorgKvsnptkmrzh" name="Торгівля квасом, безалкогольними напоями і морозивом"></activiti:value>
           <activiti:value id="sSezTorgSelHozBsht" name="Торгівля баштанною продукцією"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="Marker1" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_1&quot;:{&quot;aElement_ID&quot;:[&quot;chrstmstrees&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgChrstmsTrees'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="Marker2" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_2&quot;:{&quot;aElement_ID&quot;:[&quot;kvsnptkmrzh&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgKvsnptkmrzh'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="Marker3" name="Відображення варіантів тексту в PrintForm" type="markers" default="{&quot;motion&quot;:{&quot;ShowElementsOnTrue_3&quot;:{&quot;aElement_ID&quot;:[&quot;selhozbsht&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asCh1&quot;},&quot;sCondition&quot;:&quot;[sCond]=='sSezTorgSelHozBsht'&quot;}}}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
