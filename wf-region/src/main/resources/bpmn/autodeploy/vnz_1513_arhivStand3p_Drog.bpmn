@@ -4,15 +4,17 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати послугу" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asVNZposlug" name="Оберіть послугу яку ви хочете отримати" type="enum" required="true">
+        <activiti:formProperty id="asVNZposlug" name="Оберіть послугу яку ви хочете отримати?" type="enum" required="true">
           <activiti:value id="sEnamPos1" name="Архівна довідка вищого навчального закладу з годинами та оцінками"></activiti:value>
           <activiti:value id="sEnamPos2" name="Архівна довідка про підтвердження роботи або навчання у вищому навчальному закладі"></activiti:value>
           <activiti:value id="sEnamPos3" name="Витяг з наказу вищого навчального закладу що стосується навчання або праці"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asDokTip" name="Про що видати документ" type="enum" required="true">
+        <activiti:formProperty id="asDokTip" name="Про що видати документ?" type="enum" required="true">
           <activiti:value id="sEnamNavch" name="Про навчання"></activiti:value>
           <activiti:value id="sEnamPrachja" name="Про працю"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="tNakaz" name="З якого саме наказу видати витяг?; (вкажіть про що саме наказ, якщо можливо зазначте приблизну дату)" type="textArea" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markerNavchPrachja" name="marker" type="markers" default="${markerService.loadFromFile('archiv/VNZarhiv_1513_NavPrach.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
@@ -44,11 +46,12 @@
           <activiti:value id="sEnamVidrax" name="Відраховано до отримання диплому"></activiti:value>
         </activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_3" name="Інформація про працю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;Date_WorkBegin&quot;],&quot;sValue&quot;:&quot;Інформація про працю&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Інформація про місце роботи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;Date_WorkBegin&quot;],&quot;sValue&quot;:&quot;Інформація про місце роботи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Date_WorkBegin" name="Дата прийому на роботу;(відповідно до трудової)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="Date_WorkEnd" name="Дата звільнення з роботи;(відповідно до трудової)" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада;(відповідно до трудової)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPidrozdil" name="Структурний підрозділ;(відповідно до трудової)" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
@@ -125,7 +128,9 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamNavch" name="Про навчання"></activiti:value>
           <activiti:value id="sEnamPrachja" name="Про працю"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="tNakaz" name="Інформація про наказ; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markerNavchPrachja" name="marker" type="markers" default="${markerService.loadFromFile('arhiv/VNZarhiv_1513_NavPrach.json')}"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_111" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_111&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення; ;writable=false" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника" type="string" writable="false"></activiti:formProperty>
@@ -151,7 +156,7 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamMagistr" name="Магістр"></activiti:value>
           <activiti:value id="sEnamVidrax" name="Відраховано до отримання диплому"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="Інформація про працю" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про працю&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Інформація про місце роботи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про місце роботи&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Date_WorkBegin" name="Дата прийому на роботу" type="date"></activiti:formProperty>
         <activiti:formProperty id="Date_WorkEnd" name="Дата звільнення з роботи" type="date"></activiti:formProperty>
         <activiti:formProperty id="sPosada" name="Посада; ;writable=false" type="string" writable="false"></activiti:formProperty>
