@@ -2,7 +2,6 @@
   "motion": {
     "ShowFieldsOnCondition_AptZakl1": {
       "aField_ID": [
-        "chekRozdr1",
         "chekVurob1"
       ],
       "asID_Field": {
@@ -19,14 +18,40 @@
       },
       "sCondition": "[sCond]=='sEnamAptpunkt1'||[sCond] == 'Аптечний пункт'"
     },
+    "ShowFieldsOnCondition_AptZaMeg1": {
+      "aField_ID": [
+        "sZaMegamu1"
+      ],
+      "asID_Field": {
+        "sCond": "chekZaMeg1"
+      },
+      "sCondition": "[sCond]=='yes'||[sCond] == 'так'"
+    },
+    "ShowFieldsOnCondition_AptVMeg1": {
+      "aField_ID": [
+        "asNPTipe1",
+        "sNameNP1",
+        "asTipeVulitsa1",
+        "sVulitsa1",
+        "sBudN1",
+        "asTipePrim1",
+        "lPrimN1",
+        "lPostIndex1"
+      ],
+      "asID_Field": {
+        "sCond": "chekZaMeg1"
+      },
+      "sCondition": "[sCond]=='no'||[sCond] == 'ні'"
+    },
     "ShowFieldsOnCondition_ApRaion1": {
       "aField_ID": [
         "sRainNP1"
       ],
       "asID_Field": {
-        "sCond": "asNPTipe1"
+        "sCond": "asNPTipe1",
+        "sCond2": "chekZaMeg1"
       },
-      "sCondition": "[sCond]=='sEnamSMT'||[sCond]=='СМТ'||[sCond]=='sEnamSelo'||[sCond]=='Село'||[sCond]=='sEnamSeluse'||[sCond] == 'Селище'"
+      "sCondition": "([sCond]=='sEnamSMT'||[sCond]=='СМТ'||[sCond]=='sEnamSelo'||[sCond]=='Село'||[sCond]=='sEnamSeluse'||[sCond] == 'Селище')&&([sCond2]=='no'||[sCond2] == 'ні')"
     }
   }
 }

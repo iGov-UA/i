@@ -3,21 +3,6 @@
   <process id="MERT_1571_LicenLikZas" name="Ліцензія для виробництва або торгівлі лікарськими засобами" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="sLabeVudiDijlnosti" name=" ; ;labelType=info" type="label" default="Вкажіть види діяльності, якими будуть займатись ваші аптечні заклади. В залежності від виду, вам буде необхідно завантажити відповідні відомості про технічне оснащення кожного закладу."></activiti:formProperty>
-        
-        
-        <activiti:formProperty id="chekLicVur" name="Виробництво (виготовлення) лікарських засобів в умовах аптеки;позначте галочкою - якщо це буде вашою діяльністю;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="chekLicOpt" name="Оптова торгівля лікарськими засобами;позначте галочкою - якщо це буде вашою діяльністю;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="chekLicRozdr" name="Роздрібна торгівля лікарськими засобами;позначте галочкою - якщо це буде вашою діяльністю;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
         
         
         <activiti:formProperty id="sLabeWord" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Завантажити бланк - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7Q2dfODh2VHF6SjQ/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;У форматі Word&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
@@ -43,14 +28,44 @@
           <activiti:value id="sEnamUrK" name="Юридична особа(подає керівник)"></activiti:value>
           <activiti:value id="sEnamUrP" name="Юридична особа(подає представник)"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateActual_SubjectOrgan_01" name="Дата отримання інформації з ЄДРПОУ" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="Kphone" name="Контактний телефон керівника" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_A" name="Інформація про адресу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_A&quot;:{&quot;aElement_ID&quot;:[&quot;sOblast&quot;],&quot;sValue&quot;:&quot;Інформація про адресу&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sOblast" name="Область" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_A" name="Інформація про адресу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_A&quot;:{&quot;aElement_ID&quot;:[&quot;asOblTipe&quot;],&quot;sValue&quot;:&quot;Інформація про адресу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asOblTipe" name="Область" type="enum" required="true">
+          <activiti:value id="sEnamARK" name="Автономна Республіка Крим"></activiti:value>
+          <activiti:value id="sEnamVin" name="Вінницька область"></activiti:value>
+          <activiti:value id="sEnamVol" name="Волинська область"></activiti:value>
+          <activiti:value id="sEnamDni" name="Дніпропетровська область"></activiti:value>
+          <activiti:value id="sEnamDon" name="Донецька область"></activiti:value>
+          <activiti:value id="sEnamGut" name="Житомирська область"></activiti:value>
+          <activiti:value id="sEnamZak" name="Закарпатська область"></activiti:value>
+          <activiti:value id="sEnamZap" name="Запорізька область"></activiti:value>
+          <activiti:value id="sEnamIFr" name="Івано-Франківська область"></activiti:value>
+          <activiti:value id="sEnamKuyO" name="Київська область"></activiti:value>
+          <activiti:value id="sEnamKir" name="Кіровоградська область"></activiti:value>
+          <activiti:value id="sEnamLug" name="Луганська область"></activiti:value>
+          <activiti:value id="sEnamLviv" name="Львівська область"></activiti:value>
+          <activiti:value id="sEnamMuk" name="Миколаївська область"></activiti:value>
+          <activiti:value id="sEnamOdes" name="Одеська область"></activiti:value>
+          <activiti:value id="sEnamPolt" name="Полтавська область"></activiti:value>
+          <activiti:value id="sEnamRivn" name="Рівненська область"></activiti:value>
+          <activiti:value id="sEnamSum" name="Сумська область"></activiti:value>
+          <activiti:value id="sEnamTern" name="Тернопільська область"></activiti:value>
+          <activiti:value id="sEnamHark" name="Харківська область"></activiti:value>
+          <activiti:value id="sEnamHers" name="Херсонська область"></activiti:value>
+          <activiti:value id="sEnamHmel" name="Хмельницька область"></activiti:value>
+          <activiti:value id="sEnamCherk" name="Черкаська область"></activiti:value>
+          <activiti:value id="sEnamChern" name="Чернівецька область"></activiti:value>
+          <activiti:value id="sEnamCherg" name="Чернігівська область"></activiti:value>
+          <activiti:value id="sEnamMistKuy" name="Місто Київ"></activiti:value>
+          <activiti:value id="sEnamMistSev" name="Місто Севастополь"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="asNPTipe" name="Тип населеного пункту" type="enum" required="true">
           <activiti:value id="sEnamMist" name="Місто"></activiti:value>
           <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
@@ -59,6 +74,15 @@
         </activiti:formProperty>
         <activiti:formProperty id="sRainNP" name="Район до якого належить населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameNP" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipeVulitsa" name="Тип вулиці" type="enum" required="true">
+          <activiti:value id="sEnamVul" name="Вулиця"></activiti:value>
+          <activiti:value id="sEnamProsp" name="Проспект"></activiti:value>
+          <activiti:value id="sEnamProv" name="Провулок"></activiti:value>
+          <activiti:value id="sEnamAley" name="Алея"></activiti:value>
+          <activiti:value id="sEnamBulv" name="Бульвар"></activiti:value>
+          <activiti:value id="sEnamPlosh" name="Площа"></activiti:value>
+          <activiti:value id="sEnamTupik" name="Тупик"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sVulitsa" name="Назва вулиці;(проспекту, провулку, алеї, площі, бульвару)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBudN" name="Номер будинку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTipePrim" name="Тип приміщення" type="enum" required="true">
@@ -68,6 +92,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="lPrimN" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_K" name="Коди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_K&quot;:{&quot;aElement_ID&quot;:[&quot;asFormVl&quot;],&quot;sValue&quot;:&quot;Коди&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asFormVl" name="Форма власності" type="enum" required="true">
           <activiti:value id="sEnamPriv" name="10 Приватна"></activiti:value>
@@ -108,10 +133,6 @@
           <activiti:value id="sEnamAptpunkt1" name="Аптечний пункт"></activiti:value>
           <activiti:value id="sEnamAptSklad1" name="Аптечний склад"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="chekRozdr1" name="Роздрібна торгівля;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
-          <activiti:value id="yes" name="так"></activiti:value>
-          <activiti:value id="no" name="ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="chekVurob1" name="Виробництво;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -119,7 +140,45 @@
         <activiti:formProperty id="sAptPidpor1" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="sLabeAptAdr1" name=" ; ;labelType=info" type="label" default="&lt;div style=&quot;text-align:center&quot;&gt;Деталізована адреса аптечного закладу №1 &lt;/div&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sOblast1" name="Область" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="chekZaMeg1" name="Заклад поза межами населеного пункту?;позначте галочкою - якщо заклад за межами населеного пункту;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asOblTipe1" name="Область" type="enum" required="true">
+          <activiti:value id="sEnamARK" name="Автономна Республіка Крим"></activiti:value>
+          <activiti:value id="sEnamVin" name="Вінницька область"></activiti:value>
+          <activiti:value id="sEnamVol" name="Волинська область"></activiti:value>
+          <activiti:value id="sEnamDni" name="Дніпропетровська область"></activiti:value>
+          <activiti:value id="sEnamDon" name="Донецька область"></activiti:value>
+          <activiti:value id="sEnamGut" name="Житомирська область"></activiti:value>
+          <activiti:value id="sEnamZak" name="Закарпатська область"></activiti:value>
+          <activiti:value id="sEnamZap" name="Запорізька область"></activiti:value>
+          <activiti:value id="sEnamIFr" name="Івано-Франківська область"></activiti:value>
+          <activiti:value id="sEnamKuyO" name="Київська область"></activiti:value>
+          <activiti:value id="sEnamKir" name="Кіровоградська область"></activiti:value>
+          <activiti:value id="sEnamLug" name="Луганська область"></activiti:value>
+          <activiti:value id="sEnamLviv" name="Львівська область"></activiti:value>
+          <activiti:value id="sEnamMuk" name="Миколаївська область"></activiti:value>
+          <activiti:value id="sEnamOdes" name="Одеська область"></activiti:value>
+          <activiti:value id="sEnamPolt" name="Полтавська область"></activiti:value>
+          <activiti:value id="sEnamRivn" name="Рівненська область"></activiti:value>
+          <activiti:value id="sEnamSum" name="Сумська область"></activiti:value>
+          <activiti:value id="sEnamTern" name="Тернопільська область"></activiti:value>
+          <activiti:value id="sEnamHark" name="Харківська область"></activiti:value>
+          <activiti:value id="sEnamHers" name="Херсонська область"></activiti:value>
+          <activiti:value id="sEnamHmel" name="Хмельницька область"></activiti:value>
+          <activiti:value id="sEnamCherk" name="Черкаська область"></activiti:value>
+          <activiti:value id="sEnamChern" name="Чернівецька область"></activiti:value>
+          <activiti:value id="sEnamCherg" name="Чернігівська область"></activiti:value>
+          <activiti:value id="sEnamMistKuy" name="Місто Київ"></activiti:value>
+          <activiti:value id="sEnamMistSev" name="Місто Севастополь"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sZaMegamu1" name="Адреса закладу;(тільки для закладів, що за межами населених пунктів)" type="string" required="true"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="asNPTipe1" name="Тип населеного пункту" type="enum" required="true">
           <activiti:value id="sEnamMist" name="Місто"></activiti:value>
           <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
@@ -128,6 +187,16 @@
         </activiti:formProperty>
         <activiti:formProperty id="sRainNP1" name="Район до якого належить населений пункт" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameNP1" name="Назва населеного пункту" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asTipeVulitsa1" name="Тип вулиці" type="enum" required="true">
+          <activiti:value id="sEnamVul" name="Вулиця"></activiti:value>
+          <activiti:value id="sEnamProsp" name="Проспект"></activiti:value>
+          <activiti:value id="sEnamProv" name="Провулок"></activiti:value>
+          <activiti:value id="sEnamAley" name="Алея"></activiti:value>
+          <activiti:value id="sEnamBulv" name="Бульвар"></activiti:value>
+          <activiti:value id="sEnamPlosh" name="Площа"></activiti:value>
+          <activiti:value id="sEnamTupik" name="Тупик"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="sVulitsa1" name="Назва вулиці;(проспекту, провулку, алеї, площі, бульвару)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sBudN1" name="Номер будинку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asTipePrim1" name="Тип приміщення" type="enum" required="true">
@@ -137,6 +206,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="lPrimN1" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex1" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="nFile_Vidomost1" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
