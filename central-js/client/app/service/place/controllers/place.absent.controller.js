@@ -4,27 +4,60 @@ angular.module('app').controller('PlaceAbsentController', function($state, $root
 
   $scope.bAdmin = AdminService.isAdmin();
 
-  (function() {
-    if (window.pluso && typeof window.pluso.start === 'function') {
-      return;
-    }
-    if (window.ifpluso === undefined) {
-      window.ifpluso = 1;
-      var d = document,
-        s = d.createElement('script'),
-        g = 'getElementsByTagName';
-      s.type = 'text/javascript';
-      s.charset = 'UTF-8';
-      s.async = true;
-      s.src = ('https:' === window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js';
-      var h = d[g]('body')[0];
-      h.appendChild(s);
-    }
-  })();
+  //(function () {
+  //    if (window.pluso && typeof window.pluso.start === 'function') {
+  //        return;
+  //    }
+  //    if (window.ifpluso === undefined) {
+  //        window.ifpluso = 1;
+  //        var d = document,
+  //          s = d.createElement('script'),
+  //          g = 'getElementsByTagName';
+  //        s.type = 'text/javascript';
+  //        s.charset = 'UTF-8';
+  //        s.async = true;
+  //        s.src = ('https:' === window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js';
+  //        var h = d[g]('body')[0];
+  //        h.appendChild(s);
+  //    }
+  //})();
 
-  if (!!window.pluso) {
-    window.pluso.build(document.getElementsByClassName('pluso')[0], false);
-  }
+  //if (!!window.pluso) {
+  //    window.pluso.build(document.getElementsByClassName('pluso')[0], false);
+  //}
+    (function ()
+    {
+        var functionDeleteIconVkontakte = function ()
+        {
+            var plusoVkontakte = $('.pluso');
+            var delVkontakte = plusoVkontakte.attr({
+                'data-background': 'transparent',
+                'data-options': 'big,round,line,horizontal,counter,theme=04',
+                'data-services': 'facebook,twitter'
+            });
+        }
+        var functionAddSocialNetworkIcons = function ()
+        {
+            var d = document,
+                p = '://share.pluso.ru/pluso-like.js',
+                g = 'getElementsByTagName',
+                c = d.createElement('script'),
+                a = d[g]('body')[0];
+
+            c.type = 'text/javascript';
+            c.charset = 'UTF-8';
+            c.async = true;
+            c.src = ('https:' == window.location.protocol ? 'https' : 'http') + p;
+
+            a.appendChild(c);
+        }
+        functionAddSocialNetworkIcons();
+        functionDeleteIconVkontakte();
+    })();
+    if (!!window.pluso)
+    {
+        window.pluso.build(document.getElementsByClassName('pluso')[0], false);
+    }
 
   $scope.absentMessage = {
     email: '',
