@@ -3,12 +3,6 @@
   <process id="MERT_1571_LicenLikZas" name="Ліцензія для виробництва або торгівлі лікарськими засобами" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        
-        
-        <activiti:formProperty id="sLabeWord" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Завантажити бланк - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7Q2dfODh2VHF6SjQ/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;У форматі Word&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
-        <activiti:formProperty id="sLabePDF" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;  Завантажити бланк - &lt;a href=&quot;https://drive.google.com/file/d/0B7zchMPpg3QaRUpudUJ2OXEtUkE/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;red&quot;&gt;&lt;b&gt;У форматі PDF&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
-        
-        
         <activiti:formProperty id="asVidpov" name="Оберіть як ви хочете отримати відповідь" type="enum" required="true">
           <activiti:value id="sEnamSam" name="Забрати самостійно"></activiti:value>
           <activiti:value id="sEnamPost" name="Поштовим відправленням за місцезнаходженням/місцем проживання"></activiti:value>
@@ -206,6 +200,11 @@
         </activiti:formProperty>
         <activiti:formProperty id="lPrimN1" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex1" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeMTRozn1" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Бланк для завантаження - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7ay1tclZQVDFIaWc/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;Відомості для роздрібної торгівлі лікарськими засобами&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="sLabeMTOpt1" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Бланк для завантаження - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7T3RKY0lGZzJTOHM/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;Відомості для оптової торгівлі лікарськими засобами&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
+        <activiti:formProperty id="sLabeMTVur1" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Бланк для завантаження - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7Q2dfODh2VHF6SjQ/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;Відомості для виробництва в умовах аптеки&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
+        
         
         <activiti:formProperty id="nFile_Vidomost1" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
@@ -405,13 +404,285 @@
       </script>
     </scriptTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Лист чиновнику" activiti:delegateExpression="{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask1" name="Лист чиновнику" activiti:delegateExpression="{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: ${sPosluga_name}. Заявник ${bankIdlastName} ${bankIdfirstName}.]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow2" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
+    <serviceTask id="servicetask2" name="Лист громадянину" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення зареєстроване. ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Ваше звернення №[sID_Order] було успішно зареєстроване у нашій системі.<br />
+Ви отримаєте відповідь протягом 7ми робочих днів.<br /><br />
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan}<br />
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <userTask id="usertask1" name="Обробка"></userTask>
+    <userTask id="usertask1" name="Обробка" activiti:candidateGroups="mert_test">
+      <extensionElements>
+        <activiti:formProperty id="asVidpov" name="Оберіть як ви хочете отримати відповідь" type="enum" writable="false">
+          <activiti:value id="sEnamSam" name="Забрати самостійно"></activiti:value>
+          <activiti:value id="sEnamPost" name="Поштовим відправленням за місцезнаходженням/місцем проживання"></activiti:value>
+          <activiti:value id="sEnamElectro" name="В електронному вигляді"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ваш ІПН" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Ваші паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail;(на цей e-mail  Ви отримаєте результат обробки Вашого звернення)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerOsoba" name="markers" type="markers" default="${markerService.loadFromFile('mert/UrKPFop_OpenData.json')}"></activiti:formProperty>
+        <activiti:formProperty id="asOsoba" name="Статус заявника" type="enum" writable="false">
+          <activiti:value id="sEnamFop" name="Фізична особа підприємець"></activiti:value>
+          <activiti:value id="sEnamUrK" name="Юридична особа(подає керівник)"></activiti:value>
+          <activiti:value id="sEnamUrP" name="Юридична особа(подає представник)"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_UO&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Kphone" name="Контактний телефон керівника" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_A" name="Інформація про адресу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_A&quot;:{&quot;aElement_ID&quot;:[&quot;asOblTipe&quot;],&quot;sValue&quot;:&quot;Інформація про адресу&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asOblTipe" name="Область" type="enum" writable="false">
+          <activiti:value id="sEnamARK" name="Автономна Республіка Крим"></activiti:value>
+          <activiti:value id="sEnamVin" name="Вінницька область"></activiti:value>
+          <activiti:value id="sEnamVol" name="Волинська область"></activiti:value>
+          <activiti:value id="sEnamDni" name="Дніпропетровська область"></activiti:value>
+          <activiti:value id="sEnamDon" name="Донецька область"></activiti:value>
+          <activiti:value id="sEnamGut" name="Житомирська область"></activiti:value>
+          <activiti:value id="sEnamZak" name="Закарпатська область"></activiti:value>
+          <activiti:value id="sEnamZap" name="Запорізька область"></activiti:value>
+          <activiti:value id="sEnamIFr" name="Івано-Франківська область"></activiti:value>
+          <activiti:value id="sEnamKuyO" name="Київська область"></activiti:value>
+          <activiti:value id="sEnamKir" name="Кіровоградська область"></activiti:value>
+          <activiti:value id="sEnamLug" name="Луганська область"></activiti:value>
+          <activiti:value id="sEnamLviv" name="Львівська область"></activiti:value>
+          <activiti:value id="sEnamMuk" name="Миколаївська область"></activiti:value>
+          <activiti:value id="sEnamOdes" name="Одеська область"></activiti:value>
+          <activiti:value id="sEnamPolt" name="Полтавська область"></activiti:value>
+          <activiti:value id="sEnamRivn" name="Рівненська область"></activiti:value>
+          <activiti:value id="sEnamSum" name="Сумська область"></activiti:value>
+          <activiti:value id="sEnamTern" name="Тернопільська область"></activiti:value>
+          <activiti:value id="sEnamHark" name="Харківська область"></activiti:value>
+          <activiti:value id="sEnamHers" name="Херсонська область"></activiti:value>
+          <activiti:value id="sEnamHmel" name="Хмельницька область"></activiti:value>
+          <activiti:value id="sEnamCherk" name="Черкаська область"></activiti:value>
+          <activiti:value id="sEnamChern" name="Чернівецька область"></activiti:value>
+          <activiti:value id="sEnamCherg" name="Чернігівська область"></activiti:value>
+          <activiti:value id="sEnamMistKuy" name="Місто Київ"></activiti:value>
+          <activiti:value id="sEnamMistSev" name="Місто Севастополь"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asNPTipe" name="Тип населеного пункту" type="enum" writable="false">
+          <activiti:value id="sEnamMist" name="Місто"></activiti:value>
+          <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
+          <activiti:value id="sEnamSelo" name="Село"></activiti:value>
+          <activiti:value id="sEnamSeluse" name="Селище"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRainNP" name="Район до якого належить населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameNP" name="Назва населеного пункту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTipeVulitsa" name="Тип вулиці" type="enum" writable="false">
+          <activiti:value id="sEnamVul" name="Вулиця"></activiti:value>
+          <activiti:value id="sEnamProsp" name="Проспект"></activiti:value>
+          <activiti:value id="sEnamProv" name="Провулок"></activiti:value>
+          <activiti:value id="sEnamAley" name="Алея"></activiti:value>
+          <activiti:value id="sEnamBulv" name="Бульвар"></activiti:value>
+          <activiti:value id="sEnamPlosh" name="Площа"></activiti:value>
+          <activiti:value id="sEnamTupik" name="Тупик"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sVulitsa" name="Назва вулиці" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBudN" name="Номер будинку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTipePrim" name="Тип приміщення" type="enum" writable="false">
+          <activiti:value id="sEnamOfise" name="Офіс"></activiti:value>
+          <activiti:value id="sEnamKvart" name="Квартира"></activiti:value>
+          <activiti:value id="sEnamPrimish" name="Приміщення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lPrimN" name="Номер приміщення" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lPostIndex" name="Поштовий індекс" type="long" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_K" name="Коди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_K&quot;:{&quot;aElement_ID&quot;:[&quot;asFormVl&quot;],&quot;sValue&quot;:&quot;Коди&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asFormVl" name="Форма власності" type="enum" writable="false">
+          <activiti:value id="sEnamPriv" name="10 Приватна"></activiti:value>
+          <activiti:value id="sEnamKolect" name="20 Колективна"></activiti:value>
+          <activiti:value id="sEnamDerj" name="30 Державна"></activiti:value>
+          <activiti:value id="sEnamZagDerj" name="31 Загальнодержавна"></activiti:value>
+          <activiti:value id="sEnamKomun" name="32 Комунальна"></activiti:value>
+          <activiti:value id="sEnamInoz" name="40 Власність іноземної держави"></activiti:value>
+          <activiti:value id="sEnamUrInoz" name="50 Власність міжнародної організації або іноземної юридичної особи"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sOrgPravForm" name="Код організаційно правової форми" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="chek2110" name="21.10 Виробництво основних фармацевтичних продуктів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chek2120" name="21.20 Виробництво фармацевтичних препаратів і матеріалів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chek4646" name="46.46 Оптова торгівля фармацевтичними товарами;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chek4773" name="47.73 Роздрібна торгівля фармацевтичними товарами в спеціалізованих магазинах;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        
+        
+        <activiti:formProperty id="markersLine_MDD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MDD&quot;:{&quot;aElement_ID&quot;:[&quot;asAptZakl1&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asAptZakl1" name="Вид аптечного закладу" type="enum" writable="false">
+          <activiti:value id="sEnamAptek1" name="Аптека"></activiti:value>
+          <activiti:value id="sEnamAptpunkt1" name="Аптечний пункт"></activiti:value>
+          <activiti:value id="sEnamAptSklad1" name="Аптечний склад"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekVurob1" name="Виробництво;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sAptPidpor1" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="chekZaMeg1" name="Заклад поза межами населеного пункту?;позначте галочкою - якщо заклад за межами населеного пункту;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="asOblTipe1" name="Область" type="enum" writable="false">
+          <activiti:value id="sEnamARK" name="Автономна Республіка Крим"></activiti:value>
+          <activiti:value id="sEnamVin" name="Вінницька область"></activiti:value>
+          <activiti:value id="sEnamVol" name="Волинська область"></activiti:value>
+          <activiti:value id="sEnamDni" name="Дніпропетровська область"></activiti:value>
+          <activiti:value id="sEnamDon" name="Донецька область"></activiti:value>
+          <activiti:value id="sEnamGut" name="Житомирська область"></activiti:value>
+          <activiti:value id="sEnamZak" name="Закарпатська область"></activiti:value>
+          <activiti:value id="sEnamZap" name="Запорізька область"></activiti:value>
+          <activiti:value id="sEnamIFr" name="Івано-Франківська область"></activiti:value>
+          <activiti:value id="sEnamKuyO" name="Київська область"></activiti:value>
+          <activiti:value id="sEnamKir" name="Кіровоградська область"></activiti:value>
+          <activiti:value id="sEnamLug" name="Луганська область"></activiti:value>
+          <activiti:value id="sEnamLviv" name="Львівська область"></activiti:value>
+          <activiti:value id="sEnamMuk" name="Миколаївська область"></activiti:value>
+          <activiti:value id="sEnamOdes" name="Одеська область"></activiti:value>
+          <activiti:value id="sEnamPolt" name="Полтавська область"></activiti:value>
+          <activiti:value id="sEnamRivn" name="Рівненська область"></activiti:value>
+          <activiti:value id="sEnamSum" name="Сумська область"></activiti:value>
+          <activiti:value id="sEnamTern" name="Тернопільська область"></activiti:value>
+          <activiti:value id="sEnamHark" name="Харківська область"></activiti:value>
+          <activiti:value id="sEnamHers" name="Херсонська область"></activiti:value>
+          <activiti:value id="sEnamHmel" name="Хмельницька область"></activiti:value>
+          <activiti:value id="sEnamCherk" name="Черкаська область"></activiti:value>
+          <activiti:value id="sEnamChern" name="Чернівецька область"></activiti:value>
+          <activiti:value id="sEnamCherg" name="Чернігівська область"></activiti:value>
+          <activiti:value id="sEnamMistKuy" name="Місто Київ"></activiti:value>
+          <activiti:value id="sEnamMistSev" name="Місто Севастополь"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sZaMegamu1" name="Адреса закладу;(тільки для закладів, що за межами населених пунктів)" type="string" writable="false"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="asNPTipe1" name="Тип населеного пункту" type="enum" writable="false">
+          <activiti:value id="sEnamMist" name="Місто"></activiti:value>
+          <activiti:value id="sEnamSMT" name="СМТ"></activiti:value>
+          <activiti:value id="sEnamSelo" name="Село"></activiti:value>
+          <activiti:value id="sEnamSeluse" name="Селище"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRainNP1" name="Район до якого належить населений пункт" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sNameNP1" name="Назва населеного пункту" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTipeVulitsa1" name="Тип вулиці" type="enum" writable="false">
+          <activiti:value id="sEnamVul" name="Вулиця"></activiti:value>
+          <activiti:value id="sEnamProsp" name="Проспект"></activiti:value>
+          <activiti:value id="sEnamProv" name="Провулок"></activiti:value>
+          <activiti:value id="sEnamAley" name="Алея"></activiti:value>
+          <activiti:value id="sEnamBulv" name="Бульвар"></activiti:value>
+          <activiti:value id="sEnamPlosh" name="Площа"></activiti:value>
+          <activiti:value id="sEnamTupik" name="Тупик"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sVulitsa1" name="Назва вулиці;(проспекту, провулку, алеї, площі, бульвару)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBudN1" name="Номер будинку" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asTipePrim1" name="Тип приміщення" type="enum" writable="false">
+          <activiti:value id="sEnamOfise" name="Офіс"></activiti:value>
+          <activiti:value id="sEnamKvart" name="Квартира"></activiti:value>
+          <activiti:value id="sEnamPrimish" name="Приміщення"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lPrimN1" name="Номер приміщення" type="long" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lPostIndex1" name="Поштовий індекс" type="long" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_Vidomost1" name="Відомості про матеріально-технічну базу закладу №1; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/MERT_1570_LicenLik_lic.html]; ;bVisible=false" type="string" default="Заява про отримання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/MERT_1570_LicenLik_reg.html]; ;bVisible=false" type="string" default="Заява про внесення до реєстру" writable="false"></activiti:formProperty>
+        
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
     <sequenceFlow id="flow4" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="{MailTaskWithoutAttachment}"></serviceTask>
+    <serviceTask id="servicetask3" name="Service Task" activiti:delegateExpression="{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення задоволено. ${sPosluga_name}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Ваше звернення №[sID_Order] пройшло перевірку.<br />
+Ліцензію буде надано.<br />
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="servicetask3"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
