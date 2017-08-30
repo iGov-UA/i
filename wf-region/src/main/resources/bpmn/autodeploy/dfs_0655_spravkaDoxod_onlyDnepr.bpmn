@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dnepr_spravka_o_doxodax" name="Отримання довідки про доходи фіз. осіб" isExecutable="true" activiti:candidateStarterGroups="dnepr_nalog">
-    <documentation>12.10.16 Рефакторинг: переход на subject_organ_join, переход с мейл таски на serviceTask с использованием шаблонов и атрибутов, маркеры на портале
+  <process id="dfs_0655_spravkaDoxod_onlyDnepr" name="Отримання довідки про доходи фіз. осіб" isExecutable="true" activiti:candidateStarterGroups="dnepr_nalog">
+    <documentation>
+    	12.10.16 Рефакторинг: переход на subject_organ_join, переход с мейл таски на serviceTask с использованием шаблонов и атрибутов, маркеры на портале
 		10.01.17 Рефакторинг: переход на новые мейлы
 		22.05.17 Рефакторинг: переход на обработку чиновником на портале
+		22.08.17 Переименование БП из dnepr_spravka_o_doxodax в dfs_0655_spravkaDoxod_onlyDnepr
 	</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
@@ -36,7 +38,7 @@
         <activiti:formProperty id="sFIOGolova673" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
 
-        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_spravka_o_doxodax_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_onlyDnepr_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
 
@@ -63,17 +65,18 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment" name="Результат обробки" type="textArea"></activiti:formProperty>
 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dnepr_spravka_o_doxodax_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="Заява громадянина;File HTML;sPrintFormFileAsIs=pattern/print/dfs/dnepr_spravka_o_doxodax_print.html" type="file" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_0655_spravkaDoxod_onlyDnepr_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="заява громадянина" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Принтформа PDF ЮТ1;File PDF;sPrintFormFileAsPDF=pattern/print/dfs/dfs_0655_spravkaDoxod_onlyDnepr_print.html,bNew=true" type="file" writable="false"></activiti:formProperty>
+
 
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
 
         <activiti:formProperty id="sNameOrgan673" name="назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dnepr_spravka_o_doxodax_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_onlyDnepr_user.json')}"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -262,8 +265,8 @@
     <sequenceFlow id="flow10" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_spravka_o_doxodax">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_spravka_o_doxodax" id="BPMNPlane_dnepr_spravka_o_doxodax">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dfs_0655_spravkaDoxod_onlyDnepr">
+    <bpmndi:BPMNPlane bpmnElement="dfs_0655_spravkaDoxod_onlyDnepr" id="BPMNPlane_dfs_0655_spravkaDoxod_onlyDnepr">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="178.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
