@@ -167,7 +167,7 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   //   }
   // });
 
-   // Script Oleg hypercomments
+  // Script Oleg hypercomments
     var HC_LOAD_INIT = false;
   var my_texts =
   {
