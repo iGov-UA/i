@@ -167,24 +167,60 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   //   }
   // });
 
-  // hypercomments
-  var HC_LOAD_INIT = false;
+   // Script Oleg hypercomments
+    var HC_LOAD_INIT = false;
+  var my_texts =
+  {
+      get_keys: function (keys)
+      {
+          console.log('All keys for comments - ' + keys + '.');
+      }
+  };
   window._hcwp = window._hcwp || [];
   window._hcwp.push({
       widget: 'Stream',
-      widget_id: 60115
+      widget_id: 60115,
+      social: 'google, facebook, twitter, tumblr, livejournal',
+      callback: function (app, init)
+      {
+          app.on('siteAuth', function (packet)
+          {
+              console.log('Event site auth - ' + packet);
+          });
+      },
+      title: 'My Title',
+      cm : 161, cm2 : 191, hc : 3, cm_pending : 3, cm_spam : 4, cm_removed : 5,
+      likes : 5,
+      unlikes : 6,
+      readonly : false,
+      unixtime : 1413898136.981373,
+      quotes : 4,
+      pagination: 0,
+      hc_disable: 0, quote_disable: 0,
+      words_limit: 10,
+      comments_level: 4,
+      auth: null,
+      realtime: true,
+      //like_href: '',
+      //like_title: '',
+      //default_avatar: '',
+      texts: my_texts
   });
-  if ('HC_LOAD_INIT' in window) {
+  if ('HC_LOAD_INIT' in window)
+  {
       return;
   }
   HC_LOAD_INIT = true;
+
   var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase();
   var hcc = document.createElement('script');
+
   hcc.type = 'text/javascript';
   hcc.async = true;
   hcc.src = ('https:' === document.location.protocol ? 'https' : 'http') + '://w.hypercomments.com/widget/hc/60115/' + lang + '/widget.js';
 
-  $scope.runComments = function () {
+  $scope.runComments = function ()
+  {
       angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
   };
   try {
