@@ -117,7 +117,7 @@ public class Mail extends Abstract_Mail {
         LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
     }
 
-    public void sendOld() throws EmailException {
+    private void sendOld() throws EmailException {
         LOG.info("sendOld started...");
         LOG.info("init");
         try {
@@ -203,12 +203,16 @@ public class Mail extends Abstract_Mail {
 
     public Mail _AttachBody(String sBody) {
         try {
+            //запасной вариант.тело письма должно быть первым, далее уже атачи. перекладываем атачи, чтоб было место для тела письма
+            /*int count = getoMultiparts().getCount();
+            for (int i = count - 1; i >= 0; i--) {
+                getoMultiparts().addBodyPart(getoMultiparts().getBodyPart(i), i+1);
+            }*/
             MimeBodyPart oMimeBodyPart = new MimeBodyPart();
-            //oMimeBodyPart.setText(sBody,DEFAULT_ENCODING,"Content-Type: text/html;");
             oMimeBodyPart.setText(sBody, DEFAULT_ENCODING);
-            //         oMimeBodyPart.setHeader("Content-Type", "text/html");
             oMimeBodyPart.setHeader("Content-Type", "text/html;charset=utf-8");
-            getoMultiparts().addBodyPart(oMimeBodyPart);
+            //тело письма первое. далее уже атачи, если они там есть
+            getoMultiparts().addBodyPart(oMimeBodyPart, 0);
             LOG.info("sBodylength()={}", sBody != null ? sBody.length() : "null");
         } catch (Exception oException) {
             LOG.error("FAIL:", oException);
@@ -216,18 +220,6 @@ public class Mail extends Abstract_Mail {
         return this;
     }
 
-    /*private Mail _Attach(File oFile) {
-        _Attach(new FileDataSource(oFile), oFile.getName(), "");
-        return this;
-    }
-
-    public Mail _Attach(File[] aFile) {
-        LOG.info("(aFile.length={})", aFile.length);
-        for (File oFile : aFile) {
-            _Attach(oFile);
-        }
-        return this;
-    }*/
     public Mail _Attach(DataSource oDataSource, String sFileName, String sDescription) {
         LOG.info("_Attach started..");
         try {
@@ -245,43 +237,6 @@ public class Mail extends Abstract_Mail {
         return this;
     }
 
-    /*public Mail _Attach(URL[] aoURL) {
-        return _Attach(aoURL, null);
-    }
-
-    private Mail _Attach(URL[] aoURL, String[] asName) {
-        LOG.info("(asName={})", asName);
-        for (int n = 0; n < aoURL.length; n++) {
-            try {
-                if (asName == null) {
-                    _Attach(aoURL[n], null);
-                } else {
-                    _Attach(aoURL[n], asName[n]);
-                }
-            } catch (Exception oException) {
-                LOG.error("FAIL:", oException);
-            }
-        }
-        return this;
-    }
-
-    private Mail _Attach(URL oURL, String sName) {
-        try {
-            MimeBodyPart oMimeBodyPart = new MimeBodyPart();//javax.activation
-            oMimeBodyPart.setHeader("Content-Type", "multipart/mixed");
-            DataSource oDataSource = new URLDataSource(oURL);
-            oMimeBodyPart.setDataHandler(new DataHandler(oDataSource));
-            //oPart.setFileName(MimeUtility.encodeText(source.getName()));
-            oMimeBodyPart.setFileName(
-                    MimeUtility.encodeText(sName == null || "".equals(sName) ? oDataSource.getName() : sName));
-            oMultiparts.addBodyPart(oMimeBodyPart);
-            LOG.info("(sName={})", sName);
-        } catch (Exception oException) {
-            LOG.error("FAIL: {} (sName={})", oException.getMessage(), sName);
-            LOG.trace("FAIL:", oException);
-        }
-        return this;
-    }*/
     public static String sMailOnly(String sMail) {
         String sMailNew = sMail;
         try {
