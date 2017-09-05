@@ -93,38 +93,58 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sSubjectName: scope.formData.params.bankIdfirstName.value,
               sSubjectSurname: scope.formData.params.bankIdmiddleName.value || '',
               sSubjectPassport: scope.formData.params.bankIdPassport.value ? getPasportLastFourNumbers(scope.formData.params.bankIdPassport.value) : '',
-              sSubjectPhone: scope.formData.params.phone.value || ''
+              sSubjectPhone: scope.formData.params.phone.value || '',
+              sPrevoisReservedSlot: scope.ngModel ? scope.ngModel : false
             };
             $rootScope.$broadcast("slot-picker-start-processing");
-            $http.post('/api/service/flow/DMS/setSlotHold', data).
-            success(function(data, status, headers, config) {
-              scope.ngModel = JSON.stringify({
-                reserved_to: data.reserved_to,
-                reserve_id: data.reserve_id,
-                interval: data.interval
-              });
-              if(scope.$parent.slotsCache.showConfirm){
-                dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
-              }
-              $rootScope.$broadcast("slot-picker-stop-processing");
-              console.info('Reserved slot: ' + angular.toJson(data));
-            }).
-            error(function(data, status, headers, config) {
-              console.error('Error reserved slot ' + angular.toJson(data));
-              var err = data.message ? data.message.split(": response=") : [];
-              if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
-                if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
-                  dialogs.error('Помилка', 'Обраний Вами час вже недоступний. Повторіть, будь ласка, спробу пізніше або оберіть інший час та дату.')
-                } else {
-                  dialogs.error('Помилка', err[1])
+
+            if(scope.ngModel){
+              $http.post('/api/service/flow/DMS/canselSlotHold', {sSubjectPhone: data.sSubjectPhone}).then(function (resp) {
+                console.log('Slots reserve ' + scope.ngModel + ' was canceled');
+                scope.ngModel = null;
+              }, function (err) {
+                console.error('Error during canceling slots hold by sSubjectPhone [' + data.sSubjectPhone + "]: " + angular.toJson(err));
+              }).finally(function () {
+                setSlotHoldDms(data)
+              })
+            } else {
+              setSlotHoldDms(data)
+            }
+
+            function setSlotHoldDms(oData) {
+              $http.post('/api/service/flow/DMS/setSlotHold', oData).
+              success(function(data, status, headers, config) {
+                scope.ngModel = JSON.stringify({
+                  reserved_to: data.reserved_to,
+                  reserve_id: data.reserve_id,
+                  interval: data.interval
+                });
+                if(scope.$parent.slotsCache.showConfirm){
+                  dialogs.notify('Зарезервовано', 'Талон електронної черги зарезервовано');
                 }
-              } else {
-                dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
-              }
-              scope.selected.slot = null;
-              $rootScope.$broadcast("slot-picker-stop-processing");
-              scope.loadList();
-            });
+                $rootScope.$broadcast("slot-picker-stop-processing");
+                console.info('Reserved slot: ' + angular.toJson(data));
+              }).
+              error(function(data, status, headers, config) {
+                console.error('Error reserved slot ' + angular.toJson(data));
+                var err = data.message ? data.message.split(": response=") : [];
+                if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
+                  if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
+                    dialogs.error('Помилка', 'Обраний Вами час вже недоступний. Повторіть, будь ласка, спробу пізніше або оберіть інший час та дату.')
+                  } else {
+                    dialogs.error('Помилка', err[1])
+                  }
+                } else {
+                  dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
+                }
+                scope.selected.slot = null;
+                $rootScope.$broadcast("slot-picker-stop-processing");
+                scope.loadList();
+              });
+            }
+
+
+
           }
         } else if (isQueueDataType.iGov) {
           if (newValue) {
