@@ -200,14 +200,14 @@
 <table style="width: 100%; padding-bottom: 10px;">
     <tbody>
     <tr>
-        <td colspan="3" style="text-align: left;font-size: 16px;">наявності матеріально-технічної бази, кваліфікації персоналу</td>
+        <td colspan="3" style="text-align: left;font-size: 16px;"><div id="asPerevirka1"></div></td>
     </tr>
     </tbody>
 </table>
 <table style="width: 100%; padding-bottom: 10px;">
     <tbody>
     <tr>
-        <td colspan="3" style="text-align: left;font-size: 16px;">умов щодо контролю якості лікарських засобів, що вироблятимуться</td>
+        <td colspan="3" style="text-align: left;font-size: 16px;"><div id="asPerevirka2"></div></td>
     </tr>
     </tbody>
 </table>
@@ -222,21 +222,21 @@
 <table style="width: 100%; padding-bottom: 10px;">
     <tbody>
     <tr>
-        <td colspan="3" style="text-align: left;font-size: 16px;">нарочно</td>
+        <td colspan="3" style="text-align: left;font-size: 16px;"><div id="asVidpov1"></div></td>
     </tr>
     </tbody>
 </table>
 <table style="width: 100%; padding-bottom: 10px;">
     <tbody>
     <tr>
-        <td colspan="3" style="text-align: left;font-size: 16px;">поштовим відправленням за місцезнаходженням/місцем проживання</td>
+        <td colspan="3" style="text-align: left;font-size: 16px;"><div id="asVidpov2"></div></td>
     </tr>
     </tbody>
 </table>
 <table style="width: 100%; padding-bottom: 10px;">
     <tbody>
     <tr>
-        <td colspan="3" style="text-align: left;font-size: 16px;">в електронному вигляді</td>
+        <td colspan="3" style="text-align: left;font-size: 16px;"><div id="asVidpov3"></div></td>
     </tr>
     </tbody>
 </table>
@@ -247,7 +247,7 @@
         <td style="width: 35%; text-align: left;font-size: 15px;">[sDateCreateProcess] </td>
         <td style="width: 20%; text-align: left; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;">Підписано ЕЦП </td>
         <td tyle="width: 25%;"></td>
-        <td style="width: 20%; text-align: left; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;">через iGov</td>
+        <td style="width: 20%; text-align: left; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;"><div id="PIB"></div></td>
     </tr>
     <tr>
         <td style="width: 35%; text-align: center;font-size: 16px;"></td>
@@ -316,8 +316,6 @@
   
   
   var ScrNPTipe = "[asNPTipe]";
-  var ScrZAdress = ' ';
-  
   var ScrasOblTipe = "[asOblTipe]";
   var ScrsRainNP = "[sRainNP]";
   var ScrsNameNP = "[sNameNP]";
@@ -330,21 +328,47 @@
   
   
   if(ScrNPTipe == 'Місто'||ScrNPTipe == 'sEnamMist'){
-    ScrZAdress =
-      
-    document.getElementById("ZAdress").innerHTML += ScrasOblTipe + ", " + ScrNPTipe + " " + ScrsNameNP + ", " + ScrasTipeVulitsa + " " + ScrsVulitsa + ", " + ScrasTipePrim + " " + ScrlPrimN + ", " + ScrllPostIndex
-  
+    document.getElementById("ZAdress").innerHTML += ScrasOblTipe + ", " + ScrNPTipe + " " + ScrsNameNP + ", " + ScrasTipeVulitsa + " " + ScrsVulitsa + ", " + ScrasTipePrim + " " + ScrlPrimN + ", " + ScrllPostIndex;
   }
   else {
-    document.getElementById("ZAdress").innerHTML += ScrasOblTipe + ", " + ScrsRainNP + ", " + ScrNPTipe + " " + ScrsNameNP + ", " + ScrasTipeVulitsa + " " + ScrsVulitsa + ", " + ScrasTipePrim + " " + ScrlPrimN + ", " + ScrllPostIndex
+    document.getElementById("ZAdress").innerHTML += ScrasOblTipe + ", " + ScrsRainNP + ", " + ScrNPTipe + " " + ScrsNameNP + ", " + ScrasTipeVulitsa + " " + ScrsVulitsa + ", " + ScrasTipePrim + " " + ScrlPrimN + ", " + ScrllPostIndex;
+  };
   
+  
+  var ScrbankIdlastName = "[bankIdlastName]";
+  var ScrbankIdfirstName = "[bankIdfirstName]";
+  var ScrbankIdmiddleName = "[bankIdmiddleName]";
+  
+  var init1 = ScrbankIdfirstName.substr(1,1);
+  var init2 = ScrbankIdmiddleName.substr(1,1);
+  
+  
+  document.getElementById("PIB").innerHTML += ScrbankIdlastName + " " + init1 + ". " + init1+ ". ";
+  
+  
+  var ScrasPerevirka = "[asPerevirka]";
+  var ScrasVidpov = "[asVidpov]";
+  
+  if(ScrasPerevirka == 'sEnamMattex'||ScrasPerevirka == 'Наявності матеріально-технічної бази, кваліфікації персоналу'){
+    document.getElementById("asPerevirka1").innerHTML += "наявності матеріально-технічної бази, кваліфікації персоналу";
   }
+  else {
+    document.getElementById("asPerevirka2").innerHTML += "умов щодо контролю якості лікарських засобів, що вироблятимуться";
+  };
   
-  
-  
-  
-  
-  
+  switch(ScrasVidpov) {
+    case "Забрати самостійно":
+        document.getElementById("asVidpov1").innerHTML += "Забрати самостійно";
+        break;
+    case "Поштовим відправленням за місцезнаходженням/місцем проживання":
+        document.getElementById("asVidpov2").innerHTML += "Поштовим відправленням за місцезнаходженням/місцем проживання";
+        break;
+    case "В електронному вигляді":
+        document.getElementById("asVidpov3").innerHTML += "В електронному вигляді";
+        break;
+    default:
+        document.getElementById("asVidpov1").innerHTML += "Забрати самостійно";
+    };
   
   var ScrOsoba = "[asOsoba]";
   
@@ -385,8 +409,7 @@
   document.getElementById("clFio3").innerHTML += ScrclFio;
   document.getElementById("clFio5").innerHTML += ScrclFio;
 
-  var ScrchekBudDok = "[chekBudDok]";
-  var ScrchekPrEksp = "[chekPrEksp]";
+  
 
 
   
