@@ -1,10 +1,17 @@
-angular.module('app').controller('ServiceBuiltInBankIDController',
-  function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
-            FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
-            BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
-            PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
-            ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
-            ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService) {
+angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$state', '$stateParams', '$scope', '$timeout',
+    '$location', '$window', '$rootScope', '$http', '$filter', 'FormDataFactory', 'ActivitiService', 'ValidationService',
+    'ServiceService', 'oService', 'oServiceData', 'BankIDAccount', 'activitiForm', 'formData', 'allowOrder', 'countOrder',
+    'selfOrdersCount', 'AdminService', 'PlacesService', 'uiUploader', 'FieldAttributesService', 'iGovMarkers', 'service',
+    'FieldMotionService', 'ParameterFactory', '$modal', 'FileFactory', 'DatepickerFactory', 'autocompletesDataFactory',
+    'ErrorsFactory', 'taxTemplateFileHandler', 'taxTemplateFileHandlerConfig', 'SignFactory', 'TableService', 'LabelService',
+    'MasterPassService', 'modalService', 'BanksResponses',
+    function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
+              FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
+              BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
+              PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
+              ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
+              ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService,
+              MasterPassService, modalService, BanksResponses) {
 
     'use strict';
 
@@ -33,6 +40,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
 
       $scope.data.formData = formData;
       $scope.tableIsInvalid = false;
+
+      $scope.checkoutData = {};
+      $scope.isOpenedCheckout = false;
+      $scope.checkoutSpinner = false;
+      $scope.selectedCard = null;
+      $scope.checkoutConfirm = {status: 'checkout'};
+      $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false, otpIsConfirmed: true};
 
       $scope.setFormScope = function (scope) {
         this.formScope = scope;
@@ -332,7 +346,12 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         for( var pay in $scope.data.formData.params ) {
           if($scope.data.formData.params.hasOwnProperty(pay) && pay.indexOf('sID_Pay_MasterPass') === 0) {
             if(!$scope.data.formData.params[pay].value) {
-              $scope.createPayment();
+              if ($scope.isOpenedCheckout) {
+                $scope.createPayment();
+              } else {
+                $scope.isSending = false;
+                return false;
+              }
               return false;
             } else
                 break;
@@ -694,7 +713,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       $scope.cantSubmit = function (form) {
         return $scope.isSending
             || ($scope.isUploading && !form.$valid)
-            || ($scope.isSignNeeded && !$scope.sign.checked);
+            || ($scope.isSignNeeded && !$scope.sign.checked)
+            || ($scope.isMPassField(null, true) && !$scope.selectedCard);
       };
 
       $scope.bSending = function (form) {
@@ -1175,6 +1195,257 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         return LabelService.isLabelHasClasses(field)
       };
 
+      /*verify phone number start*/
+      $scope.phoneVerifyStart = function () {
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+        MasterPassService.phoneCheck(phoneNumber, null).then(function () {
+          $scope.phoneVerify.dialog = true;
+        });
+      };
+
+      $scope.confirmOtp = function () {
+        $scope.checkoutSpinner = true;
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+        MasterPassService.otpPhoneConfirm(phoneNumber, $scope.phoneVerify.otp).then(function (res) {
+          $scope.phoneVerify.confirmed = $scope.phoneVerify.otpIsConfirmed = res;
+          if (res) {
+            $scope.authorizeCheckout();
+            localStorage.setItem('userPhone', phoneNumber);
+          } else {
+            $scope.checkoutSpinner = false;
+          }
+        });
+      };
+
+      $scope.changePhone = function () {
+        $scope.data.formData.params['phone'].value = '+380';
+        $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false, otpIsConfirmed: true};
+        $scope.isOpenedCheckout = false;
+        console.log($scope.checkoutData)
+      };
+      /*verify phone number end*/
+
+      /*MasterPass Checkout start*/
+      function searchMPCheckoutFields() {
+        $scope.checkoutData = MasterPassService.fillCheckoutData($scope.activitiForm.formProperties);
+      }
+
+      $scope.isMPassField = function (id, all) {
+        if(id && !all)
+          return MasterPassService.isMasterPassButton(id, all);
+        if(!id && all)
+          return MasterPassService.isMasterPassButton(false, $scope.activitiForm.formProperties);
+      };
+
+      $scope.authorizeCheckout = function () {
+        $scope.checkoutSpinner = true;
+        $scope.paymentStatus = null;
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+
+        if (phoneNumber && phoneNumber.length === 12 && $scope.phoneVerify.confirmed) {
+          MasterPassService.checkUser(phoneNumber, 'ua').then(function (res) {
+            if(res) {
+              $scope.isOpenedCheckout = true;
+              $scope.phoneVerify.dialog = $scope.phoneVerify.showVerifyButton = false;
+              if(res.response.url) {
+                $scope.userCards = null;
+                $scope.registerLink = {url: res.response.url, type: res.type};
+              } else if(res.response.error) {
+                $scope.paymentStatus = 4;
+                console.error(res.response.error);
+              } else {
+                $scope.userCards = res.response;
+                $scope.selectedCard = res.response[Object.keys(res.response)[0]];
+                $scope.registerLink = null;
+              }
+            }
+            $scope.checkoutConfirm = {status: 'checkout'};
+            $scope.checkoutSpinner = false;
+          });
+        } else if (phoneNumber && phoneNumber.length === 12 && !$scope.phoneVerify.confirmed){
+          $scope.isOpenedCheckout = false;
+          var modalOptions = MasterPassService.messages('phone-is-not-verified');
+          modalService.showModal(modalOptions.defaults, modalOptions.modal)
+        } else {
+          $scope.isOpenedCheckout = false;
+        }
+      };
+      $scope.changeCard = function (i) {
+        $scope.selectedCard = i;
+      };
+
+      $scope.createPayment = function () {
+        $scope.checkoutSpinner = true;
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+
+        searchMPCheckoutFields();
+        $scope.checkoutData.card_alias = $scope.selectedCard.card_alias;
+
+        if(phoneNumber && phoneNumber.length === 12) {
+          MasterPassService.createPayment(phoneNumber, $scope.checkoutData).then(function (res) {
+            if(res.pmt_status == 4) {
+              $scope.paymentStatus = 4;
+              if(res.bank_response) {
+                BanksResponses.getErrorMessage(res.bank_response.bank_id, res.bank_response.rc).then(function (res) {
+                  $scope.checkoutErrorMsg = res.data;
+                });
+              }
+              $scope.isSending = false;
+            } else if(res.pmt_status == 0) {
+              if (res.secure && res.secure === '3ds') {
+                MasterPassService.getUserId().then(function (id) {
+                  var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + $location.path();
+                  var callbackUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/masterpass/verify3DSCallback' + '?id=' + res.pmt_id + '&msisdn=' + phoneNumber + '&user=' + id + '&url=' + url;
+                  var temp = JSON.stringify({form: $scope.data.formData.params, activiti: $scope.activitiForm.formProperties});
+                  localStorage.setItem('temporaryForm', temp);
+
+                  openUrl(res.ascUrl, {pareq: res.pareq, md: res.md, TermUrl: callbackUrl}, '_self');
+                });
+              } else if(res.secure && res.secure === 'otp') {
+                $scope.phoneVerify.otpIsConfirmed = true;
+                $scope.otpErrorMsg = null;
+                $scope.checkoutConfirm.status = 'confirm';
+                $scope.checkoutData.payment= {otpToken: res.token, otpCode: '', invoice: res.invoice, pmt_id: res.pmt_id};
+              }
+            } else if(res.pmt_status == 5) {
+              for(var field in $scope.data.formData.params) {
+                if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
+                  $scope.data.formData.params[field].value = res.pmt_id;
+                  $timeout(function () {
+                    $scope.processForm($scope.myForm, activitiForm.formProperties, false);
+                  });
+                }
+              }
+            }
+            $scope.checkoutSpinner = false;
+          })
+        } else {
+          $scope.checkoutSpinner = false;
+        }
+      };
+
+      function otpError() {
+        $scope.isSending = false;
+        $scope.paymentStatus = 4;
+        $scope.checkoutConfirm.status = 'checkout';
+        $scope.checkoutSpinner = false;
+      }
+
+      $scope.otpConfirmPayment = function () {
+        $scope.checkoutSpinner = true;
+        var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
+        MasterPassService.otpConfirm($scope.checkoutData.payment.otpCode, $scope.checkoutData.payment.otpToken, phoneNumber).then(function (res) {
+          if(res.pmt_status == 5) {
+            for(var field in $scope.data.formData.params) {
+              if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
+                $scope.data.formData.params[field].value = res.pmt_id;
+                $timeout(function () {
+                  $scope.processForm($scope.myForm, activitiForm.formProperties, false);
+                })
+              }
+            }
+          } else if(res.error === 'otp max attempts') {
+            otpError();
+          } else if(res.error) {
+            $scope.phoneVerify.otpIsConfirmed = $scope.checkoutSpinner =  false;
+            $scope.otpErrorMsg = MasterPassService.otpErrorMessages(res.error);
+          } else {
+            otpError();
+          }
+        });
+      };
+
+      $scope.chooseAnotherCard = function () {
+        $scope.authorizeCheckout();
+        $scope.checkoutConfirm = {status: 'checkout'};
+        $scope.checkoutData.payment = {};
+      };
+
+      var checkLocation = $location.url();
+      var tempFiles = localStorage.getItem('temporaryForm');
+
+      function getTemporarySavedFields() {
+        var parsedFormData = JSON.parse(tempFiles).form;
+        var parsedActivitiForm = JSON.parse(tempFiles).activiti;
+
+        for( var param in parsedFormData ) {
+          if(parsedFormData.hasOwnProperty(param) && $scope.data.formData.params.hasOwnProperty(param)) {
+            $scope.data.formData.params[param].value = parsedFormData[param].value;
+          } else if(parsedFormData.hasOwnProperty(param) && $scope.data.formData.params.hasOwnProperty(param) && 'aRow' in parsedFormData[param]) {
+            $scope.data.formData.params[param].aRow = parsedFormData[param].aRow;
+          }
+        }
+
+        for( var i=0; i<parsedActivitiForm.length; i++ ) {
+          for( var j=0; j<$scope.activitiForm.formProperties.length; j++) {
+            if(parsedActivitiForm[i].id === $scope.activitiForm.formProperties[j].id) {
+              $scope.activitiForm.formProperties[j].value = parsedActivitiForm[i].value;
+            } else if(parsedActivitiForm[i].id === $scope.activitiForm.formProperties[j].id && parsedActivitiForm[i].aRow) {
+              $scope.activitiForm.formProperties[j].aRow = parsedActivitiForm[i].aRow;
+            }
+          }
+        }
+
+        $scope.phoneVerify.dialog = $scope.phoneVerify.showVerifyButton = false;
+        $scope.phoneVerify.confirmed = true;
+        localStorage.removeItem('temporaryForm');
+      }
+
+      if(checkLocation.indexOf('pmt_id') > -1) {
+        var parse = checkLocation.split('?')[1], data = parse.split('&'), paymentStatus = data[0].split('=')[1], paymentID = data[1].split('=')[1];
+        $scope.paymentStatus = paymentStatus;
+        $scope.checkoutData.payment = {result: paymentID};
+
+        if (tempFiles)
+          getTemporarySavedFields();
+
+        for (var field in $scope.data.formData.params) {
+          if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
+            $scope.data.formData.params[field].value = paymentID;
+            $timeout(function () {
+              $scope.processForm($scope.myForm, activitiForm.formProperties, false);
+            });
+          }
+        }
+
+      } else if(checkLocation.indexOf('3DS') > -1 && checkLocation.indexOf('failed') > -1) {
+        if (tempFiles) {
+          getTemporarySavedFields();
+          $scope.authorizeCheckout();
+        }
+      } else if(checkLocation.indexOf('status=failed') > -1 && checkLocation.indexOf('bank_response') > -1) {
+        var r = checkLocation.split('?')[1], query = r.split('&'), bId = query[1].split('=')[1], bError = query[2].split('=')[1];
+        BanksResponses.getErrorMessage(bId, bError).then(function (res) {
+          if (tempFiles) {
+            getTemporarySavedFields();
+            $scope.paymentStatus = 4;
+            $scope.checkoutErrorMsg = res.data;
+          }
+        });
+      }
+
+      $scope.setFormToScope = function (form) {
+        $scope.myForm = form;
+      };
+
+      (function () {
+        var isMasterPassForm = $scope.isMPassField(false, true);
+        if(isMasterPassForm) {
+          var savedEarlierPhone = localStorage.getItem('userPhone');
+          if(savedEarlierPhone) {
+            for(var field in $scope.data.formData.params) {
+              if($scope.data.formData.params.hasOwnProperty(field) && field === 'phone') {
+                $scope.data.formData.params[field].value = '+' + savedEarlierPhone;
+                $scope.phoneVerify.confirmed = $scope.phoneVerify.otpIsConfirmed = true;
+                $scope.authorizeCheckout();
+              }
+            }
+          }
+        }
+      })();
+      /*MasterPass Checkout end*/
+
+
       $scope.$on('slot-picker-start-processing', function () {
         $scope.isSending = true;
       });
@@ -1182,4 +1453,4 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
       $scope.$on('slot-picker-stop-processing', function () {
         $scope.isSending = false;
       });
-  });
+}]);

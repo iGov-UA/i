@@ -1,0 +1,44 @@
+<div class="row checkout-masterpass">
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <span style="font-size: 16px;">Сума до сплати</span>
+    </div>
+    <div class="col-md-4" style="padding-left: 27px; padding-bottom: 20px">
+      <span>{{sum.total}} грн</span><br> <span style="font-size: 14px">(з врахуванням комісії {{sum.commission}} грн)</span>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <span style="font-size: 16px;">Оберiть карту для оплати</span><br>
+      <span class="mp-instruction" ng-if="!userCards">
+		    <span ng-if="registerLink.type === 'invite'">Крок 1. У Вас вже є гаманець Masterpass, підключіть його до iGov за
+          <a href="{{registerLink.url}}" target="_blank"> цим посиланням</a>.<br>
+        </span>
+        <span ng-if="registerLink.type !== 'invite'">Крок 1. Додайте картку у гаманець Masterpass за
+          <a href="{{registerLink.url}}" target="_blank">цим посиланням</a>.<br>
+        </span>
+        <span>Крок 2. <a ng-click="authorizeCheckout()">Натисніть тут</a>, щоб оновити список карток.</span>
+			</span>
+      <span ng-if="userCards && !userCards.error" class="checkout-masterpass-add">
+        <span class="mp-instruction">
+          Якщо Ви бажаєте використати іншу картку: <br>
+          Крок 1. Додайте картку у гаманець Masterpass за <a ng-click="addNewCardToWallet()">цим посиланням.</a> <br>
+          Крок 2. <a ng-click="authorizeCheckout()">Натисніть тут</a>, щоб оновити список карток. <br>
+        </span>
+      </span>
+    </div>
+    <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="position: relative;top: 15px;left: 25px;" ng-if="!userCards && checkoutSpinner"></i>
+    <div class="col-md-4" style="padding-left: 27px;" ng-if="userCards">
+      <select ng-model="selectedCard"
+              ng-options="card.mask + ' ' + card_alias for (card_alias, card) in userCards"
+              ng-disabled="checkoutSpinner"
+              ng-change="changeCard(selectedCard)"
+              class="form-control"></select>
+
+      <i class="fa fa-spinner fa-spin fa-2x fa-fw" style="position: absolute;top: 0;left: 100%;" ng-if="checkoutSpinner"></i>
+      <a class="remove-card-from-mp"
+         ng-if="userCards && !checkoutSpinner"
+         ng-click="removeCardFromWallet(selectedCard.card_alias)">Видалити цю карту</a>
+    </div>
+  </div>
+</div>
