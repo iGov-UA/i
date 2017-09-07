@@ -115,6 +115,12 @@
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_MD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeZaklad&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sLabeZaklad" name=" ; ;labelType=info" type="label" default="&lt;p&gt;&lt;span&gt;В полі 'Місце провадження господарської діяльності' зазначається:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для виробництва (виготовлення) лікарських засобів в умовах аптеки - аптека із зазначенням її номера, найменування (за наявності);&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для оптової торгівлі лікарськими засобами - аптечний склад (база) із зазначенням його номера, найменування (за наявності), загальної площі та площі виробничих приміщень;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для роздрібної торгівлі лікарськими засобами - аптека із зазначенням її номера, найменування (за наявності), аптечний пункт із зазначенням його номера, найменування (за наявності), номера та найменування (за наявності) аптеки, структурним підрозділом якої він є, лікувально-профілактичного закладу, в якому він розташований.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;"></activiti:formProperty>
+        
+        <activiti:formProperty id="asPerevirka" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) нижче, провести перевірку" type="enum" required="true">
+          <activiti:value id="sEnamMattex" name="Наявності матеріально-технічної бази, кваліфікації персоналу"></activiti:value>
+          <activiti:value id="sEnamUmov" name="Умов щодо контролю якості лікарських засобів, що вироблятимуться"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="sLabeApt1" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №1&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="asAptZakl1" name="Вид аптечного закладу" type="enum" required="true">
           <activiti:value id="sEnamAptek1" name="Аптека"></activiti:value>
@@ -535,7 +541,12 @@ ${sNameOrgan}<br />
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="markersLine_MDD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MDD&quot;:{&quot;aElement_ID&quot;:[&quot;asAptZakl1&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_MDD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MDD&quot;:{&quot;aElement_ID&quot;:[&quot;asPerevirka&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asPerevirka" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) в заяві, провести перевірку" type="enum" writable="false">
+          <activiti:value id="sEnamMattex" name="Наявності матеріально-технічної бази, кваліфікації персоналу"></activiti:value>
+          <activiti:value id="sEnamUmov" name="Умов щодо контролю якості лікарських засобів, що вироблятимуться"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="asAptZakl1" name="Вид аптечного закладу" type="enum" writable="false">
           <activiti:value id="sEnamAptek1" name="Аптека"></activiti:value>
           <activiti:value id="sEnamAptpunkt1" name="Аптечний пункт"></activiti:value>
