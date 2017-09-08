@@ -8,6 +8,7 @@
           <activiti:value id="sEnamPost" name="Поштовим відправленням за місцезнаходженням/місцем проживання"></activiti:value>
           <activiti:value id="sEnamElectro" name="В електронному вигляді"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
@@ -84,6 +85,7 @@
         </activiti:formProperty>
         <activiti:formProperty id="lPrimN" name="Номер приміщення" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex" name="Поштовий індекс" type="long" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_K" name="Коди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_K&quot;:{&quot;aElement_ID&quot;:[&quot;asFormVl&quot;],&quot;sValue&quot;:&quot;Коди&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asFormVl" name="Форма власності" type="enum" required="true">
           <activiti:value id="sEnamPriv" name="10 Приватна"></activiti:value>
@@ -95,7 +97,6 @@
           <activiti:value id="sEnamUrInoz" name="50 Власність міжнародної організації або іноземної юридичної особи"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLabeOrgPrav" name=" ; ;labelType=info" type="label" default="Перелік кодів організаційно правової форми - &lt;a href=&quot;http://zakon3.rada.gov.ua/rada/show/v0271832-14/paran12#n12 &quot; target=&quot;_blank&quot;&gt;Статистичний класифікатор організаційних форм суб'єктів економіки&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="sOrgPravForm" name="Код організаційно правової форми;(введіть число)" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabeKVED" name=" ; ;labelType=info" type="label" default="&lt;div style=&quot;text-align:center&quot;&gt;Позначте галочкою КВЕДи які відповідають вашій діяльності&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="chek2110" name="21.10 Виробництво основних фармацевтичних продуктів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -113,6 +114,7 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_MD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeZaklad&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sLabeZaklad" name=" ; ;labelType=info" type="label" default="&lt;p&gt;&lt;span&gt;В полі 'Місце провадження господарської діяльності' зазначається:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для виробництва (виготовлення) лікарських засобів в умовах аптеки - аптека із зазначенням її номера, найменування (за наявності);&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для оптової торгівлі лікарськими засобами - аптечний склад (база) із зазначенням його номера, найменування (за наявності), загальної площі та площі виробничих приміщень;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для роздрібної торгівлі лікарськими засобами - аптека із зазначенням її номера, найменування (за наявності), аптечний пункт із зазначенням його номера, найменування (за наявності), номера та найменування (за наявності) аптеки, структурним підрозділом якої він є, лікувально-профілактичного закладу, в якому він розташований.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;"></activiti:formProperty>
         
@@ -127,10 +129,19 @@
           <activiti:value id="sEnamAptpunkt1" name="Аптечний пункт"></activiti:value>
           <activiti:value id="sEnamAptSklad1" name="Аптечний склад"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="chekRozn1" name="Роздрібна торгівля;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="yes" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="chekVurob1" name="Виробництво;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="chekOpt1" name="Оптова торгівля;позначте галочкою - якщо це вид господарської діяльності яким буде займатись заклад;sID_CheckboxTrue=yes" type="enum" default="yes" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="sAptPidpor1" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLabeAptAdr1" name=" ; ;labelType=info" type="label" default="&lt;div style=&quot;text-align:center&quot;&gt;Деталізована адреса аптечного закладу №1 &lt;/div&gt;"></activiti:formProperty>
         <activiti:formProperty id="chekZaMeg1" name="Заклад поза межами населеного пункту?;позначте галочкою - якщо заклад за межами населеного пункту;sID_CheckboxTrue=yes" type="enum" default="no">
@@ -196,13 +207,20 @@
         <activiti:formProperty id="sLabeMTRozn1" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Бланк для завантаження - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7ay1tclZQVDFIaWc/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;Відомості для роздрібної торгівлі лікарськими засобами&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="sLabeMTOpt1" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Бланк для завантаження - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7T3RKY0lGZzJTOHM/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;Відомості для оптової торгівлі лікарськими засобами&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="sLabeMTVur1" name=" ; ;labelType=info" type="label" default="  &lt;div style=&quot;text-align:center&quot;&gt; Бланк для завантаження - &lt;a href=&quot;https://drive.google.com/file/d/0BwmWcVIV4Ro7Q2dfODh2VHF6SjQ/view &quot; target=&quot;_blank&quot;&gt;&lt;font color=&quot;blue&quot;&gt;&lt;b&gt;Відомості для виробництва в умовах аптеки&lt;/b&gt;&lt;/font&gt;&lt;/a&gt;&lt;/div&gt; "></activiti:formProperty>
-        <activiti:formProperty id="nFile_Vidomost1" name="Відомості про матеріально-технічну базу;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_VidomostRozn" name="Відомості про матеріально-технічну базу для роздрібної торгівлі;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_VidomostOpt" name="Відомості про матеріально-технічну базу для оптової торгівлі;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_VidomostVurobn" name="Відомості про матеріально-технічну базу для виробництва;(завантажте сюди заповнений бланк);bNew=true" type="file" required="true"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
+        
         <activiti:formProperty id="asNewZakl2" name="Хочете внести інформацію про ще один заклад?" type="enum" required="true">
           <activiti:value id="sEnamNewYes" name="Так, додати аптечний заклад"></activiti:value>
           <activiti:value id="sEnamNewNo" name="Ні"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sLabeApt2" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №2&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="asAptZakl2" name="Вид аптечного закладу" type="enum" required="true">
           <activiti:value id="sEnamAptek2" name="Аптека"></activiti:value>
@@ -514,6 +532,7 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="lPrimN" name="Номер приміщення" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex" name="Поштовий індекс" type="long" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_K" name="Коди" type="markers" default="{&quot;attributes&quot;:{&quot;Line_K&quot;:{&quot;aElement_ID&quot;:[&quot;asFormVl&quot;],&quot;sValue&quot;:&quot;Коди&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asFormVl" name="Форма власності" type="enum" writable="false">
           <activiti:value id="sEnamPriv" name="10 Приватна"></activiti:value>
@@ -524,7 +543,6 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnamInoz" name="40 Власність іноземної держави"></activiti:value>
           <activiti:value id="sEnamUrInoz" name="50 Власність міжнародної організації або іноземної юридичної особи"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sOrgPravForm" name="Код організаційно правової форми" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="chek2110" name="21.10 Виробництво основних фармацевтичних продуктів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -617,9 +635,23 @@ ${sNameOrgan}<br />
         </activiti:formProperty>
         <activiti:formProperty id="lPrimN1" name="Номер приміщення" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lPostIndex1" name="Поштовий індекс" type="long" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="nFile_Vidomost1" name="Відомості про матеріально-технічну базу закладу №1; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="nFile_VidomostRozn" name="Відомості для роздрібної торгівлі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_VidomostOpt" name="Відомості для оптової торгівлі; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_VidomostVurobn" name="Відомості для виробництва; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sOrgPravForm" name="Код організаційно правової форми заявника" type="long" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sReestrN" name="Номер реєстрації" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="dReestrDate" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sVuconavets" name="Відповідальний виконавець" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lKilkistFiliy" name="Кількість філій" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="tPrumitka" name="Примітки" type="textArea" default=" "></activiti:formProperty>
         
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bNew=true" type="file" writable="false"></activiti:formProperty>
         
