@@ -179,9 +179,9 @@
         <td style="width: 30%; border: 1px solid #000000; text-align: center; padding: 10px;">Вид господарської діяльності</td>
     </tr>
     <tr>
+        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[sProvadjenia1]</td>
+        <td style="border: 1px solid #000000; text-align: center; padding: 10px;"><div id="ZAdress1"></div></td>
         <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[asAptZakl1]</td>
-        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[ХХХ]</td>
-        <td style="border: 1px solid #000000; text-align: center; padding: 10px;">[ХХХ]</td>
     </tr>
     </tbody>
 </table>
@@ -244,10 +244,10 @@
 <table style="width: 100%; border-collapse: collapse;">
     <tbody>
     <tr>
-        <td style="width: 35%; text-align: left;font-size: 15px;">[sDateCreateProcess] </td>
-        <td style="width: 20%; text-align: left; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;">Підписано ЕЦП </td>
-        <td tyle="width: 25%;"></td>
-        <td style="width: 20%; text-align: left; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;"><div id="PIB"></div></td>
+        <td style="width: 30%; text-align: left;font-size: 15px;">[sDateCreateProcess] </td>
+        <td style="width: 25%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;">Підписано ЕЦП </td>
+        <td tyle="width: 15%;"></td>
+        <td style="width: 30%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;"><div id="PIB"></div></td>
     </tr>
     <tr>
         <td style="width: 35%; text-align: center;font-size: 16px;"></td>
@@ -283,15 +283,9 @@
         <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 12px;">(ініціали, прізвище)</td>
     </tr>
     </tbody>
-</table>
+</table><br> <br> 
   
-<table style="width: 100%; border-collapse: collapse;">
-    <tbody>
-    <tr>
-            <td  style="padding-top: 30px; text-align: left;font-size: 16px;">Дата [ХХХ] </td>
-    </tr>
-    </tbody>
-</table><br>  
+
   
   
   
@@ -333,6 +327,36 @@
   else {
     document.getElementById("ZAdress").innerHTML += ScrasOblTipe + ", " + ScrsRainNP + ", " + ScrNPTipe + " " + ScrsNameNP + ", " + ScrasTipeVulitsa + " " + ScrsVulitsa + ", " + ScrasTipePrim + " " + ScrlPrimN + ", " + ScrllPostIndex;
   };
+  
+  var ScrchekZaMeg1 = "[chekZaMeg1]";
+  var ScrsZaMegamu1 = "[sZaMegamu1]";
+  var ScrNPTipe1 = "[asNPTipe1]";
+  var ScrasOblTipe1 = "[asOblTipe1]";
+  var ScrsRainNP1 = "[sRainNP1]";
+  var ScrsNameNP1 = "[sNameNP1]";
+  var ScrasTipeVulitsa1 = "[asTipeVulitsa1]";
+  var ScrsVulitsa1 = "[sVulitsa1]";
+  var ScrsBudN1 = "[sBudN1]";
+  var ScrasTipePrim1 = "[asTipePrim1]";
+  var ScrlPrimN1 = "[lPrimN1]";
+  var ScrllPostIndex1 = "[lPostIndex1]";
+  
+  if(ScrchekZaMeg1 == 'yes'||ScrchekZaMeg1 == 'так'){
+    document.getElementById("ZAdress1").innerHTML += ScrasOblTipe1 + ", " + sZaMegamu1;
+  }
+  else {  
+    if(ScrNPTipe1 == 'Місто'||ScrNPTipe1 == 'sEnamMist'){
+      document.getElementById("ZAdress1").innerHTML += ScrasOblTipe1 + ", " + ScrNPTipe1 + " " + ScrsNameNP1 + ", " + ScrasTipeVulitsa1 + " " + ScrsVulitsa1 + ", " + ScrasTipePrim1 + " " + ScrlPrimN1 + ", " + ScrllPostIndex1;
+    }
+    else {
+      document.getElementById("ZAdress1").innerHTML += ScrasOblTipe1 + ", " + ScrsRainNP1 + ", " + ScrNPTipe1 + " " + ScrsNameNP1 + ", " + ScrasTipeVulitsa1 + " " + ScrsVulitsa1 + ", " + ScrasTipePrim1 + " " + ScrlPrimN1 + ", " + ScrllPostIndex1;
+    };
+  };
+  
+  
+  
+  
+  
   
   
   var ScrbankIdlastName = "[bankIdlastName]";

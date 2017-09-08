@@ -96,7 +96,6 @@
           <activiti:value id="sEnamInoz" name="40 Власність іноземної держави"></activiti:value>
           <activiti:value id="sEnamUrInoz" name="50 Власність міжнародної організації або іноземної юридичної особи"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sLabeOrgPrav" name=" ; ;labelType=info" type="label" default="Перелік кодів організаційно правової форми - &lt;a href=&quot;http://zakon3.rada.gov.ua/rada/show/v0271832-14/paran12#n12 &quot; target=&quot;_blank&quot;&gt;Статистичний класифікатор організаційних форм суб'єктів економіки&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sLabeKVED" name=" ; ;labelType=info" type="label" default="&lt;div style=&quot;text-align:center&quot;&gt;Позначте галочкою КВЕДи які відповідають вашій діяльності&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="chek2110" name="21.10 Виробництво основних фармацевтичних продуктів;позначте галочкою - якщо це ваш КВЕД;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -143,6 +142,9 @@
         </activiti:formProperty>
         
         <activiti:formProperty id="sAptPidpor1" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sProvadjenia1" name="Місце провадження господарської діяльності" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sLabeAptAdr1" name=" ; ;labelType=info" type="label" default="&lt;div style=&quot;text-align:center&quot;&gt;Деталізована адреса аптечного закладу №1 &lt;/div&gt;"></activiti:formProperty>
         <activiti:formProperty id="chekZaMeg1" name="Заклад поза межами населеного пункту?;позначте галочкою - якщо заклад за межами населеного пункту;sID_CheckboxTrue=yes" type="enum" default="no">
           <activiti:value id="yes" name="так"></activiti:value>
@@ -382,7 +384,7 @@
         <activiti:formProperty id="markerZaklad5" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad5.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/mert/MERT_1570_LicenLik_reg.html"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/mert/MERT_1571_LicenLik_regECP.html"></activiti:formProperty>
         
         <activiti:formProperty id="sNameOrgan" name="Назва ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон ЦНАП; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -574,7 +576,11 @@ ${sNameOrgan}<br />
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        
         <activiti:formProperty id="sAptPidpor1" name="Вкажіть підпоряжкування;(з яким закладом пов'язаний даний пункт)" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sProvadjenia1" name="Місце провадження господарської діяльності" type="string" writable="false"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="chekZaMeg1" name="Заклад поза межами населеного пункту?;позначте галочкою - якщо заклад за межами населеного пункту;sID_CheckboxTrue=yes" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -655,8 +661,8 @@ ${sNameOrgan}<br />
         
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bNew=true" type="file" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/MERT_1570_LicenLik_lic.html]; ;bVisible=false" type="string" default="Заява про отримання ліцензії" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/MERT_1570_LicenLik_reg.html]; ;bVisible=false" type="string" default="Заява про внесення до реєстру" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/mert/MERT_1571_LicenLik_lic.html]; ;bVisible=false" type="string" default="Заява про отримання ліцензії" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/mert/MERT_1571_LicenLik_reg.html]; ;bVisible=false" type="string" default="Заява про внесення до реєстру" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
