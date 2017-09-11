@@ -9,11 +9,10 @@ function getOptions(req) {
   var config = require('../../config/environment');
 
   var activiti = config.activiti;
+  var regionServer = config.server.sServerRegion;
 
   return {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
+    url: regionServer,
     path: activiti.path,
     username: activiti.username,
     password: activiti.password
@@ -197,7 +196,7 @@ module.exports.createSaleCancelPayment = function (req, res) {
 module.exports.verifyPhoneNumber = function (req, res) {
   var options = getOptions(req),
       isTestServer = config.bTest,
-      url = options.protocol + '://' + options.hostname + options.path + '/subject/message/sendSms';
+      url = options.url + options.path + '/subject/message/sendSms';
 
   var verifyData = masterPassAuth.createAndCheckOTP(req.query);
 
