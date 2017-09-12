@@ -151,7 +151,7 @@
     <tr>
         <td style="width: 50%; text-align: left;font-size: 15px;">Вид господарської діяльності, на яку 
 було видано ліцензію</td>
-        <td  style="width: 50%;text-align: left; font-size: 15px;text-align: left; border-bottom: 1px solid #000000;">????????</td>
+        <td  style="width: 50%;text-align: left; font-size: 15px;text-align: left; border-bottom: 1px solid #000000;"> </td>
     </tr>
     </tbody>
 </table>
@@ -161,7 +161,7 @@
     <tr>
         <td style="width: 50%; text-align: left;font-size: 15px;">Дата видачі і серія, номер (за наявності) 
 ліцензії</td>
-        <td  style="width: 50%;text-align: left; font-size: 15px;text-align: left; border-bottom: 1px solid #000000;">????????</td>
+        <td  style="width: 50%;text-align: left; font-size: 15px;text-align: left; border-bottom: 1px solid #000000;"> </td>
     </tr>
     </tbody>
 </table><br>
@@ -250,10 +250,10 @@
         <td style="width: 30%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;"><div id="PIB"></div></td>
     </tr>
     <tr>
-        <td style="width: 35%; text-align: center;font-size: 16px;"></td>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 12px;"> </td>
-        <td tyle="width: 25%;"></td>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 12px;"></td>
+        <td style="width: 30%; text-align: center;font-size: 16px;"></td>
+        <td style="width: 25%; text-align: center; padding: 0 15px; font-size: 12px;"> </td>
+        <td tyle="width: 15%;"></td>
+        <td style="width: 30%; text-align: center; padding: 0 15px; font-size: 12px;"></td>
     </tr>
     </tbody>
 </table>
@@ -261,26 +261,26 @@
 <table style="width: 100%; border-collapse: collapse;">
     <tbody>
     <tr>
-            <td  style="padding-top: 30px; text-align: left;font-size: 16px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Дата і номер реєстрації заяви: [ХХХ] № [ХХХ]</td>
+            <td  style="padding-top: 30px; text-align: left;font-size: 16px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Дата і номер реєстрації заяви:   [dReestrDate] № [sReestrN]</td>
     </tr>
     </tbody>
-</table><br>
+</table><br><br>
 
 <table style="width: 100%; border-collapse: collapse;">
     <tbody>
     <tr>
-        <td style="width: 20%; text-align: center;font-size: 15px; border-bottom: 1px solid #000000;">[ХХХ] </td>
-        <td tyle="width: 20%;"></td>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;">[ХХХ] </td>
-        <td tyle="width: 20%;"></td>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;">[ХХХ]</td>
+        <td style="width: 15%; text-align: center;font-size: 15px; border-bottom: 1px solid #000000;"> </td>
+        <td tyle="width: 10%;"></td>
+        <td style="width: 25%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;"> </td>
+        <td tyle="width: 15%;"></td>
+        <td style="width: 30%; text-align: center; padding: 0 15px; font-size: 14px; border-bottom: 1px solid #000000;"> </td>
     </tr>
     <tr>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 12px;">(посада особи, яка прийняла заяву)</td>
-        <td tyle="width: 20%;"></td>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 12px;">(підпис) </td>
-        <td tyle="width: 20%;"></td>
-        <td style="width: 20%; text-align: center; padding: 0 15px; font-size: 12px;">(ініціали, прізвище)</td>
+        <td style="width: 15%; text-align: center; padding: 0 15px; font-size: 12px;">(посада особи, яка прийняла заяву)</td>
+        <td tyle="width: 10%;"></td>
+        <td style="width: 25%; text-align: center; padding: 0 15px; font-size: 12px;">(підпис) </td>
+        <td tyle="width: 15%;"></td>
+        <td style="width: 30%; text-align: center; padding: 0 15px; font-size: 12px;">(ініціали, прізвище)</td>
     </tr>
     </tbody>
 </table><br> <br> 
@@ -370,13 +370,14 @@
   document.getElementById("PIB").innerHTML += ScrbankIdlastName + " " + init1 + ". " + init1+ ". ";
   
   
-  var ScrasPerevirka = "[asPerevirka]";
+  var ScrchekMattex = "[chekMattex]";
+  var ScrchekUmov = "[chekUmov]";
   var ScrasVidpov = "[asVidpov]";
   
-  if(ScrasPerevirka == 'sEnamMattex'||ScrasPerevirka == 'Наявності матеріально-технічної бази, кваліфікації персоналу'){
+  if(ScrchekMattex == 'yes'||ScrchekMattex == 'так'){
     document.getElementById("asPerevirka1").innerHTML += "наявності матеріально-технічної бази, кваліфікації персоналу";
-  }
-  else {
+  };
+  if(ScrchekUmov == 'yes'||ScrchekUmov == 'так'){
     document.getElementById("asPerevirka2").innerHTML += "умов щодо контролю якості лікарських засобів, що вироблятимуться";
   };
   
