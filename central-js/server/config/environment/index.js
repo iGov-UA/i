@@ -161,6 +161,8 @@ var all = {
 
   debug: (processProps.bDebug_Application === "TRUE"),
 
+  nID_Server_Helpdesk: processProps.nID_Server_Helpdesk,
+
 
   server: {
     //sServerRegion: processProps.BackProxy_Central ? processProps.BackProxy_Central.sURL_BackProxy_Central : process.env.sServerRegion,

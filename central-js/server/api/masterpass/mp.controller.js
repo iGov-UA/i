@@ -3,20 +3,22 @@ var request = require('request'),
     masterPassAuth = require('./mp.service'),
     errorMessages = require('./bankResponses.service'),
     config = require('../../config/environment'),
+    activiti = require('../../components/activiti/index'),
     async = require('async');
 
 function getOptions(req) {
   var config = require('../../config/environment');
 
-  var activiti = config.activiti;
+  var activitiData = config.activiti;
 
   return {
-    protocol: activiti.protocol,
-    hostname: activiti.hostname,
-    port: activiti.port,
-    path: activiti.path,
-    username: activiti.username,
-    password: activiti.password
+    protocol: activitiData.protocol,
+    hostname: activitiData.hostname,
+    port: activitiData.port,
+    path: activitiData.path,
+    nID_Server_Helpdesk: config.nID_Server_Helpdesk,
+    username: activitiData.username,
+    password: activitiData.password
   };
 }
 
@@ -193,23 +195,37 @@ module.exports.createSaleCancelPayment = function (req, res) {
       }
     });
 };
-
 module.exports.verifyPhoneNumber = function (req, res) {
-  var options = getOptions(req),
-      isTestServer = config.bTest,
-      url = options.protocol + '://' + options.hostname + options.path + '/subject/message/sendSms';
-
-  var verifyData = masterPassAuth.createAndCheckOTP(req.query);
-
-    var callback = function(error, response, body) {
-      if(!error) {
-        res.send({message: body});
-        res.end();
+  async.waterfall([
+    getServerUrl,
+    verifyPhoneNumber
+  ], function(error, response, body) {
+    if(!error) {
+      res.send({message: body});
+      res.end();
+    } else {
+      res.send(error);
+      res.end();
+    }
+  });
+  function getServerUrl(callback) {
+    var options = getOptions(req);
+    activiti.get('/subject/getServer', {nID: options.nID_Server_Helpdesk}, function (error, response, body) {
+      if (!error) {
+        callback(null, body);
       } else {
-        res.send(error);
-        res.end();
+        callback(
+          errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR,
+            'can\'t find server host name by ' + nID_Server, error), null);
       }
-    };
+    });
+  }
+  function verifyPhoneNumber(result, callback) {
+    var options = getOptions(req),
+      isTestServer = config.bTest,
+      url = result.sURL + '/service/subject/message/sendSms';
+
+    var verifyData = masterPassAuth.createAndCheckOTP(req.query);
 
     if (!isTestServer) {
       return request.get({
@@ -228,6 +244,7 @@ module.exports.verifyPhoneNumber = function (req, res) {
       res.send({message: 'ok'});
       res.end();
     }
+  }
 };
 
 module.exports.confirmOtp = function (req, res) {
