@@ -117,10 +117,15 @@
         <activiti:formProperty id="markersLine_MD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeZaklad&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sLabeZaklad" name=" ; ;labelType=info" type="label" default="&lt;p&gt;&lt;span&gt;В полі 'Місце провадження господарської діяльності' зазначається:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для виробництва (виготовлення) лікарських засобів в умовах аптеки - аптека із зазначенням її номера, найменування (за наявності);&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для оптової торгівлі лікарськими засобами - аптечний склад (база) із зазначенням його номера, найменування (за наявності), загальної площі та площі виробничих приміщень;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;для роздрібної торгівлі лікарськими засобами - аптека із зазначенням її номера, найменування (за наявності), аптечний пункт із зазначенням його номера, найменування (за наявності), номера та найменування (за наявності) аптеки, структурним підрозділом якої він є, лікувально-профілактичного закладу, в якому він розташований.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;&lt;br&gt;&lt;/span&gt;&lt;/p&gt;"></activiti:formProperty>
         
-        <activiti:formProperty id="asPerevirka" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) нижче, провести перевірку" type="enum" required="true">
-          <activiti:value id="sEnamMattex" name="Наявності матеріально-технічної бази, кваліфікації персоналу"></activiti:value>
-          <activiti:value id="sEnamUmov" name="Умов щодо контролю якості лікарських засобів, що вироблятимуться"></activiti:value>
+        <activiti:formProperty id="chekMattex" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) нижче, провести перевірку наявності матеріально-технічної бази, кваліфікації персоналу;;sID_CheckboxTrue=yes" type="enum" default="yes">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="chekUmov" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) нижче, провести перевірку умов щодо контролю якості лікарських засобів, що вироблятимуться;позначте галочкою - якщо у вас є виробництво;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        
         
         <activiti:formProperty id="sLabeApt1" name=" ; ;labelType=info" type="label" default=" &lt;div style=&quot;text-align:center&quot;&gt;&lt;font color=&quot;black&quot;&gt;&lt;b&gt;Аптечний заклад №1&lt;/b&gt;&lt;/font&gt;&lt;/div&gt; "></activiti:formProperty>
         <activiti:formProperty id="asAptZakl1" name="Вид аптечного закладу" type="enum" required="true">
@@ -562,9 +567,14 @@ ${sNameOrgan}<br />
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_MDD" name="Інфформація про заклади" type="markers" default="{&quot;attributes&quot;:{&quot;Line_MDD&quot;:{&quot;aElement_ID&quot;:[&quot;asPerevirka&quot;],&quot;sValue&quot;:&quot;Інфформація про заклади&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asPerevirka" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) в заяві, провести перевірку" type="enum" writable="false">
-          <activiti:value id="sEnamMattex" name="Наявності матеріально-технічної бази, кваліфікації персоналу"></activiti:value>
-          <activiti:value id="sEnamUmov" name="Умов щодо контролю якості лікарських засобів, що вироблятимуться"></activiti:value>
+        
+        <activiti:formProperty id="chekMattex" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) нижче, провести перевірку наявності матеріально-технічної бази, кваліфікації персоналу;;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="chekUmov" name="За місцем(ями) провадження господарської діяльності, зазначеним(ими) нижче, провести перевірку умов щодо контролю якості лікарських засобів, що вироблятимуться;;sID_CheckboxTrue=yes" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         
         <activiti:formProperty id="asAptZakl1" name="Вид аптечного закладу" type="enum" writable="false">
@@ -650,8 +660,79 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="markerZaklad1" name="markers" type="markers" default="${markerService.loadFromFile('mert/1571_AptZaklad1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_MD1" name=" " type="markers" default="{&quot;attributes&quot;:{&quot;Line_MD1&quot;:{&quot;aElement_ID&quot;:[&quot;asNewZakl2&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
         
-        
-        <activiti:formProperty id="sOrgPravForm" name="Код організаційно правової форми заявника" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asOrgPravForm" name="Код організаційно правової форми заявника" type="enum" required="true">
+          <activiti:value id="100" name="Підприємства"></activiti:value>
+          <activiti:value id="110" name="Фермерське господарство"></activiti:value>
+          <activiti:value id="120" name="Приватне підприємство"></activiti:value>
+          <activiti:value id="130" name="Колективне підприємство"></activiti:value>
+          <activiti:value id="140" name="Державне підприємство"></activiti:value>
+          <activiti:value id="145" name="Казенне підприємство"></activiti:value>
+          <activiti:value id="150" name="Комунальне підприємство"></activiti:value>
+          <activiti:value id="160" name="Дочірнє підприємство"></activiti:value>
+          <activiti:value id="170" name="Іноземне підприємство"></activiti:value>
+          <activiti:value id="180" name="Підприємство об’єднання громадян (релігійної організації,профспілки)"></activiti:value>
+          <activiti:value id="185" name="Підприємство споживчої кооперації"></activiti:value>
+          <activiti:value id="190" name="Орендне підприємство"></activiti:value>
+          <activiti:value id="191" name="Індивідуальне підприємство"></activiti:value>
+          <activiti:value id="192" name="Сімейне підприємство"></activiti:value>
+          <activiti:value id="193" name="Спільне підприємство"></activiti:value>
+          <activiti:value id="200" name="Господарські товариства"></activiti:value>
+          <activiti:value id="230" name="Акціонерне товариство"></activiti:value>
+          <activiti:value id="231" name="Відкрите акціонерне товариство"></activiti:value>
+          <activiti:value id="232" name="Закрите акціонерне товариство"></activiti:value>
+          <activiti:value id="235" name="Державна акціонерна компанія (товариство)"></activiti:value>
+          <activiti:value id="240" name="Товариство з обмеженою відповідальністю"></activiti:value>
+          <activiti:value id="250" name="Товариство з додатковою відповідальністю"></activiti:value>
+          <activiti:value id="260" name="Повне товариство"></activiti:value>
+          <activiti:value id="270" name="Командитне товариство"></activiti:value>
+          <activiti:value id="300" name="Кооперативи"></activiti:value>
+          <activiti:value id="310" name="Виробничий кооператив"></activiti:value>
+          <activiti:value id="320" name="Обслуговуючий кооператив"></activiti:value>
+          <activiti:value id="330" name="Споживчий кооператив"></activiti:value>
+          <activiti:value id="340" name="Сільськогосподарський виробничий кооператив"></activiti:value>
+          <activiti:value id="350" name="Сільськогосподарський обслуговуючий кооператив"></activiti:value>
+          <activiti:value id="390" name="Кооперативний банк"></activiti:value>
+          <activiti:value id="400" name="Організації (установи, заклади)"></activiti:value>
+          <activiti:value id="410" name="Орган державної влади"></activiti:value>
+          <activiti:value id="420" name="Орган місцевого самоврядування"></activiti:value>
+          <activiti:value id="425" name="Державна організація (установа, заклад)"></activiti:value>
+          <activiti:value id="430" name="Комунальна організація (установа, заклад)"></activiti:value>
+          <activiti:value id="435" name="Приватна організація (установа, заклад)"></activiti:value>
+          <activiti:value id="440" name="Організація (установа, заклад) об’єднання громадян (релігійної організації, профспілки, споживчої кооперації тощо)"></activiti:value>
+          <activiti:value id="490" name="Організація орендарів"></activiti:value>
+          <activiti:value id="495" name="Організація покупців"></activiti:value>
+          <activiti:value id="500" name="Об’єднання підприємств (юридичних осіб)"></activiti:value>
+          <activiti:value id="510" name="Асоціація"></activiti:value>
+          <activiti:value id="520" name="Корпорація"></activiti:value>
+          <activiti:value id="530" name="Консорціум"></activiti:value>
+          <activiti:value id="540" name="Концерн"></activiti:value>
+          <activiti:value id="550" name="Холдингова компанія"></activiti:value>
+          <activiti:value id="590" name="Інші об’єднання юридичних осіб"></activiti:value>
+          <activiti:value id="600" name="Відокремлені підрозділи без статусу юридичної особи"></activiti:value>
+          <activiti:value id="610" name="Філія (інший відокремлений підрозділ)"></activiti:value>
+          <activiti:value id="620" name="Представництво"></activiti:value>
+          <activiti:value id="800" name="Об’єднання громадян, профспілки, благодійні організації та інші подібні організації"></activiti:value>
+          <activiti:value id="810" name="Політична партія"></activiti:value>
+          <activiti:value id="815" name="Громадська організація"></activiti:value>
+          <activiti:value id="820" name="Спілка об’єднань громадян"></activiti:value>
+          <activiti:value id="825" name="Релігійна організація"></activiti:value>
+          <activiti:value id="830" name="Профспілка"></activiti:value>
+          <activiti:value id="835" name="Об’єднання профспілок"></activiti:value>
+          <activiti:value id="840" name="Творча спілка (інша професійна організація)"></activiti:value>
+          <activiti:value id="845" name="Благодійна організація"></activiti:value>
+          <activiti:value id="850" name="Організація роботодавців"></activiti:value>
+          <activiti:value id="855" name="Об’єднання співвласників багатоквартирного будинку"></activiti:value>
+          <activiti:value id="860" name="Орган самоорганізації населення"></activiti:value>
+          <activiti:value id="900" name="Інші організаційно-правові форми"></activiti:value>
+          <activiti:value id="910" name="Підприємець-фізична особа"></activiti:value>
+          <activiti:value id="915" name="Товарна біржа"></activiti:value>
+          <activiti:value id="920" name="Фондова біржа"></activiti:value>
+          <activiti:value id="925" name="Кредитна спілка"></activiti:value>
+          <activiti:value id="930" name="Споживче товариство"></activiti:value>
+          <activiti:value id="935" name="Спілка споживчих товариств"></activiti:value>
+          <activiti:value id="940" name="Недержавний пенсійний фонд"></activiti:value>
+          <activiti:value id="995" name="Інші організаційно-правові форми"></activiti:value>
+        </activiti:formProperty>
         
         <activiti:formProperty id="sReestrN" name="Номер реєстрації" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dReestrDate" name="Дата реєстрації" type="date" required="true"></activiti:formProperty>
