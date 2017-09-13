@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-89s" name="Зняття з реєстрації місця проживання особи" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 28.07.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 13.09.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї особи, що подає звернення! &lt;/b&gt;"></activiti:formProperty>
@@ -176,12 +176,12 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPrevName" name="Попереднє ПІБ громадянина" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPrevName" name="Попереднє ПІБ громадянина; ;writable=false" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asMilitStatus" name="Чи перебуває громадянин на військовому обліку?" type="enum" writable="false">
           <activiti:value id="sYesM" name="Так"></activiti:value>
@@ -428,13 +428,13 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPrevName" name="Попереднє прізвище, ім’я та по батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sPrevName" name="Попереднє прізвище, ім’я та по батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить старе місце проживання громадянина; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitStatus" name="Чи перебуває громадянин на військовому обліку?" type="enum" writable="false">
           <activiti:value id="sYesM" name="Так"></activiti:value>
           <activiti:value id="sNoM" name="Ні"></activiti:value>

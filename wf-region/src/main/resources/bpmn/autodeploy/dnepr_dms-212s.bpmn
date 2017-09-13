@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212s" name="Зняття з реєстрації місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 08.08.2017</documentation>
+    <documentation>Смоктій К.В. (получено на сопровождение от Жигана Ромы) Последние правки: 13.09.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
@@ -180,20 +180,20 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lable1" name=" " type="label" default="Дані дитини, яку будуть знімати з реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPrevName" name="Попереднє ПІБ дитини" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildPOB" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPrevName" name="Попереднє ПІБ дитини; ;writable=false" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildPOB" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
@@ -442,20 +442,20 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sNameOtherDocument" name="Назва іншого документу, що посвідчує заявника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail громадянина" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDate_of_birth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAreabirth" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sNationality" name="Громадянство" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDate_of_birth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAreabirth" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sNationality" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lable1" name=" " type="label" default="Дані дитини, яку будуть знімати з реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sPrevName" name="Попереднє ПІБ дитини" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildBirth" name="Дата народження" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildPOB" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sChildCitizenship" name="Громадянство" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини" type="textArea" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPrevName" name="Попереднє ПІБ дитини; ;writable=false" type="string" default="${lastName_UA1} ${firstName_UA1} ${middleName_UA1}"></activiti:formProperty>
+        <activiti:formProperty id="sChildBirth" name="Дата народження; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sChildPOB" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган, що оформлює зняття з реєстрації ; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
