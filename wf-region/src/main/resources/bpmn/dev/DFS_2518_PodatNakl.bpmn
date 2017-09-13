@@ -1,7 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
-    <startEvent id="startevent1" name="Start"></startEvent>
+  <process id="DFS_2518_PodatNakl" name="Податкова накладна" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+         <activiti:formProperty id="bankIdlastName" name="Прізвище ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові ; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sWarning0" name=" ; ;labelType=info" type="label" default="Вам необхідно скористатися &lt;b&gt;електронно-цифровим підписом підприємця або ЕЦП представника юридичної особи&lt;/b&gt;."></activiti:formProperty>
+        
+        <activiti:formProperty id="saType" name="Зведена податкова накладна;writable=true,sID_Field_SWinEd=H03" type="enum"></activiti:formProperty>
+        <activiti:formProperty id="saType1" name="Складена на операції, звільнені від оподаткування;writable=true,sID_Field_SWinEd=R03G10S" type="enum"></activiti:formProperty>
+        <activiti:formProperty id="saType11" name="Не підлягає наданню отримувачу (покупцю) з причини;writable=true,sID_Field_SWinEd=________" type="enum"></activiti:formProperty>
+        
+        
+        <activiti:formProperty id="sDateCreate" name="Дата складання податкової накладної;writable=true,sID_Field_SWinEd=HFILL" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Порядковий номер податкової накладної;writable=true,sID_Field_SWinEd=HNUM" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumber1" name="Код;2 - у разі здійснення операцій з постачання власновироблених товарів, отриманих за результатами видів діяльності, визначених в пункті 16(1).3 статті 16(1) Закону України 'Про державну підтримку сільського господарства України' або 5 - у разі складання податкової накладної оператором інвестору за багатосторонньою угодою про розподіл продукції; writable=true,sID_Field_SWinEd=HNUM1" type="long"></activiti:formProperty>
+        
+             
+        <activiti:formProperty id="clfio" name="Прізвище, ім'я, по батькові;writable=true,sID_Field_SWinEd=HNAMESEL" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}"></activiti:formProperty>
+        <activiti:formProperty id="clur" name="Найменування;writable=true,sID_Field_SWinEd=HNAMESEL" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sIpnSale" name="Індивідуальний податковий номер;writable=true,sID_Field_SWinEd=HKSEL" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFilSale" name="Номер філії;Зазначається у разі постачання/придбання товарів/послуг філією (структурним підрозділом) товарів/послуг, яка фактично є від імені головного підприємства - платника податку стороною договору;writable=true,sID_Field_SWinEd=HNUM2" type="long"></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameBuy" name="Найменування, прізвище, ім'я, по батькові - для фізичної особи - підприємця;writable=true,sID_Field_SWinEd=HNAMEBUY" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sIpnBuy" name="Індивідуальний податковий номер;writable=true,sID_Field_SWinEd=HKBUY" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFilBuy" name="Номер філії;Зазначається у разі постачання/придбання товарів/послуг філією (структурним підрозділом) товарів/послуг, яка фактично є від імені головного підприємства - платника податку стороною договору;writable=true,sID_Field_SWinEd=HNUM2" type="long"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTotalMoney" name="Загальна сума коштів, що підлягають сплаті, з урахуванням податку на додану вартість;writable=true,sID_Field_SWinEd=R04G11" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotaltax" name="Загальна сума податку на додану вартість, у тому числі:;writable=true,sID_Field_SWinEd=R03G11" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMainRate" name="загальна сума податку на додану вартість за основною ставкою;writable=true,sID_Field_SWinEd=R03G7" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRate7" name="загальна сума податку на додану вартість за ставкою 7 %;writable=true,sID_Field_SWinEd=R03G109" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalSupply20" name="Усього обсяги постачання за основною ставкою (код ставки 20);writable=true,sID_Field_SWinEd=R01G7" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalSupply7" name="Усього обсяги постачання за ставкою 7 % (код ставки 7);writable=true,sID_Field_SWinEd=R04G11" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSupplyExp0" name="Усього обсяги постачання при експорті товарів за ставкою 0 % (код ставки 901);writable=true,sID_Field_SWinEd=R01G9" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSupplyCustoms0" name="Усього обсяги постачання на митній території України за ставкою 0 % (код ставки 902);writable=true,sID_Field_SWinEd=R01G8" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sExemptTransactions" name="Усього обсяги операцій, звільнених від оподаткування (код ставки 903);writable=true,sID_Field_SWinEd=R01G10" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTare" name="Дані щодо зворотної (заставної) тари;writable=true,sID_Field_SWinEd=R02G11" type="string"></activiti:formProperty>
+     
+        <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true" type="string" required="true"></activiti:formProperty>
+       
+       
+   
+        <activiti:formProperty id="markersLine_1" name="Інформація про Постачальника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sWarning1&quot;],&quot;sValue&quot;:&quot;Постачальник (продавець)&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_2" name="Інформація про Отримувача" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBuy&quot;],&quot;sValue&quot;:&quot;Отримувач (покупець)&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Розділ А" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBuy&quot;],&quot;sValue&quot;:&quot;Розділ А&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_4" name="Розділ Б" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;sNameBuy&quot;],&quot;sValue&quot;:&quot;Розділ Б&quot;}}}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом."></activiti:formProperty>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      </extensionElements>
+    </startEvent>
     <serviceTask id="servicetask1" name="Лист громадянину про відправку ПН в ДФС"></serviceTask>
     <userTask id="usertask1" name="Відповідь про отримання ПН ДФС"></userTask>
     <userTask id="usertask2" name="Відповідь про реєстрацю ПН ДФС+квитанція №1"></userTask>
@@ -15,13 +73,13 @@
     <sequenceFlow id="flow5" sourceRef="usertask2" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_DFS_2518_PodatNakl">
+    <bpmndi:BPMNPlane bpmnElement="DFS_2518_PodatNakl" id="BPMNPlane_DFS_2518_PodatNakl">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="80.0" y="10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="80.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="76.0" width="121.0" x="200.0" y="115.0"></omgdc:Bounds>
@@ -30,7 +88,7 @@
         <omgdc:Bounds height="73.0" width="125.0" x="380.0" y="118.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="71.0" width="105.0" x="310.0" y="10.0"></omgdc:Bounds>
+        <omgdc:Bounds height="81.0" width="105.0" x="310.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="76.0" width="105.0" x="552.0" y="117.0"></omgdc:Bounds>
@@ -40,18 +98,18 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="37.0" y="130.0"></omgdi:waypoint>
-        <omgdi:waypoint x="132.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
-        <omgdi:waypoint x="132.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="132.0" y="91.0"></omgdi:waypoint>
         <omgdi:waypoint x="260.0" y="115.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="260.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="362.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="91.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="362.0" y="81.0"></omgdi:waypoint>
+        <omgdi:waypoint x="362.0" y="91.0"></omgdi:waypoint>
         <omgdi:waypoint x="442.0" y="118.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
