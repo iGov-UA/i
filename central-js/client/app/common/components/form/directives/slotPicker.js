@@ -24,9 +24,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         return this.serviceData.oData.processDefinitionId.split(':')[0] + "_--_" + field.property.id + "_--_"
       };
 
-      var resetData = function()
-      {
-        scope.slotsData = {};
+      var clearSlotPicker = function () {
         scope.selected.date = null;
         scope.selected.slot = null;
         scope.ngModel = null;
@@ -36,6 +34,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           formObj[scope.property.id].$viewValue = null;
           formObj[scope.property.id].$modelValue = null;
         }
+      };
+
+      var resetData = function() {
+        scope.slotsData = {};
+        clearSlotPicker();
       };
 
       var sID_Type_ID = 'sID_Type_' + scope.property.id;
@@ -97,11 +100,12 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sPrevoisReservedSlot: scope.ngModel ? scope.ngModel : false
             };
             $rootScope.$broadcast("slot-picker-start-processing");
+            $rootScope.bDmsSlotReserved = true;
 
             if(scope.ngModel){
-              $http.post('/api/service/flow/DMS/canselSlotHold', {sSubjectPhone: data.sSubjectPhone}).then(function (resp) {
+              $http.post('/api/service/flow/DMS/cancelSlotHold', {sSubjectPhone: data.sSubjectPhone}).then(function (resp) {
                 console.log('Slots reserve ' + scope.ngModel + ' was canceled');
-                scope.ngModel = null;
+                clearSlotPicker();
               }, function (err) {
                 console.error('Error during canceling slots hold by sSubjectPhone [' + data.sSubjectPhone + "]: " + angular.toJson(err));
               }).finally(function () {
@@ -127,6 +131,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               }).
               error(function(data, status, headers, config) {
                 console.error('Error reserved slot ' + angular.toJson(data));
+                $rootScope.bDmsSlotReserved = false;
                 var err = data.message ? data.message.split(": response=") : [];
                 if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
                   if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
@@ -142,8 +147,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 scope.loadList();
               });
             }
-
-
 
           }
         } else if (isQueueDataType.iGov) {
@@ -254,6 +257,21 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         } else {
           return false;
         }
+      };
+
+      scope.cancelSlotHold = function () {
+        $http.post('/api/service/flow/DMS/cancelSlotHold', {sSubjectPhone: scope.formData.params.phone.value}).then(function (resp) {
+          console.log('Slots reserve ' + scope.ngModel + ' was canceled');
+        }, function (err) {
+          console.error('Error during canceling slots hold by sSubjectPhone [' + scope.formData.params.phone.value + "]: " + angular.toJson(err));
+        }).finally(function () {
+          clearSlotPicker();
+          $rootScope.bDmsSlotReserved = false;
+        })
+      };
+
+      scope.isDmsSlotReserved = function () {
+        return $rootScope.bDmsSlotReserved;
       };
 
       scope.slotsData = {};

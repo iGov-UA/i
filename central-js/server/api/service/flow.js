@@ -10,7 +10,7 @@ router.post('/set/:nID', flow.setFlowSlot_ServiceData);
 
 router.get('/DMS/getSlots', flow.getSlotsDMS);
 router.post('/DMS/setSlotHold', flow.setSlotHoldDMS);
-router.post('/DMS/canselSlotHold', flow.canselSlotHoldDMS);
+router.post('/DMS/cancelSlotHold', flow.cancelSlotHoldDMS);
 router.post('/DMS/setSlot', flow.setSlotDMS);
 
 router.get('/Qlogic/getSlots', flow.getSlotsQlogic);

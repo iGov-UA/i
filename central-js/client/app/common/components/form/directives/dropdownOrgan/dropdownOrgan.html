@@ -1,5 +1,6 @@
 <div style="position:relative"
      dropdown
+
      is-open="organList.dropdown.isOpen">
 
   <div class="input-group">
@@ -9,6 +10,7 @@
            name="{{name}}"
            type="text"
            ng-model="organList.typeahead.model"
+           ng-disabled="ngDisabled"
            typeahead="organ as organ.sNameUa for organ in loadOrganList($viewValue) | orderBy:'sNameUa'"
            typeahead-on-select="onSelectOrganList($item)"
            typeahead-empty
@@ -17,6 +19,7 @@
     <span class="input-group-btn">
       <button class="btn btn-default"
               type="button"
+              ng-disabled="ngDisabled"
               dropdown-toggle>
         <span class="caret"></span>
       </button>

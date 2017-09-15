@@ -87,7 +87,7 @@ module.exports.setSlotHoldDMS = function (req, res) {
   });
 };
 
-module.exports.canselSlotHoldDMS = function (req, res) {
+module.exports.cancelSlotHoldDMS = function (req, res) {
   var nID_Server = req.body.nID_Server;
   var oData = req.body;
   activiti.getServerRegionHost(nID_Server, function(sHost){
