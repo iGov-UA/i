@@ -3,11 +3,14 @@
   <process id="DFS_2518_PodatNakl" name="Податкова накладна" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="File_XML_PN" name="Завантажте Податкову накладну у фрматі XML;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="File_XML_PN" name="Завантажте податкову накладну у форматі XML; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" default="J1201009"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system; ;bNew=true" type="file" default="J1201009"></activiti:formProperty>
         <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом."></activiti:formProperty>
         <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1490901" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
