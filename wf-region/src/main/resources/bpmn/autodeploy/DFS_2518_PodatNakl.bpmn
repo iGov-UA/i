@@ -3,6 +3,10 @@
   <process id="DFS_2518_PodatNakl" name="Податкова накладна" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="clfio" name="Автор звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="File_XML_PN" name="Завантажте Податкову накладну у фрматі XML;bNew=true" type="file" required="true"></activiti:formProperty>
