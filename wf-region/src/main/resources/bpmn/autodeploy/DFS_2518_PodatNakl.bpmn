@@ -10,10 +10,29 @@
         <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="File_XML_PN" name="Завантажте податкову накладну у форматі XML; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system; ;bNew=true" type="file" default="J1201009"></activiti:formProperty>
-        <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом."></activiti:formProperty>
-        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1490901" writable="false"></activiti:formProperty>
+        
+      
+        <activiti:formProperty id="C_REG" name="C_REG;system;writable=true,sID_Field=C_REG" type="string" default="04"></activiti:formProperty>
+        <activiti:formProperty id="C_RAJ" name="C_RAJ;system;writable=true,sID_Field=C_RAJ" type="string" default="63"></activiti:formProperty>
+        <activiti:formProperty id="TIN" name="TIN;system;writable=true,sID_Field=TIN" type="string"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC" name="C_DOC;system;writable=true,sID_Field=C_DOC" type="string" default="J12"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_SUB" name="C_DOC_SUB;system;writable=true,sID_Field=C_DOC_SUB" type="string" default="010"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_VER" name="C_DOC_VER;system;writable=true,sID_Field=C_DOC_VER" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_STAN" name="C_DOC_STAN;system;writable=true,sID_Field=C_DOC_STAN" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_TYPE" name="C_DOC_TYPE;system;writable=true,sID_Field=C_DOC_TYPE" type="string" default="00"></activiti:formProperty>
+        <activiti:formProperty id="C_DOC_CNT" name="C_DOC_CNT;system;writable=true,sID_Field=C_DOC_CNT" type="string"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_TYPE" name="PERIOD_TYPE;system;writable=true,sID_Field=PERIOD_TYPE" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_MONTH" name="PERIOD_MONTH;system;writable=true,sID_Field=PERIOD_MONTH" type="string" default="12"></activiti:formProperty>
+        <activiti:formProperty id="PERIOD_YEAR" name="PERIOD_YEAR;system;writable=true,sID_Field=PERIOD_YEAR" type="string" default="2017"></activiti:formProperty>
+        <activiti:formProperty id="C_STI_ORIG" name="C_STI_ORIG;system;writable=true,sID_Field=C_STI_ORIG" type="string" default="0463"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML" name="File;system;sID_XML=SWinEd" type="file" default="F1201009"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Confer" type="markers" default="${markerService.loadFromFile('DFS_2518/DFS_writable_1_2.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Inv" type="markers" default="${markerService.loadFromFile('DFS_2518/DFS_writable_1_2_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_XML_Answer" name="Название шаблона с ответом" type="string" default="F1490901" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису податкової накладної електронно-цифровим підписом."></activiti:formProperty>
+      
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист громадянину про відправку ПН в ДФС" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -48,10 +67,10 @@
     <userTask id="usertask1" name="Обробка ПН в ДФС " activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
-          <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+        <activiti:formProperty id="oFile_XML" name="File;system;sID_XML=SWinEd" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${SendDocument_XML}">
+          <activiti:field name="sID_File_XML">
+            <activiti:expression><![CDATA[${oFile_XML}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
             <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -64,16 +83,16 @@
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+       <activiti:formProperty id="oFile_XML" name="File;system;sID_XML=SWinEd" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer}">
           <activiti:field name="sINN">
             <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="snCountYear">
             <activiti:expression><![CDATA[${C_DOC_CNT}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer}]]></activiti:expression>
+          <activiti:field name="sFile_XML_Filter">
+            <activiti:expression><![CDATA[${sFileName_XML_Answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
