@@ -3,12 +3,12 @@
   <process id="_test_mailer_ext" name="test_mailer_ext" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
-        <activiti:formProperty id="email" name="email + sms" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email_for_test" name="email + sms" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="filetosend" name="file; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email2" name="email2" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email2" name="email2; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan" type="string" default="sNameOrgan - название органа"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan" type="string" default="sPhoneOrgan - телефон органа"></activiti:formProperty>
         <activiti:formProperty id="phone" name="телефон для смс" type="string" default="+380" required="true"></activiti:formProperty>
@@ -28,7 +28,7 @@
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email},${email2}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email_for_test},${email2}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[subject]]></activiti:expression>
@@ -86,7 +86,7 @@ Aenean at velit ac nisl rhoncus bibendum eget a neque.
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email_for_test}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Mail test ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )]]></activiti:expression>
@@ -102,7 +102,7 @@ Aenean at velit ac nisl rhoncus bibendum eget a neque.
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email_for_test}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA["Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"]]></activiti:expression>
@@ -166,7 +166,7 @@ Aenean at velit ac nisl rhoncus bibendum eget a neque.
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email_for_test}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA["Mail test + SMS ( Заявник: ${bankIdfirstName} ${bankIdmiddleName} ${bankIdlastName} )"]]></activiti:expression>
@@ -230,7 +230,7 @@ Aenean at velit ac nisl rhoncus bibendum eget a neque.
           <activiti:string><![CDATA[admin@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression><![CDATA[${email_for_test}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Ваша заявка ще не взята в роботу]]></activiti:expression>
