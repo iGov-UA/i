@@ -7,13 +7,13 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові; ;bVisible=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Податковий номер;реєстраційний номер облікової картки платника податків" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="Завантажте податкову накладну у форматі XML; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="oFile_XML" name="Завантажте податкову накладну у форматі XML; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна адреса;для отримання відповіді ;writable=true" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sFileName_XML_SWinEd_Answer" name="Название шаблона с ответом" type="string" default="F1490901" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sFileName_XML_Answer" name="Название шаблона с ответом" type="string" default="F1490901" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCounter" name="Счетчик для закрытия (при отказе)" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sWarning2" name=" ; ;labelType=info" type="label" default="Після натискання &quot;Замовити послугу&quot; Вас буде перенаправлено на сторінку підпису податкової накладної електронно-цифровим підписом."></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="Format" type="markers" default="{&quot;validate&quot;:{&quot;[FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;oFile_XML_SWinEd&quot;],&quot;saExtension&quot;:&quot;xml&quot;,&quot;sMessage&quot;:&quot;Недопустимий формат файлу! Повинно бути: {saExtension}&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers3" name="Show" type="markers" default="${markerService.loadFromFile('DFS_1374/DFS_writable_1_2_3.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="Format" type="markers" default="{&quot;validate&quot;:{&quot;[FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;oFile_XML&quot;],&quot;saExtension&quot;:&quot;xml&quot;,&quot;sMessage&quot;:&quot;Недопустимий формат файлу! Повинно бути: {saExtension}&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="Show" type="markers" default="${markerService.loadFromFile('DFS_2518/DFS_writable_1_2_3.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Лист громадянину про відправку ПН в ДФС" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -48,10 +48,10 @@
     <userTask id="usertask1" name="Обробка ПН в ДФС " activiti:candidateGroups="sales">
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${SendDocument_SWinEd}">
-          <activiti:field name="sID_File_XML_SWinEd">
-            <activiti:expression><![CDATA[${oFile_XML_SWinEd}]]></activiti:expression>
+        <activiti:formProperty id="oFile_XML" name="Податкова накладна;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${SendDocument}">
+          <activiti:field name="sID_File_XML">
+            <activiti:expression><![CDATA[${oFile_XML}]]></activiti:expression>
           </activiti:field>
           <activiti:field name="sEmail">
             <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -64,13 +64,13 @@
       <extensionElements>
         <activiti:formProperty id="result" name="Результат" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="anID_Attach_Dfs" name="Файл с ответом" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="oFile_XML_SWinEd" name="File;system;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer_SWinEd}">
+        <activiti:formProperty id="oFile_XML" name="Податкова накладна;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${TransferDocumentAnswer}">
           <activiti:field name="sINN">
             <activiti:expression><![CDATA[${bankIdinn}]]></activiti:expression>
           </activiti:field>
-          <activiti:field name="sFile_XML_SWinEd_Filter">
-            <activiti:expression><![CDATA[${sFileName_XML_SWinEd_Answer}]]></activiti:expression>
+          <activiti:field name="sFile_XML_Filter">
+            <activiti:expression><![CDATA[${sFileName_XML_Answer}]]></activiti:expression>
           </activiti:field>
         </activiti:taskListener>
       </extensionElements>
@@ -119,11 +119,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <endEvent id="endevent1" name="End">
-      <extensionElements>
-        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
-      </extensionElements>
-    </endEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="escalationTimer1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
@@ -156,7 +152,7 @@ execution.setVariable('sCounter', src)</script>
     <sequenceFlow id="flow11" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'true'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask4" name="Відправка відповіді про автореєстрацію-після 24 г" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask4" name="Відправка відповіді про автореєстрацію-після 24 г" activiti:delegateExpression="#{MailTaskWithAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -184,13 +180,12 @@ execution.setVariable('sCounter', src)</script>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${anID_Attach_Dfs}]]></activiti:expression>
+        </activiti:field>
       </extensionElements>
     </serviceTask>
-    <endEvent id="endevent2" name="End">
-      <extensionElements>
-        <activiti:executionListener event="start" delegateExpression="${updateStatus_HistoryServiceEvent}"></activiti:executionListener>
-      </extensionElements>
-    </endEvent>
+    <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow14" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow15" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${bExist_Attach_Dfs_Answer == 'false' && sCounter == 205}]]></conditionExpression>
