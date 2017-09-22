@@ -76,7 +76,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         inMarkers: []
       };
 
-      angular.forEach($scope.activitiForm.formProperties, function (field) {
+      angular.forEach($scope.activitiForm.formProperties, function (field, obj, key) {
 
         var sFieldName = field.name || '';
 
@@ -109,9 +109,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
           field.type = 'checkbox';
         }
         // перетворити input на поле вводу телефону, контрольоване директивою form/directives/tel.js:
-        if (_.indexOf(aID_FieldPhoneUA, field.id) !== -1) {
-          field.type = 'tel';
-          field.sFieldType = 'tel';
+        var vars = aID_FieldPhoneUA.filter(function (i) {
+          return field.id.indexOf(i) === 0 && field.id.split('_')[0] === i;
+        });
+
+        if (vars.length > 0) {
+          obj[key].type = 'tel';
+          obj[key].sFieldType = 'tel';
         }
         if (field.type === 'markers' && $.trim(field.value)) {
           var sourceObj = null;
