@@ -76,7 +76,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
         inMarkers: []
       };
 
-      angular.forEach($scope.activitiForm.formProperties, function (field, obj, key) {
+      angular.forEach($scope.activitiForm.formProperties, function (field, key, obj) {
 
         var sFieldName = field.name || '';
 
