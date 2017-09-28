@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="rada_0015_RekDozvil" name="Дозвіл на розміщення зовнішньої реклами" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 18.09.2017 (реклама для Днепра)</documentation>
+    <documentation>Смоктій К.В. Последние правки: 28.09.2017 (реклама для Днепра)</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLabeECP" name=" ; ;labelType=info" type="label" default="Увага!  Щоб скористатися цією послугою, потрібно використати власний &lt;a href=&quot;https://goo.gl/1OioXt &quot; target=&quot;_blank&quot;&gt;електронно-цифровий підпис (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що вас обслуговує)"></activiti:formProperty>
@@ -33,7 +33,7 @@
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір (максимум 5 років);вкажіть прописом" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRekPeriod" name="Строк на який буде надано дозвіл (максимум 5 років);вкажіть прописом" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" required="true">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
@@ -93,7 +93,7 @@
         <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRekPeriod" name="Строк на який буде надано дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
@@ -160,7 +160,7 @@
         <activiti:formProperty id="sOtherPhone" name="Додатковий контактний (особистий) номер телефону; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMisPhone" name="Міський телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про об'єкт" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sRekPeriod&quot;],&quot;sValue&quot;:&quot;Інформація про об'єкт&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sRekPeriod" name="Строк на який буде укладено договір; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sRekPeriod" name="Строк на який буде надано дозвіл; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sRekAdress" name="Адреса розміщення рекламної конструкції; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asRekVlasn" name="Власність на якій розміщується реклама" type="enum" writable="false">
           <activiti:value id="sEnamKomun" name="Комунальна"></activiti:value>
@@ -411,8 +411,6 @@
 				Коментар до рішення: ${sDecisionComment_2}<br />
 				Додаткова інформація може міститься в файлі (в додатку до цього email).<br />
 				<br />
-				Ви можете подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
-				<br>
 				${sNameOrgan} <br>
 				${sAddress} <br>
 				${sWorkTime} <br>
@@ -460,7 +458,7 @@
 				Коментар до рішення: ${sDecisionComment_2}<br />
 				Додаткова інформація може міститься в файлі (в додатку до цього email).<br />
 				<br />
-				Чекаємо на Вас для завершення отримання дозволу на розміщення зовнішньої реклами<br />
+				Чекаємо на Вас для оформлення дозволу на розміщення зовнішньої реклами.<br />
 				${sAddress} <br>
 				${sWorkTime} <br>	
 				<br />				
