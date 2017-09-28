@@ -1,5 +1,10 @@
 package org.igov.io.web.integration.queue.cherg;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache; 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -28,6 +33,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 
 /**
  * Provides integration with Queue management system cherg.net API specified at
@@ -53,7 +60,29 @@ public class Cherg {
     private static volatile ConcurrentHashMap<String, String> mDMS_SlotReserve = new ConcurrentHashMap();
 
     final static private Logger LOG = LoggerFactory.getLogger(Cherg.class);
-
+          
+    private final LoadingCache<Integer, JSONArray> serverCache = CacheBuilder.newBuilder()
+            .maximumSize(100000)
+            .expireAfterAccess(60, TimeUnit.MINUTES)
+            .build(new CacheLoader<Integer, JSONArray>() {
+                @Override
+                public JSONArray load(Integer nID) throws Exception {
+                    LOG.info("getSlotFreeDaysArray_FromCache was called from cache");
+                    return getSlotFreeDaysArray(nID);
+                }
+    });
+    
+    
+    public JSONArray getSlotFreeDaysArray_FromCache(Integer nID_Service_Private){
+        try {
+            return serverCache.get(nID_Service_Private);
+        } catch (ExecutionException ex) {
+            LOG.info("getSlotFreeDaysArray_FromCache error {}", ex);
+        }
+        
+        return null;
+    }
+    
     @PostConstruct
     public void initialize() {
         this.urlBasePart = generalConfig.getQueueManagementSystemAddress();
