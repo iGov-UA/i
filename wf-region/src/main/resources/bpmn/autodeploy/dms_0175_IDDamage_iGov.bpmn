@@ -113,7 +113,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 	для обміну паспорта громадянина України у разі непридатності для користування.
 </p>
 <p>
-	Дата та час візиту: ${format_date_of_visit}.
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
 	<b>Вам необхідно зробити два платежу:</b> 
@@ -160,7 +160,7 @@ ${sNameOrgan},<br>
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+          <activiti:expression><![CDATA[Pered splatoyu posluhy prosymo pereviryty svoyu cherhu za telefonamy 097 470 05 05 abo 066 470 05 05 abo 073 470 05 05]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -178,7 +178,7 @@ ${sNameOrgan},<br>
 	для обміну паспорта громадянина України у разі непридатності для користування.
 </p>
 <p>
-	Дата та час візиту: ${format_date_of_visit}.
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
 	<b>Вам необхідно зробити два платежу:</b> 
@@ -244,7 +244,7 @@ ${sNameOrgan},<br>
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -460,7 +460,7 @@ ${sNameOrgan},<br>
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

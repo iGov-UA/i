@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="nssmc_license" name="Ліцензування" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="usertask1" name="Внесення данних до реєстру" activiti:assignee="nssmc">
+      <extensionElements>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO" name="ЄДРПОУ ліцензіата" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan" name="Повне найменування ліцензіата" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan" name="Найменування ліцензіата" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asActionEventType" name="Дія з ліцензією" type="enum" required="true">
+          <activiti:value id="Issue" name="випуск"></activiti:value>
+          <activiti:value id="Reissue" name="переоформлення"></activiti:value>
+          <activiti:value id="Cancellation" name="анулювання"></activiti:value>
+          <activiti:value id="Terminate" name="зупинення дії"></activiti:value>
+          <activiti:value id="Duplicate" name="видача дубліката"></activiti:value>
+          <activiti:value id="Exclusion" name="виключення з реєстру"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTermType" name="Строк діі (одиниця вимірювання)" type="enum" required="true">
+          <activiti:value id="day" name="день"></activiti:value>
+          <activiti:value id="month" name="місяць"></activiti:value>
+          <activiti:value id="year" name="рік"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="nTermCount" name="Строк діі (величина)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDateFrom" name="Термін дії (з)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateTill" name="Термін дії (по)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sFile" name="Сканована копія ліцензії" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sState" name="Поточний статус ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganIssue" name="Орган, який надав ліцензію" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateIssue" name="Дата випуску ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonIssue" name="Причина випуску ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionIssue" name="Номер рішення про видачу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionIssue" name="Дата рішення про видачу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganReissue" name="Орган, який переоформив ліцензію" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateReissue" name="Дата переоформлення ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonReissue" name="Причина переоформлення ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionReissue" name="Номер рішення про переоформлення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionReissue" name="Дата рішення про переоформленнія" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganCancellation" name="Орган, який анулював ліцензію" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation" name="Дата анулювання ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonCancellation" name="Причина анулювання ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionCancellation" name="Номер рішення про анулювання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionCancellation" name="Дата рішення про анулювання" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganTerminate" name="Орган, який зупинив дію ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateTerminate" name="Дата зупинення дії ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonTerminate" name="Причина зупинення дії ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionTerminate" name="Номер рішення про зупинення дії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionTerminate" name="Дата рішення про зупинення дії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganDuplicate" name="Орган, який видав дублікат ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDuplicate" name="Дата видачі дубліката ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonDuplicate" name="Причина видачі дубліката ліцензії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionDuplicate" name="Номер рішення про видачу дубліката" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionDuplicate" name="Дата рішення про видачу дубліката" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOrganExclusion" name="Орган, який виключив ліцензію з реєстра" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateExclusion" name="Дата виключення ліцензії з реєстру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonDuplicate" name="Причина виключення ліцензії з реєстру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionExclusion" name="Номер рішення про виключення з реєстру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionExclusion" name="Дата рішення про виключення з реєстру" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers_0" name="markers" type="markers" default="${markerService.loadFromFile('nssmc/nssmc_license.json')}"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_nssmc_license">
+    <bpmndi:BPMNPlane bpmnElement="nssmc_license" id="BPMNPlane_nssmc_license">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="200.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="340.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="165.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="305.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

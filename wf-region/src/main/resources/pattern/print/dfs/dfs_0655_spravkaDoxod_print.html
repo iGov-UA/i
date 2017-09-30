@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+  <head lang="ua">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Надання довідки про доходи фізичних осіб</title>
+
+    <!-- Общие стили  -->
+    <style type="text/css">
+      article.PrintFormClaim {
+        padding: 0 0 0 2.0cm;
+        line-height: 1.5;
+        font-size: 13pt;
+        font-family: 'Times', 'Times New Roman', 'Arial', 'serif';
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+      }
+
+      article.PrintFormClaim h1 {
+        text-align: center;
+        margin-top: 24px 0 6px 0;
+        font-size: 14pt;
+        font-weight: 600;
+      }
+
+      article.PrintFormClaim h2 {
+        font-weight: 600;
+      }
+
+      article.PrintFormClaim h2, article.PrintFormClaim h3, article.PrintFormClaim p
+      {
+        text-indent: 50px; /* Отступ первой строки в пикселах */
+        margin: 12px 0 6px 0;
+      }
+
+      /* Без абзаца */
+      article.PrintFormClaim .not-indent p, article.PrintFormClaim p.not-indent
+      {
+        text-indent: 0;
+      }
+
+      article.PrintFormClaim h2 {
+        font-size: 14pt;
+        font-weight: 600;
+      }
+
+      article.PrintFormClaim h3 {
+        font-size: 14pt;
+        font-weight: 600;
+        font-style: italic;
+      }
+
+      article.PrintFormClaim div {
+        margin-top: 6pt;
+      }
+
+      /* Подчеркивание с отступами не подходит для  */
+      article.PrintFormClaim em {
+        padding: 0 15px;
+        font-style: normal;
+        border-bottom: 1px solid black;
+      }
+
+      article.PrintFormClaim ol, article.PrintFormClaim ul {
+        list-style-type: none;
+        counter-reset: item 0;
+        padding: 0; /* Убираем поля */
+        margin: 6px 0 12px 0; /* Отступ слева */
+      }
+
+      /* настраиваем отступы маркеров */
+      article.PrintFormClaim ol li:before, article.PrintFormClaim ul li:before
+      {
+        margin-left: 50px;
+        display: inline-block;
+        text-align: left;
+      }
+
+      /* нумерация со скобкой */
+      article.PrintFormClaim ol li:before {
+        content: counter(item) ') '; /* Добавляем к числам скобку */
+        counter-increment: item; /* Задаём имя счетчика */
+        width: 33px;
+      }
+
+      /* маркер в виде дифиса */
+      article.PrintFormClaim ul li:before {
+        content: '- '; /* Добавляем к числам скобку */
+        width: 15px;
+      }
+
+    </style>
+
+    <!-- Стили таблиц -->
+    <style type="text/css">
+      /* Общее оформление таблицы */
+      article.PrintFormClaim table {
+        border-spacing: 0;
+        border: 1px solid black;
+        border-radius: 5px;
+        border-collapse: collapse; /* Отображать двойные линии как одинарные */
+      }
+
+      /* Настройка заголовков */
+      article.PrintFormClaim th {
+        text-align: center;
+      }
+
+      article.PrintFormClaim td, article.PrintFormClaim th {
+        padding: 5px 5px;
+        vertical-align: central;
+        border-left: 1px solid black;
+        border-top: 1px solid black;
+      }
+
+      /* оставить только нижнюю границу */
+      article.PrintFormClaim td.bb, article.PrintFormClaim .bb {
+        border: 0px solid black;
+        border-bottom: 1px solid black;
+      }
+
+      /* Убрать границы таблицы */
+      article.PrintFormClaim table.notb, article.PrintFormClaim table.notb th,
+      article.PrintFormClaim table.notb td, article.PrintFormClaim th.notb,
+      article.PrintFormClaim td.notb {
+        border: 0px solid black;
+      }
+    </style>
+
+    <!-- Выравнивание текста -->
+    <style type="text/css">
+      /* Мелкий шрифт */
+      article.PrintFormClaim table.small-text th, article.PrintFormClaim table.small-text td,
+      article.PrintFormClaim tr.small-text>th, article.PrintFormClaim tr.small-text>td,
+      article.PrintFormClaim tr>th.small-text, article.PrintFormClaim tr>td.small-text,
+      article.PrintFormClaim .small-text {
+        font-size: 9pt;
+      }
+
+      /* Выравнимание текста по вертикали*/
+      article.PrintFormClaim table.va-c th, article.PrintFormClaim table.va-c td,
+      article.PrintFormClaim tr.va-c>th, article.PrintFormClaim tr.va-c>td,
+      article.PrintFormClaim tr>th.va-c, article.PrintFormClaim tr>td.va-c,
+      article.PrintFormClaim .va-c {
+        vertical-align: central;
+      }
+
+      article.PrintFormClaim table.va-b th, article.PrintFormClaim table.va-b td,
+      article.PrintFormClaim tr.va-b>th, article.PrintFormClaim tr.va-b>td,
+      article.PrintFormClaim tr>th.va-b, article.PrintFormClaim tr>td.va-b,
+      article.PrintFormClaim .va-b {
+        vertical-align: bottom;
+      }
+
+      article.PrintFormClaim table.va-t th, article.PrintFormClaim table.va-t td,
+      article.PrintFormClaim tr.va-t>th, article.PrintFormClaim tr.va-t>td,
+      article.PrintFormClaim tr>th.va-t, article.PrintFormClaim tr>td.va-t,
+      article.PrintFormClaim .va-t {
+        vertical-align: top;
+      }
+
+      /* выравнивание текста по горизонтали */
+      article.PrintFormClaim table.ta-c th, article.PrintFormClaim table.ta-c td,
+      article.PrintFormClaim tr.ta-c>th, article.PrintFormClaim tr.ta-c>td,
+      article.PrintFormClaim tr>th.ta-c, article.PrintFormClaim tr>td.ta-c,
+      article.PrintFormClaim .ta-c {
+        text-align: center;
+      }
+
+      article.PrintFormClaim table.ta-l th, article.PrintFormClaim table.ta-l td,
+      article.PrintFormClaim tr.ta-l>th, article.PrintFormClaim tr.ta-l>td,
+      article.PrintFormClaim tr>th.ta-l, article.PrintFormClaim tr>td.ta-l,
+      article.PrintFormClaim .ta-l {
+        text-align: left;
+      }
+
+      article.PrintFormClaim table.ta-r th, article.PrintFormClaim table.ta-r td,
+      article.PrintFormClaim tr.ta-r>th, article.PrintFormClaim tr.ta-r>td,
+      article.PrintFormClaim tr>th.ta-r, article.PrintFormClaim tr>td.ta-r,
+      article.PrintFormClaim .ta-r {
+        text-align: right;
+      }
+
+      article.PrintFormClaim table.ta-j th, article.PrintFormClaim table.ta-j td,
+      article.PrintFormClaim tr.ta-j>th, article.PrintFormClaim tr.ta-j>td,
+      article.PrintFormClaim tr>th.ta-j, article.PrintFormClaim tr>td.ta-j,
+      article.PrintFormClaim .ta-j {
+        text-align: justify;
+        -webkit-hyphens: auto;
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+      }
+
+      /* Форматирование текста*/
+      /* Косым */
+      article.PrintFormClaim table.i th, article.PrintFormClaim table.i td,
+      article.PrintFormClaim tr.i>th, article.PrintFormClaim tr.i>td, article.PrintFormClaim tr>th.i,
+      article.PrintFormClaim tr>td.i, article.PrintFormClaim .i {
+        font-style: italic;
+      }
+      /* Жирным */
+      article.PrintFormClaim table.b th, article.PrintFormClaim table.b td,
+      article.PrintFormClaim tr.b>th, article.PrintFormClaim tr.b>td, article.PrintFormClaim tr>th.b,
+      article.PrintFormClaim tr>td.b, article.PrintFormClaim .b {
+        font-weight: 600;
+      }
+      /* Подчеркнутым */
+      article.PrintFormClaim table.u th, article.PrintFormClaim table.u td,
+      article.PrintFormClaim tr.u>th, article.PrintFormClaim tr.u>td, article.PrintFormClaim tr>th.u,
+      article.PrintFormClaim tr>td.u, article.PrintFormClaim .u {
+        text-decoration: underline;
+      }
+
+      /* Колонки жирным */
+      article.PrintFormClaim table.col-1-b tr td:nth-child(1) { font-weight: 600;}
+      article.PrintFormClaim table.col-2-b tr td:nth-child(2) { font-weight: 600;}
+    </style>
+
+    <!-- Подготовленные блоки -->
+    <style type="text/css">
+		.whomBlock {
+		    text-align: justify;
+		    margin-left: 11cm;
+		}
+		
+		.whoBlock {
+		    text-align: justify;
+		    margin-left: 11cm;
+		}
+        
+      .claimBlock {
+        text-align: center;
+        margin-top: 6pt;
+        font-weight: 600;
+      }
+
+      /* организация колонок */
+      article.PrintFormClaim .layout { overflow: hidden;}
+      article.PrintFormClaim .layout div { margin: 0 0 15px 0; float: left;}
+      article.PrintFormClaim .layout div.r-t { float: right;}
+      article.PrintFormClaim .layout div.l-t { float: left;}
+
+      .under_multifield { /* Мой кейс, многострочный текст*/
+        border-bottom: 1px solid black;
+        text-align: justify;
+        clear: both;
+      }
+
+      .under_multifield>b {
+        float: left;
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        position: relative;
+        bottom: -3px;
+        background-color: white;
+      }
+
+      .under_multifield>u {
+        padding: 0 10px;        
+        line-height: 1.5;
+        text-decoration: none;
+        border-bottom: 1px solid black;
+        position: relative;
+        bottom: -4px;
+        line-height: 125%;
+      }
+
+      .under_field { /* Блок с подписью */
+        margin: 0 0 18px 0;
+        border-bottom: 1px solid black;
+        position: relative;
+        display: inline-block;
+        clear: both;
+      }
+
+      .under_field>b { /*если не надо подчеркивать*/
+        padding: 0 10px 0 0;
+        font-weight: normal;
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;
+        font-style: normal;
+        bottom: -1px;
+        background-color: white;
+      }
+      
+      .under_field>u { /*если надо подчеркнуть*/
+        padding: 0 10px;
+        text-decoration: none;
+        background: white;
+        display: inline-block;
+        position: relative;
+        left: 0;
+        bottom: 1px;
+      }
+
+      .under_field>span { /*текст снизу*/
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #606060;
+        bottom: -20px;
+        font-size: 9pt;
+      }
+
+      /* линия отреза */
+      .lineCut {
+        border-bottom: 2px dashed #000;
+      }
+
+      .lineCut>span {
+        bottom: 10px;
+        background: white;
+        float: left;
+        position: relative;
+      }
+
+      /*чек-боксы*/
+      .check_box {
+        width: 22px;
+        height: 22px;
+        border: 1px solid #000;
+        margin: 0 10px 0 5px;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .text_box {
+        height: 25px;
+        border: 1px solid #000;
+        margin-left: 5px;
+        display: inline-block;
+        line-height: 23px;
+      }
+
+      /* номер дела, ярлык */
+      .numBusines {
+        border: 1px solid #000000;
+        margin-top: 25px;
+        float: right;
+      }
+
+      .numBusines>div {
+        height: 20px;
+        margin-right: 5px;
+        margin-left: 5px;
+        border-bottom: 1px solid black;
+        position: relative;
+        display: block;
+      }
+
+      .numBusines>div>i {
+        height: 21px;
+        left: 0;
+        padding-right: 5px;
+        background: white;
+        display: inline-block;
+        position: relative;
+        font-style: normal;
+      }
+
+      .numBusines>div>span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: #606060;
+        bottom: -16px;
+        font-size: 11px;
+      }
+    </style>
+
+    <!-- Ширина и отступы -->
+    <style type="text/css">
+
+      /* ширина в процентах */            
+      .w1p {width: 1%;}      
+      .w4p {width: 4%;}      
+      .w60p {width: 60%;}
+      .w30p { width: 30%;}
+      .w33p { width: 33%;}      
+      .w100p { width: 100%;}
+
+
+
+      /* ширина */
+      .w50 {  width: 50px;}
+      .w100 { width: 100px;}
+      .w150 { width: 150px;}
+      .w200 { width: 200px;}
+      .w250 { width: 250px;}
+      .w300 { width: 300px;}
+      .w350 { width: 350px;}
+      .w450 { width: 450px;}
+      .w400 { width: 400px;}
+      .w500 { width: 500px;}
+      
+      /* ширина */
+      .w1cm { width: 1cm;}
+      .w2cm { width: 2cm;}
+      .w3cm { width: 3cm;}
+      .w4cm { width: 4cm;}
+      .w5cm { width: 5cm;}
+      .w6cm { width: 6cm;}
+      .w7cm { width: 7cm;}
+      .w8cm { width: 8cm;}
+      .w9cm { width: 9cm;}
+      .w10cm { width: 10cm;}
+      .w11cm { width: 11cm;}
+      .w12cm { width: 12cm;}
+
+
+
+      /* отступ  */
+      .pl-paragraph { text-indent: 1cm;}
+      .pl-paragraph>div,
+      .pl-paragraph>span  
+      { text-indent: initial;} 
+      /* слева */
+      .pl-25 { padding-left: 25px;}
+      .pl-50 { padding-left: 50px;}
+      .pl-75 { padding-left: 75px;}
+      .pl-100 { padding-left: 100px;}
+      .pl-150 { padding-left: 150px;}
+      .pl-200 { padding-left: 200px;}
+      .pl-250 { padding-left: 250px;}
+      .pl-300 { padding-left: 300px;}
+      /* справа */
+      .pr-25 { padding-right: 25px;}
+      .pr-50 { padding-right: 50px;}
+      .pr-75 { padding-right: 75px;}
+      .pr-100 { padding-right: 100px;}
+      .pr-150 { padding-right: 150px;}
+      .pr-200 { padding-right: 200px;}
+      .pr-250 { padding-right: 250px;}
+      .pr-300 { padding-right: 300px;}
+
+      .ml-5{ margin-left: 5cm;}
+      .ml-6{ margin-left: 6cm;}
+      .ml-7{ margin-left: 7cm;}
+      .ml-8{ margin-left: 8cm;}
+      .ml-9{ margin-left: 9cm;}
+      .ml-10{ margin-left: 10cm;}
+      .ml-11{ margin-left: 11cm;}
+      .ml-12{ margin-left: 12cm;}
+      .ml-13{ margin-left: 13cm;}
+      .ml-14{ margin-left: 14cm;}
+
+      /* междустрочные интервалы */
+      .line0 { line-height: 0;}
+      .line05 { line-height: 0.5;}
+      .line1 { line-height: 1;}
+      .line15 { line-height: 1.5;}
+      .line2 { line-height: 2;}
+      .line25 { line-height: 2.5;}
+      .line3 { line-height: 3;}
+
+      /*отступы по горизонтали*/
+      .pg-25 { padding: 0 25px;}
+      .pg-50 { padding: 0 50px;}
+      .pg-75 { padding: 0 75px;}
+      .pg-100 { padding: 0 100px;}
+
+
+
+      /* Форматирование текста*/
+      .i{font-style: italic;}
+      .b{font-weight: 600;}
+      .u{text-decoration: underline;}
+      .ub{border-bottom: 1px solid #000;}
+
+
+      .test{ border: 1px solid red;}
+
+    </style>
+
+    <!-- Стили печати -->
+    <style type="text/css">
+    
+    /*
+      @media screen {
+        article.PrintFormClaim {
+          width: 21cm;
+          min-height: 100%;
+          height: 100%;
+        }
+      }
+	*/
+      /* Настройки печати должны помещаться в блок @media print */
+      @media print {
+      
+      /*
+      	article.PrintFormClaim { font-size: 14pt; }
+      	
+      	.under_multifield>u { bottom: -1px; }
+
+	    article.PrintFormClaim table.small-text th, article.PrintFormClaim table.small-text td,
+	    article.PrintFormClaim tr.small-text>th, article.PrintFormClaim tr.small-text>td,
+	    article.PrintFormClaim tr>th.small-text, article.PrintFormClaim tr>td.small-text,
+	    article.PrintFormClaim .small-text,
+        .under_field>span {
+	        font-size: 10pt;
+     	}	
+      	*/
+	      
+      
+        /* @page { margin: 1.0cm 0.5cm 1.0cm 0.5cm;} */
+
+        article.PrintFormClaim section {
+          page-break-after: always;
+          z-index: 1;
+        }
+
+        * { -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        a[href^="http://"]:after, a[href^="ftp://"]:after {
+          content: " (" attr(href) ")";
+          color: blue;
+        }
+        article, h1, p, ul, img, p { page-break-inside: avoid;}
+        p { orphans: 3; widows: 2; }
+      }
+    </style>
+
+  </head>
+  <body>
+    <article class="PrintFormClaim">
+
+
+      <div class="layout">
+	      <div class="w9cm r-t">	      
+		      <div class="w100p">
+		        Начальнику [sNameOrgan673]<br> [sFIOGolova673]
+		      </div>
+		      <br> 
+		      <br>
+	      
+	        <div class="under_field w100p ta-l">
+	          <u id="tegFIO"></u>
+	          <span>(ПІБ)</span>
+	        </div>
+	        <br>
+	        <div class="under_field w100p ta-l">
+	          <u>[bankIdinn]</u>
+	          <span>(ідентиф. номер)</span>
+	        </div>
+	        <div class="under_field w100p ta-l">
+	          <u>[sAddressFactual]</u>
+	          <span>(місце проживання)</span>
+	        </div>
+	        <div class="under_field w100p ta-l">
+	          <u>[phone]</u>
+	          <span>(№ телефону)</span>
+	        </div>
+	        <br>
+	      </div>
+	  </div>
+      
+      
+      <br /><br />
+      <div class="claimBlock">ЗАЯВА</div>
+      
+      <div class="ta-j pl-paragraph">
+        Прошу надати мені відомості з ДРФО платників податків про суми виплачених доходів 
+        та утриманих податків/джерела виплачених доходів та утриманих податків за період
+        з <em id="tegStart"></em>
+        по <em id="tegStop"></em> 
+      </div>
+      <div class="ta-c w100p">
+        <div class="under_multifield w100p ta-j">
+          <b>для надання</b>
+          <u>[sAim]</u>
+        </div>
+        <div class="small-text line05">
+          (наприклад: відділення банку, Пенсійного фонду, працевлаштування, УПСЗН тощо).
+        </div>
+      </div>
+      <div class="ta-j">
+      	Паспортні дані
+      </div>
+      <div class="under_multifield w100p ta-j ">
+        <u>[bankIdPassport]</u>
+      </div>      
+      
+
+      <br> <br>
+      <div class="layout">
+        <div class="w30p pl-50">
+          <div class="under_field w100p ta-c">
+            <u>[sDateStart]</u>
+            <span>(дата)</span>
+          </div>
+        </div>
+
+        <div class="w30p r-t pr-50">
+          <div class="under_field w100p">
+            <u>&#160;</u>
+            <span>(підпис фізичної особи)</span>
+          </div>
+        </div>          
+      </div>
+    </article>
+    
+    <script>
+      var bankIdlastName = "[bankIdlastName]";
+      var bankIdfirstName = "[bankIdfirstName]";
+      var bankIdmiddleName = "[bankIdmiddleName]";
+      var sFIO = "[sFIO]";
+      
+      var dStart = "[dStart]";
+      var dStop = "[dStop]";
+      
+
+      sFIO = (sFIO != ("["+"sFIO"+"]")) ? sFIO :
+      bankIdlastName + " " + bankIdfirstName + " " + bankIdmiddleName;
+
+      document.getElementById("tegFIO").textContent = sFIO;
+      document.getElementById("tegStart").textContent = dStart.replace(/\//g,".");
+      document.getElementById("tegStop").textContent = dStop.replace(/\//g,".");
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="nssmc_trader" name="Реєстр торговців цінними паперами" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="usertask1" name="Внесення данних до реєстру" activiti:assignee="nssmc">
+      <extensionElements>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_Trader" name="ЄДРПОУ торговця" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_Trader" name="Повне найменування торговця" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sShortName_SubjectOrgan_Trader" name="Найменування торговця" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sLocation_SubjectOrgan_Trader" name="Місцезнаходження" type="textArea" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sDateRegistrationEDR" name="Дата державної реєстарції" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nSizeCharterCapital" name="Статутний капітал" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sLegalForm" name="Структура власності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон" type="string" default="+380"></activiti:formProperty>
+        <activiti:formProperty id="email" name="email" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSite" name="www" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nSizeCharterCapitalSince" name="Статутний капітал з (дата)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="nSizeCharterCapitalForeign" name="Статуний капітал з іноземними інвестиціями" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCountry_0" name="Країна іноземного інвестора" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sFullName_SubjectOrgan_Auditor" name="Повне найменування аудитора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_SubjectOrgan_OKPO_Auditor" name="ЄДРПОУ аудитора" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateConclusion" name="Інформація про аудит (дата висновку)" type="date"></activiti:formProperty>
+        <activiti:formProperty id="bBrokerageLicense" name="Наявність ліцензії з брокерської діяльності; ;sID_CheckboxTrue=yes" type="enum" default="no">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="bBrokerageLicense" name="Статус ліцензії" type="enum">
+          <activiti:value id="Issue" name="випуск"></activiti:value>
+          <activiti:value id="Reissue" name="переоформлення"></activiti:value>
+          <activiti:value id="Cancellation" name="анулювання"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sSeries_LicenceBrokerage" name="Серія ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber_LicenceBrokerage" name="Номер ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionIssue_LicenceBrokerage" name="Дата рішення ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionIssue_LicenceBrokerage" name="Номер рішення ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateIssue_LicenceBrokerage" name="Дата видачі ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateFrom_LicenceBrokerage" name="Термін дії ліцензії з брокерської діяльності (з)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateTill_LicenceBrokerage" name="Термін дії ліцензії з брокерської діяльності (по)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionReissue_LicenceBrokerage" name="Номер рішення про переоформлення ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionReissue_LicenceBrokerage" name="Дата рішення про переоформленнія ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonReissue_LicenceBrokerage" name="Причина переоформлення ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionCancellation_LicenceBrokerage" name="Номер рішення про анулювання ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionCancellation_LicenceBrokerage" name="Дата рішення про анулювання від ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReasonCancellation_LicenceBrokerage" name="Причина анулювання ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateCancellation_LicenceBrokerage" name="Дата анулювання ліцензії з брокерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bDealershipLicense" name="Наявність ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_DocumentsStatutory_LicenceDealership" name="Інформація про ліцензію з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionIssue" name="Дата рішення ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionIssue" name="Номер рішення ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата видачі ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateFrom" name="Термін дії ліцензії з дилерської діяльності (з)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateTill" name="Термін дії ліцензії з дилерської діяльності (по)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionReissue" name="Номер рішення про переоформлення ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionReissue" name="Дата рішення про переоформленнія ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина переоформлення ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionCancellation" name="Номер рішення про анулювання ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionCancellation" name="Рішення про анулювання від ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина анулювання ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата анулювання ліцензії з дилерської діяльності" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bDealershipLicense" name="Наявність ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_DocumentsStatutory_LicenceUnderwriting" name="Інформація про ліцензію з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionIssue" name="Дата рішення ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionIssue" name="Номер рішення ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата видачі ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateFrom" name="Термін дії ліцензії з андеррайтингу (з)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateTill" name="Термін дії ліцензії з андеррайтингу (по)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionReissue" name="Номер рішення про переоформлення ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionReissue" name="Дата рішення про переоформленнія ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина переоформлення ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionCancellation" name="Номер рішення про анулювання ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionCancellation" name="Рішення про анулювання від ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина анулювання ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата анулювання ліцензії з андеррайтингу" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bDealershipLicense" name="Наявність ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_DocumentsStatutory_LicenceManagment" name="Інформація про ліцензію з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSeries" name="Серія ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumber" name="Номер ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionIssue" name="Дата рішення ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionIssue" name="Номер рішення ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата видачі ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateFrom" name="Термін дії ліцензії з управління цінними паперами (з)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateTill" name="Термін дії ліцензії з управління цінними паперами (по)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionReissue" name="Номер рішення про переоформлення ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionReissue" name="Дата рішення про переоформленнія ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина переоформлення ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNumberDecisionCancellation" name="Номер рішення про анулювання ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateDecisionCancellation" name="Рішення про анулювання від ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sReason" name="Причина анулювання ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата анулювання ліцензії з управління цінними паперами" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_Place_Trader" name="Регіон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sName" name="Регіон" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bNonBankingFlag" name="Ознака банківської установи" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bTOVFlag" name="Ознака ТОВ" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bBankruptFlag" name="Ознака банкрот" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCurator" name="Куратор" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nAmountRent" name="Оренда сума" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateRentTill" name="Оренда до" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRent27" name="Оренда до ЗУ ст 27" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBranches" name="Філії" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFolder" name="Папка" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_SubjectHuman_TraderHead" name="Керівник" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nID_SubjectHuman_TraderAccountant" name="Бухгалтер" type="string"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_nssmc_trader">
+    <bpmndi:BPMNPlane bpmnElement="nssmc_trader" id="BPMNPlane_nssmc_trader">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="190.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="340.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="145.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="190.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="295.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

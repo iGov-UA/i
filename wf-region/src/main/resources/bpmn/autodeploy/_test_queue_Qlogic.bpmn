@@ -16,9 +16,9 @@
         <activiti:formProperty id="visitDay1" name="visitDay1" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="text2" name=" " type="label" default="Очередь 2 Qlogic для Лівобережний ЦНАП м.Маріуполь"></activiti:formProperty>
         <activiti:formProperty id="sID_Type_queue2" name="sID_Type_queue2" type="string" default="Qlogic"></activiti:formProperty>
-        <activiti:formProperty id="sOrganizatonGuid_queue2" name="sOrganizatonGuid_visitDay1" type="string" default="f5ad0fa1-bf96-4728-9c61-fdeb2e3e8419"></activiti:formProperty>
-        <activiti:formProperty id="sServiceCenterId_queue2" name="sServiceCenterId_visitDay1" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="sServiceId_queue2" name="sServiceId_visitDay1" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sOrganizatonGuid_queue2" name="sOrganizatonGuid_queue2" type="string" default="f5ad0fa1-bf96-4728-9c61-fdeb2e3e8419"></activiti:formProperty>
+        <activiti:formProperty id="sServiceCenterId_queue2" name="sServiceCenterId_queue2" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="sServiceId_queue2" name="sServiceId_queue2" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="queue2" name="queue2" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса органу" type="string"></activiti:formProperty>
@@ -29,7 +29,7 @@
     <serviceTask id="servicetask0" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <serviceTask id="servicetask1" name="для очереди" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
-    <userTask id="usertask4" name="обробка 1" activiti:candidateGroups="sales">
+    <userTask id="usertask4" name="обробка 1" activiti:candidateGroups="_test_queue_Qlogic">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить місце реєстрації особи, яка буде отримувати довідку" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string"></activiti:formProperty>

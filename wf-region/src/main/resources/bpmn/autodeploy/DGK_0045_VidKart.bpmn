@@ -4,16 +4,13 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
-        <activiti:formProperty id="FirstText" name="Зверніть увагу" type="label" default="Послуга платна! Обов`язково додайте квитанцію про сплату вартості послуги в призначене для цього поле!"></activiti:formProperty>
-        <activiti:formProperty id="sRekv" name="Вартість послуги 48 грн. Реквізити для оплати" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sLabeUvagaPlatno" name=" ; ;labelType=info" type="label" default="Зверніть увагу. Послуга платна! Державне мито 48 грн. Нижче надана можливість оплатити послугу онлайн."></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Домашня адреса" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="pidstavi" name="Заяву подає" type="enum" required="true">
           <activiti:value id="z1" name="Власник/користувач земельної ділянки"></activiti:value>
@@ -34,7 +31,7 @@
           <activiti:value id="sEnamPost" name="Лист поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Самостійно забрати відповідь в ЦНАПі"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText1" name="Увага!" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
+        <activiti:formProperty id="sText1" name=" ; ;labelType=info" type="label" default="Якщо ви обрали отримати відповідь поштою, то вам треба буде оплатити поштове відправлення, для цього ПІСЛЯ ПЕРЕВІРКИ заяви ЦНАПом на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asLust" name="Оберіть тип поштового відправлення" type="enum" required="true">
@@ -42,13 +39,21 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43,47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markerPust" name="Маркер порожнечі" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_&quot;:{&quot;aField_ID&quot;:[&quot;m1&quot;,&quot;m2&quot;,&quot;m3&quot;,&quot;m4&quot;,&quot;m5&quot;,&quot;m6&quot;,&quot;forma&quot;,&quot;bFlag&quot;,&quot;FlagPost&quot;,&quot;sAddress&quot;,&quot;shapka&quot;,&quot;sShapka&quot;,&quot;sMailClerk_dgk&quot;,&quot;sMailClerk&quot;,&quot;sPhoneOrgan&quot;,&quot;sNameOrgan&quot;,&quot;sWorkTime&quot;,&quot;sID_Payment&quot;,&quot;nID_Subject&quot;,&quot;sID_Merchant&quot;,&quot;sSum&quot;,&quot;sID_Currency&quot;,&quot;sDescription&quot;,&quot;sCountPayment&quot;,&quot;sPosluga_name&quot;,&quot;sPosluga_nameZV&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;asVidpovid&quot;},&quot;sCondition&quot;:&quot;[sCond]=='xxxx'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="m1" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="m2" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="m3" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="m4" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="m5" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="m6" name="Информация про заявителя в принтформе ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markerOpl" name="markerOpl" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_op1&quot;:{&quot;aField_ID&quot;:[&quot;sRekv&quot;,&quot;oplata&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]!='lev'&amp;&amp;[sCond]!='prav'&quot;},&quot;ShowFieldsOnCondition_op3&quot;:{&quot;aField_ID&quot;:[&quot;sID_Pay_MasterPass&quot;,&quot;sID_Merchant_MasterPass&quot;,&quot;sDescription_MasterPass&quot;,&quot;sVarSum_MP&quot;],&quot;asID_Field&quot;:{&quot;sCond&quot;:&quot;sID_Public_SubjectOrganJoin&quot;},&quot;sCondition&quot;:&quot;[sCond]=='lev'||[sCond]=='prav'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sRekv" name="Вартість послуги 48 грн. Реквізити для оплати" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг ; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш номер телефону;На цей номер буде відправлено OTP-пароль;" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;4800&quot;,&quot;fio&quot;:&quot;УДКСУ у Бабушкінському районі м.Дніпро Дніпропетровської обл.&quot;,&quot;edrpou&quot;:&quot;37989274&quot;,&quot;mfo&quot;:&quot;805012&quot;,&quot;rr&quot;:&quot;33219879727004&quot;,&quot;comment&quot;:&quot;За викопіювання з кадастрової карти та іншої картографічної документації ДЗК&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За викопіювання з кадастрової карти та іншої картографічної документації ДЗК"></activiti:formProperty>
         <activiti:formProperty id="forma" name="Подстановка принтформы ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bFlag" name="Перемикач регіонів ; ;bVisible=false" type="string" default="easy"></activiti:formProperty>
         <activiti:formProperty id="FlagPost" name="Флаг способу отримання ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -124,6 +129,7 @@ if(execution.getVariable('pidstavi') == 'z6'){execution.setVariable('m6', gal)}
 Ваше звернення [sID_Order] про ${sPosluga_nameZV} успішно зареєстроване.<br />
 Ви отримаєте відповідь протягом десяти робочих днів.
 </p>
+Код платежу - ${sID_Pay_MasterPass}.
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -237,6 +243,13 @@ ${sNameOrgan}<br />
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Якщо ви відмовляєте заявнику у наданні послуги, обов'язково вкажіть підставу у цьому полі" type="textArea" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Pay_MasterPass" name="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
+	    <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string"></activiti:formProperty>
+      
+        
         <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprOblSnap/vidomostiKadastr234.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html] ; ;bVisible=false ,bPrintform=true " type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
@@ -373,7 +386,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html] ; ;bVisible=false ,bPrintform=true " type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт) ; ;bNew=true" type="file"  writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -433,7 +446,7 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/vidomostiKadastr234.html] ; ;bVisible=false ,bPrintform=true " type="string" default="Заява про внесення відомостей" writable="false"></activiti:formProperty>
         <activiti:formProperty id="print_marker1" name="show/hidden text" type="markers" default="{&quot;motion&quot;: {&quot;ShowElementsOnTrue_1&quot;: {&quot;aElement_ID&quot;: [&quot;zmini1&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini1&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_2&quot;: {&quot;aElement_ID&quot;: [&quot;zmini2&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini2&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_3&quot;: {&quot;aElement_ID&quot;: [&quot;zmini3&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini3&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_4&quot;: {&quot;aElement_ID&quot;: [&quot;zmini4&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini4&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;},&quot;ShowElementsOnTrue_5&quot;: {&quot;aElement_ID&quot;: [&quot;zmini5&quot;],&quot;asID_Field&quot;: {&quot;sCond&quot;: &quot;Zmini5&quot;},&quot;sCondition&quot;: &quot;[sCond]=='ok'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="oplata" name="Документ, що підтверджує оплату послуг ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт) ; ;bNew=true" type="file" writable="false" ></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія документа, що посвідчує особу (паспорт) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_inn" name="Копія документа про присвоєння податкового номера ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -959,14 +972,14 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="480.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="518.0" y="107.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="63.0" x="533.0" y="64.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="63.0" x="533.0" y="64.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="460.0" y="127.0"></omgdi:waypoint>
         <omgdi:waypoint x="570.0" y="160.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="60.0" x="514.0" y="149.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="60.0" x="514.0" y="149.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -977,14 +990,14 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="753.0" y="259.0"></omgdi:waypoint>
         <omgdi:waypoint x="724.0" y="259.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="48.0" x="649.0" y="212.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="649.0" y="212.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow54" id="BPMNEdge_flow54">
         <omgdi:waypoint x="793.0" y="259.0"></omgdi:waypoint>
         <omgdi:waypoint x="825.0" y="259.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="85.0" x="837.0" y="212.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="85.0" x="837.0" y="212.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -992,14 +1005,14 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="671.0" y="353.0"></omgdi:waypoint>
         <omgdi:waypoint x="671.0" y="490.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="62.0" x="588.0" y="401.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="62.0" x="588.0" y="401.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="793.0" y="353.0"></omgdi:waypoint>
         <omgdi:waypoint x="825.0" y="353.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="87.0" x="939.0" y="401.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="87.0" x="939.0" y="401.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -1014,7 +1027,7 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="773.0" y="630.0"></omgdi:waypoint>
         <omgdi:waypoint x="877.0" y="676.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="39.0" x="823.0" y="662.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="39.0" x="823.0" y="662.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -1025,14 +1038,14 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="773.0" y="630.0"></omgdi:waypoint>
         <omgdi:waypoint x="671.0" y="676.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="66.0" x="643.0" y="662.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="66.0" x="643.0" y="662.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
         <omgdi:waypoint x="753.0" y="610.0"></omgdi:waypoint>
         <omgdi:waypoint x="531.0" y="610.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="75.0" x="572.0" y="590.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="75.0" x="572.0" y="590.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
@@ -1081,21 +1094,21 @@ ${sNameOrgan}<br />
         <omgdi:waypoint x="379.0" y="677.0"></omgdi:waypoint>
         <omgdi:waypoint x="461.0" y="677.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="277.0" y="727.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="277.0" y="727.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
         <omgdi:waypoint x="498.0" y="820.0"></omgdi:waypoint>
         <omgdi:waypoint x="555.0" y="820.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="77.0" x="557.0" y="776.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="77.0" x="557.0" y="776.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
         <omgdi:waypoint x="478.0" y="840.0"></omgdi:waypoint>
         <omgdi:waypoint x="478.0" y="860.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="57.0" x="411.0" y="839.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="57.0" x="411.0" y="839.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">

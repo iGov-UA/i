@@ -117,7 +117,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
 <p>
 	Чекаємо Вас за адресою: ${sAddress}.<br>
 	для оформлення паспорта громадянина України формі ID-картки.<br>
-	Дата та час візиту: ${formated_date_of_visit}.
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
@@ -167,7 +167,7 @@ ${sNameOrgan},<br>
 	для оформлення паспорта громадянина України формі ID-картки.
 </p>
 <p>
-	Дата та час візиту: ${formated_date_of_visit}.
+	Дата та час візиту: ${date_of_visit}.
 </p>
 <p>
 	<b>Необхідні документи, які треба принести до підрозділу ДМС при оформленні паспорта громадянина України по досягненні 14-річного віку:</b>
@@ -221,7 +221,7 @@ ${sNameOrgan},<br>
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -361,7 +361,7 @@ execution.setVariable('sEndDay', timerEnd)</script>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="ID карта" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
       <extensionElements>
-        <activiti:field name="sPhone_SMS">
+       <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sText_SMS">
@@ -433,7 +433,7 @@ ${sNameOrgan},<br>
           <activiti:value id="attr1_ok" name="Громадянин з'явився у призначений час"></activiti:value>
           <activiti:value id="attr2_missed" name="Громадянин не з'явився"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto"></activiti:formProperty>
+        <activiti:formProperty id="sCustom" name="Запуск таймера юзертаски" type="string" default="Auto" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -553,14 +553,14 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="570.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="827.0" y="307.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="581.0" y="269.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="581.0" y="269.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
         <omgdi:waypoint x="591.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="666.0" y="217.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="39.0" width="100.0" x="590.0" y="174.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="590.0" y="174.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">

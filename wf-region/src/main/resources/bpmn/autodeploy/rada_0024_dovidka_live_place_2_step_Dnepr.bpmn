@@ -159,7 +159,7 @@
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="servicetask3"></sequenceFlow>
     <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Будь ласка, використовуйте функцію &quot;Внести зауваження&quot;, якщо потрібно уточнити надану інформацію! Якщо все добре, то переходимо до наступного етапу формування Довідки &lt;br&gt;"></activiti:formProperty>
+        <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Будь ласка, використовуйте функцію &quot;Внести зауваження&quot;, якщо потрібно уточнити надану інформацію! Якщо все добре, то переходимо до наступного етапу формування Довідки"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -327,10 +327,10 @@
 					<ul>
 						<li>оригінал та копію паспорта громадянина України;</li>
 						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
-						${sAdd_TextEmail}
 						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
 					</ul>
 				</p>
+				${sAdd_TextEmail}
 				<p>
 					Коментар працівника органу реєстрації:<br>
 					<b><i>${sDecisionComment}</i></b>
@@ -402,10 +402,10 @@
 						<li>заяву про видачу довідки про реєстрацію місця проживання/перебування особи, що знаходиться у додатках до листа (розрукуйте на одному аркуші); </li>
 						<li>оригінал та копію паспорта громадянина України;</li>
 						<li>оригінал та копію свідоцтва про народження - для осіб, які отримують паспорта вперше;</li>
-						${sAdd_TextEmail}
 						<li>за необхідності - інші документи, що підтверджують Вашу реєстрацію\проживання.</li>
 					</ul>
 				</p>
+				${sAdd_TextEmail}
 				<p>
 					Коментар працівника органу реєстрації:<br>
 					<b><i>${sDecisionComment}</i></b>
@@ -438,7 +438,7 @@
     <sequenceFlow id="flow36" sourceRef="servicetask10" targetRef="endevent5"></sequenceFlow>
     <userTask id="usertask2_green" name="[Етап II] Підтвердження виготовлення довідки (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
-        <activiti:formProperty id="info21" name="На цьому етапі:" type="label" default="Ви виготовляєте довідку про реєстрацію місця проживання/перебування особи. Коли вона готова - підтверджуєте, громадянину буде надіслано email, що його чекають для отриманні довідки.&lt;br&gt;"></activiti:formProperty>
+        <activiti:formProperty id="info21" name="На цьому етапі:" type="label" default="Ви виготовляєте довідку про реєстрацію місця проживання/перебування особи. Коли вона готова - підтверджуєте, громадянину буде надіслано email, що його чекають для отриманні довідки"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить місце проживання громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
@@ -635,8 +635,9 @@ execution.setVariable('sStringInZayava', per3)
 
 tmpTextEmail = ''
 if (execution.getVariable('sID_Public_SubjectOrganJoin') != 'don_mariupolR'  &amp;&amp; execution.getVariable('sID_Public_SubjectOrganJoin') != 'don_mariupol_LevR') {
-	tmpTextEmail = "&lt;li&gt; оригінал та копію картки реєстрації особи або будинкової книги;&lt;/li&gt;" 
+	tmpTextEmail = "&lt;p&gt; &lt;b&gt;Зверніть увагу:&lt;/b&gt; &lt;ul&gt; &lt;li&gt; якщо картотека зареєстрованих осіб Вашого району ще не передана реєстраторам, то Вам може знадобитися оригінал та копія картки реєстрації особи (раніше мала назву Форма А) з ЖЕКу (ОСББ) або будинкової книги ;&lt;/li&gt; &lt;/ul&gt; &lt;/p&gt;" 
 }
+
 execution.setVariable('sAdd_TextEmail', tmpTextEmail)
 
 
