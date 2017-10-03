@@ -928,9 +928,18 @@ public class FlowService implements ApplicationContextAware {
                                     String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
                                     LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
                                     LOG.info("data map is {}", m);
+                                    String sTicket_Code = null;
                                     String sTicket_Number = (String) m.get("ticket_number");
+                                    
+                                    if(sID_Type.equals("Qlogic")){
+                                        Map<String, String> mTicket = JsonRestUtils.readObject((String)m.get("oTicket"), Map.class);
+                                        LOG.info("mTicket is {}", mTicket);
+                                    }else{
+                                        sTicket_Code = (String) m.get("ticket_code");
+                                    }
+                                    
                                     LOG.info("(sTicket_Number={})", sTicket_Number);
-                                    String sTicket_Code = (String) m.get("ticket_code");
+                                    
                                     LOG.info("(sTicket_Code={})", sTicket_Code);
                                     //}else if("iGov".equals(sID_Type)){
                                     Date oDate = null;
