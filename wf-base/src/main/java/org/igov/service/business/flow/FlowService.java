@@ -927,6 +927,7 @@ public class FlowService implements ApplicationContextAware {
                                     LOG.info("Found DMS flow slot tickets.");
                                     String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
                                     LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
+                                    LOG.info("data map is {}", m);
                                     String sTicket_Number = (String) m.get("ticket_number");
                                     LOG.info("(sTicket_Number={})", sTicket_Number);
                                     String sTicket_Code = (String) m.get("ticket_code");
