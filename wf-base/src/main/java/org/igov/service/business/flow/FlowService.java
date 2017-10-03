@@ -1,5 +1,6 @@
 package org.igov.service.business.flow;
 
+import com.google.gson.internal.LinkedTreeMap;
 import static java.lang.Math.toIntExact;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -936,9 +937,10 @@ public class FlowService implements ApplicationContextAware {
                                     if(sID_Type.equals("Qlogic")){
                                         JSONParser oJSONParser = new JSONParser();
                                         JSONObject oJSONObject = (JSONObject) oJSONParser.parse((String)m.get("oTicket"));
+                                        LOG.info("ticket_code is {}", (LinkedTreeMap)oJSONObject.get("receiptNum"));
+                                        LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)oJSONObject.get("receiptNum");
                                         
-                                        LOG.info("ticket_code is {}", (String)oJSONObject.get("receiptNum"));
-                                        sTicket_Code = (String)oJSONObject.get("receiptNum");
+                                        sTicket_Code = (String)mLinkedTreeMap.get("receiptNum");
                                     }else{
                                         sTicket_Code = (String) m.get("ticket_code");
                                     }
