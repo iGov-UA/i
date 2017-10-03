@@ -1,5 +1,6 @@
 package org.igov.service.business.flow;
 
+import com.google.gson.internal.LinkedTreeMap;
 import static java.lang.Math.toIntExact;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -40,6 +41,8 @@ import org.igov.service.business.flow.handler.ExcludeDateRange;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.quartz.CronExpression;
 
 /**
@@ -96,6 +99,10 @@ public class FlowService implements ApplicationContextAware {
         this.applicationContext = applicationContext;
     }
 
+     public static boolean bFlowOut(String sFlowType) {
+        return "DMS".equals(sFlowType) || "Qlogic".equals(sFlowType);
+    }
+    
     public Days getFlowSlots(Long nID_Service, Long nID_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment,
             DateTime startDate, DateTime endDate, boolean bAll,
             int nFreeDays, int nSlots) {
@@ -498,7 +505,6 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ok!!!", nID_Flow, aoDateRange_Exclude.size());
         return result;
     }
-
 
     public ClearSlotsResult clearFlowSlots(Long nID_Flow, DateTime startDate, DateTime stopDate,
             boolean bWithTickets) {
@@ -919,14 +925,27 @@ public class FlowService implements ApplicationContextAware {
                                 LOG.info("(sDate={})", sDate);
                                 String sID_Type = QueueDataFormType.get_sID_Type(m);
                                 LOG.info("(sID_Type={})", sID_Type);
-                                if ("DMS".equals(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
+                                if (bFlowOut(sID_Type)) {//Нет ни какой обработки т.к. это внешняя ЭО
                                     bQueueDMS = true;
                                     LOG.info("Found DMS flow slot tickets.");
                                     String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
                                     LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
-                                    String sTicket_Number = (String) m.get("ticket_number");
-                                    LOG.info("(sTicket_Number={})", sTicket_Number);
+                                    LOG.info("data map is {}", m);
+                                    
+                                    String sTicket_Number = null;
+                                    
+                                    if(sID_Type.equals("Qlogic")){
+                                        
+                                        LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)m.get("oTicket");
+                                        sTicket_Number = ((Double)mLinkedTreeMap.get("receiptNum")) != null ? 
+                                                ((Double)mLinkedTreeMap.get("receiptNum")).toString() : "";
+                                        LOG.info("sTicket_Number is {}", sTicket_Number);
+                                    }else{
+                                        sTicket_Number = (String) m.get("ticket_number");
+                                    }
+                                    
                                     String sTicket_Code = (String) m.get("ticket_code");
+                                    LOG.info("(sTicket_Number={})", sTicket_Number);
                                     LOG.info("(sTicket_Code={})", sTicket_Code);
                                     //}else if("iGov".equals(sID_Type)){
                                     Date oDate = null;
@@ -988,7 +1007,8 @@ public class FlowService implements ApplicationContextAware {
         } catch (Exception ex) {
             LOG.info("Error during gettion of flowservice: {}", ex);
         }
-
+        
+        LOG.info("mReturn is {}");
         return mReturn;
     }
 
