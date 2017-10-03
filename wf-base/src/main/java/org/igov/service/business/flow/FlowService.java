@@ -937,7 +937,8 @@ public class FlowService implements ApplicationContextAware {
                                     if(sID_Type.equals("Qlogic")){
                                         
                                         LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)m.get("oTicket");
-                                        sTicket_Code = (String)mLinkedTreeMap.get("receiptNum");
+                                        sTicket_Code = ((Double)mLinkedTreeMap.get("receiptNum")) != null ? 
+                                                ((Double)mLinkedTreeMap.get("receiptNum")).toString() : "";
                                         LOG.info("ticket_code is {}", sTicket_Code);
                                     }else{
                                         sTicket_Code = (String) m.get("ticket_code");
