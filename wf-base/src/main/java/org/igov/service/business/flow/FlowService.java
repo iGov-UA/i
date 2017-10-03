@@ -935,12 +935,10 @@ public class FlowService implements ApplicationContextAware {
                                     String sTicket_Number = (String) m.get("ticket_number");
                                     
                                     if(sID_Type.equals("Qlogic")){
-                                        JSONParser oJSONParser = new JSONParser();
-                                        JSONObject oJSONObject = (JSONObject) oJSONParser.parse((String)m.get("oTicket"));
-                                        LOG.info("ticket_code is {}", (LinkedTreeMap)oJSONObject.get("receiptNum"));
-                                        LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)oJSONObject.get("receiptNum");
                                         
+                                        LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)m.get("oTicket");
                                         sTicket_Code = (String)mLinkedTreeMap.get("receiptNum");
+                                        LOG.info("ticket_code is {}", sTicket_Code);
                                     }else{
                                         sTicket_Code = (String) m.get("ticket_code");
                                     }
