@@ -931,21 +931,21 @@ public class FlowService implements ApplicationContextAware {
                                     String snID_ServiceCustomPrivate = m.get("nID_ServiceCustomPrivate") + "";
                                     LOG.info("(nID_ServiceCustomPrivate={})", snID_ServiceCustomPrivate);
                                     LOG.info("data map is {}", m);
-                                    String sTicket_Code = null;
-                                    String sTicket_Number = (String) m.get("ticket_number");
+                                    
+                                    String sTicket_Number = null;
                                     
                                     if(sID_Type.equals("Qlogic")){
                                         
                                         LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)m.get("oTicket");
-                                        sTicket_Code = ((Double)mLinkedTreeMap.get("receiptNum")) != null ? 
+                                        sTicket_Number = ((Double)mLinkedTreeMap.get("receiptNum")) != null ? 
                                                 ((Double)mLinkedTreeMap.get("receiptNum")).toString() : "";
-                                        LOG.info("ticket_code is {}", sTicket_Code);
+                                        LOG.info("sTicket_Number is {}", sTicket_Number);
                                     }else{
-                                        sTicket_Code = (String) m.get("ticket_code");
+                                        sTicket_Number = (String) m.get("ticket_number");
                                     }
                                     
+                                    String sTicket_Code = (String) m.get("ticket_code");
                                     LOG.info("(sTicket_Number={})", sTicket_Number);
-                                    
                                     LOG.info("(sTicket_Code={})", sTicket_Code);
                                     //}else if("iGov".equals(sID_Type)){
                                     Date oDate = null;
@@ -1007,7 +1007,8 @@ public class FlowService implements ApplicationContextAware {
         } catch (Exception ex) {
             LOG.info("Error during gettion of flowservice: {}", ex);
         }
-
+        
+        LOG.info("mReturn is {}");
         return mReturn;
     }
 
