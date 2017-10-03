@@ -40,6 +40,8 @@ import org.igov.service.business.flow.handler.ExcludeDateRange;
 import org.igov.util.JSON.JsonRestUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.quartz.CronExpression;
 
 /**
@@ -932,8 +934,11 @@ public class FlowService implements ApplicationContextAware {
                                     String sTicket_Number = (String) m.get("ticket_number");
                                     
                                     if(sID_Type.equals("Qlogic")){
-                                        Map<String, String> mTicket = JsonRestUtils.readObject((String)m.get("oTicket"), Map.class);
-                                        LOG.info("mTicket is {}", mTicket);
+                                        JSONParser oJSONParser = new JSONParser();
+                                        JSONObject oJSONObject = (JSONObject) oJSONParser.parse((String)m.get("oTicket"));
+                                        
+                                        LOG.info("ticket_code is {}", (String)oJSONObject.get("receiptNum"));
+                                        sTicket_Code = (String)oJSONObject.get("receiptNum");
                                     }else{
                                         sTicket_Code = (String) m.get("ticket_code");
                                     }
