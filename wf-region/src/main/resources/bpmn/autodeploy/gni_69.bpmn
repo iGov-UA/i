@@ -130,11 +130,15 @@
           <activiti:value id="other_reason" name="інша причина"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Уточніть причину відмови" type="textArea"></activiti:formProperty>
+
+        <activiti:formProperty id="nFileResult" name="Прикріпіть результат запиту; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersResultUT1" name="Маркер адреса стартТаски" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_u1_result&quot;:{&quot;aField_ID&quot;:[&quot;nFileResult&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision1&quot;},&quot;sCondition&quot;:&quot;[sClient]=='accept'&quot;}}}"></activiti:formProperty>
+
         <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса ЮзерТаски_1" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileZapit" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -206,7 +210,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+          <activiti:expression><![CDATA["${nFileResult}"]]></activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
