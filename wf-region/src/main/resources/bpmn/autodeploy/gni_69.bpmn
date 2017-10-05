@@ -35,12 +35,17 @@
         <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="графік роботи; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+
+        <activiti:formProperty id="sPhoneOrgan" name="телефон" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса органу" type="string" default=" "></activiti:formProperty>
+
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
+       
+        <activiti:formProperty id="markersResultST1" name="Маркер 3х ОДПИ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_time_st1&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;, &quot;sPhoneOrgan&quot;], &quot;asID_Field_sValue&quot;:[&quot;Адреса: 73008, м. Херсон, вул. І. Кулика, 143а&quot;, &quot;Телефон:  (0552) 32-74-00, факс  (0552) 32-74-98&quot;], &quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot;:&quot;[sClient]=='dfs_khersT'&quot;}, &quot;ValuesFieldsOnCondition_time_st2&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;, &quot;sPhoneOrgan&quot;], &quot;asID_Field_sValue&quot;:[&quot;Адреса: 74900, Херсонська область, м. Нова Каховка,  вул. Горького, 11-а&quot;, &quot;Телефон/факс: (055-49) 4-52-88&quot;], &quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot;:&quot;[sClient]=='dfs_novaKahovkaT'&quot;}, &quot;ValuesFieldsOnCondition_time_st3&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;, &quot;sPhoneOrgan&quot;], &quot;asID_Field_sValue&quot;:[&quot;Адреса: 75500, Херсонська область, Генічеський район, м. Генічеськ, вул. Братів Коваленків, 60&quot;, &quot;Телефон/факс: (05534) 3-16-57&quot;], &quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot;:&quot;[sClient]=='dfs_henicheskT'&quot;}}}"></activiti:formProperty>
+
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -131,8 +136,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sComment1" name="Уточніть причину відмови" type="textArea"></activiti:formProperty>
 
-        <activiti:formProperty id="nFileResult" name="Прикріпіть результат запиту; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="markersResultUT1" name="Маркер адреса стартТаски" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_u1_result&quot;:{&quot;aField_ID&quot;:[&quot;nFileResult&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision1&quot;},&quot;sCondition&quot;:&quot;[sClient]=='accept'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFileResult" name="Прикріпіть результат запиту; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="markersResultUT1" name="Маркер Результата" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_u1_result&quot;:{&quot;aField_ID&quot;:[&quot;nFileResult&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision1&quot;},&quot;sCondition&quot;:&quot;[sClient]=='accept'&quot;}}}"></activiti:formProperty>
 
         <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
