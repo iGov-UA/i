@@ -136,6 +136,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 if(data.message.indexOf('api.cherg.net') >= 0 && err[1]){
                   if(data.message.indexOf('Время уже занято') >= 0 || data.message.indexOf('Обраний Вами час вже заброньовано') >= 0){
                     dialogs.error('Помилка', 'Обраний Вами час вже недоступний. Повторіть, будь ласка, спробу пізніше або оберіть інший час та дату.')
+                  } else if (err[1].indexOf('999 null') >= 0) {
+                    dialogs.error('Помилка', 'Сервер ДМС тимчасово недоступний. Спробуйте замовити послугу пізніше.')
                   } else {
                     dialogs.error('Помилка', err[1])
                   }
