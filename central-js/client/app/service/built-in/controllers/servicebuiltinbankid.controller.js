@@ -695,6 +695,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController',
             .submitForm(oService, oServiceData, $scope.data.formData, aFormProperties)//$scope.activitiForm
             .then(function (oReturn) {
               $scope.isSending = false;
+              if(angular.isDefined($rootScope.bDmsSlotReserved)){
+                delete $rootScope.bDmsSlotReserved;
+              }
               var state = $state.$current;
               var submitted = $state.get(state.name + '.submitted');
 

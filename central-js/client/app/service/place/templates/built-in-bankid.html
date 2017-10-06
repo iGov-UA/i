@@ -556,6 +556,7 @@
 
                 <input ng-switch-when="tel"
                        type="text"
+                       ng-disabled="bDmsSlotReserved"
                        name="{{property.id}}"
                        ng-model="data.formData.params[property.id].value"
                        ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
@@ -747,6 +748,7 @@
                                   form-data-property="data.formData.params[property.id]"
                                   service-data="oServiceData"
                                   activiti-form="activitiForm"
+                                  ng-disabled="bDmsSlotReserved"
                                   ng-required="isFieldRequired(property)"
                                   form-data="data.formData"
                                   name="property.id"></dropdown-organ>
@@ -822,26 +824,8 @@
               </div>
 
             </div>
-            <!--<div class="row">-->
-              <!--<div class="col-md-5"></div>-->
-              <!--<div class="col-md-3">-->
 
 
-                  <!--<label ng-hide="!sign.checked">Після натискання "Замовити послугу"-->
-                    <!--Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом.-->
-                    <!--Замовляючи послугу, Ви надаєте згоду на обробку Ваших персональних даних та підтверджуєте їх актуальність-->
-                  <!--</label>-->
-                  <!--<label  ng-if="isSignNeeded" ng-hide="isSignNeededRequired">Накласти ЕЦП :-->
-                  <!--<input type="checkbox"-->
-                         <!--ng-model="sign.checked"-->
-                         <!--name="{{data.formData.getSignFieldID()}}">-->
-                <!--</label>-->
-                  <!--&lt;!&ndash;label  ng-if="isSignNeededRequired ? true : sign.checked">Після натискання "Замовити послугу"&ndash;&gt;-->
-                         <!--&lt;!&ndash;ng-model="isSignNeededRequired ? true : sign.checked"&ndash;&gt;-->
-
-              <!--</div>-->
-              <!--<div class="col-md-4"></div>-->
-              <!--</div>-->
             <div class="row col-md-12 igov-info-label" ng-if="isSignNeeded">
               Після натискання "Замовити послугу з ЕЦП"
               Вас буде перенаправлено на сторінку підпису вашої заявки електронно-цифровим підписом. <br />
