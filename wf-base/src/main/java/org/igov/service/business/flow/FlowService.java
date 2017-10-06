@@ -938,7 +938,7 @@ public class FlowService implements ApplicationContextAware {
                                         
                                         LinkedTreeMap<String, Object> mLinkedTreeMap = (LinkedTreeMap)m.get("oTicket");
                                         sTicket_Number = ((Double)mLinkedTreeMap.get("receiptNum")) != null ? 
-                                                ((Double)mLinkedTreeMap.get("receiptNum")).toString() : "";
+                                                new Integer(((Double)mLinkedTreeMap.get("receiptNum")).intValue()).toString() : "";
                                         LOG.info("sTicket_Number is {}", sTicket_Number);
                                     }else{
                                         sTicket_Number = (String) m.get("ticket_number");
