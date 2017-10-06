@@ -854,7 +854,7 @@ public class ObjectFileCommonController {
         MultipartFile multipartFile = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
 
         if(sFileName == null || sFileName.equals("")){
-            sFileName = multipartFile.getOriginalFilename();
+            sFileName = multipartFile.getOriginalFilename().replace(";", "").replace(",", "");
         }
 
         //byte[] aRes = attachmetService.getAttachment(nID_Process, sID_Field, sKey, sID_StorageType);
