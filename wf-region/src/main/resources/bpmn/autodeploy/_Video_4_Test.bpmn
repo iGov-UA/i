@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="_Video_4_Test" name="Тестовый процесс для демонстрации работы с новым процессом" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Фамилия;при отсутствии фамилии введите её" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Имя" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Отчество" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asSelectTypeDoc" name="Выберите тип получаемой справки" type="enum">
+          <activiti:value id="sType1" name="Справка тип №1"></activiti:value>
+          <activiti:value id="sType2" name="Справка тип №2"></activiti:value>
+          <activiti:value id="sType3" name="Справка тип №3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateGetDoc" name="Желаемая дата получения справки" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Введите свой номер телефона" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Введите контактный адрес почты; для получения обратной связи" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fDocCopy" name="Копия необходимого документа; ;bNew=true" type="file" required="true"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask1" name="Обработка заявки" activiti:candidateGroups="sales">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Фамилия заявителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Имя заявителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Отчество заявителя" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asSelectTypeDoc" name="Тип получаемой справки" type="enum" writable="false">
+          <activiti:value id="sType1" name="Тип справки №1"></activiti:value>
+          <activiti:value id="sType2" name="Тип справки №2"></activiti:value>
+          <activiti:value id="sType3" name="Тип справки №3"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sDateGetDoc" name="Дата получения справки" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Телефон контактный" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Электронная почта для контактов" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fDocCopy" name="Копия документа; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asDecision" name="Принято решение" type="enum" required="true">
+          <activiti:value id="yes" name="Принято позитивное решение о выдаче справки"></activiti:value>
+          <activiti:value id="no" name="В выдаче справки отказано"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="fDecisionDoc" name="Файл с решением; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask1" name="Позитивный ответ выдача справки -1" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Положительный ответ по справке №1</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Уважаемый заявитель, Ваше обращение обработано успешно - во вложении можете увидеть Вашу справку.
+
+С уважением, МВД</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask2" name="Позитивный ответ выдача справки -2" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Положительный ответ по справке №2</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Уважаемый заявитель, Ваше обращение обработано успешно - во вложении можете увидеть Вашу справку.
+
+С уважением, МВД</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Позитивный ответ выдача справки -3" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Положительный ответ по справке №3</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Уважаемый заявитель, Ваше обращение обработано успешно - во вложении можете увидеть Вашу справку.
+
+С уважением, МВД</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <serviceTask id="servicetask4" name="Отказ в выдаче справки" activiti:delegateExpression="#{MailTaskWithAttachments}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>Отказ в выдаче справки.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>Уважаемый заявитель, Вам отказано.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression>""</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="exclusivegateway1" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='yes' && asSelectTypeDoc=='sType1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='yes' && asSelectTypeDoc=='sType2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='yes' && asSelectTypeDoc=='sType3'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="exclusivegateway1" targetRef="servicetask4">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='no'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="servicetask4" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask3" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow9" sourceRef="servicetask2" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="exclusivegateway2" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram__Video_4_Test">
+    <bpmndi:BPMNPlane bpmnElement="_Video_4_Test" id="BPMNPlane__Video_4_Test">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="30.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="630.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="131.0" x="100.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="201.0" x="330.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="55.0" width="201.0" x="330.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="201.0" x="330.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="270.0" y="137.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="201.0" x="330.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="540.0" y="137.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="65.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="231.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="290.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="290.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="290.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="197.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="290.0" y="177.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="267.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="531.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="531.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="177.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="531.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="531.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="560.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="580.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="157.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
