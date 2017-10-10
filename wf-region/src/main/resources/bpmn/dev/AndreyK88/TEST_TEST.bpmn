@@ -1,0 +1,75 @@
+<activiti:formProperty id="sLabeID" name=" ; ;labelType=info" type="label" default="Увага! &lt;br&gt;Якщо Вам потрібна довідка для отримання ID-картки, то скористайтесь &lt;a href=&quot; https://igov.org.ua/service/24/general&quot; target=&quot;_blank&quot;&gt;іншою послугою&lt;/a&gt;"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="form3_Organs" type="markers" default="${markerService.loadFromFile('form3/form3_Organs.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
+        <activiti:formProperty id="sVizitData" name="Оберіть день коли ви хочете прийти за довідкою" type="date" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="Ваш IПН" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBankIdPassport" name="Ваше посвідчення особи;Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_2" name="Інформація про адресу реєстрації" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asBudType&quot;],&quot;sValue&quot;:&quot;Інформація про адресу реєстрації&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asBudType" name="Вкажіть тип вашого будинку" type="enum" required="true">
+          <activiti:value id="sBagkvatur" name="багатоквартирний"></activiti:value>
+          <activiti:value id="sPrivSector" name="приватний"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRegistrationVul" name="Назва вулиці;(якщо це проспект вкажіть це)" type="string" default="вул. " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sRegistrationBud" name="Номер будинку" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asKorp" name="Чи поділено ваш будинок на корпуса?;позначте галочкою - якщо так, якщо ні - натисніть двічі на квадратик;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lRegistrationKorp" name="Номер корпусу" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asKvart" name="Чи поділено ваш будинок на квартири?;позначте галочкою - якщо так, якщо ні - натисніть двічі на квадратик;sID_CheckboxTrue=yes" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="lRegistrationKvart" name="Номер квартири" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerZutlo" name="markerFiles" type="markers" default="${markerService.loadFromFile('form3/forma_3_zutlo.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_3" name="Інші зареєстровані особи" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;chekReestrOsob&quot;],&quot;sValue&quot;:&quot;Інші зареєстровані особи&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="chekReestrOsob" name="Чи зареєстровані по цій адресі інші особи?;(окрім заявника або довірителя)" type="enum" required="true">
+          <activiti:value id="sNo" name="Ні, крім заявника за зазначеною адресою ніхто не зареєстрований"></activiti:value>
+          <activiti:value id="sYesDor" name="Так, зареєстровані інші повнолітні особи (є паспорти)"></activiti:value>
+          <activiti:value id="sYesDit" name="Так, зареєстровані діти (є свідоцтва про народження)"></activiti:value>
+          <activiti:value id="sYesDorDit" name="Так, зареєстровані діти і повнолітні особи (є і паспорти і свідоцтва)"></activiti:value>
+        </activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeRod" name=" ; ;labelType=info" type="label" default="В таблиці нижче зазначте дані осіб, що зареєстровані разом з вами. В графі 'Родинні стосунки' вкажіть - ким вам є зазначена особа."></activiti:formProperty>
+        <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" default="${markerService.loadFromFile('table/registr/form3_table.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeFile&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sLabeFile" name=" ; ;labelType=info" type="label" default="По можливості надайте кольорові сканкопії. Щоб завантажити кілька зображень в один документ використовуйте PDF або ZIP архів."></activiti:formProperty>
+        <activiti:formProperty id="nFile_PasportZay" name="Паспорт заявника;(1, 2 сторінка, та сторінка з місцем реєстрації);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_Vlasnist" name="Право власності;(документ що підтверджує право власності на нерухомість);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_DomKniga" name="Домова книга;(сторінки де вказано хто власник);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PasportSoj" name="Паспорти зареєстрованих співмешканців;();bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvidNar" name="Свідоцтва про народження дітей; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markerFiles" name="markerFiles" type="markers" default="${markerService.loadFromFile('form3/forma_3_files.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="markersLine_4" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asWhere&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="asWhere" name="Оберіть для чого Вам потрібна довідка" type="enum" required="true">
+          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
+          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
+          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
+          <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
+          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
+          <activiti:value id="sOther" name="Інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sKud" name="Вкажіть для чого вам, необхідна довідка" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="asBuilding" name="Чи потрібні дані про квартиру/будинок?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sPloshcha" name="Вкажіть житлову площу будинку/квартири" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sKimnaty" name="Кількість кімнат у будинку/квартирі" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPoverh" name="Кількість поверхів у будинку" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sBlago" name="Вкажіть благоустрій будинку;водопровід, каналізація, центральне опалення, ванна чи душ, газ, ліфт і т.п" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="sStan" name="Вкажіть технічний стан будинку і характеристику житлового приміщення" type="string" default=" " required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersdodatok" name="hide fields" type="markers" default="${markerService.loadFromFile('form3/forma_3_dodatok.json')}"></activiti:formProperty>
+        
