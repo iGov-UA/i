@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_560_fop" name="Державна реєстрація створення фізичної особи – підприємця" isExecutable="true">
-    <documentation>AGVersion: 2017.04.11
+    <documentation>AGVersion: 2017.10.10
 		-</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -119,8 +119,8 @@
         <activiti:formProperty id="Info8_3" name="______________________________________" type="label" default="______________________________________"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Вкажіть контактний номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Вкажіть E-Mail адресу для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява з ЕЦП;;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП ; ;bVisible=false" type="string" default="pattern/print/dnepr_cnap_560_fop2_print.html"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bPrintFormFileAsPDF=true, bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/dnepr_cnap_560_fop2_print.html"></activiti:formProperty>
         <activiti:formProperty id="markers_Hide06" name="спрятать маркеры" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_Hide06&quot;:{&quot;aField_ID&quot;:[&quot;sVarOblPlus&quot;,&quot;markers201&quot;,&quot;sVarRajObl301Plus&quot;,&quot;markers301_1&quot;,&quot;markers501_1&quot;,&quot;sNameService&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;bankIdlastName&quot;},&quot;sCondition&quot;:&quot;[sClient] == '.'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sVarOblPlus" name="область + ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers201" name="поставити + область если не пустой" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_201&quot;:{&quot;aField_ID&quot;:[&quot;sVarOblPlus&quot;],&quot;asID_Field_sValue&quot;:[&quot;+&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sVar2BankIdAddressFactual_state&quot;},&quot;sCondition&quot;:&quot;[sClient] != ''&quot;}}}"></activiti:formProperty>
@@ -207,6 +207,10 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника: ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_560_fop2_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію" writable="false"></activiti:formProperty>
+
+        <activiti:formProperty id="fVarDod1" name="Заява на спрощену систему оподаткування ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="fVarDod2" name="Заява про на платника ПДВ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -234,6 +238,7 @@
 Вам направлена копія рішення (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
@@ -342,6 +347,7 @@
 
 
 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
@@ -369,6 +375,7 @@
 
 
 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
@@ -396,6 +403,7 @@
 
 
 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
