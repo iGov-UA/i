@@ -103,10 +103,6 @@ public class FlowService implements ApplicationContextAware {
         return "DMS".equals(sFlowType) || "Qlogic".equals(sFlowType);
     }
 
-     public static boolean bFlowOut(String sFlowType) {
-        return "DMS".equals(sFlowType) || "Qlogic".equals(sFlowType);
-    }
-    
     public Days getFlowSlots(Long nID_Service, Long nID_ServiceData, String sID_BP, Long nID_SubjectOrganDepartment,
             DateTime startDate, DateTime endDate, boolean bAll,
             int nFreeDays, int nSlots) {
