@@ -161,6 +161,8 @@ var all = {
 
   debug: (processProps.bDebug_Application === "TRUE"),
 
+  nID_Server_Helpdesk: processProps.nID_Server_Helpdesk,
+
 
   server: {
     //sServerRegion: processProps.BackProxy_Central ? processProps.BackProxy_Central.sURL_BackProxy_Central : process.env.sServerRegion,
@@ -254,6 +256,11 @@ var all = {
 
   databot: {
     key: processProps.sDataBotApiKey ? processProps.sDataBotApiKey : process.env.sDataBotApiKey
+  },
+
+  masterpass: {
+    login: processProps.Pay_MasterPass_sLogin ? processProps.Pay_MasterPass_sLogin : process.env.Pay_MasterPass_sLogin,
+    token: processProps.Pay_MasterPass_sSecret ? processProps.Pay_MasterPass_sSecret : process.env.Pay_MasterPass_sSecret
   }
 };
 

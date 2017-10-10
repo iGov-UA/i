@@ -1164,7 +1164,8 @@ public class ActionFlowController {
 
         JSONArray oaJSONArray = new JSONArray();
         if(generalConfig.isQueueManagementSystem()){
-            oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+            //oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+            oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
         for (Object o : oaJSONArray) {
