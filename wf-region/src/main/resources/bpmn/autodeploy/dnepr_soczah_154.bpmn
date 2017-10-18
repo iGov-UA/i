@@ -508,7 +508,50 @@
     <sequenceFlow id="flow6" sourceRef="usertask2_green" targetRef="exclusivegateway2"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <endEvent id="endevent2" name="End"></endEvent>
-    <sequenceFlow id="flow27" sourceRef="servicetask1" targetRef="usertask1"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення громадянина про те що документи ОК" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[iGov: Призначення державної соціальної допомоги малозабезпеченим сім’ям. Перевірка документів]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+			[pattern/mail/new_design/_common_content_start.html]
+			<p>
+				Ваше звернення, щодо призначення державної соціальної допомоги малозабезпеченим сім’ям, взято в роботу.
+			</p>
+			<p>
+				Повідомлення про результат послуги буде спрямоване на Ваш e-mail.
+			</p>
+			<br>
+			Якщо у Вас є якісь додаткові питання, Ви можете звернутись за наступними контактами<br>
+			${sAddress}<br>
+			${sWorkTime}<br>
+			${sPhoneOrgan}
+			[pattern/mail/new_design/_common_content_end.html] 
+			[pattern/mail/new_design/_common_signature_start.html]
+			${sNameOrgan}.<br>
+			[pattern/mail/new_design/_common_signature_end.html]
+			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow27" sourceRef="servicetask1" targetRef="servicetask8"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="servicetask8" targetRef="usertask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_soczah_154">
     <bpmndi:BPMNPlane bpmnElement="dnepr_soczah_154" id="BPMNPlane_dnepr_soczah_154">
@@ -525,7 +568,7 @@
         <omgdc:Bounds height="79.0" width="118.0" x="1.0" y="265.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="74.0" width="142.0" x="111.0" y="101.0"></omgdc:Bounds>
+        <omgdc:Bounds height="74.0" width="142.0" x="750.0" y="10.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="76.0" width="138.0" x="341.0" y="102.0"></omgdc:Bounds>
@@ -559,6 +602,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1037.0" y="14.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="76.0" width="138.0" x="140.0" y="105.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="993.0" y="232.0"></omgdi:waypoint>
@@ -658,8 +704,12 @@
         <omgdi:waypoint x="973.0" y="252.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="119.0" y="304.0"></omgdi:waypoint>
-        <omgdi:waypoint x="211.0" y="304.0"></omgdi:waypoint>
+        <omgdi:waypoint x="60.0" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="209.0" y="181.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="209.0" y="181.0"></omgdi:waypoint>
+        <omgdi:waypoint x="299.0" y="263.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
