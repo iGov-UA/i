@@ -60,10 +60,12 @@
         <activiti:formProperty id="lable1" name="Зверніть увагу" type="label" default="Якщо Ви маєте дітей до 14 років, та другий з батьків зареєстрований за іншою адресою, то дітей потрібно зняти з реєстрації разом з Вами"></activiti:formProperty>
         <activiti:formProperty id="lable2" name="Зверніть увагу" type="label" default="Вам не потрібно здійснювати зняття з реєстрації, якщо Ви вже знялися з попередньої реєстрації реєстрації місця проживання"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Дата зняття з попереднього місця реєстрації; у форматі - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay_Qlogic" name="Тип електронної черги; ;bVisible=false" type="string" default="None"></activiti:formProperty>
+        <activiti:formProperty id="sOrganizatonGuid_visitDay_Qlogic" name="ID організації за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceCenterId_visitDay_Qlogic" name="ID сервіс-центра за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceId_visitDay_Qlogic" name="ID сервіса за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData"></activiti:formProperty>
         <activiti:formProperty id="warning_Drogobich" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; При необхідності (під час перевірки документів) у Вас можуть бути запрошені скан-копії документів, що підтверджують стару адресу реєстрації"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -71,14 +73,12 @@
         <activiti:formProperty id="sArea" name="район/місто звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationOrgan" name="Орган реєстрації ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sCancelInfo" name="sCancelInfo ; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
-        <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
+         <activiti:formProperty id="sRecvizitiAdmin" name="Реквізити для адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sKab89" name="Номер кабінету ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
-        <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка, свідоцтва про приписку або документу що їм відповідають;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
+         <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка, свідоцтва про приписку або документу що їм відповідають;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="nSvidOwn" name="Документ щодо права властності; cвідоцтво про право власності, договір куплі/продажу та витяг з державного реєстру речових прав на нерухоме майно. Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="nOrder" name="Ордер, або копія ордеру з печаткою ЖЕКу;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
@@ -88,6 +88,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="Дата-час електронної черги та номер талону, якщо потрібно; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
@@ -103,7 +104,24 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var src=execution.getVariable('date_of_visit')
+var type_queue=execution.getVariable('sID_Type_visitDay_Qlogic')
+
+if (type_queue=='Qlogic') {
+	var srcQ=execution.getVariable('visitDay_Qlogic')
+	var date_of_visit=srcQ.substr(srcQ.indexOf('"sDate":"')+9,16);
+	var tickNum=srcQ.substr(srcQ.indexOf('"receiptNum":')+13,srcQ.indexOf(',',srcQ.indexOf('"receiptNum":')+13)-(srcQ.indexOf('"receiptNum":')+13))
+	var tickCode=srcQ.substr(srcQ.indexOf('"id":"')+6,srcQ.indexOf('"',srcQ.indexOf('"id":"')+6)-(srcQ.indexOf('"id":"')+6))
+	var srcQNotif = 'Номер талону - '+ tickNum + ', дата та час візиту - ' + date_of_visit
+	execution.setVariable('sNotification_day', srcQNotif)
+	execution.setVariable('date_of_visit', date_of_visit)
+}
+else 
+{
+	var src1=execution.getVariable('date_of_visit')
+	execution.setVariable('sNotification_day', src1)
+}
+
+var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
 var month=src.substr(5,2)
 var day=src.substr(8,2)
@@ -149,13 +167,12 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					Ваше звернення [sID_Order] успішно зареєстровано. <br> Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час <b> ${date_of_visit}</b>, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури реєстрації.<br>
+					Ваше звернення [sID_Order] успішно зареєстровано. <br> Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час <b> ${sNotification_day}</b>, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури реєстрації.<br>
 					<br>
 					<b> Адреса ${sOrganType}</b>: ${sAddress}.<br> 
 					${sPhoneOrgan}<br>
 				</p>
 				<br>
-				<p>[cancelTask]</p> 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
 			${sNameOrgan},<br>
@@ -359,7 +376,7 @@ execution.setVariable('sMaxPay', maxpay)
 				</p>
 				<p>
 					<b>Деталі зустрічі:</b><br>
-					День та час - ${date_of_visit}
+					День та час - ${sNotification_day}
 				</p>
 				<p>
 					<b>Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:</b><br>
@@ -389,7 +406,6 @@ execution.setVariable('sMaxPay', maxpay)
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 				</p>
 				<br>
-				<p>[cancelTask]</p> 
 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -446,7 +462,7 @@ execution.setVariable('sMaxPay', maxpay)
 				</p>
 				<p>
 					<b>Деталі зустрічі:</b><br>
-					День та час - ${date_of_visit}
+					День та час - ${sNotification_day}
 				</p>
 				<p>
 					<b>Необхідні документи, які треба принести до ${sOrganType} при реєстраціі місця проживання:</b><br>
@@ -480,7 +496,7 @@ execution.setVariable('sMaxPay', maxpay)
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 				</p>
 				<br>
-				<p>[cancelTask]</p> 
+
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
 				${sNameOrgan},<br>
