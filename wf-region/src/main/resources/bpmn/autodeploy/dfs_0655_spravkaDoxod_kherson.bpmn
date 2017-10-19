@@ -27,7 +27,13 @@
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStart" name="Період, за який Ви хочете отримати довідку, з; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAim" name="Довідку буде надано до; наприклад: віддлення банку, Пенсійного фонду, УПСЗН тощо" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAim" name="Довідку буде надано до; наприклад: віддлення банку, Пенсійного фонду, УПСЗН тощо" type="string" required="true"></activiti:formProperty>        
+
+        <activiti:formProperty id="asTypeResult" name="Бажаний формат" type="enum" required="true">
+          <activiti:value id="elect" name="електронний"></activiti:value>
+          <activiti:value id="paper" name="паперовий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="infoTypeResult" name="Зверніть увагу" type="label" default="отримати результат ви зможете за адресою"></activiti:formProperty>        
 
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -38,15 +44,27 @@
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameOrganMain" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddressMain" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>		
+        <activiti:formProperty id="sPhoneOrganMain" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>	
+        <activiti:formProperty id="sPhoto" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty> 
 
         <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/dfs/dfs_0655_spravkaDoxod_print.html"></activiti:formProperty>
 
-        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_kherson_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+    
+    <scriptTask id="scripttask1" name="User Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
+      <script>
+      	execution.setVariable("dStart1", execution.getVariable("dStart").format("dd.MM.yyyy"))
+      	execution.setVariable("dStop1", execution.getVariable("dStop").format("dd.MM.yyyy"))
+      	execution.setVariable("sDateStart", new Date().format("dd.MM.yyyy"))
+      </script>
+    </scriptTask>
     
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="dfs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -61,45 +79,34 @@
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAim" name="Довідку буде надано до; ;writable=false" type="string"></activiti:formProperty>
 
+        <activiti:formProperty id="asTypeResult" name="Бажаний формат" type="enum" writable="false">
+          <activiti:value id="elect" name="електронний"></activiti:value>
+          <activiti:value id="paper" name="паперовий"></activiti:value>
+        </activiti:formProperty>        
+
         <activiti:formProperty id="aDecision" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про доходи фізичних осіб"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aComment" name="Причина відмови" type="textArea"></activiti:formProperty>
 
-        <activiti:formProperty id="PrintForm_1" name="Заявление PDF;File PDF;sPrintFormFileAsPDF=pattern/print/dfs/dfs_0655_spravkaDoxod_print.html,bNew=true" type="file" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-<!-- 
-        <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/dfs_0655_spravkaDoxod_print.html]; ;bVisible=false ,bPrintform=true" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
-
-        <activiti:formProperty id="nFileZapit" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
- -->
- 
- 
         <activiti:formProperty id="nFileResult" name="Прикріпіть результат запиту; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="markersResultUT1" name="Маркер Результата" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_u1_result&quot;:{&quot;aField_ID&quot;:[&quot;nFileResult&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecision1&quot;},&quot;sCondition&quot;:&quot;[sClient]=='accept'&quot;}}}"></activiti:formProperty>
- 
+        
+
+        <activiti:formProperty id="PrintForm_1" name="Заявление PDF;File PDF;sPrintFormFileAsPDF=pattern/print/dfs/dfs_0655_spravkaDoxod_print.html,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+
 
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_kherson_user.json')}"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    
-    <scriptTask id="scripttask1" name="User Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
-      <script>
-      	execution.setVariable("dStart1", execution.getVariable("dStart").format("dd.MM.yyyy"))
-      	execution.setVariable("dStop1", execution.getVariable("dStop").format("dd.MM.yyyy"))
-      	execution.setVariable("sDateStart", new Date().format("dd.MM.yyyy"))
-      </script>
-    </scriptTask>
     
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -215,7 +222,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileResult}, ${form_signed}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
