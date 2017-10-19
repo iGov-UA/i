@@ -1,0 +1,74 @@
+{
+	"motion" : {
+		"ShowFieldsOnCondition_u1_1" : {
+			"aField_ID" : ["sID_SubjectOrgan_OKPO_01", "sFullName_SubjectOrgan_01", "sLocation_SubjectOrgan_01", "sCEOName_SubjectOrgan_01"], 
+			"asID_Field" : {
+				"sClient" : "asSubekt"
+			}, 
+			"sCondition" : "[sClient] == 'представник юридичної особи' || [sClient] == 'ur'"
+		}, 
+		"ShowFieldsOnCondition_u1_2" : {
+			"aField_ID" : ["clFIO", "bankIdPassport", "bankIdinn", "bankIdinn", "sAddressFactual"], 
+			"asID_Field" : {
+				"sClient" : "asSubekt"
+			}, 
+			"sCondition" : "[sClient] == 'фізична особа-підприємець' || [sClient] == 'fiz'"
+		}, 
+		"ShowFieldsOnCondition_u1_3" : {
+			"aField_ID" : ["asDecisionReject"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1"
+			}, 
+			"sCondition" : "[sClient] == 'reject'"
+		}, 
+		"RequiredFieldsOnCondition_u1_3" : {
+			"aField_ID" : ["asDecisionReject"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1"
+			}, 
+			"sCondition" : "[sClient] == 'reject'"
+		}, 
+		"ShowFieldsOnCondition_u1_4" : {
+			"aField_ID" : ["sComment1"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1", 
+				"sClient_2" : "asDecisionReject"
+			}, 
+			"sCondition" : "[sClient] == 'reject' && [sClient_2] == 'other_reason' "
+		}, 
+		"RequiredFieldsOnCondition_u1_4" : {
+			"aField_ID" : ["sComment1"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1", 
+				"sClient_2" : "asDecisionReject"
+			}, 
+			"sCondition" : "[sClient] == 'reject' && [sClient_2] == 'other_reason' "
+		}, 
+		"ShowFieldsOnCondition_u1_5" : {
+			"aField_ID" : ["nFileResult"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1", 
+				"sClient_1" : "asTypeResult"
+			}, 
+			"sCondition" : "[sClient]=='accept' && [sClient_1]=='електронний' "
+		}, 
+		"RequiredFieldsOnCondition_u1_5" : {
+			"aField_ID" : ["nFileResult"], 
+			"asID_Field" : {
+				"sClient" : "asDecision1", 
+				"sClient_1" : "asTypeResult"
+			}, 
+			"sCondition" : "[sClient]=='accept' && [sClient_1]=='електронний' "
+		}
+	}, 
+	"attributes" : {
+		"Line_01" : {
+			"aElement_ID" : ["sID_SubjectOrgan_OKPO_01"], 
+			"sValue" : "Дані про юридичну особу"
+		}, 
+		"Line_02" : {
+			"aElement_ID" : ["clFIO"], 
+			"sValue" : "Дані про фізичну особу"
+		}
+	}
+}

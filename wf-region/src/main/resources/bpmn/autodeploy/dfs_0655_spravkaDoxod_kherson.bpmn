@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="dfs_0655_spravkaDoxod" name="Отримання довідки про доходи фізичних осіб" isExecutable="true">
+  <process id="dfs_0655_spravkaDoxod_kherson" name="Отримання довідки про доходи фізичних осіб" isExecutable="true">
     <documentation>
     	24.05.16 Рефакторинг: на основі dnepr_spravka_o_doxodax: Ставицький В.Д
 		15.09.16 Рефакторинг: Добавление маркеров на все стадии, переделка принтформы, добавление даты создание процесса
@@ -27,7 +27,13 @@
         <activiti:formProperty id="email" name="Ваша електронна пошта; на неї Ви будете отримувати повідомлення про стан Вашої заяви" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStart" name="Період, за який Ви хочете отримати довідку, з; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; період може складати рік або квартал, не раніше ніж за 2 квартали до  поточного" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sAim" name="Довідку буде надано до; наприклад: віддлення банку, Пенсійного фонду, УПСЗН тощо" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAim" name="Довідку буде надано до; наприклад: віддлення банку, Пенсійного фонду, УПСЗН тощо" type="string" required="true"></activiti:formProperty>        
+
+        <activiti:formProperty id="asTypeResult" name="Бажаний формат" type="enum" required="true">
+          <activiti:value id="elect" name="електронний"></activiti:value>
+          <activiti:value id="paper" name="паперовий"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="infoTypeResult" name="Зверніть увагу" type="label" default="отримати результат ви зможете за адресою"></activiti:formProperty>        
 
         <activiti:formProperty id="sNameOrgan" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта; ;bVisible=false" type="string" default="valery.stavitsky@gmail.com"></activiti:formProperty>
@@ -38,15 +44,27 @@
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="sNameOrganMain" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddressMain" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>		
+        <activiti:formProperty id="sPhoneOrganMain" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>	
+        <activiti:formProperty id="sPhoto" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty> 
 
         <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/dfs/dfs_0655_spravkaDoxod_print.html"></activiti:formProperty>
 
-        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_start.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_kherson_start.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
+    
+    <scriptTask id="scripttask1" name="User Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
+      <script>
+      	execution.setVariable("dStart1", execution.getVariable("dStart").format("dd.MM.yyyy"))
+      	execution.setVariable("dStop1", execution.getVariable("dStop").format("dd.MM.yyyy"))
+      	execution.setVariable("sDateStart", new Date().format("dd.MM.yyyy"))
+      </script>
+    </scriptTask>
     
     <userTask id="usertask1" name="Обробка" activiti:candidateGroups="dfs_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -61,35 +79,34 @@
         <activiti:formProperty id="dStop" name="Період, за який Ви хочете отримати довідку, по; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAim" name="Довідку буде надано до; ;writable=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="aDecision" name="Прийняття рішення про отримання витягу" type="enum" required="true">
+        <activiti:formProperty id="asTypeResult" name="Бажаний формат" type="enum" writable="false">
+          <activiti:value id="elect" name="електронний"></activiti:value>
+          <activiti:value id="paper" name="паперовий"></activiti:value>
+        </activiti:formProperty>        
+
+        <activiti:formProperty id="asDecision1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про доходи фізичних осіб"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="aComment" name="Причина відмови" type="textArea"></activiti:formProperty>
 
+        <activiti:formProperty id="nFileResult" name="Прикріпіть результат запиту; ;bNew=true" type="file"></activiti:formProperty>
+        
+
         <activiti:formProperty id="PrintForm_1" name="Заявление PDF;File PDF;sPrintFormFileAsPDF=pattern/print/dfs/dfs_0655_spravkaDoxod_print.html,bNew=true" type="file" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+
 
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFIOGolova673" name="ПІБ голови органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateStart" name="Дата замовлення; ;bVisible=false" type="string"></activiti:formProperty>
 
-        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_kherson_user.json')}"></activiti:formProperty>
 
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
-    
-    <scriptTask id="scripttask1" name="User Task" scriptFormat="groovy" activiti:autoStoreVariables="true">
-      <script>
-      	execution.setVariable("dStart1", execution.getVariable("dStart").format("dd.MM.yyyy"))
-      	execution.setVariable("dStop1", execution.getVariable("dStop").format("dd.MM.yyyy"))
-      	execution.setVariable("sDateStart", new Date().format("dd.MM.yyyy"))
-      </script>
-    </scriptTask>
     
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -136,12 +153,12 @@
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sPhoneOrgan}<br>
+			${sAddressMain}<br>
 			${sWorkTime}<br>
+			${sPhoneOrganMain}			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrganMain}.<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -181,12 +198,12 @@
 		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/655/general">iGov.org.ua</a>
 			</p>
 			Якщо у Вас виникли якісь запитання Ви можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}
+			${sAddressMain}<br>
+			${sWorkTime}<br>
+			${sPhoneOrganMain}			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -205,7 +222,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${form_signed}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileResult}, ${form_signed}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
@@ -217,25 +234,28 @@
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 			<p>
-				Ваше звернення, на отримання довідки про доходи фізичних осіб, прийнята в роботу.
+				Ваше звернення, на отримання довідки про доходи фізичних осіб, була оброблена.
 			</p>
-          	<p>
-          		Коментар чиновника:<br>
-          		<b>${aComment}</b>
           	</p>
 			<p>
-				Забрати довідку Ви зможете через 5 робочих днів за наступними контактами:<br>
-				${sAddress}<br>
-				${sPhoneOrgan}<br>
-				${sWorkTime}<br><br>
+				Якщо вы обрали електронний варінат — довідка знаходиться в додатках до цього листа.
+          	</p>
 			<p>
-			<p>
-				Для отримання довідки Вам необхідно повідомити свій <b>№[sID_Order]</b> запиту та мати при візиті до відділення фіскальної служби наступні документи:
+				Якщо обрали паперовий то зможете її отримати за наступними контактами:<br>
+				${sAddressMain}<br>
+				${sWorkTime}<br>
+				${sPhoneOrganMain}			
 			</p>
-			<ol>
-				<li>оригінал паспорта громадянина України;</li>
-				<li>роздруковану та підписану, прикріплену до цього листа, заяву на отримання довідки про доходи.</li>								
-			</ol>
+          	<br><br>
+			<p>
+				Для отримання довідки Вам необхідно повідомити свій <b>№[sID_Order]</b> 
+				запиту та мати при візиті до відділення фіскальної служби наступні документи:
+				<ol>
+					<li>оригінал паспорта громадянина України;</li>
+					<li>роздруковану та підписану, прикріплену до цього листа, заяву на отримання довідки про доходи.</li>								
+				</ol>
+			</p>
+          	<br><br>
 			<p>
 				Ви можете ознайомитися з законодавством, за яким надається послуга, 
 				за <a href="https://docs.google.com/document/d/1zVUw9mFYi8yN8jYnoox8mW1F2RFe7IUq6ThBcTEPv3E/edit" target="_blank">цим посиланням</a>
@@ -243,7 +263,7 @@
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_feedback.html]   	
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -256,19 +276,19 @@
     <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow10" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     
     <endEvent id="endevent1" name="End"></endEvent>    
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dfs_0655_spravkaDoxod">
-    <bpmndi:BPMNPlane bpmnElement="dfs_0655_spravkaDoxod" id="BPMNPlane_dfs_0655_spravkaDoxod">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dfs_0655_spravkaDoxod_kherson">
+    <bpmndi:BPMNPlane bpmnElement="dfs_0655_spravkaDoxod_kherson" id="BPMNPlane_dfs_0655_spravkaDoxod_kherson">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="180.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="rada_0024_dovidka_live_place_2_step_Dnepr" name="Довідка про реєстрацію місця проживання/перебування особи (для отримання ID-картки)" isExecutable="true">
-    <documentation>Смоктій К.В. Последние правки: 05.10.2017</documentation>
+    <documentation>Смоктій К.В. Последние правки: 11.10.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить місце реєстрації особи, яка буде отримувати довідку" type="select" default="0" required="true"></activiti:formProperty>
@@ -86,6 +86,7 @@
         <activiti:formProperty id="sCommentForAdressBuro" name="Коментар посадовця для адресного бюро ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
         <activiti:formProperty id="sAdd_TextEmail" name="Документи, що потрібно приносити; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sWorkDay_process" name="Кількість днів для опрацювання заявки; ;bVisible=false" type="string" default="10"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('skv/rada_0024_dovidka_live_place_11.json')}"></activiti:formProperty>
       </extensionElements>
@@ -539,7 +540,7 @@
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
 					Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) почали формувати довідку про реєстрацію місця проживання/перебування згідно Вашого звернення [sID_Order]. <br>
-					Час формування Вашої довідки може зайняти до 10 робочих днів. Після виготовлення довідки про реєстрацію місця проживання/перебування Вам надішлють email з запрошенням прийти до ${sOrganType}. <br> 
+					Час формування Вашої довідки може зайняти до ${sWorkDay_process} робочих днів. Після виготовлення довідки про реєстрацію місця проживання/перебування Вам надішлють email з запрошенням прийти до ${sOrganType}. <br> 
 					Адреса ${sOrganType}: ${sAddress}.<br> 
 					${sPhoneOrgan}<br>
 					${sWorkTime}<br>
