@@ -27,7 +27,19 @@
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Найменування повне" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника" type="string" required="true"></activiti:formProperty>
+
+        <activiti:formProperty id="asTypeResult" name="Бажаний формат" type="enum" required="true">
+          <activiti:value id="elect" name="електроний"></activiti:value>
+          <activiti:value id="paper" name="паперовий"></activiti:value>
+        </activiti:formProperty>        
+        
+        <activiti:formProperty id="infoTypeResult" name="Зверніть увагу" type="label" default="отримати результат ви зможете за адресою"></activiti:formProperty>
+        
+        
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?" type="string" required="true"></activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="sVf" name="Галочка физик; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sVu" name="Галочка юрик; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAvtor" name="Автор звернення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -42,12 +54,18 @@
         <activiti:formProperty id="sAddress" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>		
         <activiti:formProperty id="sPhoneOrgan" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         
+        
+        <activiti:formProperty id="sNameOrganMain" name="назва органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sAddressMain" name="адреса органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>		
+        <activiti:formProperty id="sPhoneOrganMain" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>	
+        <activiti:formProperty id="sPhoto" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
+        
+        
         <activiti:formProperty id="nCodeTaxOrgan" name="код податкового відділення; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nEGRPOU" name="ЕГРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/gni_69_start.json')}"></activiti:formProperty>
-       <!-- 
-        <activiti:formProperty id="markersResultST1" name="Маркер 3х ОДПИ" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_time_st1&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;, &quot;sPhoneOrgan&quot;], &quot;asID_Field_sValue&quot;:[&quot;Адреса: 73008, м. Херсон, вул. І. Кулика, 143а&quot;, &quot;Телефон:  (0552) 32-74-00, факс  (0552) 32-74-98&quot;], &quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot;:&quot;[sClient]=='2103_skadovsk' || [sClient]=='2103_kalanchatsk' || [sClient]=='2103_bilozersk' || [sClient]=='2103_holoprystansk' || [sClient]=='2103_chaplins'kiy' || [sClient]=='2103_oleshkivsk'&quot;}, &quot;ValuesFieldsOnCondition_time_st2&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;, &quot;sPhoneOrgan&quot;], &quot;asID_Field_sValue&quot;:[&quot;Адреса: 74900, Херсонська область, м. Нова Каховка,  вул. Горького, 11-а&quot;, &quot;Телефон/факс: (055-49) 4-52-88&quot;], &quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot;:&quot;[sClient]=='2102_beryslavske' || [sClient]=='2102_velykooleksandrivsk' || [sClient]=='2102_vysokopilsk' || [sClient]=='2102_hornostayivsk' || [sClient]=='2102_velykolepetysk' || [sClient]=='2102_verkhnorohachytsk' || [sClient]=='2102_kakhovsk' || [sClient]=='2102_novovorontsovsk'&quot;}, &quot;ValuesFieldsOnCondition_time_st3&quot;:{&quot;aField_ID&quot;:[&quot;sAddress&quot;, &quot;sPhoneOrgan&quot;], &quot;asID_Field_sValue&quot;:[&quot;Адреса: 75500, Херсонська область, Генічеський район, м. Генічеськ, вул. Братів Коваленків, 60&quot;, &quot;Телефон/факс: (05534) 3-16-57&quot;], &quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;sID_Public_SubjectOrganJoin&quot;}, &quot;sCondition&quot;:&quot;[sClient]=='2110_novotroyitsk' || [sClient]=='2110_nyzhnosirohozk' || [sClient]=='2110_ivanivsk'&quot;}}}"></activiti:formProperty>
-		 -->
+        <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0368_extSingleTax_kherson_start.json')}"></activiti:formProperty>
+
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask2" name="Повідомлення співробітника держоргану" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -126,6 +144,12 @@
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ керівника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCause" name="Навіщо Вам потрібна ця довідка?; ;writable=false" type="string"></activiti:formProperty>
+
+        <activiti:formProperty id="asTypeResult" name="Бажаний формат" type="enum" required="true">
+          <activiti:value id="elect" name="електроний"></activiti:value>
+          <activiti:value id="paper" name="паперовий"></activiti:value>
+        </activiti:formProperty>          
+        
         <activiti:formProperty id="asDecision1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати витяг з реєстру платників єдиного податку"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні витягу"></activiti:value>
@@ -145,7 +169,7 @@
         <activiti:formProperty id="sInn" name="ІПН/ЄДРПОУ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdresECP" name="адресс; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         
-        <activiti:formProperty id="markersUser1" name="Маркер адреса ЮзерТаски_1" type="markers" default="${markerService.loadFromFile('dfs/gni_69_user.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markersUser1" name="Маркер адреса ЮзерТаски_1" type="markers" default="${markerService.loadFromFile('dfs/dfs_0368_extSingleTax_kherson_user.json')}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dfs/gni_69_print.html]; ;bVisible=false" type="string" default="Заява громадянина" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFileZapit" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
