@@ -84,7 +84,7 @@
           <activiti:value id="paper" name="паперовий"></activiti:value>
         </activiti:formProperty>        
 
-        <activiti:formProperty id="aDecision" name="Прийняття рішення про отримання витягу" type="enum" required="true">
+        <activiti:formProperty id="asDecision1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про доходи фізичних осіб"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
@@ -153,12 +153,12 @@
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sPhoneOrgan}<br>
+			${sAddressMain}<br>
 			${sWorkTime}<br>
+			${sPhoneOrganMain}			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br>
+			${sNameOrganMain}.<br>
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -198,12 +198,12 @@
 		    	Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/service/655/general">iGov.org.ua</a>
 			</p>
 			Якщо у Вас виникли якісь запитання Ви можете звернутись за наступними контактами<br>
-			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}
+			${sAddressMain}<br>
+			${sWorkTime}<br>
+			${sPhoneOrganMain}			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -242,10 +242,10 @@
           	</p>
 			<p>
 				Забрати довідку Ви зможете через 5 робочих днів за наступними контактами:<br>
-				${sAddress}<br>
-				${sPhoneOrgan}<br>
-				${sWorkTime}<br><br>
-			<p>
+			${sAddressMain}<br>
+			${sWorkTime}<br>
+			${sPhoneOrganMain}			
+			</p>
 			<p>
 				Для отримання довідки Вам необхідно повідомити свій <b>№[sID_Order]</b> запиту та мати при візиті до відділення фіскальної служби наступні документи:
 			</p>
@@ -260,7 +260,7 @@
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_feedback.html]   	
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -273,11 +273,11 @@
     <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow8" name="відмова" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow10" name="позитивно" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${aDecision=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>

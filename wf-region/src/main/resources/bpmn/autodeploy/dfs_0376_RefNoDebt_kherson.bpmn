@@ -104,7 +104,7 @@
         </activiti:formProperty>          
         
 
-        <activiti:formProperty id="decision_1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
+        <activiti:formProperty id="asDecision1" name="Прийняття рішення про отримання витягу" type="enum" required="true">
           <activiti:value id="accept" name="Надати довідку про відсутність заборгованості з податків"></activiti:value>
           <activiti:value id="reject" name="Відмовити у наданні довідки"></activiti:value>
         </activiti:formProperty>
@@ -170,12 +170,12 @@
 			</p>			
 			<br>
 			За наявності питань можете звернутись за наступними контактами<br>
-			${sAddress}<br>
+			${sAddressMain}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}
+			${sPhoneOrganMain}			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -214,9 +214,9 @@
           	</p>
           	<br><br>
 			Забрати довідку Ви можете за наступними контактами:<br>
-			${sAddress}<br>
-			${sPhoneOrgan}<br>
-			${sWorkTime}<br><br>
+			${sAddressMain}<br>
+			${sWorkTime}<br>
+			${sPhoneOrganMain}<br><br>
 			<p>
 				Щоб отримати витяг, при візиті до відділення фіскальної служби,<br> 
 				Вам необхідно мати при собі оригінал паспорта громадянина України<br> 
@@ -225,7 +225,7 @@
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_feedback.html]   	
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -265,12 +265,12 @@
 			</p>
 			<br><br>
 			Перевірити стан Вашої заборгованості Ви можете звернувшися до Вашого відділення фіскальної служби за наступними контактами<br>
-			${sAddress}<br>
+			${sAddressMain}<br>
 			${sWorkTime}<br>
-			${sPhoneOrgan}
+			${sPhoneOrganMain}			
 			[pattern/mail/new_design/_common_content_end.html] 
 			[pattern/mail/new_design/_common_signature_start.html]
-			${sNameOrgan}.<br />
+			${sNameOrganMain}.<br />
 			[pattern/mail/new_design/_common_signature_end.html]
 			[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -283,11 +283,11 @@
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <sequenceFlow id="flow7" sourceRef="exclusivegateway1" targetRef="servicetask4">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='accept'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='accept'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decision_1=='reject'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision1=='reject'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow11" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
