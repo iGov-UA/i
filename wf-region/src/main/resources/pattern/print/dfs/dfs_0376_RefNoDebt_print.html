@@ -771,8 +771,8 @@
 
     <script>
       //**** Скрипт для заполнения ИНН/ЕДГРПОУ ****
-      var inn; 
-
+      var inn = "[sInn]";
+      
       if("[subekt]"=="по собі, як фізичній особі" || "[subekt]"=="fiz"){
         inn = String("[bankIdinn]");
 
@@ -788,6 +788,7 @@
       } else if("[subekt]"=="по підприємству, як його представник" || "[subekt]"=="ur"){
         inn = String("[sID_SubjectOrgan_OKPO_01]");
       } 
+      
 
       //запускаем функцию
       InsertSymbol("tegINN", inn);
