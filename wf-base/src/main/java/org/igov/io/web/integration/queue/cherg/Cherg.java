@@ -63,7 +63,7 @@ public class Cherg {
           
     private final LoadingCache<Integer, JSONArray> serverCache = CacheBuilder.newBuilder()
             .maximumSize(100000)
-            .expireAfterAccess(60, TimeUnit.MINUTES)
+            .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Integer, JSONArray>() {
                 @Override
                 public JSONArray load(Integer nID) throws Exception {
