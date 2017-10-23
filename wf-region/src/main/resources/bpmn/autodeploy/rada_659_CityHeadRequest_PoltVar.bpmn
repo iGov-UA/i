@@ -20,7 +20,7 @@
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
           <activiti:value id="sEnumStatusNo" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої Ви відноситесь" type="enum" required="true">
+        <activiti:formProperty id="asHowCategory" name="Оберіть категорію до якої ви відноситесь" type="enum" required="true">
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
           <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
           <activiti:value id="sEnumCat3" name="Інвалід Великої Вітчизняної війни"></activiti:value>
@@ -180,7 +180,7 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="clFIO" name="Прізвище, ім`я, по батькові заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail заявника" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asHowCategory" name="Особливий категорія до якої відноситься заявник (за наявнисті)" type="enum" writable="false">
+        <activiti:formProperty id="asHowCategory" name="Пільгова категорія до якої відноситься заявник (за наявнисті)" type="enum" writable="false">
           <activiti:value id="sNo1" name=" "></activiti:value>
           <activiti:value id="sEnumCat1" name="Учасник війни"></activiti:value>
           <activiti:value id="sEnumCat2" name="Дитина війни"></activiti:value>
@@ -203,7 +203,7 @@ ${sNameOrgan},<br>
           <activiti:value id="sEnumCat19" name="Дитина"></activiti:value>
           <activiti:value id="sEnumCat20" name="Інша категорії"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="asHowSocStatus" name="Оберіть соціальний статус" type="enum" writable="false">
+        <activiti:formProperty id="asHowSocStatus" name="Соціальний статус заявника" type="enum" writable="false">
           <activiti:value id="sEnumSoc2" name="Підприємець"></activiti:value>
           <activiti:value id="sEnumSoc2" name="Найманий працівник"></activiti:value>
           <activiti:value id="sEnumSoc3" name="Фермер"></activiti:value>
@@ -219,7 +219,7 @@ ${sNameOrgan},<br>
         </activiti:formProperty>
         
         <activiti:formProperty id="markersLine_2" name="Інформація про адресу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asBudType&quot;],&quot;sValue&quot;:&quot;Інформація про адресу&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asBudType" name="Тип вашого будинку" type="enum" writable="false">
+        <activiti:formProperty id="asBudType" name="Тип будинку" type="enum" writable="false">
           <activiti:value id="sBagkvatur" name="Багатоквартирний"></activiti:value>
           <activiti:value id="sPrivSector" name="Приватний"></activiti:value>
         </activiti:formProperty>
@@ -227,6 +227,7 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="sRegistrationBud" name="Номер будинку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lRegistrationKorp" name="Номер корпусу" type="long" writable="false"></activiti:formProperty>
         <activiti:formProperty id="lRegistrationKvart" name="Номер квартири" type="long" writable="false"></activiti:formProperty>
+        
         <activiti:formProperty id="markersLine_3" name="Інформація про звернення" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;sTopic&quot;],&quot;sValue&quot;:&quot;Інформація по зверненню&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTopic" name="Тема звернення" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sMessageText" name="Текст звернення" type="textArea" writable="false"></activiti:formProperty>
@@ -471,7 +472,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow49" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow50" sourceRef="servicetask9" targetRef="parallelgateway4"></sequenceFlow>
-    <userTask id="usertask3_green" name="Надання відповіді від іншого органу" activiti:candidateGroups="mvk_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask3_red" name="Надання відповіді від іншого органу" activiti:candidateGroups="mvk_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="asResultWay" name="Як заявник хочете отримати відповідь?" type="enum" writable="false">
           <activiti:value id="physcial" name="На паперовому носії"></activiti:value>
