@@ -981,7 +981,7 @@
           tasks.assignTask($scope.selectedTask.id, Auth.getCurrentUser().id)
             .then(function (result) {
               Modal.assignTask(function (event) {
-                $state.go('tasks.typeof.view', {type:'selfAssigned'});
+                $state.go('tasks.typeof.view', {type: 'selfAssigned', id: $scope.selectedTask.id});
               }, 'Задача у вас в роботі', $scope.lightweightRefreshAfterSubmit);
 
             })
