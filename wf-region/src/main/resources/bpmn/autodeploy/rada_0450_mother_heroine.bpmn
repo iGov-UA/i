@@ -103,7 +103,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="1. Первинна обробка звернення" activiti:candidateGroups="${sGroup}">
+    <userTask id="usertask1" name="1. Первинна обробка звернення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -241,7 +241,7 @@ ${sNameOrgan},<br>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <userTask id="usertask2_yellow" name="2. Кінцева обробка звернення" activiti:candidateGroups="${sGroup}">
+    <userTask id="usertask2_yellow" name="2. Кінцева обробка звернення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
