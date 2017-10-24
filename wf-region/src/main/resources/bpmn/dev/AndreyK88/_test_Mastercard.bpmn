@@ -43,13 +43,6 @@ scrbPay = 'false'
 execution.setVariable('bPay', scrbPay)
       </script>
     </scriptTask>
-    <serviceTask id="servicetask5" name="bPay Т Відмова" activiti:delegateExpression="#{PayConfirm}">
-      <extensionElements>
-        <activiti:field name="bPay">
-          <activiti:string><![CDATA[false]]></activiti:string>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
     <serviceTask id="servicetask6" name="Т Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
@@ -178,6 +171,7 @@ sPaymentBody = ${sPaymentBody}. <br/>
     
     <sequenceFlow id="flow9" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
+    <serviceTask id="servicetask5" name="bPay Т Відмова"></serviceTask>
     <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow17" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
