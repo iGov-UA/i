@@ -3,6 +3,7 @@
   <process id="rada_0450_mother_heroine" name="Надання документів на присвоєння звання Мати-героїня України" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" default="0" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -35,6 +36,12 @@
         <activiti:formProperty id="nFile15" name="Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile16" name="Ксерокопія трудової книжки матері та всіх її дітей, що працювали; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="nFile17" name="Довідка про відсутність судимості у батьків та всіх дітей; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka12" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocument" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sQuantityChild" name="Кількість дітей; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
@@ -45,7 +52,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[molodtyruzm@ukr.net]]></activiti:expression>
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
           <activiti:string><![CDATA[Нове звернення. Надання документів на присвоєння звання Мати-героїня України.]]></activiti:string>
@@ -84,22 +91,19 @@
 <p>Заповнена заява знаходиться у додадку до цього листа.</p>
 <p>
  <b>Адреса:</b> м.Дрогобич, пл.Ринок, 1 ( кабінет 33)<br>
- <b>Режим роботи:</b> <br>
-Понеділок-Четвер – з 08:00 до 17:00<br> 
-Пятниця – з 08:00 до 15:45<br>
-Субота, неділя – вихідний
+ <b>Режим роботи:</b> <br> ${sWorkTime}
 </p>
-Телефон для довідок: (03244) 2-05-84<br>
+Телефон для довідок: ${sPhoneOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Відділ молодіжної політики, сімї та спорту Виконавчого комітету Дрогобицької міської ради,<br>
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow2" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
-    <userTask id="usertask1" name="1. Первинна обробка звернення" activiti:candidateGroups="family_lviv_drohobych">
+    <userTask id="usertask1" name="1. Первинна обробка звернення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -139,7 +143,12 @@
         <activiti:formProperty id="nFile15" name="Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile16" name="Ксерокопія трудової книжки матері та всіх її дітей, що працювали; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile17" name="Довідка про відсутність судимості у батьків та всіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka12" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowElements1" type="markers" default="${markerService.loadFromFile('drogobych/rada_0450_mother_heroine_1.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
@@ -175,10 +184,10 @@
 
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 <br>
-Телефон для довідок: (03244) 2-05-84
+Телефон для довідок: ${sPhoneOrgan}
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Відділ молодіжної політики, сімї та спорту Виконавчого комітету Дрогобицької міської ради,<br>
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -209,13 +218,13 @@
 [pattern/mail/new_design/_common_content_start.html]
 <p> 
 Ваше звернення щодо надання документів на присвоєння звання Мати-героїня України опрацьовано.<br>
-Нагородний лист буде підготовлен та направлен до Обласної Державної Адміністрації.
+Нагородний лист буде підготовлено та направлено до Обласної Державної Адміністрації.
 </p>
-Телефон для довідок: (03244) 2-05-84
+Телефон для довідок:${sPhoneOrgan}
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Відділ молодіжної політики, сімї та спорту Виконавчого комітету Дрогобицької міської ради,<br>
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -232,7 +241,7 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="endevent2"></sequenceFlow>
     <sequenceFlow id="flow9" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
-    <userTask id="usertask2_yellow" name="2. Кінцева обробка звернення" activiti:candidateGroups="family_lviv_drohobych">
+    <userTask id="usertask2_yellow" name="2. Кінцева обробка звернення" activiti:candidateGroups="${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="clFio" name="Суб’єкт звернення" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -268,7 +277,12 @@
         <activiti:formProperty id="nFile15" name="Довідка, що мати народила і виховала до восьмирічного віку п’ятьох і більше дітей (ПІБ, дата народження); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile16" name="Ксерокопія трудової книжки матері та всіх її дітей, що працювали; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile17" name="Довідка про відсутність судимості у батьків та всіх дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
+        <activiti:formProperty id="sNameOrgan" name="назва ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Час роботи ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sShapka" name="Шапка для прінтформи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sListDocument" name="Перелік документів; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sQuantityChild" name="Кількість дітей; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/drogobych/rada_0450_mother_heroine.html]; ;bVisible=false" type="string" default="Форма заяви" writable="false"></activiti:formProperty>
@@ -307,10 +321,10 @@
 <p>${comment}</p>
 <p>Звертаємо увагу, Ви можете заповнити заявку повторно на порталі <a href="https://igov.org.ua/ target="_blank">iGov.org.ua</a></p>
 <br>
-Телефон для довідок: (03244) 2-05-84<br>
+Телефон для довідок: ${sPhoneOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Відділ молодіжної політики, сімї та спорту Виконавчого комітету Дрогобицької міської ради,<br>
+${sNameOrgan},<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>

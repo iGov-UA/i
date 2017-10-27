@@ -713,7 +713,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return "{\"\":\"\"}";
     }
 
-    public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
+public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
             throws Exception {
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
         convertExecutionVariableValue(oExecution);
@@ -723,9 +723,13 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
             sendAttachNewChema(oMail, sAttachmentsForSend);
         }
         if (generalConfig.isSelfTest() && oMail.getBody() != null && oMail.getBody().contains("Шановний колего!")) {
+            
+            String sHead = oMail.getHead();
+            String sBody = oMail.getBody();
+                    
             oMail = context.getBean(Mail.class);
-            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(oMail.getHead())
-                    ._Body(oMail.getBody())._AuthUser(generalConfig.getsUsnameClerk())
+            oMail._From(oMail.getFrom())._To(generalConfig.getsAddrClerk())._Head(sHead)
+                    ._Body(sBody)._AuthUser(generalConfig.getsUsnameClerk())
                     ._AuthPassword(generalConfig.getsPassClerk())._Host(oMail.getHost())
                     ._Port(oMail.getPort())
                     ._SSL(oMail.isSSL())._TLS(oMail.isTLS())
