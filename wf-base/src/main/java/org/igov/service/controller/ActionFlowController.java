@@ -1175,8 +1175,9 @@ public class ActionFlowController {
             
             DateTime oDateReady = oDateTimeFormatterReady.parseDateTime(sDate);
             oaSlot = cherg.getFreeTime(oDateReady, nID_Service_Private);
-            Integer[] aService_Private = {734, 735, 740, 741, 790, 791};
-            if(Arrays.asList(aService_Private).contains(nID_Service_Private)){
+            
+            if(nID_Service_Private == 734 || nID_Service_Private == 735 || nID_Service_Private == 740 || nID_Service_Private == 741
+                    || nID_Service_Private == 790 || nID_Service_Private == 791){
                 LOG.info("oaSlot is {}", oaSlot.toJSONString());
                 LOG.info("sDate is {}", sDate);
             }
