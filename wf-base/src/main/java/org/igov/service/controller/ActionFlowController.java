@@ -1156,23 +1156,31 @@ public class ActionFlowController {
             @ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
             @ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
     ) throws Exception {
+        LOG.info("DMS/getSlots started... nID_Service_Private: {}", nID_Service_Private);
         JSONObject oJSONObjectReturn = new JSONObject();
         DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
-
+        
         JSONArray oaSlot = null;
-
+        
         JSONArray oaJSONArray = new JSONArray();
         if(generalConfig.isQueueManagementSystem()){
-            //oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
-            oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
+            oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+            //oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
         for (Object o : oaJSONArray) {
             //JSONObject oJSONObject = (JSONObject) o;
             String sDate = o.toString();
+            
             DateTime oDateReady = oDateTimeFormatterReady.parseDateTime(sDate);
             oaSlot = cherg.getFreeTime(oDateReady, nID_Service_Private);
+            
+            if(nID_Service_Private == 734 || nID_Service_Private == 735 || nID_Service_Private == 740 || nID_Service_Private == 741
+                    || nID_Service_Private == 790 || nID_Service_Private == 791){
+                LOG.info("oaSlot is {}", oaSlot.toJSONString());
+                LOG.info("sDate is {}", sDate);
+            }
             oJSONObjectReturn.put(oDateTimeFormatter.print(oDateReady), oaSlot);
         }
 

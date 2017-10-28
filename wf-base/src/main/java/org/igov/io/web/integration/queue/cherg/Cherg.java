@@ -61,7 +61,7 @@ public class Cherg {
 
     final static private Logger LOG = LoggerFactory.getLogger(Cherg.class);
           
-    private final LoadingCache<Integer, JSONArray> serverCache = CacheBuilder.newBuilder()
+    /*private final LoadingCache<Integer, JSONArray> serverCache = CacheBuilder.newBuilder()
             .maximumSize(100000)
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Integer, JSONArray>() {
@@ -81,7 +81,7 @@ public class Cherg {
         }
         
         return null;
-    }
+    }*/
     
     @PostConstruct
     public void initialize() {
