@@ -1165,8 +1165,8 @@ public class ActionFlowController {
         
         JSONArray oaJSONArray = new JSONArray();
         if(generalConfig.isQueueManagementSystem()){
-            oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
-            //oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
+            //oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+            oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
         for (Object o : oaJSONArray) {
@@ -1176,11 +1176,11 @@ public class ActionFlowController {
             DateTime oDateReady = oDateTimeFormatterReady.parseDateTime(sDate);
             oaSlot = cherg.getFreeTime(oDateReady, nID_Service_Private);
             
-            if(nID_Service_Private == 734 || nID_Service_Private == 735 || nID_Service_Private == 740 || nID_Service_Private == 741
+            /*if(nID_Service_Private == 734 || nID_Service_Private == 735 || nID_Service_Private == 740 || nID_Service_Private == 741
                     || nID_Service_Private == 790 || nID_Service_Private == 791){
                 LOG.info("oaSlot is {}", oaSlot.toJSONString());
                 LOG.info("sDate is {}", sDate);
-            }
+            }*/
             oJSONObjectReturn.put(oDateTimeFormatter.print(oDateReady), oaSlot);
         }
 
