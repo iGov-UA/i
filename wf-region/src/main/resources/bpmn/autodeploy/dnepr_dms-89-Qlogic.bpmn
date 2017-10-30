@@ -64,7 +64,7 @@
         <activiti:formProperty id="sOrganizatonGuid_visitDay_Qlogic" name="ID організації за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sServiceCenterId_visitDay_Qlogic" name="ID сервіс-центра за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sServiceId_visitDay_Qlogic" name="ID сервіса за довідником Qlogic; ;bVisible=false" type="string" default="1"></activiti:formProperty>
-        <activiti:formProperty id="visitDay_Qlogic" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="warning_Drogobich" name="Зверніть увагу" type="label" default="&lt;b&gt;УВАГА!&lt;/b&gt; При необхідності (під час перевірки документів) у Вас можуть бути запрошені скан-копії документів, що підтверджують стару адресу реєстрації"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -110,7 +110,7 @@ var srcQ=execution.getVariable('visitDay_Qlogic')
 var date_of_visit=srcQ.substr(srcQ.indexOf('"sDate":"')+9,16);
 var tickNum=srcQ.substr(srcQ.indexOf('"receiptNum":')+13,srcQ.indexOf(',',srcQ.indexOf('"receiptNum":')+13)-(srcQ.indexOf('"receiptNum":')+13))
 var tickCode=srcQ.substr(srcQ.indexOf('"id":"')+6,srcQ.indexOf('"',srcQ.indexOf('"id":"')+6)-(srcQ.indexOf('"id":"')+6))
-var srcQNotif = 'Номер талону - '+ tickNum + ', дата та час візиту - ' + date_of_visit
+var srcQNotif = ' ' + date_of_visit + ', номер талону - ' + tickNum
 execution.setVariable('sNotification_day', srcQNotif)
 execution.setVariable('date_of_visit', date_of_visit)
 

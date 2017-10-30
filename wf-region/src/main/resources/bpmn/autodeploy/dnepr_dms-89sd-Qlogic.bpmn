@@ -31,9 +31,11 @@
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації померлого;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDate_of_death" name="Дата смерті;Формат - ДД.ММ.PPPP" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть, дата видачі документа" type="textArea" required="true"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay_Qlogic" name="Тип електронної черги; ;bVisible=false" type="string" default="Qlogic"></activiti:formProperty>
+        <activiti:formProperty id="sOrganizatonGuid_visitDay_Qlogic" name="ID організації за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceCenterId_visitDay_Qlogic" name="ID сервіс-центра за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceId_visitDay_Qlogic" name="ID сервіса за довідником Qlogic; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="Оберіть зручний день та час з доступних місць у черзі, коли Вам буде зручно з'явитись для отримання послуги" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -53,6 +55,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="Дата-час електронної черги та номер талону, якщо потрібно; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sAdd_FormaA" name="Додаток до email; ;bVisible=false" type="string" default=" &lt;li&gt;оригінал картки реєстрації (Форма А) з ЖЕК чи ОСМД або будинкову книгу;&lt;/li&gt;"></activiti:formProperty>
         <activiti:formProperty id="sHide_FormaA" name="Признак приховання документів в списку Форми А ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -71,7 +74,17 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var src=execution.getVariable('date_of_visit')
+var type_queue=execution.getVariable('sID_Type_visitDay_Qlogic')
+
+var srcQ=execution.getVariable('visitDay_Qlogic')
+var date_of_visit=srcQ.substr(srcQ.indexOf('"sDate":"')+9,16);
+var tickNum=srcQ.substr(srcQ.indexOf('"receiptNum":')+13,srcQ.indexOf(',',srcQ.indexOf('"receiptNum":')+13)-(srcQ.indexOf('"receiptNum":')+13))
+var tickCode=srcQ.substr(srcQ.indexOf('"id":"')+6,srcQ.indexOf('"',srcQ.indexOf('"id":"')+6)-(srcQ.indexOf('"id":"')+6))
+var srcQNotif = ' ' + date_of_visit + ', номер талону - ' + tickNum
+execution.setVariable('sNotification_day', srcQNotif)
+execution.setVariable('date_of_visit', date_of_visit)
+
+var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
 var month=src.substr(5,2)
 var day=src.substr(8,2)
@@ -139,7 +152,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
 				<p>
-					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури зняття з реєстрації.<br>
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${sNotification_day}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури зняття з реєстрації.<br>
 					Адреса ${sOrganType}: ${sAddress}.<br> 
 					${sPhoneOrgan}<br>
 				</p>
@@ -191,7 +204,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
         <activiti:formProperty id="sChildCitizenship" name="Громадянство померлого; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Адреса реєстрації померлого; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sDeathDoc" name="Номер актового запису, серія та номер свідоцтва про смерть; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -299,7 +312,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
 				</p>
 				<p>
 					<b>Деталі зустрічі:</b><br>
-					День та час - ${date_of_visit}
+					День та час - ${sNotification_day}
 				</p>
 				<p>
 					<b>Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:</b><br />
@@ -378,7 +391,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
 			</p>
 			<p>
 				<b>Деталі зустрічі:</b><br>
-				День та час - ${date_of_visit}
+				День та час - ${sNotification_day}
 			</p>
 			<p>
 				<b>Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:</b><br />
@@ -421,7 +434,7 @@ if (execution.getVariable('sHide_FormaA')=='True') {
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та знімаєте з реєстрації дитину."></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
