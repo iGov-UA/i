@@ -76,10 +76,12 @@
     <sequenceFlow id="flow3" sourceRef="servicetask1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask1" name="Передача значений" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
+
+
 var type_queue=execution.getVariable('sID_Type_visitDay_Qlogic')
 
 var srcQ=execution.getVariable('visitDay_Qlogic')
-var sNotification_day=srcQ.substr(srcQ.indexOf('"sDate":"')+9,16);
+var date_of_visit=srcQ.substr(srcQ.indexOf('"sDate":"')+9,16);
 var tickNum=srcQ.substr(srcQ.indexOf('"receiptNum":')+13,srcQ.indexOf(',',srcQ.indexOf('"receiptNum":')+13)-(srcQ.indexOf('"receiptNum":')+13))
 var tickCode=srcQ.substr(srcQ.indexOf('"id":"')+6,srcQ.indexOf('"',srcQ.indexOf('"id":"')+6)-(srcQ.indexOf('"id":"')+6))
 var srcQNotif = ' ' + date_of_visit + ', номер талону - ' + tickNum
