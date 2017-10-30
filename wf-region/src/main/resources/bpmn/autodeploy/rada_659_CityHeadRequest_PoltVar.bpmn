@@ -298,7 +298,7 @@ execution.setVariable('sOrganInshi', scrOrgan)
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asRisheniaj=='sEnumVidpovidSami' || (asRisheniaj=='sEnumVidpovidInshi' && asKontrol=='sEnumYes')}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow43" name="Передача іншому" sourceRef="exclusivegateway1" targetRef="parallelgateway1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asRisheniaj=='sEnumVidpovidInshi' && asKontrol=='sEnumNo'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asRisheniaj=='sEnumVidpovidInshi' && asKontrol!='sEnumYes'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow13" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
