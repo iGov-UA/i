@@ -40,9 +40,11 @@
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації;Область, Населений пункт, Вулиця, Будинок, Корпус, Квартира" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="warning3" name="Зверніть увагу" type="label" default="Якщо батьки дитини зареєстровані за різними адресами, при реєстрації повинні бути присутні обидва батьки або Вам буде потрібна нотаріально завірена згода другого батька на реєстрацію місця проживання дитини"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="Оберіть день та час, коли Вам буде зручно з'явитись для отримання послуги?" type="queueData" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDay" name="Департамент черги ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nDiffDays_visitDay" name="Пропуск дней до выбора очереди ; ;bVisible=false" type="string" default="2"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay_Qlogic" name="Тип електронної черги; ;bVisible=false" type="string" default="Qlogic"></activiti:formProperty>
+        <activiti:formProperty id="sOrganizatonGuid_visitDay_Qlogic" name="ID організації за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceCenterId_visitDay_Qlogic" name="ID сервіс-центра за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceId_visitDay_Qlogic" name="ID сервіса за довідником Qlogic; ;bVisible=false" type="string" default="1"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="Оберіть зручний день та час з доступних місць у черзі, коли Вам буде зручно з'явитись для отримання послуги" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sOrganType" name="Тип органу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="Телефон органу ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -62,6 +64,7 @@
         <activiti:formProperty id="sMailClerk" name="Пошта органу" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="date_of_visit" name="Дата-час електронної черги; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="Дата-час електронної черги та номер талону, якщо потрібно; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Дата зняття з попереднього місця реєстрації ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
@@ -78,7 +81,17 @@
     <endEvent id="endevent2" name="End"></endEvent>
     <scriptTask id="scripttask1" name="Передача значений (javascript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
-      var src=execution.getVariable('date_of_visit')
+var type_queue=execution.getVariable('sID_Type_visitDay_Qlogic')
+
+var srcQ=execution.getVariable('visitDay_Qlogic')
+var date_of_visit=srcQ.substr(srcQ.indexOf('"sDate":"')+9,16);
+var tickNum=srcQ.substr(srcQ.indexOf('"receiptNum":')+13,srcQ.indexOf(',',srcQ.indexOf('"receiptNum":')+13)-(srcQ.indexOf('"receiptNum":')+13))
+var tickCode=srcQ.substr(srcQ.indexOf('"id":"')+6,srcQ.indexOf('"',srcQ.indexOf('"id":"')+6)-(srcQ.indexOf('"id":"')+6))
+var srcQNotif = ' ' + date_of_visit + ', номер талону - ' + tickNum
+execution.setVariable('sNotification_day', srcQNotif)
+execution.setVariable('date_of_visit', date_of_visit)
+
+var src=execution.getVariable('date_of_visit')
 var year=src.substr(0,4)
 var month=src.substr(5,2)
 var day=src.substr(8,2)
@@ -141,12 +154,11 @@ execution.setVariable('sMaxPay', maxpay)
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 			[pattern/mail/new_design/_common_content_start.html]
             	<p>
-					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${date_of_visit}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури зняття з реєстрації.<br>
+					Ваше звернення [sID_Order] успішно зареєстровано. Спеціалісти ${sOrganType} (район або ЦНАП району (міста) - ${sArea}) оброблять Вашу заявку протягом 1-3 днів та надішлють Вам email з підтвердженням та запрошенням прийти до ${sOrganType} у обраний час ${sNotification_day}, реквізитами та сумою для сплати адміністративного збору, короткою інструкцією щодо процедури зняття з реєстрації.<br>
 					Адреса ${sOrganType}: ${sAddress}.<br> 
 					${sPhoneOrgan}<br>
 				</p>
 				<br>
-				<p>[cancelTask]</p> 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
 				${sNameOrgan},<br>
@@ -195,7 +207,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBankIdPassport" name="Документ, що посвідчує заявника" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="asDecision" name="Рішення держслужбовця" type="enum" required="true">
           <activiti:value id="sAccept" name="Призначити зустріч у відділенні"></activiti:value>
@@ -302,7 +314,7 @@ execution.setVariable('sMaxPay', maxpay)
 				</p>
 				<p>
 					<b>Деталі зустрічі:</b><br>
-					День та час - ${date_of_visit}
+					День та час - ${sNotification_day}
 				</p>
 				<p>
 					<b>Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:</b><br />
@@ -329,7 +341,6 @@ execution.setVariable('sMaxPay', maxpay)
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 				</p>
 				<br>
-				<p>[cancelTask]</p>
                 
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
@@ -382,7 +393,7 @@ execution.setVariable('sMaxPay', maxpay)
 				</p>
 				<p>
 					<b>Деталі зустрічі:</b><br>
-					День та час - ${date_of_visit}
+					День та час - ${sNotification_day}
 				</p>
 				<p>
 					<b>Необхідні документи, які треба принести до ${sOrganType} при знятті з реєстрації місця проживання:</b><br />
@@ -407,7 +418,6 @@ execution.setVariable('sMaxPay', maxpay)
 					При вниникненні питань Ви можете звернутися: ${sPhoneOrgan}
 				</p>
 				<br>
-				<p>[cancelTask]</p>
 			[pattern/mail/new_design/_common_content_end.html]
 			[pattern/mail/new_design/_common_signature_start.html]
 				${sNameOrgan},<br>
@@ -430,7 +440,7 @@ execution.setVariable('sMaxPay', maxpay)
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та знімаєте з реєстрації дитину."></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDay" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="visitDay_Qlogic" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
