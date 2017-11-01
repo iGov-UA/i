@@ -116,6 +116,8 @@
         <activiti:formProperty id="sWorkDay" name="Графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта ЦНАП; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string" default="Відділ обліку проживання фізичних осіб управління у сфері державної реєстрації департаменту адміністративних послуг та дозвільних процедур Дніпровської міської ради"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="Контактний телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -140,30 +142,35 @@ switch (asDistrict){
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105 (Самарська районна рада)";
     adresPost = "м. Дніпро, вул. 20-річчя Перемоги, 51 каб. 105 (Самарська районна рада)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
+    phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (056) 791-10-64";
   break;
   case 'sAND':
     mail = "f3andindus@gmail.com";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     adresPost = "м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
+    phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (068) 99 65 939";
   break;
   case 'sIndus':
     mail = "f3andindus@gmail.com";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     adresPost = "м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
+    phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (068) 99 65 939";
   break;
   case 'sSobor':
     mail = "F3SobCentr@gmail.com";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, пл. Шевченка, 7, каб. 107 (Соборна районна рада)";
     adresPost = "м. Дніпро, пл. Шевченка, 7, каб. 107 (Соборна районна рада)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
+    phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (056) 791-10-64";
   break;
   case 'sCentr':
     mail = "F3SobCentr@gmail.com";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, пл. Шевченка, 7, каб. 107 (Соборна районна рада)";
     adresPost = "м. Дніпро, пл. Шевченка, 7, каб. 107 (Соборна районна рада)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
+    phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (056) 791-10-64";
   break;
   
   default:
@@ -174,6 +181,7 @@ execution.setVariable('sMailClerk', mail);
 execution.setVariable('sAddress', adres);
 execution.setVariable('sAddressForPost', adresPost);
 execution.setVariable('sWorkDay', workTime);
+execution.setVariable('sPhoneOrgan', phoneOrgan);
 
 var pasZ1 = execution.getVariable('bankIdlastName')
 var pasZ2 = execution.getVariable('bankIdfirstName')
@@ -408,7 +416,7 @@ ${sNameOrgan}.<br />
 [pattern/mail/new_design/_common_content_start.html]
 На жаль, ${sPosluga_nameZV} не можливо надати.<br> 
 Причина: ${comment}.<br><br>
-
+${sPhoneOrgan}<br>
 Ви можете усунути недоліки і подати ще одну заявку на порталі <a href="https://igov.org.ua/">iGov.org.ua</a>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -443,7 +451,7 @@ ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_content_start.html]
 На жаль, ${sPosluga_nameZV} не можливо надати.<br> 
 Причина: ${comment}.<br>
-
+${sPhoneOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>
@@ -485,7 +493,7 @@ ${sWorkDay}<br><br>
 - документи про реєстрацію місця проживання/перебування особи, видані органами Державної міграційної служби України;
 Документи надаються Департаменту одноразово при першому зверненні.<br><br>
 <b>Після внесення до реєстру, ви зможете користуватись електронним сервісом iGov і отримувати довідку дистанційно.</b><br>
-
+${sPhoneOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>
@@ -518,7 +526,7 @@ ${sNameOrgan}<br>
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
 На жаль, ${sPosluga_nameZV} не можливо надати.<br> 
-
+${sPhoneOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>
@@ -546,6 +554,7 @@ ${sNameOrgan}<br>
 Вам необхідно прийти value{[dateVuzit]} або в інший, після вказаної дати день, до відділу обліку фізичних осіб.<br>
 Заявка через портал дає вам право на позачергове отримання послуги.<br>
 З собою мати документ, що посвідчує особу та підтверджує реєстрацію за вказаною в заявці адресою.<br><br>
+${sPhoneOrgan}<br>
 ${sAddress}<br>
 ${sWorkDay}<br>
 [pattern/mail/new_design/_common_content_end.html]
