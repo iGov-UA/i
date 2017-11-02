@@ -38,7 +38,7 @@ public class QLogic {
     private String urlGetServicesList = "http://%s:%s/QueueService.svc/json_pre_reg/GetServiceList?organisationGuid={sOrganisationGuid}&serviceCenterId=%s";
     private String urlGetDaysList = "http://%s:%s/QueueService.svc/json_pre_reg/GetDayList?organisationGuid={sOrganisationGuid}&serviceCenterId=%s&serviceId=%s";
     private String urlGetTimeList = "http://%s:%s/QueueService.svc/json_pre_reg/GetTimeList?organisationGuid={sOrganisationGuid}&serviceCenterId=%s&serviceId=%s&date=%s";
-    private String urlRegCustomer = "http://%s:%s/QueueService.svc/json_pre_reg/RegCustomer?organisationGuid={sOrganisationGuid}&serviceCenterId=%s&serviceId=%s&date=%s";
+    private String urlRegCustomer = "http://%s:%s/QueueService.svc/json_pre_reg/RegCustomerEx?organisationGuid={sOrganisationGuid}&serviceCenterId=%s&serviceId=%s&date=%s&LangId=1&phone=%s&email=%s&name=%s&customerInfo=%s";
     private String urlGetOrganisationState = "http://%s:%s/VideoAd/GetOrganisationState?orgKey=%s";
     
     final static private Logger LOG = LoggerFactory.getLogger(QLogic.class);
@@ -167,12 +167,13 @@ public class QLogic {
 	}
     
     public String regCustomer(String sOrganisationGuid, String sServiceCenterId,
-			String sServiceId, String sDate, String sTime) throws Exception {
+			String sServiceId, String sDate, String sTime, String phone, String email, String name, String information) throws Exception {
     	HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
         String sFullDateTime = String.format("%s %s", sDate, sTime);
-        
-        String url = String.format(urlRegCustomer, host, port, sServiceCenterId, sServiceId, sFullDateTime);
+
+        String url = String.format(urlRegCustomer, host, port, sServiceCenterId, sServiceId, sFullDateTime,
+                phone, email, name, information);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
         HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)

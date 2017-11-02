@@ -193,6 +193,9 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sOrganizatonGuid: scope.formData.params[sOrganizatonGuid_ID].value,
               sServiceCenterId: scope.formData.params[sServiceCenterId_ID].value,
               sServiceId: scope.formData.params[sServiceId_ID].value,
+              sPhone: scope.formData.params.phone.value || '',
+              sEmail: scope.formData.params.email.value || '',
+              sName: scope.formData.params.bankIdlastName.value + ' ' + scope.formData.params.bankIdfirstName.value + (scope.formData.params.bankIdmiddleName.value ? ' ' + scope.formData.params.bankIdmiddleName.value : ''),
               sDate: scope.selected.date.sDate,
               sTime: scope.selected.slot.sTime
             });
