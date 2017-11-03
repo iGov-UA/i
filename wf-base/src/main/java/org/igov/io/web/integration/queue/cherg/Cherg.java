@@ -1,10 +1,5 @@
 package org.igov.io.web.integration.queue.cherg;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache; 
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -29,12 +24,9 @@ import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
+import org.igov.service.business.flow.ResevedFlowSlot;
 
 /**
  * Provides integration with Queue management system cherg.net API specified at
@@ -43,46 +35,24 @@ import java.util.logging.Level;
 @Component
 public class Cherg {
 
-    @Autowired
-    GeneralConfig generalConfig;
-
     private String urlBasePart;
-    private String urlFreeTime = "/freetime";
-    private String urlSetReserve = "/set_reserve";
-    private String urlConfirmReserve = "/confirm_reserve";
-    private String urlCancelReserve = "/cancel_reserve";
-    private String urlWorkdays = "/workdays";
+    private final String urlFreeTime = "/freetime";
+    private final String urlSetReserve = "/set_reserve";
+    private final String urlCanselReserve = "/cancel_reserve";
+    private final String urlConfirmReserve = "/confirm_reserve";
+    private final String urlWorkdays = "/workdays";
     private String login;
     private String password;
     private String basicAuthHeader;
 
-    //static HashMap mDMS_SlotReserve = new HashMap();
-    private static volatile ConcurrentHashMap<String, String> mDMS_SlotReserve = new ConcurrentHashMap();
+    @Autowired
+    GeneralConfig generalConfig;
+
+    @Autowired
+    private ResevedFlowSlot resevedFlowSlot;
 
     final static private Logger LOG = LoggerFactory.getLogger(Cherg.class);
-          
-    /*private final LoadingCache<Integer, JSONArray> serverCache = CacheBuilder.newBuilder()
-            .maximumSize(100000)
-            .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<Integer, JSONArray>() {
-                @Override
-                public JSONArray load(Integer nID) throws Exception {
-                    LOG.info("getSlotFreeDaysArray_FromCache was called from cache");
-                    return getSlotFreeDaysArray(nID);
-                }
-    });
-    
-    
-    public JSONArray getSlotFreeDaysArray_FromCache(Integer nID_Service_Private){
-        try {
-            return serverCache.get(nID_Service_Private);
-        } catch (ExecutionException ex) {
-            LOG.info("getSlotFreeDaysArray_FromCache error {}", ex);
-        }
-        
-        return null;
-    }*/
-    
+
     @PostConstruct
     public void initialize() {
         this.urlBasePart = generalConfig.getQueueManagementSystemAddress();
@@ -165,7 +135,6 @@ public class Cherg {
                 ._Data(mParam)
                 ._Header(oHttpHeaders)
                 ._Send();
-
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
@@ -218,10 +187,7 @@ public class Cherg {
     }
 
     public String getSlotFreeDays(Integer nID_Service_Private) throws Exception {
-        JSONArray oaJSONArray = new JSONArray();
-        if (generalConfig.isQueueManagementSystem()) {
-            oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
-        }
+        JSONArray oaJSONArray = getSlotFreeDaysArray(nID_Service_Private);
 
         JSONObject oJSONObjectReturn = new JSONObject();
         oJSONObjectReturn.put("aDate", oaJSONArray);
@@ -234,6 +200,7 @@ public class Cherg {
     public JSONObject setReserve(String serviceId, String dateTime, String phone, String passport, String lastName,
             String name, String patronymic) throws Exception {
 
+        resevedFlowSlot.canselReservedSlot(phone);
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
 
         mParam.add("service_id", serviceId);
@@ -243,16 +210,6 @@ public class Cherg {
         mParam.add("lastname", lastName);
         mParam.add("name", name);
         mParam.add("patronymic", patronymic);
-        
-        String sKey = serviceId + "_" + phone;
-        String sID_Reserve = (String) mDMS_SlotReserve.get(sKey);
-        
-        LOG.info("mDMS_SlotReserve {}");
-        
-        if (sID_Reserve != null) {
-            cancelReserve(sID_Reserve);
-            mDMS_SlotReserve.remove(sKey);
-        }
 
         HttpHeaders oHttpHeaders = new HttpHeaders();
         oHttpHeaders.setContentType(new MediaType("application", "x-www-form-urlencoded", StandardCharsets.UTF_8));
@@ -265,9 +222,9 @@ public class Cherg {
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
-                    urlBasePart + urlFreeTime,
+                    urlBasePart + urlSetReserve,
                     mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlSetReserve + "): nStatus()="
                     + oHttpEntityCover.nStatus());
         }
 
@@ -275,7 +232,54 @@ public class Cherg {
         JSONObject response = (JSONObject) parser.parse(sReturn);
         if (!response.get("status-code").equals("0")) {
             LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response="
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlSetReserve + "): response="
+                    + response.get("status-code") + " " + response.get("status-detail"));
+        } else {
+            JSONArray dates = (JSONArray) response.get("data");
+            JSONObject result;
+            Iterator<JSONObject> datesIterator = dates.iterator();
+            if (datesIterator.hasNext()) {
+                result = datesIterator.next();
+                String reserve_id = ((Map<String, String>) dates.get(0)).get("reserve_id");
+                resevedFlowSlot.setReservedSlot(reserve_id, phone);
+            } else {
+                result = new JSONObject();
+            }
+
+            LOG.info("Result:{}", dates);
+            return result;
+        }
+
+    }
+
+    public JSONObject canselReserve(String reserve_id) throws Exception {
+
+        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
+
+        mParam.add("reserve_id", reserve_id);
+        //urlCanselReserve
+        HttpHeaders oHttpHeaders = new HttpHeaders();
+        oHttpHeaders.setContentType(new MediaType("application", "x-www-form-urlencoded", StandardCharsets.UTF_8));
+        oHttpHeaders.set("Authorization", this.basicAuthHeader);
+        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
+        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlCanselReserve)
+                ._Data(mParam)
+                ._Header(oHttpHeaders)
+                ._Send();
+        String sReturn = oHttpEntityCover.sReturn();
+        if (!oHttpEntityCover.bStatusOk()) {
+            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
+                    urlBasePart + urlCanselReserve,
+                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlCanselReserve + "): nStatus()="
+                    + oHttpEntityCover.nStatus());
+        }
+
+        JSONParser parser = new JSONParser();
+        JSONObject response = (JSONObject) parser.parse(sReturn);
+        if (!response.get("status-code").equals("0")) {
+            LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlCanselReserve + "): response="
                     + response.get("status-code") + " " + response.get("status-detail"));
         }
         JSONArray dates = (JSONArray) response.get("data");
@@ -283,10 +287,6 @@ public class Cherg {
         Iterator<JSONObject> datesIterator = dates.iterator();
         if (datesIterator.hasNext()) {
             result = datesIterator.next();
-            String reserve_id_ = (String)result.get("reserve_id");
-            String sID_Reserve_New = ((Map<String, String>) dates.get(0)).get("reserve_id");
-            mDMS_SlotReserve.put(sKey, sID_Reserve_New);
-            LOG.info("reserve_id_ = {} sID_Reserve_New = {} mDMS_SlotReserve:{}",reserve_id_, sID_Reserve_New, mDMS_SlotReserve);
         } else {
             result = new JSONObject();
         }
@@ -298,17 +298,7 @@ public class Cherg {
 
     public JSONObject confirmReserve(String nReservationId) throws Exception {
         MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
-        String sKey_Delete = null;
-        
-        for(String sKey : mDMS_SlotReserve.keySet()){
-            if(((String)mDMS_SlotReserve.get(sKey)).equals(nReservationId)){
-                sKey_Delete = sKey;
-            }
-        }
-        
-        mDMS_SlotReserve.remove(sKey_Delete);
-        
-        
+
         mParam.add("reserve_id", nReservationId);
 
         HttpHeaders oHttpHeaders = new HttpHeaders();
@@ -322,9 +312,9 @@ public class Cherg {
         String sReturn = oHttpEntityCover.sReturn();
         if (!oHttpEntityCover.bStatusOk()) {
             LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
-                    urlBasePart + urlFreeTime,
+                    urlBasePart + urlConfirmReserve,
                     mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlConfirmReserve + "): nStatus()="
                     + oHttpEntityCover.nStatus());
         }
 
@@ -332,7 +322,7 @@ public class Cherg {
         JSONObject response = (JSONObject) parser.parse(sReturn);
         if (!response.get("status-code").equals("0")) {
             LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response="
+            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlConfirmReserve + "): response="
                     + response.get("status-code") + " " + response.get("status-detail"));
         }
         JSONArray dates = (JSONArray) response.get("data");
@@ -348,48 +338,4 @@ public class Cherg {
         return result;
 
     }
-
-    public JSONObject cancelReserve(String nReservationId) throws Exception {
-        MultiValueMap<String, Object> mParam = new LinkedMultiValueMap<>();
-
-        mParam.add("reserve_id", nReservationId);
-
-        HttpHeaders oHttpHeaders = new HttpHeaders();
-        oHttpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
-        oHttpHeaders.set("Authorization", this.basicAuthHeader);
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[]{StandardCharsets.UTF_8}));
-        HttpEntityCover oHttpEntityCover = new HttpEntityCover(urlBasePart + urlCancelReserve)
-                ._Data(mParam)
-                ._Header(oHttpHeaders)
-                ._Send();
-        String sReturn = oHttpEntityCover.sReturn();
-        if (!oHttpEntityCover.bStatusOk()) {
-            LOG.error("RESULT FAIL! (sURL={}, mParamObject={}, nReturn={}, sReturn(cuted)={})",
-                    urlBasePart + urlFreeTime,
-                    mParam.toString(), oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): nStatus()="
-                    + oHttpEntityCover.nStatus());
-        }
-
-        JSONParser parser = new JSONParser();
-        JSONObject response = (JSONObject) parser.parse(sReturn);
-        if (!response.get("status-code").equals("0")) {
-            LOG.error("code=={}, detail=={}", response.get("status-code"), response.get("status-detail"));
-            throw new Exception("[sendRequest](sURL=" + urlBasePart + urlFreeTime + "): response="
-                    + response.get("status-code") + " " + response.get("status-detail"));
-        }
-        JSONArray dates = (JSONArray) response.get("data");
-        JSONObject result;
-        Iterator<JSONObject> datesIterator = dates.iterator();
-        if (datesIterator.hasNext()) {
-            result = datesIterator.next();
-        } else {
-            result = new JSONObject();
-        }
-
-        LOG.info("Result:{}", dates);
-        return result;
-
-    }
-
 }

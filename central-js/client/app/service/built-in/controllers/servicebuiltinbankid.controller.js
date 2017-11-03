@@ -189,6 +189,40 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         formFieldIDs.inForm.push(field.id);
       });
 
+    var oNAIS = {
+      sServiceCode: '',
+      sApplicationId: ''
+    };
+    function initNaisProperties() {
+      var aID_NAIS_Service_code = activitiForm.formProperties.filter(function (oProperty) {
+        return oProperty.id === 'sID_NAIS_Service_code';
+      });
+      var aID_NAIS_Application_id = activitiForm.formProperties.filter(function (oProperty) {
+        return oProperty.id === 'sID_NAIS_Application_id';
+      });
+      if(aID_NAIS_Service_code[0] && aID_NAIS_Service_code[0].value){
+        oNAIS.sServiceCode = aID_NAIS_Service_code[0].value;
+      }
+      if(aID_NAIS_Application_id[0] && aID_NAIS_Application_id[0].value){
+        oNAIS.sApplicationId = aID_NAIS_Application_id[0].value;
+      }
+    }
+    initNaisProperties();
+
+    $scope.bIsNAIS = function () {
+      return oNAIS.sApplicationId && oNAIS.sServiceCode;
+    };
+
+
+    $scope.getMinJustService = function () {
+      /*
+       ServiceService.getMinJustServiceUrl(oNAIS).then(function (data) {
+
+       })
+       */
+
+    };
+
       function getCheckbox(param) {
         if (!param || !typeof param === 'string') return null;
 
@@ -688,6 +722,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           sOrganizatonGuid: reserve.sOrganizatonGuid,
           sServiceCenterId: reserve.sServiceCenterId,
           sServiceId: reserve.sServiceId,
+          sPhone: reserve.sPhone,
+          sEmail: reserve.sEmail,
+          sName: reserve.sName,
           sDate: reserve.sDate,
           sTime: reserve.sTime
         }).success(function (data, status, headers, config) {
@@ -1280,7 +1317,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         $scope.data.formData.params['phone'].value = '+380';
         $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false, otpIsConfirmed: true};
         $scope.isOpenedCheckout = false;
-        console.log($scope.checkoutData)
       };
       /*verify phone number end*/
 
@@ -1354,7 +1390,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
               if (res.secure && res.secure === '3ds') {
                 MasterPassService.getUserId().then(function (id) {
                   var url = $location.protocol() + '://' + $location.host() + ':' + $location.port() + $location.path();
-                  var callbackUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/masterpass/verify3DSCallback' + '?id=' + res.pmt_id + '&msisdn=' + phoneNumber + '&user=' + id + '&url=' + url;
+                  var callbackUrl = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/masterpass/verify3DSCallback' + '?id=' + res.pmt_id + '&msisdn=' + phoneNumber + '&user=' + id + '&guid=' + res.guid + '&url=' + url;
                   var temp = JSON.stringify({form: $scope.data.formData.params, activiti: $scope.activitiForm.formProperties});
                   localStorage.setItem('temporaryForm', temp);
 
@@ -1364,12 +1400,13 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
                 $scope.phoneVerify.otpIsConfirmed = true;
                 $scope.otpErrorMsg = null;
                 $scope.checkoutConfirm.status = 'confirm';
-                $scope.checkoutData.payment= {otpToken: res.token, otpCode: '', invoice: res.invoice, pmt_id: res.pmt_id};
+                $scope.checkoutData.payment = {otpToken: res.token, otpCode: '', invoice: res.invoice, pmt_id: res.pmt_id, guid: res.guid, user_id: res.user_id};
               }
-            } else if(res.pmt_status == 5) {
+            } else if(res.pmt_status == 1) {
               for(var field in $scope.data.formData.params) {
                 if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
-                  $scope.data.formData.params[field].value = res.pmt_id;
+                  var paymentData = {msisdn: res.msisdn, user_id: res.user_id, pmt_id: res.pmt_id, invoice: res.invoice, guid: res.guid};
+                  $scope.data.formData.params[field].value = JSON.stringify(paymentData);
                   $timeout(function () {
                     $scope.processForm($scope.myForm, activitiForm.formProperties, false);
                   });
@@ -1393,11 +1430,19 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       $scope.otpConfirmPayment = function () {
         $scope.checkoutSpinner = true;
         var phoneNumber = MasterPassService.searchValidPhoneNumber($scope.data.formData.params);
-        MasterPassService.otpConfirm($scope.checkoutData.payment.otpCode, $scope.checkoutData.payment.otpToken, phoneNumber).then(function (res) {
-          if(res.pmt_status == 5) {
+        var params = {
+          otp: $scope.checkoutData.payment.otpCode,
+          token: $scope.checkoutData.payment.otpToken,
+          phone: phoneNumber,
+          guid: $scope.checkoutData.payment.guid,
+          userId: $scope.checkoutData.payment.user_id
+        };
+        MasterPassService.otpConfirm(params).then(function (res) {
+          if(res.pmt_status == 1) {
             for(var field in $scope.data.formData.params) {
               if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
-                $scope.data.formData.params[field].value = res.pmt_id;
+                var paymentData = {msisdn: res.msisdn, user_id: res.user_id, pmt_id: res.pmt_id, invoice: res.invoice, guid: res.guid};
+                $scope.data.formData.params[field].value = JSON.stringify(paymentData);
                 $timeout(function () {
                   $scope.processForm($scope.myForm, activitiForm.formProperties, false);
                 })
@@ -1451,16 +1496,31 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       }
 
       if(checkLocation.indexOf('pmt_id') > -1) {
-        var parse = checkLocation.split('?')[1], data = parse.split('&'), paymentStatus = data[0].split('=')[1], paymentID = data[1].split('=')[1];
-        $scope.paymentStatus = paymentStatus;
-        $scope.checkoutData.payment = {result: paymentID};
+        var parse = checkLocation.split('?')[1], data = parse.split('&');
+        var paymentData = {
+          paymentStatus: data[0].split('=')[1],
+          paymentID: data[1].split('=')[1],
+          guid: data[2].split('=')[1],
+          userID: data[3].split('=')[1],
+          msisdn: data[4].split('=')[1],
+          invoice: data[5].split('=')[1]
+        };
+      $scope.paymentStatus = paymentData.paymentStatus;
+      $scope.checkoutData.payment = {result: paymentData.paymentID};
 
         if (tempFiles)
           getTemporarySavedFields();
 
         for (var field in $scope.data.formData.params) {
           if($scope.data.formData.params.hasOwnProperty(field) && field.indexOf('sID_Pay_MasterPass') === 0) {
-            $scope.data.formData.params[field].value = paymentID;
+            var paymentOptions = {
+              msisdn: paymentData.msisdn,
+              user_id: paymentData.userID,
+              pmt_id: paymentData.paymentID,
+              invoice: paymentData.invoice,
+              guid: paymentData.guid
+            };
+            $scope.data.formData.params[field].value = JSON.stringify(paymentOptions);
             $timeout(function () {
               $scope.processForm($scope.myForm, activitiForm.formProperties, false);
             });

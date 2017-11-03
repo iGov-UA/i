@@ -125,6 +125,10 @@ module.exports.setSlotQlogic = function (req, res) {
       sOrganizatonGuid: req.body.sOrganizatonGuid,
       sServiceCenterId: req.body.sServiceCenterId,
       sServiceId: req.body.sServiceId,
+      sPhone: req.body.sPhone,
+      sEmail: req.body.sEmail,
+      sName: req.body.sName + " (iGov)",
+      sInformation: 'iGov',
       sDate: req.body.sDate,
       sTime: req.body.sTime
     }, null, sHost);
