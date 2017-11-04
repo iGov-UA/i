@@ -14,6 +14,13 @@
                 ng-model="selected.slot"
                 ng-options="slot.sTime for slot in selected.date.aSlot"></select>
     </div>
+  </div><br>
+
+  <div>
+    <div ng-if="isDmsSlotReserved()">
+      <span>Обрати інший підрозділ ДМС або змінити мій телефон (резервування місця на обраний час буде анульовано)</span>
+      <button class="btn btn-warning" ng-click="cancelSlotHold()">Змінити</button>
+    </div>
   </div>
 
   <div ng-show="!slotsLoading && slotsData.aDay.length == 0">

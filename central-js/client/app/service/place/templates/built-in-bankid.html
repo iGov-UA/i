@@ -153,6 +153,10 @@
                     Ви маєте можливість їх редагувати.</p>
                 </div>
 
+                <div ng-if="property.type === 'tel' && isMPassField(null, true)">
+                  <p style="font-size: 12px;color: darkgrey">На цей номер будет вiдправлено ОТР-пароль</p>
+                </div>
+
                 <div class="inner-html s-field-notes" ng-if="property.options && (property.options.html || property.options.HTML)" ng-bind-html="property.options.html">
                 </div>
               </div>
@@ -561,7 +565,7 @@
 
                 <div ng-switch-when="tel">
                   <input type="text"
-                         ng-disabled="phoneVerify.confirmed"
+                         ng-disabled="phoneVerify.confirmed || bDmsSlotReserved"
                          name="{{property.id}}"
                          ng-model="data.formData.params[property.id].value"
                          ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"

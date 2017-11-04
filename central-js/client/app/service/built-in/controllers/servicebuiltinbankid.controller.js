@@ -391,21 +391,11 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
                 return false;
               }
               return false;
-            } else
-                break;
+            } else {
+              break;
+            }
           }
         }
-
-        for( var pay in $scope.data.formData.params ) {
-          if($scope.data.formData.params.hasOwnProperty(pay) && pay.indexOf('sID_Pay_MasterPass') === 0) {
-            if(!$scope.data.formData.params[pay].value) {
-              $scope.createPayment();
-              return false;
-            } else
-                break;
-          }
-        }
-
         /**
          * If oFile_XML_SWinEd property exists - try to handle taxTemplateFileHandler
          * https://github.com/e-government-ua/i/issues/1374
