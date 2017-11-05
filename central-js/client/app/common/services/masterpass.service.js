@@ -276,15 +276,16 @@ angular.module('app').service('MasterPassService', ['$http', '$location', '$wind
     //   })
     // },
 
-    otpConfirm: function (otp, token, phone) {
+    otpConfirm: function (options) {
       var deferred = $q.defer();
       this.getUserId().then(function (id) {
         var params = {
           "body": {
-            "value": otp,
-            "token": token,
-            "msisdn": phone,
-            "user_id": id
+            "value": options.otp,
+            "token": options.token,
+            "msisdn": options.phone,
+            "user_id": options.userId,
+            "guid": options.guid
           },
           "action": "Otp"
         };

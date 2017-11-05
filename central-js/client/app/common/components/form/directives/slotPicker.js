@@ -396,7 +396,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           } else if (isQueueDataType.QLogic){
             scope.slotsData = convertSlotsDataQlogic(response.data);
           }
-          scope.slotsLoading = false;
+          if ($http.pendingRequests.length === 0)
+            scope.slotsLoading = false;
         });
       };
 

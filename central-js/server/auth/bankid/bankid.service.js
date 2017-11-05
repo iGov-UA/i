@@ -239,7 +239,7 @@ module.exports.syncWithSubject = function (accessToken, done) {
     },
 
     function (result, callback) {
-      self.cacheCustomer(result, function (error, reponse, body) {
+      self.cacheCustomer(result, function (error, response, body) {
         if (error || body.code) {
           callback(createError(body, 'error while caching data. ' + body.message, response), null);
         } else {
