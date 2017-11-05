@@ -5,7 +5,7 @@
 package org.igov.service.controller.interceptor;
 
 import static org.igov.util.Tool.sCut;
-
+import java.text.DecimalFormat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,6 +28,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -134,6 +135,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
     public void postHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
+        processIpayHistory(request);
     }
 
     @Override
@@ -1054,6 +1056,103 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
                     ._Param("nID_Process", nID_Process)
                     ._LogTrace()
                     .save();
+        }
+    }
+    
+     private void processIpayHistory(HttpServletRequest oRequest){
+        
+        try{
+            Map<String, String> mRequestParam = new HashMap<>();
+            Enumeration<String> paramsName = oRequest.getParameterNames();
+
+            while (paramsName.hasMoreElements()) {
+                String sKey = (String) paramsName.nextElement();
+                mRequestParam.put(sKey, oRequest.getParameter(sKey));
+            }
+
+            LOG.info("mRequestParam in processIpayHistory {}", mRequestParam);
+            String sProcessInstanceId = mRequestParam.get("processInstanceId");
+            if(sProcessInstanceId != null){
+                List<HistoricVariableInstance> aHistoricVariableInstance = historyService.createHistoricVariableInstanceQuery()
+                                            .processInstanceId(sProcessInstanceId).list();
+                
+                HistoricVariableInstance oHistoricVariableInstance_asPayResult = null;
+                HistoricVariableInstance oHistoricVariableInstance_bHistoryIpayMessage = null;
+                HistoricVariableInstance oHistoricVariableInstance_bPayResult = null;
+                HistoricVariableInstance oHistoricVariableInstance_sID_Pay_MasterPass = null;
+
+                for(HistoricVariableInstance oHistoricVariableInstance : aHistoricVariableInstance){
+                    
+                    if(oHistoricVariableInstance.getVariableName().equals("asPayResult")){
+                        oHistoricVariableInstance_asPayResult = oHistoricVariableInstance;
+                    }
+                    
+                    if(oHistoricVariableInstance.getVariableName().equals("bHistoryIpayMessage")){
+                        oHistoricVariableInstance_bHistoryIpayMessage = oHistoricVariableInstance;
+                    }
+                    
+                    if(oHistoricVariableInstance.getVariableName().equals("bPayResult")){
+                        oHistoricVariableInstance_bPayResult = oHistoricVariableInstance;
+                    }
+                    
+                    if(oHistoricVariableInstance.getVariableName().equals("sID_Pay_MasterPass")){
+                        oHistoricVariableInstance_sID_Pay_MasterPass = oHistoricVariableInstance;
+                    }
+                }
+                
+                if(oHistoricVariableInstance_asPayResult != null && oHistoricVariableInstance_bPayResult != null && oHistoricVariableInstance_sID_Pay_MasterPass != null 
+                        && oHistoricVariableInstance_bHistoryIpayMessage == null)
+                {
+                      
+                    if(oHistoricVariableInstance_asPayResult.getValue() != null){
+                        
+                        org.activiti.engine.impl.util.json.JSONObject oResponseParams = 
+                                new org.activiti.engine.impl.util.json.JSONObject((String)oHistoricVariableInstance_asPayResult.getValue());
+                        
+                        org.activiti.engine.impl.util.json.JSONObject oRequestBody =
+                                new org.activiti.engine.impl.util.json.JSONObject((String)oHistoricVariableInstance_sID_Pay_MasterPass.getValue());
+                        
+                        String pmt_status = (String)((org.activiti.engine.impl.util.json.JSONObject)oResponseParams.get("response")).get("pmt_status");
+                        String amount = ((String)((org.activiti.engine.impl.util.json.JSONObject)oResponseParams.get("response")).get("amount"));
+                        
+                        if(amount != null){
+                            Map<String, String> mParam = new HashMap<>();
+                            
+                            Double amount_fix = (double)Integer.parseInt(amount)/100;
+                            DecimalFormat decim = new DecimalFormat("0.00");
+                            mParam.put("sIpay_Amount", decim.format(amount_fix));
+                            
+                            mParam.put("sID_Order", generalConfig.getOrderId_ByProcess(generalConfig.getSelfServerId(), Long.parseLong(sProcessInstanceId)));
+                            mParam.put("nID_StatusType", HistoryEvent_Service_StatusType.CREATED.getnID().toString());
+                            
+                            String user_id = null;
+                            
+                            if(oRequestBody.get("user_id") instanceof Integer){
+                                user_id = ((Integer)oRequestBody.get("user_id")).toString();
+                            }else if(oRequestBody.get("user_id") instanceof String){
+                                user_id = ((String)oRequestBody.get("user_id"));
+                            }
+                            
+                            mParam.put("nID_Subject", user_id);
+                            
+                            mParam.put("sUserTaskName", "");
+
+                            if(pmt_status.equals("5")){
+                                mParam.put("nID_HistoryEventType", "46");
+                                oActionEventHistoryService.doRemoteRequest("/wf/service/history/document/event/addHistoryEvent", mParam);
+                                runtimeService.setVariable(sProcessInstanceId, "bHistoryIpayMessage", "true");
+                            }
+                            if(pmt_status.equals("9") || pmt_status.equals("4")){
+                                mParam.put("nID_HistoryEventType", "47");
+                                oActionEventHistoryService.doRemoteRequest("/wf/service/history/document/event/addHistoryEvent", mParam);
+                                runtimeService.setVariable(sProcessInstanceId, "bHistoryIpayMessage", "true");
+                            }
+                        }
+                    }
+                }
+            }
+        }catch (Exception ex){
+            LOG.info("Error during processIpayHistory {}", ex);
         }
     }
 

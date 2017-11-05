@@ -236,6 +236,11 @@ public class GeneralConfig {
     @Value("${general.queue.qlogic.sPort}")
     private String sQlogicPort;
     
+    @Value("${general.Self.MasterPass_sPassword}")
+    private String sMasterPass_sPassword;
+    @Value("${general.Self.MasterPass_sSecretToken}")
+    private String sMasterPass_sSecretToken;
+    
     public String getsAddrClerk() {
 		return sAddrClerk;
 	}
@@ -291,7 +296,15 @@ public class GeneralConfig {
         }
         return b;
     }
+    
+    public String getsMasterPass_sPassword() {
+        return sMasterPass_sPassword;
+    }
 
+    public String getsMasterPass_sSecretToken() {
+        return sMasterPass_sSecretToken;
+    }
+    
     public String getSelfHost() {
         return sHost_Self;
     }
