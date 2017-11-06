@@ -8,12 +8,12 @@
       'taskForm', 'iGovNavbarHelper', 'Modal', 'Auth', 'defaultSearchHandlerService',
       '$state', 'stateModel', 'ValidationService', 'FieldMotionService', 'FieldAttributesService', '$rootScope',
       'lunaService', 'TableService', 'autocompletesDataFactory', 'documentRights', 'documentLogins', '$filter',
-      'processSubject', '$sce', 'eaTreeViewFactory', '$location',
+      'processSubject', '$sce', 'eaTreeViewFactory', '$location', 'tasksSearchService',
       function ($scope, $stateParams, taskData, oTask, PrintTemplateService, iGovMarkers, tasks, user,
                 taskForm, iGovNavbarHelper, Modal, Auth, defaultSearchHandlerService,
                 $state, stateModel, ValidationService, FieldMotionService, FieldAttributesService, $rootScope,
                 lunaService, TableService, autocompletesDataFactory, documentRights, documentLogins, $filter,
-                processSubject, $sce, eaTreeViewFactory, $location) {
+                processSubject, $sce, eaTreeViewFactory, $location, tasksSearchService) {
         var defaultErrorHandler = function (response, msgMapping) {
           defaultSearchHandlerService.handleError(response, msgMapping);
           if ($scope.taskForm) {
@@ -973,6 +973,8 @@
               .catch(defaultErrorHandler);
           }
         };
+
+        console.log(taskData);
 
         $scope.assignTask = function () {
           rollbackReadonlyEnumFields();
