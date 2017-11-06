@@ -1141,7 +1141,7 @@
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAnswerExplanation" name="Коментар колл-центру" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="asStatusOperator" name="Обробка звернення" type="enum" required="true">
-        <activiti:value id="sEnumSendInESC" name="Відправити в ЕСК"></activiti:value>
+          <activiti:value id="sEnumSendInESC" name="Відправити в ЕСК"></activiti:value>
           <activiti:value id="sEnumSendEmail" name="Відправити швидку відповідь на е-mail"></activiti:value>
           <activiti:value id="sEnumSendInFrontOffice" name="Відправити до фронт-офісу для письмової відповіді"></activiti:value>
           <activiti:value id="sEnumSendInUkrDoc" name="Відправити супервайзеру в УкрДок"></activiti:value>
@@ -1149,11 +1149,10 @@
           <activiti:value id="sEnumClose" name="Дзвінок здійснений заявнику. Питання вирішено"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]; ;bVisible=false" type="string" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html"  type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow5" sourceRef="servicetask3" targetRef="usertask4"></sequenceFlow>
@@ -1739,7 +1738,7 @@
         <activiti:formProperty id="sAnswerEmail" name="Отправка email; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${CreateDocument_UkrDoc}">
           <activiti:field name="sLoginAuthor">
-            <activiti:expression><![CDATA[EO180277SMV]]></activiti:expression>
+            <activiti:expression><![CDATA[it200687kov]]></activiti:expression>
           </activiti:field>
           <activiti:field name="nID_Pattern">
             <activiti:expression><![CDATA[10677]]></activiti:expression>
@@ -2412,7 +2411,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         </activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
-       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow30" name="asStatusOperator=='sEnumSendInCallCenter'" sourceRef="exclusivegateway1" targetRef="usertask3">
@@ -3010,7 +3008,6 @@ execution.setVariable('sAnswerEmail', res)</script>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow43" name="sAnswerStatus=='Reject'" sourceRef="exclusivegateway4" targetRef="usertask4">
@@ -3657,7 +3654,6 @@ execution.setVariable('sNameDepartment', per2)</script>
         <activiti:formProperty id="sResponsibleMan" name="Відповідальний в департаменті (управлінні)" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Order_GovPublic" name="Номер звернення ДМР" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]; ;bVisible=false" type="string" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
-       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow48" sourceRef="usertask9" targetRef="endevent10"></sequenceFlow>
@@ -4505,11 +4501,10 @@ execution.setVariable('sID_Order_GovPublic', fullNumber)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sCommentOperator" name="Коментар до відповіді" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sBody1" name="[pattern/print/dneprMVK/dnepr_mvk_291_common_print.html]; ;bVisible=false" type="string" default="Форма письмової відповіді" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html"  type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="File label;File title;pattern/print/dneprMVK/dnepr_mvk_291_common_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hideShowFields1" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="hideShowFields2" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="hideValidateFields3" type="markers" default="${markerService.loadFromFile('dneprMVK/dnepr_mvk_291_common3.json')}"></activiti:formProperty>
-       
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow109" sourceRef="usertask10_red" targetRef="scripttask6"></sequenceFlow>
