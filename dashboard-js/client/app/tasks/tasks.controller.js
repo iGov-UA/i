@@ -431,11 +431,11 @@
         if (foundTask)
           $scope.selectTask(foundTask);
         else
-          initDefaultTaskSelection();
+          loadNextTasksPage().then(function (nextTasks) {
+          updateTaskSelection(nextTasks, nID_Task);
+        });
+          // initDefaultTaskSelection();
         //?
-          // loadNextTasksPage().then(function (nextTasks) {
-          //   updateTaskSelection(nextTasks, nID_Task);
-          // });
       } else if ($state.current.name != 'tasks.typeof.view')
         initDefaultTaskSelection();
     };
