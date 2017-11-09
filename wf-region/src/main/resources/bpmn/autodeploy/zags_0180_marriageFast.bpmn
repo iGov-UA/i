@@ -81,7 +81,7 @@
           <activiti:value id="sEnum2" name="удівець"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sText_nonUkr1" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теріторію України з відзначкою про перетин кордону (паспорт).&lt;br&gt;Додайте оригінал та переклад цього документу, що зроблений кваліфікованим перекладачем на теріторії України, та з нотаріально засвідченим підписом перекладача.&lt;br&gt;Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на теріторії України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Додайте копії документів;в архіві, або у форматі PDF одним файлом;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Додайте копію документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше (разом з перекладом);в архіві, або у форматі PDF одним файлом;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
@@ -114,7 +114,7 @@
           <activiti:value id="sEnum2" name="удова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sText_nonUkr2" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теріторію України з відзначкою про перетин кордону (паспорт). Також необхідний переклад цього документу, що зроблений кваліфікованим перекладачем на теріторії України, та з нотаріально засвідченим підписом перекладача. Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на теріторії України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Додайте копії документів;в архіві, або у форматі PDF одним файлом;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Додайте копію документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше (разом з перекладом);в архіві, або у форматі PDF одним файлом;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
@@ -127,8 +127,7 @@
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWeddingDay" name="Дата церемонии ; ;bVisible=false" type="string"></activiti:formProperty>
-      </extensionElements>
+  	  </extensionElements>
     </startEvent>
     <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -138,8 +137,8 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії" writable="false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable=false"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPrivileges" name="Наявність пільги; ;writable=false" type="enum">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
