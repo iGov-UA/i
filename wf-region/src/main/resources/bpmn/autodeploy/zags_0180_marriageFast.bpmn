@@ -12,9 +12,9 @@
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="houseJustice" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="asMarriageType" name="Оберіть строк, за який потрібно організувати шлюбну церемонію; від цього залежить її вартість" type="enum" required="true">
-          <activiti:value id="sEnum1" name="Впродовж однієї доби (вартість 3300 грн.)"></activiti:value>
-          <activiti:value id="sEnum2" name="Від двох діб до місяця (вартість 1660 грн.)"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спиcка MarriageType; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText6" name=" ; ;labelType=info" type="label" default="Реквізити для сплати церемонії Ви отримаєте в електронному листі після перевірки даних організатором та реєстратором"></activiti:formProperty>
   <!--Блок оплати держмита-->
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
@@ -214,7 +214,6 @@
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSumOrganizer" name="Вартість церемонії" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingDRACS" name="Оберіть відділ ДРАЦС або відправити відмову" type="enum" default="1200000000_6" required="true">
           <activiti:value id="1200000000_6" name="Центральний районний відділ (вул. Січеславська Набережна, 10)"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
@@ -586,7 +585,7 @@ ${sBankDetails1}<br>
 
 <b>Реквізити для сплати послуги організатора:</b><br>
 ${sBankDetails3}
-Вартість послуги: <b> ${sSumOrganizer} грн </b><br>
+Вартість послуги: <b> ${sSum3} грн </b><br>
 <br>
 
 
