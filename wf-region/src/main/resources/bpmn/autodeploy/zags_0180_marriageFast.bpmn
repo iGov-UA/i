@@ -127,12 +127,12 @@
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
-  	  </extensionElements>
+      </extensionElements>
     </startEvent>
     <scriptTask id="scripttask2" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
     </scriptTask>
-        <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -211,10 +211,10 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії" writable="false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" writable="false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string"></activiti:formProperty>
-       <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
@@ -742,8 +742,20 @@ ${sMail_Signature} <br>
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="423.0" y="0.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="185.0" x="348.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
+        <omgdc:Bounds height="61.0" width="185.0" x="191.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask23" id="BPMNShape_servicetask23">
+        <omgdc:Bounds height="61.0" width="185.0" x="504.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
         <omgdc:Bounds height="55.0" width="185.0" x="348.0" y="309.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask21" id="BPMNShape_servicetask21">
+        <omgdc:Bounds height="63.0" width="202.0" x="183.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
         <omgdc:Bounds height="55.0" width="185.0" x="486.0" y="440.0"></omgdc:Bounds>
@@ -760,23 +772,14 @@ ${sMail_Signature} <br>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="214.0" x="160.0" y="895.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
-        <omgdc:Bounds height="61.0" width="185.0" x="191.0" y="230.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent10" id="BPMNShape_endevent10">
         <omgdc:Bounds height="35.0" width="35.0" x="561.0" y="850.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="185.0" x="348.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask20" id="BPMNShape_servicetask20">
         <omgdc:Bounds height="63.0" width="213.0" x="160.0" y="649.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway6" id="BPMNShape_exclusivegateway6">
         <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="380.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask21" id="BPMNShape_servicetask21">
-        <omgdc:Bounds height="63.0" width="202.0" x="183.0" y="440.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent11" id="BPMNShape_endevent11">
         <omgdc:Bounds height="35.0" width="35.0" x="266.0" y="540.0"></omgdc:Bounds>
@@ -786,9 +789,6 @@ ${sMail_Signature} <br>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
         <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="195.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask23" id="BPMNShape_servicetask23">
-        <omgdc:Bounds height="61.0" width="185.0" x="504.0" y="230.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="558.0" y="660.0"></omgdc:Bounds>
