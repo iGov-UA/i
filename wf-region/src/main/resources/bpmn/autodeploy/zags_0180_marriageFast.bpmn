@@ -52,12 +52,12 @@
           <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до ДРАЦСу"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCeremony" name="Вкажіть бажану дату та час проведення обряду" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Вкажіть бажану дату та час проведення обряду" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" ; ;labelType=info" type="label" default="Для уточнення дати, часу та деталей обряду з Вами зв'яжуться в телефонному режимі"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="лінія Дані нареченого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані нареченого&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAge1" name="Вік" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
@@ -90,7 +90,7 @@
         <activiti:formProperty id="markersLine_2" name="Дані нареченої" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA2&quot;],&quot;sValue&quot;:&quot;Дані нареченої&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string"></activiti:formProperty>
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string"></activiti:formProperty>
-        <activiti:formProperty id="middleName_UA2" name="По батькові" type="string"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date"></activiti:formProperty>
         <activiti:formProperty id="sAge2" name="Вік" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
@@ -211,8 +211,6 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
@@ -280,6 +278,7 @@ ${sMail_Signature}<br>
           <activiti:value id="1200000000_6" name="Центральний районний відділ (вул. Січеславська Набережна, 10)"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="date"></activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentDRACS" name="Коментар відділу ДРАЦС" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -344,12 +343,11 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Наявність пільги; ;writable=false" type="enum">
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
-          <activiti:value id="sEnum2" name="Не маю пільгу"></activiti:value>
+          <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
+          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -366,10 +364,6 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sAge1" name="Вік; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact1" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sWithoutCitizenship1" name="Особа без громадянства" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Так"></activiti:value>
-          <activiti:value id="sEnum2" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби" type="enum" writable="false">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
@@ -394,10 +388,6 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sAge2" name="Вік; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sWithoutCitizenship2" name="Особа без громадянства або біженець" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Так"></activiti:value>
-          <activiti:value id="sEnum2" name="Ні"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum" writable="false">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
@@ -421,6 +411,8 @@ ${sMail_Signature}<br>
           <activiti:value id="returnApp" name="Повернути звернення організатору Вкажіть коментар нижче"></activiti:value>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="comment1" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentDRACS" name="Коментар для організатора (у випадку неможливості виїзду реєстратора)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -429,12 +421,15 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      </extensionElements>
+      	<activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+       </extensionElements>
     </userTask>
     <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -444,12 +439,11 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії (в заяві)" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="asEnjoyingPrivileges" name="Наявність пільги" type="enum" writable="false">
+        <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
-          <activiti:value id="sEnum2" name="Не маю пільгу"></activiti:value>
+          <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
+          <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -465,10 +459,7 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge1" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWithoutCitizenship1" name="Особа без громадянства або біженець" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Так"></activiti:value>
-          <activiti:value id="sEnum2" name="Ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sAddressFact1" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
@@ -483,7 +474,6 @@ ${sMail_Signature}<br>
           <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact1" name="Місце проживання" type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName1" name="Після реєстрації шлюбу бажає мати прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Дані нареченої" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA2&quot;],&quot;sValue&quot;:&quot;Дані нареченої&quot;}}}"></activiti:formProperty>
@@ -493,10 +483,7 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sAge2" name="Вік" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження " type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sWithoutCitizenship2" name="Особа без громадянства" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Так"></activiti:value>
-          <activiti:value id="sEnum2" name="Ні"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sAddressFact2" name="Місце проживання " type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби; ;writable=false" type="enum">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
@@ -511,7 +498,6 @@ ${sMail_Signature}<br>
           <activiti:value id="sEnum3" name="Шлюб розірвано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу " type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact2" name="Місце проживання " type="textArea" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище " type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -522,7 +508,7 @@ ${sMail_Signature}<br>
           <activiti:value id="reject" name="Відмовити громадянину в наданні послуги. Закрити заявку"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="isSigned" name="Заява отримала підписи наречених?" type="enum" writable="false">
+        <activiti:formProperty id="isSigned" name="Заява отримала підписи наречених?" type="enum">
           <activiti:value id="signed" name="Отримано обидва підписа наречених на паперовому носії"></activiti:value>
           <activiti:value id="signed2" name="Отримано обидва підписа наречених в електроній формі"></activiti:value>
           <activiti:value id="notSigned" name="Після 3 днів очікування підписи наречених не отримано. Закрити звернення."></activiti:value>
@@ -530,17 +516,22 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="bankIdinn" name="ІПН заявника ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/minust/zags_0180_marriageFast.html] ; ;bVisible=false ,bPrintform=true" type="string" default="заява громадян" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markersLine_3" name="Шнші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDateCeremony" name="Бажана дата церемонії; ;writable=false" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sDateWeddingApplication" name="Дата та час церемонії" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide2" name="Результат надання послуги" type="enum" required="true">
           <activiti:value id="accept2" name="Підтверджую, що заявники отримали послугу"></activiti:value>
           <activiti:value id="reject2" name="Громадяни не з'явилися для отримання послуги. Закрити заявку."></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
