@@ -14,6 +14,7 @@
         <activiti:formProperty id="nList" name="Оберіть строк, за який потрібно організувати шлюбну церемонію; від цього залежить її вартість" type="enum" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спиcка MarriageType; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText6" name=" ; ;labelType=info" type="label" default="Реквізити для сплати церемонії Ви отримаєте в електронному листі після перевірки даних організатором та реєстратором"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Оберіть бажаний спосіб для сплати держ.мита (0,85 грн.);Ви можете сплатити цю суму через Інтернет банківською карткою або зробити звичайний банківський платіж за реквізитами. Якщо Ви маєте пільгу, оплата не потрібна" type="enum" required="true">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
@@ -127,7 +128,8 @@
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_4.json')}"></activiti:formProperty>
         <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="sDateWeddingApplication" name="дата проведення; ;bVisible=false" type="date"></activiti:formProperty>
+     </extensionElements>
     </startEvent>
     <scriptTask id="scripttask2" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
@@ -205,6 +207,8 @@ ${sMail_Signature}<br>
     </serviceTask>
     <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса організатора ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -343,6 +347,8 @@ ${sMail_Signature}<br>
     </serviceTask>
     <userTask id="usertask1" name="${sSourceType} - Перевірка інформації ДРАЦС" activiti:candidateGroups="common_zags_${asEnjoyingDRACS}">
       <extensionElements>
+        <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса організатора ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -444,6 +450,8 @@ ${sMail_Signature}<br>
     </userTask>
     <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
+        <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса сервісного центру ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="Підпис ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -640,7 +648,7 @@ ${sBankDetails2}<br>
 
 <b>Реквізити для сплати послуги організатора:</b><br>
 ${sBankDetails3}<br>
-Вартість послуги: <b> ${sSum2} грн. </b><br>
+Вартість послуги: <b> ${sSum3} грн. </b><br>
 <br>
 
 Під час візиту на церемонію обов'язково при собі мати:<br>
