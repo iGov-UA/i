@@ -43,7 +43,6 @@
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1 ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateCeremony" name="Вкажіть бажану дату та час проведення обряду" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" ; ;labelType=info" type="label" default="Для уточнення дати, часу та деталей обряду з Вами зв'яжуться в телефонному режимі"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="лінія Дані нареченого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані нареченого&quot;}}}"></activiti:formProperty>
@@ -59,7 +58,7 @@
           <activiti:value id="sEnum2" name="Громадянин іншої країни"></activiti:value>
           <activiti:value id="sEnum3" name="Особа без громадянства або біженець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship1" name="Громадянство" type="string" required="true" default="Україна"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби" type="enum" required="true">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -92,7 +91,7 @@
           <activiti:value id="sEnum2" name="Громадянин іншої країни"></activiti:value>
           <activiti:value id="sEnum3" name="Особа без громадянства або біженець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sCitizenship2" name="Громадянство" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sCitizenship2" name="Громадянство" type="string" required="true" default="Україна"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum" required="true">
           <activiti:value id="sEnumNo" name="на обліку не перебуваю"></activiti:value>
           <activiti:value id="sEnumRegistered" name="перебуваю на обліку"></activiti:value>
@@ -719,9 +718,9 @@ ${sMail_Signature} <br>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='returnApp'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src=execution.getVariable('sDateCeremony');
-var src1=execution.getVariable('sBirthDate1');
-var src2=execution.getVariable('sBirthDate2');
+      <script>var src= new Date (execution.getVariable('sDateCeremony'));
+var src1= new Date (execution.getVariable('sBirthDate1'));
+var src2= new Date (execution.getVariable('sBirthDate2'));
 var year=getFullYear(src);
 var year1=getFullYear(src1);
 var year2=getFullYear(src2);
