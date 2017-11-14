@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_560_fop" name="Державна реєстрація створення фізичної особи – підприємця" isExecutable="true">
-    <documentation>AGVersion: 2017.10.10
+    <documentation>AGVersion: 2017.11.14
 		-</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -207,7 +207,6 @@
         <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника: ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/dnepr_cnap_560_fop2_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію" writable="false"></activiti:formProperty>
-
         <activiti:formProperty id="fVarDod1" name="Заява на спрощену систему оподаткування ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fVarDod2" name="Заява про на платника ПДВ ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -219,63 +218,63 @@
     <serviceTask id="servicetask3" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (з копією рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено рішення про відмову в реєстрації.<br /><br />
-Коментар держслужбовця (${sComment})<br /><br />
-Унікальний номер "Код" : <strong>${sUniqNum}</strong>. <br /><br />
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на <a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank">офіційній сторінці Міністерства юстиції України</a>.<br /><br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${fDecisionDoc}]]></activiti:expression>
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask4" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (з копією рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.<br /><br />
-Унікальний номер "Код" : <strong>${sUniqNum}</strong>. <br /><br />
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на <a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank">офіційній сторінці Міністерства юстиції України</a>.<br /><br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${fDecisionDoc}]]></activiti:expression>
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -289,10 +288,10 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Нове звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Нове звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
+          <activiti:expression>[pattern/mail/new_design/_common_employee_notify.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -300,57 +299,57 @@
     <serviceTask id="servicetask5" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (без копії рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.<br /><br />
-Унікальний номер "Код" : <strong>${sUniqNum}</strong>. <br /><br />
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на <a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank">офіційній сторінці Міністерства юстиції України</a>, обравши для пошуку опцію "Результат надання адміністративних послуг.
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
 
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask6" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (без копії рішення-з кодом опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено рішення про відмову в реєстрації.<br /><br />
-Коментар держслужбовця (${sComment})<br /><br />
-Унікальний номер "Код" : <strong>${sUniqNum}</strong>. <br /><br />
-У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на <a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank">офіційній сторінці Міністерства юстиції України</a>, обравши для пошуку опцію "Результат надання адміністративних послуг.
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
+Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
+У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
 
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -358,19 +357,19 @@
     <serviceTask id="servicetask7" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (без копії рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено рішення про відмову в реєстрації.<br /><br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
 Коментар держслужбовця (${sComment})
 
 
@@ -378,27 +377,27 @@
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask8" name="Е-mail повідомлення заявнику про виконану заявку з негативним результатом (з копією рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено рішення про відмову в реєстрації.<br /><br />
-Коментар держслужбовця (${sComment})<br /><br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено рішення про відмову в реєстрації.&lt;br /&gt;&lt;br /&gt;
+Коментар держслужбовця (${sComment})&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
 
@@ -406,29 +405,29 @@
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${fDecisionDoc}]]></activiti:expression>
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask9" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (з копією рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithAttachments}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.<br /><br />
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
 
@@ -436,39 +435,68 @@
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${fDecisionDoc}]]></activiti:expression>
+          <activiti:expression>${fDecisionDoc}</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
     <serviceTask id="servicetask10" name="Е-mail повідомлення заявнику про виконану заявку з позитивним результатом (без копії рішення-без коду опису)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+          <activiti:expression>${email}</activiti:expression>
         </activiti:field>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:expression><![CDATA[iGov - Ваше звернення на тему: ${sNameService}.]]></activiti:expression>
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
         </activiti:field>
         <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему <strong>"${sNameService}</strong>", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
 
 
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
+
+    <serviceTask id="servicetask11" name="Е-mail повідомлення заявнику про зареєстровану заявку" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression>${email}</activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression>iGov - Ваше звернення на тему: ${sNameService}.</activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression>[pattern/mail/new_design/_common_header.html]
+		[pattern/mail/new_design/_common_content_start.html]
+
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", успішно зареєстровано.&lt;br /&gt;
+В даний час воно очікує на взяття в роботу держслужбовцем.
+&lt;br /&gt;
+&lt;br /&gt;
+
+
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]</activiti:expression>
+        </activiti:field>
+      </extensionElements>
+	</serviceTask>
     <sequenceFlow id="flow16" sourceRef="exclusivegateway1" targetRef="servicetask4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sUniqNum !='_' && asHaveDecisionFile=='yesDecisionFile' && asDecisionMain=='acceptMain'}]]></conditionExpression>
     </sequenceFlow>
@@ -502,7 +530,8 @@
     <sequenceFlow id="flow34" sourceRef="servicetask10" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow35" sourceRef="servicetask8" targetRef="exclusivegateway3"></sequenceFlow>
     <sequenceFlow id="flow36" sourceRef="servicetask3" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="startevent1" targetRef="servicetask2"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="startevent1" targetRef="servicetask11"></sequenceFlow>
+    <sequenceFlow id="flow38" sourceRef="servicetask11" targetRef="servicetask2"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_cnap_560_fop">
     <bpmndi:BPMNPlane bpmnElement="dnepr_cnap_560_fop" id="BPMNPlane_dnepr_cnap_560_fop">
@@ -547,6 +576,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="55.0" width="351.0" x="590.0" y="1.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask11" id="BPMNShape_servicetask11">
+        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="208.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
         <omgdi:waypoint x="514.0" y="235.0"></omgdi:waypoint>
@@ -642,6 +674,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="115.0" y="235.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="235.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="245.0" y="235.0"></omgdi:waypoint>
         <omgdi:waypoint x="280.0" y="235.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
