@@ -719,16 +719,7 @@ ${sMail_Signature} <br>
     </sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>var src= execution.getVariable('sDateCeremony');
-var src1= execution.getVariable('sBirthDate1');
-var src2= execution.getVariable('sBirthDate2');
-var year=src.substr(0,4);
-var year1=src1.substr(0,4);;
-var year2=src2.substr(0,4);
-var deltayear1=year-year1;
-var deltayear2=year-year2;
 execution.setVariable('sDateWeddingApplication', src);
-execution.setVariable('sAge1', deltayear1);
-execution.setVariable('sAge2', deltayear2)</script>
     </scriptTask>
     <sequenceFlow id="flow98" sourceRef="servicetask22" targetRef="scripttask1"></sequenceFlow>
     <sequenceFlow id="flow99" sourceRef="scripttask1" targetRef="exclusivegateway7"></sequenceFlow>
