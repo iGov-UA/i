@@ -4,13 +4,10 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sText16" name=" ; ;labelType=info" type="label" default="Також Ви можете скористатися послугою &lt;a href=&quot;https://igov.org.ua/service/703/general&quot; target=&quot;_blank&quot;&gt;заява про реєстрацію шлюбу за стандартною процедурою (30 днів)&lt;/a&gt;"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН референта" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText1" name="Зверніть увагу; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявість підписаної обома нареченими заяви. &lt;br&gt;Ви матимете можливість підписати заяву за допомогою ЕЦП або впродовж 3 днів з моменту замовлення послуги (але не пізніше, ніж за три дні до церемонії) приїхати особисто до відділу ДРАЦС і підписати паперовий екземпляр заяви."></activiti:formProperty>
-        <activiti:formProperty id="sText2" name=" " type="label" default="&lt;a href=&quot;https://goo.gl/1OioXt&quot; target=&quot;_blank&quot;&gt;Де і як в Україні можна отримати ЕЦП?&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть організатора державної реєстрації шлюбу" type="select" default="houseJustice" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sPhoto" name="Фото урочистої зали" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="nList" name="Оберіть строк, за який потрібно організувати шлюбну церемонію; від цього залежить її вартість" type="enum" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSelectedListItem" name="Выбранное значение из спиcка MarriageType; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -29,7 +26,6 @@
           <activiti:value id="sEnum5" name="інваліди I та II груп"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа, що підтверджує льготну категорію; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sText3" name="неможливо сплатити державне мито онлайн; ;labelType=warning" type="label" default="На жаль, для обраного ДРАЦС тимчасово неможливо сплатити державне мито онлайн"></activiti:formProperty>
         <activiti:formProperty id="sText5" name="повідомлення з можливістю оплати державного мита онлайн; ;labelType=info" type="label" default="Після замовлення послуги на електронну адресу прийде повідомлення з можливістю оплати державного мита онлайн"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
@@ -48,11 +44,6 @@
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDate1" name="nID_Department_visitDate1 ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asSourceType" name="Джерело надходження звернення" type="enum">
-          <activiti:value id="MinUst" name="Заявка подана через портал minjust.gov.ua"></activiti:value>
-          <activiti:value id="Personal" name="Заявка подана громадянами під час візиту до ДРАЦСу"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sSourceType" name="Обране Джерело надходження звернення ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateCeremony" name="Вкажіть бажану дату та час проведення обряду" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" ; ;labelType=info" type="label" default="Для уточнення дати, часу та деталей обряду з Вами зв'яжуться в телефонному режимі"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="лінія Дані нареченого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані нареченого&quot;}}}"></activiti:formProperty>
@@ -121,19 +112,13 @@
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bReferent" name="Referent ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
-        <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="дата проведення; ;bVisible=false" type="date"></activiti:formProperty>
-     </extensionElements>
+      </extensionElements>
     </startEvent>
-    <scriptTask id="scripttask2" name="Script Task CreateDate" scriptFormat="groovy" activiti:autoStoreVariables="false">
-      <script>execution.setVariable('sDateAppeal', new Date().format("dd.MM.yyyy").toString())</script>
-    </scriptTask>
     <serviceTask id="servicetask10" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
@@ -205,7 +190,7 @@ ${sMail_Signature}<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask5" name="${sSourceType} - Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask5" name="Перевірка інформації організатором" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
@@ -345,7 +330,7 @@ ${sMail_Signature}<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <userTask id="usertask1" name="${sSourceType} - Перевірка інформації ДРАЦС" activiti:candidateGroups="common_zags_${asEnjoyingDRACS}">
+    <userTask id="usertask1" name="Перевірка інформації ДРАЦС" activiti:candidateGroups="common_zags_${asEnjoyingDRACS}">
       <extensionElements>
         <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
@@ -355,7 +340,6 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
@@ -438,17 +422,17 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/zags_0180_marriageFast_2.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на реєстрацію шлюбу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/zags_0180_marriageFast_3.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Акт прийому-передачі наданих послуг" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/zags_0180_marriageFast_4.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про платні послуги РАЦС" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      	<activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-       </extensionElements>
+        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+      </extensionElements>
     </userTask>
-    <userTask id="usertask2" name="${sSourceType} - Надання послуги" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sSum3" name="Сума за послуги організатора в залежності від строку організації шлюбу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum2" name="Сума за послуги РАЦС; ;bVisible=false" type="string"></activiti:formProperty>
@@ -458,7 +442,6 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="sNameOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі заяви" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asEnjoyingPaymentMethod" name="Держмито було сплачене:" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Маю пільгу"></activiti:value>
           <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
@@ -547,7 +530,7 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/zags_0180_marriageFast_2.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на реєстрацію шлюбу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/zags_0180_marriageFast_3.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Акт прийому-передачі наданих послуг" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/zags_0180_marriageFast_4.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про платні послуги РАЦС" writable="false"></activiti:formProperty>
-       <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -555,7 +538,7 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        </extensionElements>
+      </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -717,10 +700,8 @@ ${sMail_Signature} <br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow88" sourceRef="servicetask22" targetRef="scripttask2"></sequenceFlow>
     <sequenceFlow id="flow89" sourceRef="startevent1" targetRef="servicetask22"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow90" sourceRef="scripttask2" targetRef="exclusivegateway7"></sequenceFlow>
     <sequenceFlow id="flow91" sourceRef="exclusivegateway7" targetRef="servicetask23">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asEnjoyingPaymentMethod == 'sEnum2'}]]></conditionExpression>
     </sequenceFlow>
@@ -737,14 +718,26 @@ ${sMail_Signature} <br>
     <sequenceFlow id="flow97" name="${decide=='returnApp'}" sourceRef="exclusivegateway8" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='returnApp'}]]></conditionExpression>
     </sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>var src=execution.getVariable('sDateCeremony');
+var src1=execution.getVariable('sBirthDate1');
+var src2=execution.getVariable('sBirthDate2');
+var year=src.substr(0,4);
+var year1=src1.substr(0,4);
+var year2=src2.substr(0,4);
+var deltayear1=year-year1;
+var deltayear2=year-year2;
+execution.setVariable('sDateWeddingApplication', src);
+execution.setVariable('sAge1', deltayear1);
+execution.setVariable('sAge2', deltayear2)</script>
+    </scriptTask>
+    <sequenceFlow id="flow98" sourceRef="servicetask22" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow99" sourceRef="scripttask1" targetRef="exclusivegateway7"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zags_0180_marriageFast">
     <bpmndi:BPMNPlane bpmnElement="zags_0180_marriageFast" id="BPMNPlane_zags_0180_marriageFast">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="423.0" y="0.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
-        <omgdc:Bounds height="55.0" width="185.0" x="348.0" y="130.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask10" id="BPMNShape_servicetask10">
         <omgdc:Bounds height="61.0" width="185.0" x="191.0" y="230.0"></omgdc:Bounds>
@@ -794,6 +787,9 @@ ${sMail_Signature} <br>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="558.0" y="660.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="388.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="267.0" y="950.0"></omgdi:waypoint>
         <omgdi:waypoint x="266.0" y="1000.0"></omgdi:waypoint>
@@ -830,17 +826,9 @@ ${sMail_Signature} <br>
         <omgdi:waypoint x="579.0" y="824.0"></omgdi:waypoint>
         <omgdi:waypoint x="578.0" y="850.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow88" id="BPMNEdge_flow88">
-        <omgdi:waypoint x="440.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="130.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
         <omgdi:waypoint x="440.0" y="35.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="60.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow90" id="BPMNEdge_flow90">
-        <omgdi:waypoint x="533.0" y="157.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow91" id="BPMNEdge_flow91">
         <omgdi:waypoint x="460.0" y="215.0"></omgdi:waypoint>
@@ -880,6 +868,14 @@ ${sMail_Signature} <br>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="42.0" width="100.0" x="639.0" y="632.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow98" id="BPMNEdge_flow98">
+        <omgdi:waypoint x="440.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
+        <omgdi:waypoint x="493.0" y="157.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
