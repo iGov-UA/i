@@ -718,12 +718,12 @@ ${sMail_Signature} <br>
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='returnApp'}]]></conditionExpression>
     </sequenceFlow>
     <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
-      <script>var src= new Date (execution.getVariable('sDateCeremony'));
-var src1= new Date (execution.getVariable('sBirthDate1'));
-var src2= new Date (execution.getVariable('sBirthDate2'));
-var year=getFullYear(src);
-var year1=getFullYear(src1);
-var year2=getFullYear(src2);
+      <script>var src= execution.getVariable('sDateCeremony');
+var src1= execution.getVariable('sBirthDate1');
+var src2= execution.getVariable('sBirthDate2');
+var year=src.substr(0,4);
+var year1=src1.substr(0,4);;
+var year2=src2.substr(0,4);
 var deltayear1=year-year1;
 var deltayear2=year-year2;
 execution.setVariable('sDateWeddingApplication', src);
