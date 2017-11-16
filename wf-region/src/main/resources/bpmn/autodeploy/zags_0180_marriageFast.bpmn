@@ -29,13 +29,13 @@
         <activiti:formProperty id="sText5" name="повідомлення з можливістю оплати державного мита онлайн; ;labelType=info" type="label" default="Після замовлення послуги на електронну адресу прийде повідомлення з можливістю оплати державного мита онлайн"></activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail" type="string" default="i10172968078"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant" name="Ви можете сплатити державне мито онлайн (0,85 грн + 1.8% коміссія);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату  на Ваш e-mail; ;bVisible=false" type="string" default="i10172968078"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBankDetails1" name="Реквізити для сплати державного мита ; ;" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати за церемонію ; ;" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBankDetails3" name="Реквізити для сплати послуг організатора ; ;" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails2" name="Реквізити для сплати за церемонію ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBankDetails3" name="Реквізити для сплати послуг організатора; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса  ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -48,13 +48,13 @@
         <activiti:formProperty id="mail_date" name="дата церемонії для листа розпарсена; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" ; ;labelType=info" type="label" default="Для уточнення дати, часу та деталей обряду з Вами зв'яжуться в телефонному режимі"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="лінія Дані нареченого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані нареченого&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAge1" name="Вік; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBornPlace1" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact1" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBornPlace1" name="Місце народження; місто, село, район,область, держава" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact1" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship1" name="Чи є Ви громадянином України, громадянином іншої держави, особою без громадянства або біженцем" type="enum" required="true">
           <activiti:value id="sEnum1" name="Громадянин України"></activiti:value>
           <activiti:value id="sEnum2" name="Громадянин іншої країни"></activiti:value>
@@ -73,21 +73,21 @@
           <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
           <activiti:value id="sEnum2" name="удівець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText_nonUkr1" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теритію України з відзначкою про перетин кордону (паспорт).&lt;br&gt;Додайте оригінал та переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача.&lt;br&gt;Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))"></activiti:formProperty>
+        <activiti:formProperty id="sText_nonUkr1" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теритію України з відзначкою про перетин кордону (паспорт).&lt;br&gt;Додайте оригінал та переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача.&lt;br&gt;Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))" required="true"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Додайте копію (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше;в архіві, або у форматі PDF одним файлом;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNewLastName1" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNewLastName1" name="Після реєстрації шлюбу бажає мати прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Дані нареченої" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA2&quot;],&quot;sValue&quot;:&quot;Дані нареченої&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string"></activiti:formProperty>
-        <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string"></activiti:formProperty>
+        <activiti:formProperty id="lastName_UA2" name="Прізвище" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date"></activiti:formProperty>
+        <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAge2" name="Вік; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви громадянином України, громадянином іншої держави, особою без громадянства або біженцем" type="enum" required="true">
           <activiti:value id="sEnum1" name="Громадянин України"></activiti:value>
           <activiti:value id="sEnum2" name="Громадянин іншої країни"></activiti:value>
@@ -101,18 +101,18 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMarriage2" name="Сімейний стан" type="enum">
+        <activiti:formProperty id="sMarriage2" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="sEnum1" name="у шлюбі не перебувала"></activiti:value>
           <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
           <activiti:value id="sEnum2" name="удова"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText_nonUkr2" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теритію України з відзначкою про перетин кордону (паспорт). Також необхідний переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача. Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))"></activiti:formProperty>
+        <activiti:formProperty id="sText_nonUkr2" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теритію України з відзначкою про перетин кордону (паспорт). Також необхідний переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача. Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))" required="true"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Додайте копію (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше;в архіві, або у форматі PDF одним файлом;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
-        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty>
       </extensionElements>
