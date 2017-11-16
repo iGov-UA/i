@@ -52,7 +52,7 @@
         <activiti:formProperty id="firstName_UA1" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBirthDate1" name="Дата народження" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sAge1" name="Вік" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAge1" name="Вік; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact1" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship1" name="Чи є Ви громадянином України, громадянином іншої держави, особою без громадянства або біженцем" type="enum" required="true">
@@ -85,7 +85,7 @@
         <activiti:formProperty id="firstName_UA2" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA2" name="По батькові" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBirthDate2" name="Дата народження" type="date"></activiti:formProperty>
-        <activiti:formProperty id="sAge2" name="Вік" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAge2" name="Вік; ;bVisible=false" type="long"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; місто, село, район,область, держава" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; повна адреса з зазначенням індексу" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви громадянином України, громадянином іншої держави, особою без громадянства або біженцем" type="enum" required="true">
@@ -734,8 +734,8 @@ if(mmm =='01'&amp;&amp;ddd=='01')
   mmm2='12'
   yyyy2=yyyy
   }
-var age1 = +yyyy-yyyyBirth1
-var age2 = +yyyy-yyyyBirth2
+var age1 = Math.round(+yyyy-yyyyBirth1)
+var age2 = Math.round(+yyyy-yyyyBirth2)
 timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('mail_date', timeMar)
 execution.setVariable('sAge1', age1)
