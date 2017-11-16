@@ -126,8 +126,8 @@ public class Mail extends Abstract_Mail {
             oMultiPartEmail.setHostName(getHost());
 
             String[] asTo = {sMailOnly(getTo())};
-            if (getTo().contains("\\,")) {
-                asTo = getTo().split("\\,");//sTo
+            if (getTo().contains(",")) {
+                asTo = getTo().replaceAll(" ", "").split("\\,");//sTo
                 for (String s : asTo) {
                     LOG.info("oMultiPartEmail.addTo (s={})", s);
                     oMultiPartEmail.addTo(s, "receiver");
