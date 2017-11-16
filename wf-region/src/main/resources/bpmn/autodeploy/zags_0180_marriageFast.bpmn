@@ -708,35 +708,8 @@ if (mmm == 'Nov'){ mmm='11'}
 if (mmm == 'Dec'){ mmm='12'}
 	ddd=timeMar.substr(8,2)
 timeMar = ddd+'-'+mmm+'-'+yyyy
-yyyy2 = yyyy-(-1)
-if (ddd == '01')
-  {
-  mmm2=mmm-1
-  if (mmm2&lt;10)
-    {mmm2 = '0'+mmm2}
-
-  if(mmm =='06'||'09'||'11'||'04'||'02'||'08')
-    {ddd2='31'}
-  else
-    {ddd2='30'}      
-      
-  if(mmm =='03')
-    {ddd2='28'}
-  }
-  else
-  {
-    mmm2=mmm
-    ddd2=ddd-1
-  }
-if(mmm =='01'&amp;&amp;ddd=='01')
-  {
-  ddd2='31'
-  mmm2='12'
-  yyyy2=yyyy
-  }
 var age1 = Math.round(+yyyy-yyyyBirth1)
 var age2 = Math.round(+yyyy-yyyyBirth2)
-timeE = ddd2+'-'+mmm2+'-'+yyyy2	
 execution.setVariable('mail_date', timeMar)
 execution.setVariable('sAge1', age1.toString())
 execution.setVariable('sAge2', age2.toString())
