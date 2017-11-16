@@ -45,6 +45,7 @@
         <activiti:formProperty id="sPhoneOrgan" name="sPhoneOrgan ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sDateCeremony" name="Вкажіть бажану дату проведення обряду" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateWeddingApplication" name="час проведення; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="mail_date" name="дата церемонії для листа розпарсена; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sText4" name=" ; ;labelType=info" type="label" default="Для уточнення дати, часу та деталей обряду з Вами зв'яжуться в телефонному режимі"></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="лінія Дані нареченого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;lastName_UA1&quot;],&quot;sValue&quot;:&quot;Дані нареченого&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="lastName_UA1" name="Прізвище" type="string"></activiti:formProperty>
@@ -638,7 +639,7 @@ ${sBankDetails3}<br>
 Обов'язково ознайомтесь з порядком та правилами реєстрації шлюбу за цим <a href="https://goo.gl/rujywk" target="_blank">посиланням</a>
 <br>
 <br>
-Чекаємо на Вас ${sDateCeremony} о ${sDateWeddingApplication} за адресою: ${sAddress}.<br><br>
+Чекаємо на Вас ${mail_date} о ${sDateWeddingApplication} за адресою: ${sAddress}.<br><br>
 Будь ласка прийдіть за 15 хвилин до церемонії.<br><br>
 Телефон для довідок: ${sPhoneOrgan} <br>                                 
 [pattern/mail/new_design/_common_content_end.html] 
@@ -712,7 +713,69 @@ ${sMail_Signature} <br>
     <sequenceFlow id="flow97" name="${decide=='returnApp'}" sourceRef="exclusivegateway8" targetRef="usertask5">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='returnApp'}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="flow98" sourceRef="servicetask22" targetRef="exclusivegateway7"></sequenceFlow>
+    <sequenceFlow id="flow98" sourceRef="scripttask1" targetRef="exclusivegateway7"></sequenceFlow>
+    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var yyyy = ''
+var mmm = ''
+var ddd = ''
+var timeMar = ''
+var yyyy2 = ''
+var mmm2 = ''
+var ddd2 = ''
+var timeE = ''
+var eest = ''
+    timeMar=execution.getVariable('sDateCeremony').toString()
+    eest=timeMar.substr(20,4)
+    if(eest == 'EEST'){yyyy=timeMar.substr(25,4)}
+    else{yyyy=timeMar.substr(24,4)}
+    mmm=timeMar.substr(4,3)
+if (mmm == 'Jan'){ mmm='01'}
+if (mmm == 'Feb'){ mmm='02'}
+if (mmm == 'Mar'){ mmm='03'}
+if (mmm == 'Apr'){ mmm='04'}
+if (mmm == 'May'){ mmm='05'}
+if (mmm == 'Jun'){ mmm='06'}
+if (mmm == 'Jul'){ mmm='07'}
+if (mmm == 'Aug'){ mmm='08'}
+if (mmm == 'Sep'){ mmm='09'}
+if (mmm == 'Oct'){ mmm='10'}
+if (mmm == 'Nov'){ mmm='11'}
+if (mmm == 'Dec'){ mmm='12'}
+
+	ddd=timeMar.substr(8,2)
+timeMar = ddd+'-'+mmm+'-'+yyyy
+yyyy2 = yyyy-(-1)
+if (ddd == '01')
+  {
+  mmm2=mmm-1
+  if (mmm2&lt;10)
+    {mmm2 = '0'+mmm2}
+
+  if(mmm =='06'||'09'||'11'||'04'||'02'||'08')
+    {ddd2='31'}
+  else
+    {ddd2='30'}      
+      
+  if(mmm =='03')
+    {ddd2='28'}
+  }
+  else
+  {
+    mmm2=mmm
+    ddd2=ddd-1
+  }
+if(mmm =='01'&amp;&amp;ddd=='01')
+  {
+  ddd2='31'
+  mmm2='12'
+  yyyy2=yyyy
+  }
+timeE = ddd2+'-'+mmm2+'-'+yyyy2	
+execution.setVariable('mail_date', timeMar)
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow99" sourceRef="servicetask22" targetRef="scripttask1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_zags_0180_marriageFast">
     <bpmndi:BPMNPlane bpmnElement="zags_0180_marriageFast" id="BPMNPlane_zags_0180_marriageFast">
@@ -759,13 +822,16 @@ ${sMail_Signature} <br>
         <omgdc:Bounds height="35.0" width="35.0" x="266.0" y="540.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask22" id="BPMNShape_servicetask22">
-        <omgdc:Bounds height="55.0" width="161.0" x="360.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="161.0" x="360.0" y="40.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
         <omgdc:Bounds height="40.0" width="40.0" x="420.0" y="195.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway8" id="BPMNShape_exclusivegateway8">
         <omgdc:Bounds height="40.0" width="40.0" x="558.0" y="660.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="388.0" y="110.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="267.0" y="950.0"></omgdi:waypoint>
@@ -804,8 +870,8 @@ ${sMail_Signature} <br>
         <omgdi:waypoint x="578.0" y="850.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow89" id="BPMNEdge_flow89">
-        <omgdi:waypoint x="440.0" y="35.0"></omgdi:waypoint>
-        <omgdi:waypoint x="440.0" y="60.0"></omgdi:waypoint>
+        <omgdi:waypoint x="423.0" y="17.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="40.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow91" id="BPMNEdge_flow91">
         <omgdi:waypoint x="460.0" y="215.0"></omgdi:waypoint>
@@ -847,8 +913,12 @@ ${sMail_Signature} <br>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow98" id="BPMNEdge_flow98">
-        <omgdi:waypoint x="440.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="165.0"></omgdi:waypoint>
         <omgdi:waypoint x="440.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow99" id="BPMNEdge_flow99">
+        <omgdi:waypoint x="440.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="110.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
