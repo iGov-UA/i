@@ -678,22 +678,29 @@ var time1 = ''
 var time2 = ''
 var yyyyBirth1 = ''
 var yyyyBirth2 = ''
-var yyyy2 = ''
-var mmm2 = ''
-var ddd2 = ''
-var timeE = ''
 var eest = ''
+
     timeMar=execution.getVariable('sDateCeremony').toString()
     time1=execution.getVariable('sBirthDate1').toString()
     time2=execution.getVariable('sBirthDate2').toString()
+    
     eest=timeMar.substr(20,4)
+    
     if(eest == 'EEST'){yyyy=timeMar.substr(25,4)}
     else{yyyy=timeMar.substr(24,4)}
+    
+    eest=time1.substr(20,4)
+    
     if(eest == 'EEST'){yyyyBirth1=time1.substr(25,4)}
     else{yyyyBirth1=time1.substr(24,4)}
-     if(eest == 'EEST'){yyyyBirth2=time2.substr(25,4)}
+    
+    eest=time2.substr(20,4)
+    
+    if(eest == 'EEST'){yyyyBirth2=time2.substr(25,4)}
     else{yyyyBirth2=time2.substr(24,4)}
+    
     mmm=timeMar.substr(4,3)
+    
 if (mmm == 'Jan'){ mmm='01'}
 if (mmm == 'Feb'){ mmm='02'}
 if (mmm == 'Mar'){ mmm='03'}
@@ -706,10 +713,14 @@ if (mmm == 'Sep'){ mmm='09'}
 if (mmm == 'Oct'){ mmm='10'}
 if (mmm == 'Nov'){ mmm='11'}
 if (mmm == 'Dec'){ mmm='12'}
+
 	ddd=timeMar.substr(8,2)
-timeMar = ddd+'-'+mmm+'-'+yyyy
-var age1 = Math.round(+yyyy-yyyyBirth1)
-var age2 = Math.round(+yyyy-yyyyBirth2)
+
+timeMar = ddd+'.'+mmm+'.'+yyyy
+
+var age1 = Math.round( +yyyy - +yyyyBirth1 )
+var age2 = Math.round( +yyyy - +yyyyBirth2 )
+
 execution.setVariable('mail_date', timeMar)
 execution.setVariable('sAge1', age1.toString())
 execution.setVariable('sAge2', age2.toString())
