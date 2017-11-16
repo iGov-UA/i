@@ -218,6 +218,11 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sAge1" name="Вік; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace1" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact1" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship1" name="Чи є Ви громадянином України, громадянином іншої держави, особою без громадянства або біженцем; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="Громадянин України"></activiti:value>
+          <activiti:value id="sEnum2" name="Громадянин іншої країни"></activiti:value>
+          <activiti:value id="sEnum3" name="Особа без громадянства або біженець"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCitizenship1" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary1" name="Відношення до військової служби" type="enum" writable="false">
           <activiti:value id="sEnumNo" name="на обліку не перебуває"></activiti:value>
@@ -242,6 +247,11 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sAge2" name="Вік; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBornPlace2" name="Місце народження; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sAddressFact2" name="Місце проживання; ;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sWithoutCitizenship2" name="Чи є Ви громадянином України, громадянином іншої держави, особою без громадянства або біженцем; ;writable=false" type="enum">
+          <activiti:value id="sEnum1" name="Громадянин України"></activiti:value>
+          <activiti:value id="sEnum2" name="Громадянин іншої країни"></activiti:value>
+          <activiti:value id="sEnum3" name="Особа без громадянства або біженець"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sCitizenship2" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asMilitary2" name="Відношення до військової служби" type="enum" writable="false">
           <activiti:value id="sEnumNo" name="на обліку не перебуває"></activiti:value>
@@ -279,10 +289,10 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="sBody_3" name="[pattern/print/minust/zags_0180_marriageFast_2.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява на реєстрацію шлюбу" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/zags_0180_marriageFast_3.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Акт прийому-передачі наданих послуг" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_5" name="[pattern/print/minust/zags_0180_marriageFast_4.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про платні послуги РАЦС" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers15" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers16" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers11" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers13" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty><activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty><activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -365,10 +375,10 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="comment1" name="Коментар або підстава для відмови в наданні послуги (Інформація буде спрямована громадянину на e-mail)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCommentDRACS" name="Коментар для організатора (у випадку неможливості виїзду реєстратора)" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="markers25" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers26" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers21" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers23" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty><activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty><activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="Заява громадян на реєстрацію шлюбу, опитування;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast.html,sFileName=zajava_opituvanna" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Договір про надання послуги з організатором;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_1.html,sFileName=dogovir_platny_poslugi_organizatora" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="Заява на реєстрацію шлюбу;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_2.html,sFileName=Zajava_na_reestraciu" type="file" writable="false"></activiti:formProperty>
@@ -436,10 +446,10 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="PrintForm_3" name="Заява на реєстрацію шлюбу;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_2.html,sFileName=Zajava_na_reestraciu" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="Акт прийому-передачі наданих послуг;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_3.html,sFileName=priem_peredacha" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_5" name="Заява про платні послуги РАЦС;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_4.html,sFileName=dogovir_platny_poslugi_RACS" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="markers35" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers36" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers31" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
-        <activiti:formProperty id="markers33" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty><activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers6" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_3.json')}"></activiti:formProperty><activiti:formProperty id="markersLine_3" name="Інші дані" type="markers" default="{&quot;attributes&quot;:{&quot;Line_3&quot;:{&quot;aElement_ID&quot;:[&quot;phone&quot;],&quot;sValue&quot;:&quot;Інші дані&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/minust/zags_0180_marriageFast_3.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Акт прийому-передачі наданих послуг" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
