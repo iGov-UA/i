@@ -38,7 +38,7 @@ public class ActionEventHistoryService {
     @Autowired
     private HttpRequester httpRequester;
 
-    private String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
+    public String doRemoteRequest(String sServiceContext, Map<String, String> mParam) throws Exception {
         String soResponse = "";
         if (!generalConfig.getSelfHostCentral().contains("ksds.nads.gov.ua") && !generalConfig.getSelfHostCentral().contains("staff.igov.org.ua")) {
             String sURL = generalConfig.getSelfHostCentral() + sServiceContext;

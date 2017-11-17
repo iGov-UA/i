@@ -1,7 +1,6 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
-import static java.lang.Math.toIntExact;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +28,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,25 +40,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
-import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.Flow;
-
-import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
-import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
-import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
-
-import org.igov.service.business.flow.slot.Day;
-import org.igov.model.flow.FlowDao;
+import org.igov.service.business.flow.ResevedFlowSlot;
 
 /**
  * User: goodg_000 Date: 21.06.2015 Time: 14:02
@@ -83,13 +72,10 @@ public class ActionFlowController {
     QLogic qLogic;
 
     @Autowired
-    private FlowDao flowServiceDataDao;
-
-    @Autowired
     private FlowSlotDao flowSlotDao;
 
     @Autowired
-    GeneralConfig generalConfig;
+    private ResevedFlowSlot resevedFlowSlot;
 
     /**
      * Получение слотов по сервису сгруппированных по дням.
@@ -989,18 +975,20 @@ public class ActionFlowController {
             + "]\n"
             + "\n```\n")
     @RequestMapping(value = "/getFlowSlotTickets", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    public @ResponseBody
-    String getFlowSlotTickets(
-            @ApiParam(value = "строка имя пользователя для которого необходимо вернуть тикеты", required = true) @RequestParam(value = "sLogin") String sLogin,
-            @ApiParam(value = "булевое значение опциональный параметр (false по умолчанию). Если true - возвращать тикеты не заассайненые на пользователей", required = false) @RequestParam(value = "bEmployeeUnassigned", required = false, defaultValue = "false") Boolean bEmployeeUnassigned,
-            @ApiParam(value = "строка опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты. При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же как и у указанное даты - такой тикет добавляется в результат.", required = false) @RequestParam(value = "sDate", required = false) String sDate
+    @ResponseBody
+    public List<Map<String, String>> getFlowSlotTickets(
+            @ApiParam(value = "строка имя пользователя для которого необходимо вернуть тикеты", required = true)
+            @RequestParam(value = "sLogin") String sLogin,
+            @ApiParam(value = "булевое значение опциональный параметр (false по умолчанию). Если true - возвращать"
+                    + " тикеты не заассайненые на пользователей", required = false)
+            @RequestParam(value = "bEmployeeUnassigned", required = false, defaultValue = "false") Boolean bEmployeeUnassigned,
+            @ApiParam(value = "строка опциональный параметр в формате yyyy-MM-dd. Дата за которую выбирать тикеты."
+                    + " При выборке проверяется startDate тикета (без учета времени. только дата). Если день такой же"
+                    + " как и у указанное даты - такой тикет добавляется в результат.", required = false)
+            @RequestParam(value = "sDate", required = false) String sDate
     ) throws Exception {
 
-        List<Map<String, String>> res = oFlowService.getFlowSlotTickets(sLogin, bEmployeeUnassigned, sDate);
-
-        String jsonRes = JSONValue.toJSONString(res);
-        LOG.info("Result:{}", jsonRes);
-        return jsonRes;
+        return oFlowService.getFlowSlotTickets(sLogin, bEmployeeUnassigned, sDate);
     }
 
     @ApiOperation(value = "Получение списка тайм слотов", notes = "##### Пример:\n"
@@ -1156,7 +1144,6 @@ public class ActionFlowController {
             @ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
             @ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
     ) throws Exception {
-        LOG.info("DMS/getSlots started... nID_Service_Private: {}", nID_Service_Private);
         JSONObject oJSONObjectReturn = new JSONObject();
         DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
@@ -1169,10 +1156,12 @@ public class ActionFlowController {
             oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
+        JSONArray oaSlot = null;
+
+        JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
         for (Object o : oaJSONArray) {
             //JSONObject oJSONObject = (JSONObject) o;
             String sDate = o.toString();
-            
             DateTime oDateReady = oDateTimeFormatterReady.parseDateTime(sDate);
             oaSlot = cherg.getFreeTime(oDateReady, nID_Service_Private);
             
@@ -1201,7 +1190,7 @@ public class ActionFlowController {
     @RequestMapping(value = "/DMS/getSlotFreeDays", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getSlotFreeDays(@ApiParam(value = "ID сервиса", required = true)
-            @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
+    @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
     ) throws Exception {
         return cherg.getSlotFreeDays(nID_Service_Private);
     }
@@ -1249,8 +1238,32 @@ public class ActionFlowController {
                 sSubjectFamily,
                 sSubjectName,
                 sSubjectSurname);
-
         return result.toString();
+    }
+
+    @ApiOperation(value = "Резервирование тайм слота.", notes = "##### Пример:\n"
+            + "https://test.region.igov.org.ua/wf/service/action/flow/DMS/canselSlotHold\n\n"
+            + "nID_Service_Private - 428"
+            + "sDateTime - 2016-08-17 14:05:00"
+            + "sSubjectFamily - Sidorov"
+            + "sSubjectName - Vladimir"
+            + "sSubjectSurname - Petrovich"
+            + "sSubjectPassport - 0101"
+            + "sSubjectPhone - +380666800000"
+            + "Пример результата\n\n"
+            + "\n```json\n"
+            + "{\n"
+            + "  \"reserved_to\": \"2016-08-14 22:28:15\",\n"
+            + "  \"reserve_id\": \"18573\",\n"
+            + "  \"interval\": \"15\"\n"
+            + "}"
+            + "\n```\n")
+    @RequestMapping(value = "/DMS/canselSlotHold", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    Map<String, String> canselSlotHold(
+            @ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone
+    ) throws Exception {
+        return resevedFlowSlot.canselReservedSlot(sSubjectPhone);
     }
 
     @ApiOperation(value = "Подтверждение резервации тайм слота.", notes = "##### Пример:\n"
@@ -1357,12 +1370,12 @@ public class ActionFlowController {
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId
     ) throws Exception {
-    	LOG.info("getServiceList start");
+        LOG.info("getServiceList start");
         String oJsonResult = qLogic.getServiceList(sOrganizatonGuid, sServiceCenterId);
 
         return oJsonResult.toString();
     }
-    
+
     @RequestMapping(value = "/Qlogic/getSlotFreeDays", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getSlotFreeDays(
@@ -1370,23 +1383,23 @@ public class ActionFlowController {
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
     ) throws Exception {
-    	JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+        JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
 
         JSONObject oJSONObjectReturn = new JSONObject();
         JSONArray dates = new JSONArray();
         for (Object o : oaJSONArray) {
             JSONObject oJSONObject = (JSONObject) o;
             String datePart = (String) oJSONObject.get("DatePart");
-            
+
             Long isAllow = (Long) oJSONObject.get("IsAllow");
-            
+
             if (isAllow == 1){
-	            long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-	            Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
-	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
-	            String formattedDate = sdf.format(date);
-	            dates.add(formattedDate);
+                long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+                Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+                String formattedDate = sdf.format(date);
+                dates.add(formattedDate);
             }
         }
         oJSONObjectReturn.put("aDate", dates);
@@ -1397,7 +1410,7 @@ public class ActionFlowController {
     @RequestMapping(value = "/Qlogic/getSlots", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getSlots(
-    		@ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
+            @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
     ) throws Exception {
@@ -1408,44 +1421,44 @@ public class ActionFlowController {
         JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
         JSONArray timesArr = new JSONArray();
         for (Object o : oaJSONArray) {
-        	JSONObject oJSONObject = (JSONObject) o;
+            JSONObject oJSONObject = (JSONObject) o;
             String datePart = (String) oJSONObject.get("DatePart");
 
             Long isAllow = (Long) oJSONObject.get("IsAllow");
 
             if (isAllow == 1){
-            	long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-	            Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
-	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
-	            String formattedDate = sdf.format(date);
+                long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+                Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+                String formattedDate = sdf.format(date);
 
-	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
+                String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
 
-	            JSONParser parser = new JSONParser();
-	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
-	            if (response.containsKey("d")){
-	            	JSONArray times = (JSONArray) response.get("d");
-	            	for (Object o1 : times) {
-	                	JSONObject oJSONTimeObject = (JSONObject) o1;
-	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
-	                    if (countJobsAllow > 0){
-	                    	String startTime = (String) oJSONTimeObject.get("StartTime");
-	                    	String stopTime = (String) oJSONTimeObject.get("StopTime");
-	                    	
-	                    	Duration dStartTime = Duration.parse(startTime);
-	                    	Duration dStopTime =  Duration.parse(stopTime);
-	                    	Map<String, Object> currRes = new HashMap<String, Object>();
-	                    	currRes.put("date", formattedDate);
-	                    	currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
-	                    	currRes.put("countJobsAllow", countJobsAllow);
-	                    	Duration delta = dStopTime.minus(dStartTime);
-	                    	currRes.put("length", delta.getSeconds() / 60);
-	                    	timesArr.add(currRes);
-	                    }
+                JSONParser parser = new JSONParser();
+                JSONObject response = (JSONObject) parser.parse(oJsonResult);
+                if (response.containsKey("d")){
+                    JSONArray times = (JSONArray) response.get("d");
+                    for (Object o1 : times) {
+                        JSONObject oJSONTimeObject = (JSONObject) o1;
+                        Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
+                        if (countJobsAllow > 0){
+                            String startTime = (String) oJSONTimeObject.get("StartTime");
+                            String stopTime = (String) oJSONTimeObject.get("StopTime");
 
-	            	}
-	            }
+                            Duration dStartTime = Duration.parse(startTime);
+                            Duration dStopTime =  Duration.parse(stopTime);
+                            Map<String, Object> currRes = new HashMap<String, Object>();
+                            currRes.put("date", formattedDate);
+                            currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
+                            currRes.put("countJobsAllow", countJobsAllow);
+                            Duration delta = dStopTime.minus(dStartTime);
+                            currRes.put("length", delta.getSeconds() / 60);
+                            timesArr.add(currRes);
+                        }
+
+                    }
+                }
             }
         }
         oJSONObjectReturn.put("aDate", timesArr);
@@ -1465,7 +1478,7 @@ public class ActionFlowController {
 
         return oJsonResult.toString();
     }
-    
+
     @RequestMapping(value = "/Qlogic/setSlot", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String regCustomer(
@@ -1474,9 +1487,13 @@ public class ActionFlowController {
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
             @ApiParam(value = "Дата для которой необходимо получить список временных (YYYY-MM-DD)", required = true) @RequestParam(value = "sDate") String sDate,
             @ApiParam(value = "Время на которое производиться регистрация. Необходимо использовать "
-            		+ "StartTime из запроса временных промежутков.", required = true) @RequestParam(value = "sTime") String sTime
+                    + "StartTime из запроса временных промежутков.", required = true) @RequestParam(value = "sTime") String sTime,
+            @ApiParam(value = "Контактный номер посетителя", required = true) @RequestParam(value = "sPhone") String sPhone,
+            @ApiParam(value = "Контактный электронный ящик посетителя", required = true) @RequestParam(value = "sEmail") String sEmail,
+            @ApiParam(value = "ФИО посетителя", required = true) @RequestParam(value = "sName") String sName,
+            @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation
     ) throws Exception {
-        String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime);
+        String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
 
         JSONParser oJSONParser = new JSONParser();
         JSONObject res = new JSONObject();

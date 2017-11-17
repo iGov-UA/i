@@ -3,31 +3,41 @@ var request = require('request'),
     masterPassAuth = require('./mp.service'),
     errorMessages = require('./bankResponses.service'),
     config = require('../../config/environment'),
-    activiti = require('../../components/activiti/index'),
     async = require('async');
 
 function getOptions(req) {
   var config = require('../../config/environment');
 
-  var activitiData = config.activiti;
+  var activiti = config.activiti;
 
   return {
-    protocol: activitiData.protocol,
-    hostname: activitiData.hostname,
-    port: activitiData.port,
-    path: activitiData.path,
-    nID_Server_Helpdesk: config.nID_Server_Helpdesk,
-    username: activitiData.username,
-    password: activitiData.password
+    protocol: activiti.protocol,
+    hostname: activiti.hostname,
+    port: activiti.port,
+    path: activiti.path,
+    username: activiti.username,
+    password: activiti.password
   };
 }
 
 module.exports.walletOperations = function (req, res) {
   var auth = masterPassAuth.getUserAuth();
   var params = req.body.body;
+  var guid, userID = null;
+
+  if (req.body.body.guid) {
+    guid = req.body.body.guid;
+    delete req.body.body.guid;
+  }
+
+  if (req.body.body.user_id) {
+    userID = req.body.body.user_id;
+  }
 
   var callback = function (error, response, body) {
     if(!error) {
+      body.response.guid = guid;
+      body.response.user_id = userID;
       res.send(body);
       res.end();
     } else {
@@ -118,6 +128,13 @@ module.exports.checkUser = function (req, res) {
 };
 
 module.exports.verify3DSCallback = function (req, res) {
+  var guid, userID = req.query.user;
+
+  if (req.query.guid) {
+    guid = req.query.guid;
+    delete req.query.guid;
+  }
+
   var auth = masterPassAuth.getUserAuth(),
       params = {
         "pmt_id": req.query.id,
@@ -160,8 +177,8 @@ module.exports.verify3DSCallback = function (req, res) {
     });
   }
   function checkoutOrReturn(result, callback) {
-    if(result.response.pmt_status == 5) {
-      res.redirect(callbackUrl + '?status=' + result.response.pmt_status + '&pmt_id=' + result.response.pmt_id);
+    if(result.response.pmt_status == 1) {
+      res.redirect(callbackUrl + '?status=' + result.response.pmt_status + '&pmt_id=' + result.response.pmt_id + '&guid=' + guid + '&user_id=' + userID + '&msisdn=' + result.response.msisdn + '&invoice=' + result.response.invoice);
     } else if(result.response.pmt_status == 4 && result.response.error || result.response.error){
       res.redirect(callbackUrl + '?status=' + result.response.error);
     } else if(result.response.pmt_status == 4 && !result.response.error) {
@@ -187,6 +204,8 @@ module.exports.createSaleCancelPayment = function (req, res) {
       }
     }, function (err, response, body) {
       if(!err) {
+        body.response.guid = params.guid;
+        body.response.user_id = params.user_id;
         res.send(body);
         res.end();
       } else {
@@ -195,37 +214,23 @@ module.exports.createSaleCancelPayment = function (req, res) {
       }
     });
 };
-module.exports.verifyPhoneNumber = function (req, res) {
-  async.waterfall([
-    getServerUrl,
-    verifyPhoneNumber
-  ], function(error, response, body) {
-    if(!error) {
-      res.send({message: body});
-      res.end();
-    } else {
-      res.send(error);
-      res.end();
-    }
-  });
-  function getServerUrl(callback) {
-    var options = getOptions(req);
-    activiti.get('/subject/getServer', {nID: options.nID_Server_Helpdesk}, function (error, response, body) {
-      if (!error) {
-        callback(null, body);
-      } else {
-        callback(
-          errors.createError(errors.codes.EXTERNAL_SERVICE_ERROR,
-            'can\'t find server host name by ' + nID_Server, error), null);
-      }
-    });
-  }
-  function verifyPhoneNumber(result, callback) {
-    var options = getOptions(req),
-      isTestServer = config.bTest,
-      url = result.sURL + '/service/subject/message/sendSms';
 
-    var verifyData = masterPassAuth.createAndCheckOTP(req.query);
+module.exports.verifyPhoneNumber = function (req, res) {
+  var options = getOptions(req),
+      isTestServer = config.bTest,
+      url = options.protocol + '://' + options.hostname + options.path + '/subject/message/sendSms';
+
+  var verifyData = masterPassAuth.createAndCheckOTP(req.query);
+
+    var callback = function(error, response, body) {
+      if(!error) {
+        res.send({message: body});
+        res.end();
+      } else {
+        res.send(error);
+        res.end();
+      }
+    };
 
     if (!isTestServer) {
       return request.get({
@@ -244,7 +249,6 @@ module.exports.verifyPhoneNumber = function (req, res) {
       res.send({message: 'ok'});
       res.end();
     }
-  }
 };
 
 module.exports.confirmOtp = function (req, res) {

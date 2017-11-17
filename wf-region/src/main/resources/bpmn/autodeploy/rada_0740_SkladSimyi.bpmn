@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="rada_0740_SkladSimyi" name="Довідка про склад сім'ї" isExecutable="true">
+  <process id="rada_0740_SkladSimyi" name="Довідка про склад сім'ї або про зареєстрованих у приміщенні осіб" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLabeID" name=" ; ;labelType=info" type="label" default="Увага! &lt;br&gt;Якщо Вам потрібна довідка для отримання ID-картки, то скористайтесь &lt;a href=&quot; https://igov.org.ua/service/24/general&quot; target=&quot;_blank&quot;&gt;іншою послугою&lt;/a&gt;"></activiti:formProperty>
@@ -50,7 +50,7 @@
         <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" default="${markerService.loadFromFile('table/registr/form3_table.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeFile&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sLabeFile" name=" ; ;labelType=info" type="label" default="По можливості надайте кольорові сканкопії. Щоб завантажити кілька зображень в один документ використовуйте PDF або ZIP архів."></activiti:formProperty>
+        <activiti:formProperty id="sLabeFile" name=" ; ;labelType=info" type="label" default="Увага! Для замовлення послуги, буде необідно завантажувати кольорові сканкопії(фото) документів. Розширення має не перевищувати 150 dpi. Документ з декількома сторінками необхідно завантажувати одним файлом формату PDF або ZIP архівом."></activiti:formProperty>
         <activiti:formProperty id="nFile_PasportZay" name="Паспорт заявника;(1, 2 сторінка, та сторінка з місцем реєстрації);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Vlasnist" name="Право власності;(документ що підтверджує право власності на нерухомість);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_DomKniga" name="Домова книга;(сторінки де вказано хто власник);bNew=true" type="file" required="true"></activiti:formProperty>
@@ -78,6 +78,8 @@
         <activiti:formProperty id="sBlago" name="Вкажіть благоустрій будинку;водопровід, каналізація, центральне опалення, ванна чи душ, газ, ліфт і т.п" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="sStan" name="Вкажіть технічний стан будинку і характеристику житлового приміщення" type="string" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="markersdodatok" name="hide fields" type="markers" default="${markerService.loadFromFile('form3/forma_3_dodatok.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sLabeOtrumania" name=" ; ;labelType=warning" type="label" default="При отриманні довідки, необхідно мати при собі оригінали попередньо наданих документів"></activiti:formProperty>
         
         <activiti:formProperty id="sFlag" name="Флаг органу; ;bVisible=false" type="string" default="false"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="електронна пошта; ;bVisible=false" type="string"></activiti:formProperty>

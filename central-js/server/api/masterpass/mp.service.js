@@ -40,7 +40,6 @@ module.exports.getUserAuth = function () {
 };
 
 module.exports.createGuid = function () {
-  var result;
 
   function guid() {
     return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
@@ -52,17 +51,7 @@ module.exports.createGuid = function () {
       .substring(1);
   }
 
-  cache.get(buildKey('guid'), function (error, value) {
-    if (value) {
-      result = value;
-    } else {
-      var guidkey = guid();
-      cache.set(buildKey('guid'), guidkey, cacheTtl);
-      result = guidkey;
-    }
-  });
-
-  return result;
+  return guid();
 };
 
 module.exports.createAndCheckOTP = function (data) {

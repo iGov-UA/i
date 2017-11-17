@@ -77,6 +77,7 @@
         <activiti:formProperty id="sMinPay" name="мініальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFlag" name="Флаг ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAdd_SpecText_inEmail" name="Текст для додаткового додання в email; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="sIsCancellCustomeVizite" name="Прапор скасованої заявки громадянином ; ;bVisible=false" type="string" default="False"></activiti:formProperty>
         <activiti:formProperty id="nMilit" name="Завантажте копію військового квитка, свідоцтва про приписку або документу що їм відповідають;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" default=" " required="true"></activiti:formProperty>
         <activiti:formProperty id="lable" name="В залежності від підстави для реєстрації, будь ласка, завантажте" type="label" default=" "></activiti:formProperty>
@@ -346,7 +347,7 @@ execution.setVariable('sMaxPay', maxpay)
 						<li>У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.</li>
 						<ul>
 							<li>у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації</li>
-							<li>у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації</li> 
+							<li>у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації ${sAdd_SpecText_inEmail}</li> 
 						</ul>
 						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
 						<li>Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.</li>
@@ -433,7 +434,7 @@ execution.setVariable('sMaxPay', maxpay)
 						<li>У будь-якому банку сплатити адміністративний збір і отримати квитанцію про сплату.</li>
 						<ul>
 							<li>у розмірі ${sMinPay} грн, якщо Ви звертаєтесь для реєстрації у термін до 30 календарних днів після зняття з попереднього місця реєстрації</li>
-							<li>у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації</li> 
+							<li>у розмірі ${sMaxPay} грн, якщо Ви звертаєтесь для реєстрації після 30 календарних днів після зняття з попереднього місця реєстрації ${sAdd_SpecText_inEmail}</li> 
 						</ul>
 						<li>Прийти до ${sOrganType} за адресою: ${sAddress} з необхідними документами та звернутись до ${sKab89}.</li>
 						<li>Підписати необхідні документи та отримати печатку у громадянський паспорт або паспортний документ.</li>
