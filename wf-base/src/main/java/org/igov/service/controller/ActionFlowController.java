@@ -1,6 +1,7 @@
 package org.igov.service.controller;
 
 import io.swagger.annotations.*;
+import static java.lang.Math.toIntExact;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,16 +42,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
+import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowSlot;
 import org.igov.model.flow.FlowSlotDao;
 import org.igov.model.flow.Flow;
-import org.igov.service.business.flow.ResevedFlowSlot;
+
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_HALF_YEAR;
+import static org.igov.run.schedule.JobBuilderFlowSlots.DAYS_IN_MONTH;
+import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
+
+import org.igov.service.business.flow.slot.Day;
+import org.igov.model.flow.FlowDao;
+
 
 /**
  * User: goodg_000 Date: 21.06.2015 Time: 14:02
