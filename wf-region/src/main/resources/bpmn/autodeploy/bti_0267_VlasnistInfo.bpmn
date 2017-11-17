@@ -225,7 +225,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
  ${sAskedAddress4} <br/>
  ${sAskedAddress5} <br/>
 <br/>
-Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги.<br/>
+Для початку опрацювання запиту, Вам необхідно сплатити вартість послуги. На оплату 80 годин, після чого заявка автоматично буде закрита.<br/>
 Сплачуючи вартість послуги, Ви надаєте свою згоду з актом виконаних робіт, що буде створено після надання послуги.<br/>
 
 [paymentButton_LiqPay]
@@ -270,10 +270,10 @@ execution.setVariable('sCountPayment', src)
       </script>
     </scriptTask>
     <sequenceFlow id="flow46" sourceRef="exclusivegateway5" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment =="" && sCountPayment=="24"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment =="" && sCountPayment=="80"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow47" sourceRef="exclusivegateway5" targetRef="timerintermediatecatchevent1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment!="24"}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment ==""&& sCountPayment!="80"}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow48" sourceRef="exclusivegateway5" targetRef="servicetask7">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Payment!=''}]]></conditionExpression>
