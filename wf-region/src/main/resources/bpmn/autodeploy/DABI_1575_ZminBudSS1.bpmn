@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="DABI_1575_ZminPovidSS1" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт на об’єкті, що належить за класом відповідальності до об’єктів з незначними наслідками (СС1)" isExecutable="true">
+  <process id="DABI_1575_ZminBudSS1" name="Повідомлення про зміну даних у повідомленні про початок виконання будівельних робіт на об’єкті, що належить за класом відповідальності до об’єктів з незначними наслідками (СС1)" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sLabeECP" name=" ; ;labelType=info" type="label" default="Увага!  Щоб скористатися цією послугою, потрібно використати власний &lt;a href=&quot;https://goo.gl/1OioXt &quot; target=&quot;_blank&quot;&gt;електронно-цифровий підпис (ЕЦП)&lt;/a&gt; (наприклад податкової або банку, що вас обслуговує)"></activiti:formProperty>
@@ -17,10 +17,8 @@
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_Marker.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_PD" name="Повідомлення про початок будівництва" type="markers" default="{&quot;attributes&quot;:{&quot;Line_PD&quot;:{&quot;aElement_ID&quot;:[&quot;PovidData&quot;],&quot;sValue&quot;:&quot;Повідомлення про початок будівництва&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="PovidData" name="Дата повідомлення про початок будівництва" type="date" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім`я" type="string" required="true"></activiti:formProperty>
@@ -378,7 +376,6 @@ ${sNameOrgan}<br />
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
@@ -676,13 +673,11 @@ ${sNameOrgan}<br />
           <activiti:value id="sEnam4" name="Чотири"></activiti:value>
           <activiti:value id="sEnam5" name="П'ять"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
@@ -998,13 +993,11 @@ ${sNameOrgan}<br/>
           <activiti:value id="sEnam4" name="Чотири"></activiti:value>
           <activiti:value id="sEnam5" name="П'ять"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
@@ -1059,13 +1052,11 @@ ${sNameOrgan}<br/>
           <activiti:value id="sEnam4" name="Чотири"></activiti:value>
           <activiti:value id="sEnam5" name="П'ять"></activiti:value>
         </activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_UO" name="Інформація про юридичну особу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_D&quot;:{&quot;aElement_ID&quot;:[&quot;sID_SubjectOrgan_OKPO_01&quot;],&quot;sValue&quot;:&quot;Інформація про юридичну особу&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_SubjectOrgan_OKPO_01" name="Введіть код ЄДРПОУ; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sFullName_SubjectOrgan_01" name="Повне найменування юридичної особи; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sLocation_SubjectOrgan_01" name="Юридична адреса; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sCEOName_SubjectOrgan_01" name="ПІБ директора; ;writable=false" type="string"></activiti:formProperty>
-        
         <activiti:formProperty id="markersLine_InVl" name="Інформація про інших власників" type="markers" default="{&quot;attributes&quot;:{&quot;Line_InVl&quot;:{&quot;aElement_ID&quot;:[&quot;sPIB2&quot;],&quot;sValue&quot;:&quot;Інформація про інших власників&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPIB2" name="Прізвище, ім'я, по батькові другого власника; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="lIPN2" name="ІПН другого власника; ;writable=false" type="long"></activiti:formProperty>
@@ -1196,8 +1187,8 @@ ${sNameOrgan}<br />
     <sequenceFlow id="flow77" sourceRef="servicetask7" targetRef="parallelgateway5"></sequenceFlow>
     <sequenceFlow id="flow78" sourceRef="parallelgateway4" targetRef="servicetask7"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_DABI_1575_ZminPovidSS1">
-    <bpmndi:BPMNPlane bpmnElement="DABI_1575_ZminPovidSS1" id="BPMNPlane_DABI_1575_ZminPovidSS1">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_DABI_1575_ZminBudSS1">
+    <bpmndi:BPMNPlane bpmnElement="DABI_1575_ZminBudSS1" id="BPMNPlane_DABI_1575_ZminBudSS1">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="119.0" y="81.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
