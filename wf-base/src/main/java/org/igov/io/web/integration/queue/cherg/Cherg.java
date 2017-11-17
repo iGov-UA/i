@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
+import org.igov.service.business.flow.ResevedFlowSlot;
 
 /**
  * Provides integration with Queue management system cherg.net API specified at
