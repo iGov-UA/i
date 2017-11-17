@@ -156,7 +156,7 @@
           <activiti:value id="accept" name="Помилкі відсутні. Надіслати ліст для сплати вартості послуги"></activiti:value>
           <activiti:value id="reject" name="Запит містить помилки. Відмовити в наданні послуги"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="comment_reject" name="Причина відмови в наданні послуги" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="comment" name="Причина відмови в наданні послуги" type="textArea"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -183,7 +183,7 @@
 На жаль, Вам було відмовлено в наданні послуги<br/><br/>
 
 Коментар співробітника:<br/>
-${comment_reject}<br/>
+${comment}<br/>
 
 [pattern/mail/new_design/_common_content_end.html]    
 [pattern/mail/new_design/_common_signature.html]
@@ -287,7 +287,7 @@ execution.setVariable('sCountPayment', src)
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит відхилено]]></activiti:string>
+          <activiti:string><![CDATA[Запит відхилено. Немає оплати.]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -321,7 +321,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Запит відхилено]]></activiti:string>
+          <activiti:string><![CDATA[Оплату підтверджено]]></activiti:string>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
@@ -391,8 +391,8 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
        
         <activiti:formProperty id="form2_signed" name="Додайте файл відповіді з накладеним ЕЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="fVidpNoECP" name="Файл відповіді без ЄЦП; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="comment" name="Коментар до відповіді на запит" type="textArea" required="true"></activiti:formProperty>
+        <activiti:formProperty id="fVidpNoECP" name="Файл відповіді без ЄЦП; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="commentBTI" name="Коментар до відповіді на запит" type="textArea" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="sBody_1" name="[pattern/print/bti/bti_request_1_2.html]; ;bVisible=false" type="string" default="Запит в форматі для друку" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/bti/bti_request_1_3.html]; ;bVisible=false" type="string" default="Акт виконаних робіт" writable="false"></activiti:formProperty>
@@ -425,7 +425,7 @@ Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
 Крім того, нагадуємо, що файл підписаний ЕЦП є юридичним документом, що має повну юридичну силу на випадок винекнення майнових спорів.<br/>
 
 <b>Коментар спеціаліста:</b><br/>
-${comment}<br/>
+${commentBTI}<br/>
 
 <b>
 Увага:<br/>
