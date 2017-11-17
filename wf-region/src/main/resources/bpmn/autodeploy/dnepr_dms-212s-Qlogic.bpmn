@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212s-Qlogic" name="Зняття з реєстрації місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. Qlogic Последние правки: 30.10.2017</documentation>
+    <documentation>Смоктій К.В. Qlogic Последние правки: 17.11.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
         <activiti:formProperty id="warning0" name="Зверніть увагу" type="label" default="Якщо Ви будете реєструвати нове місце проживання у межах міста,у якому вже працює послуга &lt;a href=&quot;https://igov.org.ua/service/184/general&quot;&gt;реєстрації місця проживання&lt;/a&gt;, рекомендуємо Вам замовити реєстрацію із одночасним зняттям. Це зменшить кількість візитів і збереже Ваш час."></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть район або ЦНАП району (міста), до якого належить поточне місце реєстрації дитини" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП міста, який Вам зручно відвідати" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumDistrictMariupol" name="Оберіть район, де Ви плануєте знятися з реєстрації місця проживання" type="enum">
+          <activiti:value id="sEnumCentral" name="Центральний район"></activiti:value>
+          <activiti:value id="sEnumKalmius" name="Кальміуський район"></activiti:value>
+          <activiti:value id="sEnumLivoberezniy" name="Лівобережний район"></activiti:value>
+          <activiti:value id="sEnumPrimorsky" name="Приморський район"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -70,6 +76,7 @@
         <activiti:formProperty id="sWhenCome" name="Дата зняття з попереднього місця реєстрації ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers12" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/registration_1_Qlogic.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -205,6 +212,12 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="asEnumDistrictMariupol" name="Район, де заявник планує знятися з реєстрації місця проживання" type="enum" writable="false">
+          <activiti:value id="sEnumCentral" name="Центральний район"></activiti:value>
+          <activiti:value id="sEnumKalmius" name="Кальміуський район"></activiti:value>
+          <activiti:value id="sEnumLivoberezniy" name="Лівобережний район"></activiti:value>
+          <activiti:value id="sEnumPrimorsky" name="Приморський район"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="visitDay_Qlogic" name="День та час зустрічі: " type="queueData" writable="false"></activiti:formProperty>
@@ -465,6 +478,12 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="asEnumDistrictMariupol" name="Район, де заявник планує знятися з реєстрації місця проживання" type="enum" writable="false">
+          <activiti:value id="sEnumCentral" name="Центральний район"></activiti:value>
+          <activiti:value id="sEnumKalmius" name="Кальміуський район"></activiti:value>
+          <activiti:value id="sEnumLivoberezniy" name="Лівобережний район"></activiti:value>
+          <activiti:value id="sEnumPrimorsky" name="Приморський район"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sRegistrationAddress" name="Поточна адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sNewAddress" name="Нова адреса реєстрації дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sWhenCome" name="Вкажіть дату зняття з реєстрації" type="string" default=" "></activiti:formProperty>
