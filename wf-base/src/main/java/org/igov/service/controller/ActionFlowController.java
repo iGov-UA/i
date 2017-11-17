@@ -61,6 +61,7 @@ import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
 
 import org.igov.service.business.flow.slot.Day;
 import org.igov.model.flow.FlowDao;
+import org.igov.service.business.flow.ResevedFlowSlot;
 
 
 /**
@@ -88,6 +89,9 @@ public class ActionFlowController {
 
     @Autowired
     private ResevedFlowSlot resevedFlowSlot;
+    
+    @Autowired
+    GeneralConfig generalConfig;
 
     /**
      * Получение слотов по сервису сгруппированных по дням.
@@ -1168,9 +1172,7 @@ public class ActionFlowController {
             oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
-        JSONArray oaSlot = null;
-
-        JSONArray oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+        
         for (Object o : oaJSONArray) {
             //JSONObject oJSONObject = (JSONObject) o;
             String sDate = o.toString();
