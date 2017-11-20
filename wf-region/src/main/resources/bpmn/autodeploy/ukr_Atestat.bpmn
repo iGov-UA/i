@@ -99,6 +99,11 @@
         <activiti:formProperty id="PrintForm_3" name="Заява про видачу дублікату атестату;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_dublikat.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/education/ukr_Atestat_dublikat.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу дублікату атестату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="doc_copy" name="Копія документа, що підтверджує право отримання посвідчення буз проходження атестації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про приймання оплати і надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Дані перевірені, послугу можна надати. Прийняти оплату."></activiti:value>
+          <activiti:value id="reject" name="Відмова (вкажіть причину). Оплата не проводиться."></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="vidmova" name="Причина відмови" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -266,7 +271,7 @@ var time = ''
     if(atestationType_enum == 'sEnum2') {time = execution.getVariable('atestation_date_individual').toString()
 	var eest = ''
     eest=time.substr(20,4)
-    if(eest == 'EEST'){yyyy=timeMar.substr(25,4)}
+    if(eest == 'EEST'){yyyy=time.substr(25,4)}
     else{yyyy=time.substr(24,4)}
     mmm=time.substr(4,3)
     
