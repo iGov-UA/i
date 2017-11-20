@@ -280,6 +280,15 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
 
             {
 
+              sID: "voznesensk",
+              sName: "м. Вознесенськ",
+              sCityPassportURL: "",
+              sNewsGroupURL: "",
+              sVolunteersGroupURL: ""
+            },
+
+            {
+
               sID: "pervomaysk",
               sName: "м. Первома́йськ",
               sCityPassportURL: "https://docs.google.com/spreadsheets/d/1nFqPqX2hCoo7I9lPgOFBT4HxY8AbEvrfCrOC8upEaYE/edit?ts=56744b75#gid=0",
@@ -1110,14 +1119,6 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
       "sInfo": "Координатор міста"
     },
     {
-      "sFbID": "100001944323914",
-      "sID_Group": "kyiv.kyiv.rada",
-      "sFIO": "Калініченко Ірина",
-      "sURL": "https://www.facebook.com/irin.kalinichenko",
-      "sPhoto": "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-9/13498_856418117766324_769692464734795539_n.jpg?oh=99cb942e596d4d3bbe55f94a711c686c&oe=58F83C7F",
-      "sCity": "Київ"
-    },
-    {
       "sFbID": "100001243328133",
       "sID_Group": "kyiv.kyiv.rada",
       "sFIO": "Вадим Волос",
@@ -1749,6 +1750,14 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
       "sFIO": "Жмурков Александр",
       "sURL": "",
       "sCity": "Миколаїв"
+    },
+
+    {
+      "sFbID": "100010153835331",
+      "sID_Group": "mykolaiv.voznesensk.rada",
+      "sFIO": "Невеселий Владислав",
+      "sURL": "https://www.facebook.com/profile.php?id=100010153835331",
+      "sCity": "Вознесенськ"
     },
 
     {
