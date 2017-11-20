@@ -4,6 +4,7 @@
     <documentation>https://github.com/e-government-ua/iBP/issues/1584</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місце проходження атестації" type="select" default="HNTU" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
@@ -12,7 +13,6 @@
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-Mail для зворотнього зв'язку;на цей e-mail Ви отримаєте результат обробки Вашого звернення;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш номер телефону;На цей номер буде відправлено OTP-пароль;" type="string" default="+380" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть місце проходження атестації" type="select" default="HNTU" required="true"></activiti:formProperty>
         <activiti:formProperty id="atestationType" name="Оберіть тип атестації;Отримати посвідчення без проходження атестації можуть лише особи, що відповідають п. 56 &quot;Порядку атестації осіб, які претендують на вступ на державну службу, щодо вільного володіння державною мовою&quot;, затвердженого постановою КабМіну України від 26 квітня 2017 року № 301" type="enum" required="true">
           <activiti:value id="sEnum1" name="Групове проходження атестації (вартість 316,00 грн.)"></activiti:value>
           <activiti:value id="sEnum2" name="Індивідуальне проходження атестації (вартість 965,00 грн.)"></activiti:value>
@@ -42,7 +42,7 @@
         <activiti:formProperty id="sPaymentBody" name="sPaymentBody; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPayResult" name="asPayResult; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bPay" name="bPay; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('minust/ukr_Atestat_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -100,6 +100,7 @@
         <activiti:formProperty id="sBody_3" name="[pattern/print/education/ukr_Atestat_dublikat.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу дублікату атестату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="doc_copy" name="Копія документа, що підтверджує право отримання посвідчення буз проходження атестації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+        <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
