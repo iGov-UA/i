@@ -34,14 +34,14 @@
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
+        <!--<activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Pay_MasterPass" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;4800&quot;,&quot;fio&quot;:&quot;УДКСУ у Бабушкінському районі м.Дніпро Дніпропетровської обл.&quot;,&quot;edrpou&quot;:&quot;37989274&quot;,&quot;mfo&quot;:&quot;805012&quot;,&quot;rr&quot;:&quot;33219879727004&quot;,&quot;comment&quot;:&quot;За викопіювання з кадастрової карти та іншої картографічної документації ДЗК&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За атестацію з державної мови"></activiti:formProperty>
         <activiti:formProperty id="sPaymentBody" name="sPaymentBody; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPayResult" name="asPayResult; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="bPay" name="bPay; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bPay" name="bPay; ;bVisible=false" type="string"></activiti:formProperty>-->
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -92,19 +92,19 @@
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date" name="Обрана дата аттестации" type="string"></activiti:formProperty>
-		<activiti:formProperty id="PrintForm_1" name="Заява про видачу атестату без атестування;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_atestat.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява про видачу атестату без атестування;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_atestat.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/education/ukr_Atestat_atestat.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу атестату без атестування" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="Заява про допуск до атестації;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_dopusk.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/education/ukr_Atestat_dopusk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про допуск до атестації" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="Заява про видачу дублікату атестату;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_dublikat.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/education/ukr_Atestat_dublikat.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу дублікату атестату" writable="false"></activiti:formProperty>
         <activiti:formProperty id="doc_copy" name="Копія документа, що підтверджує право отримання посвідчення буз проходження атестації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
         <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="scripttask3" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
     <serviceTask id="servicetask2" name="Повідомлення заявнику про успішне звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
@@ -256,11 +256,49 @@ sPaymentBody = ${sPaymentBody}. <br/>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var yyyy = ''
+var mmm = ''
+var ddd = ''
+var time = ''      
+	var atestationType_enum==execution.getVariable('atestationType')
+    if(atestationType_enum == 'sEnum2')
+    {
+    time=execution.getVariable('atestation_date_individual').toString()
+var eest = ''
+    eest=time.substr(20,4)
+    if(eest == 'EEST'){yyyy=timeMar.substr(25,4)}
+    else{yyyy=time.substr(24,4)}
+    mmm=time.substr(4,3)
+    
+if (mmm == 'Jan'){ mmm='01'}
+if (mmm == 'Feb'){ mmm='02'}
+if (mmm == 'Mar'){ mmm='03'}
+if (mmm == 'Apr'){ mmm='04'}
+if (mmm == 'May'){ mmm='05'}
+if (mmm == 'Jun'){ mmm='06'}
+if (mmm == 'Jul'){ mmm='07'}
+if (mmm == 'Aug'){ mmm='08'}
+if (mmm == 'Sep'){ mmm='09'}
+if (mmm == 'Oct'){ mmm='10'}
+if (mmm == 'Nov'){ mmm='11'}
+if (mmm == 'Dec'){ mmm='12'}
+
+	ddd=time.substr(8,2)
+
+time = ddd+'.'+mmm+'.'+yyyy
+
+execution.setVariable('atestation_date', time)
+	}
+</script>
+    </scriptTask>
+    <sequenceFlow id="flow22" sourceRef="startevent1" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ukr_Atestat">
     <bpmndi:BPMNPlane bpmnElement="ukr_Atestat" id="BPMNPlane_ukr_Atestat">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="175.0" y="20.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="430.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="80.0"></omgdc:Bounds>
@@ -307,9 +345,12 @@ sPaymentBody = ${sPaymentBody}. <br/>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="471.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="192.0" y="55.0"></omgdi:waypoint>
-        <omgdi:waypoint x="192.0" y="80.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="245.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
         <omgdi:waypoint x="245.0" y="195.0"></omgdi:waypoint>
@@ -343,7 +384,7 @@ sPaymentBody = ${sPaymentBody}. <br/>
         <omgdi:waypoint x="312.0" y="350.0"></omgdi:waypoint>
         <omgdi:waypoint x="235.0" y="350.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="237.0" y="350.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="89.0" x="237.0" y="350.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -354,7 +395,7 @@ sPaymentBody = ${sPaymentBody}. <br/>
         <omgdi:waypoint x="352.0" y="350.0"></omgdi:waypoint>
         <omgdi:waypoint x="436.0" y="350.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="352.0" y="350.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="95.0" x="352.0" y="350.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -377,6 +418,10 @@ sPaymentBody = ${sPaymentBody}. <br/>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
         <omgdi:waypoint x="332.0" y="471.0"></omgdi:waypoint>
         <omgdi:waypoint x="332.0" y="445.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="430.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
