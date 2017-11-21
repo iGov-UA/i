@@ -37,7 +37,7 @@
         <activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Pay_MasterPass" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default=""></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON" type="textArea" default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;31600&quot;,&quot;fio&quot;:&quot;Херсонський національний технічний університет&quot;,&quot;edrpou&quot;:&quot;05480298&quot;,&quot;mfo&quot;:&quot;820172&quot;,&quot;rr&quot;:&quot;31255208101194&quot;,&quot;comment&quot;:&quot;атестація з державної мови, [bankIdlastName][bankIdfirstName][bankIdmiddleName]&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За атестацію з державної мови"></activiti:formProperty>
         <activiti:formProperty id="sPaymentBody" name="sPaymentBody; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPayResult" name="asPayResult; ;bVisible=false" type="string"></activiti:formProperty>
@@ -119,7 +119,7 @@ scrbPay = 'false'
 execution.setVariable('bPay', scrbPay)
       </script>
     </scriptTask>
-    <sequenceFlow id="flow5" sourceRef="usertask1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="boundarytimer1" targetRef="scripttask1"></sequenceFlow>
     <scriptTask id="scripttask2" name="СКР2" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var scrbPay = ' ' 
@@ -249,7 +249,7 @@ sPaymentBody = ${sPaymentBody}. <br/>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="servicetask8"></sequenceFlow>
-    <userTask id="usertask2" name="Перевірка оплати" activiti:candidateGroups="test_Mastercard">
+    <userTask id="usertask2" name="Перевірка оплати" activiti:candidateGroups="control_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
@@ -310,7 +310,7 @@ execution.setVariable('atestation_date', time)
         <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="168.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="372.0" y="181.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="356.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="315.0" y="410.0"></omgdc:Bounds>
@@ -364,7 +364,7 @@ execution.setVariable('atestation_date', time)
         <omgdi:waypoint x="192.0" y="160.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
-        <omgdi:waypoint x="385.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="386.0" y="197.0"></omgdi:waypoint>
         <omgdi:waypoint x="660.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
