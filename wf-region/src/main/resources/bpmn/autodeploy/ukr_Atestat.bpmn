@@ -31,6 +31,7 @@
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="doc" name="Документ, що підтверджує право отримання посвідчення без проходження атестації;назва, ким і коли виданий" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="doc_copy" name="Додайте копію документу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="atestation_day" name="Оберіть дату, у яку Ви успішно пройшли атестацію в нашому ВНЗ" type="date" required="true"></activiti:formProperty>
@@ -103,7 +104,7 @@
           <activiti:value id="accept" name="Дані перевірені, заявник може оплачувати послугу"></activiti:value>
           <activiti:value id="reject" name="Відмова (вкажіть причину)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vidmova" name="Вкажіть причину відмови" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vidmova" name="Вкажіть причину відмови" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -281,7 +282,7 @@ execution.setVariable('atestation_date', time)
           <activiti:value id="accept" name="Оплата пройшла, можемо надати послугу"></activiti:value>
           <activiti:value id="reject" name="Відмова (вкажіть причину)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vidmova" name="Вкажіть причину відмови" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="vidmova" name="Вкажіть причину відмови" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
