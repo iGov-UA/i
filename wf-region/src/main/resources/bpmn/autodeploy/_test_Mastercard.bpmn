@@ -7,14 +7,12 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="E-Mail адреса для зворотнього зв'язку" type="string" required="true"></activiti:formProperty>
-        
         <activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sID_Pay_MasterPass" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш номер телефону;На цей номер буде відправлено OTP-пароль;" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;4800&quot;,&quot;fio&quot;:&quot;УДКСУ у Бабушкінському районі м.Дніпро Дніпропетровської обл.&quot;,&quot;edrpou&quot;:&quot;37989274&quot;,&quot;mfo&quot;:&quot;805012&quot;,&quot;rr&quot;:&quot;33219879727004&quot;,&quot;comment&quot;:&quot;За викопіювання з кадастрової карти та іншої картографічної документації ДЗК&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За викопіювання з кадастрової карти та іншої картографічної документації ДЗК"></activiti:formProperty>
-        
         <activiti:formProperty id="sPaymentBody" name="sPaymentBody; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPayResult" name="asPayResult; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bPay" name="bPay; ;bVisible=false" type="string"></activiti:formProperty>
@@ -25,7 +23,6 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="decide" name="Рішення" type="enum" required="true">
           <activiti:value id="accept" name="Послугу можна надати"></activiti:value>
           <activiti:value id="reject" name="Відмова"></activiti:value>
@@ -167,7 +164,6 @@ sPaymentBody = ${sPaymentBody}. <br/>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        
         <activiti:formProperty id="asPayResult" name="Результат оплати" type="string" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
@@ -175,7 +171,6 @@ sPaymentBody = ${sPaymentBody}. <br/>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow7" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow8" sourceRef="servicetask1" targetRef="servicetask3"></sequenceFlow>
-    
     <sequenceFlow id="flow9" sourceRef="servicetask2" targetRef="servicetask4"></sequenceFlow>
     <sequenceFlow id="flow10" sourceRef="servicetask3" targetRef="usertask2"></sequenceFlow>
     <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
@@ -194,10 +189,16 @@ sPaymentBody = ${sPaymentBody}. <br/>
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="60.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="284.0" y="73.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="310.0" y="74.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
         <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="313.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="140.0"></omgdc:Bounds>
@@ -214,20 +215,14 @@ sPaymentBody = ${sPaymentBody}. <br/>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
         <omgdc:Bounds height="55.0" width="105.0" x="414.0" y="313.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="206.0" y="313.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="426.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="345.0" y="510.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
-        <omgdc:Bounds height="55.0" width="105.0" x="206.0" y="313.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="140.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
-        <omgdc:Bounds height="55.0" width="105.0" x="50.0" y="313.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="362.0" y="36.0"></omgdi:waypoint>
@@ -285,7 +280,7 @@ sPaymentBody = ${sPaymentBody}. <br/>
         <omgdi:waypoint x="102.0" y="140.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
-        <omgdi:waypoint x="284.0" y="88.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="89.0"></omgdi:waypoint>
         <omgdi:waypoint x="155.0" y="87.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
