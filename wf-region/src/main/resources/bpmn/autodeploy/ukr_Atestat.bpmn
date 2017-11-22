@@ -20,7 +20,7 @@
           <activiti:value id="sEnum4" name="Отримання посвідчення без проходження атестації (вартість 51,30 грн.)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sText" name="повідомлення про оплату; ;labelType=info" type="label" default="Після замовлення послуги та перевірки даних на електронну адресу прийде повідомлення з можливістю онлайн оплати атестації або виготовлення посвідчення"></activiti:formProperty>
-        <activiti:formProperty id="sText2" name="Зверніть увагу; ;labelType=warning" type="label" default="Студенти та викладачі ХНТУ не можуть..."></activiti:formProperty>
+        <activiti:formProperty id="sText2" name="Зверніть увагу; ;labelType=warning" type="label" default="Увага! Студенти та викладачі ХНТУ не можуть атестуватися в університеті."></activiti:formProperty>
         <activiti:formProperty id="univer_student_or_prof" name="Чи є Ви студентом або співробітником ХНТУ?" type="enum" required="true">
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
@@ -242,7 +242,9 @@ execution.setVariable('atestation_date', time)
 	}
 </script>
     </scriptTask>
-    <sequenceFlow id="flow22" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
+    <sequenceFlow id="flow22" name="${univer_student_or_prof != 'sEnum1'}" sourceRef="exclusivegateway3" targetRef="scripttask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${univer_student_or_prof != 'sEnum1'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow24" name="${decide=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
     </sequenceFlow>
@@ -394,11 +396,51 @@ ${sMail_Signature}<br>
     <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
+    <serviceTask id="servicetask8" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Подання заяви для проходження атестації щодо володіння державною мовою]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+На жаль, Вам відмовлено в наданні послуги.<br>
+Співробітники і студенти ХНТУ не можут проходити атестацію в університеті<br><br>
+Телефон для довідок: ${sPhoneOrgan} <br>
+[pattern/mail/new_design/_common_content_end.html]                
+[pattern/mail/new_design/_common_signature_start.html]
+${sMail_Signature}<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow40" sourceRef="startevent1" targetRef="exclusivegateway3"></sequenceFlow>
+    <sequenceFlow id="flow41" name="${univer_student_or_prof=='sEnum1'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${univer_student_or_prof=='sEnum1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow42" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ukr_Atestat">
     <bpmndi:BPMNPlane bpmnElement="ukr_Atestat" id="BPMNPlane_ukr_Atestat">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="250.0" y="90.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="80.0"></omgdc:Bounds>
@@ -439,6 +481,12 @@ ${sMail_Signature}<br>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
         <omgdc:Bounds height="55.0" width="105.0" x="360.0" y="536.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="75.0" y="215.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="107.0" y="87.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="437.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="510.0" y="107.0"></omgdi:waypoint>
@@ -452,8 +500,11 @@ ${sMail_Signature}<br>
         <omgdi:waypoint x="908.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="285.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="147.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="332.0" y="107.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="147.0" y="107.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
         <omgdi:waypoint x="940.0" y="290.0"></omgdi:waypoint>
@@ -524,6 +575,21 @@ ${sMail_Signature}<br>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
         <omgdi:waypoint x="263.0" y="468.0"></omgdi:waypoint>
         <omgdi:waypoint x="145.0" y="468.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
+        <omgdi:waypoint x="76.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="107.0" y="107.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
+        <omgdi:waypoint x="127.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="127.0" y="215.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="42.0" width="100.0" x="28.0" y="159.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
+        <omgdi:waypoint x="127.0" y="270.0"></omgdi:waypoint>
+        <omgdi:waypoint x="127.0" y="451.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
