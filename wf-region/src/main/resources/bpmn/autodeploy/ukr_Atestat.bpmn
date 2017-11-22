@@ -286,8 +286,8 @@ execution.setVariable('atestation_date', time)
         <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <sequenceFlow id="flow30" name="${decide=='accept' &amp;&amp; atestationType=='enum1'}" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='enum1'}]]></conditionExpression>
+    <sequenceFlow id="flow30" name="${decide=='accept'} &amp;&amp; ${atestationType=='enum1'}" sourceRef="exclusivegateway2" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='sEnum1'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask4" name="Повідомлення громадянину про успішнe подання заяви + liqpay" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
@@ -361,7 +361,7 @@ ${sMail_Signature}<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow35" name="${decide=='accept' &amp;&amp; atestationType=='enum3'}" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='enum3'||decide=='accept' && atestationType=='enum3'||decide=='accept' && atestationType=='enum4'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='sEnum3' || decide=='accept' && atestationType=='sEnum4'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Оцінка якості послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -388,8 +388,8 @@ ${sMail_Signature}<br>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="flow36" name="${decide=='accept' &amp;&amp; atestationType=='enum2'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='enum2'}]]></conditionExpression>
+    <sequenceFlow id="flow36" name="${decide=='accept'} &amp;&amp; ${atestationType=='enum2'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='sEnum2'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow37" sourceRef="servicetask6" targetRef="endevent1"></sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
