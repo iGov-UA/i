@@ -303,9 +303,9 @@ execution.setVariable('atestation_date', time)
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
  [pattern/mail/new_design/_common_content_start.html]
-Ваші дані успішно перевірені. Ви можете сплатити вартість послуги за посиланням: <br>
+Ваші дані успішно перевірені. Ви можете сплатити вартість послуги за посиланням: <br><br>
+[paymentButton_LiqPay]<br><br>
 Зверніть увагу! Якщо ви вирішили не отримувати послугу після здійснення оплати, гроші за послугу не повертаються.<br>
-[paymentButton_LiqPay]<br>
 Перед наданням послуги виконавець перевірить факт оплати і Вам прийде лист з можливістю оцінити зручність послуги.<br>
 [pattern/mail/new_design/_common_content_end.html]  
 [pattern/mail/new_design/_common_signature_start.html]
@@ -361,7 +361,7 @@ ${sMail_Signature}<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow35" name="${decide=='accept' &amp;&amp; atestationType=='enum3'}" sourceRef="exclusivegateway2" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='enum3'/decide=='accept' && atestationType=='enum3'||decide=='accept' && atestationType=='enum4'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='enum3'||decide=='accept' && atestationType=='enum3'||decide=='accept' && atestationType=='enum4'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Оцінка якості послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
