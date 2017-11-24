@@ -193,7 +193,7 @@ ${sMail_Signature}<br>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
  [pattern/mail/new_design/_common_content_start.html]
-Дякуємо, Вам що скористались нашим сервісом подання заяви на атестацію з української мови!<br /><br />Ви можете пройти атестацію value{[atestation_date_group]}.<br /><br />
+Дякуємо, Вам що скористались нашим сервісом подання заяви на атестацію з української мови!<br /><br />Ви можете пройти атестацію enum{[atestation_date_group]}.<br /><br />
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
@@ -272,6 +272,7 @@ execution.setVariable('atestation_date', time)
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date" name="Обрана дата аттестации" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm" name="Заява;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_3in1.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody" name="[pattern/print/education/ukr_Atestat_3in1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="doc_copy" name="Копія документа, що підтверджує право отримання посвідчення буз проходження атестації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
