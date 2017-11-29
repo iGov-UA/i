@@ -370,7 +370,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow18" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" name="Фідбек" sourceRef="exclusivegateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='reestr'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnamReestr'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -403,7 +403,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow23" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow21" name="Нема візиту" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nejav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnamNejav'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
