@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_686" name="Державна реєстрація змін до відомостей про фізичну особу – підприємця" isExecutable="true">
-    <documentation>AGVersion: 2017.08.08
+    <documentation>AGVersion: 2017.11.29
+		+ обязательное поле для чиновника "причина" в случае отказа
+		+ обработка энама с загрузкой файла в случае отказа
 		+ файлы по новой схеме
 		- цветные метки
 		- линии разделительные
@@ -485,7 +487,11 @@
           <activiti:value id="sYes" name="Так - Заява прийнята для обробки (надіслати листа для сплати)"></activiti:value>
           <activiti:value id="sNo" name="Ні - Заява не прийнята для обробки (надіслати листа про відмову)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+
+        <activiti:formProperty id="markers_Hide_ut01_02" name="показати строки якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionFirst_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sNo'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut01_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut01_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionFirst_01&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sNo'&quot;}}}"></activiti:formProperty>
+
+        <activiti:formProperty id="sComment" name="Вкажіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fDoc_02" name="Копія нового ІПН; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fDoc_03" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -1081,9 +1087,18 @@
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію змін"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію змін відсутній"></activiti:value>
         </activiti:formProperty>
+
+        <activiti:formProperty id="markers_Hide_ut02_01" name="показати строки якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut02_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;,&quot;fDecisionDoc&quot;,&quot;sUniqNum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_ut02_02" name="показати строки якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut02_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut02_01" name="обов'язково якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut02_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut02_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut02_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut02_03" name="обов'язково строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut02_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_SetV_ut02_01" name="встановити значення (файл відсутній) якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_ut02_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field_sValue&quot;:[&quot;noDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_SetV_ut02_02" name="встановити значення (файл відсутній) якщо результат обробки звернення не негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_ut02_02&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field_sValue&quot;:[&quot; &quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] != 'rejectMain'&quot;}}}"></activiti:formProperty>
+
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ; bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Вкажіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sVarPayDate" name="Введіть дату сплати за послугу" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sVarBankOut" name="Банк платника; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sVarBankOplata" name="Банк отримувача; ;bVisible=false" type="string"></activiti:formProperty>
@@ -1232,12 +1247,20 @@
           <activiti:value id="acceptMain" name="Так - Заява розглянута, прийнято позитивне рішення"></activiti:value>
           <activiti:value id="rejectMain" name="Ні - Заява розглянута, прийнято негативне рішення"></activiti:value>
         </activiti:formProperty>
+
+        <activiti:formProperty id="markers_Hide_ut04_01" name="показати строки якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut04_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;,&quot;fDecisionDoc&quot;,&quot;sUniqNum&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Hide_ut04_02" name="показати строки якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_ut04_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut04_01" name="обов'язково якщо результат обробки звернення позитивний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut04_01&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'acceptMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut04_02" name="обов'язково якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut04_02&quot;:{&quot;aField_ID&quot;:[&quot;sComment&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_Req_ut04_03" name="обов'язково строки якщо є файл-скан; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_Req_ut04_03&quot;:{&quot;aField_ID&quot;:[&quot;fDecisionDoc&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asHaveDecisionFile&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'yesDecisionFile'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="markers_SetV_ut04_02" name="встановити значення (файл відсутній) якщо результат обробки звернення негативний; ;bVisible=false" type="markers" default="{&quot;motion&quot;:{&quot;ValuesFieldsOnCondition_ut04_02&quot;:{&quot;aField_ID&quot;:[&quot;asHaveDecisionFile&quot;],&quot;asID_Field_sValue&quot;:[&quot;noDecisionFile&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asDecisionMain&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'rejectMain'&quot;}}}"></activiti:formProperty>
+
         <activiti:formProperty id="asHaveDecisionFile" name="Наявність скана копії рішення: " type="enum" required="true">
           <activiti:value id="yesDecisionFile" name="Так - є скан копії рішення про реєстрацію змін"></activiti:value>
           <activiti:value id="noDecisionFile" name="Ні - скан копії рішення про реєстрацію змін відсутній"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sUniqNum" name="Номер опису (або унікальний номер) :" type="string" default="_"></activiti:formProperty>
-        <activiti:formProperty id="sComment" name="У разі негативного рішення вкажіть, будь ласка, причину" type="textArea" default="Причина: "></activiti:formProperty>
+        <activiti:formProperty id="sComment" name="Вкажіть, будь ласка, причину" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="fDecisionDoc" name="Копія рішення для заявника; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dnepr_cnap_686_print.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про реєстрацію змін - оригінал" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fDoc_01" name="Копія нового паспорту (перша-друга сторінка); ;bNew=true" type="file" writable="false"></activiti:formProperty>
