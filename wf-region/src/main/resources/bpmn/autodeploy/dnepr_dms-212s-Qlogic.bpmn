@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212s-Qlogic" name="Зняття з реєстрації місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. Qlogic Последние правки: 17.11.2017</documentation>
+    <documentation>Смоктій К.В. Qlogic Последние правки: 30.11.2017</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
@@ -184,7 +184,7 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="[Етап I] Перевірка вхідних даних (1-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}_${asEnumDistrictMariupol}">
       <extensionElements>
         <activiti:formProperty id="info" name="На цьому етапі:" type="label" default="Ви перевіряєте дані громадянина і вирішуєте чи всі вони вірні. Якщо все добре, призначаєте дату та час, коли громадянин має прийти до вас для отримання штампу про реєстрацію"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string" writable="false"></activiti:formProperty>
@@ -449,7 +449,7 @@ execution.setVariable('sMaxPay', maxpay)
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow27" sourceRef="servicetask6" targetRef="usertask2_red"></sequenceFlow>
-    <userTask id="usertask2_red" name="[Етап II] Візит громадянина (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask2_red" name="[Етап II] Візит громадянина (2-й крок)" activiti:candidateGroups="registration_${sID_Public_SubjectOrganJoin}_${asEnumDistrictMariupol}">
       <extensionElements>
         <activiti:formProperty id="info1" name="На цьому етапі:" type="label" default="Громадянин приходить до Вас. Ви звіряєте дані з ним, при необхідності вносите зміни. Роздруковуєте прінтформи, підписуєте їх та знімаєте з реєстрації дитину."></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string" writable="false"></activiti:formProperty>
