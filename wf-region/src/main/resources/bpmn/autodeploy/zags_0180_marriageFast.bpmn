@@ -686,41 +686,43 @@ if (mmm == 'Oct'){ mmm='10'}
 if (mmm == 'Nov'){ mmm='11'}
 if (mmm == 'Dec'){ mmm='12'}
 
-if (mmmBirth1 == 'Jan'){ mmmBirth1='01'}
-if (mmmBirth1 == 'Feb'){ mmmBirth1='02'}
-if (mmmBirth1 == 'Mar'){ mmmBirth1='03'}
-if (mmmBirth1 == 'Apr'){ mmmBirth1='04'}
-if (mmmBirth1 == 'May'){ mmmBirth1='05'}
-if (mmmBirth1 == 'Jun'){ mmmBirth1='06'}
-if (mmmBirth1 == 'Jul'){ mmmBirth1='07'}
-if (mmmBirth1 == 'Aug'){ mmmBirth1='08'}
-if (mmmBirth1 == 'Sep'){ mmmBirth1='09'}
-if (mmmBirth1 == 'Oct'){ mmmBirth1='10'}
-if (mmmBirth1 == 'Nov'){ mmmBirth1='11'}
-if (mmmBirth1 == 'Dec'){ mmmBirth1='12'}
+if (mmmBirth1 == 'Jan'){ mmmBirth1=1}
+if (mmmBirth1 == 'Feb'){ mmmBirth1=2}
+if (mmmBirth1 == 'Mar'){ mmmBirth1=3'}
+if (mmmBirth1 == 'Apr'){ mmmBirth1=4}
+if (mmmBirth1 == 'May'){ mmmBirth1=5}
+if (mmmBirth1 == 'Jun'){ mmmBirth1=6}
+if (mmmBirth1 == 'Jul'){ mmmBirth1=7}
+if (mmmBirth1 == 'Aug'){ mmmBirth1=8}
+if (mmmBirth1 == 'Sep'){ mmmBirth1=9}
+if (mmmBirth1 == 'Oct'){ mmmBirth1=10}
+if (mmmBirth1 == 'Nov'){ mmmBirth1=11}
+if (mmmBirth1 == 'Dec'){ mmmBirth1=12}
 
-if (mmmBirth2 == 'Jan'){ mmmBirth2='01'}
-if (mmmBirth2 == 'Feb'){ mmmBirth2='02'}
-if (mmmBirth2 == 'Mar'){ mmmBirth2='03'}
-if (mmmBirth2 == 'Apr'){ mmmBirth2='04'}
-if (mmmBirth2 == 'May'){ mmmBirth2='05'}
-if (mmmBirth2 == 'Jun'){ mmmBirth2='06'}
-if (mmmBirth2 == 'Jul'){ mmmBirth2='07'}
-if (mmmBirth2 == 'Aug'){ mmmBirth2='08'}
-if (mmmBirth2 == 'Sep'){ mmmBirth2='09'}
-if (mmmBirth2 == 'Oct'){ mmmBirth2='10'}
-if (mmmBirth2 == 'Nov'){ mmmBirth2='11'}
-if (mmmBirth2 == 'Dec'){ mmmBirth2='12'}
+if (mmmBirth2 == 'Jan'){ mmmBirth2=1}
+if (mmmBirth2 == 'Feb'){ mmmBirth2=2}
+if (mmmBirth2 == 'Mar'){ mmmBirth2=3}
+if (mmmBirth2 == 'Apr'){ mmmBirth2=4}
+if (mmmBirth2 == 'May'){ mmmBirth2=5}
+if (mmmBirth2 == 'Jun'){ mmmBirth2=6}
+if (mmmBirth2 == 'Jul'){ mmmBirth2=7}
+if (mmmBirth2 == 'Aug'){ mmmBirth2=8}
+if (mmmBirth2 == 'Sep'){ mmmBirth2=9}
+if (mmmBirth2 == 'Oct'){ mmmBirth2=10}
+if (mmmBirth2 == 'Nov'){ mmmBirth2=11}
+if (mmmBirth2 == 'Dec'){ mmmBirth2=12}
 
 	ddd=timeMar.substr(8,2)
-	dddBirth1=time1.substr(8,2)
-	dddBirth2=time2.substr(8,2)
+	dddBirth1=+time1.substr(8,2)
+	dddBirth2=+time2.substr(8,2)
 
 timeMar = ddd+'.'+mmm+'.'+yyyy
 
 var age1 = Math.round( +yyyy - +yyyyBirth1 )
 var age2 = Math.round( +yyyy - +yyyyBirth2 )
 
+if ((+mmm &lt; +mmmBirth1)||((+mmm == +mmmBirth1) &amp;&amp; (+ddd &lt; +dddBirth1))) age1--;
+if ((+mmm &lt; +mmmBirth2)||((+mmm == +mmmBirth2) &amp;&amp; (+ddd &lt; +dddBirth2))) age2--;
 
 execution.setVariable('mail_date', timeMar)
 execution.setVariable('sAge1', age1.toString())
