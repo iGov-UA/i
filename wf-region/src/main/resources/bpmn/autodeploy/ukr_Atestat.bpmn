@@ -8,26 +8,24 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-Mail для зворотнього зв'язку;на цей e-mail Ви отримаєте результат обробки Вашого звернення;" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Ваш номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Ваш номер телефону;На цей номер буде відправлено OTP-пароль;" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="atestationType" name="Оберіть тип атестації;Отримати посвідчення без проходження атестації можуть лише особи, що відповідають п. 56 &quot;Порядку атестації осіб, які претендують на вступ на державну службу, щодо вільного володіння державною мовою&quot;, затвердженого постановою КабМіну України від 26 квітня 2017 року № 301" type="enum" required="true">
           <activiti:value id="sEnum1" name="Групове проходження атестації (вартість 316,00 грн.)"></activiti:value>
           <activiti:value id="sEnum2" name="Індивідуальне проходження атестації (вартість 965,00 грн.)"></activiti:value>
+          <activiti:value id="sEnum3" name="Видача дубліката посвідчення щодо вільного володіння державною мовою (вартість 51,30 грн.)"></activiti:value>
+          <activiti:value id="sEnum4" name="Отримання посвідчення без проходження атестації (вартість 51,30 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText2" name="Зверніть увагу; ;labelType=warning" type="label" default="Увага! Студенти та викладачі ХНТУ не можуть атестуватися в університеті."></activiti:formProperty>
         <activiti:formProperty id="univer_student_or_prof" name="Чи є Ви студентом або співробітником ХНТУ?" type="enum" required="true">
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant" name="Ви можете сплатити послуги з атестації онлайн (до суми додається комісія системи);після створення платежу обов'язково дайте свою згоду на отримання квитанції про сплату на Ваш e-mail" type="string" default="i5682280054"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты ; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
-        <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sMail_Signature" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sPhoneOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="doc" name="Документ, що підтверджує право отримання посвідчення буз проходження атестації;назва, ким і коли виданий" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="doc_copy" name="Додайте копію документу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="atestation_day" name="Оберіть дату, у яку Ви успішно пройшли атестацію в нашому ВНЗ" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="atestation_date_group" name="Оберіть зручні для Вас дату і час проходження атестації;Атестація проводиться за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220" type="enum" required="true">
           <activiti:value id="sEnum1" name="25.11.2017 0 10:00"></activiti:value>
           <activiti:value id="sEnum2" name="23.12.2017 0 10:00"></activiti:value>
@@ -36,6 +34,14 @@
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMasterpassCheckout" name="Оплата" type="markers" default="{&quot;attributes&quot;:{&quot;Line_01&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Pay_MasterPass&quot;],&quot;sValue&quot;:&quot;Оплата&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Pay_MasterPass" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON" type="textArea" default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;31600&quot;,&quot;fio&quot;:&quot;Херсонський національний технічний університет&quot;,&quot;edrpou&quot;:&quot;05480298&quot;,&quot;mfo&quot;:&quot;820172&quot;,&quot;rr&quot;:&quot;31255208101194&quot;,&quot;comment&quot;:&quot;атестація з державної мови, [bankIdlastName][bankIdfirstName][bankIdmiddleName]&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За атестацію з державної мови"></activiti:formProperty>
+        <activiti:formProperty id="sPaymentBody" name="sPaymentBody; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPayResult" name="asPayResult; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="bPay" name="bPay; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -48,7 +54,7 @@
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Подання заяви для проходження атестації щодо володіння державною мовою]]></activiti:string>
+          <activiti:expression><![CDATA[Подання заяви для проходження атестації щодо володіння державною мовою]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_employee_notify.html]]]></activiti:expression>
@@ -66,70 +72,84 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса проживання" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="atestationType" name="Тип атестації" type="enum" writable="false">
+        <activiti:formProperty id="phone" name="Ваш номер телефону;На цей номер буде відправлено OTP-пароль;" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="atestationType" name="Тип атестації;Отримати посвідчення без проходження атестації можуть лише особи, що відповідають п. 56 &quot;Порядку атестації осіб, які претендують на вступ на державну службу, щодо вільного володіння державною мовою&quot;, затвердженого постановою КабМіну України від 26 квітня 2017 року № 301" type="enum" writable="false">
           <activiti:value id="sEnum1" name="Групове проходження атестації (вартість 316,00 грн.)"></activiti:value>
           <activiti:value id="sEnum2" name="Індивідуальне проходження атестації (вартість 965,00 грн.)"></activiti:value>
+          <activiti:value id="sEnum3" name="Видача дубліката посвідчення щодо вільного володіння державною мовою (вартість 51,30 грн.)"></activiti:value>
+          <activiti:value id="sEnum4" name="Отримання посвідчення без проходження атестації (вартість 51,30 грн.)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="atestation_date" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date_group" name="Обрана дата атестацї" type="enum" writable="false">
           <activiti:value id="sEnum1" name="25.11.2017 0 10:00"></activiti:value>
           <activiti:value id="sEnum2" name="23.12.2017 0 10:00"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="doc" name="Документ, що підтверджує право отримання посвідчення буз проходження атестації;назва, ким і коли виданий" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="atestation_day" name="Оберіть дату, у яку Ви успішно пройшли атестацію в нашому ВНЗ" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm" name="Заява;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_3in1.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody" name="[pattern/print/education/ukr_Atestat_3in1.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
-          <activiti:value id="accept" name="Дані перевірені, заявник може оплачувати послугу"></activiti:value>
-          <activiti:value id="reject" name="Відмова (вкажіть причину)"></activiti:value>
+        <activiti:formProperty id="atestation_date" name="Обрана дата аттестации" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="Заява про видачу атестату без атестування;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_atestat.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/education/ukr_Atestat_atestat.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу атестату без атестування" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_2" name="Заява про допуск до атестації;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_dopusk.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_2" name="[pattern/print/education/ukr_Atestat_dopusk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про допуск до атестації" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_3" name="Заява про видачу дублікату атестату;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_dublikat.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_3" name="[pattern/print/education/ukr_Atestat_dublikat.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про видачу дублікату атестату" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="doc_copy" name="Копія документа, що підтверджує право отримання посвідчення буз проходження атестації; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про приймання оплати і надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Дані перевірені, послугу можна надати. Прийняти оплату."></activiti:value>
+          <activiti:value id="reject" name="Відмова (вкажіть причину). Оплата не проводиться."></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="vidmova" name="Вкажіть причину відмови" type="string"></activiti:formProperty>
+        <activiti:formProperty id="vidmova" name="Причина відмови" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <sequenceFlow id="flow1" sourceRef="scripttask1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="scripttask3" targetRef="servicetask1"></sequenceFlow>
     <sequenceFlow id="flow3" sourceRef="servicetask2" targetRef="usertask1"></sequenceFlow>
-    <serviceTask id="servicetask2" name="Повідомлення громадянину про успішне подання заяви" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Подання заяви для проходження атестації щодо володіння державною мовою]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-Ваше звернення успішно зареєстровано. <br>
-Результат перевірки введенних данних будуть спрямовані на цей е-мейл найближчим часом.<br>
-[pattern/mail/new_design/_common_content_end.html]  
-[pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
-[pattern/mail/new_design/_common_signature_end.html] 
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
+    <serviceTask id="servicetask2" name="Повідомлення заявнику про успішне звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow4" sourceRef="servicetask1" targetRef="servicetask2"></sequenceFlow>
-    <serviceTask id="servicetask3" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+    <scriptTask id="scripttask1" name="СКР1" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+scrbPay = 'false'
+execution.setVariable('bPay', scrbPay)
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow5" sourceRef="boundarytimer1" targetRef="scripttask1"></sequenceFlow>
+    <scriptTask id="scripttask2" name="СКР2" scriptFormat="javascript" activiti:autoStoreVariables="false">
+      <script>
+var scrbPay = ' ' 
+  
+if(execution.getVariable('decide') == 'accept')
+  {
+  scrbPay = 'true'
+  }
+if(execution.getVariable('decide') == 'reject')
+  {
+  scrbPay = 'false'
+  }  
+execution.setVariable('bPay', scrbPay)
+      </script>
+    </scriptTask>
+    <sequenceFlow id="flow7" sourceRef="usertask1" targetRef="scripttask2"></sequenceFlow>
+    <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask1" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1H</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <serviceTask id="servicetask3" name="bPay Т Відмова" activiti:delegateExpression="#{PayConfirm}">
+      <extensionElements>
+        <activiti:field name="bPay">
+          <activiti:string><![CDATA[false]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow8" sourceRef="scripttask1" targetRef="servicetask3"></sequenceFlow>
+    <serviceTask id="servicetask4" name="Т Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -138,57 +158,110 @@ ${sMail_Signature}<br>
           <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Подання заяви для проходження атестації щодо володіння державною мовою]]></activiti:string>
+          <activiti:expression><![CDATA[Відмова за таймером]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
 [pattern/mail/new_design/_common_content_start.html]
-На жаль, Вам відмовлено в наданні послуги.<br>
-Підстава: <br>
-${vidmova}<br><br>
-Телефон для довідок: ${sPhoneOrgan} <br>
-[pattern/mail/new_design/_common_content_end.html]                
+Відмова по таймеру. <br/><br/>
+bPay = ${bPay}. <br/>
+sPaymentBody = ${sPaymentBody}. <br/>
+[pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
+МАСТЕРКАРД
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow9" sourceRef="servicetask3" targetRef="servicetask4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow10" sourceRef="scripttask2" targetRef="exclusivegateway1"></sequenceFlow>
+    <serviceTask id="servicetask5" name="bPay Відмова" activiti:delegateExpression="#{PayConfirm}">
+      <extensionElements>
+        <activiti:field name="bPay">
+          <activiti:string><![CDATA[false]]></activiti:string>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask5" name="Оцінка якості послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <sequenceFlow id="flow11" name="${decide=='reject'}" sourceRef="exclusivegateway1" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask6" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
         </activiti:field>
         <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="subject">
-          <activiti:string><![CDATA[Атестація щодо володіння українською мовою]]></activiti:string>
+          <activiti:expression><![CDATA[Тест Мастер Відмова]]></activiti:expression>
         </activiti:field>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
- [pattern/mail/new_design/_common_content_start.html]
-Дякуємо, Вам що скористались нашим сервісом подання заяви на атестацію з української мови!<br /><br />Ви можете пройти атестацію enum{[atestation_date_group]}.<br /><br />
+[pattern/mail/new_design/_common_content_start.html]
+Відмова. <br/><br/>
+bPay = ${bPay}. <br/><br/>
+sPaymentBody = ${sPaymentBody}. <br/>
 [pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
+МАСТЕРКАРД
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <scriptTask id="scripttask1" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <sequenceFlow id="flow12" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
+    <serviceTask id="servicetask7" name="bPay Дозвіл" activiti:delegateExpression="#{PayConfirm}">
+      <extensionElements>
+        <activiti:field name="bPay">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow13" name="${decide=='accept'}" sourceRef="exclusivegateway1" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="Дозвіл" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Тест Мастер Оплата]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+Дозвіл на оплату. <br/><br/>
+bPay = ${bPay}. <br/><br/>
+sPaymentBody = ${sPaymentBody}. <br/>
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+МАСТЕРКАРД
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="servicetask8"></sequenceFlow>
+    <userTask id="usertask2" name="Перевірка оплати" activiti:candidateGroups="control_${sID_Public_SubjectOrganJoin}">
+      <extensionElements>
+        <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPayResult" name="Результат оплати" type="string" writable="false"></activiti:formProperty>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow15" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="servicetask4" targetRef="usertask2"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="usertask2" targetRef="endevent1"></sequenceFlow>
+    <scriptTask id="scripttask3" name="Script Task" scriptFormat="javascript" activiti:autoStoreVariables="false">
       <script>
 var yyyy = ''
 var mmm = ''
@@ -223,197 +296,135 @@ execution.setVariable('atestation_date', time)
 	}
 </script>
     </scriptTask>
-    <sequenceFlow id="flow22" name="${univer_student_or_prof != 'sEnum1'}" sourceRef="exclusivegateway3" targetRef="scripttask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${univer_student_or_prof != 'sEnum1'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow27" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow30" name="${decide=='accept'} &amp;&amp; ${atestationType=='enum1'}" sourceRef="exclusivegateway2" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='sEnum1'}]]></conditionExpression>
-    </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow34" name="${decide=='reject'}" sourceRef="exclusivegateway2" targetRef="servicetask3">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='reject'}]]></conditionExpression>
-    </sequenceFlow>
-    <serviceTask id="servicetask7" name="Оцінка якості послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA["${email}"]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Атестація щодо володіння українською мовою]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
- [pattern/mail/new_design/_common_content_start.html]
-Дякуємо, Вам що скористались нашим сервісом подання заяви на атестацію з української мови!<br />Ви можете пройти атестацію ${atestation_date}.<br />
- Про час тестування радимо Вам завчасно домовитись за телефоном ${sPhoneOrgan}<br />
-[pattern/mail/new_design/_common_content_end.html]
-[pattern/mail/new_design/_common_feedback.html]
-[pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <sequenceFlow id="flow36" name="${decide=='accept'} &amp;&amp; ${atestationType=='enum2'}" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide=='accept' && atestationType=='sEnum2'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow38" sourceRef="servicetask7" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow39" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
-      <extensionElements>
-        <activiti:field name="from">
-          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="to">
-          <activiti:expression><![CDATA[${email}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="subject">
-          <activiti:string><![CDATA[Подання заяви для проходження атестації щодо володіння державною мовою]]></activiti:string>
-        </activiti:field>
-        <activiti:field name="text">
-          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
-[pattern/mail/new_design/_common_content_start.html]
-На жаль, Вам відмовлено в наданні послуги.<br>
-Співробітники і студенти ХНТУ не можут проходити атестацію в університеті<br><br>
-Телефон для довідок: ${sPhoneOrgan} <br>
-[pattern/mail/new_design/_common_content_end.html]                
-[pattern/mail/new_design/_common_signature_start.html]
-${sMail_Signature}<br>
-[pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sPhone_SMS">
-          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="sText_SMS">
-          <activiti:expression><![CDATA[Za Vashym zvernennyam  [sID_Order]  vyneseno vidmovu v nadanni poslugy. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
-        </activiti:field>
-        <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[" "]]></activiti:expression>
-        </activiti:field>
-      </extensionElements>
-    </serviceTask>
-    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow40" sourceRef="startevent1" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow41" name="${univer_student_or_prof=='sEnum1'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${univer_student_or_prof=='sEnum1'}]]></conditionExpression>
-    </sequenceFlow>
-    <sequenceFlow id="flow42" sourceRef="servicetask8" targetRef="endevent1"></sequenceFlow>
-    <sequenceFlow id="flow43" sourceRef="usertask1" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="startevent1" targetRef="scripttask3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_ukr_Atestat">
     <bpmndi:BPMNPlane bpmnElement="ukr_Atestat" id="BPMNPlane_ukr_Atestat">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="41.0" y="90.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="430.0" y="90.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="367.0" y="80.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
-        <omgdc:Bounds height="71.0" width="105.0" x="750.0" y="433.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="168.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="356.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="110.0" y="451.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="315.0" y="410.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
-        <omgdc:Bounds height="71.0" width="105.0" x="750.0" y="72.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="340.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
-        <omgdc:Bounds height="55.0" width="105.0" x="263.0" y="441.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="105.0" x="140.0" y="160.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="80.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="168.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
-        <omgdc:Bounds height="40.0" width="40.0" x="532.0" y="448.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="scripttask2" id="BPMNShape_scripttask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="55.0" width="105.0" x="660.0" y="540.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="312.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask5" id="BPMNShape_servicetask5">
+        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="323.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask6" id="BPMNShape_servicetask6">
+        <omgdc:Bounds height="55.0" width="105.0" x="130.0" y="471.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask7" id="BPMNShape_servicetask7">
-        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="531.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="436.0" y="323.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="55.0" width="105.0" x="75.0" y="215.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="436.0" y="469.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
-        <omgdc:Bounds height="40.0" width="40.0" x="107.0" y="87.0"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="471.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="80.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
-        <omgdi:waypoint x="315.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="367.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="245.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="802.0" y="143.0"></omgdi:waypoint>
-        <omgdi:waypoint x="802.0" y="433.0"></omgdi:waypoint>
+        <omgdi:waypoint x="245.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="195.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="472.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="750.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="135.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="160.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="386.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="660.0" y="195.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="332.0" y="223.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="712.0" y="223.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="250.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="712.0" y="305.0"></omgdi:waypoint>
+        <omgdi:waypoint x="712.0" y="540.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="332.0" y="305.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="330.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="312.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="235.0" y="350.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="89.0" x="237.0" y="350.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="182.0" y="378.0"></omgdi:waypoint>
+        <omgdi:waypoint x="182.0" y="471.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="352.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="436.0" y="350.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="95.0" x="352.0" y="350.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="488.0" y="378.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="469.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="235.0" y="498.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="498.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="436.0" y="496.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="498.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="660.0" y="567.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="567.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="526.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="332.0" y="471.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="445.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
-        <omgdi:waypoint x="147.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="210.0" y="107.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="125.0" y="46.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
-        <omgdi:waypoint x="552.0" y="395.0"></omgdi:waypoint>
-        <omgdi:waypoint x="127.0" y="451.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
-        <omgdi:waypoint x="532.0" y="468.0"></omgdi:waypoint>
-        <omgdi:waypoint x="368.0" y="468.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="402.0" y="412.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
-        <omgdi:waypoint x="552.0" y="448.0"></omgdi:waypoint>
-        <omgdi:waypoint x="552.0" y="395.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="89.0" x="560.0" y="413.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
-        <omgdi:waypoint x="552.0" y="488.0"></omgdi:waypoint>
-        <omgdi:waypoint x="552.0" y="531.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="56.0" width="100.0" x="580.0" y="467.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
-        <omgdi:waypoint x="552.0" y="531.0"></omgdi:waypoint>
-        <omgdi:waypoint x="127.0" y="486.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
-        <omgdi:waypoint x="263.0" y="468.0"></omgdi:waypoint>
-        <omgdi:waypoint x="145.0" y="468.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow40" id="BPMNEdge_flow40">
-        <omgdi:waypoint x="76.0" y="107.0"></omgdi:waypoint>
-        <omgdi:waypoint x="107.0" y="107.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow41" id="BPMNEdge_flow41">
-        <omgdi:waypoint x="127.0" y="127.0"></omgdi:waypoint>
-        <omgdi:waypoint x="127.0" y="215.0"></omgdi:waypoint>
-        <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="42.0" width="100.0" x="28.0" y="159.0"></omgdc:Bounds>
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow42" id="BPMNEdge_flow42">
-        <omgdi:waypoint x="127.0" y="270.0"></omgdi:waypoint>
-        <omgdi:waypoint x="127.0" y="451.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow43" id="BPMNEdge_flow43">
-        <omgdi:waypoint x="750.0" y="468.0"></omgdi:waypoint>
-        <omgdi:waypoint x="572.0" y="468.0"></omgdi:waypoint>
+        <omgdi:waypoint x="430.0" y="107.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
