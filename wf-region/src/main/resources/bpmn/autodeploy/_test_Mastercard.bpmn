@@ -11,11 +11,12 @@
         <activiti:formProperty id="sID_Pay_MasterPass" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш номер телефону;На цей номер буде відправлено OTP-пароль;" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="sSum_MasterPass" name="Сума до сплати; ;bVisible=false" type="label" default=" "></activiti:formProperty>
-        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON; ;bVisible=false" type="textArea" default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;4800&quot;,&quot;fio&quot;:&quot;УДКСУ у Бабушкінському районі м.Дніпро Дніпропетровської обл.&quot;,&quot;edrpou&quot;:&quot;37989274&quot;,&quot;mfo&quot;:&quot;805012&quot;,&quot;rr&quot;:&quot;33219879727004&quot;,&quot;comment&quot;:&quot;За викопіювання з кадастрової карти та іншої картографічної документації ДЗК&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sID_Merchant_MasterPass" name="Інформація до платежу, у форматі JSON" type="textArea"  default="{&quot;p2r&quot;:[{&quot;amount&quot;:&quot;4800&quot;,&quot;fio&quot;:&quot;УДКСУ у Бабушкінському районі м.Дніпро Дніпропетровської обл.&quot;,&quot;edrpou&quot;:&quot;37989274&quot;,&quot;mfo&quot;:&quot;805012&quot;,&quot;rr&quot;:&quot;33219879727004&quot;,&quot;comment&quot;:&quot;За викопіювання з кадастрової карти та іншої картографічної документації ДЗК&quot;}]}"></activiti:formProperty>
         <activiti:formProperty id="sDescription_MasterPass" name="Призначення платежу, у форматі текст до 100 знаків; ;bVisible=false" type="string" default="За викопіювання з кадастрової карти та іншої картографічної документації ДЗК"></activiti:formProperty>
         <activiti:formProperty id="sPaymentBody" name="sPaymentBody; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asPayResult" name="asPayResult; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="bPay" name="bPay; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('test_1.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="Рішення про надання послуги" activiti:candidateGroups="test_Mastercard">
