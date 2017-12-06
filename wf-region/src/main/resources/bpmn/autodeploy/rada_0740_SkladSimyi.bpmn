@@ -8,13 +8,24 @@
         
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, у якому Ви бажаєте отримати рішення" type="select" default="0"></activiti:formProperty>
         
+        <activiti:formProperty id="asWhere" name="Для чого потрібна довідка" type="enum" required="true">
+          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
+          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
+          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
+          <activiti:value id="sDeath" name="Підтвердження місця проживання особи на момент смерті"></activiti:value>
+          <activiti:value id="sComp" name="Звернення до держаних чи комунальних підприємств"></activiti:value>
+          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
+          <activiti:value id="sOther" name="Інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sKud" name="Вкажіть для чого вам, необхідна довідка" type="string" required="true"></activiti:formProperty>
+        
         <activiti:formProperty id="sVizitData" name="Оберіть день коли ви хочете прийти за довідкою" type="date" required="true"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Ваше прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ваше ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="Ваше по батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="Ваш IПН" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Ваше посвідчення особи;Тип, серія та номер документу, дата і орган, що його видав" type="string" default="паспорт " required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
@@ -50,24 +61,16 @@
         <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" default="${markerService.loadFromFile('table/registr/form3_table.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_F" name="Сканкопії документів" type="markers" default="{&quot;attributes&quot;:{&quot;Line_F&quot;:{&quot;aElement_ID&quot;:[&quot;sLabeFile&quot;],&quot;sValue&quot;:&quot;Сканкопії документів&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sLabeFile" name=" ; ;labelType=info" type="label" default="Увага! Для замовлення послуги, буде необідно завантажувати кольорові сканкопії(фото) документів. Розширення має не перевищувати 150 dpi. Документ з декількома сторінками необхідно завантажувати одним файлом формату PDF або ZIP архівом."></activiti:formProperty>
+        <activiti:formProperty id="sLabeFile" name=" ; ;labelType=info" type="label" default="Увага! Для замовлення послуги, буде необідно завантажувати кольорові сканкопії(фото) документів. Розширення має не перевищувати 150 dpi(2700*1800 пікселів). Документ з декількома сторінками необхідно завантажувати одним файлом формату PDF або ZIP архівом."></activiti:formProperty>
         <activiti:formProperty id="nFile_PasportZay" name="Паспорт заявника;(1, 2 сторінка, та сторінка з місцем реєстрації);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_Vlasnist" name="Право власності;(документ що підтверджує право власності на нерухомість);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_DomKniga" name="Домова книга;(сторінки де вказано хто власник);bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="nFile_PasportSoj" name="Паспорти зареєстрованих співмешканців;(1, 2 сторінка, та сторінка з місцем реєстрації);bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_PasportSoj" name="Паспорти зареєстрованих співмешканців;(1, 2 сторінка, всі сторінки з фото, та сторінка з місцем реєстрації);bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nFile_SvidNar" name="Свідоцтва про народження дітей; ;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvidDeath" name="Свідоцтво про смерть; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="markerFiles" name="markerFiles" type="markers" default="${markerService.loadFromFile('form3/forma_3_files.json')}"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_4" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asWhere&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="asWhere" name="Оберіть для чого вам потрібна довідка" type="enum" required="true">
-          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
-          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
-          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
-          <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
-          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
-          <activiti:value id="sOther" name="Інше"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sKud" name="Вкажіть для чого вам, необхідна довідка" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_4" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asBuilding&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asBuilding" name="Чи потрібні дані про квартиру/будинок?;позначте галочкою - якщо так;sID_CheckboxTrue=yes" type="enum">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
@@ -137,10 +140,20 @@ ${sNameOrgan}<br>
     <userTask id="usertask1" name="Перевірка даних" activiti:candidateGroups="forma3_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVizitData" name="Бажаний день візиту заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWhere" name="Для чого громадянину потрібна довідка" type="enum" writable="false">
+          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
+          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
+          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
+          <activiti:value id="sDeath" name="Підтвердження місця проживання особи на момент смерті"></activiti:value>
+          <activiti:value id="sComp" name="Звернення до держаних чи комунальних підприємств"></activiti:value>
+          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
+          <activiti:value id="sOther" name="Інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sKud" name="Інший варіант необхідності довідки" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -172,18 +185,9 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="nFile_DomKniga" name="Домова книга; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PasportSoj" name="Паспорти зареєстрованих співмешканців; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_SvidNar" name="Свідоцтва про народження дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvidDeath" name="Свідоцтво про смерть; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_4" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asWhere&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
-        
-        <activiti:formProperty id="asWhere" name="Для чого громадянину потрібна довідка" type="enum" writable="false">
-          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
-          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
-          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
-          <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
-          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
-          <activiti:value id="sOther" name="Інше"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sKud" name="Інший варіант необхідності довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_44" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_44&quot;:{&quot;aElement_ID&quot;:[&quot;sPloshcha&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPloshcha" name="Житлова площа будинку/квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKimnaty" name="Кількість кімнат у будинку/квартирі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPoverh" name="Кількість поверхів у будинку" type="string" writable="false"></activiti:formProperty>
@@ -290,10 +294,20 @@ ${sNameOrgan},<br>
     <userTask id="usertask2_red" name="Візит громадянина" activiti:candidateGroups="forma3_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sVizitData" name="Бажаний день візиту заявника" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asWhere" name="Для чого громадянину потрібна довідка" type="enum" writable="false">
+          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
+          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
+          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
+          <activiti:value id="sDeath" name="Підтвердження місця проживання особи на момент смерті"></activiti:value>
+          <activiti:value id="sComp" name="Звернення до держаних чи комунальних підприємств"></activiti:value>
+          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
+          <activiti:value id="sOther" name="Інше"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sKud" name="Інший варіант необхідності довідки" type="string" writable="false"></activiti:formProperty>
         
         <activiti:formProperty id="markersLine_11" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_11&quot;:{&quot;aElement_ID&quot;:[&quot;clFio&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="date" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankIdbirthDay" name="Дата народження заявника" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdinn" name="IПН" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
@@ -325,18 +339,9 @@ ${sNameOrgan},<br>
         <activiti:formProperty id="nFile_DomKniga" name="Домова книга; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PasportSoj" name="Паспорти зареєстрованих співмешканців; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_SvidNar" name="Свідоцтва про народження дітей; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile_SvidDeath" name="Свідоцтво про смерть; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         
-        <activiti:formProperty id="markersLine_4" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_4&quot;:{&quot;aElement_ID&quot;:[&quot;asWhere&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
-        
-        <activiti:formProperty id="asWhere" name="Для чого громадянину потрібна довідка" type="enum" writable="false">
-          <activiti:value id="sSubs" name="Отримання субсидії"></activiti:value>
-          <activiti:value id="sSocHelp" name="Отримання соціальної допомоги"></activiti:value>
-          <activiti:value id="sHeritage" name="Оформлення спадщини"></activiti:value>
-          <activiti:value id="sComp" name="Подачі до комунальних підприємств"></activiti:value>
-          <activiti:value id="sPlase" name="Постановки на квартирний облік"></activiti:value>
-          <activiti:value id="sOther" name="Інше"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="sKud" name="Інший варіант необхідності довідки" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="markersLine_44" name="Додаткова інформація" type="markers" default="{&quot;attributes&quot;:{&quot;Line_44&quot;:{&quot;aElement_ID&quot;:[&quot;sPloshcha&quot;],&quot;sValue&quot;:&quot;Додаткова інформація&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sPloshcha" name="Житлова площа будинку/квартири" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sKimnaty" name="Кількість кімнат у будинку/квартирі" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPoverh" name="Кількість поверхів у будинку" type="string" writable="false"></activiti:formProperty>
@@ -370,7 +375,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow18" sourceRef="usertask2_red" targetRef="exclusivegateway2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" name="Фідбек" sourceRef="exclusivegateway2" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='reestr'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnamReestr'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Фідбек" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -403,7 +408,7 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow23" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
     <endEvent id="endevent4" name="End"></endEvent>
     <sequenceFlow id="flow21" name="Нема візиту" sourceRef="exclusivegateway2" targetRef="servicetask7">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${result=='nejav'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asResult=='sEnamNejav'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Е-мейл відмови у наданні послуги" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
