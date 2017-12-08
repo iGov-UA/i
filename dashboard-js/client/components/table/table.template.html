@@ -23,7 +23,7 @@
             <td ng-repeat="item in row.aField">
               <span ng-if="item.type !== 'file'">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</span>
 
-              <div ng-if="item.type === 'file'">
+              <div ng-if="item.type === 'file' && item.value !== null">
                 <div class="dropup no-print" style="display: inline-block; position:relative;">
                   <div class="file-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
                     <p style="padding-top: 10px;">Файл: {{item.fileName | tableButtonFilter}}</p>
