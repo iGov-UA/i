@@ -50,6 +50,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank" name="Військове звання (категорія); Стосовно призовників зазначається - «призовник»" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryID" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum">
           <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
@@ -64,11 +66,15 @@
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Діти лінія" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sTable1&quot;],&quot;sValue&quot;:&quot;Відомості про неповнолітніх дітей&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sTable1" name="інформація про неповнолітніх дітей; ;bNew=true" type="table" default="${markerService.loadFromFile('table/justice/sTable1_common_zags_change_name.json')}"></activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" required="true">
+         <activiti:formProperty id="saSuspicion" name="Чи підозрюєтесь (обвинувачуєтесь) у кримінальному правопорушенні?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="saConviction" name="Чи маєте судимість, яку не погашено або не знято в установленому законом порядку?" type="enum" required="true">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під адміністративним наглядом?" type="enum" required="true">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -135,6 +141,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
@@ -144,7 +152,11 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
+        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під адміністративним наглядом?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saSuspicion" name="Чи підозрюєтесь (обвинувачуєтесь) у кримінальному правопорушенні?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -231,6 +243,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
@@ -240,7 +254,11 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
+        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під адміністративним наглядом?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saSuspicion" name="Чи підозрюєтесь (обвинувачуєтесь) у кримінальному правопорушенні?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -324,6 +342,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
@@ -333,7 +353,11 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
+        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під адміністративним наглядом?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saSuspicion" name="Чи підозрюєтесь (обвинувачуєтесь) у кримінальному правопорушенні?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -418,6 +442,8 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
@@ -427,7 +453,11 @@
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
+        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під адміністративним наглядом?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saSuspicion" name="Чи підозрюєтесь (обвинувачуєтесь) у кримінальному правопорушенні?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
@@ -985,6 +1015,8 @@ execution.setVariable('sCountPayment', src)</script>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="saMarriage" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="marriage" name="перебуваю у шлюбі"></activiti:value>
           <activiti:value id="noMarriage" name="у шлюбі не перебуваю"></activiti:value>
@@ -994,7 +1026,11 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під слідством, судом, адміністративним наглядом?" type="enum" writable="false">
+        <activiti:formProperty id="saInvestigation" name="Чи перебуваєте під адміністративним наглядом?" type="enum" writable="false">
+          <activiti:value id="yes" name="так"></activiti:value>
+          <activiti:value id="no" name="ні"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="saSuspicion" name="Чи підозрюєтесь (обвинувачуєтесь) у кримінальному правопорушенні?" type="enum" writable="false">
           <activiti:value id="yes" name="так"></activiti:value>
           <activiti:value id="no" name="ні"></activiti:value>
         </activiti:formProperty>
