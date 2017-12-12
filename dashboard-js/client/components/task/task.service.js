@@ -816,8 +816,8 @@ angular.module('dashboardJsApp')
             method: 'GET',
             url: '/api/tasks/sign/checkAttachmentSignNew',
             params: {
-              sID_Process:nID_Task,
-              sID_Field:nID_Attach
+              sKey:nID_Task,
+              sID_StorageType:nID_Attach
             }
           })
         } else {

@@ -198,7 +198,7 @@
 
     <div style="text-align: left; margin-top: 3px" ng-if="tableIsLoaded(item)">
       <input type="button"
-             ng-hide="rowLengthCheckLimit(item) && !item.aRow || (!isDocumentWritable(item) && isDocumentReadable(item))"
+             ng-hide="rowLengthCheckLimit(item) || !item.aRow || (!isDocumentWritable(item) && isDocumentReadable(item))"
              class="add-row-button"
              ng-class="item.id + '_add_row_button'"
              ng-click="addRow(form[tableName], item.id, tableName)"

@@ -120,7 +120,7 @@
             <div class="row"
                  style="margin-bottom: 20px"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property) && property.id !== 'form_signed' && property.id !== 'form_signed_all' && fieldHasVisibleType(property)">
+                 ng-if="isFieldVisible(property) && !isFormSigned(property.id) && fieldHasVisibleType(property)">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
@@ -189,7 +189,9 @@
                     <thead>
 
                     <tr class="table-thead">
-                      <th ng-repeat="item in property.aRow[0].aField" ng-style="{'width' : item.nWidth}">
+                      <th ng-repeat="item in property.aRow[0].aField"
+                          ng-hide="!isVisible(item)"
+                          ng-style="{'width' : item.nWidth}">
                         <span>{{item.sFieldLabel || item.name}}</span>
                         <span style="display: block; text-align: center" class="s-field-notes"
                              ng-if="item.sFieldNotes!=null">
@@ -205,7 +207,7 @@
 
                     <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
 
-                      <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+                      <td ng-repeat="item in row.aField track by $index" ng-hide="!isVisible(item)" style="border: 1px solid lightgrey">
                         <div ng-class="getFullCellId(property, $index, rowIndex)">
 
                         <div ng-if="item.type == 'string'">

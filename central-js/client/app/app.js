@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('appBoilerPlate', ['ngCookies',
+angular.module('appBoilerPlate', [
+  'base64',
+  'angular-md5',
+  'ngCookies',
   'ngResource',
   'ngSanitize',
   'ui.router',
@@ -22,7 +25,9 @@ angular.module('appBoilerPlate', ['ngCookies',
   'autocompleteService',
   'datepickerService',
   'iGovTable',
-  'datetimepicker']);
+  'datetimepicker',
+  'cryptoPlugin',
+  'signModule']);
 
 angular.module('documents', ['appBoilerPlate']);
 angular.module('auth', ['appBoilerPlate']);

@@ -4,14 +4,14 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
     'selfOrdersCount', 'AdminService', 'PlacesService', 'uiUploader', 'FieldAttributesService', 'iGovMarkers', 'service',
     'FieldMotionService', 'ParameterFactory', '$modal', 'FileFactory', 'DatepickerFactory', 'autocompletesDataFactory',
     'ErrorsFactory', 'taxTemplateFileHandler', 'taxTemplateFileHandlerConfig', 'SignFactory', 'TableService', 'LabelService',
-    'MasterPassService', 'modalService', 'BanksResponses',
+    'MasterPassService', 'modalService', 'BanksResponses', 'signDialog', 'generationService',
     function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
               PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
               ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService,
-              MasterPassService, modalService, BanksResponses) {
+              MasterPassService, modalService, BanksResponses, signDialog, generationService) {
 
     'use strict';
 
@@ -47,6 +47,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       $scope.selectedCard = null;
       $scope.checkoutConfirm = {status: 'checkout'};
       $scope.phoneVerify = {showVerifyButton: true, dialog: false, otp: '', confirmed: false, otpIsConfirmed: true};
+
+      $scope.uploadedFiles = {};
+      $scope.contentData = [];
 
       $scope.setFormScope = function (scope) {
         this.formScope = scope;
@@ -223,6 +226,19 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
 
     };
 
+      var signType;
+      for (var param in $scope.data.formData.params) {
+        if ($scope.data.formData.params.hasOwnProperty(param)) {
+          if (/form_signed_[\d]+/.test(param)) {
+            signType = 'single';
+            break;
+          } else if (/form_signed_all_[\d]+/.test(param)) {
+            signType = 'multiply';
+            break;
+          }
+        }
+      }
+
       function getCheckbox(param) {
         if (!param || !typeof param === 'string') return null;
 
@@ -281,7 +297,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           });
           $scope.data.checkbox[param.id] = {
             trueValue: param.enumValues[param.sID_CheckboxTrue] ?
-                param.enumValues[param.sID_CheckboxTrue].id : null,
+              param.enumValues[param.sID_CheckboxTrue].id : null,
             falseValue: falseValues[0] ? falseValues[0].id : null
           };
         }
@@ -307,6 +323,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         }
       };
 
+      $scope.isVisible = function (field) {
+        return TableService.isVisible(field);
+      };
+
       iGovMarkers.validateMarkers(formFieldIDs);
       //save values for each property
       $scope.persistValues = JSON.parse(JSON.stringify($scope.data.formData.params));
@@ -318,6 +338,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       $scope.isSignNeededRequired = $scope.data.formData.isSignNeededRequired();
       //$scope.sign = {checked : false };
       $scope.sign = {checked: $scope.data.formData.isSignNeededRequired()};
+
+      $scope.isFormSigned = function (id) {
+        return /form_signed_[\d]+/.test(id) || /form_signed_all_[\d]+/.test(id);
+      };
 
       $scope.signForm = function () {
         if ($scope.data.formData.isSignNeeded) {
@@ -352,6 +376,61 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           $window.alert('No sign is needed');
         }
       };
+
+      function userSignDialog(form, multi) {
+        ActivitiService.generatePDFFromPrintForms(
+          $scope.activitiForm.formProperties,
+          $scope.oServiceData,
+          $scope.data.formData.params,
+          multi ? $scope.uploadedFiles : false
+        ).then(function (result) {
+          result.base64encoded = true;
+
+          signDialog.signContentsArray(result,
+            function(signedContents) {
+              angular.forEach(signedContents, function (content, key, obj) {
+                angular.forEach(result, function (el) {
+                  if (el.id === content.id && el.name) {
+                    obj[key].name = el.name;
+                  }
+                });
+              });
+              $rootScope.switchProcessUploadingState();
+              var aSignedContents = signedContents;
+              var contentsForUploadAsAttach = [];
+              angular.forEach(aSignedContents, function(content) {
+                var aFiles = [], nameEndExt;
+                var hasNameWithExt = result.filter(function (a) {
+                  return a.id === content.id;
+                });
+                nameEndExt = hasNameWithExt.length > 0 ? hasNameWithExt[0].name : content.id;
+                aFiles.push(generationService.getSignedFile(content.sign, nameEndExt));
+                content.aFiles = aFiles;
+                contentsForUploadAsAttach.push({
+                  fieldId: content.id,
+                  files: aFiles
+                })
+              });
+
+              ActivitiService.uploadAttachments(
+                contentsForUploadAsAttach,
+                $scope.data.formData.params,
+                $scope.activitiForm.formProperties,
+                $scope.oServiceData)
+                .then(function () {
+                  $scope.submitForm(form, $scope.activitiForm.formProperties);
+                });
+            },
+            function() {
+              $scope.isSending = false;
+              return false;
+            },
+            function(error) {
+              //todo react on error during sign
+              Modal.inform.error()(angular.toJson(error));
+            });
+        })
+      }
 
       $scope.processForm = function (form, aFormProperties, signNeeded) {
 
@@ -391,9 +470,8 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
                 return false;
               }
               return false;
-            } else {
+            } else
               break;
-            }
           }
         }
         /**
@@ -457,7 +535,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         function formSubmit() {
           if ($scope.sign.checked) {
             $scope.fixForm(form, aFormProperties);
-            $scope.signForm();
+            var singleOrMultiply = signType === 'multiply';
+            userSignDialog(form, singleOrMultiply);
+            //   $scope.signForm();
           } else if (!$scope.data.formData.params[taxTemplateFileHandlerConfig.oFile_XML_SWinEd]) {
             $scope.submitForm(form, aFormProperties);
           }
