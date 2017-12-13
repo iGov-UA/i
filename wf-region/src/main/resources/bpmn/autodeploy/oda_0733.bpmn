@@ -13,15 +13,9 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата; Date" type="date"></activiti:formProperty>
-        <activiti:formProperty id="asPlotType" name="Тип ділянки; Plot type" type="enum" required="true">
-          <activiti:value id="sEnumGreen" name="Земельна ділянка без споруд(Green-field)"></activiti:value>
-          <activiti:value id="sEnumBrown" name="Земельна ділянка із спорудами(Brown-field)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPlotTypeEN" name="Plot type" type="enum" required="true">
-          <activiti:value id="sEnumGreenEN" name="Land without buildings(Green-field)"></activiti:value>
-          <activiti:value id="sEnumBrownEN" name="Land with buildings(Brown-field)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата; Date" type="date" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asPlotType" name="Тип ділянки; Plot type" type="string" default="Земельна ділянка без споруд(Green-field)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPlotTypeEN" name="Plot type" type="string" default="Land without buildings(Green-field)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNamePlot" name="Назва ділянки; Plot name" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNamePlotEN" name="Plot name" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRegion" name="Область; Region" type="string" required="true"></activiti:formProperty>
@@ -41,13 +35,13 @@
         <activiti:formProperty id="sTotalArea" name="Загальна площа ділянки, га; Total area of the plot, hectare" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="sTotalAreaEN" name="Total area of the plot, hectare" type="long" required="true"></activiti:formProperty>
         <activiti:formProperty id="asFormPlot" name="Форма ділянки; Form of the plot" type="enum" required="true">
-          <activiti:value id="sSquare" name="квадрат(square)"></activiti:value>
-          <activiti:value id="sRectangle" name="прямокутник(rectangle)"></activiti:value>
-          <activiti:value id="sTriangle" name="трикутник(triangle)"></activiti:value>
-          <activiti:value id="sTrapeze" name="трапеція(trapeze)"></activiti:value>
-          <activiti:value id="sOther" name="інше(other)"></activiti:value>
+          <activiti:value id="sSquare" name="квадрат"></activiti:value>
+          <activiti:value id="sRectangle" name="прямокутник"></activiti:value>
+          <activiti:value id="sTriangle" name="трикутник"></activiti:value>
+          <activiti:value id="sTrapeze" name="трапеція"></activiti:value>
+          <activiti:value id="sOther" name="інше"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFormPlotOther" name="інше(other)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFormPlotOther" name="інше(other)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="asFormPlotEN" name="Form of the plot" type="enum" required="true">
           <activiti:value id="sSquare" name="square"></activiti:value>
           <activiti:value id="sRectangle" name="rectangle"></activiti:value>
@@ -55,7 +49,7 @@
           <activiti:value id="sTrapeze" name="trapeze"></activiti:value>
           <activiti:value id="sOther" name="other"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sFormPlotOtherEN" name="other" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFormPlotOtherEN" name="other" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sRelief" name="Рельєф, відмітка над рівнем моря (м),різниця між найвищою і найнижчою відмітками висот ділянки (м); Relief, marking above sea level (m),difference between the highest and the lowest markings of the heights of the site (m)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sReliefEN" name="Relief, marking above sea level (m),difference between the highest and the lowest markings of the heights of the site (m)" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sNeighboringPlots" name="Сусідні ділянки (опишіть); Neighboring plots (Describe)" type="string" required="true"></activiti:formProperty>
@@ -101,7 +95,7 @@
           <activiti:value id="sOther" name="Інше (вкажіть)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sFormTransferringOther" name="інше" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asFormTransferringEN" name="Форма передачі ділянки інвестору (зазначте можливі варіанти); Form of transferring the investor's area (please indicate possible options)" type="enum" required="true">
+        <activiti:formProperty id="asFormTransferringEN" name="Form of transferring the investor's area (please indicate possible options)" type="enum" required="true">
           <activiti:value id="sSelling" name="Selling"></activiti:value>
           <activiti:value id="sLongTerm" name="Long term lease"></activiti:value>
           <activiti:value id="sPermanentUse" name="Permanent use"></activiti:value>
@@ -248,14 +242,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asPlotType" name="Тип ділянки; Plot type" type="enum" writable="false">
-          <activiti:value id="sEnumGreen" name="Земельна ділянка без споруд(Green-field)"></activiti:value>
-          <activiti:value id="sEnumBrown" name="Земельна ділянка із спорудами(Brown-field)"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="asPlotTypeEN" name="Plot type" type="enum" writable="false">
-          <activiti:value id="sEnumGreenEN" name="Land without buildings(Green-field)"></activiti:value>
-          <activiti:value id="sEnumBrownEN" name="Land with buildings(Brown-field)"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="asPlotType" name="Тип ділянки; Plot type" type="string" default="Земельна ділянка без споруд(Green-field)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="asPlotTypeEN" name="Plot type" type="string" default="Land without buildings(Green-field)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNamePlot" name="Назва ділянки; Plot name" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNamePlotEN" name="Plot name" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sRegion" name="Область; Region" type="string" writable="false"></activiti:formProperty>
@@ -470,6 +458,8 @@
         <activiti:formProperty id="markers11" name="dliaformtransferring" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sFormTransferringOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormTransferringEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="dliaformplot2" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sFormPlotOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormPlotEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="dliatransferring" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sFormTransferringOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormTransferringEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern\print\oda_0733.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про наявну вільну земельну ділянку (типу greenfield)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="PrintForm_1" name="title;sPrintFormFileAsPDF=pattern\print\oda_0733.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист про оплату послуги"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
