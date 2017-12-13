@@ -41,7 +41,7 @@
         <activiti:formProperty id="nPrice" name="Копія довідки Управління Держземагенства у Хмельницькому районі Хмельницької області про ціну 1 кв. м земельної ділянки ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nTrust" name="Довіреність на право представляти інтереси суб’єкта звернення в органах місцевого самоврядування ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="nAgree" name="Нотаріально посвідчена заява  щодо згоди  на знесення самочинно розміщеної тимчасової споруди для провадження підприємницької діяльності ; ;bNew=true" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="label1" name="Бланк заяви щодо згоди  на знесення самочинно розміщеної ТС" type="label" default="можна надрукувати  за цим посиланням"></activiti:formProperty>
+        <activiti:formProperty id="label1" name="Бланк заяви щодо згоди  на знесення самочинно розміщеної ТС" type="label" default="можна надрукувати за цим посиланням"></activiti:formProperty>
         <activiti:formProperty id="nInfrastr" name="Копія платіжного документу, який підтверджує внесення до міського бюджету коштів пайової участі на створення і розвиток інженерно-транспортної та соціальної інфраструктури у розмірі, визначеному у відповідності до рішення міської ради ; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sWorkTime" name="Графік роботи; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="підпис; ;bVisible=false" type="string"></activiti:formProperty>
@@ -150,17 +150,13 @@
         <activiti:formProperty id="PrintForm_1" name="Заява;Заява;pattern/print/dneprOblSnap/cnap_541_print.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/dneprOblSnap/cnap_541_print.html]; ;bVisible=false" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="Принтформа" type="markers" default="${markerService.loadFromFile('dneprCnap/cnap_541_print.json')}"></activiti:formProperty>
-        
         <activiti:formProperty id="nPassport" name="Копія паспорта прив’язки ТС ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nPay" name="Копії платіжних документів за договором строкового сервітуту; декілька сторінок об'єднайте у один .pdf файл або .zip архів ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nPrice" name="Копія довідки Управління Держземагенства у Хмельницькому районі Хмельницької області про ціну 1 кв. м земельної ділянки ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nTrust" name="Довіреність на право представляти інтереси суб’єкта звернення в органах місцевого самоврядування ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nAgree" name="Нотаріально посвідчена заява  щодо згоди  на знесення самочинно розміщеної тимчасової споруди для провадження підприємницької діяльності ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nInfrastr" name="Копія платіжного документу, який підтверджує внесення до міського бюджету коштів пайової участі на створення і розвиток інженерно-транспортної та соціальної інфраструктури у розмірі, визначеному у відповідності до рішення міської ради ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        
-        
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
-        
       </extensionElements>
     </userTask>
     <serviceTask id="servicetask4" name="Лист-запрошення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -310,14 +306,14 @@ execution.setVariable('documents', res)</script>
         <omgdc:Bounds height="40.0" width="40.0" x="670.0" y="147.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="scripttask1" id="BPMNShape_scripttask1">
-        <omgdc:Bounds height="55.0" width="105.0" x="210.0" y="60.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="150.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="830.0" y="150.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="262.0" y="115.0"></omgdi:waypoint>
-        <omgdi:waypoint x="322.0" y="140.0"></omgdi:waypoint>
+        <omgdi:waypoint x="255.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
         <omgdi:waypoint x="375.0" y="167.0"></omgdi:waypoint>
@@ -335,14 +331,14 @@ execution.setVariable('documents', res)</script>
         <omgdi:waypoint x="690.0" y="147.0"></omgdi:waypoint>
         <omgdi:waypoint x="772.0" y="125.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="6.0" x="690.0" y="147.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="6.0" x="690.0" y="147.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
         <omgdi:waypoint x="690.0" y="187.0"></omgdi:waypoint>
         <omgdi:waypoint x="782.0" y="209.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="4.0" x="690.0" y="187.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="4.0" x="690.0" y="187.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
@@ -354,8 +350,8 @@ execution.setVariable('documents', res)</script>
         <omgdi:waypoint x="847.0" y="150.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="87.0" y="150.0"></omgdi:waypoint>
-        <omgdi:waypoint x="262.0" y="115.0"></omgdi:waypoint>
+        <omgdi:waypoint x="105.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="150.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
