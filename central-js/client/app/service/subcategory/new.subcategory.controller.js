@@ -3,7 +3,7 @@ angular.module('app')
     ['$scope', '$stateParams', '$filter', '$location', '$anchorScroll', 'messageBusService', 'chosenCategory', 'EditServiceTreeFactory', 'AdminService', '$state', '$rootScope', 'TitleChangeService',
       function($scope, $stateParams, $filter, $location, $anchorScroll, messageBusService, chosenCategory, EditServiceTreeFactory, AdminService, $state, $rootScope, TitleChangeService) {
         $scope.category = $stateParams.catID;
-        $scope.subcategory = chosenCategory;
+        $scope.subcategory = Array.isArray(chosenCategory) ? chosenCategory[0] : chosenCategory;
         // $scope.spinner = false;
         $scope.bAdmin = AdminService.isAdmin();
 
@@ -19,7 +19,7 @@ angular.module('app')
           $scope.spinner = false;
           $scope.catalog = data;
           if ($scope.catalog) {
-            $scope.subcategory = data;
+            $scope.subcategory = Array.isArray(data) ? data[0] : data;
           } else {
             $scope.subcategory = null;
           }
@@ -38,12 +38,12 @@ angular.module('app')
 
         if($scope.catalog &&
           $scope.catalog.aService
-          && chosenCategory.oServiceTag_Root.nID === $scope.catalog.oServiceTag_Root.nID
+          && chosenCategory[0].oServiceTag_Root.nID === $scope.catalog.oServiceTag_Root.nID
           || $rootScope.wasSearched) {
           $scope.subcategory = $scope.catalog;
           $rootScope.wasSearched = false;
         }else {
-          $scope.subcategory = chosenCategory;
+          $scope.subcategory = Array.isArray(chosenCategory) ? chosenCategory[0] : chosenCategory;
         }
         $scope.stateCheck = $state.params.catID;
 

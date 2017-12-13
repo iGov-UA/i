@@ -117,10 +117,7 @@ angular.module('app')
 
             return CatalogService.getModeSpecificServices(getIDPlaces(), $scope.sSearch, bShowEmptyFolders, $scope.category, $scope.subcategory, $stateParams.sitID, $rootScope.mainFilterCatalog, sID_SubjectOwner).then(function (result) {
 
-              if (!$state.is('index')
-                && !$state.is('index.catalog') && !($state.is("index.oldbusiness") || $rootScope.isOldStyleView) && !$state.is("index.subcategory")) {
-                fullCatalog = result[0];
-              } else if (($state.is("index.oldbusiness") || $rootScope.isOldStyleView) && result.length === 1 && result[0].aSubcategory.length > 0) {
+              if (($state.is("index.oldbusiness") || $rootScope.isOldStyleView) && result.length === 1 && result[0].aSubcategory.length > 0) {
                 fullCatalog = result[0];
               } else {
                 fullCatalog = result;

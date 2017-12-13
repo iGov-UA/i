@@ -494,10 +494,10 @@ module.exports.signFormMultipleCallback = function (req, res) {
       "U":"U","V":"V","W":"W","X":"X","Y":"Y","Z":"Z"};
 
     return word.split('').map(function (char) {
-      if(char in a) 
+      if(char in a)
         return a[char];
       else
-        return char;      
+        return char;
     }).join("");
   }
 
@@ -1074,6 +1074,23 @@ module.exports.loadForm = function (req, res) {
   };
 
   loadForm(formID, sURL, callback);
+};
+
+module.exports.loadPatternFile = function (req, res) {
+  var path = 'object/file/getPatternFile';
+
+  var callback = function (error, response, body) {
+    if (error) {
+      res.status(400).send(error);
+    } else {
+      res.send(body);
+    }
+  };
+
+  activiti.getServerRegionHost(req.query.sServerId, function (sHost) {
+    var reqParams = activiti.buildRequest(req, 'service/object/file/getPatternFile', {sPathFile: req.query.sPathFile}, sHost + '/');
+    request(reqParams, callback)
+  });
 };
 
 function loadForm(formID, sURL, callback) {

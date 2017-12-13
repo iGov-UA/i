@@ -159,6 +159,8 @@ var all = {
 
   bTest: (processProps.bTest === "TRUE"),
 
+  bIncludeTimeStampInEDS: (processProps.bIncludeTimeStampInEDS === 'TRUE'),
+
   debug: (processProps.bDebug_Application === "TRUE"),
 
   nID_Server_Helpdesk: processProps.nID_Server_Helpdesk,

@@ -309,7 +309,7 @@ exports.getAttachmentContent = function (req, res) {
 exports.getAttachmentFile = function (req, res) {
   var qs = {};
 
-  if (req.params.typeOrAttachID === 'Mongo') {
+  if (['Mongo', 'Redis'].indexOf(req.params.typeOrAttachID) !== -1) {
     qs = {
       'sKey': req.params.keyOrProcessID,
       'sID_StorageType': req.params.typeOrAttachID

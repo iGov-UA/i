@@ -186,7 +186,7 @@ angular.module('app')
       data: data
     }).then(function (response) {
       servicesCache = response.data;
-      return response.data[0];
+      return response.data;
     })
   };
 
