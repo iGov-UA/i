@@ -15,6 +15,7 @@ router.use('/signMultiple/callback', form.signFormMultipleCallback);
 router.get('/sign/check', form.signCheck);
 router.post('/save', form.saveForm);
 router.get('/load', form.loadForm);
+router.get('/loadPatternFile', form.loadPatternFile);
 
 //Mock scans process
 router.post('/scansUpload', scansMock.scanUpload);

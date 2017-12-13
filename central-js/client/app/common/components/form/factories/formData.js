@@ -96,7 +96,7 @@ angular.module('app').factory('FormDataFactory', function (ParameterFactory, Dat
         }
       }
 
-      if(property.id === 'bankId_scan_passport' || property.id === 'bankId_scan_inn' || property.id === 'form_signed' || property.id === 'form_signed_all') {
+      if(property.id === 'bankId_scan_passport' || property.id === 'bankId_scan_inn' || /form_signed_[\d]+/.test(property.id) || /form_signed_all_[\d]+/.test(property.id)) {
         var isNew = property.name.split(';');
         if(isNew.length === 3 && isNew[2].indexOf('bNew') > -1) {
           params[property.id].newAttach = true;

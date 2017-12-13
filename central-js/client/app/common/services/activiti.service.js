@@ -1,4 +1,4 @@
-angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory) {
+angular.module('app').service('ActivitiService', function ($q, $http, $location, ErrorsFactory, $filter, generationService, uiUploader, $rootScope) {
 
   var aFieldFormData = function (aFormProperties,formData) {//activitiForm
     var aField=[];
@@ -179,8 +179,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       } catch (e) {}
     }
     var path = formKey ? formKey : formID;
-    if(formDataParams.hasOwnProperty('form_signed')){
-      isNewService = formDataParams['form_signed'].newAttach ? '&isNew=true' : '';
+    if(formDataParams.hasOwnProperty('form_signed_1')){
+      isNewService = formDataParams['form_signed_1'].newAttach ? '&isNew=true' : '';
       return '/api/process-form/sign?formID=' + path + '&nID_Server=' + oServiceData.nID_Server + '&sName=' + oService.sName + '&bConvertToPDF=' + bConvertToPDF + isNewService;
     } else if (formDataParams.hasOwnProperty('form_signed_all')) {
       isNewService = formDataParams['form_signed_all'].newAttach ? '&isNew=true' : '';
@@ -311,5 +311,357 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     });
 
     return deferred.promise;
-  }
+  };
+
+  this.getPatternFile = function (sPathFile, serverID) {
+    return $http.get('api/process-form/loadPatternFile',{
+      params: {
+        sPathFile: sPathFile,
+        sServerId: serverID
+      }
+    }).then(function (response) {
+      if (response.data) {
+        return response.data;
+      }
+    });
+  };
+
+  this.generatePDFFromPrintForms = function (activitiFormProperties, oServiceData, formData, attaches) {
+    var self = this,
+      deferred = $q.defer(),
+      filesDefers = [],
+      resultsPdf = [];
+
+    // нужно найти все поля с типом "string" и id, начинающимся с "PrintForm_"
+    var filesFields = $filter('filter')(activitiFormProperties, function (prop) {
+      return prop.type === 'string' && /^PrintFormAutoSign_/.test(prop.id);
+    });
+
+    // загрузить все шаблоны
+    angular.forEach(filesFields, function (fileField) {
+      var defer = $q.defer();
+      filesDefers.push(defer.promise);
+      var patternFileName = fileField.value;
+      if (patternFileName) {
+        patternFileName = patternFileName.replace(/^pattern\//, '');
+        self.getPatternFile(patternFileName, oServiceData.nID_Server).then(function (result) {
+          defer.resolve({
+            fileField: fileField,
+            fileBase64: null,
+            template: result
+          });
+        });
+      } else
+        defer.resolve({
+          fileField: fileField,
+          fileBase64: null,
+          template: ''
+        });
+    });
+    // компиляция и отправка html
+    $q.all(filesDefers).then(function (results) {
+      var aPrintDefer = [],
+        aPrintPromise = [],
+        aPrintform = [],
+        counter = 0;
+
+      angular.forEach(results, function (templateResult, key) {
+        if(!templateResult.fileBase64){
+          for (var prop in formData) {
+            if (formData.hasOwnProperty(prop)) {
+              templateResult.template = templateResult.template.split('[' + prop + ']').join(formData[prop].value);
+            }
+          }
+
+          function getUserInfo() {
+            var sUserInfo = '';
+            if(formData){
+              if(formData.bankIdlastName){
+                sUserInfo = sUserInfo + formData.bankIdlastName.value;
+              }
+              if(formData.bankIdfirstName){
+                if(sUserInfo !== ''){
+                  sUserInfo = sUserInfo + ' ';
+                }
+                sUserInfo = sUserInfo + formData.bankIdfirstName.value;
+              }
+              if(formData.bankIdmiddleName){
+                if(sUserInfo !== ''){
+                  sUserInfo = sUserInfo + ' ';
+                }
+                sUserInfo = sUserInfo + formData.bankIdmiddleName.value;
+              }
+            }
+            return sUserInfo;
+          }
+
+          var dateCreate = new Date();
+          var formatedDateCreate = dateCreate.getFullYear() + '-' + ('0' + (dateCreate.getMonth() + 1)).slice(-2) + '-' + ('0' + dateCreate.getDate()).slice(-2);
+          var formatedTimeCreate = ('0' + dateCreate.getHours()).slice(-2) + ':' + ('0' + dateCreate.getMinutes()).slice(-2);
+          var userInformation = getUserInfo();
+          templateResult.template = templateResult.template.split('[sDateCreateProcess]').join(formatedDateCreate);
+          templateResult.template = templateResult.template.split('[sTimeCreateProcess]').join(formatedTimeCreate);
+          templateResult.template = templateResult.template.split('[sDateTimeCreateProcess]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          templateResult.template = templateResult.template.split('[sDateCreate]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          templateResult.template = templateResult.template.split('[sCurrentDateTime]').join(formatedDateCreate + ' ' + formatedTimeCreate);
+          templateResult.template = templateResult.template.split('[sUserInfo]').join(userInformation);
+
+          aPrintDefer[key] = $q.defer();
+          aPrintform[key] = templateResult;
+          aPrintPromise[key] = aPrintDefer[key].promise;
+        }
+
+      });
+
+      var asyncPdfGenerate = function (i, print, defs) {
+        if (i < print.length) {
+          var printContents = print[i].template;
+          if(printContents){
+            return generationService.generatePDFFromHTML(printContents).then(function (pdfContent) {
+              resultsPdf.push({
+                id: print[i].fileField.id,
+                content: pdfContent.base64
+              });
+              defs[i].resolve();
+              return asyncPdfGenerate(i + 1, print, defs);
+            })
+          } else {
+            defs[i].resolve();
+            return asyncPdfGenerate(i + 1, print, defs);
+          }
+        }
+      };
+
+      asyncPdfGenerate(counter, aPrintform, aPrintDefer);
+
+      $q.all(aPrintPromise).then(function () {
+        if (attaches) {
+          self.convertFilesToPdf(attaches).then(function (res) {
+            var result = res.concat(resultsPdf);
+            deferred.resolve(result);
+          });
+        } else {
+          deferred.resolve(resultsPdf);
+        }
+      });
+
+    });
+
+    return deferred.promise;
+  };
+
+  this.upload = function(files, oServiceData, fieldId) {
+    var deferred = $q.defer();
+    var self = this;
+    var scope = $rootScope.$new(true, $rootScope);
+    var url = '/api/uploadfile?sFileNameAndExt=' + files[0].name;
+
+    uiUploader.removeAll();
+    uiUploader.addFiles(files);
+    uiUploader.startUpload({
+      url: url,
+      concurrency: 1,
+      onProgress: function (file) {
+        scope.$apply(function () {
+
+        });
+      },
+      onCompleted: function (file, response) {
+        try {
+          var param = JSON.parse(response);
+          $http.get('./api/process-form/sign/check', {
+            params : {
+              fileID : param.sKey,
+              nID_Server : oServiceData.nID_Server
+            }
+          }).then(function (oResponse) {
+            if(oResponse.data) {
+              deferred.resolve({file: file, response: param, signInfo: oResponse.data});
+            }
+            if(ErrorsFactory.bSuccessResponse(oResponse.data)){
+              deferred.resolve({file: file, response: param, signInfo: oResponse.data});
+            }
+          }).catch(function (error) {
+            if(!ErrorsFactory.bSuccessResponse(error.data)){
+              deferred.reject(error.data);
+            }
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
+
+    return deferred.promise;
+  };
+
+  this.uploadAttachments = function (aContents, formData, formProperties, oServiceData) {
+    var deferred = $q.defer();
+    var self = this;
+
+    var contents = [],
+      documentPromises = [],
+      docDefer = [],
+      counter = 0;
+
+    angular.forEach(aContents, function (oContent, key) {
+      docDefer[key] = $q.defer();
+      contents[key] = oContent;
+      documentPromises[key] = docDefer[key].promise;
+    });
+
+    var uploadingResult = [];
+
+    var asyncUpload = function (i, docs, defs) {
+      if (i < docs.length) {
+
+        return self.uploadAttachToForm(docs[i], formData, formProperties, oServiceData).then(function (resp) {
+          uploadingResult.push(resp);
+          defs[i].resolve(resp);
+          return asyncUpload(i + 1, docs, defs);
+        }, function (err) {
+          uploadingResult.push({error : err});
+          defs[i].reject(err);
+          return asyncUpload(i + 1, docs, defs);
+        });
+
+      }
+    };
+
+    asyncUpload(counter, contents, docDefer);
+
+    $q.all(documentPromises).then(function () {
+      deferred.resolve(uploadingResult);
+    });
+
+    return deferred.promise;
+  };
+
+  this.uploadAttachToForm = function (content, formData, formProperties, oServiceData) {
+    var deferred = $q.defer();
+
+    this.upload(content.files, oServiceData, content.fieldId).then(function (result) {
+      var postfix = content && content.fieldId && content.fieldId.indexOf('PrintFormAutoSign') === 0 ? content.fieldId.split('_') : '',
+        isEqual = false;
+      if (postfix.length === 2) {
+        postfix = postfix[1];
+      }
+
+      for (var field in formData) {
+        if (formData.hasOwnProperty(field)) {
+          if (field === ('form_signed_' + postfix) || field === ('form_signed_all_' + postfix) || content.fieldId === field) {
+            formData[field].value = JSON.stringify(result.response);
+            formData[field].fileName = result.file.sFileNameAndExt;
+            formData[field].signInfo = result.eds;
+            isEqual = true;
+            break;
+          }
+        }
+      }
+
+      if (!isEqual) {
+        for (var j = 0; j < formProperties.length; j++) {
+          if (formProperties[j].type === 'table') {
+            for (var c = 0; c < formProperties[j].aRow.length; c++) {
+              var row = formProperties[j].aRow[c];
+              for (var i = 0; i < row.aField.length; i++) {
+                if (row.aField[i].id === content.fieldId) {
+                  formProperties[j].aRow[c].aField[i].value = {
+                    id: JSON.stringify(result.response),
+                    fromDocuments: false,
+                    signInfo: result.eds
+                  };
+                  break
+                }
+              }
+            }
+          }
+        }
+      }
+
+      deferred.resolve(result);
+    }, function (err) {
+
+      deferred.reject(err);
+    });
+
+    return deferred.promise;
+  };
+
+  this.convertFilesToBase64 = function (filesForConvert) {
+    var defer = $q.defer(),
+      objectOfDefers = {},
+      objectOfPromises = {},
+      aContentData = [];
+
+    angular.forEach(filesForConvert, function (uf, key) {
+      objectOfDefers[key] = $q.defer();
+      objectOfPromises[key] = objectOfDefers[key].promise;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var loadedContent = e.target.result.split("base64,")[1];
+        var id = uf[0].name;
+        aContentData.push({id: key, content: loadedContent, base64encoded: true, fieldId: id});
+        objectOfDefers[key].resolve();
+      };
+      reader.readAsDataURL(uf[0]);
+    });
+
+    $q.all(objectOfPromises).then(function () {
+      defer.resolve(aContentData);
+    });
+
+    return defer.promise;
+  };
+
+  this.convertFilesToPdf = function (files) {
+    var deferred = $q.defer();
+    var resultsPdf = [];
+
+    this.convertFilesToBase64(files).then(function (convertedFiles) {
+      var deferArray = [];
+      var deferPromises = [];
+      var counter = 0;
+
+      for (var i=0; i<convertedFiles.length; i++) {
+        deferArray[i] = $q.defer();
+        deferPromises[i] = deferArray[i].promise;
+      }
+
+      var asyncPdfGenerate = function (i, print, defs) {
+        if (i < print.length) {
+          var printContents = print[i].content;
+          var nameWithExt = print[i].fieldId ? print[i].fieldId.split('.') : null;
+          if(printContents && nameWithExt && nameWithExt.indexOf('pdf') !== nameWithExt.length - 1){
+            return generationService.generatePDFFromHTML(printContents).then(function (pdfContent) {
+              resultsPdf.push({
+                id: print[i].id,
+                name: print[i].fieldId,
+                content: pdfContent.base64
+              });
+              deferArray[i].resolve();
+              return asyncPdfGenerate(i + 1, print, defs);
+            })
+          } else if(nameWithExt && nameWithExt.indexOf('pdf') === nameWithExt.length - 1) {
+            resultsPdf.push({
+              id: print[i].id,
+              name: print[i].fieldId,
+              content: print[i].content
+            });
+            deferArray[i].resolve();
+            return asyncPdfGenerate(i + 1, print, defs);
+          } else {
+            deferArray[i].resolve();
+            return asyncPdfGenerate(i + 1, print, defs);
+          }
+        }
+      };
+
+      asyncPdfGenerate(counter, convertedFiles, deferArray);
+      $q.all(deferPromises).then(function () {
+        deferred.resolve(resultsPdf);
+      });
+    });
+    return deferred.promise;
+  };
 });
