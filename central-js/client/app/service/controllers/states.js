@@ -12,7 +12,7 @@ angular.module('app')
   } else {
     $scope.bHideTab = false;
   }
-  
+
   $scope.getHtml = function (html) {
     return $sce.trustAsHtml(html);
   };
@@ -168,7 +168,8 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   // });
 
   // Script Oleg hypercomments
-    var HC_LOAD_INIT = false;
+
+  var HC_LOAD_INIT = false;
   var my_texts =
   {
       get_keys: function (keys)
@@ -201,9 +202,6 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
       comments_level: 4,
       auth: null,
       realtime: true,
-      //like_href: '',
-      //like_title: '',
-      //default_avatar: '',
       texts: my_texts
   });
   if ('HC_LOAD_INIT' in window)
@@ -223,9 +221,10 @@ angular.module('app').controller('SituationController', function ($scope, AdminS
   {
       angular.element(document.querySelector('#hypercomments_widget')).append(hcc);
   };
+
   try {
-    var situation = $scope.category.aServiceTag_Child[0].sName_UA;
-    var tag = $scope.category.oServiceTag_Root.sName_UA;
+    var situation = $scope.category[0].aServiceTag_Child[0].sName_UA;
+    var tag = $scope.category[0].oServiceTag_Root.sName_UA;
     var title = situation + ' / ' + tag;
     TitleChangeService.setTitle(title);
   } catch (e){

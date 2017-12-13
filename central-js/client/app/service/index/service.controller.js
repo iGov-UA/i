@@ -127,6 +127,7 @@ angular.module('app')
       if(toState.name === 'index') {
         CatalogService.getCatalogTreeTag(1).then(function (res) {
           $scope.catalog = res;
+
           getKeywoeds();
           $scope.changeCategory();
           $scope.spinner = false;
