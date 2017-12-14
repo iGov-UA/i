@@ -4,8 +4,8 @@
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть округ та депутата, до якого  подається звернення" type="select" default="0"></activiti:formProperty>
-        <activiti:formProperty id="asRegionDeputat" name="Оберіть до якого саме депутата Ви хочете звернутися" type="enum" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lInterregional_District" name="Межі виборчого округу; ;labelType=info" type="label" default=" "></activiti:formProperty>
+        <activiti:formProperty id="asRegionDeputate" name="Оберіть до якого саме депутата Ви хочете звернутися" type="enum" required="true"></activiti:formProperty>
+        <activiti:formProperty id="lInterregional_District" name="Межі виборчого округу; ;labelType=info" type="label" default=""></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
@@ -129,7 +129,7 @@ if(execution.getVariable('sID_Public_SubjectOrganJoin') == 'vo_147' &amp;&amp; e
       </script>
     </scriptTask>
     <sequenceFlow id="flow4" sourceRef="exclusivegateway5" targetRef="servicetask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nID_Place != '61'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Place_UA != '4610600000'}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask2" name="Лист чиновнику" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
@@ -723,7 +723,7 @@ ${sNameOrgan}.<br/>
     <sequenceFlow id="flow35" sourceRef="startevent1" targetRef="scripttask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway5" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow36" sourceRef="scripttask1" targetRef="exclusivegateway5"></sequenceFlow>
-    <serviceTask id="servicetask14" name="Лист чиновнику Дрогобич (з СМС чиновнику)" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+    <serviceTask id="servicetask14" name="Лист чиновнику Дрогобич (з СМС чиновнику)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="from">
           <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
@@ -749,7 +749,7 @@ ${sNameOrgan}.<br/>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow37" name="Дрогобич" sourceRef="exclusivegateway5" targetRef="servicetask14">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${nID_Place == '61'}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sID_Place_UA == '4610600000'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow38" sourceRef="servicetask14" targetRef="servicetask15"></sequenceFlow>
     <serviceTask id="servicetask15" name="Лист громадянину Дрогобич (з ім'ям депутата)" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -768,7 +768,7 @@ ${sNameOrgan}.<br/>
 [pattern/mail/new_design/_common_content_start.html]
 <p>
 Ваше звернення до депутата було успішно зареєстровано.<br>
-Ви обрали ${sID_Public_SubjectOrganJoin}, Ваш депутат ${depname}<br><br>
+Ви обрали ${sNameUa}, Ваш депутат ${depname}<br><br>
 Ви отримаєте відповідь протягом 5 робочих днів.
 </p>
 [pattern/mail/new_design/_common_content_end.html]
@@ -991,7 +991,7 @@ ${sNameOrgan}.<br />
         <omgdi:waypoint x="550.0" y="156.0"></omgdi:waypoint>
         <omgdi:waypoint x="486.0" y="186.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="449.0" y="145.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="48.0" x="449.0" y="145.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
