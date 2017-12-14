@@ -11,7 +11,7 @@
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sEssence" name="Тип поля fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nTestingTable" name="Тестовая таблица; Число" type="table" default="${markerService.loadFromFile('table/_test_autosign_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Наложение ЭЦП на дефолтную форму; ;bNew=true;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Наложение ЭЦП на дефолтную форму; ;bNew=true;bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон подписанный ЭЦП; ;bVisible=false" type="string" default="pattern/print/_test_autosign_printform_ECP.html"></activiti:formProperty>
       </extensionElements>
     </startEvent>
@@ -21,7 +21,7 @@
         <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sEssence" name="Тип поля fileHTML" type="fileHTML"></activiti:formProperty>
         <activiti:formProperty id="nTestingTable" name="Тестовая таблица; Число" type="table" default="${markerService.loadFromFile('table/_test_autosign_table.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Наложение ЭЦП на дефолтную форму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Наложение ЭЦП на дефолтную форму; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/_test_autosign_printform_ECP.html]; ;bVisible=false" type="string" default="_test_autosign_printform_ECP.html" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>

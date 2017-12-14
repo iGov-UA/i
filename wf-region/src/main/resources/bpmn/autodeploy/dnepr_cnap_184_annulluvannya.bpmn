@@ -75,7 +75,7 @@
         <activiti:formProperty id="markers12" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_annulluvannya_12.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="Розкриття атрібутів щодо специфіки вводу" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_annulluvannya_13.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers14" name="Верифікація ЕЦП" type="markers" default="${markerService.loadFromFile('skv/dnepr_cnap_184_annulluvannya_14.json')}"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Форма заявления с ЕЦП; ;bNew=true" type="file"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <userTask id="usertask1" name="[Етап I] Перевірка та реєстрація звернення, результат обробки вхідних даних (1-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -152,7 +152,7 @@
         <activiti:formProperty id="nFile_Dogovor" name="Шаблон Договору пріоритету на місце розташування; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Rekvizity" name="Рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про анулювання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -234,7 +234,7 @@
         <activiti:formProperty id="nFile_Rekvizity" name="Рахунок на оплату за тимчасове користування місцем розташування рекламного засобу згідно Договору пріоритету; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про анулювання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Opis" name="Завантажте опис прийнятих документів; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <userTask id="usertask3" name="[Етап III] Прийняття рішення щодо звернення (Жовті Води) (3-й крок)" activiti:candidateGroups="cnap_${sID_Public_SubjectOrganJoin}">
@@ -310,7 +310,7 @@
         <activiti:formProperty id="nFile_AdvertLicense" name="Копія виписки з єдиного державного реєстру юридичних осіб та фізичних осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PravoVlasnist" name="Копія документу, що підтверджує право власності на об’єкт, де буде розміщена реклама (якщо це приватна власність); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Original_Dozvolu" name="Оригінал попереднього дозволу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Форма заявления с ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_Zayava_EZP" name="Заява про анулювання дозволу на розміщення зовнішньої реклами; Файл повинен бути підписано ЕЦП;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_authorizedDocsZP" name="Документ, який уповноважує Вас подавати документи до ЦНАП від імені ФОП або юридичної особи; Доручення, Виписка з ЄДР і т.ін. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_PlacePhotoZP" name="Фотокартка або комп'ютерний макет місця, на якому планується розташування реклами; Розмір має бути не менш 6х9 см. Файл повинен бути підписано ЕЦП ФОП або керівника суб’єкта господарської діяльності та накладено електронну печатку (у разі її наявності);bNew=true" type="file" writable="false"></activiti:formProperty>
