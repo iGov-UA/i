@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="poltava_nd_967" name="Звернення до народного депутата" isExecutable="true">
+  <process id="poltava_nd_967" name="Звернення до депутата" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть округ та депутата, до якого  подається звернення" type="select" default="0"></activiti:formProperty>
         <activiti:formProperty id="asRegionDeputate" name="Оберіть до якого саме депутата Ви хочете звернутися" type="enum" required="true"></activiti:formProperty>
-        <activiti:formProperty id="lInterregional_District" name="Межі виборчого округу; ;labelType=info" type="label" default=""></activiti:formProperty>
+        <activiti:formProperty id="lInterregional_District" name="Межі виборчого округу; ;labelType=info" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="markersLine_1" name="Інформація про заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;bankIdlastName&quot;],&quot;sValue&quot;:&quot;Інформація про заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім`я" type="string" required="true"></activiti:formProperty>
@@ -16,7 +16,7 @@
         <activiti:formProperty id="sID_Place_UA" name="Населений пункт (КОАТУУ); ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Соціальний стан заявника" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asSpecialStatus&quot;],&quot;sValue&quot;:&quot;Соціальний стан заявника&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="depname" name="ПІБ депутата; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="switch" name="переключення між кабінетів депутатів; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="switch" name="переключення між кабінетів депутатів; ;bVisible=false" type="string" default=""></activiti:formProperty>
         <activiti:formProperty id="phoneClerk967" name="телефон депутата; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="asSpecialStatus" name="Чи маєте Ви особливий статус" type="enum" required="true">
           <activiti:value id="sEnumStatusYes" name="Так"></activiti:value>
@@ -768,7 +768,7 @@ ${sNameOrgan}.<br/>
 [pattern/mail/new_design/_common_content_start.html]
 <p>
 Ваше звернення до депутата було успішно зареєстровано.<br>
-Ви обрали ${sNameUa}, Ваш депутат ${depname}<br><br>
+Ви обрали, Ваш депутат ${depname}<br><br>
 Ви отримаєте відповідь протягом 5 робочих днів.
 </p>
 [pattern/mail/new_design/_common_content_end.html]
