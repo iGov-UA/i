@@ -361,15 +361,15 @@ ${sNameOrgan},<br>
     <sequenceFlow id="flow36" sourceRef="servicetask7" targetRef="endevent5"></sequenceFlow>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow41" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
-    <serviceTask id="servicetask8" name="Service Task"></serviceTask>
+    <serviceTask id="servicetask8" name="Service Task" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow42" sourceRef="servicetask8" targetRef="usertask2"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow43" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <serviceTask id="servicetask9" name="Відповідь нарочно"></serviceTask>
+    <serviceTask id="servicetask9" name="Відповідь нарочно" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow44" name="Нарочно" sourceRef="exclusivegateway2" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[Нарочно]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask10" name="Електронна відповідь"></serviceTask>
+    <serviceTask id="servicetask10" name="Електронна відповідь" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}"></serviceTask>
     <sequenceFlow id="flow45" name="Електронка" sourceRef="exclusivegateway2" targetRef="servicetask10">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[Електронка]]></conditionExpression>
     </sequenceFlow>
