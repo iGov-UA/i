@@ -998,8 +998,12 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
     <sequenceFlow id="flow16" sourceRef="servicetask8" targetRef="endevent5"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow17" sourceRef="startevent1" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow19" name="Greenfield" sourceRef="exclusivegateway3" targetRef="servicetask1"></sequenceFlow>
-    <sequenceFlow id="flow20" name="Brownfield" sourceRef="exclusivegateway3" targetRef="servicetask5"></sequenceFlow>
+    <sequenceFlow id="flow19" name="Greenfield" sourceRef="exclusivegateway3" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPlotType == 'sGreen'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow20" name="Brownfield" sourceRef="exclusivegateway3" targetRef="servicetask5">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asPlotType == 'sBrown'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow21" sourceRef="servicetask5" targetRef="servicetask6"></sequenceFlow>
     <sequenceFlow id="flow22" sourceRef="servicetask6" targetRef="usertask2"></sequenceFlow>
   </process>
@@ -1128,7 +1132,7 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <omgdi:waypoint x="150.0" y="207.0"></omgdi:waypoint>
         <omgdi:waypoint x="182.0" y="207.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="50.0" x="110.0" y="188.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="110.0" y="188.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -1136,7 +1140,7 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <omgdi:waypoint x="150.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="182.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="53.0" x="110.0" y="316.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="110.0" y="316.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
