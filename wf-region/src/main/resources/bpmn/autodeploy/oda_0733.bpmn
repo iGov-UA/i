@@ -347,6 +347,7 @@
         <activiti:formProperty id="markers31" name="Brown3" type="markers" default="${markerService.loadFromFile('oda_0733_brown3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers32" name="Brown4" type="markers" default="${markerService.loadFromFile('oda_0733_brown4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers33" name="Brown5" type="markers" default="${markerService.loadFromFile('oda_0733_brown5.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -362,10 +363,10 @@
         <activiti:formProperty id="asPlotTypeEN" name="Plot type" type="string" default="Land without buildings(Green-field)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNamePlot" name="Назва ділянки; Plot name" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNamePlotEN" name="Plot name" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegion" name="Область; Region" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sRegionEN" name="Region" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSector" name="Район; Sector" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sSectorEN" name="Sector" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegion" name="Область; Region; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sRegionEN" name="Region; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSector" name="Район; Sector; ;writable=false" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sSectorEN" name="Sector; ;writable=false" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameFirstPunkt" name="Назва найближчого населеного пункту і відстань від нього до ділянки (км); Name of the nearest settlement,and distance from it to the plot (km)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sNameFirstPunktEN" name="Name of the nearest settlement,and distance from it to the plot (km)" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDistanceFromThePlot" name="Відстань від ділянки до найближчого житлового будинку(км); Distance from the plot to the nearest residential building(km)" type="string" writable="false"></activiti:formProperty>
@@ -583,6 +584,7 @@
         <activiti:formProperty id="scomment" name="У разі відмови, внесіть коментар для заявника" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/oda_733_greenEN.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Statement on available free land (type greenfield)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="title;sPrintFormFileAsPDF=pattern/print/oda_0733_greenEN_.html" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -626,7 +628,7 @@
         </activiti:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="servicetask2" name="Звернення прийняте" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
+    <serviceTask id="servicetask2" name="Звернення прийняте" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -653,6 +655,9 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_1}, ${PrintForm_2}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -920,11 +925,12 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <activiti:formProperty id="PrintForm_4" name="title;sPrintFormFileAsPDF=pattern/print/oda_0733_brownEN_.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/oda_0733_brown.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про наявну вільну виробничу площу (типу brownfield)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/oda_0733_brownEN.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Statement on available free production area (brownfield type)" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
-    <serviceTask id="servicetask7" name="Звернення прийняте" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
+    <serviceTask id="servicetask7" name="Звернення прийняте" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
           <activiti:expression><![CDATA[${phone}]]></activiti:expression>
@@ -951,6 +957,9 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
 [pattern/mail/_common_signature_end.html]
 [pattern/mail/_common_feedback.html]
 [pattern/mail/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[${PrintForm_3}, ${PrintForm_4}]]></activiti:expression>
         </activiti:field>
       </extensionElements>
     </serviceTask>
@@ -1132,7 +1141,7 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <omgdi:waypoint x="150.0" y="207.0"></omgdi:waypoint>
         <omgdi:waypoint x="182.0" y="207.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="110.0" y="188.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="50.0" x="110.0" y="188.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
@@ -1140,7 +1149,7 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <omgdi:waypoint x="150.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="182.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="110.0" y="316.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="53.0" x="110.0" y="316.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
