@@ -1113,9 +1113,10 @@ public class FlowService implements ApplicationContextAware {
         HttpSession oHttpSession = oRequest.getSession();
         LOG.info("Session {}", oHttpSession);
         
+        LOG.info("Session sINN is {}", oHttpSession != null ? oHttpSession.getAttribute("sINN") : null);
+        LOG.info("Session ID is {}", oHttpSession != null ? oHttpSession.getId() : null);
+        
         if(oHttpSession != null && oHttpSession.getAttribute("sINN") != null){
-            LOG.info("Session sINN is {}", oHttpSession.getAttribute("sINN"));
-            LOG.info("Session ID is {}", oHttpSession.getId());
             return true;
         }else{
             return false;
