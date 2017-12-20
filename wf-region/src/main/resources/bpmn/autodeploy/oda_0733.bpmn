@@ -17,7 +17,6 @@
           <activiti:value id="sGreen" name="Земельна ділянка без споруд(Green-field)"></activiti:value>
           <activiti:value id="sBrown" name="Земельна ділянка із спорудами(Brown-field)"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sDate" name="Дата; Date" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInstitution" name="Установа, організація; Institution, organization" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sInstitutionEN" name="Institution, organization" type="string"></activiti:formProperty>
         <activiti:formProperty id="sWebsite" name="Адреса веб-сайту; Website address" type="string" required="true"></activiti:formProperty>
@@ -347,7 +346,7 @@
         <activiti:formProperty id="markers31" name="Brown3" type="markers" default="${markerService.loadFromFile('oda_0733_brown3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers32" name="Brown4" type="markers" default="${markerService.loadFromFile('oda_0733_brown4.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers33" name="Brown5" type="markers" default="${markerService.loadFromFile('oda_0733_brown5.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;false&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -575,14 +574,12 @@
         <activiti:formProperty id="markers12" name="dliaformplot2" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sFormPlotOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormPlotEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers13" name="dliatransferring" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sFormTransferringOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormTransferringEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="sBody_1" name="[pattern/print/oda_0733.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про наявну вільну земельну ділянку (типу greenfield)" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_1" name="title;sPrintFormFileAsPDF=pattern/print/oda_0733.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист про оплату послуги"></activiti:value>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="scomment" name="У разі відмови, внесіть коментар для заявника" type="textArea" default=" "></activiti:formProperty>
         <activiti:formProperty id="sBody_2" name="[pattern/print/oda_733_greenEN.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Statement on available free land (type greenfield)" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_2" name="title;sPrintFormFileAsPDF=pattern/print/oda_0733_greenEN_.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
@@ -902,8 +899,8 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
           <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="scomment" name="У разі відмови, внесіть коментар для заявника" type="textArea" default=" "></activiti:formProperty>
-        <activiti:formProperty id="nFile4" name="Знімки з висоти з нанесеною виробничою площею, з зображенням під’їзної дороги, автомобільної дороги і населеного пункту; Height images with plotted production area, depicting an access road, highway and settlement ; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="nFile5" name="Фото виробничих приміщень з середини та із зовнішньої сторони(об'єднати в реєстр); Photos of production facilities from the inside and the outside(merge into the registry) ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile4" name="Знімки з висоти з нанесеною виробничою площею, з зображенням під’їзної дороги, автомобільної дороги і населеного пункту; Height images with plotted production area, depicting an access road, highway and settlement ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="nFile5" name="Фото виробничих приміщень з середини та із зовнішньої сторони(об'єднати в реєстр); Photos of production facilities from the inside and the outside(merge into the registry) ; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers10" name="dliaplotform1" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sFormPlotOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormPlotEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers11" name="dliaformtransferring" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_4&quot;:{&quot;aField_ID&quot;:[&quot;sFormTransferringOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormTransferringEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers12" name="dliaformplot2" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_3&quot;:{&quot;aField_ID&quot;:[&quot;sFormPlotOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormPlotEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
@@ -917,8 +914,6 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <activiti:formProperty id="markers20" name="dliainse20" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sTermsofTransferOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTermsofTransferEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers21" name="pokazat1" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_5&quot;:{&quot;aField_ID&quot;:[&quot;sTermsofTransferOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTermsofTransfer&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers22" name="pokazat2" type="markers" default="{&quot;motion&quot;:{&quot;RequiredFieldsOnCondition_6&quot;:{&quot;aField_ID&quot;:[&quot;sTermsofTransferOtherEN&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asTermsofTransferEN&quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_3" name="title;sPrintFormFileAsPDF=pattern/print/oda_0733_brown.html" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="PrintForm_4" name="title;sPrintFormFileAsPDF=pattern/print/oda_0733_brownEN_.html" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/oda_0733_brown.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про наявну вільну виробничу площу (типу brownfield)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/oda_0733_brownEN.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Statement on available free production area (brownfield type)" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" writable="false"></activiti:formProperty>
