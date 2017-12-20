@@ -232,8 +232,23 @@ module.exports.syncWithSubject = function (accessToken, done) {
         if (error) {
           callback(createError(error, response), null);
         } else {
-          result.subject = body;
-          callback(null, result);
+          console.log(config.server);
+          var nID_Server_Region = config.server.nServerRegion;
+          activiti.getServerRegionHost(nID_Server_Region, function (sHost) {
+            syncSubject.syncRegion(bankidUtil.decryptField(result.customer.inn), sHost, function (error, response, body) {
+              if (error) {
+                callback(createError(error, response), null);
+              } else {
+                var jsessionID;
+                if (response.headers['set-cookie']){
+                  jsessionID = response.headers['set-cookie'][0].split('JSESSIONID=')[1];
+                }
+                result.jsessionCookie = jsessionID;
+                result.subject = body;
+                callback(null, result);
+              }
+            });
+          });
         }
       });
     },

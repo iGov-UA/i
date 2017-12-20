@@ -24,6 +24,10 @@ function iterateObj(obj, filter) {
   });
 }
 
+var expiresUserInMs = function () {
+  return new Date(Date.now() + 1300 * 60 * 60 * 10);
+};
+
 var finishRequest = function (req, res, err, result, userService) {
   if (err) {
     logger.info("[tryCache] error on cache search", {err: err});
@@ -47,6 +51,7 @@ var finishRequest = function (req, res, err, result, userService) {
       };
     }
     removeEmptyFields(customer);
+    res.cookie('JSESSIONID', result.jsessionCookie, {expires: expiresUserInMs()});
     res.send({
       customer: customer,
       admin: admin

@@ -19,6 +19,12 @@ module.exports.sync = function (inn, callback) {
   }, callback);
 };
 
+module.exports.syncRegion = function (inn, sHost, callback) {
+  activiti.get('/service/subject/syncSubject', {
+    sINN: inn
+  }, callback, sHost);
+};
+
 module.exports.getSubjectOrgan = function (nID_Subject, callback) {
   activiti.get('/subject/getSubjectOrgan', {nID_Subject: nID_Subject}, callback);
 };
@@ -42,3 +48,5 @@ module.exports.getServerRegion = function (nID_Server, callback) {
     }
   });
 };
+
+
