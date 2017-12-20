@@ -13,7 +13,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.activiti.engine.ActivitiObjectNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.model.subject.Subject;
@@ -105,7 +107,8 @@ public class SubjectCommonController {
             @ApiParam(value = "строка-код, параметр-идентификатора субьекта (без префикса типа)", required = false)
             @RequestParam(required = false) String sCode_Subject,
             @ApiParam(value = "строка-ОКПО (субъек - организация)", required = false) @RequestParam(required = false) String sOKPO,
-            HttpServletResponse httpResponse) {
+            HttpServletResponse httpResponse,
+            HttpServletRequest oRequest) {
 
         LOG.info("--- syncSubject ---");
         LOG.info("syncSubject started...");
