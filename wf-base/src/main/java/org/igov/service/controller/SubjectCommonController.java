@@ -108,6 +108,12 @@ public class SubjectCommonController {
             HttpServletResponse httpResponse) {
 
         LOG.info("--- syncSubject ---");
+        LOG.info("syncSubject started...");
+        HttpSession oSession = oRequest.getSession(true);
+        oSession.setAttribute("sINN", sINN);
+        
+        LOG.info("syncSubject sINN is {}", oSession.getAttribute("sINN"));
+        LOG.info("syncSubject oSession ID is {}", oSession.getId());
         Subject subject;
         if (nID != null) {
             subject = subjectDao.getSubject(nID);
