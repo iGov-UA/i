@@ -408,12 +408,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
             HttpServletRequest oRequest
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
-        
-        HttpSession oHttpSession = oRequest.getSession();
-        if(oHttpSession == null || oHttpSession.getAttribute("sINN") == null){
-            return new ResponseEntity<>("Вибачте, виникла помилка", HttpStatus.FORBIDDEN);
-        }
-        
+               
         String sMessage = null;
         LOG.info("input sInfo = ", sInfo);
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
