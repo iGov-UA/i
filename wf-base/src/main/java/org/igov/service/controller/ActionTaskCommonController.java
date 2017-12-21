@@ -77,6 +77,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.servlet.http.HttpSession;
 import org.activiti.engine.task.NativeTaskQuery;
 
 import org.igov.model.subject.SubjectAccountDao;
@@ -364,7 +365,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
 
         StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost());
-        oStringBuilder_URL.append("/wf/service/action/task/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+        oStringBuilder_URL.append("/api/tasks/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
 
         if (sInfo != null) {
             oStringBuilder_URL.append("&sInfo=".concat(sInfo));
@@ -404,9 +405,15 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     ResponseEntity<String> cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
-            @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple
+            @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
+            HttpServletRequest oRequest
     ) throws CommonServiceException, TaskAlreadyUnboundException, Exception {
-
+        
+        HttpSession oHttpSession = oRequest.getSession();
+        if(oHttpSession == null || oHttpSession.getAttribute("sINN") == null){
+            return new ResponseEntity<>("Вибачте, виникла помилка", HttpStatus.FORBIDDEN);
+        }
+        
         String sMessage = null;
         LOG.info("input sInfo = ", sInfo);
         sMessage = "Вибачте, виникла помилка при виконанні операції. Спробуйте ще раз, будь ласка";
