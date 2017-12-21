@@ -861,3 +861,16 @@ exports.checkAttachmentSignNew = function (req, res) {
     res.status(200).send(body);
   });
 };
+
+exports.cancelTask = function (req, res) {
+  var options = {
+    path: 'action/task/cancelTask',
+    query: req.query,
+  };
+
+  activiti.get(options, function (error, status, result) {
+    if (!error) {
+      res.status(status).send(result);
+    }
+  });
+};

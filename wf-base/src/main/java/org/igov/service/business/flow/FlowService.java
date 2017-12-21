@@ -33,6 +33,8 @@ import javax.xml.datatype.Duration;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.activiti.engine.FormService;
 import org.activiti.engine.form.FormProperty;
 import org.igov.run.schedule.JobBuilderFlowSlots;
@@ -1105,5 +1107,19 @@ public class FlowService implements ApplicationContextAware {
         nStartDay += DAYS_IN_MONTH;
         boolean bEnoughFreeDays = nStartDay < DAYS_IN_HALF_YEAR;
         LOG.info(" bEnoughFreeDays = {}", bEnoughFreeDays);
+    }
+    
+    public Boolean checkFlowSessionPermition(HttpServletRequest oRequest){
+        HttpSession oHttpSession = oRequest.getSession();
+        LOG.info("Session {}", oHttpSession);
+        
+        LOG.info("Session sINN is {}", oHttpSession != null ? oHttpSession.getAttribute("sINN") : null);
+        LOG.info("Session ID is {}", oHttpSession != null ? oHttpSession.getId() : null);
+        
+        if(oHttpSession != null && oHttpSession.getAttribute("sINN") != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

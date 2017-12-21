@@ -17,12 +17,13 @@
         <activiti:formProperty id="sCountry_0" name="Країна призначення" type="select"></activiti:formProperty>
         <activiti:formProperty id="sID_UA_Country_0" name="Код країни призначення;(заповниться автоматично)" type="string"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Файл для накладення підпису; ;bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc" name="Таблиця з документами реквайр фолс; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;true&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}" required="true"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all_1" name="Перша Заява громадянина з ЕЦП; ;bNew=true, bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/testPrint2.html"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all_2" name="Друга Заява громадянина з ЕЦП; ;bNew=true, bPrintFormFileAsPDF=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_2" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/justice/justice_0087_FOPclose_print.html"></activiti:formProperty>
-             
+        <activiti:formProperty id="sTableDoc1" name="Таблиця з документами реквайр тру; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc1&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;required&quot;:&quot;false&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc2" name="Таблиця з документами реквайр отсутствует; ;bNew=true" type="table" default="{&quot;aField&quot;:[{&quot;id&quot;:&quot;sDoc2&quot;,&quot;name&quot;:&quot;Документ; ;bNew=true&quot;,&quot;type&quot;:&quot;file&quot;,&quot;writable&quot;:&quot;true&quot;,&quot;nWidth&quot;:&quot;20%&quot;}]}" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Е-mail" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
@@ -54,7 +55,9 @@
         <activiti:formProperty id="form_signed_all_1" name="Перша Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all_2" name="Друга Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile1" name="Файл для накладення підпису; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc" name="Таблиця з документами реквайр фолс; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc1" name="Таблиця з документами реквайр тру; ;bNew=true" type="table" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sTableDoc2" name="Таблиця з документами реквайр отсутствует; ;bNew=true" type="table" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent1" name="End"></endEvent>
