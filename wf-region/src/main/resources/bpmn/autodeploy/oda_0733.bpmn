@@ -987,7 +987,9 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
     <endEvent id="endevent4" name="End"></endEvent>
     <endEvent id="endevent5" name="End"></endEvent>
     <sequenceFlow id="flow12" sourceRef="usertask2" targetRef="exclusivegateway2"></sequenceFlow>
-    <sequenceFlow id="flow13" name="accept" sourceRef="exclusivegateway2" targetRef="servicetask7"></sequenceFlow>
+    <sequenceFlow id="flow13" name="accept" sourceRef="exclusivegateway2" targetRef="servicetask7">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flow14" sourceRef="servicetask7" targetRef="endevent4"></sequenceFlow>
     <sequenceFlow id="flow15" name="reject" sourceRef="exclusivegateway2" targetRef="servicetask8">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
@@ -1102,7 +1104,7 @@ ${sNameOrgan}<br>${sDepartamentOda}<br>
         <omgdi:waypoint x="695.0" y="310.0"></omgdi:waypoint>
         <omgdi:waypoint x="750.0" y="310.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="33.0" x="695.0" y="310.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="100.0" x="695.0" y="310.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
