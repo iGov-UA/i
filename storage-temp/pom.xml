@@ -10,106 +10,81 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <spring.data.mongodb.version>1.7.0.RELEASE</spring.data.mongodb.version>
-        <sRevisionPostfixBaseLocal>${sRevisionPostfixBase}</sRevisionPostfixBaseLocal> <!-- Version is connected! You can't modify it separated ! -->
-    </properties>
-    
-    <name>iGov-UA Storage Static</name>
-    <artifactId>db-kv-statical</artifactId>
+
+    <name>iGov-UA Storage Temp</name>
+    <artifactId>db-kv-temp</artifactId>
     <version>${sRevisionPostfixBaseLocal}</version>
     <packaging>jar</packaging>
+ <properties>
+        <spring.data.redis.version>1.2.1.RELEASE</spring.data.redis.version>
+    </properties>
 
     <dependencies>
         
-        <!-- MongoDB dependencies -->
+        <!-- REDIS DEPENDENCIES -->
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>2.13.2</version>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <type>jar</type>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <!-- XXX should have been added transitively, but fails at Jenkins -->
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-            <version>1.10.0.RELEASE</version>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-            <version>${spring.data.mongodb.version}</version>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring.data.redis.version}</version>
         </dependency>
 
         <!-- Spring dependencies -->
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
 
-        <!-- Misc dependencies -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
+        <!-- Dependencies for tests -->
 
-        <!-- Test dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- your own standard logging dependencies -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-
-        <!--dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-dao</artifactId>
-            <version>2.0.8</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <version>4.2.5.RELEASE</version>
-        </dependency-->
-
     </dependencies>
-    
+
     <build>
+        <defaultGoal>install</defaultGoal>
+
+        <testResources>
+            <testResource>
+                <directory>${pom.basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${source.version}</source>
-                    <target>${target.version}</target>
-                    <encoding>${encoding}</encoding>
-                </configuration>
+                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
         </plugins>
+
     </build>
+
 </project>
