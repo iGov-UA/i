@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <name>iGov-UA</name>
@@ -9,84 +7,7 @@
     <artifactId>root</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-
-    <profiles>
-
-        <profile>
-            <id>alpha</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <sRevisionVersion>1.0.0</sRevisionVersion>
-                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <!--sRevisionVersionBase>1.1.1</sRevisionVersionBase-->
-                <sRevision>a</sRevision>
-                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
-                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
-                <!--sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase-->
-                <sRevisionSubPath></sRevisionSubPath>
-                <!--igov.storage-static.version>1.0.0a-SNAPSHOT</igov.storage-static.version>
-                <igov.storage-temp.version>1.0.0a-SNAPSHOT</igov.storage-temp.version>
-                <igov.wf-base.version>1.0.0a-SNAPSHOT</igov.wf-base.version>
-                <igov.wf-central.version>1.0.0a-SNAPSHOT</igov.wf-central.version>
-                <igov.wf-region.version>1.0.0a-SNAPSHOT</igov.wf-region.version>
-                <liquibase.custom.data.path>${liquibase.data.path}</liquibase.custom.data.path>
-                <activiti.custom.data.path>${activiti.data.path}</activiti.custom.data.path-->
-            </properties>
-        </profile>
-        <profile>
-            <id>beta</id>
-            <!--activation>
-                <property>
-                    <name>parameter.sVer</name>
-                    <value>b</value>
-                </property>
-            </activation-->
-            <properties>
-                <sRevisionVersion>1.0.0</sRevisionVersion>
-                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision>b</sRevision>
-                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
-                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
-                <sRevisionSubPath>/beta</sRevisionSubPath>
-            </properties>
-        </profile>
-        <profile>
-            <id>delta</id>
-            <properties>
-                <sRevisionVersion>1.0.0</sRevisionVersion>
-                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision>d</sRevision>
-                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
-                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
-                <sRevisionSubPath>/delta</sRevisionSubPath>
-            </properties>
-        </profile>
-        <profile>
-            <id>omega</id>
-            <properties>
-                <sRevisionVersion>1.0.0</sRevisionVersion>
-                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision>o</sRevision>
-                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
-                <sRevisionLibPostfixBase>-SNAPSHOT</sRevisionLibPostfixBase>
-                <sRevisionSubPath>/prod</sRevisionSubPath>
-            </properties>
-        </profile>
-        <profile>
-            <id>release</id>
-            <properties>
-                <sRevisionVersion>1.0.0</sRevisionVersion>
-                <sRevisionVersionBase>1.0.0</sRevisionVersionBase>
-                <sRevision></sRevision>
-                <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
-                <sRevisionLibPostfixBase>-RELEASE</sRevisionLibPostfixBase>
-                <sRevisionSubPath>/prod</sRevisionSubPath>
-            </properties>
-        </profile>
-    </profiles>
-
+    
     <properties>
         <!--compiler properties -->
         <source.version>1.8</source.version>
@@ -95,9 +16,6 @@
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <!--compiler properties -->
-
-        <liquibase.data.path>data</liquibase.data.path>
-        <activiti.data.path>bpmn/autodeploy</activiti.data.path>
 
         <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
@@ -136,7 +54,7 @@
         <hibernate.version>4.3.10.Final-fixed</hibernate.version>
         <usertype.core.version>3.2.0.GA</usertype.core.version>
         <log4j.version>1.2.17</log4j.version>
-        <liquibase.version>3.5.3</liquibase.version>
+        <liquibase.version>3.5.1</liquibase.version>
         <java.object.merger.version.version>0.8.5.1</java.object.merger.version.version>
         <jboss.serialization.version>4.2.2.GA</jboss.serialization.version>
         <trove.version>1.0.2</trove.version>
@@ -144,34 +62,189 @@
         <ehcache.version>2.10.0</ehcache.version>
         <spring-test-dbunit.version>1.2.0</spring-test-dbunit.version>
         <dbunit.version>2.5.1</dbunit.version>
+        
         <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
         <buildNumber>${maven.build.timestamp}</buildNumber>
         
-        <igov.storage-static.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.storage-static.version>
-        <igov.storage-temp.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.storage-temp.version>
-        <igov.analytic.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.analytic.version>
-        <igov.wf-base.version>${sRevisionVersionBase}${sRevision}${sRevisionLibPostfixBase}</igov.wf-base.version>
-        <igov.wf-central.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-central.version>
-        <igov.wf-region.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.wf-region.version>
-        <!--igov.analytic.version>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</igov.analytic.version-->
-        <liquibase.custom.data.path>${liquibase.data.path}${sRevisionSubPath}</liquibase.custom.data.path>
-        <activiti.custom.data.path>${activiti.data.path}${sRevisionSubPath}</activiti.custom.data.path>
-        <igov.ibp.git>git@github.com:e-government-ua/iBP.git</igov.ibp.git>
+        <liquibase.data.path>data</liquibase.data.path>
+        <activiti.data.path>bpmn/autodeploy</activiti.data.path>
+        <!--liquibase.custom.data.path>${liquibase.data.path}${sRevisionSubPath}</liquibase.custom.data.path-->
+        <!--activiti.custom.data.path>${activiti.data.path}${sRevisionSubPath}</activiti.custom.data.path-->
+        
+        <sBranch>${env.COMPUTERNAME}_${env.USERNAME}</sBranch>
+        <sURI.RepositoryGIT-ResourcesAdd>git@github.com:e-government-ua/iBP.git</sURI.RepositoryGIT-ResourcesAdd>
+        <!--sPath.Resources>src/main/resources/</sPath.Resources-->
+        <sPath.ResourcesAdd>extension</sPath.ResourcesAdd>
+        <sFullPath.ResourcesAddCustom>src/main/resources/extension</sFullPath.ResourcesAddCustom>
+        <sHost.RepositoryJAR-Source>https://nexus.igov.org.ua</sHost.RepositoryJAR-Source>
+        
+        <sRevisionVersion>1.0.0</sRevisionVersion>
+        <sRevision>${sBranch}</sRevision>
+        <sSubBranch></sSubBranch>
+        <sCommonBranch></sCommonBranch>
+        <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+        <!--sRevisionPostfix>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</sRevisionPostfix-->
+        <sRevisionPostfixBase>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</sRevisionPostfixBase>
+        <sRevisionPostfix>${sRevisionPostfixBase}</sRevisionPostfix>
+        <sRevisionSubPath></sRevisionSubPath>
+        <sRevisionCommonSubPath></sRevisionCommonSubPath>
+        
+        
+        <igov.storage-static.version>${sRevisionPostfixBase}</igov.storage-static.version>
+        <igov.storage-temp.version>${sRevisionPostfixBase}</igov.storage-temp.version>
+        <igov.analytic.version>${sRevisionPostfixBase}</igov.analytic.version>
+        <igov.wf-base.version>${sRevisionPostfixBase}</igov.wf-base.version>
+        
+        <!--igov.wf-central.version>${sRevisionPostfix}</igov.wf-central.version-->
+        <!--igov.wf-region.version>${sRevisionPostfix}</igov.wf-region.version-->
+        <!--igov.wf-region-smida.version>${sRevisionPostfix}</igov.wf-region-smida.version-->
+        
     </properties>
+            
+    <profiles>
+
+        <!--profile>
+            <id>different_repo-lib</id>
+            <activation>
+              <property>
+                <name>sHost.RepositoryJAR-Source</name>
+              </property>
+            </activation>        
+            <properties>
+                <sRepositoryHost>${sRepositoryHost-Custom}</sRepositoryHost>
+            </properties>
+        </profile-->
+      
+        <!--profile>
+            <id>different_resources-add_repo-git</id>
+            <activation>
+              <property>
+                <name>sURI.RepositoryGIT-ResourcesAdd</name>
+              </property>
+            </activation>        
+            <properties>
+                <sRepositoryResourcesExtensionGIT>${sRepositoryResourcesExtensionGIT-Custom}</sRepositoryResourcesExtensionGIT>
+            </properties>
+        </profile-->
+      
+        <profile>
+            <id>alpha</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sRevision>a${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath></sRevisionSubPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>beta</id>
+            <properties>
+                <sRevision>b${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/beta</sRevisionSubPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>delta</id>
+            <properties>
+                <sRevision>d${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/delta</sRevisionSubPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>gamma</id>
+            <properties>
+                <sRevision>g${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/gamma</sRevisionSubPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>sigma</id>
+            <properties>
+                <sRevision>s${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/sigma</sRevisionSubPath>
+            </properties>
+        </profile>
+        <profile>
+            <id>omega</id>
+            <properties>
+                <sRevision>o${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/prod</sRevisionSubPath>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>release</id>
+            <properties>
+                <sRevision>${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-RELEASE</sRevisionLibPostfix>
+                <sRevisionSubPath>/prod</sRevisionSubPath>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>default</id>
+            <activation>
+              <property>
+                <name>sBranch</name>
+              </property>
+            </activation>        
+            <properties>
+                <sRevision>${sSubBranch}</sRevision>
+                <sRevisionLibPostfix>-SNAPSHOT</sRevisionLibPostfix>
+                <sRevisionSubPath>/${sBranch}</sRevisionSubPath>
+            </properties>
+        </profile>
+        
+        <profile>
+            <id>defaultCommon</id>
+            <activation>
+              <property>
+                <name>sCommonBranch</name>
+              </property>
+            </activation>
+            <properties>
+                <sRevisionCommonSubPath>/${sCommonBranch}</sRevisionCommonSubPath>
+                <!--sRevisionPostfixBase>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</sRevisionPostfixBase>
+                <sRevisionPostfix>${sRevisionPostfixBase}</sRevisionPostfix-->
+            </properties>
+        </profile>
+                
+        <profile>
+            <id>common</id>
+            <activation>
+              <property>
+                <name>sBranch</name>
+              </property>
+            </activation>
+            <properties>
+                <sRevisionPostfixBase>${sRevisionVersion}${sRevision}${sRevisionLibPostfix}</sRevisionPostfixBase>
+                <sRevisionPostfix>${sRevisionPostfixBase}</sRevisionPostfix>
+            </properties>
+        </profile>
+
+    </profiles>
+
 
     <distributionManagement>
         <!-- XXX Replace localNexus to iGov_Nexus or something like that. And reconfigure Jenkins -->
         <repository>
+            <!-- iGov_deploy-releases-repo -->
             <id>eGovUa_Nexus</id>
             <name>Internal Releases</name>
-           <!-- <url>https://nexus.igov.org.ua/nexus/content/repositories/releases</url> -->
-            <url>https://nexus-stage.igov.org.ua/repository/maven-releases/</url>
+            <url>${sHost.RepositoryJAR-Source}/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
+            <!-- iGov_deploy-snapshots-repo -->
             <id>eGovUa_Nexus</id>
             <name>Internal Snapshots</name>
-            <url>https://nexus-stage.igov.org.ua/repository/maven-snapshots/</url> 
-            <!--url>https://nexus.igov.org.ua/nexus/content/repositories/snapshots/</url-->
+            <url>${sHost.RepositoryJAR-Source}/repository/maven-snapshots/</url>  
         </snapshotRepository>
     </distributionManagement>
     <repositories>
@@ -188,12 +261,16 @@
             <url>http://central.maven.org/maven2</url>
         </repository>
         <repository>
-            <id>eGovUa_Nexus</id>
-            <url>https://nexus.igov.org.ua/nexus/content/groups/public</url>
+            <id>iGov_public-repo</id>
+            <url>${sHost.RepositoryJAR-Source}/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>Activiti</id>
-            <url>http://maven.alfresco.com/nexus/content/groups/public</url>
+            <id>iGov_central-repo</id>
+            <url>${sHost.RepositoryJAR-Source}/repository/maven-central/</url>
+        </repository>
+        <repository>
+            <id>iGov_hosted-repo</id>
+            <url>${sHost.RepositoryJAR-Source}/repository/maven-hosted</url>
         </repository>
         <repository>
             <id>Activiti third party</id>
@@ -206,16 +283,17 @@
         </repository>        
     </repositories>
 
+
     <modules>
-        <module>auth-custom</module>
+        <!--module>auth-custom</module-->
         <module>storage-static</module>
         <module>storage-temp</module>
         <module>analytic</module>
         <module>wf-base</module>
         <module>wf-region</module>
         <module>wf-central</module>
+        <!--module>wf-region-smida</module-->
     </modules>
-
 
     <dependencyManagement>
         <dependencies>
@@ -357,6 +435,12 @@
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
             </dependency>
+            
+            <!--dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-ehcache</artifactId>
+                <version>${hibernate.version}.Final</version>
+            </dependency-->
 
             <dependency>
                 <groupId>org.jadira.usertype</groupId>
@@ -569,16 +653,34 @@
 
         <resources>
             <resource> <!-- declared first because override is not working when copy resources -->
-                <directory>src/main/resources/${liquibase.custom.data.path}</directory>
+                <!--directory>src/main/resources/${liquibase.custom.data.path}</directory-->
+                <directory>src/main/resources/${liquibase.data.path}${sRevisionSubPath}</directory>
                 <targetPath>${liquibase.data.path}</targetPath>
+                <excludes>
+                    <exclude>**/*.csb</exclude>
+                </excludes>
             </resource>
             <resource> <!-- declared first because override is not working when copy resources -->
-                <directory>src/main/resources/${activiti.custom.data.path}</directory>
+                <directory>${sFullPath.ResourcesAddCustom}/${liquibase.data.path}${sRevisionSubPath}</directory>
+                <targetPath>${liquibase.data.path}</targetPath>
+                <excludes>
+                    <exclude>**/*.csb</exclude>
+                </excludes>
+            </resource>
+            <resource> <!-- declared first because override is not working when copy resources -->
+                <!--directory>src/main/resources/${activiti.custom.data.path}</directory-->
+                <directory>src/main/resources/${activiti.data.path}${sRevisionSubPath}</directory>
+                <targetPath>${activiti.data.path}</targetPath>
+            </resource>
+            <resource> <!-- declared first because override is not working when copy resources -->
+                <directory>${sFullPath.ResourcesAddCustom}/${activiti.data.path}${sRevisionSubPath}</directory>
                 <targetPath>${activiti.data.path}</targetPath>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.csb</exclude>
+                </excludes>
             </resource>
         </resources>
 
@@ -719,6 +821,40 @@
             </plugins>
         </pluginManagement>
 
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <echo>Info:</echo>
+                                <echo>[buildNumber]=${buildNumber}</echo>
+                                <echo>[liquibase.data.path]=${liquibase.data.path}</echo>
+                                <echo>[activiti.data.path]=${activiti.data.path}</echo>
+                                <echo>[sBranch]=${sBranch}</echo>
+                                <echo>[sCommonBranch]=${sCommonBranch}</echo>
+                                <echo>[sSubBranch]=${sSubBranch}</echo>
+                                <echo>[sRevisionPostfixBase]=${sRevisionPostfixBase}</echo>
+                                <echo>[sRevisionPostfix]=${sRevisionPostfix}</echo>
+                                <echo>[sRevisionSubPath]=${sRevisionSubPath}</echo>
+                                <echo>[sRevisionCommonSubPath]=${sRevisionCommonSubPath}</echo>
+                                <echo>[sURI.RepositoryGIT-ResourcesAdd]=${sURI.RepositoryGIT-ResourcesAdd}</echo>
+                                <echo>[sPath.ResourcesAdd]=${sPath.ResourcesAdd}</echo>
+                                <echo>[sFullPath.ResourcesAddCustom]=${sFullPath.ResourcesAddCustom}</echo>
+                                <echo>[sHost.RepositoryJAR-Source]=${sHost.RepositoryJAR-Source}</echo>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <reporting>

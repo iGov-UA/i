@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -10,26 +9,30 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <name>iGov-UA WF-Base</name>
-    <artifactId>wf-base</artifactId>
-    <version>${igov.wf-base.version}</version>
-    <packaging>jar</packaging>
-    <!--packaging>war</packaging-->
-    
-    
-
     <properties>
+        <camel-version>2.17.1</camel-version>
         <activity.version>5.17.0</activity.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sRevisionPostfixBaseLocal>${sRevisionPostfixBase}</sRevisionPostfixBaseLocal> <!-- Version is connected! You can't modify it separated ! -->
     </properties>
 
+    <name>iGov-UA WF-Base</name>
+    <artifactId>wf-base</artifactId>
+    <version>${sRevisionPostfixBaseLocal}</version>
+    <packaging>jar</packaging>
+    <!--packaging>war</packaging -->
+
     <repositories>
-          	
+
         <repository>
             <id>vaadin-addons</id>
             <url>http://maven.vaadin.com/vaadin-addons</url>
         </repository>
-            
+        <repository>
+            <id>iGov-hosted-repo</id>
+            <url>http://nexus.igov.org.ua/repository/maven-hosted</url>
+        </repository>
+
     </repositories>
 
     <build>
@@ -49,21 +52,18 @@
                 <configuration>
                     <warName>${project.artifactId}</warName>
                     <warSourceExcludes>**/DB.SQL.properties</warSourceExcludes>
-                    <!--warSourceExcludes>**/email.properties</warSourceExcludes-->
-                    <!--warSourceExcludes>**/bankID.properties</warSourceExcludes-->
+                    <!--warSourceExcludes>**/email.properties</warSourceExcludes -->
+                    <!--warSourceExcludes>**/bankID.properties</warSourceExcludes -->
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
                     <jarName>${project.artifactId}-${project.version}</jarName>
-                    <!--jarName>${project.artifactId}-1.0.0-RELEASE</jarName-->
+                    <!--jarName>${project.artifactId}-1.0.0-RELEASE</jarName -->
                     <classifier>lib</classifier>
-                    <!--excludes>
-                        <exclude>*.properties</exclude>
-                        <exclude>*.alfresco</exclude>
-                        <exclude>*.json</exclude>
-                    </excludes-->
+                    <!--excludes> <exclude>*.properties</exclude> <exclude>*.alfresco</exclude> 
+                    <exclude>*.json</exclude> </excludes -->
                 </configuration>
             </plugin>
             <plugin>
@@ -119,18 +119,15 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>      		
+            </plugin>
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
                 <version>1.5.2.1</version>
                 <dependencies>
-                    <!-- <dependency>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctorj-pdf</artifactId>
-                        <version>1.5.0-alpha.9</version>
-                    </dependency> -->
-                </dependencies>             
+                    <!-- <dependency> <groupId>org.asciidoctor</groupId> <artifactId>asciidoctorj-pdf</artifactId> 
+                    <version>1.5.0-alpha.9</version> </dependency> -->
+                </dependencies>
                 <executions>
                     <execution>
                         <id>output-html</id>
@@ -151,55 +148,30 @@
                             </attributes>
                         </configuration>
                     </execution>
-                    <!-- Работает но довольно долго, если нужен pdf расскоментировать
-                    <execution>
-                        <id>generate-pdf-doc</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>pdf</backend>
-                            <sourceHighlighter>rouge</sourceHighlighter>
-                            <attributes>
-                                <icons>font</icons>
-                                <pagenums />
-                                <toc2 />
-                                <idprefix />
-                                <idseparator>-</idseparator>
-                            </attributes>
-                        </configuration>
-                    </execution> -->
+                    <!-- Работает но довольно долго, если нужен pdf расскоментировать <execution> 
+                    <id>generate-pdf-doc</id> <phase>generate-resources</phase> <goals> <goal>process-asciidoc</goal> 
+                    </goals> <configuration> <backend>pdf</backend> <sourceHighlighter>rouge</sourceHighlighter> 
+                    <attributes> <icons>font</icons> <pagenums /> <toc2 /> <idprefix /> <idseparator>-</idseparator> 
+                    </attributes> </configuration> </execution> -->
                 </executions>
                 <configuration>
                     <sourceDirectory>src/main/asciidoc</sourceDirectory>
                     <preserveDirectories>true</preserveDirectories>
-                    <!-- <sourceDocumentName>base-allrest-index.adoc</sourceDocumentName>                   
+                    <!-- <sourceDocumentName>base-allrest-index.adoc</sourceDocumentName> 
                     <sourceDocumentName>base-egovrest-index.adoc</sourceDocumentName> -->
                     <headerFooter>true</headerFooter>
                     <imagesDir>../resources/images</imagesDir>
                 </configuration>
             </plugin>
-            <!--
-                ## Please install igov-maven-plugin from https://github.com/e-government-ua/ilog before activation
-            <plugin>
-                <groupId>org.igov</groupId>
-                <artifactId>log-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>replace-long-calls</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            -->
+            <!-- ## Please install igov-maven-plugin from https://github.com/e-government-ua/ilog 
+            before activation <plugin> <groupId>org.igov</groupId> <artifactId>log-plugin</artifactId> 
+            <version>1.0.1</version> <executions> <execution> <phase>validate</phase> 
+            <goals> <goal>replace-long-calls</goal> </goals> </execution> </executions> 
+            </plugin> -->
         </plugins>
         <pluginManagement>
             <plugins>
-                <!--This plugin's configuration is used to store Eclipse m2e settings
+                <!--This plugin's configuration is used to store Eclipse m2e settings 
                 only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -235,6 +207,12 @@
         </pluginManagement>
     </build>
     <dependencies>
+
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>2.0</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -278,7 +256,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- <dependency> <groupId>org.vaadin.addons</groupId> <artifactId>dcharts-widget</artifactId>
+        <!-- <dependency> <groupId>org.vaadin.addons</groupId> <artifactId>dcharts-widget</artifactId> 
         <version>0.10.0</version> </dependency> -->
         <dependency>
             <groupId>org.activiti</groupId>
@@ -314,13 +292,13 @@
         <dependency>
             <groupId>org.igov</groupId>
             <artifactId>db-kv-temp</artifactId>
-            <version>${igov.storage-temp.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
         </dependency>
 
         <dependency>
             <groupId>org.igov</groupId>
             <artifactId>db-kv-statical</artifactId>
-            <version>${igov.storage-static.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
         </dependency>
 
         <!-- DB-SQL (Relative-Storage) -->
@@ -342,10 +320,18 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
+        
+        <!--dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>4.3.10.Final</version>
+        </dependency-->
+        
         <dependency>
             <groupId>org.jadira.usertype</groupId>
             <artifactId>usertype.core</artifactId>
         </dependency>
+        
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
@@ -387,23 +373,21 @@
             <artifactId>java-object-merger</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.opensymphony.quartz</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-		
+        <!-- <dependency> <groupId>org.opensymphony.quartz</groupId> <artifactId>quartz</artifactId> 
+        </dependency> -->
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.3.1</version>
-        </dependency>	
-        
+        </dependency>
+
         <dependency>
             <groupId>com.pb.crm</groupId>
             <artifactId>corezoid-sdk</artifactId>
             <version>2.1</version>
         </dependency>
-        
+
         <!-- Running example processes -->
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
@@ -506,7 +490,8 @@
             <artifactId>httpmime</artifactId>
             <version>4.4.1</version>
         </dependency>
-        <!-- Allows to store external parameters for QueryLoader in *.properties files. -->
+        <!-- Allows to store external parameters for QueryLoader in *.properties 
+        files. -->
         <dependency>
             <groupId>ru.qatools.commons</groupId>
             <artifactId>properties</artifactId>
@@ -529,7 +514,7 @@
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
 
-        <!-- Springfox staticdocs --> 
+        <!-- Springfox staticdocs -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-staticdocs</artifactId>
@@ -580,17 +565,17 @@
             <groupId>com.pb.ksv</groupId>
             <artifactId>msgcore</artifactId>
             <version>2.0.1.032</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>com.pb</groupId>
             <artifactId>gsvutil</artifactId>
-            <version>1.7.1</version>  			
-        </dependency>     
+            <version>1.7.1</version>
+        </dependency>
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
             <version>0.1.53</version>
-        </dependency>   
+        </dependency>
         <dependency>
             <groupId>ua.privatbank</groupId>
             <artifactId>cryptonite</artifactId>
@@ -601,13 +586,58 @@
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jaxb</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+            <version>${camel-version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.camel</groupId>
+                    <artifactId>camel-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-quartz</artifactId>
+            <version>${camel-version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>camel-core</artifactId>
+                    <groupId>org.apache.camel</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
             <id>compile-widgetset</id>
             <build>
                 <plugins>
-                    <!-- Compile custom GWT components or widget dependencies with the GWT
+                    <!-- Compile custom GWT components or widget dependencies with the GWT 
                     compiler -->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
