@@ -11,7 +11,8 @@
            type="text"
            ng-model="organList.typeahead.model"
            ng-disabled="ngDisabled"
-           typeahead="organ as organ.sNameUa for organ in loadOrganList($viewValue) | orderBy:'sNameUa'"
+           ng-change="loadOrganList(organList.typeahead.model)"
+           typeahead="organ as organ.sNameUa for organ in organList.dropdown.list | orderBy:'sNameUa'"
            typeahead-on-select="onSelectOrganList($item)"
            typeahead-empty
            ng-required="ngRequired"/>
