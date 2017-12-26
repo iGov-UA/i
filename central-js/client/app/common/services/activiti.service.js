@@ -367,11 +367,19 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
 
       angular.forEach(results, function (templateResult, key) {
         if(!templateResult.fileBase64){
-          for (var prop in formData) {
-            if (formData.hasOwnProperty(prop)) {
-              templateResult.template = templateResult.template.split('[' + prop + ']').join(formData[prop].value);
+          angular.forEach(activitiFormProperties, function (property) {
+            if (formData.hasOwnProperty(property.id)) {
+              if (property.type === 'enum') {
+                for (var i=0; i<property.enumValues.length; i++) {
+                  if (property.enumValues[i].id === formData[property.id].value) {
+                    templateResult.template = templateResult.template.split('[' + property.id + ']').join(property.enumValues[i].name);
+                  }
+                }
+              } else {
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].value);
+              }
             }
-          }
+          });
 
           function getUserInfo() {
             var sUserInfo = '';
