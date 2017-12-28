@@ -106,7 +106,7 @@ module.exports.cancelSlotHoldDMS = function (req, res) {
     'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
   };
   activiti.getServerRegionHost(nID_Server, function(sHost){
-    activiti.sendPostRequest(req, res, '/service/action/flow/DMS/canselSlotHold', {
+    activiti.sendPostRequest(req, res, '/action/flow/DMS/canselSlotHold', {
       sSubjectPhone: oData.sSubjectPhone
     }, null, sHost);
   });
