@@ -19,7 +19,7 @@
         <activiti:formProperty id="visitDay1" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="nID_Department_visitDay1" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
         
-        <activiti:formProperty id="sFlag" name="sFlag; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="sFlag; ;bVisible=false" type="string" default="2etap"></activiti:formProperty>
         <activiti:formProperty id="markerFlag" name="markerFlag" type="markers" default="${markerService.loadFromFile('dms/DMSiGov.json')}"></activiti:formProperty>
         
         <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
@@ -30,6 +30,9 @@
         <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
+        <activiti:formProperty id="sRekvIDZagranPos" name="Реквізити; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Паспорт громадянина України для виїзду за кордон"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_nameZV" name="назва послуги; ;bVisible=false" type="string" default="паспорт громадянина України для виїзду за кордон"></activiti:formProperty>
@@ -239,7 +242,7 @@ execution.setVariable('sNotification_day', timer)
 </p>
 
 <p><b>Сплата адміністративного збору:</b>
-Перейдіть за <a href="https://dmsu.gov.ua/services/payment.html" target="_blank">цим посиланням на сайт ДМС</a> , оберіть бажаний термін отримання паспорту та свій район. Ви отримаєте платіжні реквізити. Вам необхідно зробити платіж за цими реквізитами. <br>
+Реквізити для сплати адмінсбору ${sRekvIDZagranPos}.<br>
 Зверніть увагу, що у призначенні платежу обов'язково має бути присутнім код (цифри та символи, з якого починається текст поля “Призначення платежу”), а ім'я платника має бути написано українською мовою.
 </p><br>
 <p><b>Що Вам потрібно мати з собою на цей візит:</b><br>

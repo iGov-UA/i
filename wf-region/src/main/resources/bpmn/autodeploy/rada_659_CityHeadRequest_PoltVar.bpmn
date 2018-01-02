@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="rada_659_CityHeadRequest_PoltVar" name="Відправити звернення до міського голови" isExecutable="true">
+  <process id="rada_659_CityHeadRequest_PoltVar" name="Звернення до міського голови" isExecutable="true">
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть орган, який надасть відповідь" type="select" default="0" required="true"></activiti:formProperty>
@@ -51,7 +51,7 @@
           <activiti:value id="sEnumSoc8" name="Безробітний"></activiti:value>
           <activiti:value id="sEnumSoc9" name="Студент"></activiti:value>
           <activiti:value id="sEnumSoc10" name="Служитель релігійної організації"></activiti:value>
-          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі; особа, воля якої обмежена"></activiti:value>
+          <activiti:value id="sEnumSoc11" name="Особа, що позбавлена волі/особа, воля якої обмежена"></activiti:value>
           <activiti:value id="sEnumSoc12" name="Інший соціальний стан"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Інформація про адресу" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;asBudType&quot;],&quot;sValue&quot;:&quot;Інформація про адресу&quot;}}}"></activiti:formProperty>
@@ -99,13 +99,13 @@ var Adres = ' '
   
 if(execution.getVariable('asBudType') == 'sBagkvatur')
   {
-  if(execution.getVariable('asKorp') == 'yes'){Adres='м.Дніпро, '+Vul+', б. '+Bud+', корп. '+Korp+', кв. '+Kvart}
-  if(execution.getVariable('asKorp') == 'no'){Adres='м.Дніпро, '+Vul+', б. '+Bud+', кв. '+Kvart}
+  if(execution.getVariable('asKorp') == 'yes'){Adres='м.Полтава, '+Vul+', б. '+Bud+', корп. '+Korp+', кв. '+Kvart}
+  if(execution.getVariable('asKorp') == 'no'){Adres='м.Полтава, '+Vul+', б. '+Bud+', кв. '+Kvart}
   }
 if(execution.getVariable('asBudType') == 'sPrivSector')
   {
-  if(execution.getVariable('asKvart') == 'yes'){Adres='м.Дніпро, '+Vul+', б. '+Bud+', кв. '+Kvart}
-  if(execution.getVariable('asKvart') == 'no'){Adres='м.Дніпро, '+Vul+', б. '+Bud}
+  if(execution.getVariable('asKvart') == 'yes'){Adres='м.Полтава, '+Vul+', б. '+Bud+', кв. '+Kvart}
+  if(execution.getVariable('asKvart') == 'no'){Adres='м.Полтава, '+Vul+', б. '+Bud}
   }  
 execution.setVariable('ScriptAdress', Adres)
       </script>
@@ -146,7 +146,7 @@ execution.setVariable('ScriptAdress', Adres)
 <p>${sPhoneOrgan}.</p>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_signature_start.html]
-${sNameOrgan},<br>
+${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
@@ -228,7 +228,7 @@ ${sNameOrgan},<br>
           <activiti:value id="sEnumVidmova" name="Відмова в обробці звернення"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="tComment" name="Коментар про причину відмови" type="textArea"></activiti:formProperty>
-        <activiti:formProperty id="sRNumber" name="Номер реєстрації звернення" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRNumber" name="Номер реєстрації звернення" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="asInOrgan" name="Відділ/орган до якого передано звернення" type="enum">
           <activiti:value id="sEnumInOrgan1" name="Звернення передано до Управління з питань містобудування та архітектури"></activiti:value>
           <activiti:value id="sEnumInOrgan2" name="Звернення передано до Управління капітального будівництва"></activiti:value>
@@ -624,10 +624,10 @@ ${sAddress}<br>
 ${sWorkTime}<br> 
 ${sPhoneOrgan}<br> 
 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">
@@ -665,10 +665,10 @@ ${sNameOrgan}<br>
 Електронна скан-копія відповіді знаходиться у додатку до цього листа.<br><br>
 ${sPhoneOrgan}<br> 
 [pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
 ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_end.html]
-[pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
         <activiti:field name="sPhone_SMS">

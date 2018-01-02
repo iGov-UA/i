@@ -28,6 +28,10 @@
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/passport.json')}"></activiti:formProperty>
+        
+        <activiti:formProperty id="sRekvIDZagranPos" name="Реквізити; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sFlag" name="sFlag; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
+        <activiti:formProperty id="markerFlag" name="markerFlag" type="markers" default="${markerService.loadFromFile('dms/DMSCnapID.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -153,7 +157,6 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow32" sourceRef="servicetask6" targetRef="parallelgateway2"></sequenceFlow>
-    <sequenceFlow id="flow37" sourceRef="parallelgateway1" targetRef="servicetask2"></sequenceFlow>
     <serviceTask id="servicetask2" name="ID картка" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
       <extensionElements>
         <activiti:field name="sPhone_SMS">
@@ -471,6 +474,82 @@ ${sNameOrgan},<br>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow48" sourceRef="escalationTimer1" targetRef="endevent4"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway7" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow49" sourceRef="parallelgateway1" targetRef="exclusivegateway7"></sequenceFlow>
+    <sequenceFlow id="flow50" name="ДМС" sourceRef="exclusivegateway7" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sFlag == 'DMS'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask8" name="Лист заявнику" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Обмін паспорта громадянина України у разі непридатності для користування]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
+[pattern/mail/new_design/_common_content_start.html]
+	Чекаємо Вас за адресою: ${sAddress}<br>
+	для обміну паспорта громадянина України у разі непридатності для користування.
+</p>
+<p>
+	Дата та час візиту: ${date_of_visit}.
+</p>
+<p>
+	<b>Вам необхідно зробити два платежу:</b> 
+	<ul>
+		<li>адмінзбір за оформлення ID-картки. </li>
+		<li>держмито за пошкодження паспорта. </li>
+	</ul>
+	Реквізити для сплати адмінсбору ${sRekvIDZagranPos}.<br>
+	<b>Зверніть увагу:</b>, що Вам потрібно принести з собою квітанції банку (із “мокрим” штампом) про сплату цих платежів. В квитанції дані платника повинні бути написані українською мовою.
+</p>
+<p>
+	<b>Необхідні документи, які треба принести до ЦНАПу:</b>
+	<ul>
+
+		<li>оригінал та копію ІПН;</li>
+		<li>квитанцію про сплату з мокрою печаткою банку, де Ви зазначені, як платник;</li>
+	</ul>
+</p>
+<p>
+	<b>Зверніть увагу:</b> 
+	<ul>
+		<li>Вам не потрібно буде реєструватися у черзі на місці. Вашого запису через iGov на вказаний час достатньо. Але дуже просимо Вас не спізнюватись, бо електронна черга має доволі чіткий крок.</li>
+		<li>Якщо Ви отримуєте ІD-картку не у тому підрозділі ДМС, в якому оформлювали попередній паспорт, та пошкоджена сторінка з фотокарткою, то Вам потрібно додатково принести фотокартку розміром 3,5 х 4,5 см (фотокартки, що подаються для оформлення паспорта, мають бути виконані з одного негатива, із зображенням обличчя виключно анфас, без головного убору, виготовленими на тонкому білому або кольоровому фотопапері без кутика; для громадян, які постійно носять окуляри, обов'язкове фотографування в окулярах)</li>
+		<li>Якщо Ви перебуваєте або перебували у шлюбі, то Вам потрібно додатково принести оригінал та копію документів про шлюб або розірвання шлюбу;</li>
+		<li>Якщо Ви маєте дітей, то Вам потрібно додатково принести оригінал та копію документів про народження дітей;</li>
+		<li>Якщо Ви змінювали прізвище, ім'я або по батькові, то Вам потрібно додатково принести оригінал та копію документів про зміну прізвища, ім'я або по батькові;</li>
+		<li>Якщо Ви є внутрішньо переміщеною особою, тобто адреса Вашої реєстрації (прописки) відноситься до тимчасово окупованої території або районів проведення антитерористичної операції (АТО), то Вам потрібно додатково принести з собою ксерокопію та оригінал довідки про взяття на облік внутрішньо переміщеної особи</li>
+	</ul>
+</p>
+<p>Після подання документів Ви зможете перевіряти готовність свого паспорта за цим <a href="http://dmsu.gov.ua/perevirkastanu.php" target="_blank">посиланням</a> </p>          
+<p>[cancelTask]</p>                
+[pattern/mail/new_design/_common_content_end.html]
+[pattern/mail/new_design/_common_signature_start.html]
+${sNameOrgan},<br>
+[pattern/mail/new_design/_common_signature_end.html]
+[pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovano. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[" "]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="flow51" name="ЦНАП" sourceRef="exclusivegateway7" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sFlag == 'CNAP'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow52" sourceRef="servicetask8" targetRef="usertask1_green"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_dms_0175_IDDamage_iGov">
     <bpmndi:BPMNPlane bpmnElement="dms_0175_IDDamage_iGov" id="BPMNPlane_dms_0175_IDDamage_iGov">
@@ -549,6 +628,12 @@ ${sNameOrgan},<br>
       <bpmndi:BPMNShape bpmnElement="escalationTimer1" id="BPMNShape_escalationTimer1">
         <omgdc:Bounds height="30.0" width="30.0" x="607.0" y="330.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway7" id="BPMNShape_exclusivegateway7">
+        <omgdc:Bounds height="40.0" width="40.0" x="380.0" y="17.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
+        <omgdc:Bounds height="55.0" width="105.0" x="465.0" y="10.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="36.0" y="107.0"></omgdi:waypoint>
         <omgdi:waypoint x="81.0" y="107.0"></omgdi:waypoint>
@@ -594,10 +679,6 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="731.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="840.0" y="217.0"></omgdi:waypoint>
         <omgdi:waypoint x="841.0" y="127.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
-        <omgdi:waypoint x="420.0" y="106.0"></omgdi:waypoint>
-        <omgdi:waypoint x="436.0" y="107.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
         <omgdi:waypoint x="541.0" y="107.0"></omgdi:waypoint>
@@ -672,6 +753,28 @@ ${sNameOrgan},<br>
         <omgdi:waypoint x="637.0" y="345.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="344.0"></omgdi:waypoint>
         <omgdi:waypoint x="804.0" y="325.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow49" id="BPMNEdge_flow49">
+        <omgdi:waypoint x="400.0" y="86.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow50" id="BPMNEdge_flow50">
+        <omgdi:waypoint x="400.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="488.0" y="78.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="392.0" y="67.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow51" id="BPMNEdge_flow51">
+        <omgdi:waypoint x="420.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="465.0" y="37.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="419.0" y="20.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow52" id="BPMNEdge_flow52">
+        <omgdi:waypoint x="517.0" y="65.0"></omgdi:waypoint>
+        <omgdi:waypoint x="613.0" y="79.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
