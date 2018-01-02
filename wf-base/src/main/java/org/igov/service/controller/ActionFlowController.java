@@ -1454,8 +1454,17 @@ public class ActionFlowController {
     String getSlots(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
-            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
+            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
+    HttpServletRequest oRequest
     ) throws Exception {
+        JSONObject result;
+
+        LOG.info("Qlogic/getSlots started...");
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            JSONObject oJSONObjectReturn = new JSONObject();
+            return oJSONObjectReturn.toString();
+        }
+        
         JSONObject oJSONObjectReturn = new JSONObject();
 
         JSONArray oaSlot = null;
@@ -1533,8 +1542,16 @@ public class ActionFlowController {
             @ApiParam(value = "Контактный номер посетителя", required = true) @RequestParam(value = "sPhone") String sPhone,
             @ApiParam(value = "Контактный электронный ящик посетителя", required = true) @RequestParam(value = "sEmail") String sEmail,
             @ApiParam(value = "ФИО посетителя", required = true) @RequestParam(value = "sName") String sName,
-            @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation
+            @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation,
+            HttpServletRequest oRequest
     ) throws Exception {
+        JSONObject result;
+
+        LOG.info("Qlogic/setSlot started...");
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            JSONObject oJSONObjectReturn = new JSONObject();
+            return oJSONObjectReturn.toString();
+        }
         String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
 
         JSONParser oJSONParser = new JSONParser();
