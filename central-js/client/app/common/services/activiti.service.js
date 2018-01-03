@@ -282,7 +282,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       var data = {
         sFileNameAndExt: file.id + '.html',
         sID_Field: file.id,
-        sContent: formProperties[file.id].value,
+        sContent: formProperties[file.id].valueVisible,
         sID_StorageType: 'Redis'
       };
 
@@ -295,7 +295,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       if (i < html.length) {
         return $http.post('api/uploadfile/uploadFileHTML', html[i].data)
           .then(function (uploadResult) {
-            if(formProperties[htmls[i].data.sID_Field] && formProperties[htmls[i].data.sID_Field].value){
+            if(formProperties[htmls[i].data.sID_Field] && formProperties[htmls[i].data.sID_Field].valueVisible){
               formProperties[htmls[i].data.sID_Field].value = uploadResult.data;
             }
             defs[i].resolve();
@@ -379,6 +379,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                 var date = formData[property.id].value;
                 var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
                 templateResult.template = templateResult.template.split('[' + property.id + ']').join(formattedDate);
+              } else if (property.type === 'fileHTML') {
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].valueVisible);
               } else {
                 templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].value);
               }
