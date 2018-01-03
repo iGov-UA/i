@@ -375,6 +375,10 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                     templateResult.template = templateResult.template.split('[' + property.id + ']').join(property.enumValues[i].name);
                   }
                 }
+              } else if (property.type === 'date') {
+                var date = formData[property.id].value;
+                var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formattedDate);
               } else {
                 templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].value);
               }
