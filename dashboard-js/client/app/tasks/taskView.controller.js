@@ -1586,7 +1586,7 @@
             case ('storage'):
               return parsed.sID_StorageType;
             case ('name'):
-              return parsed.sFileName;
+              return parsed.sFileNameAndExt;
             }
           };
 
