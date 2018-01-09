@@ -120,7 +120,7 @@
             <div class="row"
                  style="margin-bottom: 20px"
                  ng-repeat="property in activitiForm.formProperties track by property.id"
-                 ng-if="isFieldVisible(property) && property.id !== 'form_signed' && property.id !== 'form_signed_all' && fieldHasVisibleType(property)">
+                 ng-if="isFieldVisible(property) && !isFormSigned(property.id) && fieldHasVisibleType(property)">
 
               <div class="addition-hr" ng-if="insertSeparator(property.id).bShow">
                 <div ng-if="insertSeparator(property.id).sText.length > 0" class="flex-hr wrap-hr" style="width: 100%">
@@ -189,7 +189,9 @@
                     <thead>
 
                     <tr class="table-thead">
-                      <th ng-repeat="item in property.aRow[0].aField" ng-style="{'width' : item.nWidth}">
+                      <th ng-repeat="item in property.aRow[0].aField"
+                          ng-hide="!isVisible(item)"
+                          ng-style="{'width' : item.nWidth}">
                         <span>{{item.sFieldLabel || item.name}}</span>
                         <span style="display: block; text-align: center" class="s-field-notes"
                              ng-if="item.sFieldNotes!=null">
@@ -205,7 +207,7 @@
 
                     <tr ng-repeat="row in property.aRow track by $index" ng-init="rowIndex=$index">
 
-                      <td ng-repeat="item in row.aField track by $index" style="border: 1px solid lightgrey">
+                      <td ng-repeat="item in row.aField track by $index" ng-hide="!isVisible(item)" style="border: 1px solid lightgrey">
                         <div ng-class="getFullCellId(property, $index, rowIndex)">
 
                         <div ng-if="item.type == 'string'">
@@ -213,7 +215,7 @@
                                  ng-if='item.hasOwnProperty("default") || !item.hasOwnProperty("default") && !item.hasOwnProperty("value")'
                                  name="{{item.id + rowIndex}}"
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                                 ng-required="item.required"
+                                 ng-required="{{item.required}}"
                                  ng-model="item.default"
                                  ng-disabled="!isFieldWritable(item.writable)"
                                  type="text">
@@ -221,7 +223,7 @@
                                  ng-if='item.hasOwnProperty("value")'
                                  name="{{item.id + rowIndex}}"
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
-                                 ng-required="item.required"
+                                 ng-required="{{item.required}}"
                                  ng-model="item.value"
                                  ng-disabled="!isFieldWritable(item.writable)"
                                  type="text">
@@ -229,7 +231,7 @@
 
                         <div ng-if="item.type == 'enum'">
                           <select name="{{item.id + rowIndex}}"
-                                  ng-required="item.required"
+                                  ng-required="{{item.required}}"
                                   ng-model="item.value"
                                   ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                   ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in item.a"
@@ -244,7 +246,7 @@
                               <file-field style="text-align: center"
                                           name="{{item.id + rowIndex}}"
                                           ng-model="item.value"
-                                          ng-required="isFieldRequired(item)"
+                                          ng-required="{{item.required}}"
                                           ng-if="item.upload">Add File</file-field>
                             </div>
                             <button style="position:relative;"
@@ -258,7 +260,7 @@
                                     class="btn btn-default dropdown-toggle">{{item.fileName | cut : true : 15}}</button>
                             <file-field name="{{item.id}}"
                                         ng-model="item.value"
-                                        ng-required="isFieldRequired(item)"
+                                        ng-required="{{item.required}}"
                                         ng-if="item.upload && !item.fileName">Add File</file-field>
                           </div>
                         </div>
@@ -266,7 +268,7 @@
                         <div ng-if="item.type == 'long' || item.type == 'double'">
                           <input name="{{item.id + rowIndex}}"
                                  ng-if="item.hasOwnProperty('default') || !item.hasOwnProperty('default') && !item.hasOwnProperty('value')"
-                                 ng-required="item.required"
+                                 ng-required="{{item.required}}"
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                  ng-model="item.default"
                                  class="inputs-in-table"
@@ -274,7 +276,7 @@
                                  type="number">
                           <input name="{{item.id + rowIndex}}"
                                  ng-if="item.hasOwnProperty('value')"
-                                 ng-required="item.required"
+                                 ng-required="{{item.required}}"
                                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                  ng-model="item.value"
                                  class="inputs-in-table"
@@ -286,7 +288,7 @@
                           <!--заменить на директиву-->
                           <p class="input-group datepicker-central">
                             <input type="text"
-                                   ng-required="item.required"
+                                   ng-required="{{item.required}}"
                                    name="{{item.id + rowIndex}}"
                                    datepicker-popup="{{item.props.format}}"
                                    is-open="item.props.opened"
@@ -408,7 +410,7 @@
                                           form-data-property="item"
                                           service-data="oServiceData"
                                           activiti-form="activitiForm"
-                                          ng-required="item.required"
+                                          ng-required="{{item.required}}"
                                           form-data="data.formData"
                                           ng-disabled="!isFieldWritable(item.writable)"
                                           name="item.id"></dropdown-organ>
@@ -418,7 +420,7 @@
                                      name="{{item.id + rowIndex}}"
                                      ng-class="{'table-field-invalid': form.$submitted && form[tableName][item.id + rowIndex].$invalid || tableIsInvalid && form[tableName][item.id + rowIndex].$invalid && invalidTableNum === tableName}"
                                      service-data="oServiceData"
-                                     ng-required="item.required"
+                                     ng-required="{{item.required}}"
                                      autocomplete-data="item.autocompleteData"
                                      autocomplete-name="item.autocompleteName"
                                      form-data="data.formData"
@@ -454,9 +456,9 @@
                           <span ng-message="dateelapsed">З/до дати з/після сьогоднішньої, має бути більше/менше ніж х-днів,
                             х-місяців, х-років.
                           </span>
-			              <span ng-message="string">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
-			              <span ng-message="long">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
-			              <span ng-message="double">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="string">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="long">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
+                          <span ng-message="double">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <span ng-message="numberbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
                           <div ng-message="numberfractionalbetween">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</div>
                           <span ng-message="numbersaccounts">{{ form[tableName][item.id + rowIndex].lastErrorMessage }}</span>
@@ -751,7 +753,7 @@
                     <text-angular ta-toolbar="[ ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'fontColor'],
                                                 ['bold', 'italics', 'underline', 'ul', 'ol', 'insertLink'],
                                                 ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent', 'clear']]"
-                                  ng-model="data.formData.params[property.id].value"
+                                  ng-model="data.formData.params[property.id].valueVisible"
                                   name="{{property.id}}"
                                   ng-required="isFieldRequired(property)"
                                   ng-class="getBpAndFieldID(property)">

@@ -30,7 +30,7 @@
   </div>
 
   <div class="row" ng-if="!mainSpinner">
-    <div class="container" style="padding-left: 0; padding-right: 0;" ng-if="mainSearchView">
+    <div class="container" style="padding-left: 0; padding-right: 0;" ng-if="mainSearchView || catalog.aNode">
       <div class="col-md-12">
         <ul class="nav nav-tabs navi-citizens-business search-results">
           <li>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="container" style="padding-left: 0; padding-right: 0;" ng-if="!mainSearchView">
+    <div class="container" style="padding-left: 0; padding-right: 0;" ng-if="!mainSearchView && !catalog.aNode">
       <div class="col-md-12">
         <ul class="nav nav-tabs navi-citizens-business">
           <li>
@@ -59,7 +59,7 @@
     </div>
 
     <div class="row subcategory">
-      <div ui-view="contentIn" ng-if="!mainSearchView">
+      <div ui-view="contentIn" ng-if="!mainSearchView && !catalog.aNode">
 
         <div class="row" ng-if="!spinner && !isOldStyleView">
           <div class="container igov-container" style="margin-bottom: 40px; padding-left: 0; padding-right: 0" >
@@ -130,7 +130,7 @@
         </div>
       </div>
 
-      <div class="row" ng-if="mainSearchView && !resultsAreLoading">
+      <div class="row" ng-if="mainSearchView && !resultsAreLoading || catalog.aNode">
         <div class="container igov-container" style="margin-top: 20px">
           <div class="col-sm-12 catalog-with-search-result">
             <div ng-repeat="category in catalog" ng-if="!catalog.aService">

@@ -651,9 +651,9 @@
         * @param attachmentName - для старого сервиса передаеться sDescription, для нового - name;
         * @param {boolean} isNewAttachment - если true используеться новый сервис checkProcessAttach, иначе check_attachment_sign
         */
-        $scope.checkAttachmentSign = function (nID_Task, nID_Attach, attachmentName, isNewAttach) {
+        $scope.checkAttachmentSign = function (key, storage, attachmentName, isNewAttach) {
           $scope.checkSignState.inProcess = true;
-          tasks.checkAttachmentSign(nID_Task, nID_Attach, isNewAttach).then(function (signInfo) {
+          tasks.checkAttachmentSign(key, storage, isNewAttach).then(function (signInfo) {
             if (signInfo.customer) {
               $scope.checkSignState.show = !$scope.checkSignState.show;
               $scope.checkSignState.signInfo = signInfo;
@@ -1440,7 +1440,7 @@
           }
         };
         $scope.rowLengthCheckLimit = function (table) {
-          if(table.aRow) return table.aRow.length >= table.nRowsLimit
+          return TableService.rowLengthCheckLimit(table);
         };
 
         $scope.isFieldWritable = function (field) {
@@ -1577,6 +1577,18 @@
             }
           }
         };
+
+        $scope.takeInformFromJSON = function(item, type) {
+          var parsed = item.oValue ? JSON.parse(item.oValue) : JSON.parse(item.value);
+          switch (type) {
+            case ('key'):
+              return parsed.sKey;
+            case ('storage'):
+              return parsed.sID_StorageType;
+            case ('name'):
+              return parsed.sFileNameAndExt;
+            }
+          };
 
         // блокировка кнопок выбора файлов на время выполнения процесса загрузки ранее выбранного файла
         $rootScope.isFileProcessUploading = {

@@ -81,6 +81,7 @@ angular.module('app').directive('fileField', function (ErrorsFactory) {
               console.log("Start uploading " + aFilteredFiles.length + " file(s)");
               if(!oFile) {setFileInTable()}
               oFile.setFiles(aFilteredFiles);
+              scope.uploadedFiles[oFileField.id] = aFilteredFiles;
               if(oFileField.isNew) {
                 oFile.upload(scope.oServiceData, oFileField.id);
               } else {

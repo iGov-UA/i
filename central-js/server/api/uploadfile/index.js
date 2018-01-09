@@ -4,5 +4,6 @@ var express = require('express')
 
 router.post('/', uploadfileController.uploadProxy);
 router.post('/uploadFileHTML', uploadfileController.uploadFileHTML);
+router.post('/setAttachment', uploadfileController.setAttachment);
 
 module.exports = router;

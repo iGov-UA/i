@@ -48,3 +48,58 @@ module.exports.uploadFileHTML = function (req, res) {
   }, callback);
 
 };
+
+exports.setAttachment = function (req, res) {
+  var query = {
+    sFileNameAndExt: req.body.sFileNameAndExt,
+    sID_Field: req.body.nID_Attach
+  };
+
+  if (req.body.nID_Process) {
+    query['nID_Process'] = req.body.nID_Process;
+  }
+
+  var options = {
+    path: 'object/file/setProcessAttachText',
+    query: query,
+    headers: {
+      'Content-Type': getContentTypeByFileName(req.body.sFileNameAndExt, 'text/html') + ';charset=utf-8'
+    }
+  };
+
+  activiti.post(options, function (error, statusCode, result) {
+    error ? res.send(error) : res.status(statusCode).json(result);
+  }, req.body.sContent, false);
+
+};
+
+function getContentTypeByFileName(sFileNameAndExt, defaultType) {
+  var ext = sFileNameAndExt.split('.').pop().toLowerCase();
+  switch (ext){
+    case "pdf": return 'application/pdf';
+    case "html": return 'text/html';
+    case "bmp": return 'image/bmp';
+    case "gif": return 'image/gif';
+    case "jpeg": return 'image/jpeg';
+    case "jpg": return 'image/jpeg';
+    case "png": return 'image/png';
+    case "tif": return 'image/tiff';
+    case "doc": return 'application/msword';
+    case "docx": return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    case "odt": return 'application/vnd.oasis.opendocument.text';
+    case "rtf": return 'application/rtf';
+    case "xls": return 'application/excel';
+    case "xlsx": return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    case "xlsm": return 'application/vnd.ms-excel.sheet.macroEnabled.12';
+    case "xml": return 'text/xml';
+    case "ods": return 'application/vnd.oasis.opendocument.spreadsheet';
+    case "sxc": return 'application/vnd.sun.xml.calc';
+    case "wks": return 'application/vnd.ms-works';
+    case "csv": return 'text/csv';
+    case "zip": return 'application/zip';
+    case "rar": return 'application/x-rar-compressed';
+    case "7z": return 'application/x-7z-compressed';
+    case "p7s": return 'application/x-pkcs7-signature';
+    default: return defaultType ? defaultType : 'application/octet-stream';
+  }
+}

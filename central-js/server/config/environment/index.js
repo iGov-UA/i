@@ -159,12 +159,15 @@ var all = {
 
   bTest: (processProps.bTest === "TRUE"),
 
+  bIncludeTimeStampInEDS: (processProps.bIncludeTimeStampInEDS === 'TRUE'),
+
   debug: (processProps.bDebug_Application === "TRUE"),
 
   nID_Server_Helpdesk: processProps.nID_Server_Helpdesk,
 
 
   server: {
+    nServerRegion: processProps.nID_Server_Helpdesk ? processProps.nID_Server_Helpdesk : process.env.nID_Server_Helpdesk,
     //sServerRegion: processProps.BackProxy_Central ? processProps.BackProxy_Central.sURL_BackProxy_Central : process.env.sServerRegion,
     sServerRegion: sURLBackProxyCentralParts ? (sURLBackProxyCentralParts.protocol + '://' + sURLBackProxyCentralParts.host) : process.env.sServerRegion,
     //sServerRegion: processProps.sServerRegion || process.env.sServerRegion,

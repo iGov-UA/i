@@ -309,7 +309,7 @@ exports.getAttachmentContent = function (req, res) {
 exports.getAttachmentFile = function (req, res) {
   var qs = {};
 
-  if (req.params.typeOrAttachID === 'Mongo') {
+  if (['Mongo', 'Redis'].indexOf(req.params.typeOrAttachID) !== -1) {
     qs = {
       'sKey': req.params.keyOrProcessID,
       'sID_StorageType': req.params.typeOrAttachID
@@ -859,5 +859,18 @@ exports.checkAttachmentSignNew = function (req, res) {
     }
 
     res.status(200).send(body);
+  });
+};
+
+exports.cancelTask = function (req, res) {
+  var options = {
+    path: 'action/task/cancelTask',
+    query: req.query,
+  };
+
+  activiti.get(options, function (error, status, result) {
+    if (!error) {
+      res.status(status).send(result);
+    }
   });
 };

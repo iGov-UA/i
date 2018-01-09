@@ -49,6 +49,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.igov.io.GeneralConfig;
 import org.igov.model.flow.FlowSlot;
@@ -176,12 +178,16 @@ public class ActionFlowController {
             @ApiParam(value = "число рабочих дней пропуска от даты начала выборки (если не задана - от текущего), с которой начинать отображать расписание", required = false) @RequestParam(value = "nDiffDays", required = false, defaultValue = "0") int nDiffDays,
             @ApiParam(value = "число смещения даты начала выборки с которой начинать отбирать расписание", required = false) @RequestParam(value = "nDiffDaysForStartDate", required = false, defaultValue = "0") int nDiffDaysForStartDate,
             @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
-            @ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots
+            @ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots,
+            HttpServletRequest oRequest
     ) throws Exception {
         //nDiffDays_visitDate1
 
         LOG.info("getFlowSlots started...");
-
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            return JsonRestUtils.toJsonResponse(new Days());
+        }
+        
         /*DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(nDiffDays);//2
         DateTime oDateEnd = oDateStart.plusDays(nDays);
@@ -1158,9 +1164,17 @@ public class ActionFlowController {
     public @ResponseBody
     String getSlots(
             @ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
-            @ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays
+            @ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays,
+            HttpServletRequest oRequest
     ) throws Exception {
+        //nDiffDays_visitDate1
+        LOG.info("getSlots started...");
         JSONObject oJSONObjectReturn = new JSONObject();
+        
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            return oJSONObjectReturn.toString();
+        }
+        
         DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
         
@@ -1168,8 +1182,8 @@ public class ActionFlowController {
         
         JSONArray oaJSONArray = new JSONArray();
         if(generalConfig.isQueueManagementSystem()){
-            //oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
-            oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
+            oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
+            //oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
         
@@ -1235,10 +1249,16 @@ public class ActionFlowController {
             @ApiParam(value = "Имя клиента", required = true) @RequestParam(value = "sSubjectName") String sSubjectName,
             @ApiParam(value = "Отчество клиента", required = true) @RequestParam(value = "sSubjectSurname") String sSubjectSurname,
             @ApiParam(value = "Последние 4 цифры паспорта", required = true) @RequestParam(value = "sSubjectPassport") String sSubjectPassport,
-            @ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone
+            @ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone,
+            HttpServletRequest oRequest
     ) throws Exception {
         JSONObject result;
 
+        LOG.info("setSlotHold started...");
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            JSONObject oJSONObjectReturn = new JSONObject();
+            return oJSONObjectReturn.toString();
+        }
         //this date parsing and formatting fixes problem where we need to zero pad day of month or hour
         //basically it changes "2016-10-6 9:30:0" into "2016-10-06 09:30:00"
         DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd HH:mm:ss");
@@ -1298,8 +1318,16 @@ public class ActionFlowController {
     @RequestMapping(value = "/DMS/setSlot", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String setSlot(
-            @ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold
+            @ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold,
+            HttpServletRequest oRequest
     ) throws Exception {
+        
+        LOG.info("setSlot started...");
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            JSONObject oJSONObjectReturn = new JSONObject();
+            return oJSONObjectReturn.toString();
+        }
+        
         JSONObject result;
 
         result = cherg.confirmReserve(nID_SlotHold);
@@ -1426,8 +1454,17 @@ public class ActionFlowController {
     String getSlots(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
-            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId
+            @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
+    HttpServletRequest oRequest
     ) throws Exception {
+        JSONObject result;
+
+        LOG.info("Qlogic/getSlots started...");
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            JSONObject oJSONObjectReturn = new JSONObject();
+            return oJSONObjectReturn.toString();
+        }
+        
         JSONObject oJSONObjectReturn = new JSONObject();
 
         JSONArray oaSlot = null;
@@ -1505,8 +1542,16 @@ public class ActionFlowController {
             @ApiParam(value = "Контактный номер посетителя", required = true) @RequestParam(value = "sPhone") String sPhone,
             @ApiParam(value = "Контактный электронный ящик посетителя", required = true) @RequestParam(value = "sEmail") String sEmail,
             @ApiParam(value = "ФИО посетителя", required = true) @RequestParam(value = "sName") String sName,
-            @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation
+            @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation,
+            HttpServletRequest oRequest
     ) throws Exception {
+        JSONObject result;
+
+        LOG.info("Qlogic/setSlot started...");
+        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+            JSONObject oJSONObjectReturn = new JSONObject();
+            return oJSONObjectReturn.toString();
+        }
         String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
 
         JSONParser oJSONParser = new JSONParser();

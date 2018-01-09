@@ -28,6 +28,12 @@ angular.module('app').controller('IndexController', function ($scope, $rootScope
     $scope.navBarStatusVisible = false;
   });
 
+  UserService.isLoggedIn().then(function (result) {
+    UserService.account().then(function (res) {
+    });
+  }, function () {
+  });
+
   function capitalize(string) {
     return string !== null && string !== undefined ? string.charAt(0).toUpperCase() + string.slice(1).toLowerCase() : '';
   }
