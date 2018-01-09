@@ -49,7 +49,7 @@ public class ActionFlowControllerScenario {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    //@Ignore
+    @Ignore
     @Test
     public void shouldSuccessfullyGetFlowSlotsAndSaveTicket() throws Exception {
 
