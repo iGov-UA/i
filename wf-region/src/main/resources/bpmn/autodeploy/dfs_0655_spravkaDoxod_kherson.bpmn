@@ -51,7 +51,7 @@
         <activiti:formProperty id="sPhoneOrganMain" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty>	
         <activiti:formProperty id="sPhoto" name="телефон; ;bVisible=false" type="string" default=" "></activiti:formProperty> 
 
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Заява громадянина з ЕЦП; ;bPrintFormFileAsPDF=true,bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/dfs/dfs_0655_spravkaDoxod_print.html"></activiti:formProperty>
 
         <activiti:formProperty id="markersStart" name="Маркер стартТаски" type="markers" default="${markerService.loadFromFile('dfs/dfs_0655_spravkaDoxod_kherson_start.json')}"></activiti:formProperty>
@@ -95,7 +95,7 @@
 
         <activiti:formProperty id="PrintForm_1" name="Заявление PDF;File PDF;sPrintFormFileAsPDF=pattern/print/dfs/dfs_0655_spravkaDoxod_print.html,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankId_scan_passport" name="Копія паспорта громадянина України заявника; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Заява громадянина з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
 
 
         <activiti:formProperty id="sNameOrgan673" name="назва органу органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -222,7 +222,7 @@
           <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
         </activiti:field>
         <activiti:field name="saAttachmentsForSend">
-          <activiti:expression><![CDATA[${nFileResult}, ${form_signed}]]></activiti:expression>
+          <activiti:expression><![CDATA[${nFileResult}, ${form_signed_1}]]></activiti:expression>
         </activiti:field>
         <activiti:field name="to">
           <activiti:expression><![CDATA[${email}]]></activiti:expression>

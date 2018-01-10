@@ -9,7 +9,7 @@
           <activiti:value id="sSamar" name="Самарський"></activiti:value>
           <activiti:value id="sSobor" name="Соборний"></activiti:value>
           <activiti:value id="sCentr" name="Центральний"></activiti:value>
-          <activiti:value id="sNovok" name="Новокайдацький"></activiti:value>
+          <activiti:value id="sNovok" name="Новокодацький"></activiti:value>
           <activiti:value id="sChech" name="Чечелівський"></activiti:value>
           <activiti:value id="sShevch" name="Шевченковський"></activiti:value>
         </activiti:formProperty>
@@ -103,7 +103,7 @@
           <activiti:value id="sEnamLustKur" name="Доставка листа 43.56 гривень"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sLabeRegistr2" name=" ; ;labelType=warning" type="label" default="УВАГА! Для АНД, Індустіального, Соборного і Центрального району, довідки видаються тільки, якщо інформація про вас вже внесена в реєстр фізичних осіб (тобто, якщо ви вже отримували довідку у відділах реєстрації фіз. осіб).&lt;br&gt; Якщо в реєстрі не має інформації про зареєстрованих за вашою адресою осіб, вам буде відмовлено!"></activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name=" ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all_1" name=" ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_MarkerNoSOJ_ECP.json')}"></activiti:formProperty>
         <activiti:formProperty id="ScriptLastName" name="Прізвище довірителя; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="ScriptFirstName" name="Ім'я довірителя; ;bVisible=false" type="string"></activiti:formProperty>
@@ -145,14 +145,14 @@ switch (asDistrict){
     phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (056) 791-10-64";
   break;
   case 'sAND':
-    mail = "f3andindus@gmail.com";
+    mail = "sos_and@ukr.net";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     adresPost = "м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
     phoneOrgan = "&lt;b&gt;Телефон для довідок:&lt;/b&gt; (068) 99 65 939";
   break;
   case 'sIndus':
-    mail = "f3andindus@gmail.com";
+    mail = "sos_and@ukr.net";
     adres = "&lt;b&gt;Адреса:&lt;/b&gt; м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     adresPost = "м. Дніпро, просп. Слобожанський, 29, каб. 305 (адміністративна будівля біля ТЦ «Наша Правда»)";
     workTime = "&lt;b&gt;Графік роботи:&lt;/b&gt; понеділок - четвер з 9:00 до 19:00, пятниця з 9:00 до 17:45";
@@ -369,7 +369,7 @@ ${sNameOrgan}.<br />
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
           <activiti:value id="sEnamnarochno" name="Особисто"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all_1" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markerDash1" name="markerLabels" type="markers" default="${markerService.loadFromFile('form3/forma_3Dn_Dash1.json')}"></activiti:formProperty>
         <activiti:formProperty id="asDecide" name="Чи можливо надати заявнику довідку?" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Можливо! Надіслати лист запрошення або лист для оплати доставки поштою"></activiti:value>
@@ -633,7 +633,7 @@ ${sNameOrgan}<br>
         <activiti:formProperty id="PeopleTable" name="Перелік зареєстрованих осіб; ;bNew=true" type="table" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_ZarPasports" name="Паспорти зареєстрованих осіб; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="nFile_NarSvid" name="Свідоцтва про народження; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all_1" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_V" name="Спосіб отримання документа" type="markers" default="{&quot;attributes&quot;:{&quot;Line_V&quot;:{&quot;aElement_ID&quot;:[&quot;asVidpovid&quot;],&quot;sValue&quot;:&quot;Спосіб отримання документа&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="asVidpovid" name="Як заявник хоче отримати відповідь" type="enum" writable="false">
           <activiti:value id="sEnamPost" name="Поштою"></activiti:value>
@@ -877,7 +877,7 @@ ${sNameOrgan}<br>
           <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="form_signed_all" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_all_1" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asResult" name="Результат обробки" type="enum" required="true">
           <activiti:value id="sSend" name="Довідку передано Укрпошті для відправлення"></activiti:value>
         </activiti:formProperty>

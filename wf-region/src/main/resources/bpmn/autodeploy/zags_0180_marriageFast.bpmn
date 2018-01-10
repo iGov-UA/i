@@ -3,6 +3,7 @@
   <process id="zags_0180_marriageFast" name="Заява про державну реєстрацію шлюбу за одну добу" isExecutable="true">
     <startEvent id="startevent1" name="Start">
       <extensionElements>
+        <activiti:formProperty id="sText_Dnepr" name=" ; ;labelType=warning" type="label" default="Послуга діє на всій теріторії України, але для проходження церемонії Вам потрібно бути присутніми у визначений час на теріторії організатора шлюбної церемонії!"></activiti:formProperty>
         <activiti:formProperty id="sText16" name=" ; ;labelType=info" type="label" default="Також Ви можете скористатися послугою &lt;a href=&quot;https://igov.org.ua/service/703/general&quot; target=&quot;_blank&quot;&gt;заява про реєстрацію шлюбу за стандартною процедурою (30 днів)&lt;/a&gt;"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" default="+380"></activiti:formProperty>
         <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail Ви отримаєте результат обробки Вашого звернення" type="string"></activiti:formProperty>
@@ -68,13 +69,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank1" name="Військове звання (категорія); Стосовно призовників зазначається - «призовник»" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID1" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="sEnum1" name="у шлюбі не перебував"></activiti:value>
           <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
           <activiti:value id="sEnum2" name="удівець"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText_nonUkr1" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теритію України з відзначкою про перетин кордону (паспорт).&lt;br&gt;Додайте оригінал та переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача.&lt;br&gt;Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Додайте копію (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше;в архіві, або у форматі PDF одним файлом;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText_nonUkr1" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на територію України з відзначкою про перетин кордону (паспорт).&lt;br&gt;Додайте оригінал та переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача.&lt;br&gt;Також необхідний документ про розірвання попереднього шлюбу, перекладений на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc1" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPassport1" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string" required="true"></activiti:formProperty>
@@ -101,13 +103,14 @@
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank2" name="Військове звання (категорія); Стосовно призовників зазначається - «призовник»" type="string" required="true"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID2" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан" type="enum" required="true">
           <activiti:value id="sEnum1" name="у шлюбі не перебувала"></activiti:value>
           <activiti:value id="sEnum3" name="шлюб розірвано"></activiti:value>
           <activiti:value id="sEnum2" name="удова"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText_nonUkr2" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на теритію України з відзначкою про перетин кордону (паспорт). Також необхідний переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача. Також необхідні: довідка про те, що Ви не перебували у шлюбі (або документ про розірвання попереднього шлюбу), перекладені на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))" required="true"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Додайте копію (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше;в архіві, або у форматі PDF одним файлом;bNew=true" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sText_nonUkr2" name="Попередження; ;labelType=warning" type="label" default="Щоб замовити послугу необхідна наявність документу, за яким Ви потрапили на територію України з відзначкою про перетин кордону (паспорт).&lt;br&gt;Додайте оригінал та переклад цього документу, що зроблений кваліфікованим перекладачем на території України, та з нотаріально засвідченим підписом перекладача.&lt;br&gt;Також необхідний документ про розірвання попереднього шлюбу, перекладений на території України та з проставленим апостилем (крім громадян країн СНД та країн-підписантів Гаазької конвенції ))" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMarriageDoc2" name="Документ, що підтверджує припинення попереднього шлюбу; назва документу, номер та дата складання актового запису про розірвання шлюбу (смерть), назва відділу реєстрації, що проводив відповідну реєстрацію" type="textArea" required="true"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string" required="true"></activiti:formProperty>
@@ -203,6 +206,7 @@ ${sMail_Signature}<br>
           <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -231,6 +235,8 @@ ${sMail_Signature}<br>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK1" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary1" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank1" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID1" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriage1" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="sEnum1" name="у шлюбі не перебуває"></activiti:value>
           <activiti:value id="sEnum2" name="Удівець"></activiti:value>
@@ -260,6 +266,8 @@ ${sMail_Signature}<br>
         </activiti:formProperty>
         <activiti:formProperty id="sNameRVK2" name="Назва та адреса РВК де перебуваєте на обліку; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sPlaceMilitary2" name="Назва міста та номер поштової скриньки військової частини; ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMilitaryRank2" name="Військове звання (категорія); ;writable=false" type="string"></activiti:formProperty>
+		<activiti:formProperty id="sMilitaryID2" name="Серія та номер військового квитка (тимчасового посвідчення) або посвідчення про приписку; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMarriage2" name="Сімейний стан" type="enum" writable="false">
           <activiti:value id="sEnum1" name="у шлюбі не перебуває"></activiti:value>
           <activiti:value id="sEnum2" name="Удова"></activiti:value>
@@ -295,10 +303,8 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -345,6 +351,7 @@ ${sMail_Signature}<br>
           <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -380,16 +387,14 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="PrintForm_3" name="Заява на реєстрацію шлюбу;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_2.html,sFileName=Zajava_na_reestraciu" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="Акт прийому-передачі наданих послуг;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_3.html,sFileName=priem_peredacha" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_5" name="Заява про платні послуги РАЦС;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_4.html,sFileName=dogovir_platny_poslugi_RACS" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/zags_0180_marriageFast_3.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Акт прийому-передачі наданих послуг" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/zags_0180_marriageFast_4.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про платні послуги РАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      </extensionElements>
+    </extensionElements>
     </userTask>
     <userTask id="usertask2" name="Надання послуги" activiti:candidateGroups="organizer_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
@@ -399,6 +404,7 @@ ${sMail_Signature}<br>
           <activiti:value id="sEnum2" name="Карткою через Інтернет"></activiti:value>
           <activiti:value id="sEnum3" name="Банківський платіж за реквізитами"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asCategoryPrivileges" name="Пільгова категорія" type="enum" writable="false">
           <activiti:value id="sEnum1" name="1 і 2 категорії постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
           <activiti:value id="sEnum2" name="3 категорія постраждалих внаслідок Чорнобильської катастрофи"></activiti:value>
@@ -444,16 +450,13 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="PrintForm_5" name="Заява про платні послуги РАЦС;File title;sPrintFormFileAsPDF=pattern/print/minust/zags_0180_marriageFast_4.html,sFileName=dogovir_platny_poslugi_RACS" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markers5" name=" fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_5_print.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers6" name="comment fields" type="markers" default="${markerService.loadFromFile('minust/zags_0180_marriageFast_6.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sBody_4" name="[pattern/print/minust/zags_0180_marriageFast_3.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Акт прийому-передачі наданих послуг" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_5" name="[pattern/print/minust/zags_0180_marriageFast_4.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява про платні послуги РАЦС" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_FeePay" name="Копія квитанції про сплату державного мита; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_DocPrivileges" name="Копія документа підтверджуючого льготну категорію; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc1" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport1" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr1" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="Scan_MarriageDoc_nonUkr2" name="Копія (разом з перекладом) документу про розірвання попереднього шлюбу, або про те, що не перебували у шлюбі раніше; ;bNew=true" type="file" writable="false"></activiti:formProperty>
-      </extensionElements>
+        <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>      </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
     <serviceTask id="servicetask6" name="Повідомлення про відмову в наданні послуги" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -644,6 +647,10 @@ var time1 = ''
 var time2 = ''
 var yyyyBirth1 = ''
 var yyyyBirth2 = ''
+var mmmBirth1 = ''
+var mmmBirth2 = ''
+var dddBirth1 = ''
+var dddBirth2 = ''
 var eest = ''
 
     timeMar=execution.getVariable('sDateCeremony').toString()
@@ -666,6 +673,8 @@ var eest = ''
     else{yyyyBirth2=time2.substr(24,4)}
     
     mmm=timeMar.substr(4,3)
+    mmmBirth1=time1.substr(4,3)
+    mmmBirth2=time2.substr(4,3)
     
 if (mmm == 'Jan'){ mmm='01'}
 if (mmm == 'Feb'){ mmm='02'}
@@ -680,12 +689,43 @@ if (mmm == 'Oct'){ mmm='10'}
 if (mmm == 'Nov'){ mmm='11'}
 if (mmm == 'Dec'){ mmm='12'}
 
+if (mmmBirth1 == 'Jan'){ mmmBirth1=1}
+if (mmmBirth1 == 'Feb'){ mmmBirth1=2}
+if (mmmBirth1 == 'Mar'){ mmmBirth1=3}
+if (mmmBirth1 == 'Apr'){ mmmBirth1=4}
+if (mmmBirth1 == 'May'){ mmmBirth1=5}
+if (mmmBirth1 == 'Jun'){ mmmBirth1=6}
+if (mmmBirth1 == 'Jul'){ mmmBirth1=7}
+if (mmmBirth1 == 'Aug'){ mmmBirth1=8}
+if (mmmBirth1 == 'Sep'){ mmmBirth1=9}
+if (mmmBirth1 == 'Oct'){ mmmBirth1=10}
+if (mmmBirth1 == 'Nov'){ mmmBirth1=11}
+if (mmmBirth1 == 'Dec'){ mmmBirth1=12}
+
+if (mmmBirth2 == 'Jan'){ mmmBirth2=1}
+if (mmmBirth2 == 'Feb'){ mmmBirth2=2}
+if (mmmBirth2 == 'Mar'){ mmmBirth2=3}
+if (mmmBirth2 == 'Apr'){ mmmBirth2=4}
+if (mmmBirth2 == 'May'){ mmmBirth2=5}
+if (mmmBirth2 == 'Jun'){ mmmBirth2=6}
+if (mmmBirth2 == 'Jul'){ mmmBirth2=7}
+if (mmmBirth2 == 'Aug'){ mmmBirth2=8}
+if (mmmBirth2 == 'Sep'){ mmmBirth2=9}
+if (mmmBirth2 == 'Oct'){ mmmBirth2=10}
+if (mmmBirth2 == 'Nov'){ mmmBirth2=11}
+if (mmmBirth2 == 'Dec'){ mmmBirth2=12}
+
 	ddd=timeMar.substr(8,2)
+	dddBirth1=+time1.substr(8,2)
+	dddBirth2=+time2.substr(8,2)
 
 timeMar = ddd+'.'+mmm+'.'+yyyy
 
 var age1 = Math.round( +yyyy - +yyyyBirth1 )
 var age2 = Math.round( +yyyy - +yyyyBirth2 )
+
+if ((+mmm &lt; +mmmBirth1)||((+mmm == +mmmBirth1) &amp;&amp; (+ddd &lt; +dddBirth1))) age1--;
+if ((+mmm &lt; +mmmBirth2)||((+mmm == +mmmBirth2) &amp;&amp; (+ddd &lt; +dddBirth2))) age2--;
 
 execution.setVariable('mail_date', timeMar)
 execution.setVariable('sAge1', age1.toString())

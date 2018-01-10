@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dms_0177_zagranChild_Qlogic" name="Паспорт громадянина для виїзду за кордон для дитини" isExecutable="true">
+    <documentation>Смоктій К.В. QLogic Последние правки: 07.01.2018</documentation>
     <startEvent id="startevent1" name="Start" activiti:initiator="initiator">
       <extensionElements>
         <activiti:formProperty id="sWarning0" name=" ; ;labelType=info" type="label" default="Для оформлення закордонного паспорту для дорослого існує окрема &lt;a href=&quot;https://igov.org.ua/service/176/general&quot;&gt;послуга&lt;/a&gt;"></activiti:formProperty>
@@ -15,12 +16,18 @@
         <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="markersLine_2" name="Кынець-блок для кого" type="markers" default="{&quot;attributes&quot;:{&quot;Line_2&quot;:{&quot;aElement_ID&quot;:[&quot;sID_Public_SubjectOrganJoin&quot;],&quot;sValue&quot;:&quot; &quot;}}}"></activiti:formProperty>
-        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть ЦНАП міста, який Вам зручно відвідати" type="select" default="0" required="true"></activiti:formProperty>
+        <activiti:formProperty id="asEnumDistrictMariupol" name="Оберіть район, де зареєстровано Ваше місце проживання" type="enum">
+          <activiti:value id="sEnumCentral" name="Центральний район"></activiti:value>
+          <activiti:value id="sEnumKalmius" name="Кальміуський район"></activiti:value>
+          <activiti:value id="sEnumLivoberezniy" name="Лівобережний район"></activiti:value>
+          <activiti:value id="sEnumPrimorsky" name="Приморський район"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sInfoFAQ" name=" ; ;labelType=info" type="label" default="Відповіді на найчастіші питання по закордонних паспортах (в т.ч. про наявність черги) Ви можете знайти за &lt;a href=&quot;https://docs.google.com/document/d/12tTbPz081dMJPxPicyXEe8xMMQdYNUet4Qx04VNCnys/edit?usp=sharing&quot;&gt;посиланням&lt;/a&gt;"></activiti:formProperty>
 		<activiti:formProperty id="sID_Type_visitDay" name="Тип електронної черги; ;bVisible=false" type="string" default="Qlogic"></activiti:formProperty>
         <activiti:formProperty id="sOrganizatonGuid_visitDay" name="ID організації за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sServiceCenterId_visitDay" name="ID сервіс-центра за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sServiceId_visitDay" name="ID сервіса за довідником Qlogic; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sServiceId_visitDay" name="ID сервіса за довідником Qlogic; ;bVisible=false" type="string" default="1"></activiti:formProperty>
         <activiti:formProperty id="visitDay" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
         <activiti:formProperty id="sAddress" name="Адреса ДМС; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
@@ -30,6 +37,7 @@
         <activiti:formProperty id="sTicketNumber" name="Номер талону; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEndDay" name="Запуск таймера юзертаски; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="flow data" type="markers" default="${markerService.loadFromFile('dms/dmsZagran.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers3" name="hide fields" type="markers" default="${markerService.loadFromFile('dms/dms_Qlogic.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
@@ -167,7 +175,7 @@ ${sNameOrgan},<br>
       </extensionElements>
     </serviceTask>
     <sequenceFlow id="flow25" sourceRef="servicetask3" targetRef="usertask1"></sequenceFlow>
-    <userTask id="usertask1" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
+    <userTask id="usertask1" name="Заявка прийнята ДМС" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}_${asEnumDistrictMariupol}">
       <extensionElements>
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>

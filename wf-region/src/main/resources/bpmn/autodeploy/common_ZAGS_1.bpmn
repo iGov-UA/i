@@ -125,6 +125,12 @@
         <activiti:formProperty id="sPassport2" name="Документ, що посвідчує особу (паспорт або паспортний документ);назва, серія, номер, яким органом и коли виданий" type="string"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); декілька сторінок об'єднайте у один .pdf файл або .zip архів;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="sNewLastName2" name="Після реєстрації шлюбу бажає мати прізвище" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="asMedicalInspectione" name="Бажаєте отримати направлення на медичне обстеження" type="enum" required="true">
+          <activiti:value id="sEnumYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
+        
         <activiti:formProperty id="bReferent" name="Referent ; ;bVisible=false" type="string" default="false"></activiti:formProperty>
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера ; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file"></activiti:formProperty>
@@ -132,8 +138,10 @@
         <activiti:formProperty id="markers2" name="setters" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_2.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers3" name="required fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_3.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers4" name="Referent fields" type="markers" default="${markerService.loadFromFile('minust/common_zags_1_4.json')}"></activiti:formProperty>
-        <activiti:formProperty id="sDateAppeal" name="Дата подачі ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sWeddingDay" name="Дата церемонии ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDateAppeal" name="Дата подачі; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWeddingDay" name="Дата церемонии; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMedicalInspectione" name="Медичне обстеження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageType" name="Тип церемонії; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Електронна черга" activiti:delegateExpression="#{procedQueueTickets}"></serviceTask>
@@ -237,6 +245,10 @@
           <activiti:value id="sEnum1" name="скорочений"></activiti:value>
           <activiti:value id="sEnum2" name="повний"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asMedicalInspectione" name="Видати направлення на медичне обстеження" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -261,6 +273,8 @@
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMedicalInspectione" name="Медичне обстеження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageType" name="Тип церемонії; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
@@ -363,6 +377,10 @@
           <activiti:value id="sEnum1" name="скорочений"></activiti:value>
           <activiti:value id="sEnum2" name="повний"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asMedicalInspectione" name="Видати направлення на медичне обстеження" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Зауваження відсутні.Повідомити заявника "></activiti:value>
@@ -394,6 +412,8 @@
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMedicalInspectione" name="Медичне обстеження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageType" name="Тип церемонії; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <endEvent id="endevent6" name="End"></endEvent>
@@ -667,6 +687,10 @@ ${sMail_Signature}<br>
           <activiti:value id="sEnum1" name="скорочений"></activiti:value>
           <activiti:value id="sEnum2" name="повний"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asMedicalInspectione" name="Видати направлення на медичне обстеження" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" writable="false">
           <activiti:value id="accept" name="Зауваження відсутні.Повідомити заявника "></activiti:value>
           <activiti:value id="accept2" name="Звернення потребує підписів.Повідомити заявника"></activiti:value>
@@ -694,6 +718,8 @@ ${sMail_Signature}<br>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMedicalInspectione" name="Медичне обстеження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageType" name="Тип церемонії; ;bVisible=false" type="string"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow42" name="${decide == 'accept2'}" sourceRef="exclusivegateway2" targetRef="usertask3_yellow">
@@ -982,6 +1008,10 @@ execution.setVariable('sCountPayment', src)</script>
           <activiti:value id="sEnum1" name="скорочений"></activiti:value>
           <activiti:value id="sEnum2" name="повний"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="asMedicalInspectione" name="Видати направлення на медичне обстеження" type="enum" writable="false">
+          <activiti:value id="sEnumYes" name="Так"></activiti:value>
+          <activiti:value id="sEnumNo" name="Ні"></activiti:value>
+        </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -999,6 +1029,8 @@ execution.setVariable('sCountPayment', src)</script>
         <activiti:formProperty id="Scan_MarriageDoc2" name="Копія документу, що підтверджує припинення попереднього шлюбу; ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="Scan_Passport2" name="Копія документу, що посвідчує особу (паспорт або паспортний документ); ;bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="ScancopyDoc" name="Копія документу, що підтверджує оплату мита або наявність пільг; ;bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sMedicalInspectione" name="Медичне обстеження; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMarriageType" name="Тип церемонії; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -1123,7 +1155,32 @@ var seconds='00'
 
 var timeVisit=day+'.'+month+'.'+year+' '+hour+':'+minutes
 
-execution.setVariable('sWeddingDay', timeVisit)</script>
+execution.setVariable('sWeddingDay', timeVisit)
+
+// assigning to variables for printform
+
+var marriageType = ' '
+var medicalInspectione = ' '
+
+if(execution.getVariable('asMarriageType') == 'sEnum1') {
+	marriageType = 'Просимо зареєструвати шлюб в неурочистій обстановці.'
+}
+
+if(execution.getVariable('asMarriageType') == 'sEnum2') {
+	marriageType = 'Просимо зареєструвати шлюб в урочистій обстановці.'
+}
+
+if(execution.getVariable('asMedicalInspectione') == 'sEnumYes') {
+	medicalInspectione = 'Направлення на медичне обстеження отримали.'
+}
+
+if(execution.getVariable('asMedicalInspectione') == 'sEnumNo') {
+	medicalInspectione = 'Від отримання направлення на медичне обстеження відмовились.'
+}
+
+execution.setVariable('sMarriageType', marriageType)
+execution.setVariable('sMedicalInspectione', medicalInspectione)
+</script>
     </scriptTask>
     <sequenceFlow id="flow78" sourceRef="scripttask3" targetRef="exclusivegateway4"></sequenceFlow>
   </process>

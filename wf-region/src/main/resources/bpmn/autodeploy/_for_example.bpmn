@@ -9,8 +9,9 @@
         <activiti:formProperty id="sDateFromDoc" name="Дата начала отпуска" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sDateByDoc" name="Дата окончания отпуска" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Адрес электронной почты" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="form_signed" name="Завление с ЭЦП" type="file" required="true"></activiti:formProperty>
-        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/example_print_01.html"></activiti:formProperty>
+        <activiti:formProperty id="form_signed_1" name="Завление с ЭЦП" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="PrintFormAutoSign_1" name="Шаблон для наложения ЭЦП; ;bVisible=false" type="string" default="pattern/print/testPrint3.html"></activiti:formProperty>
+        <activiti:formProperty id="sChild" name="Укажите имя ребенка" type="string" required="true"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <endEvent id="endevent1" name="End"></endEvent>
@@ -27,7 +28,8 @@
           <activiti:value id="no" name="В подписании заявления отказано"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="fDoc1" name="Договор с ЭЦП; ;sID_Field_Printform_ForECP=sBody_1, bNew=true" type="file"></activiti:formProperty>
-        <activiti:formProperty id="sBody_1" name="[pattern/print/_for_example_print.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_1" name="[pattern/print/testPrint3.html] ; ;bVisible=false" type="string" default="Договор" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sChild" name="Имя ребенка заявителя; ;writable=false" type="string"></activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -63,7 +65,7 @@
         <activiti:field name="subject">
           <activiti:expression><![CDATA[Отказ в подписании заявления]]></activiti:expression>
         </activiti:field>
-        <activiti:field name="text ">
+        <activiti:field name="text">
           <activiti:expression><![CDATA[Уважаемый коллега, Вам отказано в предоставлении отпуска.]]></activiti:expression>
         </activiti:field>
       </extensionElements>

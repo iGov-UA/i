@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html>
+<head lang="ua">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Документ створено у системі iDoc</title>
+
+
+    <!-- Общие стили  -->
+    <style type="text/css">
+        body article.PrintFormClaim {
+            font: 300 14pt/16pt "Times New Roman";
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
+
+        article.PrintFormClaim h1 {
+            text-align: center;
+            margin-top: 24px 0 6px 0;
+            font-size: 14pt;
+            font-weight: 600;
+        }
+
+        article.PrintFormClaim h2 {
+            font-weight: 600;
+        }
+
+        article.PrintFormClaim h2,
+        article.PrintFormClaim h3,
+        article.PrintFormClaim p {
+            text-indent: 50px; /* Отступ первой строки в пикселах */
+            margin: 12px 0 6px 0;
+        }
+
+            /* Без абзаца */
+            article.PrintFormClaim .not-indent p,
+            article.PrintFormClaim p.not-indent {
+                text-indent: 0;
+            }
+
+        article.PrintFormClaim h2 {
+            font-size: 14pt;
+            font-weight: 600;
+        }
+
+        article.PrintFormClaim h3 {
+            font-size: 14pt;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        article.PrintFormClaim div {
+            margin-top: 6pt;
+        }
+
+
+        /* Подчеркивание с отступами не подходит для  */
+        article.PrintFormClaim em {
+            padding: 0 15px;
+            font-style: normal;
+            border-bottom: 1px solid black;
+        }
+
+        article.PrintFormClaim ol,
+        article.PrintFormClaim ul {
+            list-style-type: none;
+            counter-reset: item 0;
+            padding: 0; /* Убираем поля */
+            margin: 6px 0 12px 0; /* Отступ слева */
+        }
+
+
+            /* настраиваем отступы маркеров */
+            article.PrintFormClaim ol li:before,
+            article.PrintFormClaim ul li:before {
+                margin-left: 50px;
+                display: inline-block;
+                text-align: left;
+            }
+
+            /* нумерация со скобкой */
+            article.PrintFormClaim ol li:before {
+                content: counter(item) ') '; /* Добавляем к числам скобку */
+                counter-increment: item; /* Задаём имя счетчика */
+                width: 33px;
+            }
+
+            /* маркер в виде дифиса */
+            article.PrintFormClaim ul li:before {
+                content: '- '; /* Добавляем к числам скобку */
+                width: 15px;
+            }
+
+        .smallText {
+            font-size: 12pt;
+            line-height: 1.1;
+        }
+    </style>
+
+    <!-- Стили таблиц -->
+    <style type="text/css">
+        /* Общее оформление таблицы */
+        article.PrintFormClaim table {
+            border-spacing: 0;
+            border: 1px solid black;
+            border-radius: 5px;
+            border-collapse: collapse; /* Отображать двойные линии как одинарные */
+        }
+
+        /* Настройка заголовков */
+        article.PrintFormClaim th {
+            text-align: center;
+        }
+
+        article.PrintFormClaim td,
+        article.PrintFormClaim th {
+            padding: 5px 5px;
+            vertical-align: central;
+            border-left: 1px solid black;
+            border-top: 1px solid black;
+        }
+
+            /* оставить только нижнюю границу */
+            article.PrintFormClaim td.bb,
+            article.PrintFormClaim .bb {
+                border: 0px solid black;
+                border-bottom: 1px solid black;
+            }
+
+            /* Убрать границы таблицы */
+            article.PrintFormClaim table.notb,
+            article.PrintFormClaim table.notb th,
+            article.PrintFormClaim table.notb td,
+            article.PrintFormClaim th.notb,
+            article.PrintFormClaim td.notb {
+                border: 0px solid black;
+            }
+    </style>
+
+
+    <!-- Выравнивание текста -->
+    <style type="text/css">
+        /* Мелкий шрифт */
+        article.PrintFormClaim table.small-text th,
+        article.PrintFormClaim table.small-text td,
+        article.PrintFormClaim tr.small-text > th,
+        article.PrintFormClaim tr.small-text > td,
+        article.PrintFormClaim tr > th.small-text,
+        article.PrintFormClaim tr > td.small-text,
+        article.PrintFormClaim .small-text {
+            font-size: 10pt;
+        }
+
+        /* Выравнимание текста по вертикали*/
+        article.PrintFormClaim table.va-c th,
+        article.PrintFormClaim table.va-c td,
+        article.PrintFormClaim tr.va-c > th,
+        article.PrintFormClaim tr.va-c > td,
+        article.PrintFormClaim tr > th.va-c,
+        article.PrintFormClaim tr > td.va-c,
+        article.PrintFormClaim .va-c {
+            vertical-align: central;
+        }
+
+        article.PrintFormClaim table.va-b th,
+        article.PrintFormClaim table.va-b td,
+        article.PrintFormClaim tr.va-b > th,
+        article.PrintFormClaim tr.va-b > td,
+        article.PrintFormClaim tr > th.va-b,
+        article.PrintFormClaim tr > td.va-b,
+        article.PrintFormClaim .va-b {
+            vertical-align: bottom;
+        }
+
+
+        article.PrintFormClaim table.va-t th,
+        article.PrintFormClaim table.va-t td,
+        article.PrintFormClaim tr.va-t > th,
+        article.PrintFormClaim tr.va-t > td,
+        article.PrintFormClaim tr > th.va-t,
+        article.PrintFormClaim tr > td.va-t,
+        article.PrintFormClaim .va-t {
+            vertical-align: top;
+        }
+
+
+        /* выравнивание текста по горизонтали */
+        article.PrintFormClaim table.ta-c th,
+        article.PrintFormClaim table.ta-c td,
+        article.PrintFormClaim tr.ta-c > th,
+        article.PrintFormClaim tr.ta-c > td,
+        article.PrintFormClaim tr > th.ta-c,
+        article.PrintFormClaim tr > td.ta-c,
+        article.PrintFormClaim .ta-c {
+            text-align: center;
+        }
+
+        article.PrintFormClaim table.ta-l th,
+        article.PrintFormClaim table.ta-l td,
+        article.PrintFormClaim tr.ta-l > th,
+        article.PrintFormClaim tr.ta-l > td,
+        article.PrintFormClaim tr > th.ta-l,
+        article.PrintFormClaim tr > td.ta-l,
+        article.PrintFormClaim .ta-l {
+            text-align: left;
+        }
+
+        article.PrintFormClaim table.ta-r th,
+        article.PrintFormClaim table.ta-r td,
+        article.PrintFormClaim tr.ta-r > th,
+        article.PrintFormClaim tr.ta-r > td,
+        article.PrintFormClaim tr > th.ta-r,
+        article.PrintFormClaim tr > td.ta-r,
+        article.PrintFormClaim .ta-r {
+            text-align: right;
+        }
+
+        article.PrintFormClaim table.ta-j th,
+        article.PrintFormClaim table.ta-j td,
+        article.PrintFormClaim tr.ta-j > th,
+        article.PrintFormClaim tr.ta-j > td,
+        article.PrintFormClaim tr > th.ta-j,
+        article.PrintFormClaim tr > td.ta-j,
+        article.PrintFormClaim .ta-j {
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+            word-wrap: break-word;
+        }
+
+
+
+        /* Форматирование текста*/
+        /* Косым */
+        article.PrintFormClaim table.i th,
+        article.PrintFormClaim table.i td,
+        article.PrintFormClaim tr.i > th,
+        article.PrintFormClaim tr.i > td,
+        article.PrintFormClaim tr > th.i,
+        article.PrintFormClaim tr > td.i,
+        article.PrintFormClaim .i {
+            font-style: italic;
+        }
+        /* Жирным */
+        article.PrintFormClaim table.b th,
+        article.PrintFormClaim table.b td,
+        article.PrintFormClaim tr.b > th,
+        article.PrintFormClaim tr.b > td,
+        article.PrintFormClaim tr > th.b,
+        article.PrintFormClaim tr > td.b,
+        article.PrintFormClaim .b {
+            font-weight: 600;
+        }
+        /* Подчеркнутым */
+        article.PrintFormClaim table.u th,
+        article.PrintFormClaim table.u td,
+        article.PrintFormClaim tr.u > th,
+        article.PrintFormClaim tr.u > td,
+        article.PrintFormClaim tr > th.u,
+        article.PrintFormClaim tr > td.u,
+        article.PrintFormClaim .u {
+            text-decoration: underline;
+        }
+
+
+        /* Первая колонка жирным */
+        article.PrintFormClaim table.col-1-b tr td:nth-child(1) {
+            font-weight: 600;
+        }
+
+        /* Вторая колонка жирным */
+        article.PrintFormClaim table.col-2-b tr td:nth-child(2) {
+            font-weight: 600;
+        }
+    </style>
+
+
+    <!-- Подготовленные блоки -->
+    <style type="text/css">
+        .whomBlock {
+            text-align: justify;
+        }
+
+        .whoBlock {
+            text-align: justify;
+        }
+
+        .claimBlock {
+            text-align: center;
+            margin-top: 6pt;
+            font-size: 14pt;
+            font-weight: 600;
+        }
+
+
+        /* организация колонок */
+        article.PrintFormClaim .layout {
+            overflow: hidden;
+        }
+
+            article.PrintFormClaim .layout div {
+                margin: 0 0 15px 0;
+                float: left;
+            }
+
+                article.PrintFormClaim .layout div.r-t {
+                    float: right;
+                }
+
+                article.PrintFormClaim .layout div.l-t {
+                    float: left;
+                }
+
+
+        .under_multifield { /* Мой кейс, многострочный текст*/
+            border-bottom: 1px solid black;
+            text-align: justify;
+            clear: both;
+        }
+
+            .under_multifield > b {
+                float: left;
+                padding: 0 10px 0 0;
+                font-weight: normal;
+                position: relative;
+                bottom: -3px;
+                background-color: white;
+            }
+
+            .under_multifield > u {
+                padding: 0 10px;
+                text-decoration: none;
+                border-bottom: 1px solid black;
+                position: relative;
+                bottom: -1px;
+                line-height: 125%;
+            }
+
+        .under_field { /* Блок с подписью */
+            margin: 0 0 15px 0;
+            border-bottom: 1px solid black;
+            position: relative;
+            display: inline-block;
+            clear: both;
+        }
+
+            .under_field > b { /*если не надо подчеркивать*/
+                padding: 0 10px 0 0;
+                font-weight: normal;
+                background: white;
+                display: inline-block;
+                position: relative;
+                left: 0;
+                font-style: normal;
+                bottom: -1px;
+                background-color: white;
+            }
+
+            /*если надо подчеркнуть*/
+            .under_field > u {
+                padding: 0 10px;
+                text-decoration: none;
+                background: white;
+                display: inline-block;
+                position: relative;
+                left: 0;
+            }
+
+            /*текст снизу*/
+            .under_field > span {
+                position: absolute;
+                left: 0;
+                right: 0;
+                text-align: center;
+                color: #606060;
+                bottom: -16px;
+                font-size: 11px;
+            }
+
+
+        /* линия отреза */
+        .lineCut {
+            border-bottom: 2px dashed #000;
+        }
+
+            .lineCut > span {
+                bottom: 10px;
+                background: white;
+                float: left;
+                position: relative;
+            }
+
+        /*чек-боксы*/
+        .check_box {
+            width: 22px;
+            height: 22px;
+            border: 1px solid #000;
+            margin: 0 10px 0 5px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .text_box {
+            height: 25px;
+            border: 1px solid #000;
+            margin-left: 5px;
+            display: inline-block;
+            line-height: 23px;
+        }
+
+
+        /* номер дела, ярлык */
+        .numBusines {
+            border: 1px solid #000000;
+            margin-top: 25px;
+            float: right;
+        }
+
+            .numBusines > div {
+                height: 20px;
+                margin-right: 5px;
+                margin-left: 5px;
+                border-bottom: 1px solid black;
+                position: relative;
+                display: block;
+            }
+
+                .numBusines > div > i {
+                    height: 21px;
+                    left: 0;
+                    padding-right: 5px;
+                    background: white;
+                    display: inline-block;
+                    position: relative;
+                    font-style: normal;
+                }
+
+                .numBusines > div > span {
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    text-align: center;
+                    color: #606060;
+                    bottom: -16px;
+                    font-size: 11px;
+                }
+    </style>
+
+    <!-- Ширина и отступы -->
+    <style type="text/css">
+        .m-b-5 {
+            margin-bottom: 5px;
+        }
+
+        .m-b-30 {
+            margin-bottom: 30px;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+
+        /* ширина в процентах */
+        .w1p {
+            width: 1%;
+        }
+
+        .w4p {
+            width: 4%;
+        }
+
+        .w60p {
+            width: 60%;
+        }
+
+        .w30p {
+            width: 30%;
+        }
+
+        .w33p {
+            width: 33%;
+        }
+
+        .w100p {
+            width: 100%;
+        }
+
+        /* ширина */
+        .w50 {
+            width: 50px;
+        }
+
+        .w100 {
+            width: 100px;
+        }
+
+        .w150 {
+            width: 150px;
+        }
+
+        .w200 {
+            width: 200px;
+        }
+
+        .w250 {
+            width: 250px;
+        }
+
+        .w300 {
+            width: 300px;
+        }
+
+        .w350 {
+            width: 350px;
+        }
+
+        .w450 {
+            width: 450px;
+        }
+
+        .w400 {
+            width: 400px;
+        }
+
+        .w500 {
+            width: 500px;
+        }
+
+        /* отступ  */
+
+        .pl-paragraph {
+            padding-left: 1cm;
+        }
+
+        .pl-25 {
+            padding-left: 25px;
+        }
+
+        .pl-50 {
+            padding-left: 50px;
+        }
+
+        .pl-75 {
+            padding-left: 75px;
+        }
+
+        .pl-100 {
+            padding-left: 100px;
+        }
+
+        .pl-150 {
+            padding-left: 150px;
+        }
+
+        .pl-200 {
+            padding-left: 200px;
+        }
+
+        .pl-250 {
+            padding-left: 250px;
+        }
+
+        .pl-300 {
+            padding-left: 300px;
+        }
+
+        .pl-paragraph {
+            padding-left: 1cm;
+        }
+
+        .pr-25 {
+            padding-right: 25px;
+        }
+
+        .pr-50 {
+            padding-right: 50px;
+        }
+
+        .pr-75 {
+            padding-right: 75px;
+        }
+
+        .pr-100 {
+            padding-right: 100px;
+        }
+
+        .pr-150 {
+            padding-right: 150px;
+        }
+
+        .pr-200 {
+            padding-right: 200px;
+        }
+
+        .pr-250 {
+            padding-right: 250px;
+        }
+
+        .pr-300 {
+            padding-right: 300px;
+        }
+
+
+        .ml-5 {
+            margin-left: 5cm;
+        }
+
+        .ml-6 {
+            margin-left: 6cm;
+        }
+
+        .ml-7 {
+            margin-left: 7cm;
+        }
+
+        .ml-8 {
+            margin-left: 8cm;
+        }
+
+        .ml-9 {
+            margin-left: 9cm;
+        }
+
+        .ml-10 {
+            margin-left: 10cm;
+        }
+
+        .ml-11 {
+            margin-left: 11cm;
+        }
+
+        .ml-12 {
+            margin-left: 12cm;
+        }
+
+        .ml-13 {
+            margin-left: 13cm;
+        }
+
+        .ml-14 {
+            margin-left: 14cm;
+        }
+
+
+
+        /* междустрочные интервалы */
+        .line0 {
+            line-height: 0;
+        }
+
+        .line05 {
+            line-height: 0.5;
+        }
+
+        .line1 {
+            line-height: 1;
+        }
+
+        .line15 {
+            line-height: 1.5;
+        }
+
+        .line2 {
+            line-height: 2;
+        }
+
+        .line25 {
+            line-height: 2.5;
+        }
+
+        .line3 {
+            line-height: 3;
+        }
+
+        /*отступы по горизонтали*/
+        .pg-25 {
+            padding: 0 25px;
+        }
+
+        .pg-50 {
+            padding: 0 50px;
+        }
+
+        .pg-75 {
+            padding: 0 75px;
+        }
+
+        .pg-100 {
+            padding: 0 100px;
+        }
+
+        /* отступы по вертикале */
+        article.PrintFormClaim .mt-6 :nth-child(n) {
+            margin-top: 6px;
+        }
+
+
+        .test {
+            border: 1px solid red;
+        }
+
+        article.PrintFormClaim footer#colontitle {
+            /* Фиксируем елемент на странице */
+            display: none;
+        }
+    </style>
+
+
+    <!-- Стили печати -->
+    <style type="text/css">
+        @media screen {
+            body article.PrintFormClaim {
+                padding: 1cm 1.5cm 1cm 2.5cm;
+                width: 21cm;
+                min-height: 100%;
+                height: 100%;
+            }
+        }
+
+        /* Настройки печати должны помещаться в блок @media print */
+        @media print {
+            /* Задайом отступы страницы по умолчанию, если пользователь выбрал свои то эти игнорируются */
+            /* Задавать либо в cm (санитиметры) либо в in (дюймы)  в px  и дуругих единицах нельзя */
+            @page {
+                margin: 1.5cm 1.5cm 1.5cm 2.5cm;
+            }
+
+            body {
+                font-family: Times, 'Times New Roman', serif; /* Шрифт с засечками */
+            }
+
+            article.PrintFormClaim section {
+                /* Указываем что по окончанию каждого блока делаем разрыв страницы */
+                page-break-after: always;
+                /* это по слоям, тоесть указывает какой слой будет сверху, у кого больше тот и сверху */
+                z-index: 1;
+            }
+
+            article.PrintFormClaim footer#colontitle {
+                /* Фиксируем елемент на странице */
+                display: block;
+                position: fixed;
+                /* привязываем по вертикали, тоесть к низу страницы, если вместо bottom указать top то будет к верху */
+                bottom: 0;
+                /* привязываем по горизонтали, тоесть к правой части страницы */
+                /* если вместо right указать left то будет привязывать к левому краю страницы */
+                left: 0;
+                /* это по слоям, тоесть указывает какой слой будет сверху, у кого больше тот и сверху */
+                z-index: 0;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+    <article class="PrintFormClaim">
+
+        <footer id="colontitle" class="w100p">
+            <div class="layout">
+                <div class="pl-50">
+                    Постачальник ____________________<br />
+                    <span class="pl-200">МП</span>
+                </div>
+                <div class="pr-50 r-t">
+                    Споживач ____________________<br />
+                    <span class="pl-200">МП</span>
+                </div>
+            </div>
+        </footer>
+
+        <section>
+            <div class="claimBlock">ДОГОВІР № [sNumberRegistration]</div>
+            <div class="claimBlock">постачання природного газу</div>
+            <br>
+            <div class="layout">
+                <div class="pl-50">
+                    Київ                    
+                </div>
+                <div class="pr-50 r-t">
+                [sDateCreateProcess]
+                </div>
+            </div>
+
+                <p>
+                    <b>ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ «ЕНЕРДЖІ ТРЕЙД ГРУП»</b>, як суб’єкт ринку природного газу має
+                    <b>EIC-код 56X9300000013303</b> далі - Постачальник, в особі 
+                    
+                   <div id='sDir'>директора Кравця Олександра Володимировича, який діє на підставі Статуту,</div>
+                   <div id='sRDir1'>регіонального директора Надточого Дмитра Миколайовича, який діє на підставі довіреності № 17/03 від 15.12.2016,</div> 
+                   <div id='sRDir2'>регіонального директора Собко Олени Володимирівни, яка діє на підставі довіреності № 17/02 від 15.12.2016,</div>
+                   <div id='sRDir3'>регіонального директора Остапчука Олександра Володимировича, який діє на підставі довіреності № 17/05 від 15.12.2016,</div>
+                   <div id='sRDir4'>регіонального директора Бударіної Інни Володимирівни, який діє на підставі довіреності № 17/01 від 15.12.2016,</div>
+                   <div id='sRDir5'>регіонального директора Аксьонова Олександра Сергійовича, який діє на підставі довіреності № 17/04 від 15.12.2016,</div>
+                 
+                 з однієї сторони, та 
+                 
+                <div id='FOP'>
+                фізична особа-підприємець</div>   
+                [sCEOName_Spojyvaha] [sFullName_SubjectOrgan_01], 
+                <div id='text_FOP'>
+                що внесений до Єдиного державного реєстру юридичних осіб, фізичних осіб-підприємців 
+                та громадських формувань записом № [sID_SubjectOrgan_OKPO_01] від [sDateReestr],
+                </div>
+                <div id='text_DovOsob'>
+                що внесений до Єдиного реєстру юридичних осіб, фізичних осіб-підприємців та громадських
+                формувань записом № [sID_SubjectOrgan_OKPO_01] від [sDateReestr]
+                від імені якого діє [sPIB_DovOsob] на підставі довіреності, 
+                </div>     
+                як суб’єкт ринку природного газу має ЕІС код [sKod_EIS], надалі Споживач
+                <div id='text_Ur'>   в особі [sPosadaPidpysantaRod] [sCEOName_PidpysantRod], який діє на підставі [sDocPidpysanta],
+                 </div>
+                 з другої сторони,в подальшому разом іменовані Сторони, керуючись Законом України «Про ринок
+                 природного газу» та іншими нормативно - правовими актами, які регламентують діяльність суб’єктів ринку природного газу,
+                 уклали цей договір постачання природного газу (далі- Договір) про наступне:
+                </p>
+                <p>
+                    [sNameOGS], з яким Споживач уклав договір розподілу природного газу, - [sGaz_Organ],
+                    надалі – <b>Оператор ГРМ</b>. Договір розподілу природного газу між Споживачем та Оператором ГРМ укладено
+                    на підставі заяви приєднання № [sNomerZaiavk] від [sDataZaiavky].
+                </p>
+                <div class="claimBlock">ТЕРМІНИ, що використовуються в Договорі:</div>
+
+                <p>
+                    <b>Газова доба</b> - період часу з 05:00 всесвітньо координованого часу (далі – UTC) (з 07:00 за київським часом)
+                    дня до 05:00 UTC (до 07:00 за київським часом) наступного дня для зимового періоду таз 04:00 UTC (з 07:00 за київським часом)
+                    дня до 04:00 UTC (до 07:00 за київським часом) наступного дня для літнього періоду.
+                </p>
+                <p><b>ЕІС-коди</b> - персональні коди ідентифікації Споживача та Постачальника як суб’єктів ринку природного газу.</p>
+                <p>
+                    <b>Небаланс</b> - різниця між обсягами природного газу, поданими замовником послуг транспортування для транспортування на точці входу,
+                    та відібраними замовником послуг транспортування з газотранспортної системи на точці виходу, що визначається за процедурою алокації.
+                </p>
+                <p>
+                    <b>Номінація</b> - заявка замовника послуг транспортування, надана оператору газотранспортної системи стосовно обсягів природного газу,
+                    які будуть подані замовником послуг транспортування протягом доби до газотранспортної системи в точках входу та відібрані з газотранспортної системи в точках виходу,
+                    у тому числі у розрізі контрагентів (споживачів) замовника та їх точок комерційного обліку (за необхідності).
+                </p>
+                <p>
+                    <b>Оператор газорозподільних систем (далі - Оператор ГРМ)</b> - суб’єкт господарювання,
+                    який на підставі ліцензії здійснює діяльність із розподілу природного газу газорозподільною системою на користь третіх осіб (замовників).
+                </p>
+                <p>
+                    <b>Оператор газотранспортної системи (далі – Оператор ГТС)</b> - суб’єкт господарювання,
+                    який на підставі ліцензії здійснює діяльність із транспортування природного газу газотранспортною системою
+                    на користь третіх осіб (замовників), для даного Договору – ПАТ ”Укртрансгаз”.
+                </p>
+                <p>
+                    <b>Замовник послуг транспортування</b> - юридична особа або фізична особа - підприємець, яка на підставі договору 
+                    транспортування, укладеного з оператором газотранспортної системи, замовляє одну чи декілька складових послуг 
+                    транспортування природного газу (замовлення розподілу потужності, замовлення транспортування природного газу, послуга балансування);
+</p>
+                <p><b>Постачальник</b> - суб’єкт господарювання, який на підставі ліцензії здійснює діяльність із постачання природного газу.</p>
+                <p><b>Регулятор</b> - національна комісія, що здійснює державне регулювання у сферах енергетики та комунальних послуг.</p>
+                <p><b>Реномінація</b> - зміна підтвердженої номінації.</p>
+                <p><b>Сайт Постачальника (сайт)</b> - веб-сайт Постачальника в мережі Інтернет: www.etg.com.ua.</p>
+                <p>
+                    <b>Споживач</b> – фізична особа, фізична особа - підприємець або юридична особа, яка отримує природний газ
+                    на підставі договору постачання природного газу з метою використання для власних потреб або використання в якості сировини, а не для перепродажу.
+                </p>
+                <p><b>Кодекс ГТС</b> - Кодекс газотранспортної системи, затверджений Постановою НКРЕКП від 30.09.15 №2493.</p>
+                <p><b>Кодекс ГРМ</b> - Кодекс газорозподільних систем, затверджений Постановою НКРЕКП від 30.09.15 №2494.</p>
+                <p><b>Правила постачання газу</b> - Правила постачання природного газу, затверджені Постановою НКРЕКП від 30.09.15 №2496.</p>
+
+        </section>
+
+        <section>
+
+            <h1>1.ПРЕДМЕТ ДОГОВОРУ</h1>
+
+            <p>
+                1.1. Постачальник зобов`язується передати у власність Споживачу природний газ, в обсягах, за
+                ціною та у порядку, передбачених Договором, а Споживач зобов`язується прийняти газ та оплатити
+            </p>
+            <p> Постачальнику його вартість у розмірах, строки, порядку та на умовах, передбачених Договором.</p>
+            <p>1.1.1.Споживач зазначає перелік комерційних вузлів обліку газу за наступною формою:</p>
+
+            <table class="w100p">
+                <colgroup>
+                    <col width="50%" />
+                    <col width="50%" />
+                    <col width="50%" />
+                    <col width="50%" />
+                </colgroup>
+                <tbody>
+                    <tr class="small-text">
+                        <th>Газотранс-портна організація</th>
+                        <th>Філія (УМГ/...)</th>
+                        <th>ЕІС-код споживача</th>
+                        <th>Область</th>
+                        <th>Район</th> 
+                        <th>Населений пункт</th>
+                    </tr>
+                    <tr class="ta-c">
+                        <td>[sGaz_Organ]</td>
+                        <td>[sFilial]</td>
+                        <td>[sKod_EIS]</td>
+                        <td>[sLocation_FilialaObl]</td>
+                      <td>[sLocation_FilialaRn]</td>
+                      <td>[sLocation_FilialaNp]</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                1.2. Постачальник передає Споживачу природний газ в обсязі [sObsiag_Postavok] тис. куб. м, 
+                в тому числі за місяцями (тис. м куб.):
+            </p>
+
+            </br>
+
+            <table class="w100p ta-c">
+                
+                <tbody>
+                    <tr>
+                        <th>Місяць</th>
+                        <th>Обсяг, тис.</th>
+                      <th>Місяць</th>
+                        <th>Обсяг, тис.</th>
+                      <th>Місяць</th>
+                        <th>Обсяг, тис.</th>
+                      <th>Місяць</th>
+                        <th>Обсяг, тис.</th>
+                    </tr>
+                    <tr>
+                        <td>Січень</td>
+                        <td>[sJan]</td>
+                      <td>Квітень</td>
+                        <td>[sApr]</td>
+                      <td>Липень</td>
+                        <td>[sJul]</td>
+                      <td>Жовтень</td>
+                        <td>[sOct]</td>
+                    </tr>
+                    <tr>
+                        <td>Лютий</td>
+                        <td>[sFeb]</td>
+                      <td>Травень</td>
+                        <td>[sMay]</td>
+                      <td>Серпень</td>
+                        <td>[sAug]</td>
+                      <td>Листопад</td>
+                        <td>[sNov]</td>
+                    </tr>
+                    <tr>
+                        <td>Березень</td>
+                        <td>[sMar]</td>
+                        <td>Червень</td>
+                        <td>[sJun]</td>
+                      <td>Вересень</td>
+                        <td>[sSep]</td>
+                      <td>Грудень</td>
+                        <td>[sDec]</td>
+                    </tr>
+                    <tr>
+                        <td class="b">I кв.</td>
+                        <td class="b">[sFirst] </td>
+                      <td class="b">II кв.</td>
+                        <td class="b">[sSecond] </td>
+                      <td class="b">III кв.</td>
+                        <td class="b">[sThird] </td>
+                      <td class="b">IV кв.</td>
+                        <td class="b">[sFourth] </td>
+                    </tr>
+          </tbody>
+            </table>
+           </br>
+
+
+            <p>1.2.1.Вказані обсяги природного газу є плановими та можуть зменшуватися або збільшуватися в порядку, передбаченому п.1.5. Договору.</p>
+            <p>
+                1.2.2. Обсяги постачання природного газу Постачальником Споживачу в кожному розрахунковому періоді (місяці)
+                визначаються на підставі письмової заявки Споживача на адресу Постачальника та можуть відрізнятись від обсягів, зазначених у п 1.2 цього Договору.
+            </p>
+
+            <p>
+                1.3. Споживач має право на коригування протягом розрахункового періоду підтверджених Постачальником обсягів природного газу у відповідності
+                до нормативно-правових актів, які регламентують діяльність на ринку природного газу.
+            </p>
+            <p>
+                1.4. Постачання/споживання підтвердженого обсягу природного газу протягом розрахункового періоду здійснюється нерівномірно.
+                Відхилення від середньодобової норми - яка визначається шляхом ділення місячного підтвердженого обсягу природного газу на кількість днів протягом цього місяця - допускається ± 5,0%.
+            </p>
+            <p>
+                1.5. Зменшення/Збільшення/Анулювання обсягу природного газу здійснюється на підставі письмових заявок Споживача,
+                які подаються факсимільним зв’язком та/або електронною поштою не пізніше 15 числа місяця, що передує місяцю поставки.
+            </p>
+            <p>1.5.1. У разі відсутності письмової заявки Споживача відповідно до п.1.5. Договору Постачальник здійснює постачання природного газу Споживачу в обсягах, відповідно до п.1.2. Договору.</p>
+            <p>1.6. Допускається відхилення споживання обсягу природного газу за розрахунковий період ± 5% від загального Споживачем без коригування.</p>
+
+                   <p>
+                1.7. У випадку неподання Споживачем заявки у строк та у порядку, встановлених п.1.2.2, п.1.3, п.1.5 даного Договору, обсяг природного газу,
+                що поставлений Постачальником, підтверджується щомісячними актами приймання-передачі газу, оформленими згідно з розділом 4 даного Договору,
+                та підлягає оплаті Споживачем в порядку встановленому даним Договором.
+            </p>
+            <p>
+                1.8. За розрахункову одиницю поставленого природного газу приймається один кубічний метр, приведений газотранспортним підприємством
+                до стандартних умов (Т-20 град. С. Р=101,325 КПа/760мм.рт.ст./).
+            </p>
+            <p>
+                1.9. Якість природного газу повинна відповідати вимогам, установленим державними стандартами, технічними умовами, нормативно-технічними документам,
+                щодо його якості. Якість природного газу визначається методами, що передбачені державними стандартами та нормативно-технічними документами.
+                Порядок та періодичність визначення показників якості природного газу обумовлюється в договорах на транспортування газу.
+            </p>
+            <p>1.10. Споживач за даним Договором отримує природний газ з метою використання його для власних потреб, але не для перепродажу.</p>
+            <p>
+                1.11. Обов’язковою умовою для постачання природного газу Споживачу, об’єкт якого підключений до газорозподільної системи,
+                є наявність у Споживача або Постачальника укладеного в установленому порядку з Оператором ГРМ договору транспортування природного газу.
+            </p>
+            </section>
+            <section>
+            <p>
+                1.12. Відносини Сторін, що не врегульовані даним Договором, регулюються Законом України “Про ринок природного газу», Правилами постачання природного газу,
+                Кодексом газотранспортної системи та Кодексом газорозподільних систем, затвердженими в установленому законом порядку.
+            </p>
+            
+            <p>
+                1.13. У випадку зміни планового споживання газу, коригування приймаються на підставі письмових заявок Споживача за 5 (п’ять) днів до початку місяця поставки.
+                Збільшення/зменшення планового обсягу газу у поточному місяці здійснюються на підставі письмової заявки Споживача до 20-го числа місяця поставки.
+                У випадку відмови від виділення планового обсягу природного газу, або припинення договірних відносин,
+                Споживачу необхідно погасити заборгованість та попередити письмово Постачальника не пізніше 21 (двадцяти одного) дня до настання дати відмови
+                від виділення планового обсягу природного газу, або припинення договірних відносин.
+            </p>
+
+            <h1>2. ЦІНА ДОГОВОРУ</h1>
+            <p>2.1. Загальна вартість Договору складається із суми вартостей природного газу, переданого у власність Споживачу у відповідному місяці, протягом строку дії Договору.</p>
+            <p>2.2. Ціна природного газу за 1000,00 куб. м визначається Сторонами Договору у додатковій угоді до Договору.</p>
+            <p>
+                2.3. Ціна природного газу за 1000,00 куб. м може змінюватись протягом строку дії Договору. Зміна ціни природного газу за 1000,00 куб. м
+                узгоджується Сторонами шляхом підписання відповідної додаткової угоди до Договору.
+            </p>
+            <p>
+                2.4. У випадку зміни ціни природного газу за 1000,00 куб. м Постачальник направляє Споживачу підписаний з його сторони
+                та завірений печаткою проект відповідної додаткової угоди до Договору у двох оригінальних примірниках. Споживач повинен протягом трьох робочих днів
+                з дати отримання проекту додаткової угоди підписати і завірити печаткою цю додаткову угоду та повернути Постачальнику її оригінальний примірник.
+            </p>
+            <p>
+                2.5. В разі незгоди Споживача з встановленою ціною, крім випадків, передбачених п.2.7. Договору, додаткова угода не підписується,
+                а Споживач зобов’язується надати Постачальнику листа, погодженого з газорозподільним підприємством про зняття обсягів газу в даному місяці постачання,
+                погодженого з оператором Єдиної газотранспортної системи станом на перше число місяця, в якому змінилася ціна.
+                В такому разі Договір вважається призупиненим в частині поставок газу на період, щодо якого Сторонами не досягнуто згоди про нову ціну природного газу за 1000,00 куб. м.
+            </p>
+            <p>
+                2.6. Збільшення ціни природного газу за 1000,00 куб. м, що відбувається у зв’язку із набранням чинності відповідних нормативно-правових актів органів державної влади України,
+                які впливають на ціну природного газу, в тому числі граничного рівня цін на природний газ та тарифів на транспортування і розподіл природного азу,
+                є встановленою для Споживача, їм погодженою та обов’язковою для розрахунків між Сторонами за даним Договором.
+            <p>
+                2.7. Датою належного виконання Споживачем обов’язку щодо оплати вартості поставленого природного газу у відповідному місяці поставки вважається день
+                надходження грошових коштів на поточний рахунок Постачальника.
+            </p>
+            <p>
+                2.8. Зміна ціни природного газу, що відбувається у зв’язку з набранням чинності відповідних нормативно-правових актів органів державної влади України,
+                Регулятором, збільшенням ціни реалізації газу газовидобувними підприємствами України, які впливають на ціну,
+                є обов’язковою для розрахунків між Сторонами за даним Договором. У випадку зміни ціни природного газу,
+                в тому числі протягом місяця поставки, Споживач зобов’язаний перерахувати на рахунок Постачальника грошові кошти,
+                у розмірі, на який збільшилась вартість запланованого до поставки обсягу природного газу в строк відповідно до п. 3.1. Договору.
+            </p>
+
+       
+            <h1>3. ПОРЯДОК ТА УМОВИ ПРОВЕДЕННЯ РОЗРАХУНКІВ</h1>
+            <p>
+                3.1. Споживач зобов‘язаний оплатити вартість місячного обсягу природного газу, вказаного у заявці Споживача, а за відсутністю заявки Споживача, місячного обсягу природного газу (планового), зазначеного у п.1.2. Договору, на рахунок Постачальника у такому порядку:</p>
+            <ul>         
+            <li>100% вартості - до 30 числа місяця, що передує місяцю поставки природного газу;</li>
+            <li>остаточний розрахунок здійснюється на підставі підписаного сторонами Акту приймання- передачі Газу (за звітний місяць) до 5-го числа місяця, наступного за звітним (місяцем поставки).</li>
+           </ul>
+          
+
+
+            <h1>4. ПОРЯДОК ТА УМОВИ ПОСТАЧАННЯ, ПРИЙМАННЯ ТА ОБЛІКУ ГАЗУ</h1>
+            <p>4.1. Кількість поставленого Споживачу газу визначається за показниками, встановленого у Споживача комерційного вузла обліку, та підтверджується Оператором ГРМ та/або Оператором ГТС.</p>
+            <p>4.2. Приймання-передача газу протягом місяця здійснюється відповідно до п 1.4 та п 1.6. Договору.</p>
+
+            <p>
+                4.3. Приймання-передача газу, поставленого Постачальником та прийнятого Споживачем у звітному місяці, оформлюється шляхом підписання та скріпленняпечаткою щомісячних Актів приймання-передачі,
+                які є невід`ємними частинами цього Договору, і які є підставою для проведення Споживачем остаточних розрахунків за поставлений природний газ у звітному місяці.
+            </p>
+</section>
+<section> 
+            <p>
+                4.3.1. Для складання Актів приймання-передачі природного газу, Споживач до 03 числа місяця, наступного за місяцем постачання природного газу,
+                зобов’язаний надати Постачальнику належним чином завірену підписом уповноваженої особи та печаткою Споживача копію акту про
+                фактичний об’єм (обсяг) розподіленого (протранспортованого) природного газу Споживачу, складеного між Споживачем та Оператором ГРМ або Оператором ГТС.
+            </p>
+            <p>
+                4.3.2. На підставі отриманих від Споживача даних та/або даних Оператора ГТС Постачальник протягом 3 (трьох) робочих днів з дня їх отримання складає,
+                підписує і скріплює печаткою Акти приймання-передачі природного газу та направляє їх Споживачу.
+            </p>
+            <p>
+                4.4. Споживач протягом 2 (двох) робочих днів з дати одержання Актів приймання-передачі природного газу зобов'язується повернути Постачальнику
+                один примірник оригіналу акту приймання-передачі природного газу, підписаний уповноваженим представником Споживача,
+                або надати в письмовій формі мотивовану відмову від підписання Акту приймання-передачі природного газу.
+            </p>
+            <p>
+                4.5. У випадку невиконання обов’язку, передбаченого п.4.4. Договору, природний газ вважається поставленим та прийнятим Споживачем від Постачальника
+                у відповідному звітному місяці на підставі даних Постачальника та/або документів та/або інформації, які складаються
+                та/або надаються Оператором ГТС та/або Оператором ГРМ до врегулювання розбіжностей відповідно до Договору або в судовому порядку.
+            </p>
+
+            <h1>5. ПРАВА ТА ОБОВ’ЯЗКИ СТОРІН</h1>
+
+            <h2>5.1. Права та обов’язки споживача</h2>
+            <h3>5.1.1. Споживач має право:</h3>
+            <ol>
+                <li>отримувати природний газ на умовах, зазначених у цьому Договорі;</li>
+                <li>безоплатно отримувати всю інформацію стосовно його прав та послуг, що надаються Постачальником, та інформацію про ціну природного газу, порядок оплати за спожитий природний газ, а також іншу інформацію, що має надаватись Постачальником відповідно до чинного законодавства та/або цього Договору;</li>
+                <li>безоплатно отримувати наявну інформацію про обсяги та інші показання власного споживання природного газу;</li>
+                <li>звертатися до Постачальника для вирішення будь-яких питань, пов’язаних з виконанням цього Договору;</li>
+                <li>вимагати від Постачальника проведення звірки розрахунків за Договором;</li>
+                <li>провести звірку фактичних розрахунків з підписанням відповідного акту;</li>
+                <li>на вільний вибір постачальника природного газу;</li>
+                <li>оскаржувати будь-які несанкціоновані, неправомірні дії Постачальника, що порушують права Споживача, та брати участь у розгляді цих скарг на умовах, визначених чинними нормативно-правовими актами та цим Договором;</li>
+                <li>змінювати постачальника природного газу виключно в порядку, передбаченому Правилами постачання природного газу, затвердженими постановою НКРЕКП від 30.09.15 (далі- Правила);</li>
+                <li>інші права, передбачені чинними нормативно-правовими актами і цим Договором.</li>
+            </ol>
+                  <h3>5.1.2. Споживач зобов’язується:</h3>
+            <ol>
+                <li>забезпечувати своєчасну та повну оплату поставленого природного газу відповідно до умов цього Договору;</li>
+                <li>укласти у встановленому порядку договір розподілу природного газу з Оператором ГРМ;</li>
+                <li>укласти в установленому порядку договір транспортування природного газу з Оператором ГТС;</li>
+                <li>не допускати несанкціонованого відбору природного газу;</li>
+                <li>письмово повідомити Постачальника не пізніше ніж за 21 (двадцять один) календарних днів до запланованої дати зміни постачальника природного газу та виконати в повному обсязі свої зобов’язання по розрахунках за природний газ, а також укласти додаткову угоду про розірвання цього Договору або додаткову угоду про призупинення дії Договору в частині постачання природного газу в строк, передбачений п.5 розділу IV Правил;</li>
+                <li>письмово повідомляти Постачальника про всі зміни щодо персоніфікованих даних не пізніше 3 (три) календарних днів з моменту настання таких змін;</li>
+                <li>безперешкодно допускати на свою територію, об’єкти, приміщення, де розташовані вузли обліку газу, прилади обліку газу, лічильники газу тощо, представників Постачальника для звірки показань фактично використаних обсягів природного газу;</li>
+                <li>проводити на вимогу Постачальника звірку фактично використаних обсягів природного газу та пред’являти на вимогу Постачальника для перевірки правильності оплати та відповідності записів у них показанням лічильника газу;</li>
+                <li>вимагати поновлення постачання природного газу в установленому порядку після усунення порушень і компенсації оплати робіт щодо відключення, обмеження та підключення, якщо припинення газопостачання відбулося без розірвання Договору;</li>
+       
+                <li>припиняти (обмежувати) споживання природного газу відповідно до вимог законодавства та умов Договору
+                <li>відшкодовувати Постачальнику збитки, понесені ним у зв’язку з невиконанням або неналежним виконанням Споживачем своїх зобов’язань перед Постачальником, що покладені на нього чинними нормативно-правовими актами та/або цим Договором;</li>
+                <li>інші обов’язки, покладені на Споживача відповідно до законодавства та/або Договору.</li>
+            </ol>
+</section>
+<section>
+            <h2>5.2. Права та обов'язки Постачальника</h2>
+            <h3>5.2.1. Постачальник має право:</h3>
+            <ol>
+                <li>отримувати від Споживача плату за поставлений природний газ відповідно до умов Договору;</li>
+                <li>контролювати правильність оформлення Споживачем платіжних документів;</li>
+                <li>ініціювати припинення постачання природного газу Споживачу у порядку та на умовах, визначених цим Договором та чинним законодавством України;</li>
+                <li>на безперешкодний доступ до комерційних вузлів обліку газу, що встановлені на об'єктах Споживача, для звірки даних фактичних обсягів споживання природного газу;</li>
+                <li>проводити разом зі Споживачем звірку фактично використаних обсягів природного газу;</li>
+                <li>на повну і достовірну інформацію від Споживача, щодо режимів споживання природного газу;</li>
+                <li>отримувати відшкодування збитків від Споживача, що завдані Постачальнику у зв’язку з невиконанням або неналежним виконанням Споживачем своїх зобов’язань перед Постачальником, відповідно до умов цього Договору та чинного законодавства;</li>
+                <li>інші права, передбачені чинними нормативно-правовими актами і цим Договором.</li>
+            </ol>
+
+            <h3>5.2.2. Постачальник зобов’язаний:</h3>
+            <ol>
+                <li>дотримуватись вимог Правил;</li>
+                <li>постачати природний газ на умовах та в обсягах, визначених Договором, за умови дотримання Споживачем дисципліни відбору природного газу та розрахунків за нього;</li>
+                <li>подавати Оператору ГТС всі необхідні документи для підтвердження обсягу природного газу необхідного Споживачу за умови, що Споживач виконав свої обов’язки перед Постачальником, для замовлення необхідного обсягу природного газу;</li>
+                <li>дотримуватися мінімальних стандартів та вимог щодо якості обслуговування споживачів природного газу;</li>
+                <li>забезпечувати конфіденційність даних, які отримуються від Споживача;</li>
+                <li>своєчасно повідомляти Споживача (але не пізніше 5-го робочого дня з дати настання події), якщо Постачальник перебуває у процесі ліквідації, або визнання банкрутом, або Постачальник проходить по процедурі призупинення/анулювання ліцензії на постачання природного газу, або його ліцензію на провадження діяльності з постачання природного газу анульовано, або її дію зупинено та про відсутність ресурсу природного газу;</li>
+                <li>забезпечити споживача прозорими, простими та доступними способами досудового вирішення спорів з таким постачальником;</li>
+                <li>забезпечити споживачу вибір способу оплати, який є не забороненим та діє на території України відповідно до законодавства, з метою уникнення дискримінації;</li>
+                <li>реєструвати податкову накладну та/або здійснити розрахунок коригування до податкової накладної в єдиному реєстрі податкових накладних (ЄРПН) по першій події в порядку, передбаченому діючим законодавством та надіслати її в електронному вигляді Споживачу.</li>
+            </ol>
+
+     
+
+            <h1>6. ПОРЯДОК ПРИПИНЕННЯ ТА ВІДНОВЛЕННЯ ПОСТАЧАННЯ ГАЗУ</h1>
+
+                <p>6.1. Постачальник має право ініціювати/вживати заходів з припинення або обмеження в установленому порядку постачання природного газу Споживачу в випадку:</p>
+                <ul>
+                    <li>проведення Споживачем неповних або несвоєчасних розрахунків за Договором;</li>
+                    <li>перевитрат добової норми відповідно до п 1.4. Договору нерівномірної подачі природного газу та/або місячного підтвердженого обсягу природного газу згідно п 1.6. Договору;</li>
+                    <li>розірвання договору постачання природного газу;</li>
+                    <li>відмови від підписання відповідного Акту приймання-передачі природного без відповідного письмового обґрунтування такої відмови;</li>
+                    <li>настання заходів, передбачених Правилами про безпеку постачання природного газу, що діють відповідно до вимог статті 5 Закону України «Про ринок природного газу» та поширюються на споживачів, що не є захищеними.</li>
+                </ul>
+                <p>
+                    6.2. Постачання Споживачу може бути припинено (обмежено) в інших випадках, передбачених Законом України «Про ринок природного газу»,
+                    Кодексом ГТС, Кодексом ГРС, Правилами безпеки систем газопостачання.
+                </p>
+                <p>6.3. Припинення постачання не звільняє Споживача від обов’язку сплатити Постачальнику заборгованість за даним Договором.</p>
+                <p>
+                    За необхідності здійснення заходів з обмеження або припинення газопостачання Споживачу Постачальник надсилає Споживачу
+                    не менше ніж за 3 (три) доби (для підприємств металургійної та хімічної промисловості - не менше ніж за 5 діб) до дати такого припинення повідомлення (з позначкою про вручення) про необхідність
+                    самостійно обмежити чи припинити газоспоживання з певного періоду (день, година тощо). У разі усунення Споживачем
+                    до зазначеного в повідомленні часу фактів, що стали причиною надіслання повідомлення, та завчасного надання Постачальнику
+                    підтверджених документів (а Оператору ГРМ/ГТС - копії), газопостачання не припиняється (не обмежується).
+                </p>
+       </section>
+        <section>
+                <p>
+                    6.4. Відновлення постачання Споживачу здійснюється у разі усунення підстав, встановлених п.6.1 та п.6.2. Договору.
+                    Споживач зобов’язаний негайно сплатити відповідно до письмової вимоги Постачальника розмір понесених останнім витрат (підтверджених документально),
+                    пов’язаних з проведення заходів обмеження або припинення газопостачання Споживачу.
+
+                <p>6.5. Заходи з обмеження, припинення та відновлення газопостачання Споживачу здійснюється у відповідності до Правил.</p>
+
+            <h1>7. ВІДПОВІДАЛЬНІСТЬ СТОРІН</h1>
+                <p>7.1. За порушення умов Договору Сторони несуть відповідальність відповідно до законодавства України та Договору.</p>
+                <p>
+                    7.2. У випадку порушення Споживачем розміру або строку (п.3.1. Договору) оплати поставленого Постачальником природного газу у відповідному місяці
+                    Споживач сплачує Постачальнику пеню в розмірі подвійної облікової ставки НБУ, що діяла в період, за який сплачується пеня за кожний день прострочення від суми заборгованості,
+                    а за прострочення понад 30 (тридцять) календарних  днів додатково сплатити штраф у розмірі 7 (сім) відсотків від суми простроченого платежу.
+                </p>
+                <p>
+                    7.3. У разі не поставки або недопоставки Постачальником природного газу відповідно до умов Договору,
+                    останній сплачує на користь Споживача пеню в розмірі подвійної облікової ставки НБУ, що діяла в період прострочення,
+                    за кожний день прострочення від вартості недопоставленого обсягу природного газу.
+                </p>
+                <p>
+                    7.4. Постачальник звільняється від відповідальності за часткове або повне невиконання обов'язків за Договором внаслідок внесення
+                    змін до діючого законодавства або прийняття рішення органів влади, які роблять неможливим виконання умов Договору.
+                </p>
+                <p>
+                    7.5. Сплата штрафних санкцій не звільняє Сторони від взятих на себе зобов’язань, відповідно до умов даного Договору.
+                </p>
+                <p>
+                    7.6. Постачальник не відповідає за будь-які перебої у транспортуванні або розподілі природного газу, що стосуються функціонування,
+                    обслуговування та/або розвитку газотранспортної та/або газорозподільної системи, а також за будь-яке погіршення якості природного газу,
+                    що сталося з вини Оператора ГТС та/ або Оператора ГРМ.
+                </p>
+                <p>
+                    7.7. Порядок відшкодування та визначення розміру збитків, завданих внаслідок порушення Договору визначений Правилами постачання природного газу,
+                    затвердженими Постановою Національної комісії, що здійснює державне регулювання у сферах енергетики та комунальних послуг 30.09.2015  № 2496.
+                </p>
+
+       
+            <h1>8. ФОРС – МАЖОР</h1>
+                <p>
+                    8.1. При настанні обставин неможливості повного або часткового виконання будь-якою із Сторін зобов‘язань за Договором,
+                    як-то: пожежа, повінь, землетрус та інші стихійні лиха, аварія на газопроводі, війна та військові дії, блокада, страйки,
+                    зміна законодавства України, видання органами виконавчої влади України нормативних актів, що роблять неможливим виконання зобов‘язань по цьому Договору,
+                    чи інших, що не залежать від Сторін, обставин, жодна зі Сторін не несе відповідальності.
+                    Дані обставини повинні бути підтверджені ТПП України чи іншим компетентним органом.
+                </p>
+                <p>
+                    8.2. Про настання форс-мажорних обставин, строк їхньої дії та припинення Сторона, для якої вони наступили,
+                    письмово повідомляє іншу Сторону протягом трьох днів з моменту настання таких обставин.
+                    Неповідомлення або невчасне повідомлення про настання форс-мажорних обставин позбавляє Сторону права посилатися на такі обставини.
+                </p>
+                <p>8.3. Настання форс-мажорних обставин не звільняє Споживача від обов‘язку оплати обсягу фактично поставленого газу.</p>
+                <p>
+                    8.4. При припиненні обставин, зазначених у пункті 8.1, Сторона повинна без зволікання, будь-якими доступними засобами письмово повідомити про них іншуСторону.
+                    У повідомленні вказується строк, у який передбачається виконати зобов'язання за даним Договором.
+                </p>
+                <p>
+                    8.5. У випадках, передбачених у п.8.1. Договору, строк виконання Стороною своїх зобов'язань за даним Договором відсувається відповідно до часу,
+                    протягом якого діють такі обставини і їхні наслідки у випадку додержання Стороною положень п.8.2. Договору.
+                </p>
+
+
+            <h1>9. ПОРЯДОК ВИРІШЕННЯ СПОРІВ</h1>
+
+                <p>9.1. Всі спори та суперечки, що виникають між Сторонами вирішуються шляхом переговорів.</p>
+                <p>9.2. У випадку недосягнення згоди шляхом переговорів, Сторони мають право передати спір на розгляд господарського суду.</p>
+</section>
+ <section>
+
+            <h1>10. СТРОК ДІЇ ДОГОВОРУ ТА ІНШІ УМОВИ</h1>
+                <p>
+                    10.1 Цей Договір є укладеним з дати його підписання Сторонами, скріплення їх підписів печатками та діє до <b>31 грудня 2017 року</b> включно,
+                    а в частині розрахунків -до повного їх виконання.</p> <p>Договір вважається продовженим на кожний наступний календарний рік на тих же умовах,
+                    якщо не пізніше ніж за 30 (тридцять) календарних днів до закінчення строку дії Договору жодною із Сторін
+                    не буде направлено іншій Стороні письмове повідомлення про припинення строку дії Договору.
+                </p>
+                <p>
+                    10.2. Всі додатки, доповнення та додаткові угоди є невід’ємними частинами Договору, якщо вони викладені у письмовій формі,
+                    підписані уповноваженими представниками Сторін та їх підписи скріплені печатками.
+                </p>
+                <p>
+                    10.3. Кожна Сторона має право ініціювати припинення дії Договору достроково, якщо не має невиконаних зобов‘язань перед іншою Стороною
+                    та письмово попередить про це іншу Сторону не пізніше ніж за 21 (двадцять один) календарний днів до першого числа місяця,
+                    що слідує за звітним місяцем поставки природного газу.
+                </p>
+                <p>
+                    Крім цього, Споживач має право на дострокове розірвання Договору, якщо Постачальникповідомив Споживача про намір внесення змін до Договору
+                    в частині умов постачання та нові умовипостачання виявилися для нього неприйнятними. При цьому Споживач зобов'язаний попередити
+                    постачальника не менш ніж за 21 календарний день до розірвання договору, а також виконати свої обов'язки за цим Договором у частині оформлення
+                    використаних обсягів природного газу та їх оплати відповідно до умов Договору.
+                </p>
+                <p>
+                    10.4. Підписані Договір, додатки, доповнення, додаткові угоди до нього, направлені факсимільними або електронними засобами,
+                    мають юридичну силу до дати отримання Сторонами оригіналів укладених вищезазначених документів.
+                </p>
+                <p>
+                    10.5. Споживач не має права без попередньої письмової згоди Постачальника передавати свої договірні прав, або обов’язки третім особам.
+                    Заміна сторони у Договорі здійснюється виключно за письмовою згодою іншої сторони Договору.
+                </p>
+                <p class="ta-l">10.6. [asStatus_Plat] [sDopTexts_PDV_EP] [sDopText_PDV] [sDopTexts_EP_PDV] [sDopText_EP] [sStavka] [sSviyVariant]</p>
+                <p>10.7. Постачальник знаходиться на загальній системі оподаткування та є платником податку на прибуток за ставкою відповідно до Податкового кодексу України.</p>
+      
+            <p>
+                10.8. Підписавши Договір, Споживач вважається повідомленим і таким, що надав свою згоду про те, що інформація про нього, персональні дані керівників
+                та інших відповідальних співробітників (прізвище, ім'я, по батькові, адреса, адреса електронної пошти, номер телефону,
+                серія номер паспорту, ким та коли виданий), будуть внесені до бази даних Постачальника.
+              </p>
+              <p>При виконанні Сторонами умов цього Договору кожна Сторона забезпечує дотримання вимог та несе відповідальність щодо захисту персональних даних,
+                що встановлені Законом України "Про захист персональних даних" і мають відношення до виконання Сторонами умов цього Договору.
+            </p>
+            <p>
+                10.9. Споживач надає Постачальнику право використовувати свої персональні дані та погоджується з тим,
+                що ця інформація може бути передана без письмового повідомлення Споживача для: обліку Споживачів,
+                наданих їм послуг та поставленого товару, розрахунків зі Споживачами; розсилання Споживачам повідомлень, тощо.
+                Підписуючи цей Договір, Сторони, згідно Закону України «Про захист персональних даних»,
+                надають взаємну згоду один одному на обробку їхніх персональних даних, а саме: назви, місцезнаходження/місця проживання,
+                реєстраційних даних (коду ЄДРПОУ, номеру державної реєстрації у єдиному державному реєстрі юридичних осіб та фізичних осіб-підприємців), інформації щодо системи
+                оподаткування (індивідуального податкового номеру, реєстраційного номеру облікової картки платника податків, номеру свідоцтва про статус платника
+                ПДВ), банківських реквізитів, електронних  ідентифікаційних даних (ІР-адреса, телефон, e-mail), прізвища, ім'я по батькові,
+                особистого підписута інших даних, що дають змогу ідентифікувати особу, що діє в інтересах та/або від імені однієї із Сторін,
+                та інших даних, які передає одна Сторона іншій з метою забезпечення реалізації податкових відносин, господарських відносин, відносин у сфері бухгалтерського обліку та
+                аудиту. Сторони повідомлені про те, що їх персональні дані внесені в базу персональних даних,
+                а також повідомлені про свої права згідно Закону України «Про захист персональних даних».
+            </p>
+            <p>
+                10.10. Сторони домовились, що Договір, його невід’ємні частини, вся документація та інформація пов'язана з його виконанням,
+                є конфіденційною інформацією та не підлягає розголошенню третім особам.
+                Не вважається порушенням розкриття конфіденційної інформації на законну вимогу компетентних державних органів України.
+            </p>
+
+            <p>
+                10.11. Сторони зобов’язуються письмово повідомляти одна одну у випадку ухвалення рішення про ліквідацію,
+                реорганізацію або банкрутство однієї із Сторін у термін не пізніше 3-х календарних днів із дати прийняття такого рішення.
+                У ті ж терміни Сторони сповіщають одна одну про зміну реквізитів (місцезнаходження, найменування, організаційно-правової форми,
+                банківських реквізитів, статусу платника податку на прибуток, реєстрації платника податку на додану вартість тощо)
+                Письмове повідомлення сторін про зміну реквізитів є невід’ємною частиною цього Договору та створюють ті ж наслідки для Сторін, як наведені у Договорі.
+            </p>
+            <p>
+                10.12. Інформація, що стосується прав споживачів, у тому числі щодо розгляду скарг (вирішення спорів) Постачальником,
+                і засоби спілкування та/або публічного оголошення інформації,
+                що подається Постачальником згідно з Правилами постачання природного газу розміщена сайті Постачальника: https://etg.com.ua/
+            </p>
+            </section>
+        <section>
+            <p>10.13. Взаємовідносини Сторін, не передбачені Договором, регулюються чинним законодавством України.</p>
+            <p>10.14. Договір складено українською мовою у двох примірниках – по одному для кожної Сторони Договору. Кожний примірник має однакову юридичну силу.</p>
+<br /><br />
+
+            <h1>11. МІСЦЕЗНАХОДЖЕННЯ, РЕКВИЗИТИ ТА ПІДПИСИ СТОРІН</h1>
+            <br />
+            <div class="layout not-indent mt-6">
+                <div style="width:380px;">
+                    <p class="ta-c b">Постачальник:</p>
+                    <p class="ta-c b">ТОВ «ЕНЕРЖІ ТРЕЙД ГРУП»</p>
+                    <p>Т01001, м. Київ, Рильський провулок, 4</p>
+                    <p>Код ЄДРПОУ 36716332</p>
+                   <p>п/р № 26006010021247 в АБ "Південний", МФО 328209</p>     
+                    <p>ІПН 367163326584</p>
+                    <p>Тел/факс (044)337-74-28</p>
+                    <p>Ел. пошта: info@etg.com.ua</p>
+                    <p>Контактні дані точки контакту наведені у додатку 1 до цього Договору</p>
+                    <p>Тел. (044)337-74-28</p>
+                    <p>Ел. пошта: info@etg.com.ua</p>
+                </div>
+
+                <div style="width:380px;" class="r-t">
+                    <p class="ta-c b">Споживач:</p>
+                    <p class="ta-c b">[sCEOName_Spojyvaha] [sFullName_SubjectOrgan_01]</p>
+                    <p>Юр. адреса [sLocation_SubjectOrgan_01][sAdress_01]</p>
+                    <p id='sStrERDPO'>Код ЄДРПОУ [sID_SubjectOrgan_OKPO_01]</p>
+                    <p>п/р № [sRoz_Rah]</p>
+                    <p>Код банку (МФО) [sKod_MFO]</p>
+                    <p id='sStrIPN'>ІПН [sIPN_spojyvaha]</p>
+                    <p>Тел.,(факс) [phone]</p>
+                    <p>Ел. пошта: [email]</p>
+                </div>
+            </div>
+       <br /><br />
+             <table class="w100p ta-с notb">
+                <colgroup>
+                    <col width="50%" />
+                    <col width="50%" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>
+                          <div id='sDyrector' >Директор</div>
+                      <div id='sRegional_Dyr'>Регіональний директор</div>
+                      </th>
+                      <th><div class="ta-c"> 
+                       <div id='sDyrKer'>Директор</div>
+                      <div id='sPosOsPid'>[sPosadaPidpysanta]</div>
+                      </div>
+                      </th>
+                    
+                    <tr>
+                        <th>
+                          <div id='sD'>______________________________ О. В. Кравець</div>
+                          <div id='sR1'>______________________________ Д. М. Надточій</div> 
+                          <div id='sR2'>_______________________________ О. В. Собко</div>
+                          <div id='sR3'>______________________________ О. В. Остапчук</div>   
+                          <div id='sR4'>______________________________ І. В. Бударіна</div>
+                          <div id='sR5'>______________________________ О. С. Аксьонов</div>      
+                      </th>
+                      
+                        <th>
+                        <div id='sNSpoj'>______________________________ [sCEOName_Spojyvaha]</div>
+                       <div  id='sPosName'>___________________________ [sCEOName_Pidpysant][sPIB_DovOsob]</div>
+                       </th>
+                     </tbody>
+            </table>
+        </section>
+
+        <section>
+            <div class="ml-11 w100p ta-l">
+                <div class="layout not-indent">Додаток 1 до</div>
+                <div class="layout not-indent">Договору постачання природного газу</div>
+                <div class="ulayout not-indent">№ [sNumberRegistration] від [sDateCreateProcess]</div><br />
+            </div>
+
+
+            <table class="w100p smallText ta-c col-1-b col-2-b">
+                <colgroup>
+                    <col width="6%" />
+                    <col width="30%" />
+                    <col width="14%" />
+                    <col width="40%" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>№ з/п</th>
+                        <th>Адреса</th>
+                        <th>Номер телефону</th>
+                        <th>Режим роботи</th>
+                    </tr>
+                    <tr>
+                        <td>1.</td>
+                        <td>
+                            01001, м. Київ,
+                            Рильський провулок, буд. 4
+                        </td>
+                        <td> (044)337-74- 28</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>2.</td>
+                        <td>
+                            21027, м. Вінниця,
+                            вул. Келецька, буд. 51
+                        </td>
+                        <td>(0432) 572-- 574</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>3.</td>
+                        <td>
+                            69091, м. Запоріжжя,
+                            вул. Сталеварів, буд. 3А
+                        </td>
+                        <td>(061) 707-65- 07</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>4.</td>
+                        <td>
+                            36020, м. Полтава,
+                            вул. Пилипа Орлика, буд. 2/16
+                        </td>
+                        <td>(044) 39-09- 989</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>5.</td>
+                        <td>
+                            33023, м. Рівне, вул.
+                            Грушевського, буд. 77
+                        </td>
+                        <td>(036)240-01- 30</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>6.</td>
+                        <td>
+                            54003, м. Миколаїв,
+                            вул. Погранична (Чигрина), буд. 165
+                        </td>
+                        <td>(0512) 59-31- 65</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>7.</td>
+                        <td>
+                            61001, м. Харків,
+                            мікрорайон Захисників України, буд. 7/8, літера Б-10
+                        </td>
+                        <td>(057) 752-60- 52</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>8.</td>
+                        <td>
+                            79039, м. Львів, вул.
+                            Шевченка, буд. 111А
+                        </td>
+                        <td>(032) 253-34- 35</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                    <tr>
+                        <td>9.</td>
+                        <td>
+                            18001, м. Черкаси,
+                            вул.Смілянська,буд. 23, офіс 35
+                        </td>
+                        <td>(0472) 38-31- 81</td>
+                        <td>Робочі дні (Понеділок-П’ятниця) 09:00-18:00. Вихідні дні: субота та неділя</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </section>
+    </article>
+</body>
+</html>
