@@ -371,10 +371,16 @@ ${sNameOrgan},<br>
     <userTask id="usertask2" name="Обробка звернення" activiti:candidateGroups="dms_zagran_${sID_Public_SubjectOrganJoin}">
       <extensionElements>
         <activiti:formProperty id="sCancelInfo" name="Чи скасована заявка (заповнюється громадянином лише у разі відміни запису, за замовчуванням вказано &quot;Заявка актуальна&quot;)" type="string"></activiti:formProperty>
+        
         <activiti:formProperty id="clFio" name="ПІБ заявника" type="string" default="${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Телефон громадянина" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="email" name="Електронна пошта громадянина" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="lastName_UA1" name="Прізвище дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="firstName_UA1" name="Ім'я дитини" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="middleName_UA1" name="По батькові дитини" type="string" writable="false"></activiti:formProperty>
+                
         <activiti:formProperty id="visitDay1" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
         <activiti:formProperty id="asDecide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="sEnamAccept" name="Послугу надоно, громаднин прийшов на прийом"></activiti:value>
@@ -448,7 +454,7 @@ ${sNameOrgan}<br>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
 [pattern/mail/new_design/_common_signature_start.html]
-Укрпошта, Дніпро. <br>
+${sNameOrgan}<br>
 [pattern/mail/new_design/_common_signature_end.html]
 [pattern/mail/new_design/_common_footer.html]]]></activiti:expression>
         </activiti:field>
