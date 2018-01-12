@@ -75,6 +75,54 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
         }).catch(catchLastError);
     };
 
+    var linksToCryptoplugin = {
+        opera: {
+            link: 'https://addons.opera.com/ru/extensions/details/bankid-cryptoplugin/',
+            type: 'opera'
+        },
+        chrome: {
+            link: 'https://chrome.google.com/webstore/detail/bankid-cryptoplugin/pgfbdgicjmhenccemcijooffohcdanic?utm_source=chrome-app-launcher-info-dialog',
+            type: 'chrome'
+        },
+        mozilla: {
+            link: '/IdentDigitalSignature/resources/plugin/cryptoplugin_ext_id@privatbank.ua.xpi',
+            type: 'mozilla'
+        },
+        safari: {
+            link : '',
+            type: 'safari'
+        },
+        exe: {
+            link: 'https://biprocessing.org.ua/IdentDigitalSignature/resources/plugin/cryptoplugin-1.2.2.exe'
+        }
+    };
+
+    $scope.pluginsLink = { extension: '', exe: '', type: '' };
+
+    (function () {
+        if ((!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0) {
+            $scope.pluginsLink.extension = linksToCryptoplugin.opera.link;
+            $scope.pluginsLink.type = 'opera';
+        } else if (typeof InstallTrigger !== 'undefined') {
+            $scope.pluginsLink.extension = linksToCryptoplugin.mozilla.link;
+            $scope.pluginsLink.type = 'mozilla';
+        } else if (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification))) {
+            $scope.pluginsLink.extension = linksToCryptoplugin.safari.link;
+            $scope.pluginsLink.type = 'safari';
+        } else if (!!window.chrome && !!window.chrome.webstore) {
+            $scope.pluginsLink.extension = linksToCryptoplugin.chrome.link;
+            $scope.pluginsLink.type = 'chrome';
+        } else {
+            $scope.pluginsLink.extension = '';
+        }
+
+        $scope.pluginsLink.exe = linksToCryptoplugin.exe;
+    })();
+
+    $scope.getExtensionMozilla = function (link) {
+        window.open(link,"_self");
+    };
+
     $scope.findKeys = function () {
         removeLastError();
         var edsContext = $scope.edsContext;

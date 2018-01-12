@@ -156,6 +156,12 @@ angular.module('signModule', [])
             "    </div>\n" +
             "  </form>\n" +
             "  <span style=\"color: red\">{{lastError.msg}}</span>\n" +
+            "  <div style='color: grey' ng-if=\"lastError.code === 'noExtensionInstalled'\">" +
+            "   (<a style=\"font-size: 14px;\" ng-href=\"{{pluginsLink.extension}}\" target=\"_blank\" ng-if=\"pluginsLink.type !== 'mozilla'\">Встановити розширення для браузера</a>\n" +
+            "   <a style=\"cursor: pointer; font-size: 14px;\" target=\"_blank\" onclick=\"window.open('/IdentDigitalSignature/resources/plugin/cryptoplugin_ext_id@privatbank.ua.xpi')\" ng-if=\"pluginsLink.type === 'mozilla'\">Встановити розширення для браузера</a>\n" +
+            "   <span style=\"font-size: 14px\" ng-if=\"pluginsLink.type !== 'safari'\"'> та </span>\n" +
+            "   <a style=\"font-size: 14px;\" ng-href=\"{{pluginsLink.exe.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
+            "  </div>" +
             "</div>\n" +
             "<div class=\"modal-footer\" style=\"border: none\">\n" +
             "  <button type=\"button\"\n" +
