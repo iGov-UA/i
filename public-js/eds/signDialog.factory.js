@@ -157,8 +157,14 @@ angular.module('signModule', [])
             "  </form>\n" +
             "  <span style=\"color: red\">{{lastError.msg}}</span>\n" +
             "  <div style='color: grey' ng-if=\"lastError.code === 'noExtensionInstalled'\">" +
-            "   (<a style=\"font-size: 14px;\" ng-href=\"{{pluginsLink.extension}}\" target=\"_blank\" ng-if=\"pluginsLink.type !== 'mozilla'\">Встановити розширення для браузера</a>\n" +
-            "   <a style=\"cursor: pointer; font-size: 14px;\" target=\"_blank\" onclick=\"window.open('/IdentDigitalSignature/resources/plugin/cryptoplugin_ext_id@privatbank.ua.xpi')\" ng-if=\"pluginsLink.type === 'mozilla'\">Встановити розширення для браузера</a>\n" +
+            "   (<a style=\"font-size: 14px;\"\n" +
+            "       ng-href=\"{{pluginsLink.extension}}\"\n" +
+            "       target=\"_blank\"\n" +
+            "       ng-if=\"pluginsLink.type !== 'mozilla'\">Встановити розширення для браузера</a>\n" +
+            "   <a style=\"cursor: pointer; font-size: 14px;\"\n" +
+            "       target=\"_blank\"\n" +
+            "       onclick=\"window.open('/IdentDigitalSignature/resources/plugin/cryptoplugin_ext_id@privatbank.ua.xpi')\"\n" +
+            "       ng-if=\"pluginsLink.type === 'mozilla'\">Встановити розширення для браузера</a>\n" +
             "   <span style=\"font-size: 14px\" ng-if=\"pluginsLink.type !== 'safari'\"'> та </span>\n" +
             "   <a style=\"font-size: 14px;\" ng-href=\"{{pluginsLink.exe.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
             "  </div>" +
