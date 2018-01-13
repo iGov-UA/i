@@ -79,7 +79,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import org.activiti.engine.task.NativeTaskQuery;
-
+import org.igov.model.action.item.ServiceDao;
+import org.igov.model.action.item.Service;
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.access.AccessKeyService;
@@ -120,6 +121,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
+    @Autowired
+    private ServiceDao oServiceDao;
 
     @Autowired
     private IdentityService identityService;
@@ -3359,5 +3362,14 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
     }
-
+    
+    @RequestMapping(value = "/getProcessByID", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<Long, String> getProcessByID(@RequestParam(value = "nID", required = true) Long nID){
+        Map<Long, String> mResMap = new HashMap<>();
+        Service oService = oServiceDao.findByIdExpected(nID);
+        mResMap.put(nID, oService.getName());
+        return mResMap;
+    }
+    
 }
