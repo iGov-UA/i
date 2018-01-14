@@ -15,8 +15,7 @@
 					url: "https://delta.test.igov.org.ua/wf/service/action/task/getProcessByID?" + dataString, /* PAGE WHERE WE WILL PASS THE DATA */
 					cache: false,
 					success: function(result){ /* GET THE TO BE RETURNED DATA */
-                                          res = result;
-                                          console.log(result);
+                                          $("#p0").append("json response: " + result);
 					}
 				  });
                                   $("#show").html(res); 
@@ -28,13 +27,11 @@
 	</head>
 		
 	<body>
-		<select name="allProcess" id="allProcess">
+                <select name="allProcess" id="allProcess">
 			<option value="1382">1382</option>
 			<option value="285">285</option>
 		</select>
-		
-		<div id="show">
-			<!-- ITEMS TO BE DISPLAYED HERE -->
-		</div>
+                
+		<p id="p0"></p>
 	</body>
 </html>
