@@ -15,10 +15,10 @@
 					url: "https://delta.test.igov.org.ua/wf/service/action/task/getProcessByID?" + dataString, /* PAGE WHERE WE WILL PASS THE DATA */
 					cache: false,
 					success: function(result){ /* GET THE TO BE RETURNED DATA */
-                                          $("#p0").append("json response: " + result);
+                                          $("#p0").empty();
+                                          $("#p0").append("json response: " + JSON.stringify(result));
 					}
 				  });
-                                  $("#show").html(res); 
 				});
 			  });
 		</script>
