@@ -3372,4 +3372,11 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         return mResMap;
     }
     
+    @RequestMapping(value = "/getBody", method = RequestMethod.GET)
+    public @ResponseBody String getBody() throws CommonServiceException, TaskAlreadyUnboundException, Exception{
+       BufferedReader oBufferedReader
+                = new BufferedReader(new InputStreamReader(
+                        ToolFS.getInputStream("patterns/mail/", "test.html"), "UTF-8"));
+        return org.apache.commons.io.IOUtils.toString(oBufferedReader);
+    }
 }
