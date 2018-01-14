@@ -9,15 +9,17 @@
 				  
 				  var allProcess = $(this).val(); /* GET THE VALUE OF THE SELECTED DATA */
 				  var dataString = "nID=" + allProcess; /* STORE THAT TO A DATA STRING */
-	
+                                  var res = "";
 				  $.ajax({ /* THEN THE AJAX CALL */
 					type: 'GET', /* TYPE OF METHOD TO USE TO PASS THE DATA */
 					url: "https://delta.test.igov.org.ua/wf/service/action/task/getProcessByID?" + dataString, /* PAGE WHERE WE WILL PASS THE DATA */
 					cache: false,
 					success: function(result){ /* GET THE TO BE RETURNED DATA */
-					  $("#show").html(result); /* THE RETURNED DATA WILL BE SHOWN IN THIS DIV */
+                                          res = result;
+                                          console.log(result);
 					}
 				  });
+                                  $("#show").html(res); 
 				});
 			  });
 		</script>
