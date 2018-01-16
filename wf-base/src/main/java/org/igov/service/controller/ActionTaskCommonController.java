@@ -706,7 +706,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages,
-            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables)
+            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
+            @ApiParam(value = "(опциональный) тестовый вариант процесса", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -738,6 +739,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeMessages == null) {
             bIncludeMessages = Boolean.FALSE;
         }
+        if (bTest == null) {
+            bTest = Boolean.FALSE;
+        }
         Map<String, Object> response = new HashMap<>();
 
         try {
@@ -759,8 +763,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
         }
 
-        response.put("oData", oActionTaskService.getQueueData(aField));
-
+        if(!bTest){
+            response.put("oData", oActionTaskService.getQueueData(aField));
+        }
         if (bIncludeGroups.equals(Boolean.TRUE)) {
             response.put("aGroup", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
@@ -811,8 +816,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process)));
-
+        if(!bTest){
+            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process)));
+        }
         return JsonRestUtils.toJsonResponse(response);
     }
 
