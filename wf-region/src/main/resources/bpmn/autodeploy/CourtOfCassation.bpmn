@@ -35,9 +35,12 @@
           <activiti:value id="seventeen" name="Представник посадової особи, яку викликано для дачі пояснень"></activiti:value>
           <activiti:value id="other" name="Інший"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sStatus" name="Інший процесуальний статус учасника судового процесу, від імені якого подається документ" type="string"></activiti:formProperty>
-        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNumberAplication" name="Реєстраційний номер заяви ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sCategoryDoc" name="Перелік документів ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sID_Order" name="Номер заяви ; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sStatus" name="Інший процесуальний статус учасника судового процесу, від імені якого подається документ" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameUr" name="Найменування юридичної особи" type="string" required="true" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sNameFiz" name="Прізвище, ім'я, по батькові учасника судового процесу" type="string" required="true" default=" "></activiti:formProperty>
         <activiti:formProperty id="sTableDoc" name="Таблиця з документами; ;bNew=true" type="table" default="${markerService.loadFromFile('table/court/CourtOfCassation_sTableDoc.json')}"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="тільки пдф" type="markers" default="{&quot;validate&quot;:{&quot;FileExtensions_1&quot;:{&quot;aField_ID&quot;:[&quot;sDoc&quot;],&quot;saExtension&quot;:&quot;pdf&quot;,&quot;sMessage&quot;:&quot;будь ласка, завантажте файл у форматі pdf&quot;}}}"></activiti:formProperty>
         <activiti:formProperty id="markers2" name="якщо фіз" type="markers" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_2&quot;:{&quot;aField_ID&quot;:[&quot;sNameFiz&quot;],&quot;asID_Field&quot;:{&quot;sReason&quot;:&quot;sSubekt&quot;},&quot;sCondition&quot;:&quot;[sReason] == 'fiz'||[sReason] == 'фізична особа або фізична особа-підприємець'&quot;}}}"></activiti:formProperty>

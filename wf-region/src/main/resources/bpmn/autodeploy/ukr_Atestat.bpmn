@@ -9,43 +9,35 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="bankIdAddressFactual" name="Адреса проживання" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" required="true"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія індивідуального податкового номеру" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="email" name="Е-Mail для зворотнього зв'язку;на цей e-mail Ви отримаєте результат обробки Вашого звернення;" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш номер телефону" type="string" default="+380" required="true"></activiti:formProperty>
         <activiti:formProperty id="atestationType" name="Оберіть тип атестації;Отримати посвідчення без проходження атестації можуть лише особи, що відповідають п. 56 &quot;Порядку атестації осіб, які претендують на вступ на державну службу, щодо вільного володіння державною мовою&quot;, затвердженого постановою КабМіну України від 26 квітня 2017 року № 301" type="enum" required="true">
-          <activiti:value id="sEnum1" name="Групове проходження атестації (вартість 350,00 грн.)"></activiti:value>
-          <activiti:value id="sEnum2" name="Індивідуальне проходження атестації (вартість 1067,00 грн.)"></activiti:value>
+          <activiti:value id="sEnum1" name="Групове проходження атестації"></activiti:value>
+          <activiti:value id="sEnum2" name="Індивідуальне проходження атестації"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText2" name="Зверніть увагу; ;labelType=warning" type="label" default="Увага! Студенти та викладачі ХНТУ не можуть атестуватися в університеті."></activiti:formProperty>
-        <activiti:formProperty id="univer_student_or_prof" name="Чи є Ви студентом або співробітником ХНТУ?" type="enum" required="true">
+        <activiti:formProperty id="sText2" name="Зверніть увагу; ;labelType=warning" type="label" default="Увага! Студенти та викладачі навчального закладу не можуть атестуватися в ньому."></activiti:formProperty>
+        <activiti:formProperty id="univer_student_or_prof" name="Чи є Ви студентом або співробітником нашого навчального закладу?" type="enum" required="true">
           <activiti:value id="sEnum1" name="Так"></activiti:value>
           <activiti:value id="sEnum2" name="Ні"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="sText16" name=" ; ;labelType=info" type="label" default="Реквізити для оплати: &lt;br&gt; Отримувач: Херсонський національний технічний університет &lt;br&gt;Код: 05480298 &lt;br&gt;Банк: Державна казначейська служба України, м.Київ&lt;br&gt; МФО: 820172&lt;br&gt; Р\рахунок: 31255208101194&lt;br&gt; Призначення платежу: атестація з державної мови, П.І.Б."></activiti:formProperty>
+        <activiti:formProperty id="sTextHDAU" name=" ; ;labelType=info" type="label" default="Реквізити для оплати: &lt;br&gt; Отримувач: ДВНЗ «Херсонський державний аграрний університет» &lt;br&gt;Код: 00493020 &lt;br&gt;Банк: Державна казначейська служба України, м.Київ&lt;br&gt; МФО: 820172&lt;br&gt; Р\рахунок: 31257241100213&lt;br&gt; Призначення платежу: атестація з державної мови, П.І.Б."></activiti:formProperty>
+        <activiti:formProperty id="sED" name="коротка назва ВИШу ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTextHNTU" name=" ; ;labelType=info" type="label" default="Реквізити для оплати: &lt;br&gt; Отримувач: Херсонський національний технічний університет &lt;br&gt;Код: 05480298 &lt;br&gt;Банк: Державна казначейська служба України, м.Київ&lt;br&gt; МФО: 820172&lt;br&gt; Р\рахунок: 31255208101194&lt;br&gt; Призначення платежу: атестація з державної мови, П.І.Б."></activiti:formProperty>
         <activiti:formProperty id="sSum" name="Сума для оплати:; ;labelType=info" type="label" default=" "></activiti:formProperty>
         <activiti:formProperty id="fPay" name="Додайте скан-копію квитанції з оплатою атестації" type="file" required="true"></activiti:formProperty>
         <activiti:formProperty id="sMail_Signature" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPhoneOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="atestation_date_group" name="Оберіть зручні для Вас дату і час проходження атестації" type="enum" required="true">
-          <activiti:value id="sEnum1" name="27.01.2018 о 10:00 за адресою м. Херсон, вул. Миру, 40, корпус 6, ауд. 102"></activiti:value>
-          <activiti:value id="sEnum2" name="17.02.2018 о 10:00 за адресою м. Херсон, вул. Миру, 40, корпус 6, ауд. 102"></activiti:value>
-          <activiti:value id="sEnum3" name="17.03.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum4" name="27.04.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum5" name="19.05.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum6" name="16.06.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum5" name="19.05.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum6" name="16.06.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum7" name="21.07.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum8" name="18.08.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum9" name="15.09.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum10" name="20.10.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum11" name="17.11.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum12" name="15.12.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="sTextHDAU1" name=" ; ;labelType=info" type="label" default="Увага! Обирайте дату, у яку не проводиться групова атестація. Дякуємо за розуміння."></activiti:formProperty>
+        <activiti:formProperty id="atestation_date_group1" name="Оберіть зручні для Вас дату і час проходження атестації" type="enum" required="true"></activiti:formProperty>
         <activiti:formProperty id="atestation_date_individual" name="Оберіть зручні для Вас дату і час проходження атестації;Атестація проводиться за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="atestation_date_group" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="markers1" name="show-hide" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_1.json')}"></activiti:formProperty>
+        <activiti:formProperty id="markers2" name="show-hide_PF" type="markers" default="${markerService.loadFromFile('education/ukr_Atestat_2.json')}"></activiti:formProperty>
       </extensionElements>
     </startEvent>
     <serviceTask id="servicetask1" name="Повідомлення про нове звернення" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
@@ -79,30 +71,18 @@
         <activiti:formProperty id="email" name="Е-Mail для зворотнього зв'язку" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Номер телефону" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="atestationType" name="Тип атестації" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="Групове проходження атестації (вартість 350,00 грн.)"></activiti:value>
-          <activiti:value id="sEnum2" name="Індивідуальне проходження атестації (вартість 1067,00 грн.)"></activiti:value>
+          <activiti:value id="sEnum1" name="Групове проходження атестації"></activiti:value>
+          <activiti:value id="sEnum2" name="Індивідуальне проходження атестації"></activiti:value>
         </activiti:formProperty>
+        <activiti:formProperty id="sED" name="коротка назва ВИШу ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="atestation_date" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="atestation_date_group" name="Обрана дата атестацї" type="enum" writable="false">
-          <activiti:value id="sEnum1" name="27.01.2018 о 10:00 за адресою м. Херсон, вул. Миру, 40, корпус 6, ауд. 102"></activiti:value>
-          <activiti:value id="sEnum2" name="17.02.2018 о 10:00 за адресою м. Херсон, вул. Миру, 40, корпус 6, ауд. 102"></activiti:value>
-          <activiti:value id="sEnum3" name="17.03.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum4" name="27.04.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum5" name="19.05.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum6" name="16.06.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum5" name="19.05.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum6" name="16.06.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum7" name="21.07.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum8" name="18.08.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum9" name="15.09.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum10" name="20.10.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum11" name="17.11.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-          <activiti:value id="sEnum12" name="15.12.2018 о 10:00 за адресою м. Херсон, вул. Бериславське Шосе, 24, корп. 3, ауд. 220"></activiti:value>
-        </activiti:formProperty>
+        <activiti:formProperty id="atestation_date_group" name="Дата аттестации ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sShapka" name="sShapka ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sMailClerk" name="sMailClerk ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="PrintForm" name="Заява;File title;sPrintFormFileAsPDF=pattern/print/education/ukr_Atestat_dopusk.html,sFileName=Zajava" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="fPay" name="Копія квитанції про оплату" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_passport" name="Скан-копія паспорта" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="bankId_scan_inn" name="Скан-копія індивідуального податкового номеру" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody" name="[pattern/print/education/ukr_Atestat_dopusk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява" writable="false"></activiti:formProperty>
         <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
           <activiti:value id="accept" name="Дані перевірені, заявник може приходити на атестацію"></activiti:value>
@@ -199,7 +179,7 @@ ${sMail_Signature}<br>
         <activiti:field name="text">
           <activiti:expression><![CDATA[[pattern/mail/new_design/_common_header.html]
  [pattern/mail/new_design/_common_content_start.html]
-Дякуємо, Вам що скористались нашим сервісом подання заяви на атестацію з української мови!<br /><br />Ви можете пройти атестацію enum{[atestation_date_group]}.<br/><br/>
+Дякуємо, Вам що скористались нашим сервісом подання заяви на атестацію з української мови!<br /><br />Ви можете пройти атестацію ${atestation_date_group}.<br/><br/>
 При собі мати паспорт і ручку<br/><br/>
 [pattern/mail/new_design/_common_content_end.html]
 [pattern/mail/new_design/_common_feedback.html]
