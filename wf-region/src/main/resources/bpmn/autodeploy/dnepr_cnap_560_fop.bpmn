@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_cnap_560_fop" name="Державна реєстрація створення фізичної особи – підприємця" isExecutable="true">
-    <documentation>AGVersion: 2017.11.14
+    <documentation>AGVersion: 2018.01.17 (2017.11.14)
+		+ дополнительное предупреждение ФОП об обязательной проверке системы налогообложения (при успешной регистрации)
+		+ автосайн корректный
 		-</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
@@ -262,7 +264,12 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
+&lt;br /&gt;&lt;br /&gt;
+Якщо Ви обирали спрощену систему оподаткування просимо обов'язково перевірити наявність Ваших даних у реєстрі платників Єдиного податку протягом перших 3-5 діб після реєстрації. &lt;br /&gt;
+Для перевірки зайдіть до &lt;a href="https://cabinet.sfs.gov.ua/cabinet/faces/public/reestr.jspx" target="_blank"&gt;електронного кабінету платника&lt;/a&gt;, оберіть "Реєстр платників єдиного податку" та використайте свій ІПН для пошуку.&lt;br /&gt;
+Якщо в реєстрі відсутня інформація про Вас - просимо не гаяти час, роздрукувати &lt;a href="https://drive.google.com/open?id=0B9UDkfHM4vkrRnF6SjVVeW9GSHc" target="_blank">бланк заяви&lt;/a&gt; та звернутися безпосередньо до податкової.&lt;br /&gt;
+Після 10 діб Ви вже не зможете перейти на спрощену систему оподаткування раніше початку наступного кварталу.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
@@ -311,7 +318,12 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
+&lt;br /&gt;&lt;br /&gt;
+Якщо Ви обирали спрощену систему оподаткування просимо обов'язково перевірити наявність Ваших даних у реєстрі платників Єдиного податку протягом перших 3-5 діб після реєстрації. &lt;br /&gt;
+Для перевірки зайдіть до &lt;a href="https://cabinet.sfs.gov.ua/cabinet/faces/public/reestr.jspx" target="_blank"&gt;електронного кабінету платника&lt;/a&gt;, оберіть "Реєстр платників єдиного податку" та використайте свій ІПН для пошуку.&lt;br /&gt;
+Якщо в реєстрі відсутня інформація про Вас - просимо не гаяти час, роздрукувати &lt;a href="https://drive.google.com/open?id=0B9UDkfHM4vkrRnF6SjVVeW9GSHc" target="_blank">бланк заяви&lt;/a&gt; та звернутися безпосередньо до податкової.&lt;br /&gt;
+Після 10 діб Ви вже не зможете перейти на спрощену систему оподаткування раніше початку наступного кварталу.&lt;br /&gt;&lt;br /&gt;
 Унікальний номер "Код" : &lt;strong&gt;${sUniqNum}&lt;/strong&gt;. &lt;br /&gt;&lt;br /&gt;
 У будь-який час Ви можете отримати результат наданих адміністративних послуг використавши "Код" під час пошуку на &lt;a href="https://usr.minjust.gov.ua/ua/freesearch/" target="_blank"&gt;офіційній сторінці Міністерства юстиції України&lt;/a&gt;, обравши для пошуку опцію "Результат надання адміністративних послуг.
 
@@ -427,7 +439,12 @@
           <activiti:expression>[pattern/mail/new_design/_common_header.html]
 		[pattern/mail/new_design/_common_content_start.html]
 
-Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.&lt;br /&gt;&lt;br /&gt;
+Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
+&lt;br /&gt;&lt;br /&gt;
+Якщо Ви обирали спрощену систему оподаткування просимо обов'язково перевірити наявність Ваших даних у реєстрі платників Єдиного податку протягом перших 3-5 діб після реєстрації. &lt;br /&gt;
+Для перевірки зайдіть до &lt;a href="https://cabinet.sfs.gov.ua/cabinet/faces/public/reestr.jspx" target="_blank"&gt;електронного кабінету платника&lt;/a&gt;, оберіть "Реєстр платників єдиного податку" та використайте свій ІПН для пошуку.&lt;br /&gt;
+Якщо в реєстрі відсутня інформація про Вас - просимо не гаяти час, роздрукувати &lt;a href="https://drive.google.com/open?id=0B9UDkfHM4vkrRnF6SjVVeW9GSHc" target="_blank">бланк заяви&lt;/a&gt; та звернутися безпосередньо до податкової.&lt;br /&gt;
+Після 10 діб Ви вже не зможете перейти на спрощену систему оподаткування раніше початку наступного кварталу.&lt;br /&gt;&lt;br /&gt;
 Вам направлена копія рішення (додаток до листа).
 
 
@@ -458,6 +475,11 @@
 		[pattern/mail/new_design/_common_content_start.html]
 
 Ваше звернення на тему &lt;strong&gt;"${sNameService}&lt;/strong&gt;", опрацьовано і по ньому винесено позитивне рішення про реєстрацію.
+&lt;br /&gt;&lt;br /&gt;
+Якщо Ви обирали спрощену систему оподаткування просимо обов'язково перевірити наявність Ваших даних у реєстрі платників Єдиного податку протягом перших 3-5 діб після реєстрації. &lt;br /&gt;
+Для перевірки зайдіть до &lt;a href="https://cabinet.sfs.gov.ua/cabinet/faces/public/reestr.jspx" target="_blank"&gt;електронного кабінету платника&lt;/a&gt;, оберіть "Реєстр платників єдиного податку" та використайте свій ІПН для пошуку.&lt;br /&gt;
+Якщо в реєстрі відсутня інформація про Вас - просимо не гаяти час, роздрукувати &lt;a href="https://drive.google.com/open?id=0B9UDkfHM4vkrRnF6SjVVeW9GSHc" target="_blank">бланк заяви&lt;/a&gt; та звернутися безпосередньо до податкової.&lt;br /&gt;
+Після 10 діб Ви вже не зможете перейти на спрощену систему оподаткування раніше початку наступного кварталу.&lt;br /&gt;&lt;br /&gt;
 
 
 [pattern/mail/new_design/_common_content_end.html]
