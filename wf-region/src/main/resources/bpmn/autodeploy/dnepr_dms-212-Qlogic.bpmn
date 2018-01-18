@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212-Qlogic" name="Реєстрація місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. Qlogic Последние правки: 30.11.2017</documentation>
+    <documentation>Смоктій К.В. Qlogic Последние правки: 16.01.2018</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
@@ -123,7 +123,7 @@ execution.setVariable('sMinPay', minpay)
 execution.setVariable('sMaxPay', maxpay)
 	  </script>
     </scriptTask>
-    <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="javascript" activiti:autoStoreVariables="false">
+    <scriptTask id="scripttask2" name="Script Task (JavaScript)" scriptFormat="groovy" activiti:autoStoreVariables="false">
       <script>
 
     var src=execution.getVariable('sCancelInfo')
@@ -246,10 +246,12 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_2" name="[pattern/print/dms/zajava_regBkChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFrChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_13" name="[pattern/print/dms/Zayava_Person_Data_Child.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява щодо персональних даних" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_1" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_regFrChild.html,sFileName=Zayava_pro_reyestratsiyu_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_2" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_regBkChild.html,sFileName=Zayava_pro_reyestratsiyu_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFrChild.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="nSvidChild" name="Свідоцтво про народження;Якщо декілька сторінок об'єднайте у pdf-файл або архів (формату zip, rar, 7z);bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -308,7 +310,6 @@ execution.setVariable('sMaxPay', maxpay)
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
     <serviceTask id="servicetask8" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow34" sourceRef="exclusivegateway1" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag=='true'}]]></conditionExpression>
@@ -540,6 +541,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBkChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_10" name="[pattern/print/dms/kartkaFrChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Картка реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_11" name="[pattern/print/dms/kartkaBk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Картка реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_13" name="[pattern/print/dms/Zayava_Person_Data_Child.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява щодо персональних даних" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -596,7 +599,7 @@ execution.setVariable('sMaxPay', maxpay)
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow36" sourceRef="scripttask2" targetRef="exclusivegateway3"></sequenceFlow>
-    <sequenceFlow id="flow37" name="${sIsCancellCustomeVizite=='False'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
+    <sequenceFlow id="flow37" name="${sIsCancellCustomeVizite=='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite=='False'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow38" name="${sIsCancellCustomeVizite!='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
@@ -608,8 +611,8 @@ execution.setVariable('sMaxPay', maxpay)
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask3" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-212">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-212" id="BPMNPlane_dnepr_dms-212">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-212-Qlogic">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-212-Qlogic" id="BPMNPlane_dnepr_dms-212-Qlogic">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="125.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -644,7 +647,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdc:Bounds height="89.0" width="107.0" x="730.0" y="181.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="73.0" width="105.0" x="932.0" y="358.0"></omgdc:Bounds>
+        <omgdc:Bounds height="73.0" width="105.0" x="1000.0" y="359.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="905.0" y="473.0"></omgdc:Bounds>
@@ -701,17 +704,12 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="645.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="730.0" y="225.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="837.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="870.0" y="226.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="984.0" y="431.0"></omgdi:waypoint>
-        <omgdi:waypoint x="984.0" y="490.0"></omgdi:waypoint>
-        <omgdi:waypoint x="940.0" y="490.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="605.0" y="225.0"></omgdi:waypoint>
@@ -727,7 +725,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="625.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="280.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="520.0" y="249.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="520.0" y="249.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -743,7 +741,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="741.0" y="499.0"></omgdi:waypoint>
         <omgdi:waypoint x="742.0" y="523.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="86.0" x="654.0" y="461.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="86.0" x="654.0" y="461.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -752,7 +750,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="530.0" y="597.0"></omgdi:waypoint>
         <omgdi:waypoint x="608.0" y="597.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="83.0" x="521.0" y="470.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="83.0" x="521.0" y="470.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -767,9 +765,10 @@ execution.setVariable('sMaxPay', maxpay)
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
         <omgdi:waypoint x="942.0" y="311.0"></omgdi:waypoint>
         <omgdi:waypoint x="984.0" y="311.0"></omgdi:waypoint>
-        <omgdi:waypoint x="984.0" y="358.0"></omgdi:waypoint>
+        <omgdi:waypoint x="984.0" y="490.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="490.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="930.0" y="263.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="930.0" y="263.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
@@ -778,7 +777,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="854.0" y="490.0"></omgdi:waypoint>
         <omgdi:waypoint x="905.0" y="490.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="807.0" y="264.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="807.0" y="264.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">

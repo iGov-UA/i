@@ -7,18 +7,34 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string"></activiti:formProperty>
-
-
-        <activiti:formProperty id="nID_Department_visitDate1" name="Департамент" type="enum" required="true">
-          <activiti:value id="1" name="Департамент 1"></activiti:value>
-          <activiti:value id="2" name="Департамент 2"></activiti:value>
-        </activiti:formProperty>
-        <activiti:formProperty id="nSlots_visitDate1" name="nSlots_visitDate1" type="long" ></activiti:formProperty>
-        <activiti:formProperty id="visitDate1" name="visitDate1" type="queueData" required="true"></activiti:formProperty>
-
-        <activiti:formProperty id="phone" name="Ваш телефон" type="string" default="+38" required="true"></activiti:formProperty>
-        <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="date_of_visit" name="дата візиту; ;bVisible=false" type=""></activiti:formProperty>
+        
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" default="+380" required="true"></activiti:formProperty>
+        <activiti:formProperty id="email" name="Ваш e-mail; На цей e-mail  Ви отримаєте результат обробки Вашого звернення" type="string" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть підрозділ міграційної служби, в якому Ви будете отримувати паспорт" type="select" default="0" required="true"></activiti:formProperty>
+        
+        <activiti:formProperty id="visitDay" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_ServiceCustomPrivate_visitDay" name="Номер черги за довідником ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sID_Type_visitDay" name="sID_Type_visitDay; ;bVisible=false" type="string" default="DMS"></activiti:formProperty>
+        
+        <activiti:formProperty id="visitDay1" name="Оберіть зручний день та час з доступних місць у черзі" type="queueData" required="true"></activiti:formProperty>
+        <activiti:formProperty id="nID_Department_visitDay1" name="Департамент; ;bVisible=false" type="string"></activiti:formProperty>
+        
+        <activiti:formProperty id="sCancelInfo" name="sCancelInfo; ;bVisible=false" type="string" default="Заявка актуальна"></activiti:formProperty>
+        
+        <activiti:formProperty id="sTicketCode" name="Код талону; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTicketNumber" name="Номер талону; ;bVisible=false" type="string"></activiti:formProperty>
+                
+        <activiti:formProperty id="sFlag" name="sFlag; ;bVisible=false" type="string" default="2etap"></activiti:formProperty>
+        <activiti:formProperty id="markerFlag" name="markerFlag" type="markers" default="${markerService.loadFromFile('dms/DMSiGov.json')}"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="Адреса ДМС; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day" name="sNotification_day; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNotification_day1" name="sNotification_day1; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPaymentDMS" name="Реквізити для сплати; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="Назва органу; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="Пошта органу; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        <activiti:formProperty id="sRekvIDZagranPos" name="Реквізити; ;bVisible=false" type="string" default=" "></activiti:formProperty>
+        
       </extensionElements>
     </startEvent>
     <userTask id="usertask2" name="обробка " activiti:candidateGroups="sales">
@@ -27,14 +43,12 @@
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="phone" name="Контактний телефон" type="string" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="email" name="e-mail" type="string" writable="false"></activiti:formProperty>
+        
+        <activiti:formProperty id="visitDay1" name="Дата та час візиту - " type="queueData" writable="false"></activiti:formProperty>
 
 
-        <activiti:formProperty id="email" name="Ваша електронна пошта" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="visitDate" name="В який день Ви бажаєте звернутися до міграційної служби?" type="queueData" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="finish" name="Стан" type="enum" required="true">
-          <activiti:value id="attr1_ok" name="Громадянин прийшов у назначений час"></activiti:value>
-          <activiti:value id="attr2_missed" name="Громадянин не надійшов у зазначений час"></activiti:value>
-        </activiti:formProperty>
         <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
       </extensionElements>
     </userTask>

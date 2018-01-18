@@ -11,6 +11,8 @@
         <activiti:formProperty id="sID_Payment" name="ИД транзакции платежа; ;bVisible=false" type="string" default=" "></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина)" type="string" default="i10172968078"></activiti:formProperty>
+        <activiti:formProperty id="sExpired_Period_Hour" name="срок жизни платежа" type="long" default="1"></activiti:formProperty>
+        <activiti:formProperty id="nExpired_Period_Hour" name="срок жизни платежа" type="long" default="1"></activiti:formProperty>
         <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="0.01"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="Тестовая транзакция"></activiti:formProperty>
@@ -21,26 +23,8 @@
         <activiti:formProperty id="bankIdlastName" name="Прізвище" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdfirstName" name="Ім'я" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="bankIdmiddleName" name="По батькові" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdPassport" name="Паспортні дані" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdaddress" name="Адреса реєстрації" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="bankIdinn" name="ІПН" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="vin" name="VIN-номер авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="brand" name="Марка авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="model" name="Модель авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="number" name="Попередній держ.номер авто" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceNumber" name="Серія та номер довідки-рахунка" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="invoiceDate" name="Дата  видачі довідки-рахунка" type="date" writable="false"></activiti:formProperty>
         <activiti:formProperty id="phone" name="Ваш контактний телефон" type="string" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide" name="Результат перевірки наявності обтяжень" type="enum" writable="false">
-          <activiti:value id="accept1" name="Обтяження відсутні. "></activiti:value>
-          <activiti:value id="warning" name="Авто підлягає арешту. "></activiti:value>
-          <activiti:value id="reject" name="Знайдені обтяження. Відмовити громадянину в наданні послуги."></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="comment" name="Коментарі" type="textArea" writable="false"></activiti:formProperty>
-        <activiti:formProperty id="decide2" name="Результат огляду авто " type="enum" required="true">
-          <activiti:value id="accept2" name="Перевірка успішна. "></activiti:value>
-          <activiti:value id="reject2" name="Авто  не пройшло перевірку"></activiti:value>
-        </activiti:formProperty>
         <activiti:formProperty id="sIDPayment" name="id платежа" type="string" default="${sID_Payment}" writable="false"></activiti:formProperty>
       </extensionElements>
     </userTask>

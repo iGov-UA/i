@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="dnepr_dms-212s-Qlogic" name="Зняття з реєстрації місця проживання дитини до чотирнадцяти років" isExecutable="true">
-    <documentation>Смоктій К.В. Qlogic Последние правки: 30.11.2017</documentation>
+    <documentation>Смоктій К.В. Qlogic Последние правки: 16.01.2018</documentation>
     <startEvent id="startevent1" name="Start">
       <extensionElements>
         <activiti:formProperty id="warning1" name="Зверніть увагу" type="label" default="&lt;b&gt; Послуга надається лише для однієї дитини щодо якої заповнюється звернення! &lt;/b&gt;"></activiti:formProperty>
@@ -212,7 +212,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="asEnumDistrictMariupol" name="Район, де заявник планує знятися з реєстрації місця проживання" type="enum" writable="false">
+        <activiti:formProperty id="asEnumDistrictMariupol" name="Район, де заявник планує знятися з реєстрації місця проживання" type="enum" writable="false">
           <activiti:value id="sEnumCentral" name="Центральний район"></activiti:value>
           <activiti:value id="sEnumKalmius" name="Кальміуський район"></activiti:value>
           <activiti:value id="sEnumLivoberezniy" name="Лівобережний район"></activiti:value>
@@ -233,8 +233,10 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sMaxPay" name="максимальна сума адмінсбору ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sBody_3" name="[pattern/print/dms/1zajava_znFrChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_4" name="[pattern/print/dms/zajava_znBk.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява для зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_13" name="[pattern/print/dms/Zayava_Person_Data_Child.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява щодо персональних даних" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_3" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/1zajava_znFrChild.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page1_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
         <activiti:formProperty id="PrintForm_4" name="File label;File title;sPrintFormFileAsPDF=pattern/print/dms/zajava_znBk.html,sFileName=Zayava_znyattya_z_reyestratsiyi_Page2_of_2,bNew=true" type="file" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -292,7 +294,6 @@ execution.setVariable('sMaxPay', maxpay)
     </serviceTask>
     <sequenceFlow id="flow16" sourceRef="servicetask5" targetRef="scripttask2"></sequenceFlow>
     <serviceTask id="servicetask8" name="Видалення тікета з черги" activiti:delegateExpression="#{releaseTicketsOfQueue}"></serviceTask>
-    <sequenceFlow id="flow31" sourceRef="servicetask8" targetRef="endevent3"></sequenceFlow>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flow34" sourceRef="exclusivegateway1" targetRef="servicetask9">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${asDecision=='sAccept'&&sFlag=='true'}]]></conditionExpression>
@@ -478,7 +479,7 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sChildDoc" name="Дані свідоцтва про народження дитини; ;writable=false" type="textArea"></activiti:formProperty>
         <activiti:formProperty id="sChildCitizenship" name="Громадянство; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sArea" name="Місто або район, до якого належить нове місце проживання дитини; ;writable=false" type="string"></activiti:formProperty>
-		<activiti:formProperty id="asEnumDistrictMariupol" name="Район, де заявник планує знятися з реєстрації місця проживання" type="enum" writable="false">
+        <activiti:formProperty id="asEnumDistrictMariupol" name="Район, де заявник планує знятися з реєстрації місця проживання" type="enum" writable="false">
           <activiti:value id="sEnumCentral" name="Центральний район"></activiti:value>
           <activiti:value id="sEnumKalmius" name="Кальміуський район"></activiti:value>
           <activiti:value id="sEnumLivoberezniy" name="Лівобережний район"></activiti:value>
@@ -500,6 +501,8 @@ execution.setVariable('sMaxPay', maxpay)
         <activiti:formProperty id="sBody_12" name="[pattern/print/dms/DovidkaZnChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Довідка про зняття з реєстрації" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_7" name="[pattern/print/dms/TalonFrChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Талон про зняття з реєстрації лицьова" writable="false"></activiti:formProperty>
         <activiti:formProperty id="sBody_8" name="[pattern/print/dms/TalonBkChild.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Талон про зняття з реєстрації зворотня" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sBody_13" name="[pattern/print/dms/Zayava_Person_Data_Child.html] ; ;bVisible=false ,bPrintform=true" type="string" default="Заява щодо персональних даних" writable="false"></activiti:formProperty>
+        <activiti:formProperty id="sDateCreate" name="Дата подання заявки ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNum" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sEddrNumChild" name="Номер у Єдиному державному демографічному реєстрі ; ;bVisible=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sStamp_Print" name="Текст для другу в лівому верхньому куту довідки про реєстрацію ; ;bVisible=false" type="string"></activiti:formProperty>
@@ -554,7 +557,7 @@ execution.setVariable('sMaxPay', maxpay)
     </serviceTask>
     <sequenceFlow id="flow30" sourceRef="servicetask2" targetRef="endevent4"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
-    <sequenceFlow id="flow36" name="${sIsCancellCustomeVizite=='False'}" sourceRef="exclusivegateway3" targetRef="servicetask8">
+    <sequenceFlow id="flow36" name="${sIsCancellCustomeVizite=='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${sIsCancellCustomeVizite=='False'}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="flow37" name="${sIsCancellCustomeVizite!='False'}" sourceRef="exclusivegateway3" targetRef="endevent3">
@@ -567,8 +570,8 @@ execution.setVariable('sMaxPay', maxpay)
     </scriptTask>
     <sequenceFlow id="flow40" sourceRef="scripttask3" targetRef="servicetask4"></sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-212s">
-    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-212s" id="BPMNPlane_dnepr_dms-212s">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dnepr_dms-212s-Qlogic">
+    <bpmndi:BPMNPlane bpmnElement="dnepr_dms-212s-Qlogic" id="BPMNPlane_dnepr_dms-212s-Qlogic">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="125.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -603,7 +606,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdc:Bounds height="88.0" width="107.0" x="760.0" y="182.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
-        <omgdc:Bounds height="71.0" width="119.0" x="985.0" y="350.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="119.0" x="1070.0" y="350.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
         <omgdc:Bounds height="35.0" width="35.0" x="942.0" y="430.0"></omgdc:Bounds>
@@ -660,17 +663,12 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="645.0" y="225.0"></omgdi:waypoint>
         <omgdi:waypoint x="760.0" y="226.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="654.0" y="182.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="867.0" y="226.0"></omgdi:waypoint>
         <omgdi:waypoint x="907.0" y="225.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
-        <omgdi:waypoint x="1044.0" y="421.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1043.0" y="447.0"></omgdi:waypoint>
-        <omgdi:waypoint x="977.0" y="447.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
         <omgdi:waypoint x="605.0" y="225.0"></omgdi:waypoint>
@@ -686,7 +684,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="625.0" y="245.0"></omgdi:waypoint>
         <omgdi:waypoint x="625.0" y="277.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="100.0" x="517.0" y="236.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="517.0" y="236.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
@@ -702,7 +700,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="522.0" y="510.0"></omgdi:waypoint>
         <omgdi:waypoint x="522.0" y="550.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="86.0" x="511.0" y="460.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="86.0" x="511.0" y="460.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
@@ -711,7 +709,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="751.0" y="657.0"></omgdi:waypoint>
         <omgdi:waypoint x="643.0" y="657.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="48.0" width="83.0" x="661.0" y="461.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="83.0" x="661.0" y="461.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
@@ -722,9 +720,10 @@ execution.setVariable('sMaxPay', maxpay)
       <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
         <omgdi:waypoint x="979.0" y="317.0"></omgdi:waypoint>
         <omgdi:waypoint x="1043.0" y="317.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1044.0" y="350.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1043.0" y="447.0"></omgdi:waypoint>
+        <omgdi:waypoint x="977.0" y="447.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="995.0" y="272.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="995.0" y="272.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
@@ -733,7 +732,7 @@ execution.setVariable('sMaxPay', maxpay)
         <omgdi:waypoint x="866.0" y="447.0"></omgdi:waypoint>
         <omgdi:waypoint x="942.0" y="447.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="64.0" width="100.0" x="841.0" y="279.0"></omgdc:Bounds>
+          <omgdc:Bounds height="42.0" width="100.0" x="841.0" y="279.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
