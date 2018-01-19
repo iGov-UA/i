@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.regex.*;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -35,59 +35,64 @@ public class ManagerSMS {
             .append("</body>")
             .append("</message>").toString();
 
-    /*private static final String KYIVSTARBODY = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-            .append("<message rid=\"id\" paid=\"false\" bearer=\"SMS\">")
+    private static final String KYIVSTARBODY = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+            .append("<message paid=\"2000\" mid=\"").append("%s").append("\" bearer=\"SMS\">")
+            .append("<sn>").append("%s").append("</sn>")
             .append("<sin>").append("%s").append("</sin>")
-            .append("<body content-type=\"text/plain\" encoding=\"plain\">").append("%s")
+            .append("<body content-type=\"text/plain\">").append("%s")
             .append("</body>")
-            .append("</message>").toString();*/
-    public String sendSms(String phone, String message, String sID_Order, boolean bTest) throws Exception {//, boolean bOldAPI
+            .append("</message>").toString();
         
-        String resp = "[none]";
+    public String sendSms(String phone, String message, String sID_Order) {
+        
+        String sResponse = "[none]";
 
         try {
-            Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073");
-            //Pattern regexKyivStar = Pattern.compile("38067(.*)|38096(.*)|38097(.*)|38098(.*)");
-            LOG.info("phone: " + phone + " sID_Order: " + sID_Order + " bTest: " + bTest);
+            Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073(.*)");
+            Pattern regexKyivStar = Pattern.compile("38039(.*)|38067(.*)|38068(.*)|38096(.*)|38097(.*)|38098(.*)");
+            LOG.info("phone: {}, sID_Order: {}", phone, sID_Order);
             phone = phone.replace("+", "").trim();
 
-            if(!bTest){
-                Boolean bOldAPI = !bTest;
-                if (bOldAPI) {
-                    resp = SendSenderSms(sID_Order, phone, message);
-                    LOG.info("phone: " + phone + " sID_Order: " + sID_Order + " bTest: " + bTest + " resp: " + resp);
-                } else if (regexpLifeCell.matcher(phone).matches()) {
-                    resp = SendLifeCellSms(phone, message);
-                } /*else if(regexKyivStar.matcher(phone).matches())
-                    {
-                        SendKyivStarSms(phone, message);
-                }*/ else {
-                    resp = SendSenderSms(sID_Order, phone, message);
-                }
+            if (regexpLifeCell.matcher(phone).matches()) {
+                LOG.info("send sms via 'LifeCell'");
+                sResponse = SendLifeCellSms(phone, message);
+            } else if (regexKyivStar.matcher(phone).matches()){
+                LOG.info("send sms via 'KyivStar'");
+                sResponse = SendKyivStarSms(sID_Order, phone, message);
+            } else {
+                LOG.info("send sms via sender");
+                sResponse = SendSenderSms(sID_Order, phone, message);
             }
-            LOG.info("phone: " + phone + " sID_Order: " + sID_Order + " bTest: " + bTest + " resp: " + resp + " ok!!!");
-        }
-        catch (Exception ex){
-            LOG.error("Error sending SMS: " + ex.toString());
+    
+            LOG.info("response: {}", sResponse);
+        } catch (Exception ex){
+            LOG.error("sending sms error", ex);
         }
             
-        return resp;
+        return sResponse;
     }
     
     private String SendLifeCellSms(String phone, String message) throws Exception {
         String bodyResult = String.format(LIFEBODY, "+" + phone, message);
+        LOG.info("SendLifeCellSms_Body = {}", bodyResult);
+
         String response = oHttpRequester.postInside(generalConfig.getLifeURL(), null, bodyResult, "text/xml; charset=utf-8",
                 generalConfig.getLifeLogin(), generalConfig.getLifePassword());
-        LOG.info(response);
+        LOG.info("SendLifeCellSms_Response = {}", response);
         return response;
     }
 
-    /*private String SendKyivStarSms(String phone, String message) throws Exception
+    private String SendKyivStarSms(String sID_Order, String phone, String message) throws Exception
     {
-        String bodyResult = String.format(KYIVSTARBODY, "+" + phone, message);
-        return oHttpRequester.postInside(generalConfig.getKyivStarURL(), null, bodyResult, "text/xml; charset=utf-8",
-            generalConfig.getKyivStarLogin(), generalConfig.getKyivStarPassword());
-    }*/
+        LOG.info("SendKyivStarSms started...");
+        String bodyResult = String.format(KYIVSTARBODY, sID_Order, "iGov", phone, message);
+        LOG.info("generalConfig.getKievStarURL() {}", generalConfig.getKievStarURL());
+        LOG.info("generalConfig.getKievStarLogin() {}", generalConfig.getKievStarLogin());
+        LOG.info("generalConfig.getKievStarPassword() {}", generalConfig.getKievStarPassword());
+        return oHttpRequester.postInside(generalConfig.getKievStarURL(), null, bodyResult, "text/xml; charset=utf-8",
+            generalConfig.getKievStarLogin(), generalConfig.getKievStarPassword());
+    }
+    
     private String SendSenderSms(String sID_Order, String phone, String message) {
         String response = managerSMS.sendSMS(sID_Order, "+" + phone, message);
         LOG.info(response);
