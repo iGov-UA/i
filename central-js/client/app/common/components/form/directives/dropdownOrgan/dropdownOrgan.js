@@ -1,4 +1,4 @@
-angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $http, $timeout) {
+angular.module('app').directive('dropdownOrgan', function (OrganListFactory, dialogs, $http, $timeout) {
   return {
     restrict: 'EA',
     templateUrl: 'app/common/components/form/directives/dropdownOrgan/dropdownOrgan.html',
@@ -13,6 +13,8 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
       name: "="
     },
     link: function (scope) {
+
+      scope.isErrorOccured = false;
       // init organ list for organ select
       scope.organList = new OrganListFactory(scope.serviceData);
       scope.loadOrganList = function (search) {
@@ -107,8 +109,16 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, $ht
             });
             $timeout(function () {
               attributesApplying = false;
-            })
-          });
+            });
+          })
+            .error(function(data, status, headers, config) {
+              dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+              scope.organList.reset();
+              scope.organList.initialize();
+              scope.organList.load(scope.serviceData, null).then(function (regions) {
+                scope.organList.initialize(regions);
+              });
+            });
         }
       };
 
