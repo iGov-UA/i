@@ -141,7 +141,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                   } else {
                     dialogs.error('Помилка', err[1])
                   }
-                } else {
+                } else if (data.message === null || data.message.indexOf('Error parsing') > 0
+                            || data.message.indexOf('5') === 0) {
+                  dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+                }
+                else {
                   dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
                 }
                 scope.selected.slot = null;
