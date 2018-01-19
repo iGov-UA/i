@@ -1,33 +1,5 @@
 package org.igov.service.business.action.task.systemtask.mail;
 
-import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
-import static org.igov.util.ToolLuna.getProtectedNumber;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.activation.DataSource;
-
-import javax.mail.Multipart;
-import javax.mail.internet.MimeMultipart;
-
 import org.activiti.bpmn.model.FlowElement;
 import org.activiti.bpmn.model.UserTask;
 import org.activiti.engine.ActivitiObjectNotFoundException;
@@ -52,7 +24,6 @@ import org.igov.service.business.access.AccessKeyService;
 import org.igov.service.business.action.event.HistoryEventService;
 import org.igov.service.business.action.task.core.AbstractModelTask;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import org.igov.service.business.action.task.form.QueueDataFormType;
 import org.igov.service.business.action.task.systemtask.misc.CancelTaskUtil;
 import org.igov.service.business.finance.Currency;
 import org.igov.service.business.finance.Liqpay;
@@ -62,9 +33,9 @@ import org.igov.service.business.util.CustomRegexPattern;
 import org.igov.service.business.util.DateUtilFormat;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
+import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.igov.util.Tool;
 import org.igov.util.ToolWeb;
-import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -76,6 +47,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.activation.DataSource;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeMultipart;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.igov.io.fs.FileSystemData.getFileData_Pattern;
+import static org.igov.util.ToolLuna.getProtectedNumber;
 
 public abstract class Abstract_MailTaskCustom extends AbstractModelTask implements JavaDelegate, CustomRegexPattern {
 
@@ -713,7 +704,7 @@ public abstract class Abstract_MailTaskCustom extends AbstractModelTask implemen
         return "{\"\":\"\"}";
     }
 
-public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
+    public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
             throws Exception {
         //если тестовый сервер - письма чиновнику на адрес smailclerkigov@gmail.com
         convertExecutionVariableValue(oExecution);
@@ -957,7 +948,7 @@ public void sendMail(DelegateExecution oExecution, String sAttachmentsForSend)
                     String sReturn;
                     sPhone_SMS_Value = sPhone_SMS_Value.replaceAll("\\ ", "");
                     sReturn = ManagerSMS.sendSms(sPhone_SMS_Value, sText_SMS_Value,
-                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))), generalConfig.isTest_LiqPay());
+                            generalConfig.getOrderId_ByOrder(getProtectedNumber(Long.valueOf(oExecution.getProcessInstanceId()))));
                     LOG.info("(sReturn={})", sReturn);
                 }
             }
