@@ -3,14 +3,15 @@ package org.igov.service.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import java.io.BufferedReader;
-import java.util.Map;
 import org.apache.commons.codec.binary.Base64;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.Mail;
 import org.igov.service.business.access.AccessDataService;
 import org.igov.service.business.access.AccessKeyService;
+import org.igov.service.business.finance.Currency;
+import org.igov.service.business.finance.Liqpay;
 import org.igov.service.business.finance.LiqpayService;
+import org.igov.service.business.object.Language;
 import org.igov.service.controller.security.AccessContract;
 import org.igov.service.controller.security.AuthenticationTokenSelector;
 import org.slf4j.Logger;
@@ -18,18 +19,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import org.igov.service.business.finance.Currency;
-import org.igov.service.business.finance.Liqpay;
+import java.io.BufferedReader;
+import java.util.Map;
 
 import static org.igov.service.business.finance.LiqpayService.TASK_MARK;
-import org.igov.service.business.object.Language;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Api(tags = { "FinanceCommonController -- Финансы общие (в т.ч. платежи)" })
 @Controller
@@ -256,8 +252,8 @@ public class FinanceCommonController {
         @ApiParam(value = "ИД валюты (3 символа)", required = false) @RequestParam(value = "sID_Currency", required = false) String sID_Currency,
         @ApiParam(value = "", required = false) @RequestParam(value = "sURL_CallbackStatusNew", required = false) String sURL_CallbackStatusNew,
         @ApiParam(value = "", required = false) @RequestParam(value = "sURL_CallbackPaySuccess", required = false) String sURL_CallbackPaySuccess,
-        @ApiParam(value = "номер-ИД субьекта", required = false) @RequestParam Long nID_Subject,
-        @ApiParam(value = "количество часов актуальности платежа", required = false) @RequestParam Integer sExpired_Period_Hour
+        @ApiParam(value = "номер-ИД субьекта", required = true) @RequestParam Long nID_Subject,
+        @ApiParam("количество часов актуальности платежа") @RequestParam(required = false) Integer sExpired_Period_Hour
     ) throws Exception {
 
         if (sSum != null) {
