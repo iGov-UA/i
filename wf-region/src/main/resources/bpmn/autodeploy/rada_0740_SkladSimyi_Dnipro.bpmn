@@ -94,9 +94,9 @@
         <activiti:formProperty id="sText1" name=" ; ;labelType=info" type="label" default="Якщо ви обрали отримати відповідь поштою, вам треба буде оплатити поштове відправлення, для цього на вашу пошту буде направлено лист з реквізитами та посиланням для оплати через Інтернет"></activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Вартість поштового відправлення" type="enum" default="sEnamLustKur" writable="false">
-          <activiti:value id="sEnamLustKur" name="Доставка листа 43.56 гривень"></activiti:value>
-        </activiti:formProperty>
+        
+        <activiti:formProperty id="asLust" name=" ; ;labelType=info" type="label" default="&lt;b&gt;Вартість доставки листа поштою 55.59 грн (54.60 грн. + 0.99 грн. комісія) &lt;/b&gt;"></activiti:formProperty>
+        
         <activiti:formProperty id="sLabeRegistr2" name=" ; ;labelType=warning" type="label" default="УВАГА! Для АНД, Індустіального, Соборного і Центрального району, довідки видаються тільки, якщо інформація про вас вже внесена в реєстр фізичних осіб (тобто, якщо ви вже отримували довідку у відділах реєстрації фіз. осіб).&lt;br&gt; Якщо в реєстрі не має інформації про зареєстрованих за вашою адресою осіб, вам буде відмовлено!"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all_1" name=" ; ;bNew=true" type="file"></activiti:formProperty>
         <activiti:formProperty id="markerPost" name="Post" type="markers" default="${markerService.loadFromFile('AK/Dnipro_Post_MarkerNoSOJ_ECP.json')}"></activiti:formProperty>
@@ -116,7 +116,7 @@
         <activiti:formProperty id="sCountPayment" name="лічільник спрацювання таймера; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="nID_Subject" name="ИД-номер субъекта; ;bVisible=false" type="string" default="0"></activiti:formProperty>
         <activiti:formProperty id="sID_Merchant" name="ИД-строковой мерчанта (магазина); ;bVisible=false" type="string" default="i75116857714"></activiti:formProperty>
-        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="43.56 "></activiti:formProperty>
+        <activiti:formProperty id="sSum" name="сумма платежа; ;bVisible=false" type="string" default="55.59"></activiti:formProperty>
         <activiti:formProperty id="sID_Currency" name="ИД-строковой валюты; ;bVisible=false" type="string" default="UAH"></activiti:formProperty>
         <activiti:formProperty id="sDescription" name="строка-описание платежа; ;bVisible=false" type="string" default="сплата за отримання листа"></activiti:formProperty>
         <activiti:formProperty id="sPosluga_name" name="назва послуги; ;bVisible=false" type="string" default="Довідка про склад сім'ї"></activiti:formProperty>
@@ -872,9 +872,8 @@ ${sNameOrgan}<br>
         </activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 23.11"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
+        <activiti:formProperty id="asLust" name="Вартість поштового відправлення" type="enum" default="sEnamLustKur" writable="false">
+          <activiti:value id="sEnamLustKur" name="Доставка листа 54.60 грн (1,8% комісія Лікпей)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="form_signed_all_1" name="Заява з ЕЦП; ;bNew=true" type="file" writable="false"></activiti:formProperty>
@@ -933,9 +932,8 @@ ${sNameOrgan}<br>
         </activiti:formProperty>
         <activiti:formProperty id="sIndex" name="Індекс; ;writable=false" type="string"></activiti:formProperty>
         <activiti:formProperty id="sPostAdress" name="Адреса на яку надіслати відповідь; ;writable=false" type="string"></activiti:formProperty>
-        <activiti:formProperty id="asLust" name="Тип поштового відправлення" type="enum" writable="false">
-          <activiti:value id="sEnamLustRek" name="Рекомендований лист, вартість 23.11"></activiti:value>
-          <activiti:value id="sEnamLustKur" name="Лист з кур'єрською доставкою, вартість 43.47"></activiti:value>
+        <activiti:formProperty id="asLust" name="Вартість поштового відправлення" type="enum" default="sEnamLustKur" writable="false">
+          <activiti:value id="sEnamLustKur" name="Доставка листа 54.60 грн (1,8% комісія Лікпей)"></activiti:value>
         </activiti:formProperty>
         <activiti:formProperty id="sID_Payment" name="Номер транзакції платежу" type="string" writable="false"></activiti:formProperty>
         <activiti:formProperty id="markersLine_Org" name="Де отримати документ" type="markers" default="{&quot;attributes&quot;:{&quot;Line_Org&quot;:{&quot;aElement_ID&quot;:[&quot;sNameOrgan&quot;],&quot;sValue&quot;:&quot;Де отримати документ&quot;}}}"></activiti:formProperty>
@@ -1060,6 +1058,9 @@ ${sNameOrgan}<br>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
         <omgdc:Bounds height="55.0" width="105.0" x="393.0" y="153.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="393.0" y="233.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask8" id="BPMNShape_servicetask8">
         <omgdc:Bounds height="55.0" width="105.0" x="70.0" y="303.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
@@ -1158,9 +1159,6 @@ ${sNameOrgan}<br>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent8" id="BPMNShape_endevent8">
         <omgdc:Bounds height="35.0" width="35.0" x="12.0" y="561.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="scripttask3" id="BPMNShape_scripttask3">
-        <omgdc:Bounds height="55.0" width="105.0" x="393.0" y="233.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
         <omgdi:waypoint x="55.0" y="100.0"></omgdi:waypoint>
