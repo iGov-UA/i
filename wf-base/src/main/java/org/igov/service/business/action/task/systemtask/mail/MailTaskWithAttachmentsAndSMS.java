@@ -2,9 +2,9 @@ package org.igov.service.business.action.task.systemtask.mail;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
-import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.igov.service.business.action.task.core.ActionTaskService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author BW
@@ -21,11 +21,20 @@ public class MailTaskWithAttachmentsAndSMS extends MailTaskWithAttachments {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         sendMailWithAttachments(oExecution);
-        sendSms(oExecution, sPhone_SMS, sText_SMS);
+        sendSmsAsync(oExecution);
         LOG.info("MailTaskWithAttachmentsAndSMS ok!");
     }
 
-    
+    private void sendSmsAsync(DelegateExecution oExecution) {
+        new Thread(() -> {
+            try {
+                LOG.info("sending sms async");
+                sendSms(oExecution, sPhone_SMS, sText_SMS);
+            } catch (Exception e) {
+                LOG.warn("Error happens while sending sms", e);
+            }
+        }).start();
+    }
 
     private void wait(DelegateExecution oExecution, String sAttachmentsForSend) {
         try {

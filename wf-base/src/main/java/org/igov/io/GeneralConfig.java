@@ -142,6 +142,13 @@ public class GeneralConfig {
     @Value("${general.SMS.lifePassword}")
     private String lifePassword;
 
+    @Value("${general.SMS.kievStarURL}")
+    private String kievStarURL;
+    @Value("${general.SMS.kievStarLogin}")
+    private String kievStarLogin;
+    @Value("${general.SMS.kievStarPassword}")
+    private String kievStarPassword;
+    
     @Value("${general.LiqPay.sURL_CheckOut}")
     private String sURL_CheckOut_LiqPay;
     @Value("${general.LiqPay.bTest}")
@@ -768,5 +775,29 @@ public class GeneralConfig {
 	public String getQlogicPort() {
 		return sQlogicPort;
 	}
+
+    public String getKievStarURL() {
+        return kievStarURL;
+    }
+
+    public String getKievStarLogin() {
+        return kievStarLogin;
+    }
+
+    public String getKievStarPassword() {
+        return kievStarPassword;
+    }
+
+    public void setKievStarURL(String kievStarURL) {
+        this.kievStarURL = kievStarURL;
+    }
+
+    public void setKievStarLogin(String kievStarLogin) {
+        this.kievStarLogin = kievStarLogin;
+    }
+
+    public void setKievStarPassword(String kievStarPassword) {
+        this.kievStarPassword = kievStarPassword;
+    }
     
 }
