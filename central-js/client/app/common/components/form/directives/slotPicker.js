@@ -405,7 +405,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
           if ($http.pendingRequests.length === 0)
             scope.slotsLoading = false;
+        })
+          .catch(function (err) {
+            console.log(err);
+            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+            scope.selected.slot = null;
+            $rootScope.$broadcast("slot-picker-stop-processing");
+            scope.loadList();
         });
+
       };
 
       function convertSlotsDataDMS(data) {
