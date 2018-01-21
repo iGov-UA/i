@@ -150,7 +150,6 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                   dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
                 }
 
-                dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
                 scope.selected.slot = null;
                 $rootScope.$broadcast("slot-picker-stop-processing");
                 scope.loadList();
@@ -378,6 +377,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.slotsLoading = true;
 
         return $http.get(sURL, {params:data}).then(function(response) {
+
           if (isQueueDataType.DMS){
             scope.slotsData = convertSlotsDataDMS(response.data);
           } else if (isQueueDataType.iGov) {
@@ -403,18 +403,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           } else if (isQueueDataType.QLogic){
             scope.slotsData = convertSlotsDataQlogic(response.data);
           }
+
           if ($http.pendingRequests.length === 0)
             scope.slotsLoading = false;
         })
           .catch(function (err) {
-            console.log(err);
-            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі\n' +
+              'Оберіть, будь ласка, інший відділ або спробуйте пізніше');
             resetData();
-            scope.organList.reset();
-            scope.organList.initialize();
-            scope.organList.load(scope.serviceData, null).then(function (regions) {
-              scope.organList.initialize(regions);
-            });
         });
 
       };
