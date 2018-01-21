@@ -409,8 +409,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           .catch(function (err) {
             console.log(err);
             dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
-            scope.selected.slot = null;
-            $rootScope.$broadcast("slot-picker-stop-processing");
+            resetData();
             scope.loadList();
         });
 
