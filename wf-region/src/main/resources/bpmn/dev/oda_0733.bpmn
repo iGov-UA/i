@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="oda_0733" name="oda_0733" isExecutable="true">
+    <startEvent id="startevent1" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMailClerk" name="електронна пошта ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPhoneOrgan" name="телефон для довідок ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAddress" name="адреса;  ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWorkTime" name="Графік роботи;  ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="nArea" name="Графік роботи ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDate" name="Дата" type="date"></activiti:formProperty>
+        <activiti:formProperty id="asPlotType" name="Тип ділянки; Plot type" type="enum">
+          <activiti:value id="sEnumGreen" name="Земельна ділянка без споруд(Green-field)"></activiti:value>
+          <activiti:value id="sEnumBrown" name="Земельна ділянка із спорудами(Brown-field)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNamePlot" name="Назва ділянки; Plot name" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegion" name="Область; Region" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSector" name="Район; Sector" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameFirstPunkt" name="Назва найближчого населеного пункту і відстань від нього до ділянки (км); Name of the nearest settlement,and distance from it to the plot (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceFromThePlot" name="Відстань від ділянки до найближчого житлового будинку(км); Distance from the plot to the nearest residential building(km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceFromTheResidential" name="Відстань від ділянки до межі житлової зони(згідно з генпланом розвитку населеного пункту)(км); Distance from the plot to the boundary of the residential zone(according to the general plan of development of the settlement)(km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameNearest" name="Назва найближчого районного центру і відстань до нього (км); Name of the nearest district center and distance to it (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameRegionalCenter" name="Назва найближчого обласного центру і відстань до нього (км); Name of the nearest regional center and distance to it (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalArea" name="Загальна площа ділянки, га; Total area of the plot, hectare" type="long"></activiti:formProperty>
+        <activiti:formProperty id="asFormPlot" name="Форма ділянки; Form of the plot" type="enum">
+          <activiti:value id="sSquare" name="квадрат(square)"></activiti:value>
+          <activiti:value id="sRectangle" name="прямокутник(rectangle)"></activiti:value>
+          <activiti:value id="sTriangle" name="трикутник(triangle)"></activiti:value>
+          <activiti:value id="sTrapeze" name="трапеція(trapeze)"></activiti:value>
+          <activiti:value id="sOther" name="інше(other)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRelief" name="Рельєф, відмітка над рівнем моря (м),різниця між найвищою і найнижчою відмітками висот ділянки (м); Relief, marking above sea level (m),difference between the highest and the lowest markings of the heights of the site (m)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNeighboringPlots" name="Сусідні ділянки (опишіть); Neighboring plots (Describe)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBuildings" name="Будівлі і споруди, якщо вони є на ділянці, хто їх власник (опишіть); Buildings and structures, if they are at the site, who their owner (describe)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObstacles" name="Чи є підземні перешкоди на ділянці(газопроводи, електричні кабелі, кабелі зв’язку тощо); Are underground obstacles on the plot(gas pipelines, electric cables, communication cables, etc.)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sOvergroundArea" name="Чи  є надземні перешкоди на ділянці(канали, лінії електропередач, водойми, струмки, дороги, об’єкти під охороною  тощо); Are there overground obstacles in the area(channels, power lines, reservoirs, streams, roads, guarded objects, etc.)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sEnvironmental" name="Екологічні вимоги і обмеження (опишіть); Environmental requirements and restrictions (please describe)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sSoilPollution" name="Забруднення грунту, поверхневих і грунтових вод (опишіть приклади і ризики забруднень); Soil pollution, surface and groundwater (describe examples and risks of pollution)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDuringFlood" name="Затоплення ділянки під час повеней(опишіть приклади і ризики затоплень); Flood flood during flood" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sOwner" name="Власник ; Owner" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOwnership" name="Форма власності; Ownership" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAvailable" name="Наявні правовстановлюючі документи власника  (зазначте, які); Available holders' documents (please specify which ones)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCadastralNumber" name="Кадастровий номер (вкажіть за наявності); Cadastral number (indicate if available)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUser" name="Користувач ; User" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIdentityDocuments" name="Наявні правовстановлюючі документи користувача (зазначте, які); Available User Identity Documents (please specify which)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeUsed" name="Для яких цілей використовується ділянка; For what purpose the site is used" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlotSettlement" name="Ділянка знаходиться в межах чи за межами населеного пункту; The plot is within or outside the settlement" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUrbanDocumentation" name="Наявність містобудівної документації (схема планування території району,області або їх частин,  генеральний план населеного пункту, детальний план території  тощо); Availability of urban planning documentation (scheme of planning the territory of the rayon, the oblast or parts thereof, the general layout of the settlement, detailed plan of the territory, etc.)" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sClassification" name="Класифікація виду цільового призначення земельної ділянки (назва, код КВЦПЗ); Classification of the type of the intended purpose of the land plot (name, code of the CPCS)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPresence" name="Наявність правових обмежень (обтяжень) земельної ділянки; Presence of legal restrictions (encumbrances) of a land plot" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFormTransferring" name="Форма передачі ділянки інвестору (зазначте можливі варіанти); Form of transferring the investor's area (please indicate possible options)" type="enum">
+          <activiti:value id="sSelling" name="Продаж(Selling)"></activiti:value>
+          <activiti:value id="sLongTerm" name="Довгострокова оренда(Long term lease)"></activiti:value>
+          <activiti:value id="sPermanent use" name="Постійне користування(Permanent use)"></activiti:value>
+          <activiti:value id="sOther" name="Інше (вкажіть)(Other (please specify))"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sEstimated" name="Орієнтовна вартість землі для продажу  (грн./м. кв.); Estimated cost of land for sale (UAH / sq. M)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedCost" name="Орієнтовна вартість землі для оренди (грн./м. кв.); Estimated cost of land for rent (UAH / sq. M)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAccessTrucks" name="Під’їзна дорога для вантажних автомобілів (опишіть, яке покриття дороги, її  ширина); Access road for trucks (describe the road cover, its width)." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceRoad" name="Відстань до автодороги державного значення (км); Distance to the state road (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameStation" name="Назва вантажної залізничної станції і відстань автодорогою від неї до ділянки (км); The name of the freight railway station and the distance by the highway from it to the site (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAirport" name="Назва аеропорту і відстань автодорогою від нього до ділянки (км); Airport name and distance by road from it to the site (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameRiver" name="Назва найближчої річки і відстань від неї до ділянки, км; The name of the nearest river and the distance from it to the site, km" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPublicTransport" name="Наявність маршрутів громадського транспорту до ділянки (автобуси, потяги). ; Availability of public transport routes to the area (buses, trains)." type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInformationGas" name="Інформація про підведення газотранспортної мережі до ділянки; Information about supplying the gas transportation network to the site" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceGas" name="Відстань до діючого газопроводу (км); Distance to the existing gas pipeline (km)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sGasDiameter" name="Діаметр газопроводу (мм); Gas pipeline diameter (mm)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sGasPressure" name="Тиск газу у газопроводі (кгс/см2); Gas pressure in the gas pipeline (kgf / cm2)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCapacity" name="Резерв потужності у місці можливого підключення до газопроводу (м3/год); Capacity reserve at the place of possible connection to the gas pipeline (m3 / h)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceToCurrent" name="Відстань до діючої газорозподільної станції (ГРС), (км); Distance to the current gas distribution station (GDS), (km)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sReserveGas" name="Резерв потужності газорозподільної станції (м3/год); Reserve of gas distribution station capacity (m3 / h)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedCost" name="Орієнтовна вартість підведення газової мережі до ділянки (тис. дол. США); Estimated cost of supplying the gas network to the site (thousand USD)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sInformation" name="Інформація про підведення електричної мережі до ділянки; Information about supplying the electrical network to the site" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceLine" name="Відстань до діючої лінії електропередач (ЛЕП) (км); Distance to the current transmission line (LP) (km)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPowerVoltage" name="Напруга лінії електропередач (кВ); Power line voltage (kV)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPowerReserve" name="Резерв потужності на у місці можливого підключення до ЛЕП (кВт); Power reserve on at the point of possible connection to the transmission line (kW)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceTransformer" name="Відстань до діючої трансформаторної підстанції, (км); Distance to the current transformer substation, (km)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sVoltageTransformer" name="Напруга на трансформаторній підстанції (кВ); Voltage at transformer substation (kV)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPowerTransformer" name="Резерв потужності на трансформаторній підстанції (кВт); Power reserve at the transformer substation (kW)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedGrid" name="Орієнтовна вартість підведення електромережі до ділянки (тис. дол. США); Estimated cost of supplying the grid to the site (thousand USD)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWaterSupply" name="Як можна забезпечити водопостачання на ділянці (опишіть варіанти); How can water supply be provided at the site (please describe the options)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceWater" name="Відстань до можливого місця підключення до діючого водопроводу (км); Distance to the possible connection to the existing water supply (km)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDiameterWater" name="Діаметр діючого водопроводу (мм); Diameter of operating water supply (mm)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCapacityRunning" name="Резерв потужності діючого водопроводу у місці можливого підключення (м3/год); Capacity of running water supply at the place of possible connection (m3 / h)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedSupply" name="Орієнтовна вартість водозабезпечення  ділянки (тис. дол. США); Estimated cost of water supply of the site (thousand USD)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sSewage" name="Як можна забезпечити водовідведення (каналізацію) на ділянці (опишіть варіанти); How can sewage be provided at the site (describe variants)?" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceConnection" name="Відстань до можливого місця підключення до діючої системи водовідведення (км); Distance to the possible place of connection to the existing drainage system (km)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPlacePossible" name="Діаметр діючого каналізаційного водоводу (колектора) у місці можливого підключення до системи водовідведення (мм); Diameter of the operating sewerage (collector) in the place of possible connection to the drainage system (mm)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDrainageSystem" name="Резерв потужності діючої системи водовідведення у місці можливого підключення (м3/год); Reserve the capacity of the existing drainage system at the place of possible connection (m3 / h)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sSewageConduit" name="Чи з каналізаційного водоводу (колектора) каналізаційні стоки подаються на діючі очисні споруди?; Is sewage effluent from sewage conduit (collector) supplied to existing treatment facilities?; ;sID_CheckboxTrue=sEnumEst" type="enum" default="sEnumNemae">
+          <activiti:value id="sEnumEst" name="є каналізаційний водовід (there is a sewer water pipe)"></activiti:value>
+          <activiti:value id="sEnumNemae" name="немає каналізаційного водоводу (No drainage water supply)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCapacityFacilities" name="Резерв потужності діючих очисних споруд (м3/год); Capacity of existing treatment facilities (m3 / h)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sApproximate" name="Орієнтовна вартість водовідведення від ділянки (тис. дол. США); Approximate cost of drainage from the site (thousand USD)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTelephony" name="Чи можна забезпечити стаціонарний телефонний зв’язок?; Can I provide fixed telephony?" type="enum">
+          <activiti:value id="sTak" name="Так, можна (Yes you can)"></activiti:value>
+          <activiti:value id="sNo" name="Ні, немає можливості (No, there is no possibility)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOperators" name="Чи є на ділянці стабільне покриття мобільним телефонним зв’язком і яких операторів; Is there a stable coverage of mobile telephony and which operators?" type="enum">
+          <activiti:value id="sEst" name="Так, є (Yes, there is)"></activiti:value>
+          <activiti:value id="sNema" name="Ні, немає (No)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInstitution" name="Установа, організація; Institution, organization" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Адреса веб-сайту; Website address" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFax" name="Тел/Факс; Tel / Fax" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact" name="Ім’я, прізвище контактної особи; Name, surname of the contact person" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Посада; Position" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommunication" name="Мова спілкування; The language of communication" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMob" name="Моб. тел.; Mob tel." type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="E-мail; E-mail" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDatePreparation" name="Дата підготовки інформації (місяць, рік); Date of preparation of information (month, year)" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sFormPlotOther" name="інше(other) ; ;bNew=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="inshe" type="marker" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sFormPlotOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormPlot &quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sFormTransferringOther" name="інше(other) ; ;bNew=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="inshe" type="marker" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sFormTransferringOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormTransferring &quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDopinfoAll" name="Додаткова інформація; Additional Information" type="table"></activiti:formProperty>
+        <activiti:formProperty id="marker3" name="лінія поля Загальна інформація" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sFormPlotOther&quot;],&quot;sValue&quot;:&quot;Загальна інформація; General information&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="лінія поля Правовий статус" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sOwner&quot;],&quot;sValue&quot;:&quot;Правовий статус; Legal Status&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker5" name="лінія поля Транспортна та інженерна інфраструктура" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sAccessTrucks&quot;],&quot;sValue&quot;:&quot;Транспортна та інженерна інфраструктура; Transport and engineering infrastructure&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker6" name="лінія поля Мережі зв’язку" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asTelephony&quot;],&quot;sValue&quot;:&quot;Мережі зв’язку; Communication networks&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker7" name="лінія поля Контакти" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sInstitution&quot;],&quot;sValue&quot;:&quot;Контакти; Contacts&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Знімки з висоти з нанесеною ділянкою, з зображенням автомобільних доріг і найближчого населеного пункту; Height of the plot plotted, depicting roads and the nearest settlement; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Карта з нанесеними межами земельної ділянки та місцями проходження інженерних мереж ; Map with the boundaries of the land plot and places of engineering networks passing; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Фотографії, які дають уявлення про вигляд ділянки(об`єднати в реєстр); Photos that give an idea of the plot's appearance (merge into the registry) ; ;bNew=true" type="file"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="usertask1" name="Перевірка даних">
+      <extensionElements>
+        <activiti:formProperty id="sID_Public_SubjectOrganJoin" name="Оберіть свій район або місто ; ;bVisible=false" type="select" required="true"></activiti:formProperty>
+        <activiti:formProperty id="sNameOrgan" name="підпис ; ;bVisible=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asPlotType" name="Тип ділянки; Plot type" type="enum">
+          <activiti:value id="sEnumGreen" name="Земельна ділянка без споруд(Green-field)"></activiti:value>
+          <activiti:value id="sEnumBrown" name="Земельна ділянка із спорудами(Brown-field)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sNamePlot" name="Назва ділянки; Plot name ;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sRegion" name="Область; Region;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sSector" name="Район; Sector;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameFirstPunkt" name="Назва найближчого населеного пункту і відстань від нього до ділянки (км); Name of the nearest settlement,and distance from it to the plot (km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceFromThePlot" name="Відстань від ділянки до найближчого житлового будинку(км); Distance from the plot to the nearest residential building(km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceFromTheResidential" name="Відстань від ділянки до межі житлової зони(згідно з генпланом розвитку населеного пункту)(км); Distance from the plot to the boundary of the residential zone(according to the general plan of development of the settlement)(km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameNearest" name="Назва найближчого районного центру і відстань до нього (км); Name of the nearest district center and distance to it (km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameRegionalCenter" name="Назва найближчого обласного центру і відстань до нього (км); Name of the nearest regional center and distance to it (km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sTotalArea" name="Загальна площа ділянки, га; Total area of the plot, hectare;writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="asFormPlot" name="Форма ділянки; Form of the plot" type="enum">
+          <activiti:value id="sSquare" name="квадрат(square)"></activiti:value>
+          <activiti:value id="sRectangle" name="прямокутник(rectangle)"></activiti:value>
+          <activiti:value id="sTriangle" name="трикутник(triangle)"></activiti:value>
+          <activiti:value id="sTrapeze" name="трапеція(trapeze)"></activiti:value>
+          <activiti:value id="sOther" name="інше(other)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sRelief" name="Рельєф, відмітка над рівнем моря (м),різниця між найвищою і найнижчою відмітками висот ділянки (м); Relief, marking above sea level (m),difference between the highest and the lowest markings of the heights of the site (m);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNeighboringPlots" name="Сусідні ділянки (опишіть); Neighboring plots (Describe)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sBuildings" name="Будівлі і споруди, якщо вони є на ділянці, хто їх власник (опишіть); Buildings and structures, if they are at the site, who their owner (describe);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sObstacles" name="Чи є підземні перешкоди на ділянці(газопроводи, електричні кабелі, кабелі зв’язку тощо); Are underground obstacles on the plot(gas pipelines, electric cables, communication cables, etc.);writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sOvergroundArea" name="Чи  є надземні перешкоди на ділянці(канали, лінії електропередач, водойми, струмки, дороги, об’єкти під охороною  тощо); Are there overground obstacles in the area(channels, power lines, reservoirs, streams, roads, guarded objects, etc.);writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sEnvironmental" name="Екологічні вимоги і обмеження (опишіть); Environmental requirements and restrictions (please describe);writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sSoilPollution" name="Забруднення грунту, поверхневих і грунтових вод (опишіть приклади і ризики забруднень); Soil pollution, surface and groundwater (describe examples and risks of pollution);writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sDuringFlood" name="Затоплення ділянки під час повеней(опишіть приклади і ризики затоплень); Flood flood during flood;writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sOwner" name="Власник ; Owner;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sOwnership" name="Форма власності; Ownership;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAvailable" name="Наявні правовстановлюючі документи власника  (зазначте, які); Available holders' documents (please specify which ones);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCadastralNumber" name="Кадастровий номер (вкажіть за наявності); Cadastral number (indicate if available);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUser" name="Користувач ; User;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sIdentityDocuments" name="Наявні правовстановлюючі документи користувача (зазначте, які); Available User Identity Documents (please specify which);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPurposeUsed" name="Для яких цілей використовується ділянка; For what purpose the site is used;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlotSettlement" name="Ділянка знаходиться в межах чи за межами населеного пункту; The plot is within or outside the settlement;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sUrbanDocumentation" name="Наявність містобудівної документації (схема планування території району,області або їх частин,  генеральний план населеного пункту, детальний план території  тощо); Availability of urban planning documentation (scheme of planning the territory of the rayon, the oblast or parts thereof, the general layout of the settlement, detailed plan of the territory, etc.);writable=false" type="textArea"></activiti:formProperty>
+        <activiti:formProperty id="sClassification" name="Класифікація виду цільового призначення земельної ділянки (назва, код КВЦПЗ); Classification of the type of the intended purpose of the land plot (name, code of the CPCS);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPresence" name="Наявність правових обмежень (обтяжень) земельної ділянки; Presence of legal restrictions (encumbrances) of a land plot;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asFormTransferring" name="Форма передачі ділянки інвестору (зазначте можливі варіанти); Form of transferring the investor's area (please indicate possible options)" type="enum">
+          <activiti:value id="sSelling" name="Продаж(Selling)"></activiti:value>
+          <activiti:value id="sLongTerm" name="Довгострокова оренда(Long term lease)"></activiti:value>
+          <activiti:value id="sPermanent use" name="Постійне користування(Permanent use)"></activiti:value>
+          <activiti:value id="sOther" name="Інше (вкажіть)(Other (please specify))"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sEstimated" name="Орієнтовна вартість землі для продажу  (грн./м. кв.); Estimated cost of land for sale (UAH / sq. M);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedCost" name="Орієнтовна вартість землі для оренди (грн./м. кв.); Estimated cost of land for rent (UAH / sq. M);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sAccessTrucks" name="Під’їзна дорога для вантажних автомобілів (опишіть, яке покриття дороги, її  ширина); Access road for trucks (describe the road cover, its width);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceRoad" name="Відстань до автодороги державного значення (км); Distance to the state road (km)" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameStation" name="Назва вантажної залізничної станції і відстань автодорогою від неї до ділянки (км); The name of the freight railway station and the distance by the highway from it to the site (km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sAirport" name="Назва аеропорту і відстань автодорогою від нього до ділянки (км); Airport name and distance by road from it to the site (km);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sNameRiver" name="Назва найближчої річки і відстань від неї до ділянки, км; The name of the nearest river and the distance from it to the site, km;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPublicTransport" name="Наявність маршрутів громадського транспорту до ділянки (автобуси, потяги). ; Availability of public transport routes to the area (buses, trains);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sInformationGas" name="Інформація про підведення газотранспортної мережі до ділянки; Information about supplying the gas transportation network to the site;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceGas" name="Відстань до діючого газопроводу (км); Distance to the existing gas pipeline (km);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sGasDiameter" name="Діаметр газопроводу (мм); Gas pipeline diameter (mm);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sGasPressure" name="Тиск газу у газопроводі (кгс/см2); Gas pressure in the gas pipeline (kgf / cm2);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCapacity" name="Резерв потужності у місці можливого підключення до газопроводу (м3/год); Capacity reserve at the place of possible connection to the gas pipeline (m3 / h);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceToCurrent" name="Відстань до діючої газорозподільної станції (ГРС), (км); Distance to the current gas distribution station (GDS), (km);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sReserveGas" name="Резерв потужності газорозподільної станції (м3/год); Reserve of gas distribution station capacity (m3 / h);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedCost" name="Орієнтовна вартість підведення газової мережі до ділянки (тис. дол. США); Estimated cost of supplying the gas network to the site (thousand USD);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sInformation" name="Інформація про підведення електричної мережі до ділянки; Information about supplying the electrical network to the site;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceLine" name="Відстань до діючої лінії електропередач (ЛЕП) (км); Distance to the current transmission line (LP) (km);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPowerVoltage" name="Напруга лінії електропередач (кВ); Power line voltage (kV);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPowerReserve" name="Резерв потужності на у місці можливого підключення до ЛЕП (кВт); Power reserve on at the point of possible connection to the transmission line (kW);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceTransformer" name="Відстань до діючої трансформаторної підстанції, (км); Distance to the current transformer substation, (km);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sVoltageTransformer" name="Напруга на трансформаторній підстанції (кВ); Voltage at transformer substation (kV);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPowerTransformer" name="Резерв потужності на трансформаторній підстанції (кВт); Power reserve at the transformer substation (kW);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedGrid" name="Орієнтовна вартість підведення електромережі до ділянки (тис. дол. США); Estimated cost of supplying the grid to the site (thousand USD);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWaterSupply" name="Як можна забезпечити водопостачання на ділянці (опишіть варіанти); How can water supply be provided at the site (please describe the options);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDistanceWater" name="Відстань до можливого місця підключення до діючого водопроводу (км); Distance to the possible connection to the existing water supply (km);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDiameterWater" name="Діаметр діючого водопроводу (мм); Diameter of operating water supply (mm);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sCapacityRunning" name="Резерв потужності діючого водопроводу у місці можливого підключення (м3/год); Capacity of running water supply at the place of possible connection (m3 / h);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEstimatedSupply" name="Орієнтовна вартість водозабезпечення  ділянки (тис. дол. США); Estimated cost of water supply of the site (thousand USD);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sSewage" name="Як можна забезпечити водовідведення (каналізацію) на ділянці (опишіть варіанти); How can sewage be provided at the site (describe variants);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPlaceConnection" name="Відстань до можливого місця підключення до діючої системи водовідведення (км); Distance to the possible place of connection to the existing drainage system (km);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sPlacePossible" name="Діаметр діючого каналізаційного водоводу (колектора) у місці можливого підключення до системи водовідведення (мм); Diameter of the operating sewerage (collector) in the place of possible connection to the drainage system (mm);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sDrainageSystem" name="Резерв потужності діючої системи водовідведення у місці можливого підключення (м3/год); Reserve the capacity of the existing drainage system at the place of possible connection (m3 / h);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sSewageConduit" name="Чи з каналізаційного водоводу (колектора) каналізаційні стоки подаються на діючі очисні споруди?; Is sewage effluent from sewage conduit (collector) supplied to existing treatment facilities?; ;sID_CheckboxTrue=sEnumEst" type="enum" default="sEnumNemae">
+          <activiti:value id="sEnumEst" name="є каналізаційний водовід (there is a sewer water pipe)"></activiti:value>
+          <activiti:value id="sEnumNemae" name="немає каналізаційного водоводу (No drainage water supply)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sCapacityFacilities" name="Резерв потужності діючих очисних споруд (м3/год); Capacity of existing treatment facilities (m3 / h);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sApproximate" name="Орієнтовна вартість водовідведення від ділянки (тис. дол. США); Approximate cost of drainage from the site (thousand USD);writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="asTelephony" name="Чи можна забезпечити стаціонарний телефонний зв’язок?; Can I provide fixed telephony?" type="enum">
+          <activiti:value id="sTak" name="Так, можна (Yes you can)"></activiti:value>
+          <activiti:value id="sNo" name="Ні, немає можливості (No, there is no possibility)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="asOperators" name="Чи є на ділянці стабільне покриття мобільним телефонним зв’язком і яких операторів; Is there a stable coverage of mobile telephony and which operators?" type="enum">
+          <activiti:value id="sEst" name="Так, є (Yes, there is)"></activiti:value>
+          <activiti:value id="sNema" name="Ні, немає (No)"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="sInstitution" name="Установа, організація; Institution, organization;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sWebsite" name="Адреса веб-сайту; Website address;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sFax" name="Тел/Факс; Tel / Fax;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sContact" name="Ім’я, прізвище контактної особи; Name, surname of the contact person;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sPosition" name="Посада; Position;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sCommunication" name="Мова спілкування; The language of communication;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sMob" name="Моб. тел.; Mob telм" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sEmail" name="E-мail; E-mail;writable=false" type="string"></activiti:formProperty>
+        <activiti:formProperty id="sDatePreparation" name="Дата підготовки інформації (місяць, рік); Date of preparation of information (month, year);writable=false" type="long"></activiti:formProperty>
+        <activiti:formProperty id="sFormPlotOther" name="інше(other) ; ;bNew=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker1" name="inshe" type="marker" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sFormPlotOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormPlot &quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sFormTransferringOther" name="інше(other) ; ;bNew=true" type="string"></activiti:formProperty>
+        <activiti:formProperty id="marker2" name="inshe" type="marker" default="{&quot;motion&quot;:{&quot;ShowFieldsOnCondition_1&quot;:{&quot;aField_ID&quot;:[&quot;sFormTransferringOther&quot;],&quot;asID_Field&quot;:{&quot;sClient&quot;:&quot;asFormTransferring &quot;},&quot;sCondition&quot;:&quot;[sClient] == 'sOther'&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="sDopinfoAll" name="Додаткова інформація; Additional Information" type="table"></activiti:formProperty>
+        <activiti:formProperty id="marker3" name="лінія поля Загальна інформація" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sFormPlotOther&quot;],&quot;sValue&quot;:&quot;Загальна інформація; General information&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker4" name="лінія поля Правовий статус" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sOwner&quot;],&quot;sValue&quot;:&quot;Правовий статус; Legal Status&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker5" name="лінія поля Транспортна та інженерна інфраструктура" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sAccessTrucks&quot;],&quot;sValue&quot;:&quot;Транспортна та інженерна інфраструктура; Transport and engineering infrastructure&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker6" name="лінія поля Мережі зв’язку" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;asTelephony&quot;],&quot;sValue&quot;:&quot;Мережі зв’язку; Communication networks&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="marker7" name="лінія поля Контакти" type="marker" default="{&quot;attributes&quot;:{&quot;Line_1&quot;:{&quot;aElement_ID&quot;:[&quot;sInstitution&quot;],&quot;sValue&quot;:&quot;Контакти; Contacts&quot;}}}"></activiti:formProperty>
+        <activiti:formProperty id="nFile1" name="Знімки з висоти з нанесеною ділянкою, з зображенням автомобільних доріг і найближчого населеного пункту; Height of the plot plotted, depicting roads and the nearest settlement; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile2" name="Карта з нанесеними межами земельної ділянки та місцями проходження інженерних мереж ; Map with the boundaries of the land plot and places of engineering networks passing; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="nFile3" name="Фотографії, які дають уявлення про вигляд ділянки(об`єднати в реєстр); Photos that give an idea of the plot's appearance (merge into the registry) ; ;bNew=true" type="file"></activiti:formProperty>
+        <activiti:formProperty id="decide" name="Рішення про надання послуги" type="enum" required="true">
+          <activiti:value id="accept" name="Заява оформлена вірно, надіслати лист про оплату послуги"></activiti:value>
+          <activiti:value id="reject" name="Заява оформлена НЕ вірно, відмова"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="comment" name="У разі відмови, внесіть коментар для заявника" type="textArea" default=" "></activiti:formProperty>
+        <activiti:taskListener event="create" delegateExpression="${fileTaskUploadListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <serviceTask id="servicetask1" name="Лист-привітання громадянина" activiti:delegateExpression="#{MailTaskWithAttachmentsAndSMS}">
+      <extensionElements>
+        <activiti:field name=" sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="Text_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] zareestrovanos]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="saAttachmentsForSend">
+          <activiti:expression><![CDATA[""saAttachmentsForSend]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Звернення на тему:]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[1111111]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask2" name="Звернення прийняте" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu email]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Отримання інформації]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[text]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask3" name="Відмова" activiti:delegateExpression="#{MailTaskWithoutAttachmentAndWithSms}">
+      <extensionElements>
+        <activiti:field name="sPhone_SMS">
+          <activiti:expression><![CDATA[${phone}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="sText_SMS">
+          <activiti:expression><![CDATA[Vashe zvernennya [sID_Order] obrobleno. Detali: igov.org.ua/journal abo u Vashomu emailsText_SMS]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="from">
+          <activiti:string><![CDATA[noreply@igov.org.ua]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${email}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:string><![CDATA[Отримання інформації ]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[text]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask4" name="Повідомлення держслужбовця" activiti:delegateExpression="#{MailTaskWithoutAttachment}">
+      <extensionElements>
+        <activiti:field name="from">
+          <activiti:expression><![CDATA[noreply@igov.org.ua]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="to">
+          <activiti:expression><![CDATA[${sMailClerk}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="subject">
+          <activiti:expression><![CDATA[Нове звернення на порталі igov.org.ua на тему: . Заявник ${bankIdlastName} ${bankIdfirstName} ${bankIdmiddleName}]]></activiti:expression>
+        </activiti:field>
+        <activiti:field name="text">
+          <activiti:expression><![CDATA[[pattern.html]]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow3" name="reject" sourceRef="exclusivegateway1" targetRef="servicetask3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="servicetask3" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow5" name="accept" sourceRef="exclusivegateway1" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${decide == 'accept'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="startevent1" targetRef="servicetask1"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="servicetask4"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask4" targetRef="usertask1"></sequenceFlow>
+    <endEvent id="endevent3" name="End"></endEvent>
+    <sequenceFlow id="flow11" sourceRef="servicetask2" targetRef="endevent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_oda_0733">
+    <bpmndi:BPMNPlane bpmnElement="oda_0733" id="BPMNPlane_oda_0733">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="660.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usertask1" id="BPMNShape_usertask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="470.0" y="180.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="61.0" width="107.0" x="182.0" y="177.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="71.0" width="108.0" x="624.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
+        <omgdc:Bounds height="55.0" width="105.0" x="625.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask4" id="BPMNShape_servicetask4">
+        <omgdc:Bounds height="65.0" width="105.0" x="332.0" y="175.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="657.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent3" id="BPMNShape_endevent3">
+        <omgdc:Bounds height="35.0" width="35.0" x="661.0" y="384.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="575.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="657.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="677.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="677.0" y="145.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="27.0" x="629.0" y="151.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="677.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="677.0" y="35.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="677.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="260.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="33.0" x="628.0" y="233.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="125.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="182.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="289.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="332.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="437.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="470.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="678.0" y="331.0"></omgdi:waypoint>
+        <omgdi:waypoint x="678.0" y="384.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

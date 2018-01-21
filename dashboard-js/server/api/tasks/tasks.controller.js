@@ -868,7 +868,7 @@ exports.cancelTask = function (req, res) {
     query: req.query,
   };
 
-  activiti.get(options, function (error, status, result) {
+  activiti.post(options, function (error, status, result) {
     if (!error) {
       res.status(status).send(result);
     }

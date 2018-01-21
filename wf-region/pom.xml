@@ -10,37 +10,39 @@
 	<version>1.0-SNAPSHOT</version>
     </parent>
 
-    <name>iGov-UA WF-Region</name> 
-    <artifactId>wf-region</artifactId>
-    <version>${igov.wf-region.version}</version>
-    <packaging>war</packaging>
-
     <properties>
             <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
             <activity.version>5.17.0</activity.version>
             <guava-version>15.0</guava-version>
+            <sRevisionPostfixBaseLocal>${sRevisionPostfixBase}</sRevisionPostfixBaseLocal><!-- You can froze Version here !!! -->
     </properties>
+
+    <name>iGov-UA WF-Region</name> 
+    <artifactId>wf-region</artifactId>
+    <version>${sRevisionPostfix}</version>
+    <packaging>war</packaging>
+
 
     <build>
         <plugins>
-	    <plugin>
+	    <!--plugin>
 		<artifactId>maven-clean-plugin</artifactId>
 		<version>3.0.0</version>
 		<configuration>
 			<filesets>
 				<fileset>
-					<directory>src/main/resources/ibp-repo</directory>
+					<directory>src/main/resources/${sPath.ResourcesAdd}</directory>
 				</fileset>
 			</filesets>
 		</configuration>
-	</plugin>
+	</plugin-->
 	<!--plugin>
 		<groupId>org.codehaus.mojo</groupId>
 		<artifactId>exec-maven-plugin</artifactId>
 		<version>1.6.0</version>
 		<executions>
 			<execution>
-				<id>github-ibp-clone</id>
+				<id>ResourcesAdd-git-clone</id>
 				<goals>
 					<goal>exec</goal>
 				</goals>
@@ -49,8 +51,8 @@
 					<executable>git</executable>
 					<arguments>
 						<argument>clone</argument>
-						<argument>${igov.ibp.git}</argument>
-						<argument>src/main/resources/ibp-repo</argument>
+						<argument>${sURI.RepositoryGIT-ResourcesAdd}</argument>
+						<argument>src/main/resources/${sPath.ResourcesAdd}</argument>
 					</arguments>
 					<successCodes>
 						<successCode>0</successCode>
@@ -139,7 +141,7 @@
                                 <pluginExecution>
                                     <pluginExecutionFilter>
                                         <groupId>
-                                            org.zeroturnaround
+						org.zeroturnaround
                                         </groupId>
                                         <artifactId>
                                             jrebel-maven-plugin
@@ -197,9 +199,9 @@
                         <version>2.3.0</version>
                         <configuration>
                             <webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                            <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-                            <runTarget>clean</runTarget>
-                            <soyc>false</soyc>
+                             <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                             <runTarget>clean</runTarget>
+                             <soyc>false</soyc>
                         </configuration>
                         <executions>
                             <execution>
@@ -226,6 +228,60 @@
                 </plugins>
             </build>
         </profile>
+        
+        
+        <profile>
+            <id>different_resources-add_repo-git</id>
+            <activation>
+              <property>
+                <name>sURI.RepositoryGIT-ResourcesAdd</name>
+              </property>
+            </activation>        
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                                <filesets>
+                                        <fileset>
+                                                <directory>src/main/resources/${sPath.ResourcesAdd}</directory>
+                                        </fileset>
+                                </filesets>
+                        </configuration>
+                </plugin>
+                <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                                <execution>
+                                        <id>ResourcesAdd-git-clone</id>
+                                        <goals>
+                                                <goal>exec</goal>
+                                        </goals>
+                                        <phase>generate-resources</phase>
+                                        <configuration>
+                                                <executable>git</executable>
+                                                <arguments>
+                                                        <argument>clone</argument>
+                                                        <argument>${sURI.RepositoryGIT-ResourcesAdd}</argument>
+                                                        <argument>src/main/resources/${sPath.ResourcesAdd}</argument>
+                                                </arguments>
+                                                <successCodes>
+                                                        <successCode>0</successCode>
+                                                        <successCode>128</successCode>
+                                                </successCodes>
+                                        </configuration>
+                                </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+            
+                
     </profiles>
 
 
@@ -233,21 +289,22 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>wf-base</artifactId>
-            <version>${igov.wf-base.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
             <classifier>lib</classifier>
             <type>jar</type>
         </dependency>
-        <dependency>
+	    
+	        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>wf-base</artifactId>
-            <version>${igov.wf-base.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>wf-base</artifactId>
-            <version>${igov.wf-base.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
             <classifier>ui-zip</classifier>
             <type>zip</type>
             <scope>provided</scope>
@@ -263,8 +320,11 @@
             <artifactId>activiti-engine</artifactId>
             <version>${activity.version}</version>
 
-        </dependency>
-        <dependency>
+
+	    
+	    </dependency>
+    
+	    <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring</artifactId>
             <version>${activity.version}</version>
@@ -327,19 +387,19 @@
         <dependency>
             <groupId>org.igov</groupId>
             <artifactId>db-kv-temp</artifactId>
-            <version>${igov.storage-temp.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
         </dependency>
 
         <dependency>
             <groupId>org.igov</groupId>
             <artifactId>db-kv-statical</artifactId>
-            <version>${igov.storage-static.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
         </dependency>
         
         <dependency>
             <groupId>org.igov</groupId>
             <artifactId>analytic</artifactId>
-            <version>${igov.analytic.version}</version>
+            <version>${sRevisionPostfixBaseLocal}</version>
         </dependency>
 
         <!-- DB-SQL (Relative-Storage) -->
@@ -351,12 +411,10 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.3.176</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.4-1201-jdbc41</version>
         </dependency>
         <dependency>
             <groupId>com.sybase.jdbc3.jdbc</groupId>
@@ -382,20 +440,17 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>2.4.0</version>
         </dependency>
 		
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava-version}</version>
         </dependency>
 
         <!-- Testing -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.0.6.RELEASE</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -413,19 +468,16 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -436,7 +488,6 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>3.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -448,7 +499,6 @@
         <dependency>
             <groupId>com.plexiti.activiti</groupId>
             <artifactId>activiti-fluent-tests</artifactId>
-            <version>0.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -457,11 +507,27 @@
             <version>1.2</version>
         </dependency>
 
+ <!-- Spring dependencies -->
 
         <dependency>
             <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- Dependencies for tests -->
+        <dependency>
+            <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>4.1.4.RELEASE</version>
             <type>jar</type>
         </dependency>
 

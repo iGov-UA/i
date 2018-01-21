@@ -79,7 +79,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import org.activiti.engine.task.NativeTaskQuery;
-
+import org.igov.model.action.item.ServiceDao;
+import org.igov.model.action.item.Service;
 import org.igov.model.subject.SubjectAccountDao;
 import org.igov.model.subject.SubjectRightBPDao;
 import org.igov.service.business.access.AccessKeyService;
@@ -120,6 +121,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private FormService formService;
     @Autowired
     private RepositoryService repositoryService;
+    @Autowired
+    private ServiceDao oServiceDao;
 
     @Autowired
     private IdentityService identityService;
@@ -703,7 +706,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aFieldStartForm возвращается массив полей стартовой формы", required = false) @RequestParam(value = "bIncludeStartForm", required = false) Boolean bIncludeStartForm,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aAttachment возвращается массив элементов-объектов Attachment (без самого контента)", required = false) @RequestParam(value = "bIncludeAttachments", required = false) Boolean bIncludeAttachments,
             @ApiParam(value = "(опциональный) если задано значение true - в отдельном элементе aMessage возвращается массив сообщений по задаче", required = false) @RequestParam(value = "bIncludeMessages", required = false) Boolean bIncludeMessages,
-            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables)
+            @ApiParam(value = "(опциональный) если задано значение false - в элементе aProcessVariables не возвращается массив переменных процесса", required = false) @RequestParam(value = "bIncludeProcessVariables", required = false, defaultValue = "false") Boolean bIncludeProcessVariables,
+            @ApiParam(value = "(опциональный) тестовый вариант процесса", required = false) @RequestParam(value = "bTest", required = false, defaultValue = "false") Boolean bTest)
             throws CRCInvalidException, CommonServiceException, RecordNotFoundException {
 
         if (nID_Task == null) {
@@ -735,6 +739,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         if (bIncludeMessages == null) {
             bIncludeMessages = Boolean.FALSE;
         }
+        if (bTest == null) {
+            bTest = Boolean.FALSE;
+        }
         Map<String, Object> response = new HashMap<>();
 
         try {
@@ -756,8 +763,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             response.put("aField", oActionTaskService.getHistoricFormPropertiesByTaskID(nID_Task));
         }
 
-        response.put("oData", oActionTaskService.getQueueData(aField));
-
+        if(!bTest){
+            response.put("oData", oActionTaskService.getQueueData(aField));
+        }
         if (bIncludeGroups.equals(Boolean.TRUE)) {
             response.put("aGroup", oActionTaskService.getGroupIDsByTaskID(nID_Task));
         }
@@ -808,8 +816,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         );
         response.put("sDateTimeCreate", sDateTimeCreate);
         response.put("sType", oActionTaskService.getTypeOfTask(sLogin, nID_Task.toString()));
-        response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process)));
-
+        if(!bTest){
+            response.put("aProcessSubjectTask", oProcessSubjectTaskService.getProcessSubjectTask(String.valueOf(nID_Process)));
+        }
         return JsonRestUtils.toJsonResponse(response);
     }
 
@@ -3359,5 +3368,21 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         }
 
     }
-
+    
+    @RequestMapping(value = "/getProcessByID", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    public @ResponseBody
+    Map<Long, String> getProcessByID(@RequestParam(value = "nID", required = true) Long nID){
+        Map<Long, String> mResMap = new HashMap<>();
+        Service oService = oServiceDao.findByIdExpected(nID);
+        mResMap.put(nID, oService.getName());
+        return mResMap;
+    }
+    
+    @RequestMapping(value = "/getBody", method = RequestMethod.GET)
+    public @ResponseBody String getBody() throws CommonServiceException, TaskAlreadyUnboundException, Exception{
+       BufferedReader oBufferedReader
+                = new BufferedReader(new InputStreamReader(
+                        ToolFS.getInputStream("patterns/mail/", "test.html"), "UTF-8"));
+        return org.apache.commons.io.IOUtils.toString(oBufferedReader);
+    }
 }

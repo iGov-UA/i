@@ -10,9 +10,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <properties>
+        <spring.data.redis.version>1.5.0.RELEASE</spring.data.redis.version>
+        <sRevisionPostfixBaseLocal>${sRevisionPostfixBase}</sRevisionPostfixBaseLocal> <!-- Version is connected! You can't modify it separated ! -->
+    </properties>
+    
     <name>iGov-UA Auth Custom</name>
     <artifactId>auth-custom</artifactId>
-    <version>${igov.storage-static.version}</version>
+    <version>${sRevisionPostfixBaseLocal}</version>
     <packaging>jar</packaging>
     
     <dependencies>
@@ -26,7 +31,7 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
-            <version>1.5.0.RELEASE</version>
+            <version>${spring.data.redis.version}</version>
         </dependency>
 
         <dependency>

@@ -128,6 +128,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 }
                 $rootScope.$broadcast("slot-picker-stop-processing");
                 console.info('Reserved slot: ' + angular.toJson(data));
+
+                // if(data.message === null || data.message.indexOf('Error parsing') > 0
+                //     || data.message.indexOf('5') === 0 || !data.message) {
+                //   dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+                // }
               }).
               error(function(data, status, headers, config) {
                 console.error('Error reserved slot ' + angular.toJson(data));
@@ -144,6 +149,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 } else {
                   dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
                 }
+
+                dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
                 scope.selected.slot = null;
                 $rootScope.$broadcast("slot-picker-stop-processing");
                 scope.loadList();
@@ -398,7 +405,18 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
           if ($http.pendingRequests.length === 0)
             scope.slotsLoading = false;
+        })
+          .catch(function (err) {
+            console.log(err);
+            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+            resetData();
+            scope.organList.reset();
+            scope.organList.initialize();
+            scope.organList.load(scope.serviceData, null).then(function (regions) {
+              scope.organList.initialize(regions);
+            });
         });
+
       };
 
       function convertSlotsDataDMS(data) {

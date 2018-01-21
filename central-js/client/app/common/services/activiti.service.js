@@ -363,7 +363,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       var aPrintDefer = [],
         aPrintPromise = [],
         aPrintform = [],
-        counter = 0;
+        counter = 0,
+        valueToPaste = '';
 
       angular.forEach(results, function (templateResult, key) {
         if(!templateResult.fileBase64){
@@ -372,7 +373,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
               if (property.type === 'enum') {
                 for (var i=0; i<property.enumValues.length; i++) {
                   if (property.enumValues[i].id === formData[property.id].value) {
-                    templateResult.template = templateResult.template.split('[' + property.id + ']').join(property.enumValues[i].name);
+                    valueToPaste = formData[property.id].value ? formData[property.id].value : '';
+                    templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
                   }
                 }
               } else if (property.type === 'date') {
@@ -386,9 +388,11 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                 }
                 templateResult.template = templateResult.template.split('[' + property.id + ']').join(formattedDate);
               } else if (property.type === 'fileHTML') {
-                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].valueVisible);
+                valueToPaste = formData[property.id].valueVisible ? formData[property.id].valueVisible : '';
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
               } else {
-                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].value);
+                valueToPaste = formData[property.id].value ? formData[property.id].value : '';
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
               }
             }
           });

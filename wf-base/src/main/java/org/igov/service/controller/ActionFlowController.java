@@ -1210,6 +1210,8 @@ public class ActionFlowController {
 			oJSONObjectReturn.put(oDateTimeFormatter.print(oDate), oaSlot);
 			oDate = oDate.plusDays(1);
 		}*/
+        String s = null;
+        s.getBytes();
         return oJSONObjectReturn.toString();
     }
 
