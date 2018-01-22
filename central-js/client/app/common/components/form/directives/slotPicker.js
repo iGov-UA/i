@@ -288,6 +288,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       scope.slotsData = {};
       scope.slotsLoading = true;
 
+      scope.organList = new OrganListFactory(scope.serviceData);
+
       var departmentProperty = 'nID_Department_' + scope.property.id;
       var departmentParam = scope.formData.params[departmentProperty];
 
@@ -408,9 +410,14 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             scope.slotsLoading = false;
         })
           .catch(function (err) {
-            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі\n' +
+            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі.' +
               'Оберіть, будь ласка, інший відділ або спробуйте пізніше');
             resetData();
+            scope.organList.reset();
+            scope.organList.initialize();
+            scope.organList.load(scope.serviceData, null).then(function (regions) {
+              scope.organList.initialize(regions);
+            });
         });
 
       };
