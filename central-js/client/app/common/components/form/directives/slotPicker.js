@@ -287,6 +287,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       scope.slotsData = {};
       scope.slotsLoading = true;
+      scope.errorIsOccured = false;
 
       var departmentProperty = 'nID_Department_' + scope.property.id;
       var departmentParam = scope.formData.params[departmentProperty];
@@ -377,6 +378,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.slotsLoading = true;
 
         return $http.get(sURL, {params:data}).then(function(response) {
+          scope.errorIsOccured = false;
 
           if (isQueueDataType.DMS){
             scope.slotsData = convertSlotsDataDMS(response.data);
@@ -408,8 +410,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             scope.slotsLoading = false;
         })
           .catch(function (err) {
-            dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі\n' +
-              'Оберіть, будь ласка, інший відділ або спробуйте пізніше');
+            scope.errorIsOccured = true;
             resetData();
         });
 
