@@ -1,5 +1,5 @@
 <div class="slot-picker">
-  <div ng-show="slotsLoading || slotsData.aDay.length > 0">
+  <div ng-show="!errorIsOccured && slotsLoading || slotsData.aDay.length > 0">
     <div class="slot-day">
         <select class="form-control"
                 ng-model="selected.date"
@@ -26,6 +26,11 @@
   <div ng-show="!slotsLoading && slotsData.aDay.length == 0">
     На жаль, по обраній послузі більше не залишилось місць в електронній черзі.
     Спробуйте пізніше, коли з'являться нові доступні місця у черзі, або інше територіальне відділення.
+  </div>
+
+  <div ng-show="errorIsOccured">
+    ДМС оновлює дані про місця в черзі.
+    Оберіть, будь ласка, інший відділ або спробуйте пізніше.
   </div>
 
   <div ng-show="!slotsLoading && !slotsData.aDay">
