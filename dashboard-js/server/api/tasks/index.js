@@ -35,7 +35,6 @@ router.get('/:taskId/getMessageFile/:messageId/:fileName', controller.getMessage
 router.post('/postServiceMessages', controller.postServiceMessage);
 router.post('/:taskId/setTaskAttachment', controller.setTaskAttachment);
 router.post('/:taskId/setTaskAttachmentNew', controller.setTaskAttachmentNew);
-router.get('/cancelTask', controller.cancelTask);
 
 
 module.exports = router;
