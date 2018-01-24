@@ -368,6 +368,10 @@ public class ActionTaskService {
             throw new RecordNotFoundException("\u041c\u0435\u0442\u0430\u0434\u0430\u043d\u043d\u044b\u0435 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u043e\u0439 \u043e\u0447\u0435\u0440\u0435\u0434\u0438 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d\u044b");
         }
         for (String queueData : queueDataList) {
+            if(queueData.equals("null")){
+                continue;
+            }
+            
             Map<String, Object> m = QueueDataFormType.parseQueueData(queueData);
             Long nID_FlowSlotTicket = null;
             try {
