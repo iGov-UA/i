@@ -431,7 +431,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
                     + "З повагою, команда порталу  iGov.org.ua";
-            return new ResponseEntity<>(sMessage, HttpStatus.OK);
+            //            return new ResponseEntity<>(sMessage, HttpStatus.OK);
 
         } catch (Exception e) {
             sMessage = "Вибачте, виникла помилка.";
