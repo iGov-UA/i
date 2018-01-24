@@ -179,7 +179,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
             JSONObject omRequestBody = null;
             JSONObject omResponseBody = null;
-            LOG.info("sRequestBody: {}", sRequestBody);
+            //LOG.info("sRequestBody: {}", sRequestBody);
             try {
                 if (!sRequestBody.trim().equals("")) {
                     omRequestBody = (JSONObject) oJSONParser.parse(sRequestBody);
@@ -331,7 +331,7 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
 
             String sRequestBody = osRequestBody.toString();
             //String sResponseBody = !bFinish ? "" : oResponse.toString();
-            LOG.info("sRequestBody: {}", sRequestBody);
+            //LOG.info("sRequestBody: {}", sRequestBody);
             String sURL = oRequest.getRequestURL().toString();
 
             JSONObject omRequestBody = null;
