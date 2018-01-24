@@ -404,7 +404,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
     @RequestMapping(value = "/cancelTask", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-    public @ResponseBody void cancelTask(
+    public void cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
