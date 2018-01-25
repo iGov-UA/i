@@ -404,7 +404,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      */
     @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
     @RequestMapping(value = "/cancelTask", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
-    public void cancelTask(
+    public @ResponseBody
+    ResponseEntity<String> cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
             @ApiParam(value = "Строка с информацией (причиной отмены)", required = false) @RequestParam(value = "sInfo", required = false) String sInfo,
             @ApiParam(value = "Простой вариант отмены (без электронной очереди)", required = false) @RequestParam(value = "bSimple", required = false) Boolean bSimple,
@@ -431,36 +432,32 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
             sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
                     + "З повагою, команда порталу  iGov.org.ua";
-            //            return new ResponseEntity<>(sMessage, HttpStatus.OK);
+            return new ResponseEntity<>(sMessage, HttpStatus.OK);
 
-        } catch (Exception e) {
-            sMessage = "Вибачте, виникла помилка.";
+        } catch (CRCInvalidException e) {
+            sMessage = "Вибачте, виникла помилка: Помилковий номер заявки!";
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage());
-            throw new Exception(sMessage);
-            //return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
-        } 
-                
-        /*catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+        } catch (RecordNotFoundException e) {
             sMessage = "Вибачте, виникла помилка: Заявка не знайдена!";
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage());
-            //return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         } catch (TaskAlreadyUnboundException e) {
             CommonServiceException oCommonServiceException = new CommonServiceException("BUSINESS_ERR", e.getMessage(), e);
             oCommonServiceException.setHttpStatus(HttpStatus.FORBIDDEN);
             LOG.warn("Error: {}", e.getMessage(), e);
-            //return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(sMessage, HttpStatus.FORBIDDEN);
         } catch (Exception ex) {
             sMessage = "Ваша заявка відмінена. Ви можете подати нову на Порталі державних послуг iGov.org.ua.\n"
                     + "З повагою, команда порталу  iGov.org.ua";
             LOG.info("Error: {}", ex);
-            //return new ResponseEntity<>(sMessage, HttpStatus.OK);
-        }*/
+            return new ResponseEntity<>(sMessage, HttpStatus.OK);
+        }
     }
-
 
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть
