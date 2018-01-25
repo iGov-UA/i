@@ -368,7 +368,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
 
         StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost());
-        oStringBuilder_URL.append("/api/tasks/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+        oStringBuilder_URL.append("api/processes/cancelTaskCentral?").append("nID_Order=".concat(nID_Order.toString()));
 
         if (sInfo != null) {
             oStringBuilder_URL.append("&sInfo=".concat(sInfo));
