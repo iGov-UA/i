@@ -403,7 +403,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      */
     @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
-    @RequestMapping(value = "/cancelTask", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/cancelTask", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody
     ResponseEntity<String> cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
