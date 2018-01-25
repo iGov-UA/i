@@ -8,7 +8,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/getLoginBPs', controller.getLoginBPs);
 router.get('/getBPs_ForExport', controller.getBPs_ForExport);
-router.post('/cancelTaskCentral', controller.cancelTask);
+router.get('/cancelTaskCentral', controller.cancelTask);
 
 
 module.exports = router;

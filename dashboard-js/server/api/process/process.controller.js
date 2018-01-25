@@ -97,7 +97,7 @@ exports.cancelTask = function (req, res) {
     }
   };
 
-  activiti.post(options, function (error, status, result) {
+  activiti.get(options, function (error, status, result) {
     if (!error) {
       res.status(status).send(result);
     }
