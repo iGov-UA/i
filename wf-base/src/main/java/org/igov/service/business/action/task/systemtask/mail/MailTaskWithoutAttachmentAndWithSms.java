@@ -8,7 +8,6 @@ package org.igov.service.business.action.task.systemtask.mail;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.Expression;
 import org.igov.service.business.action.task.core.ActionTaskService;
-import static org.igov.service.business.action.task.systemtask.mail.Abstract_MailTaskCustom.LOG;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +30,17 @@ public class MailTaskWithoutAttachmentAndWithSms extends MailTaskWithoutAttachme
         LOG.info("Process id is {} in MailTaskWithoutAttachment {}",
                 oExecution.getProcessInstanceId());
         sendMail(oExecution, null);
-        sendSms(oExecution, sPhone_SMS, sText_SMS);
+        trySendSms(oExecution);
         LOG.info("MailTaskWithoutAttachmentAndWithSms ok!");
+    }
+    
+    private void trySendSms(DelegateExecution oExecution) {
+        try {
+            LOG.info("attempt to send sms");
+            sendSms(oExecution, sPhone_SMS, sText_SMS);
+        } catch (Exception e) {
+            LOG.warn("Error happens while sending sms", e);
+        }
     }
     
 }
