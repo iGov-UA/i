@@ -21,19 +21,17 @@ public class MailTaskWithAttachmentsAndSMS extends MailTaskWithAttachments {
     @Override
     public void execute(DelegateExecution oExecution) throws Exception {
         sendMailWithAttachments(oExecution);
-        sendSmsAsync(oExecution);
+        trySendSms(oExecution);
         LOG.info("MailTaskWithAttachmentsAndSMS ok!");
     }
 
-    private void sendSmsAsync(DelegateExecution oExecution) {
-        new Thread(() -> {
-            try {
-                LOG.info("sending sms async");
-                sendSms(oExecution, sPhone_SMS, sText_SMS);
-            } catch (Exception e) {
-                LOG.warn("Error happens while sending sms", e);
-            }
-        }).start();
+    private void trySendSms(DelegateExecution oExecution) {
+        try {
+            LOG.info("attempt to send sms");
+            sendSms(oExecution, sPhone_SMS, sText_SMS);
+        } catch (Exception e) {
+            LOG.warn("Error happens while sending sms", e);
+        }
     }
 
     private void wait(DelegateExecution oExecution, String sAttachmentsForSend) {

@@ -85,3 +85,22 @@ exports.getBPs_ForExport = function (req, res) {
     });
   }
 };
+
+
+exports.cancelTask = function (req, res) {
+  var options = {
+    path: 'action/task/cancelTask',
+    query: {
+      nID_Order: req.query.nID_Order,
+      bSimple: req.query.bSimple,
+      sInfo: req.query.sInfo
+    }
+  };
+
+  activiti.get(options, function (error, status, result) {
+    if (!error) {
+      res.status(status).send(result);
+    }
+  });
+};
+

@@ -368,7 +368,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
 
         StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost());
-        oStringBuilder_URL.append("/api/tasks/cancelTask?").append("nID_Order=".concat(nID_Order.toString()));
+        oStringBuilder_URL.append("/api/processes/cancelTaskCentral?").append("nID_Order=".concat(nID_Order.toString()));
 
         if (sInfo != null) {
             oStringBuilder_URL.append("&sInfo=".concat(sInfo));
@@ -403,7 +403,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
      *
      */
     @ApiOperation(value = "Отмена задачи (в т.ч. электронной очереди)")
-    @RequestMapping(value = "/cancelTask", method = {RequestMethod.GET, RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+    @RequestMapping(value = "/cancelTask", method = {RequestMethod.GET, RequestMethod.POST})
     public @ResponseBody
     ResponseEntity<String> cancelTask(
             @ApiParam(value = "номер-ИД процесса (с контрольной суммой)", required = true) @RequestParam(value = "nID_Order", required = true) Long nID_Order,
@@ -458,7 +458,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             return new ResponseEntity<>(sMessage, HttpStatus.OK);
         }
     }
-
 
     /**
      * @param nID_Task номер-ИД таски, для которой нужно найти процесс и вернуть

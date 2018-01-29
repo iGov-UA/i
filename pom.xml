@@ -653,7 +653,21 @@
                 </excludes>
             </resource>
             <resource> <!-- declared first because override is not working when copy resources -->
+                <directory>src/main/resources/${liquibase.data.path}${sRevisionCommonSubPath}</directory>
+                <targetPath>${liquibase.data.path}</targetPath>
+                <excludes>
+                    <exclude>**/*.csb</exclude>
+                </excludes>
+            </resource>
+            <resource> <!-- declared first because override is not working when copy resources -->
                 <directory>${sFullPath.ResourcesAddCustom}/${liquibase.data.path}${sRevisionSubPath}</directory>
+                <targetPath>${liquibase.data.path}</targetPath>
+                <excludes>
+                    <exclude>**/*.csb</exclude>
+                </excludes>
+            </resource>
+            <resource> <!-- declared first because override is not working when copy resources -->
+                <directory>${sFullPath.ResourcesAddCustom}/${liquibase.data.path}${sRevisionCommonSubPath}</directory>
                 <targetPath>${liquibase.data.path}</targetPath>
                 <excludes>
                     <exclude>**/*.csb</exclude>
@@ -665,7 +679,15 @@
                 <targetPath>${activiti.data.path}</targetPath>
             </resource>
             <resource> <!-- declared first because override is not working when copy resources -->
+                <directory>src/main/resources/${activiti.data.path}${sRevisionCommonSubPath}</directory>
+                <targetPath>${activiti.data.path}</targetPath>
+            </resource>
+            <resource> <!-- declared first because override is not working when copy resources -->
                 <directory>${sFullPath.ResourcesAddCustom}/${activiti.data.path}${sRevisionSubPath}</directory>
+                <targetPath>${activiti.data.path}</targetPath>
+            </resource>
+            <resource> <!-- declared first because override is not working when copy resources -->
+                <directory>${sFullPath.ResourcesAddCustom}/${activiti.data.path}${sRevisionCommonSubPath}</directory>
                 <targetPath>${activiti.data.path}</targetPath>
             </resource>
             <resource>
