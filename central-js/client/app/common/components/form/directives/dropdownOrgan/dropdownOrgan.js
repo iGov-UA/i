@@ -112,7 +112,6 @@ angular.module('app').directive('dropdownOrgan', function (OrganListFactory, dia
             });
           })
             .error(function(data, status, headers, config) {
-              dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
               scope.organList.reset();
               scope.organList.initialize();
               scope.organList.load(scope.serviceData, null).then(function (regions) {
