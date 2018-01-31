@@ -538,4 +538,9 @@ public class SubjectService {
         
         return asSubjectContact;
     }
+    
+    public String getSubjectHumanPositionCustomBySubject(String sID_Group_Activiti){
+        SubjectGroup oSubjectGroup = oSubjectGroupDao.findByExpected("sID_Group_Activiti", sID_Group_Activiti);
+        return oSubjectGroup.getoSubjectHumanPositionCustom().getsNote();
+    }
 }

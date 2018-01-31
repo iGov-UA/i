@@ -282,7 +282,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       var data = {
         sFileNameAndExt: file.id + '.html',
         sID_Field: file.id,
-        sContent: formProperties[file.id].value,
+        sContent: formProperties[file.id].valueVisible,
         sID_StorageType: 'Redis'
       };
 
@@ -295,7 +295,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       if (i < html.length) {
         return $http.post('api/uploadfile/uploadFileHTML', html[i].data)
           .then(function (uploadResult) {
-            if(formProperties[htmls[i].data.sID_Field] && formProperties[htmls[i].data.sID_Field].value){
+            if(formProperties[htmls[i].data.sID_Field] && formProperties[htmls[i].data.sID_Field].valueVisible){
               formProperties[htmls[i].data.sID_Field].value = uploadResult.data;
             }
             defs[i].resolve();
@@ -363,7 +363,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
       var aPrintDefer = [],
         aPrintPromise = [],
         aPrintform = [],
-        counter = 0;
+        counter = 0,
+        valueToPaste = '';
 
       angular.forEach(results, function (templateResult, key) {
         if(!templateResult.fileBase64){
@@ -372,11 +373,26 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
               if (property.type === 'enum') {
                 for (var i=0; i<property.enumValues.length; i++) {
                   if (property.enumValues[i].id === formData[property.id].value) {
-                    templateResult.template = templateResult.template.split('[' + property.id + ']').join(property.enumValues[i].name);
+                    valueToPaste = formData[property.id].value ? formData[property.id].value : '';
+                    templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
                   }
                 }
+              } else if (property.type === 'date') {
+                var date = formData[property.id].value, formattedDate;
+                if (date && date instanceof Date) {
+                  formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+                } else if (date && !(date instanceof Date)) {
+                  formattedDate = date;
+                } else {
+                  formattedDate = '';
+                }
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formattedDate);
+              } else if (property.type === 'fileHTML') {
+                valueToPaste = formData[property.id].valueVisible ? formData[property.id].valueVisible : '';
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
               } else {
-                templateResult.template = templateResult.template.split('[' + property.id + ']').join(formData[property.id].value);
+                valueToPaste = formData[property.id].value ? formData[property.id].value : '';
+                templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
               }
             }
           });

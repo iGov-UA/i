@@ -1634,7 +1634,6 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
       })();
       /*MasterPass Checkout end*/
 
-
       $scope.$on('slot-picker-start-processing', function () {
         $scope.isSending = true;
       });

@@ -26,9 +26,6 @@ module.exports.getFlowSlots_ServiceData = function (req, res) {
 //        return $http.get('/api/service/flow/' + scope.serviceData.nID, {params:data}).then(function(response) {
 
     var nID_Server = req.query.nID_Server;
-    req.headers = {
-      'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-    };
     activiti.getServerRegionHost(nID_Server, function(sHost){
 
       activiti.sendGetRequest(req, res, '/service/action/flow/getFlowSlots', {
@@ -49,9 +46,6 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
 
     var nID_Server = req.query.nID_Server;
     var nSlots = req.query.nSlots;
-    req.headers = {
-      'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-    };
     activiti.getServerRegionHost(nID_Server, function(sHost){
         //var sURL = sHost+'/service/object/file/upload_file_to_redis';
         //console.log("sURL="+sURL);
@@ -69,9 +63,6 @@ module.exports.setFlowSlot_ServiceData = function (req, res) {
 module.exports.getSlotsDMS = function (req, res) {
   var nID_Server = req.query.nID_Server;
   var nID_Service_Private = req.query.nID_Service_Private;
-  req.headers = {
-    'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
     activiti.sendPostRequest(req, res, '/service/action/flow/DMS/getSlots', {
       nID_Service_Private: nID_Service_Private,
@@ -83,9 +74,6 @@ module.exports.getSlotsDMS = function (req, res) {
 module.exports.setSlotHoldDMS = function (req, res) {
   var nID_Server = req.body.nID_Server;
   var oData = req.body;
-  req.headers = {
-    'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
     activiti.sendPostRequest(req, res, '/service/action/flow/DMS/setSlotHold', {
       nID_Service_Private: oData.nID_Service_Private,
@@ -102,9 +90,6 @@ module.exports.setSlotHoldDMS = function (req, res) {
 module.exports.cancelSlotHoldDMS = function (req, res) {
   var nID_Server = req.body.nID_Server;
   var oData = req.body;
-  req.headers = {
-    'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
     activiti.sendPostRequest(req, res, '/action/flow/DMS/canselSlotHold', {
       sSubjectPhone: oData.sSubjectPhone
@@ -115,9 +100,6 @@ module.exports.cancelSlotHoldDMS = function (req, res) {
 module.exports.setSlotDMS = function (req, res) {
   var nID_Server = req.body.nID_Server;
   var oData = req.body;
-  req.headers = {
-    'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
     activiti.sendPostRequest(req, res, '/service/action/flow/DMS/setSlot', {
       nID_SlotHold: oData.nID_SlotHold
@@ -127,9 +109,6 @@ module.exports.setSlotDMS = function (req, res) {
 
 module.exports.getSlotsQlogic = function (req, res) {
   var nID_Server = req.query.nID_Server;
-  req.headers = {
-    'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
     activiti.sendGetRequest(req, res, '/service/action/flow/Qlogic/getSlots', {
       sOrganizatonGuid: req.query.sOrganizatonGuid,
@@ -141,9 +120,6 @@ module.exports.getSlotsQlogic = function (req, res) {
 
 module.exports.setSlotQlogic = function (req, res) {
   var nID_Server = req.body.nID_Server;
-  req.headers = {
-    'cookie': 'JSESSIONID=' + req.cookies.JSESSIONID,
-  };
   activiti.getServerRegionHost(nID_Server, function(sHost){
     activiti.sendGetRequest(req, res, '/service/action/flow/Qlogic/setSlot', {
       sOrganizatonGuid: req.body.sOrganizatonGuid,

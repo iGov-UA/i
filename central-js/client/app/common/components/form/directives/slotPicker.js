@@ -128,6 +128,11 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 }
                 $rootScope.$broadcast("slot-picker-stop-processing");
                 console.info('Reserved slot: ' + angular.toJson(data));
+
+                // if(data.message === null || data.message.indexOf('Error parsing') > 0
+                //     || data.message.indexOf('5') === 0 || !data.message) {
+                //   dialogs.error('Помилка', 'ДМС оновлює дані про місця в черзі');
+                // }
               }).
               error(function(data, status, headers, config) {
                 console.error('Error reserved slot ' + angular.toJson(data));
@@ -144,6 +149,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
                 } else {
                   dialogs.error('Помилка', data.message ? data.message : angular.toJson(data));
                 }
+
                 scope.selected.slot = null;
                 $rootScope.$broadcast("slot-picker-stop-processing");
                 scope.loadList();
@@ -281,6 +287,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
 
       scope.slotsData = {};
       scope.slotsLoading = true;
+      scope.errorIsOccured = false;
 
       var departmentProperty = 'nID_Department_' + scope.property.id;
       var departmentParam = scope.formData.params[departmentProperty];
@@ -371,6 +378,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
         scope.slotsLoading = true;
 
         return $http.get(sURL, {params:data}).then(function(response) {
+          scope.errorIsOccured = false;
+
           if (isQueueDataType.DMS){
             scope.slotsData = convertSlotsDataDMS(response.data);
           } else if (isQueueDataType.iGov) {
@@ -396,9 +405,15 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           } else if (isQueueDataType.QLogic){
             scope.slotsData = convertSlotsDataQlogic(response.data);
           }
+
           if ($http.pendingRequests.length === 0)
             scope.slotsLoading = false;
+        })
+          .catch(function (err) {
+            scope.errorIsOccured = true;
+            resetData();
         });
+
       };
 
       function convertSlotsDataDMS(data) {

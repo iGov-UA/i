@@ -111,17 +111,17 @@ module.exports.buildGET = function (apiURL, params, sHost, session, isCustomAuth
   var reqObj = {
     url: sURL,
     json: true,
-    qs: qs
+    qs: qs,
+    headers: {}
   };
 
   if (cookie){
-    reqObj.headers = {'cookie' : cookie};
+    _.extend(reqObj.headers, {'cookie': "JSESSIONID=" + cookie.JSESSIONID});
   }
 
   if(buffer){
     reqObj.encoding = null;
   }
-
 
   if(!isCustomAuth){
     _.extend(reqObj, {auth: this.getAuth()})
@@ -132,11 +132,8 @@ module.exports.buildGET = function (apiURL, params, sHost, session, isCustomAuth
 
 module.exports.buildRequest = function (req, apiURL, params, sHost, buffer) {
   //var nID_Subject = req.session.subject ? req.session.subject.nID : null;
-  if (req.headers.cookie.indexOf('JSESSIONID') > -1){
-    return this.buildGET(apiURL, params, sHost, req.session, false, buffer, req.headers.cookie);//nID_Subject
-  } else {
-    return this.buildGET(apiURL, params, sHost, req.session, false, buffer);
-  }//nID_Subject
+  return this.buildGET(apiURL, params, sHost, req.session, false, buffer, req.cookies);
+  //nID_Subject
 };
 
 module.exports.getAuth = function () {

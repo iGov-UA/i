@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+        	
+		<script type="text/javascript">
+			  $(document).ready(function(){ /* PREPARE THE SCRIPT */
+				$("#allProcess").change(function(){ /* WHEN YOU CHANGE AND SELECT FROM THE SELECT FIELD */
+				  
+				  var allProcess = $(this).val(); /* GET THE VALUE OF THE SELECTED DATA */
+				  var dataString = "nID=" + allProcess; /* STORE THAT TO A DATA STRING */
+                                  var res = "";
+				  $.ajax({ /* THEN THE AJAX CALL */
+					type: 'GET', /* TYPE OF METHOD TO USE TO PASS THE DATA */
+					url: "https://delta.test.igov.org.ua/wf/service/action/task/getProcessByID?" + dataString, /* PAGE WHERE WE WILL PASS THE DATA */
+					cache: false,
+					success: function(result){ /* GET THE TO BE RETURNED DATA */
+                                          $("#p0").empty();
+                                          $("#p0").append("json response: " + JSON.stringify(result));
+					}
+				  });
+				});
+                                
+                                $('input').on('click', function () {
+                                    $.ajax({ /* THEN THE AJAX CALL */
+					type: 'POST', /* TYPE OF METHOD TO USE TO PASS THE DATA */
+                                        dataType: 'json',
+                                        data: JSON.parse(
+                                            '{"processDefinitionId": "_test_enum_usertask:15:31930214","businessKey": "key","nID_Subject": 20045,' +
+                                            '"properties": [' +
+                                              '{"id": "lastName", "value": "MockUser"},' +
+                                              '{"id": "firstName", "value": "MockUser"},' +
+                                              '{"id": "middleName", "value": "MockUser"},' +
+                                              '{"id": "email", "value": "test@test.com"},' +
+                                              '{"id": "phone", "value": "+380 50 000 0000"},' +
+                                              '{"id": "INN", "value": "123"}' + ']}'),
+					url: "https://delta.test.region.igov.org.ua/wf/service/form/form-data?nID_Subject=20045&nID_Service=1382&nID_ServiceData=414&nID_Region=1&sID_UA=1200000000",
+					cache: false,
+					success: function(result){ /* GET THE TO BE RETURNED DATA */
+                                          $("#p0").empty();
+                                          $("#p0").append("json response: " + JSON.stringify(result));
+					}
+                                    });
+				});
+			  });
+		</script>
+			
+
+	</head>
+		
+	<body>
+                <select name="allProcess" id="allProcess">
+			<option value="1382">1382</option>
+			<option value="285">285</option>
+		</select>
+                <input type='button' value='Send request'>
+		<p id="p0"></p>
+	</body>
+</html>
