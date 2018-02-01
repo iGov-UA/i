@@ -1814,7 +1814,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         boolean bOk = false;
         LOG.info("Deleting process snID_Process={}, sLogin={}, sReason={}", snID_Process, sLogin, sReason);
         try {
-            oRuntimeService.deleteProcessInstance(snID_Process, sReason);           
+            oRuntimeService.deleteProcessInstance(snID_Process, sReason);
+            
         } catch (ActivitiObjectNotFoundException e) {
             LOG.info("Could not find process {} to delete: {}", snID_Process, e);
             throw new RecordNotFoundException();
