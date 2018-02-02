@@ -1,5 +1,6 @@
 package org.igov.model.flow;
 
+import com.google.common.base.Optional;
 import org.igov.model.core.GenericEntityDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,18 +28,23 @@ public class FlowSlotTicketDaoImpl extends GenericEntityDao<Long, FlowSlotTicket
     @Override
     public boolean unbindFromTask(Long nID_FlowSlotTicket) {
         LOG.info("(nID_FlowSlotTicket={})", nID_FlowSlotTicket);
-        FlowSlotTicket flowSlotTicket = findByIdExpected(nID_FlowSlotTicket);
+        Optional<FlowSlotTicket> flowSlotTicket = findById(nID_FlowSlotTicket);
+        
+        if(flowSlotTicket.isPresent()){
+            if (flowSlotTicket.get().getnID_Task_Activiti() == null) {
+                LOG.info("Ticket is not bound to any task. Skip unbind operation. (id={})", flowSlotTicket.get().getId());
+                return false;
+            }
 
-        if (flowSlotTicket.getnID_Task_Activiti() == null) {
-            LOG.info("Ticket is not bound to any task. Skip unbind operation. (id={})", flowSlotTicket.getId());
+            LOG.info("Ticket is unbound from Task. (id={}, nID_Task_Activiti={}, dateStart={}, dateFinish={})", flowSlotTicket.get().getId(),
+                    flowSlotTicket.get().getnID_Task_Activiti(), flowSlotTicket.get().getsDateStart(), flowSlotTicket.get().getsDateFinish());
+            //flowSlotTicket.setnID_Task_Activiti(null);
+            //saveOrUpdate(flowSlotTicket);
+            delete(flowSlotTicket.get());
+            return true;
+        }else{
+            LOG.info("Ticket is not present (id={})", nID_FlowSlotTicket);
             return false;
         }
-
-        LOG.info("Ticket is unbound from Task. (id={}, nID_Task_Activiti={}, dateStart={}, dateFinish={})", flowSlotTicket.getId(),
-                flowSlotTicket.getnID_Task_Activiti(), flowSlotTicket.getsDateStart(), flowSlotTicket.getsDateFinish());
-        //flowSlotTicket.setnID_Task_Activiti(null);
-        //saveOrUpdate(flowSlotTicket);
-        delete(flowSlotTicket);
-        return true;
     }
 }
