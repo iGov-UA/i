@@ -30,7 +30,7 @@ public class CancelTaskUtil {
             .append("</form>")
             .toString();
     private static final String cancelTaskSimpleButtonHTML = new StringBuilder()
-            .append("<form method=\"POST\" action=\"")
+            .append("<form target=\"_blank\" method=\"POST\" action=\"")
             .append(TAG_action)
             .append("\" ")
             .append("accept-charset=\"utf-8\">")
