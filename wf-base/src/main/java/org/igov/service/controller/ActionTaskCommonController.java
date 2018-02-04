@@ -77,6 +77,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpSession;
 import org.activiti.engine.task.NativeTaskQuery;
 import org.igov.model.action.item.ServiceDao;
@@ -89,6 +90,7 @@ import org.igov.service.business.action.event.ActionEventHistoryService;
 import static org.igov.service.business.action.task.core.ActionTaskService.DATE_TIME_FORMAT;
 import static org.igov.util.Tool.sO;
 import org.igov.util.ToolFS;
+import org.springframework.context.ApplicationContext;
 
 
 /**
@@ -123,7 +125,10 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     private RepositoryService repositoryService;
     @Autowired
     private ServiceDao oServiceDao;
-
+    
+    @Autowired
+    private ApplicationContext context;
+    
     @Autowired
     private IdentityService identityService;
 
@@ -362,10 +367,18 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
 
         String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
         LOG.info("sID_Order {}", sID_Order);
-
-        BufferedReader oBufferedReader
-                = new BufferedReader(new InputStreamReader(
+        
+        BufferedReader oBufferedReader = null;
+        
+        if(bSimple){
+            oBufferedReader = new BufferedReader(new InputStreamReader(
+                        ToolFS.getInputStream("patterns/mail/", "cancelTask_disign_simple.html"), "UTF-8"));
+            
+        }
+        else{
+            oBufferedReader = new BufferedReader(new InputStreamReader(
                         ToolFS.getInputStream("patterns/mail/", "cancelTask_disign.html"), "UTF-8"));
+        }
 
         StringBuilder oStringBuilder_URL = new StringBuilder(generalConfig.getSelfHost());
         oStringBuilder_URL.append("/api/processes/cancelTaskCentral?").append("nID_Order=".concat(nID_Order.toString()));
@@ -426,6 +439,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                 String snID_Process = snID_Order.substring(0, snID_Order.length() - 1);
                 LOG.info("snID_Process={}", snID_Process);
                 oActionTaskService.deleteProcessSimple(snID_Process, sLogin, sReason);
+                
+                try{
+                    HistoricVariableInstance historicVariableInstance = historyService
+                                .createHistoricVariableInstanceQuery()
+                                .processInstanceId(snID_Process)
+                                .variableName("email").singleResult();
+                    String sID_Order = generalConfig.getOrderId_ByOrder(nID_Order);
+                    Mail oMail = context.getBean(Mail.class);
+                    oMail._To((String)historicVariableInstance.getValue())
+                    ._Head("Скасування заявки")
+                    ._Body("Ви скасували Вашу заявку " + sID_Order)
+                    ._oMultiparts(new MimeMultipart());
+                    oMail.send();
+                }
+                catch(Exception ex){
+                    LOG.info("Error during mail sending: {}", ex.getMessage());
+                }
             } else {
                 oActionTaskService.cancelTasksInternal(nID_Order, sInfo);
             }
