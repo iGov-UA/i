@@ -162,7 +162,7 @@ angular.module('signModule', [])
             "       target=\"_blank\"\n" +
             "       >Встановити розширення для браузера</a>\n" +
             "   <span style=\"font-size: 14px\" ng-if=\"pluginsLink.type !== 'safari'\"'> та </span>\n" +
-            "   <a style=\"font-size: 14px;\" ng-if=\"pluginsLink.type !== 'safari'\" ng-href=\"{{pluginsLink.exe.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
+            "   <a style=\"font-size: 14px;\" ng-if=\"pluginsLink.type !== 'safari'\" ng-href=\"{{pluginsLink.exe.link}}\" target=\"_blank\">Встановити додаток</a>\n" +
             "   <a style=\"font-size: 14px;\" ng-if=\"pluginsLink.type === 'safari'\" ng-href=\"{{pluginsLink.safari.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
             "  </div>" +
             "</div>\n" +
