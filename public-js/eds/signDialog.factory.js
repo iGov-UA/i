@@ -160,13 +160,10 @@ angular.module('signModule', [])
             "   (<a style=\"font-size: 14px;\"\n" +
             "       ng-href=\"{{pluginsLink.extension}}\"\n" +
             "       target=\"_blank\"\n" +
-            "       ng-if=\"pluginsLink.type !== 'mozilla'\">Встановити розширення для браузера</a>\n" +
-            "   <a style=\"cursor: pointer; font-size: 14px;\"\n" +
-            "       target=\"_blank\"\n" +
-            "       onclick=\"window.open('/IdentDigitalSignature/resources/plugin/cryptoplugin_ext_id@privatbank.ua.xpi')\"\n" +
-            "       ng-if=\"pluginsLink.type === 'mozilla'\">Встановити розширення для браузера</a>\n" +
+            "       >Встановити розширення для браузера</a>\n" +
             "   <span style=\"font-size: 14px\" ng-if=\"pluginsLink.type !== 'safari'\"'> та </span>\n" +
-            "   <a style=\"font-size: 14px;\" ng-href=\"{{pluginsLink.exe.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
+            "   <a style=\"font-size: 14px;\" ng-if=\"pluginsLink.type !== 'safari'\" ng-href=\"{{pluginsLink.exe.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
+            "   <a style=\"font-size: 14px;\" ng-if=\"pluginsLink.type === 'safari'\" ng-href=\"{{pluginsLink.safari.link}}\" target=\"_blank\">Встановити додаток</a>)\n" +
             "  </div>" +
             "</div>\n" +
             "<div class=\"modal-footer\" style=\"border: none\">\n" +
