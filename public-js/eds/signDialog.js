@@ -119,10 +119,6 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
         $scope.pluginsLink.exe = linksToCryptoplugin.exe;
     })();
 
-    $scope.getExtensionMozilla = function (link) {
-        window.open(link,"_self");
-    };
-
     $scope.findKeys = function () {
         removeLastError();
         var edsContext = $scope.edsContext;
