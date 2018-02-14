@@ -85,15 +85,15 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
             type: 'chrome'
         },
         mozilla: {
-            link: '/IdentDigitalSignature/resources/plugin/cryptoplugin_ext_id@privatbank.ua.xpi',
+            link: '/wf/VAADIN/themes/activiti/files/cryptoplugin_ext_id@ff.xpi',
             type: 'mozilla'
         },
         safari: {
-            link : '',
+            link : '/wf/VAADIN/themes/activiti/files/cryptoplugin-safari-1.2.2.zip',
             type: 'safari'
         },
         exe: {
-            link: 'https://biprocessing.org.ua/IdentDigitalSignature/resources/plugin/cryptoplugin-1.2.2.exe'
+            link: '/wf/VAADIN/themes/activiti/files/cryptoplugin-1.2.2.exe'
         }
     };
 
@@ -118,10 +118,6 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
 
         $scope.pluginsLink.exe = linksToCryptoplugin.exe;
     })();
-
-    $scope.getExtensionMozilla = function (link) {
-        window.open(link,"_self");
-    };
 
     $scope.findKeys = function () {
         removeLastError();
