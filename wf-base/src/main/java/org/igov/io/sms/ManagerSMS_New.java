@@ -137,7 +137,7 @@ public class ManagerSMS_New {
 	    oHttpURLConnection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 	    oHttpURLConnection.setRequestProperty("sid", sessionId);
 	    oHttpURLConnection.setDoOutput(true);
-
+            oHttpURLConnection.setConnectTimeout(10000);
 	    try (DataOutputStream oDataOutputStream = new DataOutputStream(oHttpURLConnection.getOutputStream())) {
 		oDataOutputStream.write(stringSmsReqest.getBytes("UTF-8"));
 		oDataOutputStream.flush();
@@ -194,7 +194,9 @@ public class ManagerSMS_New {
 			    oHttpURLConnection.getResponseCode(), e);
 		}
 	    }
-
+            
+            oHttpURLConnection.disconnect();
+	    
 	} catch (MalformedURLException e) {
 	    LOG.error("Error send SMS. RequestBody:\n{} Error:", stringSmsReqest, e);
 	    ret = e.getMessage();
