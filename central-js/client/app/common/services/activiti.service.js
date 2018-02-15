@@ -373,7 +373,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
               if (property.type === 'enum') {
                 for (var i=0; i<property.enumValues.length; i++) {
                   if (property.enumValues[i].id === formData[property.id].value) {
-                    valueToPaste = formData[property.id].value ? formData[property.id].value : '';
+                    valueToPaste = property.enumValues[i].name ? property.enumValues[i].name : '';
                     templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
                   }
                 }
