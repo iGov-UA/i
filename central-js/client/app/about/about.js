@@ -722,14 +722,6 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
       "sCity": "Дніпро"
     },
     {
-      "sFIO": "Забрудський Дмитро",
-      "sURL": "https://www.facebook.com/dmitrij.zabrudskij",
-      "sPhoto": "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-9/48134_10201214484668290_1678936328_n.jpg?oh=c8b44833f09cb7b5cbfec92aa04ba813&oe=58EF3FB9",
-      "sFbID": "1356206656",
-      "sCity": "Дніпро"
-    },
-
-    {
       "sFIO": "Грек Дар'я",
       "sURL": "https://www.facebook.com/darja.grek",
       "sPhoto": "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/12046987_969763873087888_5887983526328644721_n.jpg?oh=0dbf3a5892084b7690cf955ec35a79c1&oe=58DD0107",
