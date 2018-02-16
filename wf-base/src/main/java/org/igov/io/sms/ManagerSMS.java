@@ -36,7 +36,7 @@ public class ManagerSMS {
             .append("</message>").toString();
 
     private static final String KYIVSTARBODY = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-            .append("<message paid=\"2000\" mid=\"").append("%s").append("\" bearer=\"SMS\">")
+            .append("<message paid=\"2500\" mid=\"").append("%s").append("\" bearer=\"SMS\">")
             .append("<sn>").append("%s").append("</sn>")
             .append("<sin>").append("%s").append("</sin>")
             .append("<body content-type=\"text/plain\">").append("%s")
