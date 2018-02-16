@@ -29,7 +29,7 @@ import org.xml.sax.SAXException;
  * @author olga
  */
 @Service
-@Scope("prototype")
+@Scope("singleton")
 public class ProminSession_Singleton {
     
     private final static Logger LOG = LoggerFactory.getLogger(ProminSession_Singleton.class);
