@@ -36,7 +36,7 @@ public class ManagerSMS {
             .append("</message>").toString();
 
     private static final String KYIVSTARBODY = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-            .append("<message paid=\"2000\" mid=\"").append("%s").append("\" bearer=\"SMS\">")
+            .append("<message paid=\"2500\" mid=\"").append("%s").append("\" bearer=\"SMS\">")
             .append("<sn>").append("%s").append("</sn>")
             .append("<sin>").append("%s").append("</sin>")
             .append("<body content-type=\"text/plain\">").append("%s")
@@ -47,6 +47,13 @@ public class ManagerSMS {
         
         String sResponse = "[none]";
 
+        if (generalConfig.isSelfTest()) {
+            LOG.warn("send sms in test environment, phone: {}, message: {}, sID_Order: {}", phone, message, sID_Order);
+            return "[test]";
+        }
+
+        phone = formatPhone(phone);
+    
         try {
             Pattern regexpLifeCell = Pattern.compile("38093(.*)|38063(.*)|38073(.*)");
             Pattern regexKyivStar = Pattern.compile("38039(.*)|38067(.*)|38068(.*)|38096(.*)|38097(.*)|38098(.*)");
@@ -70,6 +77,19 @@ public class ManagerSMS {
         }
             
         return sResponse;
+    }
+    
+    private String formatPhone(String sPhone) {
+        if (sPhone.startsWith("0")) {
+            sPhone = "8".concat(sPhone);
+        }
+        if (sPhone.startsWith("8")) {
+            sPhone = "3".concat(sPhone);
+        }
+        if (sPhone.startsWith("3")) {
+            sPhone = "+".concat(sPhone);
+        }
+        return sPhone;
     }
     
     private String SendLifeCellSms(String phone, String message) throws Exception {
