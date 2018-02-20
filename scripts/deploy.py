@@ -36,7 +36,7 @@ if os.path.exists("iSystem"):
 
 branch = args.sysbranch
 if args.version == 'prod' or args.version == 'prod-backup' or args.sbranch == 'iGov__Prod'  or args.sbranch == 'iGov__Prod_backup':
-   branch = 'master'
+   branch = 'test'
 
 subprocess.call("git clone %s -b %s --single-branch iSystem" % (args.sysrepo, branch), shell=True)
 subprocess.call("rsync -rt iSystem/scripts/ scripts/", shell=True)
