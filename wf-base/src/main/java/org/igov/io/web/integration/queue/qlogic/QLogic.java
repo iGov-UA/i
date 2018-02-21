@@ -181,12 +181,21 @@ public class QLogic {
                 ._UrlVariable(urlVariables)
                 ._SendGET();
         String sReturn = oHttpEntityCover.sReturn();
+        
         if (!oHttpEntityCover.bStatusOk()) {
+        	JSONParser parser = new JSONParser();
+            JSONObject response = (JSONObject) parser.parse(sReturn);
+            String message = "[sendRequest](sURL=" + url + "): nStatus()="
+                    + oHttpEntityCover.nStatus();
+            
+            if (response.containsKey("Message")){
+            	message = (String)response.get("Message");
+            	LOG.error("Error message: " + message);
+            }
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
             		url,
                     oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + url + "): nStatus()="
-                    + oHttpEntityCover.nStatus());
+            throw new Exception(message);
         }
 
         LOG.info("Result:{}", sReturn);
