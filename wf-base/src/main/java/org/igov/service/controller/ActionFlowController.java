@@ -1472,40 +1472,41 @@ public class ActionFlowController {
             String datePart = (String) oJSONObject.get("DatePart");
 
             Long isAllow = (Long) oJSONObject.get("IsAllow");
-
-            if (isAllow == 1) {
-                long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-                Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-                //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
-                String formattedDate = sdf.format(date);
-
-                String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
-
-                JSONParser parser = new JSONParser();
-                JSONObject response = (JSONObject) parser.parse(oJsonResult);
-                if (response.containsKey("d")) {
-                    JSONArray times = (JSONArray) response.get("d");
-                    for (Object o1 : times) {
-                        JSONObject oJSONTimeObject = (JSONObject) o1;
-                        Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
-                        if (countJobsAllow > 0) {
-                            String startTime = (String) oJSONTimeObject.get("StartTime");
-                            String stopTime = (String) oJSONTimeObject.get("StopTime");
-
-                            Duration dStartTime = Duration.parse(startTime);
-                            Duration dStopTime = Duration.parse(stopTime);
-                            Map<String, Object> currRes = new HashMap<String, Object>();
-                            currRes.put("date", formattedDate);
-                            currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
-                            currRes.put("countJobsAllow", countJobsAllow);
-                            Duration delta = dStopTime.minus(dStartTime);
-                            currRes.put("length", delta.getSeconds() / 60);
-                            timesArr.add(currRes);
-                        }
-
-                    }
-                }
+            
+            if (isAllow == 1){
+            	long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+	            Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+	            String formattedDate = sdf.format(date);
+	            
+	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
+	            
+	            JSONParser parser = new JSONParser();
+	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
+	            if (response.containsKey("d")){
+	            	JSONArray times = (JSONArray) response.get("d");
+	            	for (Object o1 : times) {
+	                	JSONObject oJSONTimeObject = (JSONObject) o1;
+	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
+	                    Long isAllowTime = (Long) oJSONTimeObject.get("isAllow");
+	                    if (countJobsAllow > 0 && isAllowTime > 0){
+	                    	String startTime = (String) oJSONTimeObject.get("StartTime");
+	                    	String stopTime = (String) oJSONTimeObject.get("StopTime");
+	                    	
+	                    	Duration dStartTime = Duration.parse(startTime);
+	                    	Duration dStopTime =  Duration.parse(stopTime);
+	                    	Map<String, Object> currRes = new HashMap<String, Object>();
+	                    	currRes.put("date", formattedDate);
+	                    	currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
+	                    	currRes.put("countJobsAllow", countJobsAllow);
+	                    	Duration delta = dStopTime.minus(dStartTime);
+	                    	currRes.put("length", delta.getSeconds() / 60);
+	                    	timesArr.add(currRes);
+	                    }
+	                    
+	            	}
+	            }
             }
         }
         oJSONObjectReturn.put("aDate", timesArr);
