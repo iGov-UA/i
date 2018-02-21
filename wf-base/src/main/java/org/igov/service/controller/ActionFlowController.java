@@ -1492,7 +1492,7 @@ public class ActionFlowController {
 	            	for (Object o1 : times) {
 	                	JSONObject oJSONTimeObject = (JSONObject) o1;
 	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
-	                    Long isAllowTime = (Long) oJSONTimeObject.get("isAllow");
+	                    Long isAllowTime = (Long) oJSONTimeObject.get("IsAllow");
 	                    if (countJobsAllow > 0 && isAllowTime > 0){
 	                    	String startTime = (String) oJSONTimeObject.get("StartTime");
 	                    	String stopTime = (String) oJSONTimeObject.get("StopTime");
