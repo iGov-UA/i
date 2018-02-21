@@ -58,8 +58,8 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) 
 
       /*
        * Временно выключили до выяснения причин падения прода
-       * 
-       * $http.get(getReportParametersUrl).then(function (result) {
+       * */
+       $http.get(getReportParametersUrl).then(function (result) {
 
         if (result.data != '' && !(result.data.code && result.data.code === 'BUSINESS_ERR')) {
           _.each(result.data.split("\n"), function (line) {
@@ -84,7 +84,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) 
       }, function () {
         //if error 403 when loading .properties
         defaultHandler(exportParams, callback);
-      })*/
+      })
 
     },
 
