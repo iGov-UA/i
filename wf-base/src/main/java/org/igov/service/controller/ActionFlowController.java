@@ -1465,7 +1465,9 @@ public class ActionFlowController {
 
         JSONArray oaSlot = null;
 
+        try {
         JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+        LOG.info("Received days list: " + oaJSONArray.toString());
         JSONArray timesArr = new JSONArray();
         for (Object o : oaJSONArray) {
             JSONObject oJSONObject = (JSONObject) o;
@@ -1481,6 +1483,7 @@ public class ActionFlowController {
 	            String formattedDate = sdf.format(date);
 	            
 	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
+	            LOG.info("Received days list: " + oaJSONArray.toString());
 	            
 	            JSONParser parser = new JSONParser();
 	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
@@ -1510,6 +1513,9 @@ public class ActionFlowController {
             }
         }
         oJSONObjectReturn.put("aDate", timesArr);
+        } catch (Exception e){
+        	LOG.error(e.getMessage(), e);
+        }
 
         return oJSONObjectReturn.toString();
     }
