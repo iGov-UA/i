@@ -60,9 +60,7 @@ public class ProminSession_Singleton {
     }
 
     public String getSID_Auth_PB_SMS() {
-        LOG.info("getSID_Auth_PB_SMS: start");
         aSID_Auth_PB_SMS = checkAndUpdateSid(aSID_Auth_PB_SMS, generalConfig.getLogin_Auth_PB_SMS(), generalConfig.getPassword_Auth_PB_SMS(), generalConfig.getURL_GenerateSID_Auth_PB_SMS());
-        LOG.info("getSID_Auth_PB_SMS: end {}", aSID_Auth_PB_SMS);
         return aSID_Auth_PB_SMS;
     }
 
