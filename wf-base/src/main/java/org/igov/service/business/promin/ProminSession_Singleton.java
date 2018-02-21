@@ -38,7 +38,7 @@ public class ProminSession_Singleton {
     private String sid_Auth_PB_ObjectSubPlace = null;
 
     private long nTimeCreatedMS;
-    private final long nTimeLiveLimitMS = 1000 * 60 * 20;
+    private final long nTimeLiveLimitMS = 1000 * 60 * 40;
 
     private long nTimeCreatedMS_PB_ObjectSubPlace = 0;
     private final long nTimeLiveLimitMS_PB_ObjectSubPlace = 1000 * 60 * 20;
@@ -60,9 +60,7 @@ public class ProminSession_Singleton {
     }
 
     public String getSID_Auth_PB_SMS() {
-        LOG.info("getSID_Auth_PB_SMS: start");
         aSID_Auth_PB_SMS = checkAndUpdateSid(aSID_Auth_PB_SMS, generalConfig.getLogin_Auth_PB_SMS(), generalConfig.getPassword_Auth_PB_SMS(), generalConfig.getURL_GenerateSID_Auth_PB_SMS());
-        LOG.info("getSID_Auth_PB_SMS: end {}", aSID_Auth_PB_SMS);
         return aSID_Auth_PB_SMS;
     }
 
@@ -103,7 +101,7 @@ public class ProminSession_Singleton {
     public String toString() {
         String sCase = "SID_ESC";
         return "[" + sCase + "]: sid_Auth_UkrDoc_SED=" + sid_Auth_UkrDoc_SED + ", sid_Auth_Receipt_PB_Bank= " + sid_Auth_Receipt_PB_Bank
-                + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
+                 + ", aSID_Auth_PB_SMS= " + aSID_Auth_PB_SMS + ", nTimeCreatedMS=" + nTimeCreatedMS + ", nTimeLiveLimitMS=" + nTimeLiveLimitMS;
     }
 
     private String getSessionId(String login, String password, String uriSid) {
