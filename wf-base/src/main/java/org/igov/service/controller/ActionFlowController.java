@@ -1542,28 +1542,23 @@ public class ActionFlowController {
             @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation,
             HttpServletRequest oRequest
     ) throws Exception {
-        JSONObject result;
-
-        LOG.info("Qlogic/setSlot started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
-            JSONObject oJSONObjectReturn = new JSONObject();
-            return oJSONObjectReturn.toString();
-        }
-        String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
-
-        JSONParser oJSONParser = new JSONParser();
-        JSONObject res = new JSONObject();
-        if (oJsonResult != null) {
-            try {
-                JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
-                if (oJSONObject.containsKey("d")) {
-                    JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
-                    res.put("id", oJSONObjectMap.get("CustOrderGuid"));
-                    res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
-                }
-            } catch (Exception e) {
-                LOG.error("Error parsing response = {}", oJsonResult, e);
-            }
+    	JSONObject res = new JSONObject();
+    	String oJsonResult = "";
+        try {
+	        oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
+	        
+	        JSONParser oJSONParser = new JSONParser();
+	        if(oJsonResult!=null){
+	                JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
+	                if (oJSONObject.containsKey("d")){
+	                	JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
+	                	res.put("id", oJSONObjectMap.get("CustOrderGuid"));
+	                	res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
+	                }
+	        }
+        } catch (Exception e){
+        	LOG.error("Error with request = {}", oJsonResult, e);
+        	res.put("errMsg", e.getMessage());
         }
 
         return res.toString();
