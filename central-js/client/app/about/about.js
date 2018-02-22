@@ -2264,6 +2264,14 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
       "sPhoto": "https://scontent-fra3-1.xx.fbcdn.net/v/t1.0-1/p160x160/1525098_424658800995496_376116867_n.jpg?oh=968b84cf3150d83fd3ea4b2a65a67744&oe=581E810F",
       "sCity": "Шостка"
     },
+    
+    {
+        "sFbID": "100003945012673",
+        "sID_Group": "cherkasy.cherkasy.rada",
+        "sFIO": "Сокол Олег",
+        "sURL": "https://www.facebook.com/oleg.sokol.980",
+        "sCity": "Черкаси"
+      },
 
     {
       "sFbID": "100011166150937",
