@@ -2266,6 +2266,14 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
     },
 
     {
+        "sFbID": "oleg.sokol.980",
+        "sID_Group": "cherkasy.cherkasy.rada",
+        "sFIO": "Сокол Олег",
+        "sURL": "https://www.facebook.com/oleg.sokol.980",
+        "sCity": "Черкаси"
+      },
+      
+      {
       "sFbID": "100011166150937",
       "sID_Group": "cherkasy.cherkasy.rada",
       "sFIO": "Колодіч Олена",
