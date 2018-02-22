@@ -295,6 +295,7 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow, DateTime oDateStart, DateTime oDateEnd) throws ParseException {
 
+        long timeStart = System.nanoTime();
         LOG.info("buildFlowSlots started nID_Flow = {}, oDateStart = {}, oDateEnd = {}", nID_Flow, oDateStart, oDateEnd);
         Flow oFlow = flowDao.findByIdExpected(nID_Flow);
 
@@ -407,7 +408,7 @@ public class FlowService implements ApplicationContextAware {
             LOG.info("stop cron exclude date before apply: " + oExcludeDateRange.getsDateTimeTo());
             LOG.info("-----");
         }*/
-        
+        long timeMiddle = System.nanoTime();
         List<FlowProperty> aFlowProperty = null;
         
         if(aFlowProperty_ToBuild.isEmpty()){
@@ -503,6 +504,9 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ok!!!", nID_Flow, aoDateRange_Exclude.size());
+        long timeEnd = System.nanoTime();
+        LOG.info("Middle time of service: " + (timeMiddle - timeStart));
+        LOG.info("Full time of service procession: " + (timeEnd - timeStart));
         return result;
     }
 
