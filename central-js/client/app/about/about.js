@@ -2266,7 +2266,7 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
     },
 
     {
-        "sFbID": "oleg.sokol.980",
+        "sFbID": "958913770916781",
         "sID_Group": "cherkasy.cherkasy.rada",
         "sFIO": "Сокол Олег",
         "sURL": "https://www.facebook.com/oleg.sokol.980",
