@@ -437,10 +437,8 @@ public class ActionFlowController {
             @ApiParam(value = "строка дата, начиная с такого-то момента времени, в формате \"2015-06-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @ApiParam(value = "строка дата, заканчивая к такому-то моменту времени, в формате \"2015-07-28 12:12:56.001\"", required = false) @RequestParam(value = "sDateStop", required = false) String sDateStop) throws ParseException {
 
-        long timeStart = System.nanoTime();
         DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
         DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
-
         try {
             nID_Flow_ServiceData = oFlowService.determineFlow_ID(
                     nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
@@ -449,12 +447,8 @@ public class ActionFlowController {
             LOG.debug("FAIL:", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-         long timeMiddle = System.nanoTime();
 
         List<FlowSlotVO> res = oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
-        long timeEnd = System.nanoTime();
-        LOG.info("Middle controller operation time: " + (timeMiddle - timeStart) / 1000000);
-        LOG.info("Full controller operation time: " + (timeEnd - timeStart) / 1000000);
         return JsonRestUtils.toJsonResponse(res);
     }
 
