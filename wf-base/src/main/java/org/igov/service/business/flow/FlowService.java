@@ -464,7 +464,8 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         LOG.info("nID_Flow = {}, aoFlowProperty = {} ok!!!", nID_Flow, aFlowProperty.size());
-
+        
+        long timeMiddle2 = System.nanoTime();
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ", nID_Flow, aoDateRange_Exclude.size());
         if (!aoDateRange_Exclude.isEmpty()) {
             List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow, oDateStart, oDateEnd);
@@ -506,6 +507,7 @@ public class FlowService implements ApplicationContextAware {
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ok!!!", nID_Flow, aoDateRange_Exclude.size());
         long timeEnd = System.nanoTime();
         LOG.info("Middle time of service: " + (timeMiddle - timeStart)/1000000);
+        LOG.info("Middle2 time of service: " + (timeMiddle2 - timeStart)/1000000);
         LOG.info("Full time of service procession: " + (timeEnd - timeStart)/1000000);
         return result;
     }
