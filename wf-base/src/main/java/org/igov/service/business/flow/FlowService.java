@@ -505,8 +505,8 @@ public class FlowService implements ApplicationContextAware {
         }
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ok!!!", nID_Flow, aoDateRange_Exclude.size());
         long timeEnd = System.nanoTime();
-        LOG.info("Middle time of service: " + (timeMiddle - timeStart));
-        LOG.info("Full time of service procession: " + (timeEnd - timeStart));
+        LOG.info("Middle time of service: " + (timeMiddle - timeStart)/1000000);
+        LOG.info("Full time of service procession: " + (timeEnd - timeStart)/1000000);
         return result;
     }
 
