@@ -95,7 +95,7 @@ public class Mail extends Abstract_Mail {
         sbBody.append("\nhead:");
         sbBody.append(getHead());
 
-        if (bUniSender) {
+        /*if (bUniSender) {
             try {
                 if (!sendWithUniSender()) {
                     sendAlternativeWay(sbBody.toString());
@@ -112,8 +112,9 @@ public class Mail extends Abstract_Mail {
             }
         } else {
             sendAlternativeWay(sbBody.toString());
-        }
-
+        }*/
+        
+        sendAlternativeWay(sbBody.toString());
         LOG.info("send mail ended ehith sbBody: " + sbBody.toString());
     }
 

@@ -168,10 +168,13 @@ public class QLogic {
     
     public String regCustomer(String sOrganisationGuid, String sServiceCenterId,
 			String sServiceId, String sDate, String sTime, String phone, String email, String name, String information) throws Exception {
-    	HttpHeaders oHttpHeaders = new HttpHeaders();
-        oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
-        String sFullDateTime = String.format("%s %s", sDate, sTime);
-
+    	
+    	 String sReturn = "";
+        try {
+        	HttpHeaders oHttpHeaders = new HttpHeaders();
+            oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
+            String sFullDateTime = String.format("%s %s", sDate, sTime);
+            
         String url = String.format(urlRegCustomer, host, port, sServiceCenterId, sServiceId, sFullDateTime,
                 phone, email, name, information);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
@@ -180,15 +183,28 @@ public class QLogic {
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
                 ._SendGET();
-        String sReturn = oHttpEntityCover.sReturn();
+        sReturn = oHttpEntityCover.sReturn();
+        
         if (!oHttpEntityCover.bStatusOk()) {
+        	JSONParser parser = new JSONParser();
+            JSONObject response = (JSONObject) parser.parse(sReturn);
+            String message = "[sendRequest](sURL=" + url + "): nStatus()="
+                    + oHttpEntityCover.nStatus();
+            
+            if (response.containsKey("Message")){
+            	message = (String)response.get("Message");
+            	LOG.error("Error message: " + message);
+            }
             LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
             		url,
                     oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception("[sendRequest](sURL=" + url + "): nStatus()="
-                    + oHttpEntityCover.nStatus());
+            throw new Exception(message);
         }
 
+        } catch (Exception e){
+        	LOG.error("Exception occured while doing request:" + e.getMessage(), e);
+        	throw new Exception(e);
+        }
         LOG.info("Result:{}", sReturn);
         return sReturn;
 	}
