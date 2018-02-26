@@ -164,7 +164,7 @@ public class ActionFlowController {
                 + "- флаг \"bFree\" - является ли слот свободным? Слот считается свободным если на него нету тикетов у которых nID_Task_Activiti равен null,"
                 + " а у тех у которых nID_Task_Activiti = null - время создания тикета (sDateEdit) не позднее чем текущее время минус 5 минут (предопределенная константа)\n"
                 + "- флаг \"bHasFree\" равен true , если данных день содержит хотя бы один свободный слот.\n")})
-    @RequestMapping(value = "/getFlowS  lots", method = RequestMethod.GET)
+    @RequestMapping(value = "/getFlowSlots", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity getFlowSlots(
             @ApiParam(value = "номер-ИД услуги  (обязательный если нет sID_BP и nID_ServiceData)", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
