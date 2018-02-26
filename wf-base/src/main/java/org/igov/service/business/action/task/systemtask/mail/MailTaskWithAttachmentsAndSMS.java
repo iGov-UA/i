@@ -26,11 +26,9 @@ public class MailTaskWithAttachmentsAndSMS extends MailTaskWithAttachments {
             @Override
             public void run() {
                   trySendSms(oExecution);
+                  LOG.info("MailTaskWithAttachmentsAndSMS ok!");
             }
         });
-        
-        trySendSms(oExecution);
-        LOG.info("MailTaskWithAttachmentsAndSMS ok!");
     }
 
     private void trySendSms(DelegateExecution oExecution) {
