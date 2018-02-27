@@ -1079,7 +1079,14 @@ public class FlowService implements ApplicationContextAware {
             LOG.info(" oDateStart = {}", oDateStart);
             List<Flow> aFlow = flowDao.findAll();
             LOG_TEMP.info(" aFlow.size = {}", aFlow.size());
+            int sleeperCounter = 0;
             for (Flow oFlow : aFlow) {
+                sleeperCounter++;
+                if(sleeperCounter == 100){
+                    LOG.info("thread sleeped...");
+                    sleeperCounter = 0;
+                    Thread.sleep(900000);
+                }
                 try {
                     ++i;
                     if (oFlow.getsID_BP().endsWith(SUFFIX_AUTO) && oFlow.getnCountAutoGenerate() != null) {
