@@ -1071,7 +1071,7 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
-    public void buildFlowSlots() {
+    public void buildFlowSlots(int start, int end) {
         int i = 0;
         Logger LOG_TEMP = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
         try {
@@ -1079,14 +1079,12 @@ public class FlowService implements ApplicationContextAware {
             LOG.info(" oDateStart = {}", oDateStart);
             List<Flow> aFlow = flowDao.findAll();
             LOG_TEMP.info(" aFlow.size = {}", aFlow.size());
-            int sleeperCounter = 0;
+            
             for (Flow oFlow : aFlow) {
-                sleeperCounter++;
-                if(sleeperCounter == 100){
-                    LOG.info("thread sleeped...");
-                    sleeperCounter = 0;
-                    Thread.sleep(900000);
+                if(oFlow.getId() < start || oFlow.getId() > end){
+                    continue;
                 }
+                
                 try {
                     ++i;
                     if (oFlow.getsID_BP().endsWith(SUFFIX_AUTO) && oFlow.getnCountAutoGenerate() != null) {

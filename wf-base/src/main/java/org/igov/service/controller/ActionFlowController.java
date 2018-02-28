@@ -1383,7 +1383,7 @@ public class ActionFlowController {
     String buildFlowSlot() {
         LOG.info("buildFlowSlot start");
         try {
-            oFlowService.buildFlowSlots();
+            oFlowService.buildFlowSlots(0, 10000);
         } catch (Exception e) {
             LOG.error("ERROR buildFlowSlot!!! " + e.getMessage());
         }
