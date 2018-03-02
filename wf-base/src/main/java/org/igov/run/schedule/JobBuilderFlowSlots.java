@@ -51,7 +51,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         LOG.info(" !In QuartzJob - executing JOB at {} by context.getTrigger().getName()={}",
                 new Date(), context.getTrigger().getName());
-       if(context.getTrigger().getName().equals(oCronTrigger_EveryNight_Deep1")){
+       if(context.getTrigger().getName().equals("oCronTrigger_EveryNight_Deep1")){
            oFlowService.buildFlowSlots(0, 100);
        }else if (context.getTrigger().getName().equals("oCronTrigger_EveryNight_Deep2")){
            oFlowService.buildFlowSlots(100, 200);
