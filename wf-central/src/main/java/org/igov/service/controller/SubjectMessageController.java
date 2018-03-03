@@ -46,6 +46,8 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.task.Task;
 
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.igov.service.business.action.task.core.AbstractModelTask.getByteArrayMultipartFileFromStorageInmemory;
@@ -97,6 +99,9 @@ public class SubjectMessageController {
 
     @Autowired
     private TaskService taskService;
+    
+    @Autowired
+    private RuntimeService runtimeService;
 
 	@ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
@@ -510,6 +515,27 @@ public class SubjectMessageController {
             }
             
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            
+            Map<String, Object> processVariables = runtimeService
+                    .createProcessInstanceQuery()
+                    .processInstanceId(oHistoryEvent_Service.getnID_Process().toString())
+                    .singleResult()
+                    .getProcessVariables();
+
+            processVariables.forEach((k, v) -> LOG.info("processVariables: k = " + k + "v + " + v));
+
+            List<Task> list = taskService
+                    .createTaskQuery()
+                    .processInstanceId(oHistoryEvent_Service.getnID_Process().toString())
+                    .active()
+                    .list();
+
+            LOG.info("Task list size: " + list.size());
+
+            if (!list.isEmpty()) {
+                list.get(0).getTaskLocalVariables().forEach((k, v) -> LOG.info("taskVariables: k = " + k + "v + " + v));
+            }
+            
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
             oSubjectMessage.setsID_DataLink(sID_DataLink);
