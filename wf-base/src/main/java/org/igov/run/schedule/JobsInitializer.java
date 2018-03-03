@@ -44,6 +44,10 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         //addEscalationJob(scheduler);
         //addFeedBackJob(scheduler);
         addBuilderFlowSlotsJob(scheduler);
+        addBuilderFlowSlotsJob2(scheduler);
+        addBuilderFlowSlotsJob3(scheduler);
+        addBuilderFlowSlotsJob4(scheduler);
+        addBuilderFlowSlotsJob5(scheduler);
     }
 
     private void addEscalationJob(Scheduler scheduler) throws SchedulerException {
@@ -118,6 +122,102 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
         }
     }
     
+    private void addBuilderFlowSlotsJob2(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart2",
+                "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep2",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup2");
+       
+            LOG.info("oCronExpression__EveryNight_Deep...");
+        try { 
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+            
+         /*CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  */
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+    }
+    
+     private void addBuilderFlowSlotsJob3(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart3",
+                "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep3",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup3");
+       
+            LOG.info("oCronExpression__EveryNight_Deep...");
+        try { 
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+            
+         /*CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  */
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+    }
+     
+    private void addBuilderFlowSlotsJob4(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart4",
+                "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep4",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup4");
+       
+            LOG.info("oCronExpression__EveryNight_Deep...");
+        try { 
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+            
+         /*CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  */
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+    } 
+    
+     private void addBuilderFlowSlotsJob5(Scheduler scheduler) throws SchedulerException {
+        JobDetail oJobDetail_BuilderFlowSlots_Standart = new JobDetail("oJobDetail_BuilderFlowSlots_Standart5",
+                "oJobDetail_BuilderFlowSlots_Group", JobBuilderFlowSlots.class);
+
+        CronTrigger oCronTrigger_EveryNight_Deep = new CronTrigger("oCronTrigger_EveryNight_Deep5",
+                "oCronTrigger_EveryNight_BuilderFlowSlotsJobGroup5");
+       
+            LOG.info("oCronExpression__EveryNight_Deep...");
+        try { 
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
+            
+         /*CronExpression oCronExpression__EveryNight_Deep = new CronExpression("0 30 6,7 1/1 * ?"); //раз в сутки 6-30,7-30
+            LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
+            oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep); 
+            scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);  */
+        } catch (Exception oException) {
+            LOG.error("FAIL: ", oException.getMessage());
+            LOG.debug("FAIL: ", oException);
+        }
+    }
+     
     private void addPaymentProcessorJob(Scheduler scheduler) throws SchedulerException {
         JobDetail oJobDetail_PaymentProcessor_Standart = new JobDetail("oJobDetail_PaymentProcessor_Standart",
                 "oJobDetail_PaymentProcesor_Group", JobPaymentProcessor.class);
