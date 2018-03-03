@@ -517,10 +517,7 @@ public class SubjectMessageController {
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             
             Map<String, Object> processVariables = runtimeService
-                    .createProcessInstanceQuery()
-                    .processInstanceId(oHistoryEvent_Service.getnID_Process().toString())
-                    .singleResult()
-                    .getProcessVariables();
+                    .getVariables(oHistoryEvent_Service.getnID_Process().toString());
 
             processVariables.forEach((k, v) -> LOG.info("processVariables: k = " + k + "v + " + v));
 
