@@ -3414,4 +3414,23 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                         ToolFS.getInputStream("patterns/mail/", "test.html"), "UTF-8"));
         return org.apache.commons.io.IOUtils.toString(oBufferedReader);
     }
+    
+    @RequestMapping(value = "/getVariableValue", method = RequestMethod.GET)
+    @ResponseBody
+    public String mergeVariableValueOnProcessInstance(
+            @RequestParam(value = "processInstanceId", required = true) String snID_Process,
+            @RequestParam(value = "variableName", required = true) String sVariableName) {
+        String sValue = "";
+        try {
+            Object currentValueObject = runtimeService.getVariable(snID_Process, sVariableName);
+            if(Objects.nonNull(currentValueObject)){
+                sValue = currentValueObject.toString();
+            }
+            LOG.info("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
+                    oException.getMessage(), snID_Process, sVariableName, sValue);
+        }
+        return sValue;
+    }
 }
