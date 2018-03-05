@@ -77,6 +77,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpSession;
 import org.activiti.engine.task.NativeTaskQuery;
@@ -3422,15 +3423,33 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "variableName", required = true) String sVariableName) {
         String sValue = "";
         try {
-            Object currentValueObject = runtimeService.getVariable(snID_Process, sVariableName);
-            if(Objects.nonNull(currentValueObject)){
-                sValue = currentValueObject.toString();
-            }
+            List<Object> aoVariableLocalValues = taskService
+                    .createTaskQuery()
+                    .processInstanceId(snID_Process)
+                    .active()
+                    .list()
+                    .stream()
+                    .map(task -> task.getTaskLocalVariables())
+                    .collect(Collectors.toList());
+            LOG.info("Fetch aoVariableValues={}", aoVariableLocalValues.toString());
+            LOG.info("Fetch aoVariableValues2={}", aoVariableLocalValues);
+            List<Object> aoVariableValues = taskService
+                    .createTaskQuery()
+                    .processInstanceId(snID_Process)
+                    .active()
+                    .list()
+                    .stream()
+                    .map(task -> task.getProcessVariables())
+                    .collect(Collectors.toList());
+            LOG.info("Fetch aoVariableValues={}", aoVariableValues.toString());
+            LOG.info("Fetch aoVariableValues2={}", aoVariableValues);
+            aoVariableValues.forEach(value -> value.toString());
+                    
             LOG.info("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
                     oException.getMessage(), snID_Process, sVariableName, sValue);
         }
-        return sValue;
+        return "";
     }
 }
