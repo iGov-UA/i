@@ -249,13 +249,13 @@ public class NotificationPatterns {
             sHead = ((sHead == null || "".equals(sHead.trim()))
                     ? "Просимо ознайомитись із відповіддю громадянина по Вашим зауваженням на iGov" : sHead);
             LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
-            String sURL = "https://region.igov.org.ua/";
+            String sURL = generalConfig.getSelfHost();
             String sText = "<b>Шановний колего!</b><br><br>";
             StringBuilder osBody = new StringBuilder(sText);
             osBody.append("<br>");
             osBody.append(sBody).append("<br>");
             osBody.append("<br/>").append("Для перегляду, необхідно пройти авторизацію під Вашим логіном на "
-                    + "<a href=\"" + sURL + "\">" + sURL + "</a>. А потім перейти до заявки та відкрити вкладку \"Історія діалогу\"."
+                    + "<a href=\"" + sURL + "\">" + "iGov.org.ua" + "</a>. А потім перейти до заявки та відкрити вкладку \"Історія діалогу\"."
             ).append("<br/>");
             osBody.append("<br/>").append("Дякуємо за увагу").append("<br/>");
             //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
