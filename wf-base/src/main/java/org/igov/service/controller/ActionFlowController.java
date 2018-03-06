@@ -1564,7 +1564,7 @@ public class ActionFlowController {
 	        }
         } catch (Exception e){
         	LOG.error("Error with request = {}", oJsonResult, e);
-        	res.put("errMsg", e.getMessage());
+        	throw new Exception(e);
         }
 
         return res.toString();

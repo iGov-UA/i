@@ -524,22 +524,22 @@ public class SubjectMessageController {
             
             if (nID_SubjectMessageType == 8L) { //citizen's comment or question
                 mergeParams.put("insertValues", "GotUpdate");
-                //request to get mail from userTask
+                //request to get clerk mail from userTask
                 String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
                 Map<String, String> requestParams = new HashMap<>();
                 requestParams.put("processInstanceId", String.valueOf(nID_Task));
                 requestParams.put("variableName", "sMailClerk");
-                sMail = httpRequester.getInside(sTaskDataUrl, requestParams);
+                String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
                 LOG.info("Searched sMail={}", sMail);
+                String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
+                oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
             httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
-            if(nID_SubjectMessageType==9){
-                 //String sToken = Tool.getGeneratedToken();
-                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
-            }
+
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
