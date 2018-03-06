@@ -3420,8 +3420,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     .processInstanceId(snID_Process)
                     .active()
                     .list();
-
             LOG.info("aTask size={}", aTask.size());
+            aTask.forEach(Task -> System.out.println(Task.getId()));
             LOG.info("aTask ={}", aTask.toString());
 
             List<Map<String, Object>> aoVariableLocalValues = aTask.stream()
