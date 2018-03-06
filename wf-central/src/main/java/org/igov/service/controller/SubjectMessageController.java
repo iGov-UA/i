@@ -536,9 +536,11 @@ public class SubjectMessageController {
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
             }
             httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
-            if(nID_SubjectMessageType==9){
-                 //String sToken = Tool.getGeneratedToken();
-                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
+            if (nID_SubjectMessageType == 8L) { //citizen's comment or question
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBody), sMail, sID_Order);
+            }
+            if (nID_SubjectMessageType == 9L) { //officer's comment or question
+                oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
