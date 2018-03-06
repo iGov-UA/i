@@ -107,7 +107,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
        
             LOG.info("oCronExpression__EveryNight_Deep...");
         try { 
-         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 30 4 1/1 * ?"); //раз в сутки в 6-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
@@ -131,7 +131,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
        
             LOG.info("oCronExpression__EveryNight_Deep...");
         try { 
-         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 30 4 1/1 * ?"); //раз в сутки в 6-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
@@ -155,7 +155,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
        
             LOG.info("oCronExpression__EveryNight_Deep...");
         try { 
-         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 30 4 1/1 * ?"); //раз в сутки в 6-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
@@ -179,7 +179,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
        
             LOG.info("oCronExpression__EveryNight_Deep...");
         try { 
-         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 30 4 1/1 * ?"); //раз в сутки в 6-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);
@@ -203,7 +203,7 @@ public class JobsInitializer implements InitializingBean, ApplicationContextAwar
        
             LOG.info("oCronExpression__EveryNight_Deep...");
         try { 
-         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 00 3 1/1 * ?"); //раз в сутки в 6-30
+         CronExpression oCronExpression__EveryNight_Deep_6_00 = new CronExpression("0 30 4 1/1 * ?"); //раз в сутки в 6-30
             LOG.info("oCronExpression__EveryNight_Deep.setCronExpression...");
             oCronTrigger_EveryNight_Deep.setCronExpression(oCronExpression__EveryNight_Deep_6_00); 
             scheduler.scheduleJob(oJobDetail_BuilderFlowSlots_Standart, oCronTrigger_EveryNight_Deep);

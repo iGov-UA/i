@@ -60,7 +60,7 @@ public class JobBuilderFlowSlots extends IAutowiredSpringJob {
        }else if (context.getTrigger().getName().equals("oCronTrigger_EveryNight_Deep4")){
            oFlowService.buildFlowSlots(300, 400);
        }else{
-           oFlowService.buildFlowSlots(400, 500);
+           oFlowService.buildFlowSlots(400, 550);
        }
        
        
