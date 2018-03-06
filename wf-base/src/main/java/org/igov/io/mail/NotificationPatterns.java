@@ -250,8 +250,7 @@ public class NotificationPatterns {
                     "Просимо ознайомитись із відповіддю громадянина по Вашим зауваженням на iGov" : sHead);
             LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
             
-            String sText = "<b>Шановний колего!</b><br><br>"
-                    + "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника, або відповідь на Ваше зауваження.";
+            String sText = "<b>Шановний колего!</b><br><br>";
 
             StringBuilder osBody = new StringBuilder(sText);
             osBody.append("<br>");

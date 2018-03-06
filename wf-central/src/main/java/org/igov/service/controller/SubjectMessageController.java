@@ -531,6 +531,7 @@ public class SubjectMessageController {
                 requestParams.put("variableName", "sMailClerk");
                 String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
                 LOG.info("Searched sMail={}", sMail);
+                sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
                 oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBody), sMailClerk, sID_Order);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
