@@ -248,7 +248,7 @@ public class NotificationPatterns {
         try {
             sHead = ((sHead == null || "".equals(sHead.trim()))
                     ? "Просимо ознайомитись із відповіддю громадянина по Вашим зауваженням на iGov" : sHead);
-            LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
+            LOG.info("sendTaskClientFeedbackMessageEmail: sHead = {}, sMailTo= {}", sHead, sMailTo);
             String sURL = generalConfig.getSelfHost();
             String sText = "<b>Шановний колего!</b><br><br>";
             StringBuilder osBody = new StringBuilder(sText);
