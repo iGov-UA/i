@@ -524,24 +524,21 @@ public class SubjectMessageController {
             
             if (nID_SubjectMessageType == 8L) { //citizen's comment or question
                 mergeParams.put("insertValues", "GotUpdate");
-                //request to get mail from userTask
+                //request to get clerk mail from userTask
                 String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
                 Map<String, String> requestParams = new HashMap<>();
                 requestParams.put("processInstanceId", String.valueOf(nID_Task));
                 requestParams.put("variableName", "sMailClerk");
-                sMail = httpRequester.getInside(sTaskDataUrl, requestParams);
+                String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
                 LOG.info("Searched sMail={}", sMail);
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBody), sMailClerk, sID_Order);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
-            }
-            httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
-            if (nID_SubjectMessageType == 8L) { //citizen's comment or question
-                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBody), sMail, sID_Order);
-            }
-            if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
+            httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
+
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);

@@ -251,7 +251,7 @@ public class NotificationPatterns {
             LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
             
             String sText = "<b>Шановний колего!</b><br><br>"
-                    + "Заявка " + sID_Order.split("-")[1] + "отримала запитання від заявника, або відповідь на Ваше зауваження.";
+                    + "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника, або відповідь на Ваше зауваження.";
 
             StringBuilder osBody = new StringBuilder(sText);
             osBody.append("<br>");

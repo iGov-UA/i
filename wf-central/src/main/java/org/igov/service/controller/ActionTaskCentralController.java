@@ -26,6 +26,8 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
+import org.igov.io.mail.NotificationPatterns;
+import static org.igov.util.Tool.sO;
 
 @Controller
 @Api(tags = { "ActionTaskCentralController -- Действия задачи центрально" })
@@ -36,7 +38,6 @@ public class ActionTaskCentralController {
 
     @Autowired
     public GeneralConfig generalConfig;
-    
     @Autowired
     HttpRequester httpRequester;
     @Autowired
@@ -47,6 +48,8 @@ public class ActionTaskCentralController {
     private ActionEventService oActionEventService;
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
+    @Autowired
+    private NotificationPatterns oNotificationPatterns;
 
     @ApiOperation(value = "/setTaskAnswer_Central", notes = "Нет описания")
     @RequestMapping(value = "/setTaskAnswer_Central", method = RequestMethod.POST)
@@ -134,6 +137,14 @@ public class ActionTaskCentralController {
             mergeParams.put("removeValues", "WaitAnswer");
             LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
             httpRequester.getInside(mergeUrl, mergeParams);
+            //request to get clerk mail from userTask
+            String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
+            Map<String, String> requestParams = new HashMap<>();
+            requestParams.put("processInstanceId", String.valueOf(processId));
+            requestParams.put("variableName", "sMailClerk");
+            String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
+            LOG.info("Searched sMail={}", sMailClerk);
+            oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, null, sMailClerk, sID_Order);
 
         } catch (Exception e) {
             throw new CommonServiceException(
