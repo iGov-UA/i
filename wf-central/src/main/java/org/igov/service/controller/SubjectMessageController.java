@@ -3,7 +3,6 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiException;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -91,12 +90,8 @@ public class SubjectMessageController {
     private ProminSession_Singleton prominSession_Singleton;
     @Autowired
     HttpRequester httpRequester;
-
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-
-    @Autowired
-    private TaskService taskService;
 
 	@ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
@@ -509,20 +504,6 @@ public class SubjectMessageController {
                 LOG.info("sData={}", sData);                
             }
             
-            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-            oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
-                    sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
-            oSubjectMessage.setsID_DataLink(sID_DataLink);
-            if (bAddDate != null) {
-                oSubjectMessage.setDate(new DateTime());
-            }
-            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
-            subjectMessagesDao.setMessage(oSubjectMessage);
-
-            Long messageID = oSubjectMessage.getId();
-
-            LOG.info("Successfully saved message with the ID {}", messageID);
-
             String sHost = null;
             int nID_Server = oHistoryEvent_Service.getnID_Server();
             Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
@@ -540,9 +521,16 @@ public class SubjectMessageController {
             mergeParams.put("key", "saTaskStatus");
 
             LOG.info("mergeParams={}, mergeUrl=", mergeParams, mergeUrl);
-
+            
             if (nID_SubjectMessageType == 8L) { //citizen's comment or question
                 mergeParams.put("insertValues", "GotUpdate");
+                //request to get mail from userTask
+                String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
+                Map<String, String> requestParams = new HashMap<>();
+                requestParams.put("processInstanceId", String.valueOf(nID_Task));
+                requestParams.put("variableName", "sMailClerk");
+                sMail = httpRequester.getInside(sTaskDataUrl, requestParams);
+                LOG.info("Searched sMail={}", sMail);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
@@ -552,6 +540,20 @@ public class SubjectMessageController {
                  //String sToken = Tool.getGeneratedToken();
                  oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
+            historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
+            oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
+                    sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
+            oSubjectMessage.setsID_DataLink(sID_DataLink);
+            if (bAddDate != null) {
+                oSubjectMessage.setDate(new DateTime());
+            }
+            oSubjectMessage.setnID_HistoryEvent_Service(nID_HistoryEvent_Service);
+            subjectMessagesDao.setMessage(oSubjectMessage);
+
+            Long messageID = oSubjectMessage.getId();
+
+            LOG.info("Successfully saved message with the ID {}", messageID);
+
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
             LOG.error("FAIL:", e);
