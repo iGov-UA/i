@@ -170,6 +170,7 @@ public class QLogic {
 			String sServiceId, String sDate, String sTime, String phone, String email, String name, String information) throws Exception {
     	
     	 String sReturn = "";
+    	 HttpEntityCover oHttpEntityCover = null;
         try {
         	HttpHeaders oHttpHeaders = new HttpHeaders();
             oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
@@ -179,7 +180,7 @@ public class QLogic {
                 phone, email, name, information);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
-        HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
+        oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
                 ._SendGET();
@@ -203,6 +204,9 @@ public class QLogic {
 
         } catch (Exception e){
         	LOG.error("Exception occured while doing request:" + e.getMessage(), e);
+        	if (oHttpEntityCover != null){
+        		LOG.error("Exception response:" + oHttpEntityCover.sReturn());
+        	}
         	throw new Exception(e);
         }
         LOG.info("Result:{}", sReturn);
