@@ -76,9 +76,9 @@ public class NotificationPatterns {
             //"patterns/mail/auto_client_notify.html"
             File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "auto_client_notify.html");
             String sBody = Files.toString(oFile, Charset.defaultCharset());
-            
+
             LOG.info("sBody testing: " + sBody);
-            
+
             if (sID_Order != null) {
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
                 LOG.info("!!!after sID_Order replace sBody: " + sBody);
@@ -95,7 +95,7 @@ public class NotificationPatterns {
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sBody)
                     ._ToName(makeStringAsName(bankIdFirstName), makeStringAsName(bankIdLastName))
-                     ._oMultiparts(new MimeMultipart());
+                    ._oMultiparts(new MimeMultipart());
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
         } catch (Exception oException) {
@@ -190,8 +190,8 @@ public class NotificationPatterns {
     public void sendTaskEmployeeMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order, String soParams)
             throws EmailException {
         try {
-            sHead = ((sHead == null || "".equals(sHead.trim())) ? 
-                    "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
+            sHead = ((sHead == null || "".equals(sHead.trim()))
+                    ? "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
             LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
             String sClientFIO = null;
             String sEmployerFIO = null;
@@ -242,21 +242,23 @@ public class NotificationPatterns {
             throw oException;
         }
     }
-    
+
     public void sendTaskClientFeedbackMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order)
             throws EmailException {
         try {
-            sHead = ((sHead == null || "".equals(sHead.trim())) ? 
-                    "Просимо ознайомитись із відповіддю громадянина по Вашим зауваженням на iGov" : sHead);
+            sHead = ((sHead == null || "".equals(sHead.trim()))
+                    ? "Просимо ознайомитись із відповіддю громадянина по Вашим зауваженням на iGov" : sHead);
             LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
-            
+
+            String sURL = generalConfig.getSelfHostCentral().toString();
+
             String sText = "<b>Шановний колего!</b><br><br>";
 
             StringBuilder osBody = new StringBuilder(sText);
             osBody.append("<br>");
             osBody.append(sBody).append("<br>");
             osBody.append("<br/>").append("Для перегляду, необхідно пройти авторизацію під Вашим логіном на "
-                    + "<a "+ generalConfig.getSelfHostCentral()+ "> ."
+                    + "<a href=\"" + sURL + "\">"
                     + "А потім перейти до заявки та відкрити вкладку \"Історія діалогу\"."
             ).append("<br/>");
             osBody.append("<br/>").append("Дякуємо за увагу").append("<br/>");
