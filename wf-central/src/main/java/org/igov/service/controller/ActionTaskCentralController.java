@@ -137,6 +137,7 @@ public class ActionTaskCentralController {
             mergeParams.put("removeValues", "WaitAnswer");
             LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
             httpRequester.getInside(mergeUrl, mergeParams);
+            
             //request to get clerk mail from userTask
             String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
             Map<String, String> requestParams = new HashMap<>();
