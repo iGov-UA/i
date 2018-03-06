@@ -5,12 +5,15 @@
  */
 package org.igov.io.web;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.igov.io.Log;
 
 import static org.igov.util.Tool.sCut;
@@ -22,20 +25,23 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
 /**
  *
  * @author bw
  */
-public class HttpEntityCover {
+public class HttpEntityCover implements ResponseErrorHandler{
     
     static final transient Logger LOG = LoggerFactory.getLogger(HttpEntityCover.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("WebBig");
@@ -176,7 +182,7 @@ public class HttpEntityCover {
 
             RestTemplate oRestTemplate = new RestTemplate(
                     Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
-
+            oRestTemplate.setErrorHandler(this);
 
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
             if (mUrlVariable != null){
@@ -218,5 +224,16 @@ public class HttpEntityCover {
         _Reset();
         return this;
     }
+
+	@Override
+	public boolean hasError(ClientHttpResponse response) throws IOException {
+		return response.getStatusCode().equals(HttpStatus.OK);
+	}
+
+	@Override
+	public void handleError(ClientHttpResponse response) throws IOException {
+		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
+		osResponseEntity = new ResponseEntity<String>(theString, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }
