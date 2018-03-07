@@ -530,10 +530,10 @@ public class SubjectMessageController {
                 requestParams.put("processInstanceId", String.valueOf(nID_Task));
                 requestParams.put("variableName", "sMailClerk");
                 String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
-                LOG.info("Searched sMail={}", sMail);
+                LOG.info("Searched sMailClerk={}", sMailClerk);
                 String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
                 String sURL_Region = sHost.replaceAll("/wf/", "");
-                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sHost);
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sURL_Region);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
