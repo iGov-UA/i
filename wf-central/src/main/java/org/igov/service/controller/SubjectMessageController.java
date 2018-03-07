@@ -511,6 +511,7 @@ public class SubjectMessageController {
                 throw new RecordNotFoundException();
             } else {
                 sHost = oOptionalServer.get().getsURL();
+                LOG.info("Url region = ",  oOptionalServer.get().getsURL_Omega());
             }
 
             String mergeUrl = sHost + "/service/action/task/mergeVariable";
@@ -532,7 +533,8 @@ public class SubjectMessageController {
                 String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
                 LOG.info("Searched sMailClerk={}", sMailClerk);
                 String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
-                String sURL_Region = sHost.replace("//wf//", "");
+                String sURL_Region = sHost.replace("/wf/", "");
+                LOG.info("Searched sURL_Region={}", sURL_Region);
                 oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sURL_Region);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
