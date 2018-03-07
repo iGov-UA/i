@@ -146,7 +146,7 @@ public class ActionTaskCentralController {
             String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
             LOG.info("Searched sMail={}", sMailClerk);
             sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
-            oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order);
+            oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sHost);
 
         } catch (Exception e) {
             throw new CommonServiceException(

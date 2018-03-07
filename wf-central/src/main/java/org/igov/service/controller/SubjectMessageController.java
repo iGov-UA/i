@@ -532,7 +532,7 @@ public class SubjectMessageController {
                 String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
                 LOG.info("Searched sMail={}", sMail);
                 String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
-                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order);
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sHost);
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
