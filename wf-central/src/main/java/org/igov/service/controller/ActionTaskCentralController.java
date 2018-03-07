@@ -144,7 +144,7 @@ public class ActionTaskCentralController {
             requestParams.put("processInstanceId", String.valueOf(processId));
             requestParams.put("variableName", "sMailClerk");
             String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
-            String sURL_Region = sHost.replaceAll("/wf/", "");
+            String sURL_Region = sHost.replace("//wf//", "");
             LOG.info("Searched sMailClerk={}", sMailClerk);
             sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
             oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);
