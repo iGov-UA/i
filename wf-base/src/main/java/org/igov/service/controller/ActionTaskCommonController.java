@@ -3413,17 +3413,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public String getRuntimeProcessVariableValue(
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "variableName", required = true) String sVariableName) {
-        String sValue = "";
-        try {
-            Object currentValueObject = runtimeService.getVariable(snID_Process, sVariableName);
-            if(currentValueObject != null){
-                sValue = currentValueObject.toString();
-            }
-            LOG.info("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
-        } catch (Exception oException) {
-            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
-                    oException.getMessage(), snID_Process, sVariableName, sValue);
-        }
-        return sValue;
+        return oActionTaskService.getRuntimeProcessVariableValue(snID_Process, sVariableName);
     }
 }
