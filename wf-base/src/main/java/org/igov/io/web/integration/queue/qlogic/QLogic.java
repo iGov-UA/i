@@ -204,8 +204,8 @@ public class QLogic {
         } catch (Exception e){
         	LOG.error("Exception occured while doing request:" + e.getMessage(), e);
         	if (oHttpEntityCover != null){
-        		LOG.error("Exception response:" + oHttpEntityCover.sReturn());
-        		throw new Exception(oHttpEntityCover.sReturn(), e);
+        		LOG.error("Exception response:" + oHttpEntityCover.sErrorMessage());
+        		throw new Exception(oHttpEntityCover.sErrorMessage(), e);
         	}
         	throw new Exception(e);
         }

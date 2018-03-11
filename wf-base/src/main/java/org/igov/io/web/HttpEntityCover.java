@@ -15,6 +15,9 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.igov.io.Log;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import static org.igov.util.Tool.sCut;
 
@@ -53,6 +56,7 @@ public class HttpEntityCover implements ResponseErrorHandler {
     private Map<String, Object> mUrlVariable = null;
     
     private ResponseEntity<String> osResponseEntity = null;
+    private String errorMessage = null;
             
     public HttpEntityCover(String sURL){
         this.sURL = sURL;
@@ -63,6 +67,7 @@ public class HttpEntityCover implements ResponseErrorHandler {
         sURL = null;
         mParamObject = null;
         mParamByteArray = null;
+        errorMessage = null;
         return this;
     }
     
@@ -91,6 +96,10 @@ public class HttpEntityCover implements ResponseErrorHandler {
             return null;
         }
         return osResponseEntity.getBody();
+    }
+    
+    public String sErrorMessage(){
+        return errorMessage;
     }
 
     public Integer nStatus(){
@@ -234,7 +243,18 @@ public class HttpEntityCover implements ResponseErrorHandler {
 	public void handleError(ClientHttpResponse response) throws IOException {
 		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
 		LOG.error("Error message occured while processing request:" + theString);
-		osResponseEntity = new ResponseEntity<String>(theString, HttpStatus.INTERNAL_SERVER_ERROR);
+		try {
+			JSONParser parser = new JSONParser();
+	        JSONObject jsonResponse;
+			jsonResponse = (JSONObject) parser.parse(theString);
+	        if (jsonResponse.containsKey("Message")){
+	        	errorMessage = (String)jsonResponse.get("Message");
+	        	LOG.error("Error message: " + errorMessage);
+	        }
+		} catch (ParseException e) {
+			LOG.warn("Exception while parsing error response");;
+		}
+        
 	}
 
 }
