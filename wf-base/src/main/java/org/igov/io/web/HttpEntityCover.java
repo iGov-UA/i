@@ -67,7 +67,6 @@ public class HttpEntityCover implements ResponseErrorHandler {
         sURL = null;
         mParamObject = null;
         mParamByteArray = null;
-        errorMessage = null;
         return this;
     }
     
@@ -207,6 +206,7 @@ public class HttpEntityCover implements ResponseErrorHandler {
                         ._Status(Log.LogStatus.ERROR)
                         ._Param("sURL", sURL)
                         ._Param("sRequest", sRequest)
+                        ._Param("sErrorMessage", errorMessage)
                         ._Param("nReturn", nStatus())
                         ._LogTransit()
                         .save()
