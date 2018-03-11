@@ -1567,6 +1567,7 @@ public class ActionFlowController {
 	                }
 	        }
         } catch (Exception e){
+        	LOG.error("Error occured while registering slot:" + e.getMessage());
         	res.put("errMsg", e.getMessage());
         	oResponse.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

@@ -213,7 +213,7 @@ public class QLogic {
 
         } catch (Exception e){
         	LOG.error("Exception occured while doing request:" + e.getMessage(), e);
-        	throw new Exception(e);
+        	throw new Exception(e.getMessage(), e);
         }
         LOG.info("Result:{}", sReturn);
         return sReturn;
