@@ -232,8 +232,9 @@ public class HttpEntityCover implements ResponseErrorHandler {
 
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
-		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
-		osResponseEntity = new ResponseEntity<String>(theString, HttpStatus.INTERNAL_SERVER_ERROR);
+		String response = IOUtils.toString(response.getBody(), "UTF-8"); 
+		LOG.error("Error message occured while processing request:" + response);
+		osResponseEntity = new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
