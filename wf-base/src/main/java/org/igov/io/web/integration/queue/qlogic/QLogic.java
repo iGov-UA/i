@@ -192,20 +192,8 @@ public class QLogic {
         if (!oHttpEntityCover.bStatusOk()) {
         	LOG.error("Exception occured with request to QLogic. Status code:" + oHttpEntityCover.nStatus());
         	if (oHttpEntityCover != null){
-        		LOG.error("Exception response:" + oHttpEntityCover.sReturn());
-        		String errorMessage = "";
-        		try {
-        			JSONParser parser = new JSONParser();
-        	        JSONObject jsonResponse;
-        			jsonResponse = (JSONObject) parser.parse(oHttpEntityCover.sReturn());
-        	        if (jsonResponse.containsKey("Message")){
-        	        	errorMessage = (String)jsonResponse.get("Message");
-        	        	LOG.error("Error message: " + errorMessage);
-        	        }
-        		} catch (ParseException e) {
-        			LOG.warn("Exception while parsing error response");;
-        		}
-        		throw new Exception(errorMessage);
+        		LOG.error("Exception response:" + oHttpEntityCover.sErrorMessage());
+        		throw new Exception(oHttpEntityCover.sErrorMessage());
         	}
         } else {
             sReturn = oHttpEntityCover.sReturn();
