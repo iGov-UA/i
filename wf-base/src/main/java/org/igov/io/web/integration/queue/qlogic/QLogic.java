@@ -24,6 +24,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResponseErrorHandler;
 
 /**
  * Provides integration with Qlogic system 
@@ -189,12 +190,11 @@ public class QLogic {
                 ._SendGET();
         
         if (!oHttpEntityCover.bStatusOk()) {
-        	LOG.error("Exception occured with request to QLogic. Status code:", e);
+        	LOG.error("Exception occured with request to QLogic. Status code:" + oHttpEntityCover.nStatus());
         	if (oHttpEntityCover != null){
         		LOG.error("Exception response:" + oHttpEntityCover.sErrorMessage());
-        		throw new Exception(oHttpEntityCover.sErrorMessage(), e);
+        		throw new Exception(oHttpEntityCover.sErrorMessage());
         	}
-        	throw new Exception(e);
         } else {
             sReturn = oHttpEntityCover.sReturn();
         }
@@ -232,29 +232,6 @@ public class QLogic {
 
         LOG.info("Result:{}", sReturn);
         return sReturn;
-	}
-	
-	@Override
-	public boolean hasError(ClientHttpResponse response) throws IOException {
-		return !response.getStatusCode().equals(HttpStatus.OK);
-	}
-
-	@Override
-	public void handleError(ClientHttpResponse response) throws IOException {
-		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
-		LOG.error("Error message occured while processing request:" + theString);
-		try {
-			JSONParser parser = new JSONParser();
-	        JSONObject jsonResponse;
-			jsonResponse = (JSONObject) parser.parse(theString);
-	        if (jsonResponse.containsKey("Message")){
-	        	errorMessage = (String)jsonResponse.get("Message");
-	        	LOG.error("Error message: " + errorMessage);
-	        }
-		} catch (ParseException e) {
-			LOG.warn("Exception while parsing error response");;
-		}
-        
 	}
 
 }
