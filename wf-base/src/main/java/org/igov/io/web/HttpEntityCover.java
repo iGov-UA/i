@@ -252,7 +252,7 @@ public class HttpEntityCover implements ResponseErrorHandler {
 	        	LOG.error("Error message: " + errorMessage);
 	        }
 		} catch (ParseException e) {
-			LOG.warn("Exception while parsing error response");;
+			LOG.warn("Exception while parsing error response", e);;
 		}
         
 	}
