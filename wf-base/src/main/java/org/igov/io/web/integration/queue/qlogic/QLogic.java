@@ -127,7 +127,6 @@ public class QLogic {
         JSONArray oaJSONArrayReturn = new JSONArray();
         if(sReturn!=null){
             try {
-
                 oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
 
                 oaJSONArrayReturn = (JSONArray) oJSONObjectGot.get("d");

@@ -227,7 +227,7 @@ public class HttpEntityCover implements ResponseErrorHandler{
 
 	@Override
 	public boolean hasError(ClientHttpResponse response) throws IOException {
-		return response.getStatusCode().equals(HttpStatus.OK);
+		return !response.getStatusCode().equals(HttpStatus.OK);
 	}
 
 	@Override
