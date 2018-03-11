@@ -41,7 +41,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author bw
  */
-public class HttpEntityCover implements ResponseErrorHandler{
+public class HttpEntityCover {
     
     static final transient Logger LOG = LoggerFactory.getLogger(HttpEntityCover.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("WebBig");
@@ -182,7 +182,7 @@ public class HttpEntityCover implements ResponseErrorHandler{
 
             RestTemplate oRestTemplate = new RestTemplate(
                     Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
-            oRestTemplate.setErrorHandler(this);
+           // oRestTemplate.setErrorHandler(this);
 
             HttpEntity oHttpEntity = new HttpEntity(mParamObject, oHttpHeaders);
             if (mUrlVariable != null){
@@ -225,15 +225,15 @@ public class HttpEntityCover implements ResponseErrorHandler{
         return this;
     }
 
-	@Override
-	public boolean hasError(ClientHttpResponse response) throws IOException {
-		return !response.getStatusCode().equals(HttpStatus.OK);
-	}
-
-	@Override
-	public void handleError(ClientHttpResponse response) throws IOException {
-		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
-		osResponseEntity = new ResponseEntity<String>(theString, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+//	@Override
+//	public boolean hasError(ClientHttpResponse response) throws IOException {
+//		return !response.getStatusCode().equals(HttpStatus.OK);
+//	}
+//
+//	@Override
+//	public void handleError(ClientHttpResponse response) throws IOException {
+//		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
+//		osResponseEntity = new ResponseEntity<String>(theString, HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
 
 }
