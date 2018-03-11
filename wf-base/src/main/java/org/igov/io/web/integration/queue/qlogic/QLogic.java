@@ -1,5 +1,6 @@
 package org.igov.io.web.integration.queue.qlogic;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -19,6 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 
 /**
@@ -183,22 +187,16 @@ public class QLogic {
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
                 ._SendGET();
-        sReturn = oHttpEntityCover.sReturn();
         
         if (!oHttpEntityCover.bStatusOk()) {
-        	JSONParser parser = new JSONParser();
-            JSONObject response = (JSONObject) parser.parse(sReturn);
-            String message = "[sendRequest](sURL=" + url + "): nStatus()="
-                    + oHttpEntityCover.nStatus();
-            
-            if (response.containsKey("Message")){
-            	message = (String)response.get("Message");
-            	LOG.error("Error message: " + message);
-            }
-            LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
-            		url,
-                    oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception(message);
+        	LOG.error("Exception occured with request to QLogic. Status code:", e);
+        	if (oHttpEntityCover != null){
+        		LOG.error("Exception response:" + oHttpEntityCover.sErrorMessage());
+        		throw new Exception(oHttpEntityCover.sErrorMessage(), e);
+        	}
+        	throw new Exception(e);
+        } else {
+            sReturn = oHttpEntityCover.sReturn();
         }
 
         } catch (Exception e){
@@ -234,6 +232,29 @@ public class QLogic {
 
         LOG.info("Result:{}", sReturn);
         return sReturn;
+	}
+	
+	@Override
+	public boolean hasError(ClientHttpResponse response) throws IOException {
+		return !response.getStatusCode().equals(HttpStatus.OK);
+	}
+
+	@Override
+	public void handleError(ClientHttpResponse response) throws IOException {
+		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
+		LOG.error("Error message occured while processing request:" + theString);
+		try {
+			JSONParser parser = new JSONParser();
+	        JSONObject jsonResponse;
+			jsonResponse = (JSONObject) parser.parse(theString);
+	        if (jsonResponse.containsKey("Message")){
+	        	errorMessage = (String)jsonResponse.get("Message");
+	        	LOG.error("Error message: " + errorMessage);
+	        }
+		} catch (ParseException e) {
+			LOG.warn("Exception while parsing error response");;
+		}
+        
 	}
 
 }
