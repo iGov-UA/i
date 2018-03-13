@@ -155,7 +155,7 @@ angular.module('signModule', [])
             "      <hr class=\"hr-divider\" style=\"margin: 0\">\n" +
             "    </div>\n" +
             "  </form>\n" +
-            "  <span style=\"color: red\">{{lastError.msg}}</span>\n" +
+            "  <span style=\"color: red\">{{lastError}}</span>\n" +
             "  <div style='color: grey' ng-if=\"lastError.code === 'noExtensionInstalled'\">" +
             "   (<a style=\"font-size: 14px;\"\n" +
             "       ng-href=\"{{pluginsLink.extension}}\"\n" +
