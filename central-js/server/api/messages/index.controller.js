@@ -174,8 +174,8 @@ module.exports.postServiceMessage = function(req, res){
     var oDateNew = {
         'sID_Order': oData.sID_Order,
         'sBody': oData.sBody,
-        'nID_SubjectMessageType' : 8
-        , 'bAuth': !bAdmin
+        'nID_SubjectMessageType' : 8, 
+        'bAuth': !bAdmin
     };
     if(oUtil.bExist(sToken)){
         oDateNew = _.extend(oDateNew,{'sToken': sToken});

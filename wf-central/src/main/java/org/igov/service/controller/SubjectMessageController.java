@@ -3,7 +3,6 @@ package org.igov.service.controller;
 import com.google.common.base.Optional;
 import io.swagger.annotations.*;
 import org.activiti.engine.ActivitiException;
-import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.util.json.JSONArray;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -91,12 +90,8 @@ public class SubjectMessageController {
     private ProminSession_Singleton prominSession_Singleton;
     @Autowired
     HttpRequester httpRequester;
-
     @Autowired
     private NotificationPatterns oNotificationPatterns;
-
-    @Autowired
-    private TaskService taskService;
 
 	@ApiOperation(value = "Получение сообщения", notes = ""
             + "Примеры: https://test.igov.org.ua/wf/service/subject/message/getMessage?nID=76\n"
@@ -128,10 +123,10 @@ public class SubjectMessageController {
         SubjectMessage message = subjectMessagesDao.getMessage(nID);
         return JsonRestUtils.toJsonResponse(message);
     }
-    
-    
-    
-    
+
+
+
+
     @RequestMapping(value = "/getSID_Auth_PB_SMS", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE, headers = {"Accept=application/json"})
     public
@@ -140,7 +135,7 @@ public class SubjectMessageController {
             @ApiParam(value = "", required = false) @RequestParam(value = "nID") Long nID) {
         return prominSession_Singleton.getSID_Auth_PB_SMS();
     }
-    
+
 
     @ApiOperation(value = "Сохранение сообщение ", notes = ""
             + "При заданных параметрах sID_Order или nID_Protected с/без nID_Server и sID_Rate - обновляется поле nRate в записи сущности HistoryEvent_Service, которая находится по sID_Order или nID_Protected с/без nID_Server (подробнее тут, при этом приходящее значение из параметра sID_Rate должно содержать число от 1 до 5. т.е. возможные ошибки:\n\n"
@@ -404,12 +399,12 @@ public class SubjectMessageController {
             }
             aSubjectMessage = subjectMessagesDao.getMessages(nID_HistoryEvent_Service);
             aoSubjectMessage.addAll(aSubjectMessage);
-            
+
             if(isRegion){
                 aoSubjectMessage.addAll(historyEventDao.getHistoryEvents(null, nID_HistoryEvent_Service, false));
             }
-            
-        
+
+
         } catch (Exception e) {
             LOG.error("FAIL: {}", e);
             //LOG.trace("FAIL:", e);
@@ -458,7 +453,7 @@ public class SubjectMessageController {
             if (bAuth) {
                 actionEventService.checkAuth(oHistoryEvent_Service, nID_Subject, sToken);
             }
-        
+
             if (isNotBlank(sID_File)) {
                 LOG.info("sID_File={}, sFileName={}", sID_File, sFileName);
                     byte[] aByte_FileContent = null;
@@ -485,7 +480,7 @@ public class SubjectMessageController {
                     }
                     sID_DataLink = accessDataDao.setAccessData(aByte_FileContent);   //accessDataService//sKey
                     sID_DataLinkSource="Central";
-                    LOG.info("Saved to Mongo! (sID_DataLink={},aByte_FileContent.length={})", sID_DataLink, aByte_FileContent.length);                    
+                    LOG.info("Saved to Mongo! (sID_DataLink={},aByte_FileContent.length={})", sID_DataLink, aByte_FileContent.length);
             }
 
             if (isNotBlank(sID_DataLink)) {
@@ -501,14 +496,51 @@ public class SubjectMessageController {
                 o.put("sFileContentType", sFileContentType);
                  o.put("sKey", sID_DataLink); //TODO: заменить на клиенте использование на одноименный параметр сущности
                 //o.put("sID_DataLink", sID_DataLink);
-                o.put("sID_DataLinkSource", sID_DataLinkSource); //TODO: заменить на сервере и клиенте использование на одноименный параметр сущности 
+                o.put("sID_DataLinkSource", sID_DataLinkSource); //TODO: заменить на сервере и клиенте использование на одноименный параметр сущности
                 o.put("sID_DataLinkAuthor", sID_DataLinkAuthor); //TODO: заменить на сервере и клиенте использование на одноименный параметр сущности
                 //sID_FileAuthor//SFS
                 oaFile.put(o);
                 sData = new JSONObject().put("aFile", oaFile).toString();
-                LOG.info("sData={}", sData);                
+                LOG.info("sData={}", sData);
             }
-            
+
+            String sHost = null;
+            int nID_Server = oHistoryEvent_Service.getnID_Server();
+            Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
+            if (!oOptionalServer.isPresent()) {
+                throw new RecordNotFoundException();
+            } else {
+                sHost = oOptionalServer.get().getsURL();
+                LOG.info("Url region = ",  oOptionalServer.get().getsURL_Omega());
+            }
+
+            String mergeUrl = sHost + "/service/action/task/mergeVariable";
+            Long nID_Task = oHistoryEvent_Service.getnID_Process();
+            Map<String, String> mergeParams = new HashMap<>();
+            Map<String, List<String>> multipleParam = new HashMap<>();
+            mergeParams.put("processInstanceId", String.valueOf(nID_Task));
+            mergeParams.put("key", "saTaskStatus");
+
+            LOG.info("mergeParams={}, mergeUrl=", mergeParams, mergeUrl);
+
+            if (nID_SubjectMessageType == 8L) { //citizen's comment or question
+                mergeParams.put("insertValues", "GotUpdate");
+                //request to get clerk mail from userTask
+                String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
+                Map<String, String> requestParams = new HashMap<>();
+                requestParams.put("processInstanceId", String.valueOf(nID_Task));
+                requestParams.put("variableName", "sMailClerk");
+                String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
+                String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
+                String sURL_Region = sHost.replace("/wf", "");
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sURL_Region);
+            }
+            if (nID_SubjectMessageType == 9L) { //officer's comment or question
+                multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
+                oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
+            }
+            httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
+
             historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
             oSubjectMessage = oSubjectMessageService.createSubjectMessage(sMessageHead(nID_SubjectMessageType,
                     sID_Order), sBody, nID_Subject, sMail != null ? sMail : "", "", sData, nID_SubjectMessageType);
@@ -523,35 +555,6 @@ public class SubjectMessageController {
 
             LOG.info("Successfully saved message with the ID {}", messageID);
 
-            String sHost = null;
-            int nID_Server = oHistoryEvent_Service.getnID_Server();
-            Optional<Server> oOptionalServer = serverDao.findById(Long.valueOf(nID_Server + ""));
-            if (!oOptionalServer.isPresent()) {
-                throw new RecordNotFoundException();
-            } else {
-                sHost = oOptionalServer.get().getsURL();
-            }
-
-            String mergeUrl = sHost + "/service/action/task/mergeVariable";
-            Long nID_Task = oHistoryEvent_Service.getnID_Process();
-            Map<String, String> mergeParams = new HashMap<>();
-            Map<String, List<String>> multipleParam = new HashMap<>();
-            mergeParams.put("processInstanceId", String.valueOf(nID_Task));
-            mergeParams.put("key", "saTaskStatus");
-
-            LOG.info("mergeParams={}, mergeUrl=", mergeParams, mergeUrl);
-
-            if (nID_SubjectMessageType == 8L) { //citizen's comment or question
-                mergeParams.put("insertValues", "GotUpdate");
-            }
-            if (nID_SubjectMessageType == 9L) { //officer's comment or question
-                multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
-            }
-            httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
-            if(nID_SubjectMessageType==9){
-                 //String sToken = Tool.getGeneratedToken();
-                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
-            }
         } catch (Exception e) {
             LOG.error("FAIL: {} (sID_Order={})", e.getMessage(), sID_Order);
             LOG.error("FAIL:", e);
@@ -873,7 +876,7 @@ public class SubjectMessageController {
             HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
             if (oHistoryEvent_Service != null) {
                 if (oHistoryEvent_Service.getsToken() != null && oHistoryEvent_Service.getsToken().equals(sToken)) {
-                    
+
                     SubjectMessage oSubjectMessage_Feedback = oSubjectMessageService.createSubjectMessage(
                             sMessageHead(nID_SubjectMessageType, sID_Order), "", oHistoryEvent_Service.getnID_Subject(),
                             "", "", "", nID_SubjectMessageType);//2l
@@ -882,7 +885,7 @@ public class SubjectMessageController {
                     LOG.info("No SubjectMessage records found, create new!");
                     oHistoryEvent_Service.setsToken("");
                     historyEventServiceDao.saveOrUpdate(oHistoryEvent_Service);
-                    
+
                 } else {
                     LOG.warn("Skipping history event service from processing as it contains wrong token: {}", oHistoryEvent_Service.getsToken());
                     throw new CommonServiceException(

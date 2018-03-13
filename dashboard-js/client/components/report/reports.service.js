@@ -56,7 +56,10 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) 
       //loading properties from .properties file for a selected Business Process
       var getReportParametersUrl = '/api/reports/template?sPathFile=/export/' + exportParams.sBP + '.properties';
 
-      $http.get(getReportParametersUrl).then(function (result) {
+      /*
+       * Временно выключили до выяснения причин падения прода
+       * 
+       * $http.get(getReportParametersUrl).then(function (result) {
 
         if (result.data != '' && !(result.data.code && result.data.code === 'BUSINESS_ERR')) {
           _.each(result.data.split("\n"), function (line) {
@@ -81,7 +84,7 @@ angular.module('dashboardJsApp').factory('reports', function tasks($http, Auth) 
       }, function () {
         //if error 403 when loading .properties
         defaultHandler(exportParams, callback);
-      })
+      })*/
 
     },
 

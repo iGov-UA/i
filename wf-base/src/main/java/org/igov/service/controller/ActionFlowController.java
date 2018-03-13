@@ -49,7 +49,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.igov.io.GeneralConfig;
@@ -65,6 +67,7 @@ import org.igov.service.business.flow.slot.Day;
 import org.igov.model.flow.FlowDao;
 import org.igov.service.business.flow.ResevedFlowSlot;
 
+import com.google.gwt.http.client.Response;
 
 /**
  * User: goodg_000 Date: 21.06.2015 Time: 14:02
@@ -91,7 +94,7 @@ public class ActionFlowController {
 
     @Autowired
     private ResevedFlowSlot resevedFlowSlot;
-    
+
     @Autowired
     GeneralConfig generalConfig;
 
@@ -184,10 +187,10 @@ public class ActionFlowController {
         //nDiffDays_visitDate1
 
         LOG.info("getFlowSlots started...");
-        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             return JsonRestUtils.toJsonResponse(new Days());
         }
-        
+
         /*DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
         oDateStart = oDateStart.plusDays(nDiffDays);//2
         DateTime oDateEnd = oDateStart.plusDays(nDays);
@@ -440,7 +443,6 @@ public class ActionFlowController {
 
         DateTime startDate = oFlowService.parseJsonDateTimeSerializer(sDateStart);
         DateTime stopDate = oFlowService.parseJsonDateTimeSerializer(sDateStop);
-
         try {
             nID_Flow_ServiceData = oFlowService.determineFlow_ID(
                     nID_Flow_ServiceData, sID_BP, nID_SubjectOrganDepartment);
@@ -451,7 +453,6 @@ public class ActionFlowController {
         }
 
         List<FlowSlotVO> res = oFlowService.buildFlowSlots(nID_Flow_ServiceData, startDate, stopDate);
-
         return JsonRestUtils.toJsonResponse(res);
     }
 
@@ -1170,29 +1171,28 @@ public class ActionFlowController {
         //nDiffDays_visitDate1
         LOG.info("getSlots started...");
         JSONObject oJSONObjectReturn = new JSONObject();
-        
-        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             return oJSONObjectReturn.toString();
         }
-        
+
         DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
-        
+
         JSONArray oaSlot = null;
-        
+
         JSONArray oaJSONArray = new JSONArray();
-        if(generalConfig.isQueueManagementSystem()){
+        if (generalConfig.isQueueManagementSystem()) {
             oaJSONArray = cherg.getSlotFreeDaysArray(nID_Service_Private);
             //oaJSONArray = cherg.getSlotFreeDaysArray_FromCache(nID_Service_Private);
         }
 
-        
         for (Object o : oaJSONArray) {
             //JSONObject oJSONObject = (JSONObject) o;
             String sDate = o.toString();
             DateTime oDateReady = oDateTimeFormatterReady.parseDateTime(sDate);
             oaSlot = cherg.getFreeTime(oDateReady, nID_Service_Private);
-            
+
             /*if(nID_Service_Private == 734 || nID_Service_Private == 735 || nID_Service_Private == 740 || nID_Service_Private == 741
                     || nID_Service_Private == 790 || nID_Service_Private == 791){
                 LOG.info("oaSlot is {}", oaSlot.toJSONString());
@@ -1218,7 +1218,7 @@ public class ActionFlowController {
     @RequestMapping(value = "/DMS/getSlotFreeDays", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getSlotFreeDays(@ApiParam(value = "ID сервиса", required = true)
-    @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
+            @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private
     ) throws Exception {
         return cherg.getSlotFreeDays(nID_Service_Private);
     }
@@ -1255,7 +1255,7 @@ public class ActionFlowController {
         JSONObject result;
 
         LOG.info("setSlotHold started...");
-        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
         }
@@ -1321,13 +1321,13 @@ public class ActionFlowController {
             @ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold,
             HttpServletRequest oRequest
     ) throws Exception {
-        
+
         LOG.info("setSlot started...");
-        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
         }
-        
+
         JSONObject result;
 
         result = cherg.confirmReserve(nID_SlotHold);
@@ -1386,11 +1386,11 @@ public class ActionFlowController {
     public @ResponseBody
     String buildFlowSlot() {
         LOG.info("buildFlowSlot start");
-		try {
-			oFlowService.buildFlowSlots();
-		} catch (Exception e) {
-			LOG.error("ERROR buildFlowSlot!!! " + e.getMessage());
-		}
+        try {
+            oFlowService.buildFlowSlots(0, 10000);
+        } catch (Exception e) {
+            LOG.error("ERROR buildFlowSlot!!! " + e.getMessage());
+        }
         LOG.info("buildFlowSlot stop!!!");
         return "ok!";
     }
@@ -1400,7 +1400,7 @@ public class ActionFlowController {
     String getServiceCenterList(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid
     ) throws Exception {
-    	LOG.info("getServiceCenterList start");
+        LOG.info("getServiceCenterList start");
         String oJsonResult = qLogic.getServiceCenterList(sOrganizatonGuid);
 
         return oJsonResult;
@@ -1435,7 +1435,7 @@ public class ActionFlowController {
 
             Long isAllow = (Long) oJSONObject.get("IsAllow");
 
-            if (isAllow == 1){
+            if (isAllow == 1) {
                 long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
                 Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
@@ -1455,64 +1455,71 @@ public class ActionFlowController {
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
-    HttpServletRequest oRequest
+            HttpServletRequest oRequest
     ) throws Exception {
         JSONObject result;
 
         LOG.info("Qlogic/getSlots started...");
-        if(!oFlowService.checkFlowSessionPermition(oRequest)){
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
         }
-        
+
         JSONObject oJSONObjectReturn = new JSONObject();
 
         JSONArray oaSlot = null;
 
+        try {
         JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+        LOG.info("Received days list: " + oaJSONArray.toString());
         JSONArray timesArr = new JSONArray();
         for (Object o : oaJSONArray) {
             JSONObject oJSONObject = (JSONObject) o;
             String datePart = (String) oJSONObject.get("DatePart");
 
             Long isAllow = (Long) oJSONObject.get("IsAllow");
-
+            
             if (isAllow == 1){
-                long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-                Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-                //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
-                String formattedDate = sdf.format(date);
-
-                String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
-
-                JSONParser parser = new JSONParser();
-                JSONObject response = (JSONObject) parser.parse(oJsonResult);
-                if (response.containsKey("d")){
-                    JSONArray times = (JSONArray) response.get("d");
-                    for (Object o1 : times) {
-                        JSONObject oJSONTimeObject = (JSONObject) o1;
-                        Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
-                        if (countJobsAllow > 0){
-                            String startTime = (String) oJSONTimeObject.get("StartTime");
-                            String stopTime = (String) oJSONTimeObject.get("StopTime");
-
-                            Duration dStartTime = Duration.parse(startTime);
-                            Duration dStopTime =  Duration.parse(stopTime);
-                            Map<String, Object> currRes = new HashMap<String, Object>();
-                            currRes.put("date", formattedDate);
-                            currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
-                            currRes.put("countJobsAllow", countJobsAllow);
-                            Duration delta = dStopTime.minus(dStartTime);
-                            currRes.put("length", delta.getSeconds() / 60);
-                            timesArr.add(currRes);
-                        }
-
-                    }
-                }
+            	long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+	            Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+	            String formattedDate = sdf.format(date);
+	            
+	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
+	            LOG.info("Received days list: " + oaJSONArray.toString());
+	            
+	            JSONParser parser = new JSONParser();
+	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
+	            if (response.containsKey("d")){
+	            	JSONArray times = (JSONArray) response.get("d");
+	            	for (Object o1 : times) {
+	                	JSONObject oJSONTimeObject = (JSONObject) o1;
+	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
+	                    Long isAllowTime = (Long) oJSONTimeObject.get("IsAllow");
+	                    if (countJobsAllow > 0 && isAllowTime > 0){
+	                    	String startTime = (String) oJSONTimeObject.get("StartTime");
+	                    	String stopTime = (String) oJSONTimeObject.get("StopTime");
+	                    	
+	                    	Duration dStartTime = Duration.parse(startTime);
+	                    	Duration dStopTime =  Duration.parse(stopTime);
+	                    	Map<String, Object> currRes = new HashMap<String, Object>();
+	                    	currRes.put("date", formattedDate);
+	                    	currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
+	                    	currRes.put("countJobsAllow", countJobsAllow);
+	                    	Duration delta = dStopTime.minus(dStartTime);
+	                    	currRes.put("length", delta.getSeconds() / 60);
+	                    	timesArr.add(currRes);
+	                    }
+	                    
+	            	}
+	            }
             }
         }
         oJSONObjectReturn.put("aDate", timesArr);
+        } catch (Exception e){
+        	LOG.error(e.getMessage(), e);
+        }
 
         return oJSONObjectReturn.toString();
     }
@@ -1543,30 +1550,26 @@ public class ActionFlowController {
             @ApiParam(value = "Контактный электронный ящик посетителя", required = true) @RequestParam(value = "sEmail") String sEmail,
             @ApiParam(value = "ФИО посетителя", required = true) @RequestParam(value = "sName") String sName,
             @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation,
-            HttpServletRequest oRequest
+            HttpServletRequest oRequest, HttpServletResponse oResponse
     ) throws Exception {
-        JSONObject result;
-
-        LOG.info("Qlogic/setSlot started...");
-        if(!oFlowService.checkFlowSessionPermition(oRequest)){
-            JSONObject oJSONObjectReturn = new JSONObject();
-            return oJSONObjectReturn.toString();
-        }
-        String oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
-
-        JSONParser oJSONParser = new JSONParser();
-        JSONObject res = new JSONObject();
-        if(oJsonResult!=null){
-            try {
-                JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
-                if (oJSONObject.containsKey("d")){
-                	JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
-                	res.put("id", oJSONObjectMap.get("CustOrderGuid"));
-                	res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
-                }
-            } catch (Exception e){
-            	LOG.error("Error parsing response = {}", oJsonResult, e);
-            }
+    	JSONObject res = new JSONObject();
+    	String oJsonResult = "";
+        try {
+	        oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
+	        
+	        JSONParser oJSONParser = new JSONParser();
+	        if(oJsonResult!=null){
+	                JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
+	                if (oJSONObject.containsKey("d")){
+	                	JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
+	                	res.put("id", oJSONObjectMap.get("CustOrderGuid"));
+	                	res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
+	                }
+	        }
+        } catch (Exception e){
+        	LOG.error("Error occured while registering slot:" + e.getMessage());
+        	res.put("errMsg", e.getMessage());
+        	oResponse.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         return res.toString();
@@ -1576,7 +1579,7 @@ public class ActionFlowController {
     public @ResponseBody
     String getOrganizationState(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid)
-            		throws Exception {
+            throws Exception {
         String oJsonResult = qLogic.getOrganizationState(sOrganizatonGuid);
 
         return oJsonResult.toString();

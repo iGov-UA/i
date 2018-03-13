@@ -1770,6 +1770,21 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
 
         return res;
     }
+    
+    public String getRuntimeProcessVariableValue(String snID_Process, String sVariableName) {
+        String sValue = "";
+        try {
+            Object currentValueObject = oRuntimeService.getVariable(snID_Process, sVariableName);
+            if(currentValueObject != null){
+                sValue = currentValueObject.toString();
+            }
+            LOG.debug("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
+                    oException.getMessage(), snID_Process, sVariableName, sValue);
+        }
+        return sValue;
+    }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
         String snID_Process = String.valueOf(ToolLuna.getValidatedOriginalNumber(nID_Order));

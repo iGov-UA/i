@@ -5,6 +5,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.mail.internet.MimeMultipart;
 import org.activiti.engine.impl.util.json.JSONObject;
 import org.apache.commons.mail.EmailException;
@@ -75,9 +76,9 @@ public class NotificationPatterns {
             //"patterns/mail/auto_client_notify.html"
             File oFile = FileSystemData.getFile(FileSystemData.SUB_PATH_PATTERN_EMAIL, "auto_client_notify.html");
             String sBody = Files.toString(oFile, Charset.defaultCharset());
-            
+
             LOG.info("sBody testing: " + sBody);
-            
+
             if (sID_Order != null) {
                 sBody = sBody.replaceAll("\\[sID_Order\\]", sID_Order);
                 LOG.info("!!!after sID_Order replace sBody: " + sBody);
@@ -94,7 +95,7 @@ public class NotificationPatterns {
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sBody)
                     ._ToName(makeStringAsName(bankIdFirstName), makeStringAsName(bankIdLastName))
-                     ._oMultiparts(new MimeMultipart());
+                    ._oMultiparts(new MimeMultipart());
             oMail.send();
             LOG.info("Send email with sID_Order={} to the sMailTo={}", sID_Order, sMailTo);
         } catch (Exception oException) {
@@ -189,8 +190,8 @@ public class NotificationPatterns {
     public void sendTaskEmployeeMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order, String soParams)
             throws EmailException {
         try {
-            sHead = ((sHead == null || "".equals(sHead.trim())) ? 
-                    "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
+            sHead = ((sHead == null || "".equals(sHead.trim()))
+                    ? "Просимо ознайомитись із коментарем держслужбовця, по Вашій заявці на iGov" : sHead);
             LOG.info("sendTaskEmployeeMessageEmail: sHead = " + sHead);
             String sClientFIO = null;
             String sEmployerFIO = null;
@@ -234,6 +235,33 @@ public class NotificationPatterns {
             String sMailBody = osBody.toString();
             Mail oMail = context.getBean(Mail.class);
             oMail._To(sMailTo)._Head(sHead)._Body(sMailBody)._ToName(sClientFIO)._oMultiparts(new MimeMultipart());
+            oMail.send();
+        } catch (Exception oException) {
+            LOG.warn("FAIL: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo,
+                    sID_Order);
+            throw oException;
+        }
+    }
+
+    public void sendTaskClientFeedbackMessageEmail(String sHead, String sBody, String sMailTo, String sID_Order, String sURL)
+            throws EmailException {
+        try {
+            sHead = ((sHead == null || "".equals(sHead.trim()))
+                    ? "Просимо ознайомитись із відповіддю громадянина по Вашим зауваженням на iGov" : sHead);
+            LOG.debug("sendTaskClientFeedbackMessageEmail: sHead = {}, sMailTo= {}, sURL= {}", sHead, sMailTo, sURL);
+            String sText = "<b>Шановний колего!</b><br><br>";
+            StringBuilder osBody = new StringBuilder(sText);
+            osBody.append("<br>");
+            osBody.append(sBody).append("<br>");
+            osBody.append("<br/>").append("Для перегляду, необхідно пройти авторизацію під Вашим логіном на "
+                    + "<a href=\"" + sURL + "\">" + "iGov.org.ua" + "</a>. А потім перейти до заявки та відкрити вкладку \"Історія діалогу\"."
+            ).append("<br/>");
+            osBody.append("<br/>").append("Дякуємо за увагу").append("<br/>");
+            //osBody.append("Для уточнення - перейдіть по цьому посіланню: ").append(sURL).append("<br/>");
+
+            String sMailBody = osBody.toString();
+            Mail oMail = context.getBean(Mail.class);
+            oMail._To(sMailTo)._Head(sHead)._Body(sMailBody)._oMultiparts(new MimeMultipart());
             oMail.send();
         } catch (Exception oException) {
             LOG.warn("FAIL: {} (sMailTo={},sID_Order={})", oException.getMessage(), sMailTo,

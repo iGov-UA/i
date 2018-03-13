@@ -295,6 +295,7 @@ public class FlowService implements ApplicationContextAware {
      */
     public List<FlowSlotVO> buildFlowSlots(Long nID_Flow, DateTime oDateStart, DateTime oDateEnd) throws ParseException {
 
+        long timeStart = System.nanoTime();
         LOG.info("buildFlowSlots started nID_Flow = {}, oDateStart = {}, oDateEnd = {}", nID_Flow, oDateStart, oDateEnd);
         Flow oFlow = flowDao.findByIdExpected(nID_Flow);
 
@@ -407,7 +408,7 @@ public class FlowService implements ApplicationContextAware {
             LOG.info("stop cron exclude date before apply: " + oExcludeDateRange.getsDateTimeTo());
             LOG.info("-----");
         }*/
-        
+        long timeMiddle = System.nanoTime();
         List<FlowProperty> aFlowProperty = null;
         
         if(aFlowProperty_ToBuild.isEmpty()){
@@ -417,6 +418,7 @@ public class FlowService implements ApplicationContextAware {
             aFlowProperty = aFlowProperty_ToBuild; 
         }
         
+        long highLoadPartStart = System.nanoTime();
         LOG.info("nID_Flow = {}, aoFlowProperty = {}", nID_Flow, aFlowProperty.size());
         for (FlowProperty oFlowProperty : aFlowProperty) {
             if (oFlowProperty.getbExclude() == null || !oFlowProperty.getbExclude()) {
@@ -463,7 +465,8 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         LOG.info("nID_Flow = {}, aoFlowProperty = {} ok!!!", nID_Flow, aFlowProperty.size());
-
+        long highLoadPartEnd = System.nanoTime();
+        
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ", nID_Flow, aoDateRange_Exclude.size());
         if (!aoDateRange_Exclude.isEmpty()) {
             List<FlowSlot> aFlowSlot = flowSlotDao.findFlowSlotsByFlow(nID_Flow, oDateStart, oDateEnd);
@@ -503,6 +506,10 @@ public class FlowService implements ApplicationContextAware {
             }
         }
         LOG.info("nID_Flow = {}, aoDateRange_Exclude = {} ok!!!", nID_Flow, aoDateRange_Exclude.size());
+        long timeEnd = System.nanoTime();
+        LOG.info("Middle time of service: " + (timeMiddle - timeStart)/1000000);
+        LOG.info("HighLoadPart time of service: " + (highLoadPartEnd - highLoadPartStart)/1000000);
+        LOG.info("Full time of service procession: " + (timeEnd - timeStart)/1000000);
         return result;
     }
 
@@ -1064,7 +1071,7 @@ public class FlowService implements ApplicationContextAware {
         return res;
     }
 
-    public void buildFlowSlots() {
+    public void buildFlowSlots(int start, int end) {
         int i = 0;
         Logger LOG_TEMP = LoggerFactory.getLogger(JobBuilderFlowSlots.class);
         try {
@@ -1072,7 +1079,12 @@ public class FlowService implements ApplicationContextAware {
             LOG.info(" oDateStart = {}", oDateStart);
             List<Flow> aFlow = flowDao.findAll();
             LOG_TEMP.info(" aFlow.size = {}", aFlow.size());
+            
             for (Flow oFlow : aFlow) {
+                if(oFlow.getId() < start || oFlow.getId() > end){
+                    continue;
+                }
+                
                 try {
                     ++i;
                     if (oFlow.getsID_BP().endsWith(SUFFIX_AUTO) && oFlow.getnCountAutoGenerate() != null) {

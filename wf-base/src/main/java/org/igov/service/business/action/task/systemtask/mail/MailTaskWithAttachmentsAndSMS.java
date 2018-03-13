@@ -22,7 +22,6 @@ public class MailTaskWithAttachmentsAndSMS extends MailTaskWithAttachments {
     public void execute(DelegateExecution oExecution) throws Exception {
         sendMailWithAttachments(oExecution);
         trySendSms(oExecution);
-        LOG.info("MailTaskWithAttachmentsAndSMS ok!");
     }
 
     private void trySendSms(DelegateExecution oExecution) {
