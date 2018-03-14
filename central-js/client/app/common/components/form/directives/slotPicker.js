@@ -195,15 +195,27 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
         } else if (isQueueDataType.QLogic){
           if(newValue){
-            scope.ngModel = JSON.stringify({
-              sOrganizatonGuid: scope.formData.params[sOrganizatonGuid_ID].value,
-              sServiceCenterId: scope.formData.params[sServiceCenterId_ID].value,
-              sServiceId: scope.formData.params[sServiceId_ID].value,
-              sPhone: scope.formData.params.phone.value || '',
-              sEmail: scope.formData.params.email.value || '',
-              sName: scope.formData.params.bankIdlastName.value + ' ' + scope.formData.params.bankIdfirstName.value + (scope.formData.params.bankIdmiddleName.value ? ' ' + scope.formData.params.bankIdmiddleName.value : ''),
-              sDate: scope.selected.date.sDate,
-              sTime: scope.selected.slot.sTime
+            var baseURL = '/api/service/flow/Qlogic/setSlot';
+            var setFlowUrl = baseURL + newValue.nID + '?nID_Server=' + scope.serviceData.nID_Server;
+            if (nSlotsParam) {
+              var nSlots = parseInt(nSlotsParam.value) || 0;
+              if (nSlots > 1)
+                setFlowUrl += '&nSlots=' + nSlots;
+            }
+
+            $http.post(setFlowUrl).then(function (response) {
+              scope.ngModel = JSON.stringify({
+                sOrganizatonGuid: scope.formData.params[sOrganizatonGuid_ID].value,
+                sServiceCenterId: scope.formData.params[sServiceCenterId_ID].value,
+                sServiceId: scope.formData.params[sServiceId_ID].value,
+                sPhone: scope.formData.params.phone.value || '',
+                sEmail: scope.formData.params.email.value || '',
+                sName: scope.formData.params.bankIdlastName.value + ' ' + scope.formData.params.bankIdfirstName.value + (scope.formData.params.bankIdmiddleName.value ? ' ' + scope.formData.params.bankIdmiddleName.value : ''),
+                sDate: scope.selected.date.sDate,
+                sTime: scope.selected.slot.sTime
+              });
+            }, function () {
+              dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
             });
           }
 
