@@ -1176,7 +1176,8 @@ public class ActionFlowController {
         LOG.info("getSlots started...");
         LOG.info("getSlots sKeyPB24:" + sKeyPB24);
         JSONObject oJSONObjectReturn = new JSONObject();
-
+        LOG.info("oFlowService =" + oFlowService.checkFlowSessionPermition(oRequest));
+        LOG.info("generalConfig =" + generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24));
         if (!oFlowService.checkFlowSessionPermition(oRequest) && 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
             LOG.info("Inside Session check");
