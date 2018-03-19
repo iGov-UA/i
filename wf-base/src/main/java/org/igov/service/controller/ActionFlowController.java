@@ -185,7 +185,7 @@ public class ActionFlowController {
         //nDiffDays_visitDate1
 
         LOG.info("getFlowSlots started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
+        if (!oFlowService.checkFlowSessionPermition(oRequest) && 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
             return JsonRestUtils.toJsonResponse(new Days());
         }
@@ -1170,12 +1170,15 @@ public class ActionFlowController {
     ) throws Exception {
         //nDiffDays_visitDate1
         LOG.info("getSlots started...");
+        LOG.info("getSlots sKeyPB24:" + sKeyPB24);
         JSONObject oJSONObjectReturn = new JSONObject();
 
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
+        if (!oFlowService.checkFlowSessionPermition(oRequest) && 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+            LOG.info("Inside Session check");
             return oJSONObjectReturn.toString();
         }
+        LOG.info("After Session check");
 
         DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
@@ -1257,7 +1260,7 @@ public class ActionFlowController {
         JSONObject result;
 
         LOG.info("setSlotHold started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
+        if (!oFlowService.checkFlowSessionPermition(oRequest) && 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
@@ -1327,7 +1330,7 @@ public class ActionFlowController {
     ) throws Exception {
 
         LOG.info("setSlot started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
+        if (!oFlowService.checkFlowSessionPermition(oRequest) && 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
@@ -1466,7 +1469,7 @@ public class ActionFlowController {
         JSONObject result;
 
         LOG.info("Qlogic/getSlots started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
+        if (!oFlowService.checkFlowSessionPermition(oRequest) && 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
@@ -1574,8 +1577,9 @@ public class ActionFlowController {
 	                }
 	        }
         } catch (Exception e){
-        	LOG.error("Error with request = {}", oJsonResult, e);
-        	throw new Exception(e);
+        	LOG.error("Error occured while registering slot:" + e.getMessage());
+        	res.put("errMsg", e.getMessage());
+        	oResponse.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         return res.toString();
