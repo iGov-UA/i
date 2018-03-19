@@ -248,9 +248,6 @@ public class GeneralConfig {
     @Value("${general.Self.MasterPass_sSecretToken}")
     private String sMasterPass_sSecretToken;
     
-    @Value("${general.Flow.Session.PB.sKey}")
-    private String sFlowSessionPB_sKey;
-    
     public String getsAddrClerk() {
 		return sAddrClerk;
 	}
@@ -801,10 +798,6 @@ public class GeneralConfig {
 
     public void setKievStarPassword(String kievStarPassword) {
         this.kievStarPassword = kievStarPassword;
-    }
-
-    public String getsFlowSessionPB_sKey() {
-        return sFlowSessionPB_sKey;
     }
     
 }

@@ -64,7 +64,6 @@ import static org.igov.run.schedule.JobBuilderFlowSlots.WORK_DAYS_NEEDED;
 import org.igov.service.business.flow.slot.Day;
 import org.igov.model.flow.FlowDao;
 import org.igov.service.business.flow.ResevedFlowSlot;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * User: goodg_000 Date: 21.06.2015 Time: 14:02
@@ -165,7 +164,7 @@ public class ActionFlowController {
                 + "- флаг \"bFree\" - является ли слот свободным? Слот считается свободным если на него нету тикетов у которых nID_Task_Activiti равен null,"
                 + " а у тех у которых nID_Task_Activiti = null - время создания тикета (sDateEdit) не позднее чем текущее время минус 5 минут (предопределенная константа)\n"
                 + "- флаг \"bHasFree\" равен true , если данных день содержит хотя бы один свободный слот.\n")})
-    @RequestMapping(value = "/getFlowSlots", method = { RequestMethod.POST, RequestMethod.GET })
+    @RequestMapping(value = "/getFlowSlots", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity getFlowSlots(
             @ApiParam(value = "номер-ИД услуги  (обязательный если нет sID_BP и nID_ServiceData)", required = false) @RequestParam(value = "nID_Service", required = false) Long nID_Service,
@@ -179,14 +178,12 @@ public class ActionFlowController {
             @ApiParam(value = "число смещения даты начала выборки с которой начинать отбирать расписание", required = false) @RequestParam(value = "nDiffDaysForStartDate", required = false, defaultValue = "0") int nDiffDaysForStartDate,
             @ApiParam(value = "строка параметр, определяющие дату начала в формате \"yyyy-MM-dd\", с которую выбрать слоты. При наличии этого параметра слоты возвращаются только за указанный период(число дней задается nDays)", required = false) @RequestParam(value = "sDateStart", required = false) String sDateStart,
             @ApiParam(value = "число, опциональный параметр (по умолчанию 1), группировать слоты по заданному числу штук", required = false) @RequestParam(value = "nSlots", defaultValue = "1", required = false) Integer nSlots,
-            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestBody String sKeyPB24,
             HttpServletRequest oRequest
     ) throws Exception {
         //nDiffDays_visitDate1
 
         LOG.info("getFlowSlots started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             return JsonRestUtils.toJsonResponse(new Days());
         }
 
@@ -1165,15 +1162,13 @@ public class ActionFlowController {
     String getSlots(
             @ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
             @ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays,
-            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestBody String sKeyPB24,
             HttpServletRequest oRequest
     ) throws Exception {
         //nDiffDays_visitDate1
         LOG.info("getSlots started...");
         JSONObject oJSONObjectReturn = new JSONObject();
 
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             return oJSONObjectReturn.toString();
         }
 
@@ -1251,14 +1246,12 @@ public class ActionFlowController {
             @ApiParam(value = "Отчество клиента", required = true) @RequestParam(value = "sSubjectSurname") String sSubjectSurname,
             @ApiParam(value = "Последние 4 цифры паспорта", required = true) @RequestParam(value = "sSubjectPassport") String sSubjectPassport,
             @ApiParam(value = "Номер телефона клиента", required = true) @RequestParam(value = "sSubjectPhone") String sSubjectPhone,
-            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestBody String sKeyPB24,
             HttpServletRequest oRequest
     ) throws Exception {
         JSONObject result;
 
         LOG.info("setSlotHold started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
         }
@@ -1322,13 +1315,11 @@ public class ActionFlowController {
     public @ResponseBody
     String setSlot(
             @ApiParam(value = "ИД слота резервации", required = true) @RequestParam(value = "nID_SlotHold") String nID_SlotHold,
-            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestBody String sKeyPB24,
             HttpServletRequest oRequest
     ) throws Exception {
 
         LOG.info("setSlot started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
         }
@@ -1454,20 +1445,18 @@ public class ActionFlowController {
         return oJSONObjectReturn.toString();
     }
 
-    @RequestMapping(value = "/Qlogic/getSlots", method = { RequestMethod.POST, RequestMethod.GET }, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/Qlogic/getSlots", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String getSlots(
             @ApiParam(value = "уникальный идентификатор для сервисного центра", required = true) @RequestParam(value = "sOrganizatonGuid") String sOrganizatonGuid,
             @ApiParam(value = "ID сервисного центра", required = true) @RequestParam(value = "sServiceCenterId") String sServiceCenterId,
             @ApiParam(value = "ID Услуги", required = true) @RequestParam(value = "sServiceId") String sServiceId,
-            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestBody String sKeyPB24,
             HttpServletRequest oRequest
     ) throws Exception {
         JSONObject result;
 
         LOG.info("Qlogic/getSlots started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
             JSONObject oJSONObjectReturn = new JSONObject();
             return oJSONObjectReturn.toString();
         }
