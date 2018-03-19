@@ -1179,6 +1179,7 @@ public class ActionFlowController {
 
         if (!oFlowService.checkFlowSessionPermition(oRequest) || 
                 !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+            LOG.info("Inside Session check");
             return oJSONObjectReturn.toString();
         }
         LOG.info("After Session check");
