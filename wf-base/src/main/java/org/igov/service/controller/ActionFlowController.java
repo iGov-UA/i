@@ -188,10 +188,11 @@ public class ActionFlowController {
     ) throws Exception {
         //nDiffDays_visitDate1
 
-        LOG.info("getFlowSlots started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
-            return JsonRestUtils.toJsonResponse(new Days());
+        LOG.info("getFlowSlots started...");        
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
+            if (!generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+                 return JsonRestUtils.toJsonResponse(new Days());
+            }
         }
 
         /*DateTime oDateStart = DateTime.now().withTimeAtStartOfDay();
@@ -1174,15 +1175,13 @@ public class ActionFlowController {
     ) throws Exception {
         //nDiffDays_visitDate1
         LOG.info("getSlots started...");
-        LOG.info("getSlots sKeyPB24:" + sKeyPB24);
         JSONObject oJSONObjectReturn = new JSONObject();
 
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
-            LOG.info("Inside Session check");
-            return oJSONObjectReturn.toString();
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
+            if (!generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+                return oJSONObjectReturn.toString();
+            }
         }
-        LOG.info("After Session check");
 
         DateTimeFormatter oDateTimeFormatter = DateTimeFormat.forPattern("y-MM-dd");
         DateTimeFormatter oDateTimeFormatterReady = DateTimeFormat.forPattern("YYYY-MM-dd");
@@ -1263,11 +1262,12 @@ public class ActionFlowController {
     ) throws Exception {
         JSONObject result;
 
-        LOG.info("setSlotHold started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
-            JSONObject oJSONObjectReturn = new JSONObject();
-            return oJSONObjectReturn.toString();
+        LOG.info("setSlotHold started...");        
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
+            if (!generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+                JSONObject oJSONObjectReturn = new JSONObject();
+                return oJSONObjectReturn.toString();
+            }
         }
         //this date parsing and formatting fixes problem where we need to zero pad day of month or hour
         //basically it changes "2016-10-6 9:30:0" into "2016-10-06 09:30:00"
@@ -1334,10 +1334,11 @@ public class ActionFlowController {
     ) throws Exception {
 
         LOG.info("setSlot started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
-            JSONObject oJSONObjectReturn = new JSONObject();
-            return oJSONObjectReturn.toString();
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
+            if (!generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+                JSONObject oJSONObjectReturn = new JSONObject();
+                return oJSONObjectReturn.toString();
+            }
         }
 
         JSONObject result;
@@ -1473,10 +1474,11 @@ public class ActionFlowController {
         JSONObject result;
 
         LOG.info("Qlogic/getSlots started...");
-        if (!oFlowService.checkFlowSessionPermition(oRequest) || 
-                !generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
-            JSONObject oJSONObjectReturn = new JSONObject();
-            return oJSONObjectReturn.toString();
+        if (!oFlowService.checkFlowSessionPermition(oRequest)) {
+            if (!generalConfig.getsFlowSessionPB_sKey().equals(sKeyPB24)) {
+                JSONObject oJSONObjectReturn = new JSONObject();
+                return oJSONObjectReturn.toString();
+            }
         }
 
         JSONObject oJSONObjectReturn = new JSONObject();
@@ -1484,55 +1486,55 @@ public class ActionFlowController {
         JSONArray oaSlot = null;
 
         try {
-        JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
-        LOG.info("Received days list: " + oaJSONArray.toString());
-        JSONArray timesArr = new JSONArray();
-        for (Object o : oaJSONArray) {
-            JSONObject oJSONObject = (JSONObject) o;
-            String datePart = (String) oJSONObject.get("DatePart");
+            JSONArray oaJSONArray = qLogic.getDaysList(sOrganizatonGuid, sServiceCenterId, sServiceId);
+            LOG.info("Received days list: " + oaJSONArray.toString());
+            JSONArray timesArr = new JSONArray();
+            for (Object o : oaJSONArray) {
+                JSONObject oJSONObject = (JSONObject) o;
+                String datePart = (String) oJSONObject.get("DatePart");
 
-            Long isAllow = (Long) oJSONObject.get("IsAllow");
-            
+                Long isAllow = (Long) oJSONObject.get("IsAllow");
+
             if (isAllow == 1){
-            	long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
-	            Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
-	            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
-	            //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
-	            String formattedDate = sdf.format(date);
-	            
-	            String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
-	            LOG.info("Received days list: " + oaJSONArray.toString());
-	            
-	            JSONParser parser = new JSONParser();
-	            JSONObject response = (JSONObject) parser.parse(oJsonResult);
-	            if (response.containsKey("d")){
-	            	JSONArray times = (JSONArray) response.get("d");
-	            	for (Object o1 : times) {
-	                	JSONObject oJSONTimeObject = (JSONObject) o1;
-	                    Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
-	                    Long isAllowTime = (Long) oJSONTimeObject.get("IsAllow");
-	                    if (countJobsAllow > 0 && isAllowTime > 0){
-	                    	String startTime = (String) oJSONTimeObject.get("StartTime");
-	                    	String stopTime = (String) oJSONTimeObject.get("StopTime");
-	                    	
-	                    	Duration dStartTime = Duration.parse(startTime);
-	                    	Duration dStopTime =  Duration.parse(stopTime);
-	                    	Map<String, Object> currRes = new HashMap<String, Object>();
-	                    	currRes.put("date", formattedDate);
-	                    	currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
-	                    	currRes.put("countJobsAllow", countJobsAllow);
-	                    	Duration delta = dStopTime.minus(dStartTime);
-	                    	currRes.put("length", delta.getSeconds() / 60);
-	                    	timesArr.add(currRes);
-	                    }
-	                    
-	            	}
-	            }
+                    long unixSeconds = Long.valueOf(StringUtils.substringBetween(datePart, "(", "+"));
+                    Date date = new Date(unixSeconds); // *1000 is to convert seconds to milliseconds
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // the format of your date
+                    //sdf.setTimeZone(TimeZone.getTimeZone("GMT+" + StringUtils.substringBetween(datePart, "+", ")").substring(0, 2)));
+                    String formattedDate = sdf.format(date);
+
+                    String oJsonResult = qLogic.getTimeList(sOrganizatonGuid, sServiceCenterId, sServiceId, formattedDate);
+                    LOG.info("Received days list: " + oaJSONArray.toString());
+
+                    JSONParser parser = new JSONParser();
+                    JSONObject response = (JSONObject) parser.parse(oJsonResult);
+                    if (response.containsKey("d")) {
+                        JSONArray times = (JSONArray) response.get("d");
+                        for (Object o1 : times) {
+                            JSONObject oJSONTimeObject = (JSONObject) o1;
+                            Long countJobsAllow = (Long) oJSONTimeObject.get("CountJobsAllow");
+                            Long isAllowTime = (Long) oJSONTimeObject.get("IsAllow");
+                            if (countJobsAllow > 0 && isAllowTime > 0) {
+                                String startTime = (String) oJSONTimeObject.get("StartTime");
+                                String stopTime = (String) oJSONTimeObject.get("StopTime");
+
+                                Duration dStartTime = Duration.parse(startTime);
+                                Duration dStopTime = Duration.parse(stopTime);
+                                Map<String, Object> currRes = new HashMap<String, Object>();
+                                currRes.put("date", formattedDate);
+                                currRes.put("time", LocalTime.MIDNIGHT.plus(dStartTime).format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
+                                currRes.put("countJobsAllow", countJobsAllow);
+                                Duration delta = dStopTime.minus(dStartTime);
+                                currRes.put("length", delta.getSeconds() / 60);
+                                timesArr.add(currRes);
+                            }
+
+                        }
+                    }
+                }
             }
-        }
-        oJSONObjectReturn.put("aDate", timesArr);
+            oJSONObjectReturn.put("aDate", timesArr);
         } catch (Exception e){
-        	LOG.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
 
         return oJSONObjectReturn.toString();
@@ -1566,24 +1568,24 @@ public class ActionFlowController {
             @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation,
             HttpServletRequest oRequest, HttpServletResponse oResponse
     ) throws Exception {
-    	JSONObject res = new JSONObject();
-    	String oJsonResult = "";
+        JSONObject res = new JSONObject();
+        String oJsonResult = "";
         try {
-	        oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
-	        
-	        JSONParser oJSONParser = new JSONParser();
+            oJsonResult = qLogic.regCustomer(sOrganizatonGuid, sServiceCenterId, sServiceId, sDate, sTime, sPhone, sEmail, sName, sInformation);
+
+            JSONParser oJSONParser = new JSONParser();
 	        if(oJsonResult!=null){
-	                JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
-	                if (oJSONObject.containsKey("d")){
-	                	JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
-	                	res.put("id", oJSONObjectMap.get("CustOrderGuid"));
-	                	res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
-	                }
-	        }
+                    JSONObject oJSONObject = (JSONObject) oJSONParser.parse(oJsonResult);
+	            if (oJSONObject.containsKey("d")){
+                        JSONObject oJSONObjectMap = (JSONObject) oJSONObject.get("d");
+                        res.put("id", oJSONObjectMap.get("CustOrderGuid"));
+                        res.put("receiptNum", oJSONObjectMap.get("CustReceiptNum"));
+                }
+            }
         } catch (Exception e){
-        	LOG.error("Error occured while registering slot:" + e.getMessage());
-        	res.put("errMsg", e.getMessage());
-        	oResponse.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            LOG.error("Error occured while registering slot:" + e.getMessage());
+            res.put("errMsg", e.getMessage());
+            oResponse.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         return res.toString();
