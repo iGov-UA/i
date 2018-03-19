@@ -1164,12 +1164,13 @@ public class ActionFlowController {
             + "  \"2016-08-14\": []\n"
             + "}"
             + "\n```\n")
-    @RequestMapping(value = "/DMS/getSlots", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/DMS/getSlots", method = RequestMethod.POST, produces = "application/json;charset=UTF-8"
+    , consumes = "application/json;charset=UTF-8")
     public @ResponseBody
     String getSlots(
             @ApiParam(value = "уникальный строковой-ИД сервиса", required = true) @RequestParam(value = "nID_Service_Private") Integer nID_Service_Private,
             @ApiParam(value = "опциональный параметр, укзывающий количество дней для которыйх нужно найти слоты", required = false, defaultValue = "7") @RequestParam(value = "nDays", required = false, defaultValue = "7") int nDays,
-            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestBody String sKeyPB24,
+            @ApiParam(value = "Строка ключ сессии Приват", required = false) @RequestParam(value = "sKeyPB24", required = false) @RequestBody String sKeyPB24,
             HttpServletRequest oRequest
     ) throws Exception {
         //nDiffDays_visitDate1
