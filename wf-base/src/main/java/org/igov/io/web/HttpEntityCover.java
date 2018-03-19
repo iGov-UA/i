@@ -15,6 +15,9 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.igov.io.Log;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import static org.igov.util.Tool.sCut;
 
@@ -41,7 +44,7 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author bw
  */
-public class HttpEntityCover implements ResponseErrorHandler{
+public class HttpEntityCover implements ResponseErrorHandler {
     
     static final transient Logger LOG = LoggerFactory.getLogger(HttpEntityCover.class);
     private static final Logger LOG_BIG = LoggerFactory.getLogger("WebBig");
@@ -53,6 +56,7 @@ public class HttpEntityCover implements ResponseErrorHandler{
     private Map<String, Object> mUrlVariable = null;
     
     private ResponseEntity<String> osResponseEntity = null;
+    private String errorMessage = null;
             
     public HttpEntityCover(String sURL){
         this.sURL = sURL;
@@ -92,6 +96,10 @@ public class HttpEntityCover implements ResponseErrorHandler{
         }
         return osResponseEntity.getBody();
     }
+    
+    public String sErrorMessage(){
+        return errorMessage;
+    }
 
     public Integer nStatus(){
         if(osResponseEntity==null){
@@ -114,7 +122,7 @@ public class HttpEntityCover implements ResponseErrorHandler{
 
             RestTemplate oRestTemplate = new RestTemplate(
                     Arrays.asList(oStringHttpMessageConverter, oHttpMessageConverter, oFormHttpMessageConverter));
-
+            oRestTemplate.setErrorHandler(this);
             
             //Let's construct attachemnts HTTP entities
             if (mParamByteArray != null) {
@@ -198,6 +206,7 @@ public class HttpEntityCover implements ResponseErrorHandler{
                         ._Status(Log.LogStatus.ERROR)
                         ._Param("sURL", sURL)
                         ._Param("sRequest", sRequest)
+                        ._Param("sErrorMessage", errorMessage)
                         ._Param("nReturn", nStatus())
                         ._LogTransit()
                         .save()
@@ -227,13 +236,25 @@ public class HttpEntityCover implements ResponseErrorHandler{
 
 	@Override
 	public boolean hasError(ClientHttpResponse response) throws IOException {
-		return response.getStatusCode().equals(HttpStatus.OK);
+		return !response.getStatusCode().equals(HttpStatus.OK);
 	}
 
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {
 		String theString = IOUtils.toString(response.getBody(), "UTF-8"); 
-		osResponseEntity = new ResponseEntity<String>(theString, HttpStatus.INTERNAL_SERVER_ERROR);
+		LOG.error("Error message occured while processing request:" + theString);
+		try {
+			JSONParser parser = new JSONParser();
+	        JSONObject jsonResponse;
+			jsonResponse = (JSONObject) parser.parse(theString);
+	        if (jsonResponse.containsKey("Message")){
+	        	errorMessage = (String)jsonResponse.get("Message");
+	        	LOG.error("Error message: " + errorMessage);
+	        }
+		} catch (ParseException e) {
+			LOG.warn("Exception while parsing error response", e);;
+		}
+        
 	}
 
 }

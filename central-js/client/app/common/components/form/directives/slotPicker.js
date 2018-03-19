@@ -195,6 +195,8 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
           }
         } else if (isQueueDataType.QLogic){
           if(newValue){
+            var URL = 'api/service/flow/Qlogic/setSlot';
+
             scope.ngModel = JSON.stringify({
               sOrganizatonGuid: scope.formData.params[sOrganizatonGuid_ID].value,
               sServiceCenterId: scope.formData.params[sServiceCenterId_ID].value,
@@ -205,6 +207,17 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               sDate: scope.selected.date.sDate,
               sTime: scope.selected.slot.sTime
             });
+
+            $http({
+              method: 'POST',
+              url: URL,
+              data: scope.ngModel
+            })
+              .then(function (response) {
+                console.log('ok');
+              }, function (error) {
+                dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
+              });
           }
 
         }
