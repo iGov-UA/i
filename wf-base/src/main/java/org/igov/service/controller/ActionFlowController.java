@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.igov.io.GeneralConfig;
@@ -65,6 +66,8 @@ import org.igov.service.business.flow.slot.Day;
 import org.igov.model.flow.FlowDao;
 import org.igov.service.business.flow.ResevedFlowSlot;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.google.gwt.http.client.Response;
 
 /**
  * User: goodg_000 Date: 21.06.2015 Time: 14:02
@@ -1556,7 +1559,7 @@ public class ActionFlowController {
             @ApiParam(value = "Контактный электронный ящик посетителя", required = true) @RequestParam(value = "sEmail") String sEmail,
             @ApiParam(value = "ФИО посетителя", required = true) @RequestParam(value = "sName") String sName,
             @ApiParam(value = "строка с информацией о клиенте", required = true) @RequestParam(value = "sInformation") String sInformation,
-            HttpServletRequest oRequest
+            HttpServletRequest oRequest, HttpServletResponse oResponse
     ) throws Exception {
     	JSONObject res = new JSONObject();
     	String oJsonResult = "";
