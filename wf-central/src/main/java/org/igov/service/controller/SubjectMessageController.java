@@ -530,11 +530,16 @@ public class SubjectMessageController {
                 Map<String, String> requestParams = new HashMap<>();
                 requestParams.put("processInstanceId", String.valueOf(nID_Task));
                 requestParams.put("variableName", "sMailClerk");
-                String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
-                LOG.info("sMailClerk={}", sMailClerk);
-                String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
-                String sURL_Region = sHost.replace("/wf", "");
-                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sURL_Region);
+                
+                String asResult = httpRequester.getInside(sTaskDataUrl, requestParams);
+                List<String> asMailClerk = Arrays.asList(asResult.split(","));
+                LOG.info("asMailClerk={}", asMailClerk);
+                for(String sMailClerk: asMailClerk){
+                    LOG.info("sMailClerk={}", sMailClerk);
+                    String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
+                    String sURL_Region = sHost.replace("/wf", "");
+                    oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailC
+                }
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));

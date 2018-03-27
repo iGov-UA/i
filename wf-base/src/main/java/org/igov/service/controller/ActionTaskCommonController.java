@@ -3412,6 +3412,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public String getRuntimeProcessVariableValue(
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "variableName", required = true) String sVariableName) {
-        return oActionTaskService.getRuntimeProcessVariableValue(snID_Process, sVariableName);
+        List<String> aValues = oActionTaskService.getRuntimeProcessVariableValue(snID_Process, sVariableName);
+        return String.join(",", aValues);
     }
 }

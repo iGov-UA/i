@@ -23,7 +23,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
@@ -143,11 +145,16 @@ public class ActionTaskCentralController {
             Map<String, String> requestParams = new HashMap<>();
             requestParams.put("processInstanceId", String.valueOf(processId));
             requestParams.put("variableName", "sMailClerk");
-            String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
-            LOG.info("sMailClerk={}", sMailClerk);
-            String sURL_Region = sHost.replace("/wf", "");
-            sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
-            oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);
+            String asResult = httpRequester.getInside(sTaskDataUrl, requestParams);
+            List<String> asMailClerk = Arrays.asList(asResult.split(","));
+            LOG.info("asMailClerk={}", asMailClerk);
+            for(String sMailClerk: asMailClerk){
+                LOG.info("sMailClerk={}", sMailClerk);
+                String sURL_Region = sHost.replace("/wf", "");
+                sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
+                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);
+            }
+            
 
         } catch (Exception e) {
             throw new CommonServiceException(
