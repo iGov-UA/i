@@ -1774,16 +1774,15 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     public String getRuntimeProcessVariableValue(String snID_Process, String sVariableName) {
         String sValue = "";
         LOG.info("Fetch variable by nID_Process={} & sVariableName={}", snID_Process, sVariableName);
-//        try {
-//            Object currentValueObject = oRuntimeService.getVariable(snID_Process, sVariableName);
-//            if(currentValueObject != null){
-//                sValue = currentValueObject.toString();
-//            }
-//            LOG.debug("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
-//        } catch (Exception oException) {
-//            LOG.error("ERROR:{} (snID_Process={},sVariableName={},sValue={})",
-//                    oException.getMessage(), snID_Process, sVariableName, sValue);
-//        }
+        try {
+            Object currentValueObject = oRuntimeService.getVariable(snID_Process, sVariableName);
+            if(currentValueObject != null){
+                sValue = currentValueObject.toString();
+            }
+        } catch (Exception oException) {
+            LOG.error("ERROR:{} (snID_Process={},sVariableName={},sValue={})",
+                    oException.getMessage(), snID_Process, sVariableName, sValue);
+        }
         return sValue;
     }
 
