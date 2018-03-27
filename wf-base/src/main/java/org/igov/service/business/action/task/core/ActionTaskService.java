@@ -1782,7 +1782,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 .forEach(a -> aFormPropertyUnion.addAll(a));
         return aFormPropertyUnion
                 .stream()
-                .filter(oFormProperty -> sVariableName.equals(oFormProperty.getName()))
+                .filter(oFormProperty -> sVariableName.equals(oFormProperty.getId()))
                 .map(oProperty -> oProperty.getValue())
                 .collect(Collectors.toList());
     }
