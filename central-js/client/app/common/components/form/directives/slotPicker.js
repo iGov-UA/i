@@ -105,6 +105,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             if(scope.ngModel){
               $http.post('/api/service/flow/DMS/cancelSlotHold', {sSubjectPhone: data.sSubjectPhone}).then(function (resp) {
                 console.log('Slots reserve ' + scope.ngModel + ' was canceled');
+                console.log('1');
                 clearSlotPicker();
               }, function (err) {
                 console.error('Error during canceling slots hold by sSubjectPhone [' + data.sSubjectPhone + "]: " + angular.toJson(err));
@@ -118,6 +119,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
             function setSlotHoldDms(oData) {
               $http.post('/api/service/flow/DMS/setSlotHold', oData).
               success(function(data, status, headers, config) {
+                console.log('2');
                 scope.ngModel = JSON.stringify({
                   reserved_to: data.reserved_to,
                   reserve_id: data.reserve_id,
@@ -176,6 +178,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
               return;
             }
             $http.post(setFlowUrl).then(function (response) {
+              console.log('3');
               scope.ngModel = JSON.stringify({
                 sID_Type: "iGov",
                 nID_FlowSlotTicket: response.data.nID_Ticket,
@@ -274,6 +277,7 @@ angular.module('app').directive('slotPicker', function($http, dialogs, ErrorsFac
       scope.cancelSlotHold = function () {
         $http.post('/api/service/flow/DMS/cancelSlotHold', {sSubjectPhone: scope.formData.params.phone.value}).then(function (resp) {
           console.log('Slots reserve ' + scope.ngModel + ' was canceled');
+          console.log(4);
         }, function (err) {
           console.error('Error during canceling slots hold by sSubjectPhone [' + scope.formData.params.phone.value + "]: " + angular.toJson(err));
         }).finally(function () {
