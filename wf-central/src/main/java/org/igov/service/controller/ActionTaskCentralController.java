@@ -149,9 +149,13 @@ public class ActionTaskCentralController {
             List<String> asMailClerk = Arrays.asList(asResult.split(","));
             LOG.info("asMailClerk={}", asMailClerk);
             for(String sMailClerk: asMailClerk){
-                String sURL_Region = sHost.replace("/wf", "");
-                sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
-                oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);
+                if(sMailClerk.contains("@")){
+                    String sURL_Region = sHost.replace("/wf", "");
+                    sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
+                    oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);
+                }else {
+                    LOG.error("ERROR, sMailClerk={}, should be of e-mail format..." + sMailClerk);
+                }
             }
             
 
