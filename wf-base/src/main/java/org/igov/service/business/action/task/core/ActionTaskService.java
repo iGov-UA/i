@@ -1775,12 +1775,16 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     public List<String> getRuntimeProcessVariableValue(String snID_Process, String sVariableName) {
         LOG.info("Fetch variable by nID_Process={} & sVariableName={}", snID_Process, sVariableName);
         List<FormProperty> aFormPropertyUnion = new ArrayList();
-        getActiveTasksByProcessID(snID_Process)                
+        List<String> asTaskID = getActiveTasksByProcessID(snID_Process)                
                 .stream()
                 .map(task -> task.getId())
+                .collect(Collectors.toList());
+        LOG.info("asTaskID={}", asTaskID.toString());
+        asTaskID
+                .stream()
                 .map(task_id -> getFormPropertiesByTaskID(Long.parseLong(task_id)))
                 .forEach(a -> aFormPropertyUnion.addAll(a));
-
+        LOG.info("aFormPropertyUnion size={}", aFormPropertyUnion.size());
         return aFormPropertyUnion
                 .stream()
                 .filter(oFormProperty -> sVariableName.equals(oFormProperty.getName()))
