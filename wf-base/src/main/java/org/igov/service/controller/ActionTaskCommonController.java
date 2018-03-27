@@ -3413,8 +3413,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "variableName", required = true) String sVariableName) {
         List<String> aValues = oActionTaskService.getRuntimeProcessVariableValue(snID_Process, sVariableName);
-        aValues.forEach(v -> LOG.info("sMailClerk Value: " + v););
-        LOG.info("history data during task updating - sLogin: " + sLogin);
+        aValues.forEach(v -> LOG.info("sMailClerk Value: " + v));
         return String.join(",", aValues);
     }
 }
