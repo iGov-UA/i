@@ -149,7 +149,6 @@ public class ActionTaskCentralController {
             List<String> asMailClerk = Arrays.asList(asResult.split(","));
             LOG.info("asMailClerk={}", asMailClerk);
             for(String sMailClerk: asMailClerk){
-                LOG.info("sMailClerk={}", sMailClerk);
                 String sURL_Region = sHost.replace("/wf", "");
                 sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
                 oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);

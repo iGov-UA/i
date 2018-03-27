@@ -532,10 +532,18 @@ public class SubjectMessageController {
                 requestParams.put("variableName", "sMailClerk");
                 
                 String asResult = httpRequester.getInside(sTaskDataUrl, requestParams);
+                if(asResult.isEmpty()){
+                        LOG.info("asResult is empty");
+                    }
                 List<String> asMailClerk = Arrays.asList(asResult.split(","));
                 LOG.info("asMailClerk={}", asMailClerk);
+                LOG.info("asMailClerk size={}", asMailClerk.size());
                 for(String sMailClerk: asMailClerk){
+                    if(sMailClerk.isEmpty()){
+                        LOG.info("sMailClerk is empty");
+                    } else {
                     LOG.info("sMailClerk={}", sMailClerk);
+                    }
                     String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
                     String sURL_Region = sHost.replace("/wf", "");
                     oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sURL_Region);
