@@ -531,6 +531,7 @@ public class SubjectMessageController {
                 requestParams.put("processInstanceId", String.valueOf(nID_Task));
                 requestParams.put("variableName", "sMailClerk");
                 String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
+                LOG.info("sMailClerk={}", sMailClerk);
                 String sBodyClerk = "Заявка " + sID_Order.split("-")[1] + ", отримала запитання від заявника.";
                 String sURL_Region = sHost.replace("/wf", "");
                 oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sO(sBodyClerk), sMailClerk, sID_Order, sURL_Region);

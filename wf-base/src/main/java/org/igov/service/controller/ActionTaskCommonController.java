@@ -250,8 +250,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             + "[ 555 ]\n"
             + "\n```\n")
     @ApiResponses(value = {
-        @ApiResponse(code = 403, message = "CRC Error или Record not found")
-        ,
+        @ApiResponse(code = 403, message = "CRC Error или Record not found"),
         @ApiResponse(code = 200, message = "Успех запроса. Если процесс с соответствующим ИД и таской найдены в базе")})
     @RequestMapping(value = "/getTasksByOrder", method = RequestMethod.GET)
     public @ResponseBody
