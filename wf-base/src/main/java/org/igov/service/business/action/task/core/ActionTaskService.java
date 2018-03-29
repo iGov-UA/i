@@ -68,6 +68,8 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.mail.EmailException;
 
@@ -1767,23 +1769,26 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         if (historicVariableInstance != null) {
             res.put(historicVariableInstance.getVariableName(), historicVariableInstance.getValue());
         }
-
         return res;
     }
     
-    public String getRuntimeProcessVariableValue(String snID_Process, String sVariableName) {
-        String sValue = "";
-        try {
-            Object currentValueObject = oRuntimeService.getVariable(snID_Process, sVariableName);
-            if(currentValueObject != null){
-                sValue = currentValueObject.toString();
-            }
-            LOG.debug("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
-        } catch (Exception oException) {
-            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
-                    oException.getMessage(), snID_Process, sVariableName, sValue);
-        }
-        return sValue;
+    public List<String> getRuntimeProcessVariableValue(String snID_Process, String sVariableName) {
+        LOG.info("Fetch variable by nID_Process={} & sVariableName={}", snID_Process, sVariableName);
+        List<FormProperty> aFormPropertyUnion = new ArrayList();
+        getActiveTasksByProcessID(snID_Process)                
+                .stream()
+                .map(task -> task.getId())
+                .map(task_id -> getFormPropertiesByTaskID(Long.parseLong(task_id)))
+                .forEach(a -> aFormPropertyUnion.addAll(a));
+        return aFormPropertyUnion
+                .stream()
+                .filter(oFormProperty -> sVariableName.equals(oFormProperty.getId()))
+                .map(oProperty -> oProperty.getValue())
+                .collect(Collectors.toList());
+    }
+
+    private List<Task> getActiveTasksByProcessID(String snID_Process) {
+        return oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
     }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
@@ -2071,7 +2076,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public List<Map<String, Object>> getFormPropertiesMapByTaskID(Long nID_Task) {
-        List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        List<FormProperty> a = getFormPropertiesByTaskID(nID_Task);
         List<Map<String, Object>> aReturn = new LinkedList();
         Map<String, Object> mReturn;
         //a.get(1).getType().getInformation()
@@ -2092,11 +2097,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 if (oEnums instanceof Map) {
                     Map<String, String> mEnum = (Map) oEnums;
                     mReturn.put("mEnum", mEnum);
-
                 }
-
             }
-
             aReturn.add(mReturn);
         }
         return aReturn;
