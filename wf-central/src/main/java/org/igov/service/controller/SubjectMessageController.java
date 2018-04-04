@@ -525,6 +525,8 @@ public class SubjectMessageController {
 
             if (nID_SubjectMessageType == 8L) { //citizen's comment or question
                 mergeParams.put("insertValues", "GotUpdate");
+                mergeParams.put("taskStatusVariable", "_name");
+                mergeParams.put("taskStatusValue", "GotAnswer");
                 //request to get clerk mail from userTask
                 String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
                 Map<String, String> requestParams = new HashMap<>();
@@ -546,6 +548,8 @@ public class SubjectMessageController {
             }
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
+                mergeParams.put("taskStatusVariable", "_name");
+                mergeParams.put("taskStatusValue", "");
                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
             httpRequester.getInside(mergeUrl, mergeParams, multipleParam);

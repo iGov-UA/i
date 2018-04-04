@@ -137,6 +137,8 @@ public class ActionTaskCentralController {
             mergeParams.put("key", "saTaskStatus");
             mergeParams.put("insertValues", "GotAnswer");
             mergeParams.put("removeValues", "WaitAnswer");
+            mergeParams.put("taskStatusVariable", "_name");
+            mergeParams.put("taskStatusValue", "GotAnswer");
             LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
             httpRequester.getInside(mergeUrl, mergeParams);
             
