@@ -1691,7 +1691,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             String processId = String.valueOf(nID_Process);
             String variableName = "saTaskStatus";
-            String taskStatusVariable = "name_";
+            String taskStatusVariable = "taskStatus";
             String waitsAnswerTag = "WaitAnswer";
             String gotAnswerTag = "GotAnswer";
             Object taskStatus = runtimeService.getVariable(processId, variableName);
