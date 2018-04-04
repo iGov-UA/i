@@ -923,6 +923,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "taskStatusVariable", required = false) String taskStatusVariable,
             @RequestParam(value = "taskStatusValue", required = false) String taskStatusValue
     ) {
+                    LOG.info("Get all variables for process in mergeVariable: " + snID_Process);
+            runtimeService.getVariables(snID_Process)
+                    .forEach((k,v)->LOG.info("Variable name: " + k + " value: " + v));
         try {
             Object currentValueObject = runtimeService.getVariable(snID_Process, sKey);
             String currentValue = currentValueObject == null ? "" : currentValueObject.toString();
@@ -1700,6 +1703,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             if (tags.contains(gotAnswerTag)) {
                 tags = tags.replace(gotAnswerTag, "").trim();
             }
+            LOG.info("Get all variables in setTaskQuestions for process: " + processId);
+            runtimeService.getVariables(processId)
+                    .forEach((k,v)->LOG.info("Variable name: " + k + " value: " + v));
             runtimeService.setVariable(processId, variableName, tags);
             runtimeService.setVariable(processId, taskStatusVariable, waitsAnswerTag);
 
