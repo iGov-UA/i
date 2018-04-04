@@ -2567,8 +2567,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         
         Map<String, Object> taskInfo = new HashMap<>();
         
-        String processInstanceId = task.getExecutionId();
-        Object taskStatus = oRuntimeService.getVariable(processInstanceId, "taskStatus");
+        String executionId = task.getExecutionId();
+        Object taskStatus = oRuntimeService.getVariable(executionId, "taskStatus");
 
         taskInfo.put("id", task.getId());
         taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
@@ -2587,7 +2587,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("formKey", task.getFormKey());
         taskInfo.put("parentTaskId", task.getParentTaskId());
         taskInfo.put("parentTaskUrl", "");
-        taskInfo.put("executionId", processInstanceId);
+        taskInfo.put("executionId", executionId);
         taskInfo.put("executionUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
         taskInfo.put("processInstanceId", task.getProcessInstanceId());
         taskInfo.put("processInstanceUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
