@@ -115,7 +115,7 @@ public class AddressService {
         String saParam = "";
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             String entryValue = String.valueOf(entry.getValue());
-            if (entryValue != "null" || entryValue != "") {
+            if (!"null".equals(entryValue) && !"".equals(entryValue)) {
                 try {
                     saParam += "&" + URLEncoder.encode(entry.getKey(), "UTF-8") + "="
                             + URLEncoder.encode(entryValue, "UTF-8");
