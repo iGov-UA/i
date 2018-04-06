@@ -30,7 +30,7 @@ public class AddresssCommonController {
     @RequestMapping(value = "/getListRegions", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    JSONArray getListRegions() throws Exception {
+    JSONArray getListRegions() {
         return oAddressService.getListRegions();
     }
 
@@ -40,7 +40,7 @@ public class AddresssCommonController {
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
     List<Settlement> getListDistricts(
-            @ApiParam(value = "назва області", required = true) @RequestParam(value = "sRegion", required = true) String sRegion) throws Exception {
+            @ApiParam(value = "назва області", required = true) @RequestParam(value = "sRegion", required = true) String sRegion) {
         return oAddressService.getListDistricts(sRegion);
     }
     
@@ -53,7 +53,7 @@ public class AddresssCommonController {
             @ApiParam(value = "назва області", required = true) @RequestParam(value = "sRegion", required = true) String sRegion,
             @ApiParam(value = "назва району", required = false) @RequestParam(value = "sDistrict", required = false) String sDistrict,
             @ApiParam(value = "тип населеного пункта", required = true) @RequestParam(value = "sType", required = true) String sType,
-            @ApiParam(value = "фільтр по назві населенного пункту", required = false) @RequestParam(value = "sNameFilter", required = false) String sNameFilter) throws Exception {
+            @ApiParam(value = "фільтр по назві населенного пункту", required = false) @RequestParam(value = "sNameFilter", required = false) String sNameFilter) {
         return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
     }
     
@@ -65,7 +65,7 @@ public class AddresssCommonController {
     List<Street> getListStreets(
             @ApiParam(value = "ИД населеного пункта", required = true) @RequestParam(value = "sID_Settlement", required = true) String sID_Settlement,
             @ApiParam(value = "тип вулиці", required = false) @RequestParam(value = "sType", required = false) String sType,
-            @ApiParam(value = "фільтр по назві вулиці", required = true) @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
+            @ApiParam(value = "фільтр по назві вулиці", required = true) @RequestParam(value = "sNameFilter", required = true) String sNameFilter) {
         return oAddressService.getListStreets(sID_Settlement, sType, sNameFilter);
     }
 }
