@@ -18,12 +18,34 @@ angular.module('signModule', [])
                 modalScope.contentData = contentData;
                 var signModal = openModal(modalScope, modalClass);
                 signModal.result.then(function (signedContent) {
-                    resultCallback({
-                        id: contentData.id,
-                        content: contentData.content,
-                        certificate: signedContent.certBase64,
-                        sign: signedContent.sign
-                    });
+                    if(signedContent.auth_token) {
+                        resultCallback({
+                            passport: signedContent
+                        });
+                    }
+                    else if(contentData === null){
+                        resultCallback({
+                            certificateInfo: signedContent
+                        });
+                    } else if(contentData.content) {
+                        resultCallback({
+                            id: contentData.id,
+                            content: contentData.content,
+                            certificate: signedContent.certBase64,
+                            sign: signedContent.sign,
+                            subject: signedContent.subject,
+                            issuer: signedContent.issuer
+                        });
+                    } else if(contentData.sHash) {
+                        resultCallback({
+                            id: contentData.nID,
+                            content: contentData.sHash,
+                            certificate: signedContent.certificate,
+                            sign: signedContent.sign,
+                            subject: signedContent.subject,
+                            issuer: signedContent.issuer
+                        });
+                    }
                 }, function () {
                     dismissCallback();
                 });
@@ -151,12 +173,33 @@ angular.module('signModule', [])
             "        <input class=\"form-control\" name=\"eds-key-password\" type=\"password\" ng-model=\"edsContext.selectedKey.password\" required>\n" +
             "      </div>\n" +
             "    </div>\n" +
+            "    <div class=\"col-sm-12 form-field\">\n" +
+            "      <div class=\"col-sm-4 task-form-title\">\n" +
+            "        <label>Пароль до пристрою <span style=\"color: red\"></span></label>\n" +
+            "      </div>\n" +
+            "      <div class=\"col-sm-4\" style=\"padding-right: 0\">\n" +
+            "        <input class=\"form-control\" name=\"token-password\" type=\"password\" ng-model=\"deviceInfo.password\">\n" +
+            "      </div>\n" +
+            "      <div class=\"col-sm-3 task-form-title\">\n" +
+            "        <button type=\"button\"\n" +
+            "                class=\"btn btn-link\"\n" +
+            "                style=\"border: 1px solid #3694BA; outline: 0; border-radius: 3px; text-decoration: none;\"\n" +
+            "                ng-click=\"signInByToken()\">Токен\n" +
+            "        </button>\n" +
+            "      </div>\n" +
+            "    </div>\n" +
+            // "    <div class=\"col-sm-12 form-field\" style=\"margin-top: 6px; margin-bottom: 15px; margin-left: 8px;\">\n" +
+            // "      <div class=\"col-sm-4\" style=\"padding-right: 0\">\n" +
+            // "        <input class=\"form-control\" name=\"token-password\" type=\"password\" ng-model=\"deviceInfo.password\">\n" +
+            // "      </div>\n" +
+            // "       <button type=\"button\" class=\"col-md-4 col-md-offset-4 btn btn-link\" style=\"border: 1px solid #3694BA; outline: 0; border-radius: 3px; text-decoration: none;\" ng-click=\"signInByToken()\">Токен</button>\n" +
+            // "    </div>\n" +
             "    <div class=\"col-sm-12 form-field\" style=\"margin-top: 6px; margin-bottom: 15px;\">\n" +
             "      <hr class=\"hr-divider\" style=\"margin: 0\">\n" +
             "    </div>\n" +
             "  </form>\n" +
             "  <span style=\"color: red\">{{lastError.msg}}</span>\n" +
-            "  <div style='color: grey' ng-if=\"lastError.code === 'noExtensionInstalled'\">" +
+            "  <div style='color: grey' ng-if=\"['noExtensionInstalled', 'noFileSelected'].indexOf(lastError.code) > -1\">" +
             "   (<a style=\"font-size: 14px;\"\n" +
             "       ng-href=\"{{pluginsLink.extension}}\"\n" +
             "       target=\"_blank\"\n" +

@@ -147,11 +147,17 @@ angular.module('signModule').service('signService', function ($q, $base64, crypt
     function doSingleSign(data, isForcedBase64Encoding, isCertificateSavedInEDS) {
         return executeIfPluginCreated(function () {
             var d = $q.defer();
-            var dataBase64 = isForcedBase64Encoding ? $base64.encode(data.content) : data.content;
+            if(data.content) {
+                var dataBase64 = isForcedBase64Encoding ? $base64.encode(data.content) : data.content;
+            } else if(data.sHash) {
+                var dataBase64 = data.sHash;
+            }
             plugin.getCertificate(function (data) {
-                var certBase64 = data.certificate;
-
+                if(data) {
+                    var certBase64 = data.certificate;
+                }
                 plugin.getDataFromCMS(dataBase64, function (success) {
+
                     plugin.CMSSign(success.data,
                         "",
                         certBase64,
@@ -160,8 +166,24 @@ angular.module('signModule').service('signService', function ($q, $base64, crypt
                         isCertificateSavedInEDS,
                         function (data) {
 
-                            plugin.CMSJoin([dataBase64, data.sign], function (signed) {
-                                d.resolve({sign: signed.CMS, certificate: certBase64});
+                            plugin.
+                            CMSJoin([dataBase64, data.sign], function (signed) {
+                                var certInfo;
+                                var issuer;
+                                plugin.getCertificateInfo(certBase64, function (certData) {
+                                    var currentDate = new Date().getTime() / 1000;
+                                    if(currentDate <= certData.notValidAfter && currentDate >= certData.notValidBefore) {
+                                        certInfo = certData.subject;
+                                        issuer = certData.issuer;
+                                        d.resolve({sign: signed.CMS, certificate: certBase64, subject: certInfo, issuer: issuer});
+                                    } else {
+                                        var notValidAfter = new Date(certData.notValidAfter * 1000).toLocaleString();
+                                        d.reject({msg: 'Сертифікат дійсний до'.concat(notValidAfter)
+                                            .concat('. Тому він не може бути використаний для накладання підпису')});
+                                    }
+                                }, function (error) {
+                                    console.log(error);
+                                });
                             }, function (error) {
                                 d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
                             })
@@ -177,7 +199,23 @@ angular.module('signModule').service('signService', function ($q, $base64, crypt
                         true,
                         isCertificateSavedInEDS,
                         function (data) {
-                            d.resolve({sign: data.sign, certificate: certBase64});
+                            var certInfo;
+                            var issuer;
+                            plugin.getCertificateInfo(certBase64, function (certData) {
+                                var currentDate = new Date().getTime() / 1000;
+                                if(currentDate <= certData.notValidAfter && currentDate >= certData.notValidBefore) {
+                                    issuer = certData.issuer;
+                                    certInfo = certData.subject;
+                                    d.resolve({sign: data.sign, certificate: certBase64, subject: certInfo, issuer: issuer});
+                                } else {
+                                    var notValidAfter = new Date(certData.notValidAfter * 1000).toLocaleString();
+                                    d.reject({msg: 'Сертифікат дійсний до '.concat(notValidAfter)
+                                        .concat('. Тому він не може бути використаний для накладання підпису')});
+                                }
+                            }, function (error) {
+                                d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
+                                console.log(error);
+                            });
                         }, function () {
                             d.reject({code: errorCodes.undefinedError, msg: "Неочікувана помилка"});
                         });
@@ -301,9 +339,55 @@ angular.module('signModule').service('signService', function ($q, $base64, crypt
         var isCertificateSavedInEDS = true;
         if(angular.isArray(data)){
             return doMultiSign(data, isForcedBase64Encoding, isCertificateSavedInEDS);
-        } else if (data.content){
+        } else if (data.content || data.sHash){
             return doSingleSign(data, isForcedBase64Encoding, isCertificateSavedInEDS);
         }
+    };
+
+    this.getCertificateInfo = function() {
+        var deferred = $q.defer();
+        plugin.getCertificate(function (data) {
+            var certBase64 = data.certificate;
+            plugin.getCertificateInfo(certBase64, function (certData) {
+                certData.certificate = certBase64;
+                deferred.resolve(certData);
+            });
+        }, function(error) {
+            console.log(error);
+            deferred.reject({code: error, msg: "Неочікувана помилка"});
+        });
+        return deferred.promise;
+    };
+
+    this.signInByToken = function(password) {
+        var deferred = $q.defer();
+        plugin.getDeviceList(function (data) {
+            console.log(data);
+            if(data.length > 0) {
+                plugin.selectDevice(data[0].deviceId, password, function (success) {
+                    plugin.readIdPassportInfo(function (passportInfo) {
+                        console.log(passportInfo);
+                        deferred.resolve({passport: passportInfo, auth_token: true});
+                    }, function (err) {
+                        console.log(err);
+                        deferred.reject({code: err, msg:'Ошибка чтения данных ID Passport (DG1)', auth_token: true});
+                    })
+                }, function (err) {
+                    console.log(err);
+                    deferred.reject({code: err, msg: "Невірний пароль", auth_token: true});
+                });
+            } else {
+                deferred.resolve({msg: 'Підтримувані токени в системі не виявлено\n' +
+                'Підключить токен \n' +
+                '\n' +
+                'Ми підтримуємо токени Autor SecureToken 337, BIFIT iToken, IIT Кристал-1\n' +
+                'Якщо система не знаходить ваш токен, можливо ви не встановили драйвер', auth_token: true})
+            }
+        }, function (err) {
+            console.log(err);
+            deferred.reject({code: err, msg: "Неочікувана помилка", auth_token: true});
+        });
+        return deferred.promise;
     };
 
     this.errorCodes = errorCodes;
