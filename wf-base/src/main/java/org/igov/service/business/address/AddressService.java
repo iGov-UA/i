@@ -82,10 +82,12 @@ public class AddressService {
         do {
             String resp = new RestRequest().get(getCommonInfoURL(sURLResource, pageNumber, properties), null, StandardCharsets.UTF_8, String.class, headers);
             JSONObject oJSONObject = (JSONObject) parser.parse(resp);
-            LOG.debug("oJSONObject is {}", oJSONObject.toJSONString());
+            LOG.info("oJSONObject is {}", oJSONObject.toJSONString());
             JSONObject oJsonPaging = (JSONObject) oJSONObject.get("paging");
             pageNumber = Integer.parseInt(String.valueOf(oJsonPaging.get("page_number")));
-            totalPages = Integer.parseInt(String.valueOf(oJsonPaging.get("page_size")));
+            totalPages = Integer.parseInt(String.valueOf(oJsonPaging.get("total_pages")));
+            LOG.info("pageNumber is {}", pageNumber);
+            LOG.info("totalPages is {}", totalPages);
             aJsonRegions.addAll((JSONArray) oJSONObject.get("data"));
         } while (pageNumber++ == totalPages);
     }
@@ -102,22 +104,24 @@ public class AddressService {
         if (!properties.isEmpty()) {
             sURL = addParamsToURL(sURL, properties);
         }
+        LOG.info("Result URL for ehealth: " + sURL);
         return sURL;
     }
 
     public String addParamsToURL(String sURL, Map<String, Object> properties) {
-        String saParam = "&";
+        String saParam = "";
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             String entryValue = String.valueOf(entry.getValue());
             if (entryValue != "null" || entryValue != "") {
                 try {
-                    saParam += URLEncoder.encode(entry.getKey(), "UTF-8") + "="
-                            + URLEncoder.encode(entryValue, "UTF-8") + "&";
+                    saParam += "&" + URLEncoder.encode(entry.getKey(), "UTF-8") + "="
+                            + URLEncoder.encode(entryValue, "UTF-8");
                 } catch (UnsupportedEncodingException e) {
                     LOG.error("ERROR={}, occured while parsing params: key={}, value={}",e.getMessage(), entry.getKey(), entryValue);
                 }
             }
         }
+        LOG.info("Properties: " + properties);
         return sURL + saParam;
     }
 }
