@@ -2,6 +2,7 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 import org.igov.model.ehealth.address.Settlement;
 import org.igov.model.ehealth.address.Street;
@@ -38,7 +39,8 @@ public class AddresssCommonController {
     @RequestMapping(value = "/getListDistricts", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    List<Settlement> getListDistricts(@RequestParam(value = "sRegion", required = true) String sRegion) throws Exception {
+    List<Settlement> getListDistricts(
+            @ApiParam(value = "назва області", required = true) @RequestParam(value = "sRegion", required = true) String sRegion) throws Exception {
         return oAddressService.getListDistricts(sRegion);
     }
     
@@ -47,10 +49,11 @@ public class AddresssCommonController {
     @RequestMapping(value = "/getListSettlements", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    List<Settlement> getListSettlements(@RequestParam(value = "sRegion", required = true) String sRegion,
-            @RequestParam(value = "sDistrict", required = false) String sDistrict,
-            @RequestParam(value = "sType", required = false) String sType,
-            @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
+    List<Settlement> getListSettlements(
+            @ApiParam(value = "назва області", required = true) @RequestParam(value = "sRegion", required = true) String sRegion,
+            @ApiParam(value = "назва району", required = false) @RequestParam(value = "sDistrict", required = false) String sDistrict,
+            @ApiParam(value = "тип населеного пункта", required = false) @RequestParam(value = "sType", required = false) String sType,
+            @ApiParam(value = "фільтр по назві населенного пункту", required = true) @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
         return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
     }
     
@@ -59,9 +62,10 @@ public class AddresssCommonController {
     @RequestMapping(value = "/getListStreets", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    List<Street> getListStreets(@RequestParam(value = "sID_Settlement", required = true) String sID_Settlement,
-            @RequestParam(value = "sType", required = false) String sType,
-            @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
+    List<Street> getListStreets(
+            @ApiParam(value = "ИД населеного пункта", required = false) @RequestParam(value = "sID_Settlement", required = true) String sID_Settlement,
+            @ApiParam(value = "тип вулиці", required = false) @RequestParam(value = "sType", required = false) String sType,
+            @ApiParam(value = "фільтр по назві вулиці", required = false) @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
         return oAddressService.getListStreets(sID_Settlement, sType, sNameFilter);
     }
 }

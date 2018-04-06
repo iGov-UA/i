@@ -72,7 +72,7 @@ public class AddressService {
         List<Settlement> aoSettlements = gson.fromJson(aJsonSettlements.toJSONString(), type);
         return aoSettlements
                 .stream()
-                .filter(oSettlement -> sNameFilter.equalsIgnoreCase(oSettlement.getsName()))
+                .filter(oSettlement -> sNameFilter.startsWith(oSettlement.getsName()))
                 .collect(Collectors.toList());
     }
     
@@ -133,7 +133,7 @@ public class AddressService {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             String entryValue = String.valueOf(entry.getValue());
             if (!"null".equals(entryValue) && !"".equals(entryValue)) {
-                saParam += "&" + entry.getKey() + "=" + entryValue;
+                    saParam += "&" + entry.getKey() + "=" + entryValue;
             }
         }
         LOG.info("Properties: " + properties);
