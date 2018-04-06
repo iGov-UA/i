@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class AddressService {
     public JSONArray getListRegions()
             throws InterruptedException, ExecutionException, TimeoutException, ParseException {
         JSONArray aJsonRegions = new JSONArray();
-        getJSONResponse(API_REGIONS_RESOURCE, aJsonRegions, null);
+        getJSONResponse(API_REGIONS_RESOURCE, aJsonRegions, new HashMap());
         return aJsonRegions;
     }
 
