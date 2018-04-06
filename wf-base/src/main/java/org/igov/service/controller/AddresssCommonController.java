@@ -42,11 +42,11 @@ public class AddresssCommonController {
     }
     
     @ApiOperation(value = "Получение списка областей", notes = "##### Пример:\n"
-            + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListDistricts\n\n")
-    @RequestMapping(value = "/getListDistricts", method = RequestMethod.GET,
+            + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListSettlements\n\n")
+    @RequestMapping(value = "/getListSettlements", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    List<Settlement> getListDistricts(@RequestParam(value = "sRegion", required = true) String sRegion,
+    List<Settlement> getListSettlements(@RequestParam(value = "sRegion", required = true) String sRegion,
             @RequestParam(value = "sDistrict", required = false) String sDistrict,
             @RequestParam(value = "sType", required = false) String sType,
             @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
