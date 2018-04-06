@@ -2566,6 +2566,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         
         Map<String, Object> taskInfo = new HashMap<>();
+        
+        String executionId = task.getExecutionId();
+        Object taskStatus = oRuntimeService.getVariable(executionId, "taskStatus");
 
         taskInfo.put("id", task.getId());
         taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
@@ -2584,12 +2587,13 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("formKey", task.getFormKey());
         taskInfo.put("parentTaskId", task.getParentTaskId());
         taskInfo.put("parentTaskUrl", "");
-        taskInfo.put("executionId", task.getExecutionId());
+        taskInfo.put("executionId", executionId);
         taskInfo.put("executionUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
         taskInfo.put("processInstanceId", task.getProcessInstanceId());
         taskInfo.put("processInstanceUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
         taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
         taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+        taskInfo.put("taskRemark", taskStatus);
         taskInfo.put("variables", new LinkedList());
 
         if (flowSlotTicket != null) {
