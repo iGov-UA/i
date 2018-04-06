@@ -55,7 +55,7 @@ public class AddressService {
     public JSONArray getListDistricts(String sRegion) throws ParseException {
         JSONArray aJsonDistricts = new JSONArray();
         Map<String, Object> properties = new HashMap();
-//        properties.put("region", sRegion);
+        properties.put("region", sRegion);
         getJSONResponse(API_DISTRICTS_RESOURCE, aJsonDistricts, properties);
         return aJsonDistricts;
     }
@@ -133,12 +133,7 @@ public class AddressService {
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
             String entryValue = String.valueOf(entry.getValue());
             if (!"null".equals(entryValue) && !"".equals(entryValue)) {
-                try {
-                    saParam += "&" + URLEncoder.encode(entry.getKey(), "UTF-8") + "="
-                            + URLEncoder.encode(entryValue, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    LOG.error("ERROR={}, occured while parsing params: key={}, value={}",e.getMessage(), entry.getKey(), entryValue);
-                }
+                saParam += "&" + entry.getKey() + "=" + entryValue;
             }
         }
         LOG.info("Properties: " + properties);

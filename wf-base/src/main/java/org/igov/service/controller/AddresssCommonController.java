@@ -42,12 +42,24 @@ public class AddresssCommonController {
         return oAddressService.getListDistricts(sRegion);
     }
     
-    @ApiOperation(value = "Получение списка городов", notes = "##### Пример:\n"
+    @ApiOperation(value = "Получение списка областей", notes = "##### Пример:\n"
             + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListSettlements\n\n")
     @RequestMapping(value = "/getListSettlements", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    List<Street> getListSettlements(@RequestParam(value = "sID_Settlement", required = true) String sID_Settlement,
+    List<Settlement> getListSettlements(@RequestParam(value = "sRegion", required = true) String sRegion,
+            @RequestParam(value = "sDistrict", required = false) String sDistrict,
+            @RequestParam(value = "sType", required = false) String sType,
+            @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
+        return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
+    }
+    
+    @ApiOperation(value = "Получение списка городов", notes = "##### Пример:\n"
+            + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListStreets\n\n")
+    @RequestMapping(value = "/getListStreets", method = RequestMethod.GET,
+            produces = APPLICATION_JSON_CHARSET_UTF_8)
+    public @ResponseBody
+    List<Street> getListStreets(@RequestParam(value = "sID_Settlement", required = true) String sID_Settlement,
             @RequestParam(value = "sType", required = false) String sType,
             @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
         return oAddressService.getListStreets(sID_Settlement, sType, sNameFilter);
