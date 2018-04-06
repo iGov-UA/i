@@ -3,15 +3,11 @@ package org.igov.service.business.address;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -92,7 +88,7 @@ public class AddressService {
         List<Street> aoStreets = gson.fromJson(aJsonStreets.toJSONString(), type);
         return aoStreets
                 .stream()
-                .filter(oStreet -> sNameFilter.equalsIgnoreCase(oStreet.getsName()))
+                .filter(oStreet -> sNameFilter.equalsIgnoreCase(oStreet.getName()))
                 .collect(Collectors.toList());
     }
 
