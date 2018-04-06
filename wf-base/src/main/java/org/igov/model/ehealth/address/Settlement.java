@@ -1,11 +1,12 @@
 package org.igov.model.ehealth.address;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 /**
  *
  * @author Alex
  */
-public class Settlement {
+public class Settlement implements Serializable {
 
     @JsonProperty("type")
     private String sType;
@@ -130,5 +131,12 @@ public class Settlement {
     public void setDistrict(String District) {
         this.District = District;
     }
+
+    @Override
+    public String toString() {
+        return "Settlement{" + "sType=" + sType + ", sRegion_id=" + sRegion_id + ", sRegion=" + sRegion + ", sParent_settlement_id=" + sParent_settlement_id + ", sParent_settlement=" + sParent_settlement + ", sName=" + sName + ", sMountain_group=" + sMountain_group + ", sKoatuu=" + sKoatuu + ", sID=" + sID + ", sDistrict_id=" + sDistrict_id + ", District=" + District + '}';
+    }
+    
+    
     
 }

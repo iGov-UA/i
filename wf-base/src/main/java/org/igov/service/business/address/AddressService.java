@@ -72,7 +72,7 @@ public class AddressService {
         List<Settlement> aoSettlements = gson.fromJson(aJsonSettlements.toJSONString(), type);
         LOG.info("aoSettlements size {}", aoSettlements.size());
         LOG.info("sNameFilter {}", sNameFilter);
-        aoSettlements.forEach(object -> LOG.info("namee {}", object.getsName()));
+        aoSettlements.forEach(object -> LOG.info("namee {}", object.toString()));
         List<Settlement> aoSettlementsFiltered =  aoSettlements
                 .stream()
                 .filter(oSettlement -> oSettlement.getsName().startsWith(sNameFilter))

@@ -1,13 +1,14 @@
 package org.igov.model.ehealth.address;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Alex
  */
-public class Street {
+public class Street implements Serializable {
     
     @JsonProperty("type")
     private String sType;
