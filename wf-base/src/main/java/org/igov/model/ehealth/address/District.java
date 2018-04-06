@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author Alex
  */
-@javax.persistence.Entity
 public class District {
     
     @JsonProperty("region_id")

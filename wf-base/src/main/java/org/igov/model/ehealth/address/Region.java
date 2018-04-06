@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *
  * @author Alex
  */
-@javax.persistence.Entity
 public class Region {
     
     @JsonProperty("name")
