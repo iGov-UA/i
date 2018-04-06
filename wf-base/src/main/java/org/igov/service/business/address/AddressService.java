@@ -55,7 +55,7 @@ public class AddressService {
     public JSONArray getListDistricts(String sRegion) throws ParseException {
         JSONArray aJsonDistricts = new JSONArray();
         Map<String, Object> properties = new HashMap();
-        properties.put("region", sRegion);
+//        properties.put("region", sRegion);
         getJSONResponse(API_DISTRICTS_RESOURCE, aJsonDistricts, properties);
         return aJsonDistricts;
     }
