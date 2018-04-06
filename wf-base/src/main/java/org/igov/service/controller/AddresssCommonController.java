@@ -2,6 +2,8 @@ package org.igov.service.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
+import org.igov.model.ehealth.address.Settlement;
 import org.igov.service.business.address.AddressService;
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,25 @@ public class AddresssCommonController {
     JSONArray getListRegions() throws Exception {
         return oAddressService.getListRegions();
     }
+
+    @ApiOperation(value = "Получение списка регионов", notes = "##### Пример:\n"
+            + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListDistricts\n\n")
+    @RequestMapping(value = "/getListDistricts", method = RequestMethod.GET,
+            produces = APPLICATION_JSON_CHARSET_UTF_8)
+    public @ResponseBody
+    List<Settlement> getListDistricts(@RequestParam(value = "sRegion", required = true) String sRegion) throws Exception {
+        return oAddressService.getListDistricts(sRegion);
+    }
     
     @ApiOperation(value = "Получение списка областей", notes = "##### Пример:\n"
             + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListDistricts\n\n")
     @RequestMapping(value = "/getListDistricts", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    JSONArray getListDistricts(@RequestParam(value = "sRegion", required = true) String sRegion) throws Exception {
-        return oAddressService.getListDistricts(sRegion);
+    List<Settlement> getListDistricts(@RequestParam(value = "sRegion", required = true) String sRegion,
+            @RequestParam(value = "sDistrict", required = false) String sDistrict,
+            @RequestParam(value = "sType", required = false) String sType,
+            @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
+        return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
     }
 }
