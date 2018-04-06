@@ -74,9 +74,10 @@ public class AddressService {
                 .collect(Collectors.toList());
     }
 
-    private void getJSONResponse(String sURLResource, JSONArray aJsonRegions, Map<String, Object> properties) throws ParseException, RestClientException {
+    private void getJSONResponse(String sURLResource, JSONArray aJsonResult, Map<String, Object> properties) throws ParseException, RestClientException {
         int pageNumber = 1; // default start page number
         int totalPages;
+        boolean res;
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json; charset=utf-8");
         do {
@@ -88,8 +89,10 @@ public class AddressService {
             totalPages = Integer.parseInt(String.valueOf(oJsonPaging.get("total_pages")));
             LOG.info("pageNumber is {}", pageNumber);
             LOG.info("totalPages is {}", totalPages);
-            aJsonRegions.addAll((JSONArray) oJSONObject.get("data"));
-        } while (pageNumber++ == totalPages);
+            res = pageNumber++ == totalPages;
+            LOG.info("res is {}", res);
+            aJsonResult.addAll((JSONArray) oJSONObject.get("data"));
+        } while (res);
     }
 
     private String getCommonInfoURL(String apiUrlEnd, int pageNumber, Map<String, Object> properties) {
