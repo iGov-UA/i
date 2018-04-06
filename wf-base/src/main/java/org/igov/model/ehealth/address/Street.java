@@ -7,6 +7,7 @@ import java.util.List;
  *
  * @author Alex
  */
+@javax.persistence.Entity
 public class Street {
     
     @JsonProperty("type")

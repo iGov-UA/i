@@ -1,11 +1,11 @@
 package org.igov.model.ehealth.address;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  *
  * @author Alex
  */
+@javax.persistence.Entity
 public class Settlement {
 
     @JsonProperty("type")
