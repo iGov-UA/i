@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import org.igov.model.ehealth.address.Settlement;
+import org.igov.model.ehealth.address.Street;
 import org.igov.service.business.address.AddressService;
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +42,14 @@ public class AddresssCommonController {
         return oAddressService.getListDistricts(sRegion);
     }
     
-    @ApiOperation(value = "Получение списка областей", notes = "##### Пример:\n"
+    @ApiOperation(value = "Получение списка городов", notes = "##### Пример:\n"
             + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListSettlements\n\n")
     @RequestMapping(value = "/getListSettlements", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
     public @ResponseBody
-    List<Settlement> getListSettlements(@RequestParam(value = "sRegion", required = true) String sRegion,
-            @RequestParam(value = "sDistrict", required = false) String sDistrict,
+    List<Street> getListSettlements(@RequestParam(value = "sID_Settlement", required = true) String sID_Settlement,
             @RequestParam(value = "sType", required = false) String sType,
             @RequestParam(value = "sNameFilter", required = true) String sNameFilter) throws Exception {
-        return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
+        return oAddressService.getListStreets(sID_Settlement, sType, sNameFilter);
     }
 }

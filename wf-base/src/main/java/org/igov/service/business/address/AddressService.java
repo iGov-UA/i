@@ -17,6 +17,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import org.igov.io.web.RestRequest;
 import org.igov.model.ehealth.address.Settlement;
+import org.igov.model.ehealth.address.Street;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -39,7 +40,8 @@ public class AddressService {
     private static final String API_REGIONS_RESOURCE = "regions";
     private static final String API_DISTRICTS_RESOURCE = "districts";
     private static final String API_SETTLEMENTS_RESOURCE = "settlements";
-
+    private static final String API_STREET_RESOURCE = "streets";
+    
     private final JSONParser parser = new JSONParser();
     private final Gson gson = new Gson();
 
@@ -73,6 +75,21 @@ public class AddressService {
                 .filter(oSettlement -> sNameFilter.equalsIgnoreCase(oSettlement.getsName()))
                 .collect(Collectors.toList());
     }
+    
+    public List<Street> getListStreets(String sID_Settlement, String sType, String sNameFilter) throws ParseException, IOException {
+        JSONArray aJsonStreets = new JSONArray();
+        Map<String, Object> properties = new HashMap();
+        properties.put("settlement_id", sID_Settlement);
+        properties.put("type", sType);
+        getJSONResponse(API_STREET_RESOURCE, aJsonStreets, properties);
+        
+        Type type = new TypeToken<List<Street>>(){}.getType();
+        List<Street> aoStreets = gson.fromJson(aJsonStreets.toJSONString(), type);
+        return aoStreets
+                .stream()
+                .filter(oStreet -> sNameFilter.equalsIgnoreCase(oStreet.getsName()))
+                .collect(Collectors.toList());
+    }
 
     private void getJSONResponse(String sURLResource, JSONArray aJsonResult, Map<String, Object> properties) throws ParseException, RestClientException {
         int pageNumber = 1; // default start page number
@@ -89,7 +106,7 @@ public class AddressService {
             totalPages = Integer.parseInt(String.valueOf(oJsonPaging.get("total_pages")));
             LOG.info("pageNumber is {}", pageNumber);
             LOG.info("totalPages is {}", totalPages);
-            res = pageNumber++ == totalPages;
+            res = pageNumber++ < totalPages;
             LOG.info("res is {}", res);
             aJsonResult.addAll((JSONArray) oJSONObject.get("data"));
         } while (res);
