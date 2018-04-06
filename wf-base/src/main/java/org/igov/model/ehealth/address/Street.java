@@ -11,62 +11,60 @@ import java.util.List;
 public class Street implements Serializable {
     
     @JsonProperty("type")
-    private String sType;
+    private String type;
         
     @JsonProperty("settlement_id")
-    private String sSettlement_id;
+    private String settlement_id;
     
     @JsonProperty("name")
-    private String sName;
+    private String name;
     
     @JsonProperty("id")
-    private String sID;
+    private String id;
     
-    @JsonProperty("aliases")
-    private List<String> asAliases;
+    private List<String> aliases;
 
     public Street() {
     }
 
-    public String getsType() {
-        return sType;
+    public String getType() {
+        return type;
     }
 
-    public void setsType(String sType) {
-        this.sType = sType;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getsSettlement_id() {
-        return sSettlement_id;
+    public String getSettlement_id() {
+        return settlement_id;
     }
 
-    public void setsSettlement_id(String sSettlement_id) {
-        this.sSettlement_id = sSettlement_id;
+    public void setSettlement_id(String settlement_id) {
+        this.settlement_id = settlement_id;
     }
 
-    public String getsName() {
-        return sName;
+    public String getName() {
+        return name;
     }
 
-    public void setsName(String sName) {
-        this.sName = sName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getsID() {
-        return sID;
+    public String getId() {
+        return id;
     }
 
-    public void setsID(String sID) {
-        this.sID = sID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public List<String> getAsAliases() {
-        return asAliases;
+    public List<String> getAliases() {
+        return aliases;
     }
 
-    public void setAsAliases(List<String> asAliases) {
-        this.asAliases = asAliases;
+    public void setAliases(List<String> aliases) {
+        this.aliases = aliases;
     }
-    
-    
+
 }

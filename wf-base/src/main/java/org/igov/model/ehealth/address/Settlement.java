@@ -11,13 +11,11 @@ public class Settlement implements Serializable {
     @JsonProperty("type")
     private String type;
 
-    @JsonProperty("region_id")
     private String region_id;
 
     @JsonProperty("region")
     private String region;
 
-    @JsonProperty("parent_settlement_id")
     private String parent_settlement_id;
 
     @JsonProperty("parent_settlement")
@@ -26,7 +24,6 @@ public class Settlement implements Serializable {
     @JsonProperty("name")
     private String name;
     
-    @JsonProperty("mountain_group")
     private String mountain_group;
     
     @JsonProperty("koatuu")
@@ -35,7 +32,6 @@ public class Settlement implements Serializable {
     @JsonProperty("id")
     private String id;
     
-    @JsonProperty("district_id")
     private String district_id;
 
     @JsonProperty("district")
