@@ -86,6 +86,9 @@ public class AddressService {
         
         Type type = new TypeToken<List<Street>>(){}.getType();
         List<Street> aoStreets = gson.fromJson(aJsonStreets.toJSONString(), type);
+        LOG.info("aoSettlements size {}", aoStreets.size());
+        LOG.info("sNameFilter {}", sNameFilter);
+        aoStreets.forEach(object -> LOG.info("namee {}", object.toString()));
         return aoStreets
                 .stream()
                 .filter(oStreet -> sNameFilter.equalsIgnoreCase(oStreet.getName()))

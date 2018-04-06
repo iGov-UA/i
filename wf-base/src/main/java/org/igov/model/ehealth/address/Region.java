@@ -1,6 +1,5 @@
 package org.igov.model.ehealth.address;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

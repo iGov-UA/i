@@ -2,7 +2,6 @@ package org.igov.model.ehealth.address;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
@@ -21,8 +20,6 @@ public class Street implements Serializable {
     
     @JsonProperty("id")
     private String id;
-    
-    private List<String> aliases;
 
     public Street() {
     }
@@ -57,14 +54,6 @@ public class Street implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    public void setAliases(List<String> aliases) {
-        this.aliases = aliases;
     }
 
 }
