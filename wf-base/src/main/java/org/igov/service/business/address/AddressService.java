@@ -70,10 +70,15 @@ public class AddressService {
         
         Type type = new TypeToken<List<Settlement>>(){}.getType();
         List<Settlement> aoSettlements = gson.fromJson(aJsonSettlements.toJSONString(), type);
-        return aoSettlements
+        LOG.info("aoSettlements size {}", aoSettlements.size());
+        LOG.info("sNameFilter {}", sNameFilter);
+        aoSettlements.forEach(object -> LOG.info("namee {}", object.getsName()));
+        List<Settlement> aoSettlementsFiltered =  aoSettlements
                 .stream()
-                .filter(oSettlement -> sNameFilter.startsWith(oSettlement.getsName()))
+                .filter(oSettlement -> oSettlement.getsName().startsWith(sNameFilter))
                 .collect(Collectors.toList());
+        LOG.info("aoSettlementsFiltered size {}", aoSettlementsFiltered.size());
+        return aoSettlementsFiltered;
     }
     
     public List<Street> getListStreets(String sID_Settlement, String sType, String sNameFilter) throws ParseException, IOException {
