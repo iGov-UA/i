@@ -9,134 +9,129 @@ import java.io.Serializable;
 public class Settlement implements Serializable {
 
     @JsonProperty("type")
-    private String sType;
+    private String type;
 
     @JsonProperty("region_id")
-    private String sRegion_id;
+    private String region_id;
 
     @JsonProperty("region")
-    private String sRegion;
+    private String region;
 
     @JsonProperty("parent_settlement_id")
-    private String sParent_settlement_id;
+    private String parent_settlement_id;
 
     @JsonProperty("parent_settlement")
-    private String sParent_settlement;
+    private String parent_settlement;
 
     @JsonProperty("name")
-    private String sName;
+    private String name;
     
     @JsonProperty("mountain_group")
-    private String sMountain_group;
+    private String mountain_group;
     
     @JsonProperty("koatuu")
-    private String sKoatuu;
+    private String koatuu;
     
     @JsonProperty("id")
-    private String sID;
+    private String id;
     
     @JsonProperty("district_id")
-    private String sDistrict_id;
+    private String district_id;
 
     @JsonProperty("district")
-    private String District;
+    private String district;
 
     public Settlement() {
     }
 
-    public String getsType() {
-        return sType;
+    public String getType() {
+        return type;
     }
 
-    public void setsType(String sType) {
-        this.sType = sType;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getsRegion_id() {
-        return sRegion_id;
+    public String getRegion_id() {
+        return region_id;
     }
 
-    public void setsRegion_id(String sRegion_id) {
-        this.sRegion_id = sRegion_id;
+    public void setRegion_id(String region_id) {
+        this.region_id = region_id;
     }
 
-    public String getsRegion() {
-        return sRegion;
+    public String getRegion() {
+        return region;
     }
 
-    public void setsRegion(String sRegion) {
-        this.sRegion = sRegion;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
-    public String getsParent_settlement_id() {
-        return sParent_settlement_id;
+    public String getParent_settlement_id() {
+        return parent_settlement_id;
     }
 
-    public void setsParent_settlement_id(String sParent_settlement_id) {
-        this.sParent_settlement_id = sParent_settlement_id;
+    public void setParent_settlement_id(String parent_settlement_id) {
+        this.parent_settlement_id = parent_settlement_id;
     }
 
-    public String getsParent_settlement() {
-        return sParent_settlement;
+    public String getParent_settlement() {
+        return parent_settlement;
     }
 
-    public void setsParent_settlement(String sParent_settlement) {
-        this.sParent_settlement = sParent_settlement;
+    public void setParent_settlement(String parent_settlement) {
+        this.parent_settlement = parent_settlement;
     }
 
-    public String getsName() {
-        return sName;
+    public String getName() {
+        return name;
     }
 
-    public void setsName(String sName) {
-        this.sName = sName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getsMountain_group() {
-        return sMountain_group;
+    public String getMountain_group() {
+        return mountain_group;
     }
 
-    public void setsMountain_group(String sMountain_group) {
-        this.sMountain_group = sMountain_group;
+    public void setMountain_group(String mountain_group) {
+        this.mountain_group = mountain_group;
     }
 
-    public String getsKoatuu() {
-        return sKoatuu;
+    public String getKoatuu() {
+        return koatuu;
     }
 
-    public void setsKoatuu(String sKoatuu) {
-        this.sKoatuu = sKoatuu;
+    public void setKoatuu(String koatuu) {
+        this.koatuu = koatuu;
     }
 
-    public String getsID() {
-        return sID;
+    public String getId() {
+        return id;
     }
 
-    public void setsID(String sID) {
-        this.sID = sID;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getsDistrict_id() {
-        return sDistrict_id;
+    public String getDistrict_id() {
+        return district_id;
     }
 
-    public void setsDistrict_id(String sDistrict_id) {
-        this.sDistrict_id = sDistrict_id;
+    public void setDistrict_id(String district_id) {
+        this.district_id = district_id;
     }
 
     public String getDistrict() {
-        return District;
+        return district;
     }
 
-    public void setDistrict(String District) {
-        this.District = District;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
-    @Override
-    public String toString() {
-        return "Settlement{" + "sType=" + sType + ", sRegion_id=" + sRegion_id + ", sRegion=" + sRegion + ", sParent_settlement_id=" + sParent_settlement_id + ", sParent_settlement=" + sParent_settlement + ", sName=" + sName + ", sMountain_group=" + sMountain_group + ", sKoatuu=" + sKoatuu + ", sID=" + sID + ", sDistrict_id=" + sDistrict_id + ", District=" + District + '}';
-    }
-    
     
     
 }

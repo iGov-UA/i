@@ -75,7 +75,7 @@ public class AddressService {
         aoSettlements.forEach(object -> LOG.info("namee {}", object.toString()));
         List<Settlement> aoSettlementsFiltered =  aoSettlements
                 .stream()
-                .filter(oSettlement -> oSettlement.getsName().startsWith(sNameFilter))
+                .filter(oSettlement -> oSettlement.getName().startsWith(sNameFilter))
                 .collect(Collectors.toList());
         LOG.info("aoSettlementsFiltered size {}", aoSettlementsFiltered.size());
         return aoSettlementsFiltered;
