@@ -52,8 +52,8 @@ public class AddresssCommonController {
     List<Settlement> getListSettlements(
             @ApiParam(value = "назва області", required = true) @RequestParam(value = "sRegion", required = true) String sRegion,
             @ApiParam(value = "назва району", required = false) @RequestParam(value = "sDistrict", required = false) String sDistrict,
-            @ApiParam(value = "тип населеного пункта", required = true) @RequestParam(value = "sType", required = true) String sType,
-            @ApiParam(value = "фільтр по назві населенного пункту", required = false) @RequestParam(value = "sNameFilter", required = false) String sNameFilter) {
+            @ApiParam(value = "тип населеного пункта", required = false) @RequestParam(value = "sType", required = false) String sType,
+            @ApiParam(value = "фільтр по назві населенного пункту", required = true) @RequestParam(value = "sNameFilter", required = true) String sNameFilter) {
         return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
     }
     
