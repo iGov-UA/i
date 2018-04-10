@@ -79,7 +79,7 @@
       ,{
         url: 'http://www.lun.ua',
         alt: 'lun',
-        image: 'assets/images/ads/lun.png',
+        image: 'assets/images/ads/lun_new.png',
         isActual: true
       }
       ,{
