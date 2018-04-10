@@ -14,6 +14,10 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
 
     $scope.signedContent = {};
 
+    $scope.deviceInfo = {
+        password: ''
+    };
+
     $scope.edsContext = {
         edsStorage: {
             name: "",
@@ -73,6 +77,16 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
             var filePath = edsStorage.filePath;
             edsContext.edsStorage.name = filePath.substr(filePath.lastIndexOf("/") + 1)
         }).catch(catchLastError);
+    };
+
+    $scope.signInByToken = function() {
+        var password = $scope.deviceInfo.password;
+        return signService.signInByToken(password).then(function (passportInfo) {
+            $modalInstance.close(passportInfo);
+            console.log(passportInfo);
+        }, function (err) {
+            console.log(err);
+        });
     };
 
     var linksToCryptoplugin = {
@@ -146,10 +160,18 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
                 signService.selectKey(edsContext.selectedKey.key, edsContext.selectedKey.password)
                 : edsContext.keyList.length > 1 && !edsContext.selectedKey.key.needPassword ?
                     signService.selectKey(edsContext.selectedKey.key, "") :true).then(function () {
-
+                if($scope.contentData === null) {
+                    return signService.getCertificateInfo().then(function (result) {
+                        $modalInstance.close(result);
+                    });
+                }
                 return signService.signCMS($scope.contentData, !$scope.contentData.base64encoded)
                     .then(function (signResult) {
-                        $modalInstance.close(signResult);
+                        if(signResult.msg && signResult.msg.indexOf('Сертифікат дійсний до') > -1) {
+                            catchLastError(signResult.msg);
+                        } else {
+                            $modalInstance.close(signResult);
+                        }
                     });
             }).catch(catchLastError);
         } else {
