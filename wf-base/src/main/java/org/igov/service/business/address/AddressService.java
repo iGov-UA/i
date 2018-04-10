@@ -2,15 +2,11 @@ package org.igov.service.business.address;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.igov.io.web.RestRequest;
 import org.igov.model.ehealth.address.Settlement;
@@ -34,6 +30,7 @@ public class AddressService {
     private static final String PAGE_NUMBER_PROPERTY = "page";
     private static final String PAGE_SIZE_PROPERTY = "page_size";
     private static final Integer MAX_PAGE_SIZE = 500;
+    
     private static final String API_REGIONS_RESOURCE = "regions";
     private static final String API_DISTRICTS_RESOURCE = "districts";
     private static final String API_SETTLEMENTS_RESOURCE = "settlements";

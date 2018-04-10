@@ -44,7 +44,7 @@ public class AddresssCommonController {
         return oAddressService.getListDistricts(sRegion);
     }
     
-    @ApiOperation(value = "Получение списка областей", notes = "##### Пример:\n"
+    @ApiOperation(value = "Получение списка городов", notes = "##### Пример:\n"
             + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListSettlements\n\n")
     @RequestMapping(value = "/getListSettlements", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
@@ -57,7 +57,7 @@ public class AddresssCommonController {
         return oAddressService.getListSettlements(sRegion, sDistrict, sType, sNameFilter);
     }
     
-    @ApiOperation(value = "Получение списка городов", notes = "##### Пример:\n"
+    @ApiOperation(value = "Получение списка улиц", notes = "##### Пример:\n"
             + "https://delta.test.region.igov.org.ua/wf/service/common/address/getListStreets\n\n")
     @RequestMapping(value = "/getListStreets", method = RequestMethod.GET,
             produces = APPLICATION_JSON_CHARSET_UTF_8)
