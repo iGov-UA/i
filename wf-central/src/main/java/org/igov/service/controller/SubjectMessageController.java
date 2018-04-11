@@ -526,7 +526,7 @@ public class SubjectMessageController {
             if (nID_SubjectMessageType == 8L) { //citizen's comment or question
                 mergeParams.put("insertValues", "GotUpdate");
                 mergeParams.put("taskStatusVariable", "taskStatus");
-                mergeParams.put("taskStatusValue", "GotAnswer");
+                mergeParams.put("taskStatusValue", "GotUpdate");
                 //request to get clerk mail from userTask
                 String sTaskDataUrl = sHost + "/service/action/task/getVariableValue";
                 Map<String, String> requestParams = new HashMap<>();
