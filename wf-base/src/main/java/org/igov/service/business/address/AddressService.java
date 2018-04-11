@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.igov.io.GeneralConfig;
 import org.igov.io.web.RestRequest;
 import org.igov.model.ehealth.address.Settlement;
 import org.igov.model.ehealth.address.Street;
@@ -17,16 +18,19 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
 @Service
 public class AddressService {
+    
+    @Autowired
+    private GeneralConfig oGeneralConfig;
 
     private final static Logger LOG = LoggerFactory.getLogger(AddressService.class);
 
-    private static final String EHEALTH_URL = "https://api.ehealth.world/api/uaddresses";
     private static final String PAGE_NUMBER_PROPERTY = "page";
     private static final String PAGE_SIZE_PROPERTY = "page_size";
     private static final Integer MAX_PAGE_SIZE = 500;
@@ -108,7 +112,7 @@ public class AddressService {
 
     private String getCommonInfoURL(String apiUrlEnd, int pageNumber, Map<String, Object> properties) {
         String sURL = String.format("%s/%s?%s=%s&%s=%s",
-                EHEALTH_URL,
+                oGeneralConfig.getsURL_Ehealth_Api_Uaddresses(),
                 apiUrlEnd,
                 PAGE_NUMBER_PROPERTY,
                 pageNumber,

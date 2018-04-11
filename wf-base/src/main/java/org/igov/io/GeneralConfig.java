@@ -251,19 +251,22 @@ public class GeneralConfig {
     @Value("${general.Flow.Session.PB.sKey}")
     private String sFlowSessionPB_sKey;
     
+    @Value("${general.ehealth.api.uaddresses}")
+    private String sURL_Ehealth_Api_Uaddresses;
+    
     public String getsAddrClerk() {
 		return sAddrClerk;
-	}
+    }
 
-	public String getsUsnameClerk() {
+    public String getsUsnameClerk() {
 		return sUsnameClerk;
-	}
+    }
 
-	public String getsPassClerk() {
+    public String getsPassClerk() {
 		return sPassClerk;
-	}
+    }
 
-	public String getObjectSubPlace_Auth_sLogin() {
+    public String getObjectSubPlace_Auth_sLogin() {
         return sObjectSubPlace_Auth_sLogin;
     }
 
@@ -771,13 +774,13 @@ public class GeneralConfig {
         return sPassword_Auth_1C;
     }
 
-	public String getQlogicHost() {
-		return sQlogicHost;
-	}
+    public String getQlogicHost() {
+        return sQlogicHost;
+    }
 
-	public String getQlogicPort() {
-		return sQlogicPort;
-	}
+    public String getQlogicPort() {
+        return sQlogicPort;
+    }
 
     public String getKievStarURL() {
         return kievStarURL;
@@ -805,6 +808,10 @@ public class GeneralConfig {
 
     public String getsFlowSessionPB_sKey() {
         return sFlowSessionPB_sKey;
+    }
+
+    public String getsURL_Ehealth_Api_Uaddresses() {
+        return sURL_Ehealth_Api_Uaddresses;
     }
     
 }
