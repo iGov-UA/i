@@ -378,12 +378,7 @@
      * @returns {boolean} True if task is in status otherwise false
      */
     $scope.hasTaskStatus = function(task, status) {
-      if(task.taskRemark === status) {
-        return true;
-      }
-      return false;
-      // var saTaskStatusVarData = getTaskVariable(task.variables, 'saTaskStatus');
-      // return hasTaskStatus(saTaskStatusVarData, status);
+      return task.taskRemark === status;
     };
 
     $scope.getTaskTitle = function (task) {
