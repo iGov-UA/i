@@ -815,10 +815,10 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
           }
         }).error(function (data, status, headers, config) {
           console.error(angular.toJson(data));
-          ErrorsFactory.push({
-            type: 'danger',
-            text: 'Неможливо зарезервувати час в електронній черзі.'
-          })
+          // ErrorsFactory.push({
+          //   type: 'danger',
+          //   text: 'Неможливо зарезервувати час в електронній черзі.'
+          // })
           dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
         });
 
