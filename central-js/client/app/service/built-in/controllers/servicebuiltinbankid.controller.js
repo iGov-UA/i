@@ -1,14 +1,14 @@
 angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$state', '$stateParams', '$scope', '$timeout',
     '$location', '$window', '$rootScope', '$http', '$filter', 'FormDataFactory', 'ActivitiService', 'ValidationService',
     'ServiceService', 'oService', 'oServiceData', 'BankIDAccount', 'activitiForm', 'formData', 'allowOrder', 'countOrder',
-    'selfOrdersCount', 'AdminService', 'PlacesService', 'uiUploader', 'FieldAttributesService', 'iGovMarkers', 'service',
+    'selfOrdersCount', 'AdminService', 'PlacesService', 'uiUploader', 'dialogs', 'FieldAttributesService', 'iGovMarkers', 'service',
     'FieldMotionService', 'ParameterFactory', '$modal', 'FileFactory', 'DatepickerFactory', 'autocompletesDataFactory',
     'ErrorsFactory', 'taxTemplateFileHandler', 'taxTemplateFileHandlerConfig', 'SignFactory', 'TableService', 'LabelService',
     'MasterPassService', 'modalService', 'BanksResponses', 'signDialog', 'generationService',
     function ($sce, $state, $stateParams, $scope, $timeout, $location, $window, $rootScope, $http, $filter,
               FormDataFactory, ActivitiService, ValidationService, ServiceService, oService, oServiceData,
               BankIDAccount, activitiForm, formData, allowOrder, countOrder, selfOrdersCount, AdminService,
-              PlacesService, uiUploader, FieldAttributesService, iGovMarkers, service, FieldMotionService,
+              PlacesService, uiUploader, dialogs, FieldAttributesService, iGovMarkers, service, FieldMotionService,
               ParameterFactory, $modal, FileFactory, DatepickerFactory, autocompletesDataFactory,
               ErrorsFactory, taxTemplateFileHandler, taxTemplateFileHandlerConfig, SignFactory, TableService, LabelService,
               MasterPassService, modalService, BanksResponses, signDialog, generationService) {
@@ -819,6 +819,7 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
             type: 'danger',
             text: 'Неможливо зарезервувати час в електронній черзі.'
           })
+          dialogs.error('Помилка', 'Неможливо вибрати час. Спробуйте обрати інший або пізніше, будь ласка');
         });
 
       }
