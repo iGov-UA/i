@@ -883,9 +883,9 @@ public class RequestProcessingInterceptor extends HandlerInterceptorAdapter impl
             boolean bProcessClosed = aTask == null || aTask.size() == 0;
             String sUserTaskName = bProcessClosed ? "закрита" : aTask.get(0).getName();//"(нет назви)"
 
+            historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             sendMailTo(omRequestBody, sID_Order, snID_Subject, snID_Service, oProcessDefinition);
 
-            historyEventService.addHistoryEvent(sID_Order, sUserTaskName, mParam);
             LOG.info("Before calling set action process count {}, {}", mParam, oProcessDefinition.getKey());
             if (oProcessDefinition.getKey().startsWith("_doc_") || DNEPR_MVK_291_COMMON_BP.contains(oProcessDefinition.getKey())) {
                 //Integer count = ActionProcessCountUtils.callSetActionProcessCount(httpRequester, generalConfig, oProcessDefinition.getKey(), Long.valueOf(snID_Service));

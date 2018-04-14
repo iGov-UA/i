@@ -52,6 +52,7 @@ import static org.igov.service.business.subject.SubjectMessageService.sMessageHe
 import org.igov.io.mail.NotificationPatterns;
 import org.igov.model.action.event.HistoryEventDao;
 import org.igov.service.business.promin.ProminSession_Singleton;
+import org.igov.service.exception.EntityNotFoundException;
 import static org.igov.util.Tool.sO;
 
 @Controller
@@ -447,7 +448,14 @@ public class SubjectMessageController {
         SubjectMessage oSubjectMessage;
         LOG.info("setServiceMessage started for the sID_Order {}", sID_Order);
         try {
-            HistoryEvent_Service oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            HistoryEvent_Service oHistoryEvent_Service;
+            try {
+             oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            } catch (EntityNotFoundException e){
+                LOG.error("ERROR occured Entity HistoryEvent_Service not found by sID_Order={}", sID_Order);
+                Thread.sleep(1000L);
+                oHistoryEvent_Service = historyEventServiceDao.getOrgerByID(sID_Order);
+            }
             nID_HistoryEvent_Service = oHistoryEvent_Service.getId();
             LOG.info("Fetched nID_HistoryEvent_Service={}", nID_HistoryEvent_Service);
             if (bAuth) {
