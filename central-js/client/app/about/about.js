@@ -2815,30 +2815,20 @@ angular.module('about').controller('aboutController', function ($scope, Sponsors
     },
 
     {
-      "sFbID": "100003564843440",
+      "sFbID": "456267354791088",
       "sID_Group": "zaporizhya.zaporizhya.rada",
-      "sFIO": "Соловйов Максим",
-      "sURL": "https://www.facebook.com/maksim.solovyov.12",
-      "sPhoto": "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/c0.0.160.160/p160x160/1654480_462168640578627_1688838187_n.jpg?oh=ee1aa15df9961314f5c04ac2deca8cbe&oe=58589B6B",
-      "sCity": "Запоріжжя",
-      "sInfo": "Координатор міста"
-    },
-
-    {
-      "sFbID": "100001223226254",
-      "sID_Group": "zaporizhya.zaporizhya.rada",
-      "sFIO": "Семененко Наталія",
-      "sURL": "https://www.facebook.com/natali.semenenko.7",
-      "sPhoto": "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/11053111_973704062680359_5930411105580993115_n.jpg?oh=1f1cd02868841db723c70e76f7d71559&oe=584B177A",
+      "sFIO": "Петренко Світлана",
+      "sURL": "https://www.facebook.com/profile.php?id=100012234824559",
+      "sPhoto": "https://scontent.fiev4-1.fna.fbcdn.net/v/t1.0-9/30713998_456267358124421_5815899697520312320_n.jpg?_nc_cat=0&oh=cffdb46665ee5324bf6143156811a176&oe=5B59E209",
       "sCity": "Запоріжжя"
     },
 
     {
-      "sFbID": "100002379005173",
+      "sFbID": "114419619019870",
       "sID_Group": "zaporizhya.zaporizhya.rada",
-      "sFIO": "Микал Олена",
-      "sURL": "https://www.facebook.com/alona.mykal?fref=hovercard",
-      "sPhoto": "https://scontent-frt3-1.xx.fbcdn.net/v/t1.0-1/p160x160/12189529_897424843680141_1910380645282979523_n.jpg?oh=ea5e22fed4d8dbdb0248a4a5f4c272b7&oe=584C104A",
+      "sFIO": "Повищая Тетяна",
+      "sURL": "https://www.facebook.com/profile.php?id=100013554969512",
+      "sPhoto": "https://scontent.fiev4-1.fna.fbcdn.net/v/t1.0-9/14433179_114419619019870_9179520616790405244_n.jpg?_nc_cat=0&oh=2b3ed911d088224b19a09bb1c13e5ef6&oe=5B509A02",
       "sCity": "Запоріжжя"
     },
 
