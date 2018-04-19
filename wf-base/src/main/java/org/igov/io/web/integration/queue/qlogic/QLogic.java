@@ -1,5 +1,6 @@
 package org.igov.io.web.integration.queue.qlogic;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igov.io.GeneralConfig;
 import org.igov.io.web.HttpEntityCover;
@@ -19,7 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResponseErrorHandler;
 
 /**
  * Provides integration with Qlogic system 
@@ -127,7 +132,6 @@ public class QLogic {
         JSONArray oaJSONArrayReturn = new JSONArray();
         if(sReturn!=null){
             try {
-
                 oJSONObjectGot = (JSONObject) oJSONParser.parse(sReturn);
 
                 oaJSONArrayReturn = (JSONArray) oJSONObjectGot.get("d");
@@ -170,6 +174,7 @@ public class QLogic {
 			String sServiceId, String sDate, String sTime, String phone, String email, String name, String information) throws Exception {
     	
     	 String sReturn = "";
+    	 HttpEntityCover oHttpEntityCover = null;
         try {
         	HttpHeaders oHttpHeaders = new HttpHeaders();
             oHttpHeaders.setAcceptCharset(Arrays.asList(new Charset[] { StandardCharsets.UTF_8 }));
@@ -179,31 +184,24 @@ public class QLogic {
                 phone, email, name, information);
         Map<String, Object> urlVariables = new HashMap<String, Object>();
         urlVariables.put("sOrganisationGuid", "{" + sOrganisationGuid + "}");
-        HttpEntityCover oHttpEntityCover = new HttpEntityCover(url)
+        oHttpEntityCover = new HttpEntityCover(url)
                 ._Header(oHttpHeaders)
                 ._UrlVariable(urlVariables)
                 ._SendGET();
-        sReturn = oHttpEntityCover.sReturn();
         
         if (!oHttpEntityCover.bStatusOk()) {
-        	JSONParser parser = new JSONParser();
-            JSONObject response = (JSONObject) parser.parse(sReturn);
-            String message = "[sendRequest](sURL=" + url + "): nStatus()="
-                    + oHttpEntityCover.nStatus();
-            
-            if (response.containsKey("Message")){
-            	message = (String)response.get("Message");
-            	LOG.error("Error message: " + message);
-            }
-            LOG.error("RESULT FAIL! (sURL={}, nReturn={}, sReturn(cuted)={})",
-            		url,
-                    oHttpEntityCover.nStatus(), sReturn);
-            throw new Exception(message);
+        	LOG.error("Exception occured with request to QLogic. Status code:" + oHttpEntityCover.nStatus());
+        	if (oHttpEntityCover != null){
+        		LOG.error("Exception response:" + oHttpEntityCover.sErrorMessage());
+        		throw new Exception(oHttpEntityCover.sErrorMessage());
+        	}
+        } else {
+            sReturn = oHttpEntityCover.sReturn();
         }
 
         } catch (Exception e){
         	LOG.error("Exception occured while doing request:" + e.getMessage(), e);
-        	throw new Exception(e);
+        	throw new Exception(e.getMessage(), e);
         }
         LOG.info("Result:{}", sReturn);
         return sReturn;

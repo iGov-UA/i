@@ -23,7 +23,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.igov.io.GeneralConfig;
 import org.igov.io.mail.NotificationPatterns;
@@ -135,6 +137,8 @@ public class ActionTaskCentralController {
             mergeParams.put("key", "saTaskStatus");
             mergeParams.put("insertValues", "GotAnswer");
             mergeParams.put("removeValues", "WaitAnswer");
+            mergeParams.put("taskStatusVariable", "taskStatus");
+            mergeParams.put("taskStatusValue", "GotAnswer");
             LOG.info("mergeParams={}, mergeUrl={}", mergeParams, mergeUrl);
             httpRequester.getInside(mergeUrl, mergeParams);
             
@@ -143,10 +147,19 @@ public class ActionTaskCentralController {
             Map<String, String> requestParams = new HashMap<>();
             requestParams.put("processInstanceId", String.valueOf(processId));
             requestParams.put("variableName", "sMailClerk");
-            String sMailClerk = httpRequester.getInside(sTaskDataUrl, requestParams);
-            LOG.info("Searched sMail={}", sMailClerk);
-            sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
-            oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order);
+            String asResult = httpRequester.getInside(sTaskDataUrl, requestParams);
+            List<String> asMailClerk = Arrays.asList(asResult.split(","));
+            LOG.info("asMailClerk={}", asMailClerk);
+            for(String sMailClerk: asMailClerk){
+                if(sMailClerk.contains("@")){
+                    String sURL_Region = sHost.replace("/wf", "");
+                    sBody = "Заявка " + sID_Order.split("-")[1] + ", отримала відповідь на Ваше зауваження.";
+                    oNotificationPatterns.sendTaskClientFeedbackMessageEmail(sHead, sBody, sMailClerk, sID_Order, sURL_Region);
+                }else {
+                    LOG.error("ERROR, sMailClerk={}, should be of e-mail format..." + sMailClerk);
+                }
+            }
+            
 
         } catch (Exception e) {
             throw new CommonServiceException(

@@ -68,6 +68,8 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.mail.EmailException;
 
@@ -1767,8 +1769,26 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         if (historicVariableInstance != null) {
             res.put(historicVariableInstance.getVariableName(), historicVariableInstance.getValue());
         }
-
         return res;
+    }
+    
+    public List<String> getRuntimeProcessVariableValue(String snID_Process, String sVariableName) {
+        LOG.info("Fetch variable by nID_Process={} & sVariableName={}", snID_Process, sVariableName);
+        List<FormProperty> aFormPropertyUnion = new ArrayList();
+        getActiveTasksByProcessID(snID_Process)                
+                .stream()
+                .map(task -> task.getId())
+                .map(task_id -> getFormPropertiesByTaskID(Long.parseLong(task_id)))
+                .forEach(a -> aFormPropertyUnion.addAll(a));
+        return aFormPropertyUnion
+                .stream()
+                .filter(oFormProperty -> sVariableName.equals(oFormProperty.getId()))
+                .map(oProperty -> oProperty.getValue())
+                .collect(Collectors.toList());
+    }
+
+    private List<Task> getActiveTasksByProcessID(String snID_Process) {
+        return oTaskService.createTaskQuery().processInstanceId(snID_Process).active().list();
     }
 
     public boolean deleteProcess(Long nID_Order, String sLogin, String sReason) throws Exception {
@@ -2056,7 +2076,7 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
     }
 
     public List<Map<String, Object>> getFormPropertiesMapByTaskID(Long nID_Task) {
-        List<FormProperty> a = oFormService.getTaskFormData(nID_Task.toString()).getFormProperties();
+        List<FormProperty> a = getFormPropertiesByTaskID(nID_Task);
         List<Map<String, Object>> aReturn = new LinkedList();
         Map<String, Object> mReturn;
         //a.get(1).getType().getInformation()
@@ -2077,11 +2097,8 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
                 if (oEnums instanceof Map) {
                     Map<String, String> mEnum = (Map) oEnums;
                     mReturn.put("mEnum", mEnum);
-
                 }
-
             }
-
             aReturn.add(mReturn);
         }
         return aReturn;
@@ -2549,6 +2566,9 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         
         Map<String, Object> taskInfo = new HashMap<>();
+        
+        String executionId = task.getExecutionId();
+        Object taskStatus = oRuntimeService.getVariable(executionId, "taskStatus");
 
         taskInfo.put("id", task.getId());
         taskInfo.put("url", oGeneralConfig.getSelfHost() + "/wf/service/runtime/tasks/" + task.getId());
@@ -2567,12 +2587,13 @@ LOG.info("mBody from ActionTaskService = {};", mBody);
         taskInfo.put("formKey", task.getFormKey());
         taskInfo.put("parentTaskId", task.getParentTaskId());
         taskInfo.put("parentTaskUrl", "");
-        taskInfo.put("executionId", task.getExecutionId());
+        taskInfo.put("executionId", executionId);
         taskInfo.put("executionUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/executions/" + task.getExecutionId());
         taskInfo.put("processInstanceId", task.getProcessInstanceId());
         taskInfo.put("processInstanceUrl", oGeneralConfig.getSelfHost() + "/wf/service/runtime/process-instances/" + task.getProcessInstanceId());
         taskInfo.put("processDefinitionId", task.getProcessDefinitionId());
         taskInfo.put("processDefinitionUrl", oGeneralConfig.getSelfHost() + "/wf/service/repository/process-definitions/" + task.getProcessDefinitionId());
+        taskInfo.put("taskRemark", taskStatus);
         taskInfo.put("variables", new LinkedList());
 
         if (flowSlotTicket != null) {

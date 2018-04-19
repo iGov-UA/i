@@ -260,7 +260,6 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     //@ApiParam(value = " Номер процесса activiti.", required = true)  @RequestParam(value = "nID_Process") String snID_Process
     )
             throws CommonServiceException, CRCInvalidException, RecordNotFoundException {
-
         String snID_Process = oActionTaskService.getOriginalProcessInstanceId(nID_Order);
         return oActionTaskService.getTaskIdsByProcessInstanceId(snID_Process);
 
@@ -921,7 +920,9 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "key", required = true) String sKey,
             @RequestParam(value = "removeValues", required = false) String[] sRemoveValues,
-            @RequestParam(value = "insertValues", required = false) String[] sInsertValues
+            @RequestParam(value = "insertValues", required = false) String[] sInsertValues,
+            @RequestParam(value = "taskStatusVariable", required = false) String taskStatusVariable,
+            @RequestParam(value = "taskStatusValue", required = false) String taskStatusValue
     ) {
         try {
             Object currentValueObject = runtimeService.getVariable(snID_Process, sKey);
@@ -941,7 +942,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
                     }
                 }
             }
-            runtimeService.setVariable(snID_Process, sKey, currentValue.trim());
+            setVariableToProcessInstance(snID_Process, sKey, currentValue.trim());
+            setVariableToProcessInstance(snID_Process, taskStatusVariable, taskStatusValue);
             LOG.info("currentValue={}", currentValue);
         } catch (Exception oException) {
             LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
@@ -1687,6 +1689,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
         try {
             String processId = String.valueOf(nID_Process);
             String variableName = "saTaskStatus";
+            String taskStatusVariable = "taskStatus";
             String waitsAnswerTag = "WaitAnswer";
             String gotAnswerTag = "GotAnswer";
             Object taskStatus = runtimeService.getVariable(processId, variableName);
@@ -1698,7 +1701,8 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
             if (tags.contains(gotAnswerTag)) {
                 tags = tags.replace(gotAnswerTag, "").trim();
             }
-            runtimeService.setVariable(processId, variableName, tags);
+            setVariableToProcessInstance(processId, variableName, tags);
+            setVariableToProcessInstance(processId, taskStatusVariable, waitsAnswerTag);
 
             String sID_Order = generalConfig.getOrderId_ByProcess(nID_Process);
             String sReturn = oActionTaskService.updateHistoryEvent_Service(
@@ -3413,17 +3417,7 @@ public class ActionTaskCommonController {//extends ExecutionBaseResource
     public String getRuntimeProcessVariableValue(
             @RequestParam(value = "processInstanceId", required = true) String snID_Process,
             @RequestParam(value = "variableName", required = true) String sVariableName) {
-        String sValue = "";
-        try {
-            Object currentValueObject = runtimeService.getVariable(snID_Process, sVariableName);
-            if(currentValueObject != null){
-                sValue = currentValueObject.toString();
-            }
-            LOG.info("Fetch variable value={} by nID_Process={} & sVariableName={}", sValue, snID_Process, sVariableName);
-        } catch (Exception oException) {
-            LOG.error("ERROR:{} (snID_Process={},sKey={},sInsertValue={}, sRemoveValue={})",
-                    oException.getMessage(), snID_Process, sVariableName, sValue);
-        }
-        return sValue;
+        List<String> aValues = oActionTaskService.getRuntimeProcessVariableValue(snID_Process, sVariableName);
+        return String.join(",", aValues);
     }
 }
