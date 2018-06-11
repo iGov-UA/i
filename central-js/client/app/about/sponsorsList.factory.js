@@ -98,7 +98,7 @@
         url: 'https://webmoney.ua',
         alt: 'webmoneyua',
         image: 'assets/images/ads/webmoneyua.png',
-        isActual: true
+        isActual: false
       }
       ,{
         url: 'https://leogaming.net',
