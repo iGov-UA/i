@@ -107,7 +107,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
             type: 'safari'
         },
         exe: {
-            link: '/wf/VAADIN/themes/activiti/files/cryptoplugin-1.2.2.exe'
+            link: '/wf/VAADIN/themes/activiti/files/cryptoplugin-1.2.3.exe'
         }
     };
 

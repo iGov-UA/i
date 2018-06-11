@@ -549,7 +549,7 @@ public class SubjectMessageController {
             if (nID_SubjectMessageType == 9L) { //officer's comment or question
                 multipleParam.put("removeValues", Arrays.asList(new String[] {"GotUpdate", "GotAnswer"}));
                 mergeParams.put("taskStatusVariable", "taskStatus");
-                mergeParams.put("taskStatusValue", "");
+                mergeParams.put("taskStatusValue", "WaitAnswer");
                 oNotificationPatterns.sendTaskEmployeeMessageEmail(sHead, sO(sBody), sMail, sID_Order, soParams);
             }
             httpRequester.getInside(mergeUrl, mergeParams, multipleParam);
