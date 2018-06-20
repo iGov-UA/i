@@ -1377,7 +1377,10 @@
                   var loadedTable = JSON.parse(res);
                   obj[key].aRow = loadedTable.aRow;
                   obj[key].description = attachment.description;
-                })
+                  if (!attachment.attachmentName) {
+                    attachment.attachmentName = obj[key].name ? obj[key].name.split(';')[0] : null;
+                  }
+                });
               }
             })
           });
@@ -1735,7 +1738,7 @@
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
         };
-
+console.log($scope)
         $rootScope.$broadcast("update-search-counter");
       }
     ])
