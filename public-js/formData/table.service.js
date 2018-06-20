@@ -118,7 +118,7 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
      */
 
     this.isFieldWritable = function (field) {
-        if(!field) {
+        if(field === undefined) {
             return true;
         } else{
             if(typeof field === 'string' || field instanceof String) {
@@ -168,6 +168,9 @@ angular.module('iGovTable', ['autocompleteService', 'iGovMarkers', 'datepickerSe
                     }
                     if(field.default) {
                         delete field.default;
+                        if(field.props) {
+                            field.props.value = ""
+                        }
                     } else if(field.props) {
                         field.props.value = ""
                     }

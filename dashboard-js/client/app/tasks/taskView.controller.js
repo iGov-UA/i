@@ -1374,7 +1374,8 @@
               var match = attachment.description.match(reg);
               if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
                 tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
-                  obj[key] = JSON.parse(res);
+                  var loadedTable = JSON.parse(res);
+                  obj[key].aRow = loadedTable.aRow;
                   obj[key].description = attachment.description;
                 })
               }

@@ -38,7 +38,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-required="field.required"
                    ng-model="field.value"
-                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                   ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="text">
             <input class="inputs-in-table"
@@ -47,7 +47,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-required="field.required"
                    ng-model="field.value"
-                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                   ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="text">
           </div>
@@ -59,7 +59,7 @@
                     ng-model="field.value"
                     ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                     ng-options="oEnumValue.id as oEnumValue.name for oEnumValue in field.a"
-                    ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                    ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                     ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                     class="inputs-in-table">
             </select>
@@ -73,7 +73,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-model="field.value"
                    class="inputs-in-table"
-                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                   ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="number">
             <input name="{{field.id + rowIndex}}"
@@ -82,7 +82,7 @@
                    ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                    ng-model="field.value"
                    class="inputs-in-table"
-                   ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                   ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                    ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                    type="number">
           </div>
@@ -92,7 +92,7 @@
                  class="form-control date-picker"
                  ng-class="{'table-field-invalid': form.$submitted && form[tableName][field.id + rowIndex].$invalid || tableIsInvalid && form[tableName][field.id + rowIndex].$invalid && invalidTableNum === tableName}"
                  name="{{field.id + rowIndex}}"
-                 ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                 ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                  ng-required="field.required"
                  ng-model="field.props.value"
                  ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
@@ -108,7 +108,7 @@
                          autocomplete-data="field.autocompleteData"
                          autocomplete-name="field.autocompleteName"
                          reach-infinity="requestMoreItems($select.items)"
-                         ng-disabled="!isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
+                         ng-disabled="!isFieldWritable(item.writable) || !isFieldWritable(field.writable) || (!isDocumentWritable(item) && isDocumentReadable(item))"
                          on-select="onSelectDataList($item, tableName, rowIndex, field)">
 
                 <ui-select-match title="{{$select.selected}}">
@@ -129,7 +129,7 @@
               <div class="file-modal table-file-modal dropdown-menu drop-up" role="menu">
                 <file-field name="{{field.id}}"
                             ng-if="field.fileName"
-                            ng-disabled="isFormPropertyDisabled(field)"
+                            ng-disabled="isFormPropertyDisabled(item) || isFormPropertyDisabled(field)"
                             ng-model="field.value"
                             ng-required="isRequired(field)">
                 </file-field>
@@ -199,6 +199,7 @@
     <div style="text-align: left; margin-top: 3px" ng-if="tableIsLoaded(item)">
       <input type="button"
              ng-hide="rowLengthCheckLimit(item) || !item.aRow || (!isDocumentWritable(item) && isDocumentReadable(item))"
+             ng-if="isFieldWritable(item.writable)"
              class="add-row-button"
              ng-class="item.id + '_add_row_button'"
              ng-click="addRow(form[tableName], item.id, tableName)"
