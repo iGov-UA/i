@@ -186,7 +186,8 @@
           <a href="#"
              class="btn btn-default remove-btn"
              ng-click="removeRow($index, form[tableName], item.id)"
-             ng-disabled="!isDocumentWritable(item) && isDocumentReadable(item)">
+             ng-disabled="!isDocumentWritable(item) && isDocumentReadable(item)"
+             ng-if="isFieldWritable(item.writable)">
             <i style="color: #FF1F1F;" class="glyphicon glyphicon-remove"></i>
           </a>
         </td>
