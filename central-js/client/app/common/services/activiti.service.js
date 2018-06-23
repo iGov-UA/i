@@ -454,7 +454,8 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                           } else if(field.type === 'enum' && !field.value) {
                             return ' ';
                           } else if(field.type === 'date' && !field.value) {
-                            return field.props && field.props.value ? field.props.value.split('T')[0] : ' ';
+                            var formatted = field.props && field.props.value ? field.props.value.toJSON() : '';
+                            return formatted ? formatted.split('T')[0] : ' ';
                           } else if (field.value) return field.value;
                           else if (field.default) return field.default;
                           else if (field.props) return field.props.value;
