@@ -56,6 +56,10 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     return data;
   };
 
+  var escapeRegExp = function (str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+  };
+
   this.getForm = function (oServiceData, processDefinitionId) {
     var oFuncNote = {sHead:"Отримання форми послуги", sFunc:"getForm"};
     var oData = {
@@ -364,10 +368,39 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
         aPrintPromise = [],
         aPrintform = [],
         counter = 0,
-        valueToPaste = '';
+        valueToPaste = '',
+        aTable = [];
 
       angular.forEach(results, function (templateResult, key) {
         if(!templateResult.fileBase64){
+          var tableBlueprints = templateResult.template.match(/(?=<!--\[)([\s\S]*?]-->)/g);
+          var matchesIds = [], idArray = [];
+
+          angular.forEach(tableBlueprints, function (template) {
+            var comment = template.match(/<!--[\s\S]*?-->/g);
+            if(Array.isArray(comment)) {
+              for(var i=0; i<comment.length; i++) {
+                comment[i] = comment[i].match(/\w+/)[0];
+              }
+            }
+            if(comment) {
+              matchesIds.push(comment);
+            }
+          });
+
+          angular.forEach(matchesIds, function (ids) {
+            var arr = ids.filter(function(item, pos, self) {
+              return self.indexOf(item) === pos;
+            });
+            idArray.push(arr);
+          });
+
+          angular.forEach(activitiFormProperties, function (property) {
+            if (property.type === 'table' && property.hasOwnProperty('aRow')) {
+              aTable.push(property);
+            }
+          });
+
           angular.forEach(activitiFormProperties, function (property) {
             if (formData.hasOwnProperty(property.id)) {
               if (property.type === 'enum') {
@@ -375,6 +408,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                   if (property.enumValues[i].id === formData[property.id].value) {
                     valueToPaste = property.enumValues[i].name ? property.enumValues[i].name : '';
                     templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
+                    break;
                   }
                 }
               } else if (property.type === 'date') {
@@ -387,14 +421,53 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
                   formattedDate = '';
                 }
                 templateResult.template = templateResult.template.split('[' + property.id + ']').join(formattedDate);
-              } else if (property.type === 'fileHTML') {
+              }  else if (property.type === 'fileHTML') {
                 valueToPaste = formData[property.id].valueVisible ? formData[property.id].valueVisible : '';
                 templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
               } else {
-                valueToPaste = formData[property.id].value ? formData[property.id].value : '';
-                templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
+                if (property.type !== 'table') {
+                  valueToPaste = formData[property.id].value ? formData[property.id].value : '';
+                  templateResult.template = templateResult.template.split('[' + property.id + ']').join(valueToPaste);
+                }
               }
             }
+          });
+
+          angular.forEach(idArray, function(id) {
+            angular.forEach(aTable, function(table) {
+              if(table.id === id[0]) {
+                angular.forEach(tableBlueprints, function (blueprint) {
+                  var commentedField = blueprint.match(/<!--.*?-->/)[0];
+                  var uncommentedField = commentedField.split('--')[1];
+                  var result = uncommentedField.slice(1);
+                  if(result === id[0]){
+                    var withAddedRowsTemplate = blueprint.repeat(table.aRow.length);
+                    angular.forEach(table.aRow, function (row) {
+                      angular.forEach(row.aField, function (field) {
+                        var fieldId = function () {
+                          if(field.type === 'enum' && field.value) {
+                            for (var j = 0; j < field.a.length; j++) {
+                              if (field.a[j].id === field.value) {
+                                return field.a[j].name ? field.a[j].name : ' ';
+                              }
+                            }
+                          } else if(field.type === 'enum' && !field.value) {
+                            return ' ';
+                          } else if(field.type === 'date' && !field.value) {
+                            return field.props && field.props.value ? field.props.value.split('T')[0] : ' ';
+                          } else if (field.value) return field.value;
+                          else if (field.default) return field.default;
+                          else if (field.props) return field.props.value;
+                          else return ' ';
+                        };
+                        withAddedRowsTemplate = withAddedRowsTemplate.replace(new RegExp(escapeRegExp('[' + field.id + ']')), fieldId());
+                      })
+                    });
+                    templateResult.template = templateResult.template.replace(blueprint, withAddedRowsTemplate);
+                  }
+                })
+              }
+            });
           });
 
           function getUserInfo() {
