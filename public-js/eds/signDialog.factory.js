@@ -23,7 +23,7 @@ angular.module('signModule', [])
                             passport: signedContent
                         });
                     }
-                    else if(contentData === null){
+                   else if(contentData === null){
                         resultCallback({
                             certificateInfo: signedContent
                         });
@@ -34,7 +34,9 @@ angular.module('signModule', [])
                             certificate: signedContent.certBase64,
                             sign: signedContent.sign,
                             subject: signedContent.subject,
-                            issuer: signedContent.issuer
+                            issuer: signedContent.issuer,
+                            notValidAfter: signedContent.notValidAfter,
+                            notValidBefore: signedContent.notValidBefore
                         });
                     } else if(contentData.sHash) {
                         resultCallback({
@@ -43,7 +45,9 @@ angular.module('signModule', [])
                             certificate: signedContent.certificate,
                             sign: signedContent.sign,
                             subject: signedContent.subject,
-                            issuer: signedContent.issuer
+                            issuer: signedContent.issuer,
+                            notValidAfter: signedContent.notValidAfter,
+                            notValidBefore: signedContent.notValidBefore
                         });
                     }
                 }, function () {
@@ -173,21 +177,21 @@ angular.module('signModule', [])
             "        <input class=\"form-control\" name=\"eds-key-password\" type=\"password\" ng-model=\"edsContext.selectedKey.password\" required>\n" +
             "      </div>\n" +
             "    </div>\n" +
-            // "    <div class=\"col-sm-12 form-field\">\n" +
-            // "      <div class=\"col-sm-4 task-form-title\">\n" +
-            // "        <label>Пароль до пристрою <span style=\"color: red\"></span></label>\n" +
-            // "      </div>\n" +
-            // "      <div class=\"col-sm-4\" style=\"padding-right: 0\">\n" +
-            // "        <input class=\"form-control\" name=\"token-password\" type=\"password\" ng-model=\"deviceInfo.password\">\n" +
-            // "      </div>\n" +
-            // "      <div class=\"col-sm-3 task-form-title\">\n" +
-            // "        <button type=\"button\"\n" +
-            // "                class=\"btn btn-link\"\n" +
-            // "                style=\"border: 1px solid #3694BA; outline: 0; border-radius: 3px; text-decoration: none;\"\n" +
-            // "                ng-click=\"signInByToken()\">Токен\n" +
-            // "        </button>\n" +
-            // "      </div>\n" +
-            // "    </div>\n" +
+            "    <div class=\"col-sm-12 form-field\">\n" +
+            "      <div class=\"col-sm-4 task-form-title\">\n" +
+            "        <label>Пароль до пристрою <span style=\"color: red\"></span></label>\n" +
+            "      </div>\n" +
+            "      <div class=\"col-sm-4\" style=\"padding-right: 0\">\n" +
+            "        <input class=\"form-control\" name=\"token-password\" type=\"password\" ng-model=\"deviceInfo.password\">\n" +
+            "      </div>\n" +
+            "      <div class=\"col-sm-3 task-form-title\">\n" +
+            "        <button type=\"button\"\n" +
+            "                class=\"btn btn-link\"\n" +
+            "                style=\"border: 1px solid #3694BA; outline: 0; border-radius: 3px; text-decoration: none;\"\n" +
+            "                ng-click=\"signInByToken()\">Токен\n" +
+            "        </button>\n" +
+            "      </div>\n" +
+            "    </div>\n" +
             // "    <div class=\"col-sm-12 form-field\" style=\"margin-top: 6px; margin-bottom: 15px; margin-left: 8px;\">\n" +
             // "      <div class=\"col-sm-4\" style=\"padding-right: 0\">\n" +
             // "        <input class=\"form-control\" name=\"token-password\" type=\"password\" ng-model=\"deviceInfo.password\">\n" +
