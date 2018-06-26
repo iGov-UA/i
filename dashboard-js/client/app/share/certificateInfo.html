@@ -1,0 +1,150 @@
+<style>
+  .popup {
+    width:100%;
+    height:100%;
+    display: block;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index: 10000;
+    background:rgba(0,0,0,0.75);
+  }
+  /* Inner */
+  .popup-inner {
+    max-width: 909px;
+    max-height: 700px;
+    width: 90%;
+    height: 100%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    z-index: 10000;
+    -webkit-transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%);
+    border-radius:3px;
+    background-image: url('./assets/images/certificate.png');
+  }
+
+  .subscriber {
+    position: relative;
+    margin: 75px 0 0 175px;
+    padding-bottom: 10px;
+    color: #695621;
+  }
+
+  .subscriber h2 {
+    padding-top: 35px;
+    margin-left: 245px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: Samanata;
+  }
+
+  .subscriber .subscribtion-time {
+    padding-top: 14px;
+    font-size: 16px;
+    font-family: 'Arial Bold', 'Arial';
+  }
+
+  .subscriber .subscribtion-info {
+    padding-top: 14px;
+    font-size: 16px;
+    font-family: 'Arial Bold', 'Arial';
+  }
+
+  .issuer {
+    position: relative;
+    margin: 0 0 10px 175px;
+    padding-bottom: 35px;
+    color: #695621;
+  }
+
+  .issuer h2 {
+    margin-left: 200px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: Samanata;
+  }
+
+  .issuer .issuer-info {
+    position: inherit;
+    width: 80%;
+    word-wrap: break-word;
+    padding-top: 14px;
+    font-size: 16px;
+    font-family: 'Arial Bold', 'Arial';
+  }
+
+  .certificate-info-download {
+    font-size: 14px;
+    color: #695621;
+    margin: 0 0 10px 175px;
+  }
+
+  .certificate-info-download span {
+    text-decoration: none;
+    cursor: pointer;
+    color: #695621;
+  }
+
+
+  /* Close Button */
+  #popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0;
+    right:0;
+    -webkit-transform:translate(30%, 0);
+    transform:translate(30%, 0);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-size:20px;
+    text-align:center;
+    color:#fff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+</style>
+
+<div class="popup" id="popup-1">
+  <div class="popup-inner">
+    <div class="subscriber">
+      <h2>Сертифікат ЕЦП</h2>
+      <div class="subscribtion-time">
+        <span><b>Термін дії:</b> з {{certificateInfo.notValidBefore}} до {{certificateInfo.notValidAfter}}</span><br/>
+        <span><b>Час підпису:</b> {{certificateInfo.date}}</span>
+      </div>
+      <div class="subscribtion-info">
+        <span><b>Повне ім'я:</b> {{certificateInfo.name}}</span><br/>
+        <span><b>ІНН:</b> {{certificateInfo.inn}}</span><br/>
+        <span ng-if="certificateInfo.edrpou"><b>ЄДРПОУ:</b> {{certificateInfo.edrpou}}<br/></span>
+        <span><b>Організація:</b> {{certificateInfo.org}}</span><br/>
+        <span ng-if="certificateInfo.pos"><b>Посада:</b> {{certificateInfo.pos}}<br/></span>
+        <span><b>Місто:</b> {{certificateInfo.city}}</span><br/>
+        <span><b>Серійний номер:</b> {{certificateInfo.sn}}</span>
+      </div>
+    </div>
+    <div class="issuer">
+      <h2>Видавець сертифікату</h2>
+      <div class="issuer-info">
+        <span><b>АЦСК:</b> {{certificateInfo.acsk}}</span><br/>
+        <span><b>Організація:</b> {{certificateInfo.issuerOrg}}</span><br/>
+        <span><b>Місто:</b> {{certificateInfo.issuerCity}}</span><br/>
+        <span><b>SN сертифіката видавця:</b> {{certificateInfo.issuerSn}}</span><br/>
+      </div>
+    </div>
+
+    <!--<div class="certificate-info-download">-->
+    <!--<div class="row">-->
+      <!--<span ng-click="downloadCertificate()" class="col-md-5"><img src="/assets/images/download.png"/> Завантажити сертифікат</span>-->
+      <!--<span class="col-md-7"><img src="/assets/images/pen.png"/> Завантажити інфо про підпис для друку</span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <a id="popup-close" ng-click="closeCertificateWindow()">x</a>
+  </div>
+</div>
