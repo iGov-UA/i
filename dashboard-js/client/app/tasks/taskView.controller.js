@@ -1374,9 +1374,13 @@
               var match = attachment.description.match(reg);
               if(match !== null && (item.id && match[2].toLowerCase() === item.id.toLowerCase() ||item.name && match[2].toLowerCase() === item.name.toLowerCase())) {
                 tasks.getTableOrFileAttachment(attachment.taskId, attachment.id).then(function (res) {
-                  obj[key] = JSON.parse(res);
+                  var loadedTable = JSON.parse(res);
+                  obj[key].aRow = loadedTable.aRow;
                   obj[key].description = attachment.description;
-                })
+                  if (!attachment.attachmentName) {
+                    attachment.attachmentName = obj[key].name ? obj[key].name.split(';')[0] : null;
+                  }
+                });
               }
             })
           });
@@ -1734,7 +1738,7 @@
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
         };
-
+console.log($scope)
         $rootScope.$broadcast("update-search-counter");
       }
     ])

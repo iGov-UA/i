@@ -93,36 +93,13 @@
         <!--поле типа simple-field-->
         <div ng-if="item.value && isFormPropertyDisabled(item)">
           <simple-field></simple-field>
-        </div>
-
-        <!--поле типа date-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
           <date-field></date-field>
-        </div>
-
-        <!--поле типа text-area-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
           <textarea-field></textarea-field>
-        </div>
-
-        <!--поле типа enum-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
           <enum-field></enum-field>
-        </div>
-
-        <!--поле типа checkbox-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
           <checkbox-field></checkbox-field>
-        </div>
-
-        <!--поле типа select-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
           <select-field></select-field>
-        </div>
-
-        <!--поле типа fileHTML-->
-        <div ng-if="item.value && isFormPropertyDisabled(item)">
           <file-html></file-html>
+          <table-field></table-field>
         </div>
 
         <!--поле типа user-->
@@ -246,7 +223,8 @@
         <div ng-if="sSelectedTask !== 'unassigned'">
           <div class="dropup" ng-repeat="item in taskData.aAttachment" style="display: inline-block; position:relative;">
             <div class="like-modal dropdown-menu drop-up" role="menu" style="bottom: 128%">
-              <p>{{item.description | tableButtonFilter}}</p>
+              <p ng-if="!item.attachmentName">{{item.description | tableButtonFilter}}</p>
+              <p ng-if="item.attachmentName">{{item.attachmentName}}</p>
               <a href="/api/tasks/{{taskId}}/attachments/{{item.id}}/content/{{($index+1)}}"
                  target="_blank"
                  ng-if="!isTableAttachment(item.description)"
@@ -269,7 +247,8 @@
                     class="btn btn-link attach-btn dropdown-toggle"
                     data-toggle="dropdown"
                     title="{{item.description | tableButtonFilter}}">
-              {{item.description | cut : true : 25 | tableButtonFilter}}
+              <span ng-if="!item.attachmentName">{{ item.description | cut : true : 25 | tableButtonFilter }}</span>
+              <span ng-if="item.attachmentName">{{ item.attachmentName }}</span>
             </button>
           </div>
 
