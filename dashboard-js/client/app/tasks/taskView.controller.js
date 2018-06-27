@@ -1400,6 +1400,7 @@
                           res.writable = table.bWritable;
                           res.readable = table.bReadable;
                           res.required = table.bRequired;
+                          fixFieldsForTable(res);
                         }
                       }
                     }
@@ -1738,7 +1739,7 @@
             return field.id + "_--_" + "COL_" + field.aRow[0].aField[column].id + "_--_" + "ROW_" + row;
           }
         };
-console.log($scope)
+
         $rootScope.$broadcast("update-search-counter");
       }
     ])

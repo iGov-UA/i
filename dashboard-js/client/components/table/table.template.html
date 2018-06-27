@@ -21,7 +21,9 @@
           </tr>
           <tr ng-if="!openedAttachTable.content" ng-repeat="row in openedAttachTable.aRow">
             <td ng-repeat="item in row.aField">
-              <span ng-if="item.type !== 'file'">{{item.value ? item.value : (item.default? item.default : item.props.value)}}</span>
+              <span ng-if="item.type !== 'file' && item.props && item.props.value">{{ item.props.value }}</span>
+              <span ng-if="item.type !== 'file' && item.default">{{ item.default }}</span>
+              <span ng-if="item.type !== 'file' && item.value">{{ item.value }}</span>
 
               <div ng-if="item.type === 'file' && item.value !== null">
                 <div class="dropup no-print" style="display: inline-block; position:relative;">
