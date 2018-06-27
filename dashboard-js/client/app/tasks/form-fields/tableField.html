@@ -54,6 +54,7 @@
 
           <div ng-if="['enum'].indexOf(field.type) > -1">
             <select name="{{field.id + rowIndex}}"
+                    ng-if="isFieldWritable(item.writable) && isFieldWritable(field.writable)"
                     ng-init="field.value = ((field.value || field.default) || '')"
                     ng-required="field.required"
                     ng-model="field.value"
@@ -63,6 +64,9 @@
                     ng-change="broadcast('TableFieldChanged', { 'field': field, 'rowIndex': rowIndex, 'tableName': tableName } )"
                     class="inputs-in-table">
             </select>
+            <span ng-if="!isFieldWritable(item.writable) || !isFieldWritable(field.writable)">
+              <input type="text" class="inputs-in-table" ng-model="field.value" disabled>
+            </span>
           </div>
 
           <div ng-if="['long', 'double'].indexOf(field.type) > -1">
@@ -125,7 +129,7 @@
           </div>
 
           <div ng-if="['file'].indexOf(field.type) > -1">
-            <div class="dropup" style="display: inline-block; position:relative;">
+            <div class="dropup" style="display: inline-block; position:relative;" ng-if="field.value">
               <div class="file-modal table-file-modal dropdown-menu drop-up" role="menu">
                 <file-field name="{{field.id}}"
                             ng-if="field.fileName"
@@ -147,6 +151,9 @@
                           ng-model="field.value"
                           ng-required="isRequired(field)">
               </file-field>
+            </div>
+            <div ng-if="!field.value">
+              <input type="text" class="inputs-in-table" disabled>
             </div>
           </div>
 
