@@ -19,7 +19,30 @@ angular.module('dashboardJsApp').directive('tableModal', ['$window', function ($
         popupWin.document.write('<html><head><style>' + printStyles + '</style></head><body onload="window.print()">' + printContents + '</html>');
         popupWin.document.close();
         scope.hideModal();
-      }
+      };
+
+      scope.getEnumValue = function (object) {
+        var array = [], value = null;
+        var objValue = object.hasOwnProperty('value') ? 'value' : 'default';
+
+        for (var item in object) {
+          if (object.hasOwnProperty(item) && Array.isArray(object[item])) {
+            array = object[item];
+            break;
+          }
+        }
+
+        if (array.length) {
+          for (var i=0; i<array.length; i++) {
+            if (array[i].id === object[objValue]) {
+              value = array[i].name;
+              break;
+            }
+          }
+        }
+
+        return value ? value : object[objValue];
+      };
     },
     templateUrl: 'components/table/table.template.html'
   };
