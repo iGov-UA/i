@@ -24,9 +24,7 @@
               <span ng-if="['file', 'enum'].indexOf(item.type) === -1 && item.props && item.props.value">{{ item.props.value }}</span>
               <span ng-if="['file', 'enum'].indexOf(item.type) === -1 && item.default && !item.hasOwnProperty('value')">{{ item.default }}</span>
               <span ng-if="item.type === 'enum'">
-                <span ng-repeat="el in item.a" ng-if="item.hasOwnProperty('value') && item.value === el.id || !item.hasOwnProperty('value') && item.default === el.id">
-                  {{ el.name }}
-                </span>
+                {{ getEnumValue(item) }}
               </span>
               <span ng-if="['file', 'enum'].indexOf(item.type) === -1 && item.value">{{ item.value }}</span>
 
