@@ -100,6 +100,39 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
     resultCallback = bankidNBUUtil.decryptCallback(adminCheckCallback);
   }
 
+  var body = {
+    "type": "physical",
+    "fields": ["firstName", "middleName", "lastName", "phone", "inn", "birthDay", "email"],
+
+    "addresses": [
+      {
+        "type": "factual",
+        "fields": ["country", "state", "area", "city", "street", "houseNo", "flatNo"]
+      },
+      {
+        "type": "birth",
+        "fields": ["country", "state", "area", "city", "street", "houseNo", "flatNo"]
+      }
+    ],
+
+    "documents": [{
+      "type": "passport",
+      "fields": ["series", "number", "issue", "dateIssue", "dateExpiration", "issueCountryIso2"]
+    }],
+
+    "scans": [{
+      "type": "passport",
+      "fields": ["link", "dateCreate", "extension"]
+    }, {
+      "type": "zpassport",
+      "fields": ["link", "dateCreate", "extension"]
+    }]
+  };
+
+  if(bankidNBUUtil.isCipherEnabled()){
+    body.cert = bankidNBUUtil.getBase64PublicKey();
+  }
+
   return request.post({
     'url': url,
     'headers': {
@@ -108,34 +141,7 @@ module.exports.index = function (accessToken, callback, disableDecryption) {
       'Accept': 'application/json'
     },
     json: true,
-    body: {
-      "type": "physical",
-      "fields": ["firstName", "middleName", "lastName", "phone", "inn", "birthDay", "email"],
-
-      "addresses": [
-        {
-          "type": "factual",
-          "fields": ["country", "state", "area", "city", "street", "houseNo", "flatNo"]
-        },
-        {
-          "type": "birth",
-          "fields": ["country", "state", "area", "city", "street", "houseNo", "flatNo"]
-        }
-      ],
-
-      "documents": [{
-        "type": "passport",
-        "fields": ["series", "number", "issue", "dateIssue", "dateExpiration", "issueCountryIso2"]
-      }],
-
-      "scans": [{
-        "type": "passport",
-        "fields": ["link", "dateCreate", "extension"]
-      }, {
-        "type": "zpassport",
-        "fields": ["link", "dateCreate", "extension"]
-      }]
-    }
+    body: body
   }, responseContractValidation(callback, changeToCustomer(resultCallback)));
 };
 
@@ -394,4 +400,3 @@ module.exports.signPdfForm = function (accessToken, acceptKeyUrl, formToUpload, 
 module.exports.prepareSignedContentRequest = function (accessToken, codeValue) {
   return module.exports.getScanContentRequest(bankidNBUUtil.getClientPdfClaim(codeValue), accessToken);
 };
-

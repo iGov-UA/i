@@ -7,12 +7,13 @@ var config = require('../../config/environment')
   , url = require('url');
 
 var privateKeyFromConfigs;
+var publicKeyFromConfigs;
 
 function isCipherEnabled() {
   return config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true;
 }
 
-var initPrivateKey = function () {
+var initKeys = function () {
   if ((config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true) && config.bankidnbu.privateKey && !privateKeyFromConfigs) {
     try {
       var key = fs.readFileSync(config.bankidnbu.privateKey);
@@ -22,15 +23,29 @@ var initPrivateKey = function () {
         padding: constants.RSA_PKCS1_PADDING
       }
     } catch (err) {
-      throw new Error('Can\'t read private key file for bankID. ' +
+      throw new Error('Can\'t read private key file for bankID nbu. ' +
         'It should be specified. ' +
-        'See config/local.env.sample.js ' +
+        'See config ' +
+        'Nested message if\n' + err.message);
+    }
+  }
+  if ((config.bankidnbu.enableCipher === 'true' || config.bankidnbu.enableCipher === true) && config.bankidnbu.publicKey && !publicKeyFromConfigs) {
+    try {
+      var publicKey = fs.readFileSync(config.bankidnbu.publicKey);
+      publicKeyFromConfigs = {
+        key: publicKey,
+        keyBase64: new Buffer(publicKey, 'utf-8').toString('base64')
+      }
+    } catch (err) {
+      throw new Error('Can\'t read public key file for bankID nbu. ' +
+        'It should be specified. ' +
+        'See config ' +
         'Nested message if\n' + err.message);
     }
   }
 };
 
-initPrivateKey();
+initKeys();
 
 var getURL = function (pathname) {
   return url.format({
@@ -163,4 +178,8 @@ module.exports.decryptData = function (customerData, privateKey) {
   });
 };
 
-module.exports.initPrivateKey = initPrivateKey;
+module.exports.initPrivateKey = initKeys;
+module.exports.isCipherEnabled = isCipherEnabled;
+module.exports.getBase64PublicKey = function () {
+  return publicKeyFromConfigs.keyBase64;
+};

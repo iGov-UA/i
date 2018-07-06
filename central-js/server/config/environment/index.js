@@ -110,6 +110,21 @@ try {
   sPrivateKeyPathAuthBankIDNBU = '';
 }
 
+var sPublicKeyPathAuthBankIDNBU;
+
+try {
+  pathStr = processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sPublicKeyPath_Auth_BankID : process.env.BANKIDNBU_PRIVATE_KEY;
+  pathArr = parsePath(processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sPublicKeyPath_Auth_BankID : process.env.BANKIDNBU_PRIVATE_KEY);
+
+  if (pathArr.length > 1) {
+    sPublicKeyPathAuthBankIDNBU = pathStr;
+  } else {
+    sPublicKeyPathAuthBankIDNBU = (__dirname + '/../../../' + pathStr);
+  }
+} catch (e) {
+  sPublicKeyPathAuthBankIDNBU = '';
+}
+
 function parseUrl(url) {
   var pattern = "^(([^:/\\?#]+):)?(//(([^:/\\?#]*)(?::([^/\\?#]*))?))?([^\\?#]*)(\\?([^#]*))?(#(.*))?$",
     regex = new RegExp(pattern),
@@ -234,6 +249,7 @@ var all = {
     client_secret: processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sClientSecret_Auth_BankID : process.env.BANKIDNBU_CLIENT_SECRET,
     enableCipher: processProps.Auth_BankID_NBU ? (processProps.Auth_BankID_NBU.bCrypt_Auth_BankID === "TRUE") : process.env.BANKIDNBU_ENABLE_CIPHER,
     privateKey: sPrivateKeyPathAuthBankIDNBU,
+    publicKey: sPublicKeyPathAuthBankIDNBU,
     privateKeyPassphrase: processProps.Auth_BankID_NBU ? processProps.Auth_BankID_NBU.sPrivateKeyPassphrase_Auth_BankID : process.env.BANKIDNBU_PRIVATE_KEY_PASSPHRASE
   },
 
