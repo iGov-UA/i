@@ -34,7 +34,8 @@ var initKeys = function () {
       var publicKey = fs.readFileSync(config.bankidnbu.publicKey);
       publicKeyFromConfigs = {
         key: publicKey,
-        keyBase64: new Buffer(publicKey, 'utf-8').toString('base64')
+        keyBase64: new Buffer(publicKey, 'utf-8')
+          .toString('utf-8')
       }
     } catch (err) {
       throw new Error('Can\'t read public key file for bankID nbu. ' +
