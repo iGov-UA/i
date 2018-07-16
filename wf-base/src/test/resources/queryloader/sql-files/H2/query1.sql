@@ -1,1 +1,0 @@
-select CURRENT_TIME()

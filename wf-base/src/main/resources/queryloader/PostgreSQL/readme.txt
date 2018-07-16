@@ -1,1 +1,0 @@
-This is root directory for all PostgreSQL sql queries.
