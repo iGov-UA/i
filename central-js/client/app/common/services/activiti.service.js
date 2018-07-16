@@ -23,6 +23,20 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     return aField;
   };
 
+  var convertTableDate = function (formData) {
+    angular.forEach(formData.params, function (item) {
+      if (item.value && item.value.aRow) {
+        angular.forEach(item.value.aRow, function (row) {
+          angular.forEach(row.aField, function (field) {
+            if (field.type === 'date') {
+              field.props.getForTable();
+            }
+          });
+        });
+      }
+    });
+  };
+
   var prepareFormData = function (oService, oServiceData, formData, nID_Server) {//url
     var data = {
       'nID_Server': nID_Server
@@ -83,6 +97,7 @@ angular.module('app').service('ActivitiService', function ($q, $http, $location,
     ErrorsFactory.init(oFuncNote, {asParam: ['nID_Service: '+oService.nID, 'nID_ServiceData: '+oServiceData.nID, 'processDefinitionId: '+oServiceData.oData.processDefinitionId, "saField: "+JSON.stringify(aField)]});
     var nID_Server = oServiceData.nID_Server;
     var oFormData = prepareFormData(oService, oServiceData, formData, nID_Server);
+    convertTableDate(formData);
     return $http.post('./api/process-form', oFormData).then(function (oResponse) {
         if(ErrorsFactory.bSuccessResponse(oResponse.data,function(oThis, doMerge, sMessage, aCode, sResponse){
 //            console.log("[submitForm]sMessage="+sMessage+",aCode="+aCode+",sResponse="+sResponse);
