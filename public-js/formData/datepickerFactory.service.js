@@ -20,6 +20,11 @@ angular.module('datepickerService', []).factory('DatepickerFactory', function($f
         this.opened = true;
     };
 
+    datepicker.prototype.getForTable = function() {
+        var convDate = this.value.getFullYear() + '/' + (this.value.getMonth() + 1) + '/' + this.value.getDate() + ' ' + '12:00';
+        this.value = new Date(convDate);
+    };
+
     datepicker.prototype.get = function() {
         return $filter('date')(this.value, this.format);
     };
