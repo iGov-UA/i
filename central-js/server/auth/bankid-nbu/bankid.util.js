@@ -34,8 +34,8 @@ var initKeys = function () {
       var publicKey = fs.readFileSync(config.bankidnbu.publicKey);
       publicKeyFromConfigs = {
         key: publicKey,
-        keyBase64: new Buffer(publicKey, 'utf-8')
-          .toString('utf-8')
+        keyBase64: new Buffer(publicKey, 'binary')
+          .toString('base64')
       }
     } catch (err) {
       throw new Error('Can\'t read public key file for bankID nbu. ' +
@@ -166,8 +166,7 @@ function decrypt(value, key, privateKey) {
 
 module.exports.encryptData = function (customerData, publicKey) {
   iterateObj(customerData, function (value, key) {
-    return isEncrypted(value, key)
-      ? crypto.publicEncrypt(publicKey, new Buffer(value, 'utf-8')).toString('base64')
+    return isEncrypted(value, key) ? crypto.publicEncrypt(publicKey ? publicKey : publicKeyFromConfigs.key, new Buffer(value, 'utf-8')).toString('base64')
       : value;
   });
   return customerData;
