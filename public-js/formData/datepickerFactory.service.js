@@ -21,8 +21,10 @@ angular.module('datepickerService', []).factory('DatepickerFactory', function($f
     };
 
     datepicker.prototype.getForTable = function() {
-        var convDate = this.value.getFullYear() + '/' + (this.value.getMonth() + 1) + '/' + this.value.getDate() + ' ' + '12:00';
-        this.value = new Date(convDate);
+        if (this.value) {
+            var convDate = this.value.getFullYear() + '/' + (this.value.getMonth() + 1) + '/' + this.value.getDate() + ' ' + '12:00';
+            this.value = new Date(convDate);
+        }
     };
 
     datepicker.prototype.get = function() {
