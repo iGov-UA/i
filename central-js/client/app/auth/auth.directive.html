@@ -24,6 +24,25 @@
   </ul>
 </span>
 
+  <button class="btn btn-info btn-primary" data-toggle="modal" data-target=".modal-phone">
+    <i><img src="/assets/images/icons/mobile_key_icon.png"></i>
+    <span class="btn-text">MobileID</span>
+  </button>
+  <div class="modal fade modal-phone" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <form class="form-inline">
+            <label for="inputPhone">Введіть номер телефону:</label>
+            <input type="text" ng-model="inputPhone" placeholder="+38 000 0000000" value={{this.inputPhone}}>
+            <button class="btn" type="submit" data-dismiss="modal" ng-click="mobileIdSubmit()" ng-href="$location.protocol() + '://' + $location.host() + ':' + $location.port()
+            + '/mobile-id' ng-controller="HttpGetController"">Увійти</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <button style="display: none;" class="btn"><i class="icon-mobil-id"></i></button>
 <a class="btn btn-info_ btn-success i-btn-badge" target="_self"
    ng-href="{{$location.protocol()}}://{{$location.host()}}:{{$location.port()}}/auth/eds?link={{redirectUri}}"
