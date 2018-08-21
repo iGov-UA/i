@@ -16,7 +16,7 @@ module.exports.mobileid= function(req, res) {
             //"msisdn": req.body.msisdn,
             "msisdn": "+380672340261",
             "dtbs":"Kari test",
-            "apTransactionID": "_22222",
+            "apTransactionID": "_2222288888888888888888",
             "apInstant":"2017-04-01T09:12:01.000Z"
         }
 
@@ -27,6 +27,8 @@ module.exports.mobileid= function(req, res) {
         'url': "https://81.23.16.246//MSSP/restapi/status/2222288888888888888888"
 
     }, callback);
+
+    return resultRestapi; 
     
     
     
