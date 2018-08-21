@@ -3,12 +3,13 @@ var request = require('request');
 module.exports.mobileid= function(req, res) {
 
     var callback = function(error, response, body) {
-        console.log(result)
+        console.log(resultServices);
+        console.log(resultRestapi);
         res.send(body);
         res.end();
     };
 
-    var result = request.post({
+    var resultServices = request.post({
 
         'url': "https://81.23.16.246/MSSP/restapi/services/Service_NR/formats/PKCS7/signTextTransaction",
         'qs': {
@@ -20,15 +21,13 @@ module.exports.mobileid= function(req, res) {
         }
 
     }, callback);
+
+    var resultRestapi = request.get({
+
+        'url': "https://81.23.16.246//MSSP/restapi/status/2222288888888888888888"
+
+    }, callback);
     
-    return result;
+    
     
 };
-
-
-
-
-
-
-
-
