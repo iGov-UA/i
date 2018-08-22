@@ -38,7 +38,7 @@ module.exports.mobileid= function(req, res) {
 
     // }, callback);
 
-    return resultServices; 
+    return resultServices;  
     
     
     
