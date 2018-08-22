@@ -16,14 +16,15 @@ module.exports.mobileid= function(req, res) {
 
         'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
         'auth': {
-            'kyivstar': config.mobileid.login
+            'username': config.mobileid.login,
+            'password': config.mobileid.password
         },
         'qs': {
             //"msisdn": req.body.msisdn,
             "msisdn": "+380672340261",
             "dtbs":"Kari test",
             "apTransactionID": "_222228888888888888888",
-            "apInstant": apInstant
+            "apInstant": "2018-08-22T09:12:01.000Z"
         }
 
     }, callback);
