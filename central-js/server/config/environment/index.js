@@ -47,6 +47,11 @@ function convertStringsToObject(processProps) {
     typeof processProps.Auth_BankID_NBU == 'string' ?
       JSON.parse(processProps.Auth_BankID_NBU) :
       processProps.Auth_BankID_NBU;
+  
+  processProps.Auth_MobileID =
+    typeof processProps.Auth_MobileID == 'string' ?
+      JSON.parse(processProps.Auth_MobileID) :
+      processProps.Auth_MobileID;
 
   processProps.Auth_CardKyanyn =
     typeof processProps.Auth_CardKyanyn == 'string' ?
@@ -280,6 +285,11 @@ var all = {
   masterpass: {
     login: processProps.Pay_MasterPass_sLogin ? processProps.Pay_MasterPass_sLogin : process.env.Pay_MasterPass_sLogin,
     token: processProps.Pay_MasterPass_sSecret ? processProps.Pay_MasterPass_sSecret : process.env.Pay_MasterPass_sSecret
+  },
+  mobileid: {
+    IP: processProps.Auth_MobileID.sIP ? processProps.Auth_MobileID.sIP : process.env.Auth_MobileID.sIP,
+    login: processProps.Auth_MobileID.sLogin ? processProps.Auth_MobileID.sLogin : process.env.Auth_MobileID.sLogin,
+    password: processProps.Auth_MobileID.sPassword ? processProps.Auth_MobileID.sPassword : process.env.Auth_MobileID.sPassword
   }
 };
 

@@ -1,34 +1,44 @@
-var request = require('request');
+var request = require('request')
+  , config = require('../../config/environment')
 
 module.exports.mobileid= function(req, res) {
 
+
     var callback = function(error, response, body) {
         console.log(resultServices);
-        console.log(resultRestapi);
         res.send(body);
         res.end();
     };
 
+    var apInstant = new Date();
+
     var resultServices = request.post({
 
-        'url': "https://81.23.16.246/MSSP/restapi/services/Service_NR/formats/PKCS7/signTextTransaction",
+        'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
+        'auth': {
+            'username': config.mobileid.login,
+            'password': config.mobileid.password
+        },
         'qs': {
             //"msisdn": req.body.msisdn,
             "msisdn": "+380672340261",
             "dtbs":"Kari test",
-            "apTransactionID": "_2222288888888888888888",
-            "apInstant":"2017-04-01T09:12:01.000Z"
+            "apTransactionID": "_222228888888888888888",
+            "apInstant": apInstant
         }
 
     }, callback);
+    // var resultRestapi = request.get({
 
-    var resultRestapi = request.get({
+    //     'url': "https://81.23.16.246:8080//MSSP/restapi/status/222228888888888888888",
+    //     'auth': {
+    //         'username': "kyivstar",
+    //         'password': "kyivstar"
+    //       }
 
-        'url': "https://81.23.16.246//MSSP/restapi/status/2222288888888888888888"
+    // }, callback);
 
-    }, callback);
-
-    return resultRestapi; 
+    return resultServices; 
     
     
     
