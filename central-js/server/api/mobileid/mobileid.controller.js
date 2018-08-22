@@ -16,8 +16,7 @@ module.exports.mobileid= function(req, res) {
 
         'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
         'auth': {
-            'username': config.mobileid.login,
-            'password': config.mobileid.password
+            'kyivstar': config.mobileid.login
         },
         'qs': {
             //"msisdn": req.body.msisdn,
