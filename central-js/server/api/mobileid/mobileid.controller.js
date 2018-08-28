@@ -28,9 +28,9 @@ module.exports.mobileid= function(req, res) {
 
             "msisdn":"+380672340261",
             "dtbd":"Test message",
-            "dtbs":"trxID_1111111",
-            "apTransactionID": "trxID_1111111",
-            "apInstant":"2018-01-26T06:50:00.000Z"
+            "dtbs":"trxID_11111",
+            "apTransactionID": "trxID_11111",
+            "apInstant": apInstant
         }
     }
         , console.log(resultServices)
@@ -45,7 +45,7 @@ module.exports.mobileid= function(req, res) {
     function resultRestapi (){
         console.log("стартовал второй запрос");
         if (
-            //dresponse.statusCode = undefined ||
+            //response.statusCode = undefined ||
             pingCount > maxPings) {
             clearInterval(pingMobileId);
         } else {
