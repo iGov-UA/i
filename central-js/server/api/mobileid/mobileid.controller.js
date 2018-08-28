@@ -17,7 +17,7 @@ module.exports.mobileid= function(req, res) {
         'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
         'headers': {
             'Content-Type': 'application/json'
-        },
+        }, 
         'auth': {
             'username': config.mobileid.login,
             'password': config.mobileid.password
