@@ -21,10 +21,16 @@ module.exports.mobileid= function(req, res) {
         },
         'qs': {
             //"msisdn": req.body.msisdn,
-            "msisdn": "+380672340261",
-            "dtbs":"Kari test",
-            "apTransactionID": apTransactionID,
-            "apInstant": apInstant
+            // "msisdn": "",
+            // "dtbs":"Kari test",
+            // "apTransactionID": apTransactionID,
+            // "apInstant": apInstant
+
+            "msisdn":"+380672340261",
+            "dtbd":"Test message",
+            "dtbs":"trxID_1111111",
+            "apTransactionID": "trxID_1111111",
+            "apInstant":"2018-01-26T06:50:00.000Z"
         }
     }
         , console.log(resultServices)
@@ -39,7 +45,7 @@ module.exports.mobileid= function(req, res) {
     function resultRestapi (){
         console.log("стартовал второй запрос");
         if (
-            //response.statusCode = undefined ||
+            //dresponse.statusCode = undefined ||
             pingCount > maxPings) {
             clearInterval(pingMobileId);
         } else {
