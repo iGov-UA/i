@@ -15,7 +15,6 @@ module.exports.mobileid= function(req, res) {
     var resultServices = request.post({
 
         'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
-        'Content-Type': 'application/json',
         'auth': {
             'username': config.mobileid.login,
             'password': config.mobileid.password
@@ -27,11 +26,11 @@ module.exports.mobileid= function(req, res) {
             // "apTransactionID": apTransactionID,
             // "apInstant": apInstant
 
-            "msisdn":"+380672340261",
+            "msisdn":"+380672329401",
             "dtbd":"Test message",
-            "dtbs":"trxID_11111",
-            "apTransactionID": "trxID_11111",
-            "apInstant": apInstant
+            "dtbs":"trxID_111112",
+            "apTransactionID": "trxID_111112",
+            "apInstant": "2018-08-28T17:50:00.000Z"
         }
     }
         , console.log(resultServices)
