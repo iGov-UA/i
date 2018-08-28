@@ -5,12 +5,12 @@ module.exports.mobileid= function(req, res) {
 
 
     var callback = function(error, response, body) {
-        console.log(resultServices);
         res.send(body);
         res.end();
     };
 
     var apInstant = new Date();
+    var apTransactionID ="_" + Date.now();
 
     var resultServices = request.post({
 
@@ -23,20 +23,37 @@ module.exports.mobileid= function(req, res) {
             //"msisdn": req.body.msisdn,
             "msisdn": "+380672340261",
             "dtbs":"Kari test",
-            "apTransactionID": "_222228888888888888888",
-            "apInstant": "2018-08-22T09:12:01.000Z"
+            "apTransactionID": apTransactionID,
+            "apInstant": apInstant
         }
+    }
+        , console.log(resultServices)
+        , callback
+    );
 
-    }, callback);
-    // var resultRestapi = request.get({
+    var pingCount = 0;
+    var maxPings = 5;
+  
+    var pingMobileId = setInterval(resultRestapi, 30000);
+  
+    function resultRestapi (){
+        console.log("стартовал второй запрос");
+        if (
+            //response.statusCode = undefined ||
+            pingCount > maxPings) {
+            clearInterval(pingMobileId);
+        } else {
+            pingCount++;
+            request.get({
+                'url': config.mobileid.IP + "/MSSP/restapi/status/222228888888888888888",
+                'auth': {
+                    'username': config.mobileid.login,
+                    'password': config.mobileid.password
+                }     
+        }, callback)
+    };
+}
 
-    //     'url': "https://81.23.16.246:8080//MSSP/restapi/status/222228888888888888888",
-    //     'auth': {
-    //         'username': "kyivstar",
-    //         'password': "kyivstar"
-    //       }
-
-    // }, callback);
 
     return resultServices;  
     
