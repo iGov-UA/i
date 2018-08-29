@@ -34,32 +34,28 @@ module.exports.mobileid= function(req, res) {
         }
     }, callback);
 
-//     var pingCount = 0;
-//     var maxPings = 5;
+    var pingCount = 0;
+    var maxPings = 5;
   
-//     var pingMobileId = setInterval(resultRestapi, 30000);
+    var pingMobileId = setInterval(resultRestapi, 30000);
   
-//     function resultRestapi (){
-//         console.log("стартовал второй запрос");
-//         if (
-//             //response.statusCode = undefined ||
-//             pingCount > maxPings) {
-//             clearInterval(pingMobileId);
-//         } else {
-//             pingCount++;
-//             request.get({
-//                 'url': config.mobileid.IP + "/MSSP/restapi/status/222228888888888888888",
-//                 'auth': {
-//                     'username': config.mobileid.login,
-//                     'password': config.mobileid.password
-//                 }     
-//         }, callback)
-//     };
-// }
+    function resultRestapi (){
 
-
-//     return resultServices;  
-    
-    
+        if (
+            resultServices.statusCode = 504 ||
+            pingCount > maxPings) {
+            clearInterval(pingMobileId);
+        } else {
+            pingCount++;
+            request.get({
+                'url': config.mobileid.IP + "/MSSP/restapi/status/" + resultServices.transactionID,
+                'auth': {
+                    'username': config.mobileid.login,
+                    'password': config.mobileid.password
+                }     
+        }, callback)
+    };
+}
+    return resultServices;      
     
 };

@@ -29,7 +29,9 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
         $http.post('/api/mobileid', {
           msisdn: this.inputPhone
         }).success(function (data) {
-          console.log (data)
+          console.log (data);
+          console.log (data.transactionID);
+          console.log (data.statusCode);
             deferred.resolve(data);
             return cb();
         }).error(function (err) {
