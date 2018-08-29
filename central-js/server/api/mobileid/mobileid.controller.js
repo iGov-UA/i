@@ -13,57 +13,57 @@ module.exports.mobileid= function(req, res) {
         res.end();
     };
   
-    var apInstant = new Date();
-    var apTransactionID ="trxID_" + Date.now();
+    // var apInstant = new Date();
+    // var apTransactionID ="trxID_" + Date.now();
 
-    var resultServices = request.post({
+    // var resultServices = request.post({
 
-        'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
-        'headers': {
-            'Content-Type': 'application/json; charset=utf-8'
-        }, 
-        'auth': {
-            'username': config.mobileid.login,
-            'password': config.mobileid.password
-        },
-        'json': true,
-        'body': {
-            "msisdn":"+380672340261",
-            "dtbd":"Test message",
-            "dtbs":apTransactionID,
-            "apTransactionID": apTransactionID,
-            "apInstant": apInstant
-        }
-    }, callback);
+    //     'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
+    //     'headers': {
+    //         'Content-Type': 'application/json; charset=utf-8'
+    //     }, 
+    //     'auth': {
+    //         'username': config.mobileid.login,
+    //         'password': config.mobileid.password
+    //     },
+    //     'json': true,
+    //     'body': {
+    //         "msisdn":"+380672340261",
+    //         "dtbd":"Test message",
+    //         "dtbs":apTransactionID,
+    //         "apTransactionID": apTransactionID,
+    //         "apInstant": apInstant
+    //     }
+    // }, callback);
 
-//     var pingCount = 0;
-//     var maxPings = 5;
+    var pingCount = 0;
+    var maxPings = 5;
   
-//     var pingMobileId = setInterval(resultRestapi, 30000);
+    var pingMobileId = setInterval(resultRestapi, 30000);
 
   
-//     function resultRestapi (){
+    function resultRestapi (){
 
-//         if (pingCount > maxPings) {
-//             clearInterval(pingMobileId);
-//             console.log ('mobileid', 'пинг закончен');
-//             console.log ('mobileid', resultRestapi.statusCode);
-//             return resultRestapi;  
-//         } else {
-//             pingCount++;
-//             request.get({
-//                 'url': config.mobileid.IP + "/MSSP/restapi/status/26478",
-//                 'headers': {
-//                     'Content-Type': 'application/json; charset=utf-8'
-//                 }, 
-//                 'auth': {
-//                     'username': config.mobileid.login,
-//                     'password': config.mobileid.password
-//                 }
+        if (pingCount > maxPings) {
+            clearInterval(pingMobileId);
+            console.log ('mobileid', 'пинг закончен');
+            console.log ('mobileid', resultRestapi.statusCode);
+            return resultRestapi;  
+        } else {
+            pingCount++;
+            request.get({
+                'url': config.mobileid.IP + "/MSSP/restapi/status/26483",
+                'headers': {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }, 
+                'auth': {
+                    'username': config.mobileid.login,
+                    'password': config.mobileid.password
+                }
 
-//         }, callback)
-//     };
-// }
+        }, callback)
+    };
+}
         
     
 };
