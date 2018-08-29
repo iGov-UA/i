@@ -5,9 +5,9 @@ module.exports.mobileid= function(req, res) {
 
 
     var callback = function(error, response, body) {
-        console.log('run callback', error, response, body); 
-        console.log('resultServices', resultServices.body); 
-        console.log('resultRestapi', resultRestapi.body); 
+        console.log('mobileid', error, response, body); 
+        console.log('mobileid', 'resultServices', resultServices.body); 
+        
 
         res.send(body);
         res.end();
@@ -55,7 +55,8 @@ module.exports.mobileid= function(req, res) {
                     'username': config.mobileid.login,
                     'password': config.mobileid.password
                 }     
-        }, callback)
+        }, console.log('mobileid', 'resultRestapi', resultRestapi.body) 
+        , callback)
     };
 }
     return resultServices;      
