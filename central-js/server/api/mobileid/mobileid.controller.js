@@ -5,7 +5,9 @@ module.exports.mobileid= function(req, res) {
 
 
     var callback = function(error, response, body) {
-        //console.log('run callback', error, response, body); 
+        console.log('run callback', error, response, body); 
+        console.log('resultServices', resultServices.body); 
+        console.log('resultRestapi', resultRestapi.body); 
 
         res.send(body);
         res.end();
