@@ -52,7 +52,7 @@ module.exports.mobileid= function(req, res) {
         } else {
             pingCount++;
             request.get({
-                'url': config.mobileid.IP + "/MSSP/restapi/status/26483",
+                'url': config.mobileid.IP + "/MSSP/restapi/status/26484",
                 'headers': {
                     'Content-Type': 'application/json; charset=utf-8'
                 }, 
