@@ -44,10 +44,12 @@ module.exports.mobileid= function(req, res) {
     function resultRestapi (){
 
         if (
-            resultServices.statusCode = 504 ||
+            resultRestapi.statusCode == 200 ||
             pingCount > maxPings) {
             clearInterval(pingMobileId);
-        } else {
+        } else if (resultServices.statusCode == 504 || resultRestapi.statusCode == 504 ) {
+            console.log('mobileid', resultServices.statusCode, resultRestapi.statusCode); 
+            console.log('mobileid', resultServices.transactionID); 
             pingCount++;
             request.get({
                 'url': config.mobileid.IP + "/MSSP/restapi/status/" + resultServices.transactionID,
@@ -55,8 +57,7 @@ module.exports.mobileid= function(req, res) {
                     'username': config.mobileid.login,
                     'password': config.mobileid.password
                 }     
-        }, console.log('mobileid', 'resultRestapi', resultRestapi.body) 
-        , callback)
+        }, callback)
     };
 }
     return resultServices;      
