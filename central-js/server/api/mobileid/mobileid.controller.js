@@ -40,8 +40,7 @@ module.exports.mobileid= function(req, res) {
     var maxPings = 5;
   
     var pingMobileId = setInterval(resultRestapi, 30000);
-    var transactionID = resultServices.transactionID;
-    console.log ('mobileid', resultRestapi.statusCode); 
+
   
     function resultRestapi (){
 
@@ -53,7 +52,7 @@ module.exports.mobileid= function(req, res) {
         } else {
             pingCount++;
             request.get({
-                'url': config.mobileid.IP + "/MSSP/restapi/status/" + transactionID,
+                'url': config.mobileid.IP + "/MSSP/restapi/status/26459",
                 'headers': {
                     'Content-Type': 'application/json; charset=utf-8'
                 }, 
