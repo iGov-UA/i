@@ -8,11 +8,12 @@ var pingCount = 1;
 
     var callback = function(error, response, body) {
         console.log(body);  
+        console.log(req);  
         if (body == null) {
             res.send(body);   
             res.end();   
         }
-        else if (body.statusCode == "504" && pingCount < 100) {
+        else if (body.statusCode == 504 && pingCount < 100) {
             transactionID = body.transactionID;
             resultRestapi (transactionID, callback);
         } else {
