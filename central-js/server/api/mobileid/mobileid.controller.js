@@ -4,21 +4,23 @@ var request = require('request')
 module.exports.mobileid= function(req, res) {
 
 var transactionID;
-var pingCount = 1;
+var pingCount = 0;
 
     var callback = function(error, response, body) {
-        console.log(body);  
-        console.log(req);  
+        console.log('mobileid', body);  
+        console.log('mobileid', req);  
         if (body == null) {
             res.send(body);   
             res.end();   
         }
-        else if (body.statusCode == 504 && pingCount < 100) {
+        else if (body.statusCode == 504 && pingCount < 30) {
+            
             transactionID = body.transactionID;
-            resultRestapi (transactionID, callback);
+            setTimeout(resultRestapi, 10000);
         } else {
             res.send(body);   
-            res.end();       
+            res.end(); 
+    
         }        
 
     };
@@ -29,7 +31,6 @@ var pingCount = 1;
     var resultServices = request.post({
 
         'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
-        //'url': "https://httpstat.us/200",
         'headers': {
             'Content-Type': 'application/json; charset=utf-8'
         }, 
@@ -51,25 +52,9 @@ var pingCount = 1;
 
   function resultRestapi () {
 
-    // var pingCount = 1;
-    // var maxPings = 3;
-
-    // console.log ("ид транзакции", transactionID); 
-    // var pingMobileId = setInterval(pingResultRestapi, 3000);
-
-  
-    // function pingResultRestapi (){
-
-        // if (pingCount > maxPings) {
-        //     clearInterval(pingMobileId);
-        //     console.log ("Пинг закончен");
-            
-            //return req;  
-        // } else {
             pingCount++;
             request.get({
                 'url': config.mobileid.IP + "/MSSP/restapi/status/" + transactionID,
-                //'url': "https://httpstat.us/202",
                 'headers': {
                     'Content-Type': 'application/json; charset=utf-8'
                 }, 

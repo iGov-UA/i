@@ -23,18 +23,22 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
       };
 
       scope.mobileIdSubmit = function(callback) {
+        scope.spinner = true;
         
         var cb = callback || angular.noop;
         var deferred = $q.defer();
         $http.post('/api/mobileid', {
           msisdn: this.inputPhone
         }).success(function (data) {
+          scope.spinner = false;
           console.log (data);
           console.log (data.transactionID);
           console.log (data.statusCode);
             deferred.resolve(data);
             return cb();
+            
         }).error(function (err) {
+            scope.spinner = false;
             deferred.reject(err);
             console.log (err)
             return cb(err);
@@ -43,6 +47,7 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
         return deferred.promise;
         
         this.inputPhone = '';
+        
 
       };
 
