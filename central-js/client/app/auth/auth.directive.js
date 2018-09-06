@@ -22,33 +22,57 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
         scope.showBankIdDropdown = !scope.showBankIdDropdown;
       };
 
+      scope.inputPhone = "+380";
       scope.mobileIdSubmit = function(callback) {
         scope.spinner = true;
         
         var cb = callback || angular.noop;
         var deferred = $q.defer();
+        scope.statusMessage = "";
+        scope.validationMessage = "";
+        
+        var inputPhone = this.inputPhone;
+
+        var found = inputPhone.match(/(^\+380[0-9]{9}$)/);
+
+        if (found == null) {
+          scope.spinner = false;
+          scope.statusMessage = "Помилка в номері телефону.";
+          return false;          
+        }              
+
+        var foundKyivstar = inputPhone.match(/(^\+380(67|68|96|97|98)[0-9]{7}$)/);
+        if (foundKyivstar == null) {
+          scope.spinner = false;
+          scope.statusMessage = "Послуга доступна абонентам Kyivstar.";
+          return false;          
+        } 
+
         $http.post('/api/mobileid', {
           msisdn: this.inputPhone
+          
         }).success(function (data) {
           scope.spinner = false;
+          scope.statusMessage = +data.statusMessage;
           console.log (data);
           console.log (data.transactionID);
           console.log (data.statusCode);
+          console.log (data.statusMessage);
+          
+          //statusMessage = data.statusMessage;
             deferred.resolve(data);
             return cb();
             
         }).error(function (err) {
             scope.spinner = false;
+            scope.statusMessage = +data.statusMessage;
             deferred.reject(err);
             console.log (err)
             return cb(err);
+            
         }.bind(this));
 
         return deferred.promise;
-        
-        this.inputPhone = '';
-        
-
       };
 
       scope.getBankIdAuthUrl = function (provider) {

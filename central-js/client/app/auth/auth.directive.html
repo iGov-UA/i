@@ -36,19 +36,16 @@
             <label for="inputPhone">Введіть номер телефону:</label>
             <input type="text" 
                   ng-model="inputPhone" 
-                  name="{{property.id}}"
-                  ng-required="isFieldRequired(property)"
-                  ng-class="getBpAndFieldID(property)"
-                  ng-tel-field="{defaultCountry:'ua', autoFormat:true, allowExtensions:false, preferredCountries:['ua'], autoPlaceholder:true}"
                   value={{this.inputPhone}} 
-                  maxlength="16"
-                  class="form-control">
+                  class="form-control">  
+            <div ng-bind="validationMessage" style="font-size: 14px; margin-top: 8px;"></div>
+            <div ng-bind="statusMessage" style="font-size: 14px; margin-top: 8px;"></div>
             <button class="btn" 
                     ng-class="{disabled: spinner}"                
                     style="width:100%; margin-top: 8px;"
                     type="submit" 
                     ng-click="mobileIdSubmit()">
-                      <img style="height: 15px;" ng-show="spinner" src="/assets/images/loading.gif" alt="Loading"/>
+                      <img style="height: 10px;" ng-show="spinner" src="/assets/images/loading.gif" alt="Loading"/>
                       Увійти
             </button>
           </form>
