@@ -55,11 +55,11 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
         }).success(function (data) {
           scope.spinner = false;
           if (data==undefined||data==""){
-            scope.statusMessage = "Спробуй пізніше.";
+            scope.statusMessage = "Спробуйте пізніше.";
           } else if (data.statusCode == "502") {
             scope.statusMessage = "Авторизация подтверждена.";
           } else if (data.statusMessage != undefined) {
-            scope.statusMessage = +data.statusMessage;
+            scope.statusMessage = String(data.statusMessage);
           } else {
             scope.statusMessage = "Неизвестный статус";
           }
