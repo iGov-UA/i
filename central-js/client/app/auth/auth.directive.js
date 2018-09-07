@@ -54,11 +54,11 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
           
         }).success(function (data) {
           scope.spinner = false;
-          if (data==""){
+          if (data==undefined){
             scope.statusMessage = "Спробуйте ще";
           } else if (!data.statusMessage) {
             scope.statusMessage = data.statusMessage;
-          } else if (data.statusCode == 502) {
+          } else if (data.statusCode == "502") {
             scope.statusMessage = "Авторизация подтверждена";
           }
                     
@@ -71,7 +71,7 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
             
         }).error(function (err) {
             scope.spinner = false;
-            scope.statusMessage = +data.statusMessage;
+            scope.statusMessage = "Ошибка";
             deferred.reject(err);
             console.log (err)
             return cb(err);
