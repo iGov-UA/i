@@ -40,9 +40,9 @@ var pingCount = 0;
         },
         'json': true,
         'body': {
-            "msisdn":"+380672340261",
-            "dtbd":"Test message",
-            "dtbs":apTransactionID,
+            "msisdn": req.body.msisdn,
+            "dtbd": "Test message",
+            "dtbs": apTransactionID,
             "apTransactionID": apTransactionID,
             "apInstant": apInstant
         }

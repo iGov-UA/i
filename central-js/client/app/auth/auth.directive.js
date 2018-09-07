@@ -48,18 +48,24 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
           return false;          
         } 
 
+        console.log(this.inputPhone);
         $http.post('/api/mobileid', {
           msisdn: this.inputPhone
           
         }).success(function (data) {
           scope.spinner = false;
-          scope.statusMessage = +data.statusMessage;
+          if (data==""){
+            scope.statusMessage = "Спробуйте ще";
+          } else if (!data.statusMessage) {
+            scope.statusMessage = data.statusMessage;
+          } else if (statusCode == 502) {
+            scope.statusMessage = "Авторизация подтверждена";
+          }
+                    
           console.log (data);
-          console.log (data.transactionID);
           console.log (data.statusCode);
           console.log (data.statusMessage);
           
-          //statusMessage = data.statusMessage;
             deferred.resolve(data);
             return cb();
             
