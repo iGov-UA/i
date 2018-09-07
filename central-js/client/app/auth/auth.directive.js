@@ -56,10 +56,12 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
           scope.spinner = false;
           if (data==undefined){
             scope.statusMessage = "Спробуйте ще";
-          } else if (!data.statusMessage) {
-            scope.statusMessage = data.statusMessage;
           } else if (data.statusCode == "502") {
             scope.statusMessage = "Авторизация подтверждена";
+          } else if (data.statusMessage != undefined) {
+            scope.statusMessage = +data.statusMessage;
+          } else {
+            scope.statusMessage = "Неизвестный статус";
           }
                     
           console.log (data);
@@ -71,7 +73,7 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
             
         }).error(function (err) {
             scope.spinner = false;
-            scope.statusMessage = "Ошибка";
+            scope.statusMessage = "Gateway Time-out";
             deferred.reject(err);
             console.log (err)
             return cb(err);
