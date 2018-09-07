@@ -24,7 +24,12 @@
   </ul>
 </span>
 
-  <button class="btn" data-toggle="modal" data-target=".modal-phone" style="background-color: #318cbd; color: #fff">
+  <button class="btn" 
+    target="_self"
+    ng-if="!authMethods || authMethods.indexOf('mobile') > -1"
+    data-toggle="modal" 
+    data-target=".modal-phone" 
+    style="background-color: #318cbd; color: #fff">
     <i><img style="height: 19px;" src="/assets/images/icons/mobile_key_icon.png"></i>
     <span class="btn-text">MobileID</span>
   </button>

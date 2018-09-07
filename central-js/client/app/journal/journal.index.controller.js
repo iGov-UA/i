@@ -32,7 +32,7 @@ angular.module('journal').controller('JournalController', function ($rootScope, 
     if($rootScope.profile.isKyivCity){
       return "BankID,EDS,BankID-NBU"
     }
-    return "BankID,EDS,mpbds,KK,BankID-NBU"
+    return "BankID,EDS,mpbds,KK,BankID-NBU,mobile"
   };
   $scope.searchOrder = function (sID_Order_New, sToken_New) {//arguments.callee.toString()
     var oFuncNote = {sHead: "Пошук заявки", sFunc: "searchOrder"};
