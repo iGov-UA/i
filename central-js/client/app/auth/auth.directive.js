@@ -59,7 +59,7 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
           } else if (data.statusCode == "502") {
             scope.statusMessage = "Авторизация подтверждена";
           } else if (data.statusMessage != undefined) {
-            scope.statusMessage = data.statusMessage;
+            scope.statusMessage = +data.statusMessage;
           } else {
             scope.statusMessage = "Неизвестный статус";
           }
@@ -67,6 +67,7 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
           console.log (data);
           console.log (data.statusCode);
           console.log (data.statusMessage);
+          console.log (typeof data.statusMessage);
           
             deferred.resolve(data);
             return cb();
