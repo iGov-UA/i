@@ -30,7 +30,7 @@ var pingCount = 0;
 
     var resultServices = request.post({
 
-        'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS1/signTextTransaction",
+        'url': config.mobileid.IP + "/MSSP/restapi/services/service_ds/formats/PKCS7/signTextTransaction",
         'headers': {
             'Content-Type': 'application/json; charset=utf-8'
         }, 
