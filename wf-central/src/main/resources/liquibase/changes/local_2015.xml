@@ -1597,4 +1597,220 @@
         <modifyDataType tableName="HistoryEvent_Service" columnName="soData" newDataType="clob" />
     </changeSet>
 
+    <changeSet id="PLATFORM-2143-create-tables" author="Oleksandr Gurtovyi">
+        <createTable tableName="PlaceBranchType">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBuildType">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBuildPartType">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBuildPartCellType">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBranch">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_Old" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_PlaceBranchType" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBranch_PlaceBranchType"
+                             referencedTableName="PlaceBranchType"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_Place" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBranch_Place"
+                             referencedTableName="Place"
+                             referencedColumnNames="nID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBuild">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_PlaceBuildType" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBuild_PlaceBuildType"
+                             referencedTableName="PlaceBuildType"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBranch" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBuild_PlaceBranch"
+                             referencedTableName="PlaceBranch"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="sKey_MailIndex" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBuildPart">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_PlaceBuildPartType" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBuildPart_PlaceBuildPartType"
+                             referencedTableName="PlaceBuildPartType"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBuild" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBuildPart_PlaceBuild"
+                             referencedTableName="PlaceBuild"
+                             referencedColumnNames="nID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="PlaceBuildPartCell">
+            <column name="nID" type="bigint" autoIncrement="true" startWith="1000" incrementBy="1">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sKey" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sNote" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nID_PlaceBuildPartCellType" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBuildPartCell_PlaceBuildPartCellType"
+                             referencedTableName="PlaceBuildPartCellType"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBuildPart" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_PlaceBuildPartCell_PlaceBuildPart"
+                             referencedTableName="PlaceBuildPart"
+                             referencedColumnNames="nID"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="SubjectContactPlacePointType">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="sName_EN" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_UA" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sName_RU" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="SubjectContactPlacePoint">
+            <column name="nID" type="bigint">
+                <constraints primaryKey="true" nullable="false" unique="true"/>
+            </column>
+            <column name="nID_Subject" type="bigint">
+                <constraints nullable="false"
+                             referencedTableName="Subject" referencedColumnNames="nID"
+                             foreignKeyName="FK_SubjectContactPlacePoint_Subject"/>
+            </column>
+            <column name="nID_SubjectContactPlacePointType" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectContactPlacePoint_SubjectContactPlacePointType"
+                             referencedTableName="SubjectContactPlacePointType"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_Place" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectContactPlacePoint_Place"
+                             referencedTableName="Place"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_Place_Region" type="bigint">
+                <constraints nullable="true" foreignKeyName="FK_SubjectContactPlacePoint_Place_Region"
+                             referencedTableName="Place"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBranch" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectContactPlacePoint_PlaceBranch"
+                             referencedTableName="PlaceBranch"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBuild" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectContactPlacePoint_PlaceBuild"
+                             referencedTableName="PlaceBuild"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBuildPart" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectContactPlacePoint_PlaceBuildPart"
+                             referencedTableName="PlaceBuildPart"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="nID_PlaceBuildPartCell" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="FK_SubjectContactPlacePoint_PlaceBuildPartCell"
+                             referencedTableName="PlaceBuildPartCell"
+                             referencedColumnNames="nID"/>
+            </column>
+            <column name="sDate" type="date">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

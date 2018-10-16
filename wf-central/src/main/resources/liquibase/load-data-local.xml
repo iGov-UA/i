@@ -669,6 +669,101 @@
             <column name="sName_UA" type = "STRING" />
             <column name="nID_PlaceType" type = "NUMERIC" />
         </loadUpdateData>
+
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBranchType.csv" tableName="PlaceBranchType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sKey" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildType.csv" tableName="PlaceBuildType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sKey" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildPartType.csv" tableName="PlaceBuildPartType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sKey" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildPartCellType.csv" tableName="PlaceBuildPartCellType" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="sKey" type="STRING"/>
+            <column name="sName" type="STRING"/>
+        </loadUpdateData>
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBranch.csv" tableName="PlaceBranch" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sKey"     type="STRING"/>
+            <column name="sName"   type="STRING"/>
+            <column name="sName_Old"   type="STRING"/>
+            <column name="nID_PlaceBranchType"   type="NUMERIC"/>
+            <column name="nID_Place"   type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuild.csv" tableName="PlaceBuild" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sKey"     type="STRING"/>
+            <column name="nID_PlaceBuildType"   type="NUMERIC"/>
+            <column name="nID_PlaceBranch"   type="NUMERIC"/>
+            <column name="sKey_MailIndex"   type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildPart.csv" tableName="PlaceBuildPart" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sKey"     type="STRING"/>
+            <column name="nID_PlaceBuildPartType"   type="NUMERIC"/>
+            <column name="nID_PlaceBuild"   type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildPartCell.csv" tableName="PlaceBuildPartCell" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sKey"     type="STRING"/>
+            <column name="sNote"     type="STRING"/>
+            <column name="nID_PlaceBuildPartCellType"   type="NUMERIC"/>
+            <column name="nID_PlaceBuildPart"   type="NUMERIC"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildPartCellType.csv" tableName="PlaceBuildPartCellType" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sKey"     type="STRING"/>
+            <column name="sName"     type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/PlaceBuildPartType.csv" tableName="PlaceBuildPartType" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sKey"     type="STRING"/>
+            <column name="sName"     type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectContactPlacePointType.csv" tableName="SubjectContactPlacePointType" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sName_EN"     type="STRING"/>
+            <column name="sName_RU"     type="STRING"/>
+            <column name="sName_UA"     type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/Place.csv" tableName="Place" separator=";">
+            <column name="nID"     type="NUMERIC"/>
+            <column name="sName"     type="STRING"/>
+            <column name="nID_PlaceType"     type="NUMERIC"/>
+            <column name="sID_UA"     type="STRING"/>
+            <column name="sNameOriginal"     type="STRING"/>
+        </loadUpdateData>
+
+        <loadUpdateData primaryKey="nID" encoding="UTF-8" file="data/SubjectContactPlacePoint.csv" tableName="SubjectContactPlacePoint" separator=";">
+            <column name="nID" type="NUMERIC"/>
+            <column name="nID_Subject" type="NUMERIC"/>
+            <column name="nID_SubjectContactPlacePointType" type="NUMERIC"/>
+            <column name="sDate" type="STRING"/>
+            <column name="nID_Place" type="NUMERIC"/>
+            <column name="nID_PlaceBranch" type="NUMERIC"/>
+            <column name="nID_PlaceBuild" type="NUMERIC"/>
+            <column name="nID_PlaceBuildPart" type="NUMERIC"/>
+            <column name="nID_PlaceBuildPartCell" type="NUMERIC"/>
+        </loadUpdateData>
     </changeSet>
 
 </databaseChangeLog>
