@@ -29,7 +29,7 @@ import static org.igov.util.Tool.bNullArgsAll;
 
 @Controller
 @Api(tags = {"ObjectPlaceController -- Обьекты мест (населенных пунктов и регионов) и стран"})
-@RequestMapping(value = "/object/place/sub")
+@RequestMapping(value = "/object/place")
 public class ObjectPlaceCommonController {
     @Autowired
     ObjectPlaceCommonService objectPlaceCommonService;
