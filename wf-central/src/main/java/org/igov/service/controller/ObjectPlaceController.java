@@ -9,6 +9,8 @@ import org.igov.model.action.event.HistoryEvent_ServiceDao;
 import org.igov.model.core.BaseEntityDao;
 import org.igov.model.object.place.*;
 import org.igov.service.business.core.EntityService;
+import org.igov.service.business.object.CommonPlaceService;
+import org.igov.service.business.object.ObjectPlaceCommonService;
 import org.igov.service.exception.CommonServiceException;
 import org.igov.service.exception.EntityNotFoundException;
 import org.igov.util.JSON.JsonRestUtils;
@@ -28,6 +30,7 @@ import java.util.List;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.igov.service.business.object.ObjectPlaceService.regionsToJsonResponse;
 import static org.igov.service.business.object.ObjectPlaceService.swap;
+
 import static org.igov.util.Tool.bNullArgsAll;
 
 /**
@@ -42,6 +45,7 @@ public class ObjectPlaceController {
     private static final Logger LOG = LoggerFactory.getLogger(ObjectPlaceController.class);
 
     private static final String JSON_TYPE = "Accept=application/json";
+    public static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json;charset=UTF-8";
 
     @Autowired
     private PlaceDao placeDao;
@@ -65,6 +69,12 @@ public class ObjectPlaceController {
     
     @Autowired
     private HistoryEvent_ServiceDao historyEventServiceDao;
+
+    @Autowired
+    private CommonPlaceService oCommonPlaceService;
+
+    @Autowired
+    private ObjectPlaceCommonService objectPlaceCommonService;
 
     private static boolean positive(Long value) {
         return value != null && value > 0;
@@ -1059,5 +1069,246 @@ public class ObjectPlaceController {
             	    throws CommonServiceException {
     		return objectPlace_UADao.getObjectPlace_UA(sID, sName_UA); 
         }
+
+
+    @ApiOperation(value = "Получение списка улиц", notes = "Получем список улиц. Пример:\n"
+            + "https://alpha.test.idoc.com.ua/wf/service/object/place/sub/PB/getSubPlaces_/?sID_SubPlace_PB=UA40773&sFind=южн\n\n"
+            + "Ответ:\n\n"
+            + "\n```json\n"
+            + "{"
+            + "  \"listAddress\":"
+            + "   [{"
+            + "      \"code\": \"23TFD62IDSDX00\","
+            + "	     \"desc\": \"1-я Южная\","
+            + "	     \"type\": \"улица\""
+            + "    }, {"
+            + "	     \"code\": \"23T149MQULAP00\","
+            + "	     \"desc\": \"Южная Сторона\","
+            + "	     \"type\": \"улица\""
+            + "    }"
+            + "   ]"
+            + "}"
+            + "\n```\n")
+    @RequestMapping(value = "/PB/getSubPlaces_", method = RequestMethod.GET, headers = {
+            JSON_TYPE}, produces = APPLICATION_JSON_CHARSET_UTF_8)
+    public @ResponseBody
+    String getSubPlaces_(
+            @ApiParam(value = "sID_SubPlace_PB - код узла адреса)", required = true) @RequestParam(value = "sID_SubPlace_PB", required = true) String sID_SubPlace_PB,
+            @ApiParam(value = "sFind - строка поиска (ищет по вхождению текста в название улицы)", required = false) @RequestParam(value = "sFind", required = false) String sFind)
+            throws CommonServiceException {
+
+        LOG.debug("sID_SubPlace_PB={}, sFind={}", sID_SubPlace_PB, sFind);
+
+        return objectPlaceCommonService.getSubPlaces_(sID_SubPlace_PB, sFind);
+    }
+
+    @ApiOperation(value = "Получение типа проезда")
+    @RequestMapping(value = "/getPlaceBranchType", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBranchType getPlaceBranchType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBranchType(nID);
+    }
+
+    @ApiOperation(value = "Добавление типа проезда")
+    @RequestMapping(value = "/setPlaceBranchType", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBranchType setPlaceBranchType(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sName", required = true) @RequestParam(value = "sName") String sName) {
+        return oCommonPlaceService.setPlaceBranchType(sKey, sName);
+    }
+
+    @ApiOperation(value = "Удаление типа проезда")
+    @RequestMapping(value = "/removePlaceBranchType", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBranchType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBranchType(nID);
+    }
+
+    @ApiOperation(value = "Получение типа здания")
+    @RequestMapping(value = "/getPlaceBuildType", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBuildType getPlaceBuildType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBuildType(nID);
+    }
+
+    @ApiOperation(value = "Добавление типа здания")
+    @RequestMapping(value = "/setPlaceBuildType", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBuildType setPlaceBuildType(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sName", required = true) @RequestParam(value = "sName") String sName) {
+        return oCommonPlaceService.setPlaceBuildType(sKey, sName);
+    }
+
+    @ApiOperation(value = "Удаление типа здания")
+    @RequestMapping(value = "/removePlaceBuildType", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBuildType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBuildType(nID);
+    }
+
+    @ApiOperation(value = "Получение типа корпуса")
+    @RequestMapping(value = "/getPlaceBuildPartType", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBuildPartType getPlaceBuildPartType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBuildPartType(nID);
+    }
+
+    @ApiOperation(value = "Добавление типа корпуса")
+    @RequestMapping(value = "/setPlaceBuildPartType", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBuildPartType setPlaceBuildPartType(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sName", required = true) @RequestParam(value = "sName") String sName) {
+        return oCommonPlaceService.setPlaceBuildPartType(sKey, sName);
+    }
+
+    @ApiOperation(value = "Удаление типа корпуса")
+    @RequestMapping(value = "/removePlaceBuildPartType", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBuildPartType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBuildPartType(nID);
+    }
+
+    @ApiOperation(value = "Получение типа жилого помещения")
+    @RequestMapping(value = "/getPlaceBuildPartCellType", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBuildPartCellType getPlaceBuildPartCellType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBuildPartCellType(nID);
+    }
+
+    @ApiOperation(value = "Добавление типа жилого помещения")
+    @RequestMapping(value = "/setPlaceBuildPartCellType", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBuildPartCellType setPlaceBuildPartCellType(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sName", required = true) @RequestParam(value = "sName") String sName) {
+        return oCommonPlaceService.setPlaceBuildPartCellType(sKey, sName);
+    }
+
+    @ApiOperation(value = "Удаление типа жилого помещения")
+    @RequestMapping(value = "/removePlaceBuildPartCellType", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBuildPartCellType(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBuildPartCellType(nID);
+    }
+
+    @ApiOperation(value = "Получение названия проезда")
+    @RequestMapping(value = "/getPlaceBranch", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBranch getPlaceBranch(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBranch(nID);
+    }
+
+    @ApiOperation(value = "Добавление названия проезда")
+    @RequestMapping(value = "/setPlaceBranch", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBranch setPlaceBranch(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sName", required = true) @RequestParam(value = "sName") String sName,
+            @ApiParam(value = "sName_Old", required = true) @RequestParam(value = "sName_Old") String sName_Old,
+            @ApiParam(value = "nID_PlaceBranchType", required = true) @RequestParam(value = "nID_PlaceBranchType") Long nID_PlaceBranchType,
+            @ApiParam(value = "nID_Place", required = true) @RequestParam(value = "nID_Place") Long nID_Place) {
+        return oCommonPlaceService.setPlaceBranch(sKey, sName, sName_Old, nID_PlaceBranchType, nID_Place);
+    }
+
+    @ApiOperation(value = "Удаление названия проезда")
+    @RequestMapping(value = "/removePlaceBranch", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBranch(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBranch(nID);
+    }
+
+    @ApiOperation(value = "Получение дома")
+    @RequestMapping(value = "/getPlaceBuild", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBuild getPlaceBuild(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBuild(nID);
+    }
+
+    @ApiOperation(value = "Добавление дома")
+    @RequestMapping(value = "/setPlaceBuild", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBuild setPlaceBuild(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sKey_MailIndex", required = true) @RequestParam(value = "sKey_MailIndex") String sKey_MailIndex,
+            @ApiParam(value = "nID_PlaceBuildType", required = true) @RequestParam(value = "nID_PlaceBuildType") Long nID_PlaceBuildType,
+            @ApiParam(value = "nID_PlaceBranch", required = true) @RequestParam(value = "nID_PlaceBranch") Long nID_PlaceBranch) {
+        return oCommonPlaceService.setPlaceBuild(sKey, nID_PlaceBuildType, nID_PlaceBranch, sKey_MailIndex);
+    }
+
+    @ApiOperation(value = "Удаление дома")
+    @RequestMapping(value = "/removePlaceBuild", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBuild(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBuild(nID);
+    }
+
+    @ApiOperation(value = "Получение номера корпуса")
+    @RequestMapping(value = "/getPlaceBuildPart", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBuildPart getPlaceBuildPart(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBuildPart(nID);
+    }
+
+    @ApiOperation(value = "Добавление номера корпуса")
+    @RequestMapping(value = "/setPlaceBuildPart", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBuildPart setPlaceBuildPart(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "nID_PlaceBuildPartType", required = true) @RequestParam(value = "nID_PlaceBuildPartType") Long nID_PlaceBuildPartType,
+            @ApiParam(value = "nID_PlaceBuild", required = true) @RequestParam(value = "nID_PlaceBuild") Long nID_PlaceBuild) {
+        return oCommonPlaceService.setPlaceBuildPart(sKey, nID_PlaceBuildPartType, nID_PlaceBuild);
+    }
+
+    @ApiOperation(value = "Удаление номера корпуса")
+    @RequestMapping(value = "/removePlaceBuildPart", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBuildPart(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBuildPart(nID);
+    }
+
+    @ApiOperation(value = "Получение номера помещения")
+    @RequestMapping(value = "/getPlaceBuildPartCell", method = RequestMethod.GET)
+    public @ResponseBody
+    PlaceBuildPartCell getPlaceBuildPartCell(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        return oCommonPlaceService.getPlaceBuildPartCell(nID);
+    }
+
+    @ApiOperation(value = "Добавление номера помещения")
+    @RequestMapping(value = "/setPlaceBuildPartCell", method = RequestMethod.POST)
+    public @ResponseBody
+    PlaceBuildPartCell setPlaceBuildPartCell(
+            @ApiParam(value = "sKey", required = true) @RequestParam(value = "sKey") String sKey,
+            @ApiParam(value = "sNote", required = true) @RequestParam(value = "sNote") String sNote,
+            @ApiParam(value = "nID_PlaceBuildPartType", required = true) @RequestParam(value = "nID_PlaceBuildPartType") Long nID_PlaceBuildPartCellType,
+            @ApiParam(value = "nID_PlaceBuild", required = true) @RequestParam(value = "nID_PlaceBuild") Long nID_PlaceBuildPart) {
+        return oCommonPlaceService.setPlaceBuildPartCell(sKey, sNote, nID_PlaceBuildPartCellType, nID_PlaceBuildPart);
+    }
+
+    @ApiOperation(value = "Удаление номера помещения")
+    @RequestMapping(value = "/removePlaceBuildPartCell", method = RequestMethod.DELETE)
+    public @ResponseBody
+    void removePlaceBuildPartCell(
+            @ApiParam(value = "nID", required = true) @RequestParam(value = "nID") Long nID) {
+        oCommonPlaceService.removePlaceBuildPartCell(nID);
+    }
+
 
 }
