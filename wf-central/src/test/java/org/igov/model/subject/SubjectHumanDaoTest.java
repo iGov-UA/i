@@ -26,6 +26,7 @@ public class SubjectHumanDaoTest {
     @Autowired
     private SubjectContactDao subjectContactDao;
 
+    @Ignore
     @Test
     public void testGetSubjectHumanBySubjectId() {
         final Long subjectId=24l;
