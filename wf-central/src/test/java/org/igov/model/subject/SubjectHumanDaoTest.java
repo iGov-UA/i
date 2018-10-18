@@ -51,6 +51,7 @@ public class SubjectHumanDaoTest {
         testSetSubjectHuman(SubjectHumanIdType.INN, "123", 0);
     }
 
+    @Ignore
     @Test
     public void testSetSubjectHumanWithPassport() {
         testSetSubjectHuman(SubjectHumanIdType.Passport, "MB123456", 0);
