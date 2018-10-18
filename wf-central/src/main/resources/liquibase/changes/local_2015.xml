@@ -1817,4 +1817,11 @@
         <dropNotNullConstraint tableName="SubjectContactPlacePoint" columnName="nID_Subject" columnDataType="bigint"/>
     </changeSet>
 
+    <changeSet id="PLATFORM-2312-add-onDeleteAction" author="">
+        <dropForeignKeyConstraint baseTableName="SubjectContactPlacePoint" constraintName="FK_SubjectContactPlacePoint_Subject"/>
+        <addForeignKeyConstraint constraintName="FK_SubjectContactPlacePoint_Subject" baseTableName="SubjectContactPlacePoint" baseColumnNames="nID_Subject"
+                                 referencedTableName="Subject" referencedColumnNames="nID"
+                                onDelete="CASCADE"/>
+    </changeSet>
+
 </databaseChangeLog>
