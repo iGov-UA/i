@@ -21,13 +21,13 @@ public class SubjectOrganDaoTest {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
-    @Test
+   /* @Test
     public void testGetSubjectHumanBySubjectId() {
         final Long subjectId=24l;
         Subject subject = new Subject();
         subject.setId(subjectId);
         SubjectOrgan subjectOrgan=subjectOrganDao.getSubjectOrgan(subject);
         Assert.assertEquals(subjectOrgan.getoSubject().getId(),subjectId);
-    }
+    }*/
 
 }
