@@ -14,10 +14,7 @@ import org.igov.util.JSON.JsonDateTimeDeserializer;
 import org.igov.util.JSON.JsonDateTimeSerializer;
 import org.joda.time.DateTime;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * @author Oleksandr.Gurtovyi
@@ -27,7 +24,7 @@ import javax.persistence.Transient;
 @ApiModel(description = "Контакт здания")
 public class SubjectContactPlacePoint extends AbstractEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nID_Subject")
     @JsonBackReference
     @ApiModelProperty(value = "Номер-ИД субьекта (на что 'вяжется' запись)", required = true)
