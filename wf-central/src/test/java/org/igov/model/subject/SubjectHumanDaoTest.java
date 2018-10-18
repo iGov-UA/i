@@ -26,7 +26,7 @@ public class SubjectHumanDaoTest {
     @Autowired
     private SubjectContactDao subjectContactDao;
 
-    @Ignore
+   /* @Ignore
     @Test
     public void testGetSubjectHumanBySubjectId() {
         final Long subjectId=24l;
@@ -34,7 +34,7 @@ public class SubjectHumanDaoTest {
         subject.setId(subjectId);
         SubjectHuman subjectHuman=subjectHumanDao.getSubjectHuman(subject);
         Assert.assertEquals(subjectHuman.getoSubject().getId(),subjectId);
-    }
+    }*/
 
     @Test
     public void testSetSubjectHumanWithEmail() {
