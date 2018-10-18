@@ -3,6 +3,7 @@ package org.igov.model.subject;
 import org.igov.model.subject.organ.SubjectOrgan;
 import org.igov.model.subject.organ.SubjectOrganDao;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,14 @@ public class SubjectOrganDaoTest {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
-   /* @Test
+    @Ignore
+    @Test
     public void testGetSubjectHumanBySubjectId() {
         final Long subjectId=24l;
         Subject subject = new Subject();
         subject.setId(subjectId);
         SubjectOrgan subjectOrgan=subjectOrganDao.getSubjectOrgan(subject);
         Assert.assertEquals(subjectOrgan.getoSubject().getId(),subjectId);
-    }*/
+    }
 
 }
