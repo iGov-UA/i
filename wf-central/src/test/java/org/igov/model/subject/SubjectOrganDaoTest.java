@@ -22,7 +22,7 @@ public class SubjectOrganDaoTest {
     @Autowired
     private SubjectOrganDao subjectOrganDao;
 
-    @Ignore
+
     @Test
     public void testGetSubjectHumanBySubjectId() {
         final Long subjectId=24l;
