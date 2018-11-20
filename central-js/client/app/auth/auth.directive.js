@@ -88,9 +88,19 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
         if (provider.auth == 'BankID') {
           return $location.protocol() + '://' + $location.host() + ':' + $location.port()
             + '/auth/bankID?bank=' + provider.key + '&link=' + scope.redirectUri;
-        } else if (provider.auth == 'BankID-NBU') {
-          return $location.protocol() + '://' + $location.host() + ':' + $location.port()
-            + '/auth/bankid-nbu?bank=' + provider.key + '&link=' + scope.redirectUri;
+        }
+        else if (provider.auth == 'BankID-NBU') {
+          $(document).ready(function () {
+            $('ul.dropdown-menu > li:last-child').mouseenter(function () {
+              $('.errorInfo').css('visibility', 'visible');
+            });
+            $('ul.dropdown-menu > li:last-child').mouseleave(function () {
+              $('.errorInfo').css('visibility', 'hidden');
+            });
+          });
+
+          /*return $location.protocol() + '://' + $location.host() + ':' + $location.port()
+            + '/auth/bankid-nbu?bank=' + provider.key + '&link=' + scope.redirectUri;*/
         }
       }
     }
