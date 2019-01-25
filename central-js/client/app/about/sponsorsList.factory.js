@@ -35,9 +35,15 @@
         isActual: true
       }
       ,{
-        url: 'http://www.templatemonster.com/ua',
+        url: 'https://www.templatemonster.com/ua',
         alt: 'template',
         image: 'assets/images/ads/template.png',
+        isActual: true
+      }
+      ,{
+        url: 'https://masterbundles.com/',
+        alt: 'masterbundles',
+        image: 'assets/images/ads/masterbundles.png',
         isActual: true
       }
       ,{
