@@ -305,10 +305,27 @@ function ValidationService(moment, amMoment, angularMomentConfig, MarkersFactory
     /**
      * 'Mail' - перевіряє адресу електронної пошти
      */
-    'Mail': function (modelValue, viewValue) {
+    'Mail': function (modelValue, viewValue, options) {
       var bValid = true;
+      var bValidEmail = true;
+        if (options.aDomain !== undefined) {
+            for (var i = 0; i < options.aDomain.length; i++) {
+                if (modelValue.indexOf(options.aDomain[i]) > -1) {
+                    bValidEmail = false;
+                    break;
+                }
+            }
+        }
+        else if (options.sasMaskExclute !== undefined) {
+            for (var a = 0; a < options.sasMaskExclute.length; a++) {
+                if (modelValue.indexOf(options.sasMaskExclute[a]) > -1) {
+                    bValidEmail = false;
+                    break;
+                }
+            }
+        }
       var EMAIL_REGEXP = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
-      bValid = bValid && EMAIL_REGEXP.test(modelValue);
+      bValid = bValid && bValidEmail && EMAIL_REGEXP.test(modelValue);
       return bValid;
     },
 
