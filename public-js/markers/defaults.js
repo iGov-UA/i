@@ -6,7 +6,8 @@ angular.module('iGovMarkers')
           aField_ID: ['privatePhone', 'workPhone', 'phone', 'tel']
         }
         ,Mail: {
-          aField_ID: ['privateMail', 'email']
+          aField_ID: ['privateMail', 'email'],
+          sasMaskExclute: ['@ya.ru', '@ya.ua', '@yandex.ua', '@yandex.ru', '@rambler.ru', '@mail.ru', '@bk.ru', '@list.ru', '@inbox.ru']
         }
         ,AutoVIN: {
           aField_ID: ['vin_code', 'vin_code1', 'vin']
