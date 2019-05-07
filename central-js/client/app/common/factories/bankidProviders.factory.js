@@ -8,6 +8,12 @@ angular.module('app').factory('bankidProviders', [
         icon: 'assets/images/banks/privat.png'
       },
       {
+        name: 'monobank',
+        key: 'mono',
+        auth: 'BankID',
+        icon: 'assets/images/banks/monobank.png'
+      },
+      {
         name: 'А-банк',
         key: 'abank',
         auth: 'BankID',
