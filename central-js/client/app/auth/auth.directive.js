@@ -35,14 +35,14 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
 
         var found = inputPhone.match(/(^\+380[0-9]{9}$)/);
 
-        if (found == null) {
+        if (found === null) {
           scope.spinner = false;
           scope.statusMessage = "Помилка в номері телефону.";
           return false;          
         }              
 
         var foundKyivstar = inputPhone.match(/(^\+380(67|68|96|97|98)[0-9]{7}$)/);
-        if (foundKyivstar == null) {
+        if (foundKyivstar === null) {
           scope.spinner = false;
           scope.statusMessage = "Послуга доступна абонентам Kyivstar.";
           return false;          
@@ -54,11 +54,11 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
           
         }).success(function (data) {
           scope.spinner = false;
-          if (data==undefined||data==""){
+          if (data===undefined||data===""){
             scope.statusMessage = "Спробуйте пізніше.";
-          } else if (data.statusCode == "502") {
+          } else if (data.statusCode === "502") {
             scope.statusMessage = "Авторизация подтверждена.";
-          } else if (data.statusMessage != undefined) {
+          } else if (data.statusMessage !== undefined) {
             scope.statusMessage = String(data.statusMessage);
           } else {
             scope.statusMessage = "Неизвестный статус";
@@ -76,7 +76,7 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
             scope.spinner = false;
             scope.statusMessage = "Gateway Time-out";
             deferred.reject(err);
-            console.log (err)
+            console.log (err);
             return cb(err);
             
         }.bind(this));
@@ -85,24 +85,15 @@ angular.module('app').directive('serviceAuthBlock', function ($state, $location,
       };
 
       scope.getBankIdAuthUrl = function (provider) {
-        if (provider.auth == 'BankID') {
-          return $location.protocol() + '://' + $location.host() + ':' + $location.port()
-            + '/auth/bankID?bank=' + provider.key + '&link=' + scope.redirectUri;
+        if (provider.auth === 'BankID') {
+          return $location.protocol() + '://' + $location.host() + ':' + $location.port() +
+            '/auth/bankID?bank=' + provider.key + '&link=' + scope.redirectUri;
         }
-        else if (provider.auth == 'BankID-NBU') {
-          $(document).ready(function () {
-            $('ul.dropdown-menu > li:last-child').mouseenter(function () {
-              $('.errorInfo').css('visibility', 'visible');
-            });
-            $('ul.dropdown-menu > li:last-child').mouseleave(function () {
-              $('.errorInfo').css('visibility', 'hidden');
-            });
-          });
-
-          /*return $location.protocol() + '://' + $location.host() + ':' + $location.port()
-            + '/auth/bankid-nbu?bank=' + provider.key + '&link=' + scope.redirectUri;*/
+        else if (provider.auth === 'BankID-NBU') {
+          return $location.protocol() + '://' + $location.host() + ':' + $location.port() +
+            '/auth/bankid-nbu?bank=' + provider.key + '&link=' + scope.redirectUri;
         }
-      }
+      };
     }
   };
 });
