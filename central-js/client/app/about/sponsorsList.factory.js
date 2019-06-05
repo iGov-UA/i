@@ -203,6 +203,12 @@
         isActual: true
       }
       ,{
+        url: 'https://www.facebook.com/iic.in.ua/',
+        alt: 'https://www.facebook.com/iic.in.ua/',
+        image: 'assets/images/ads/DpIIC.png',
+        isActual: true
+      }
+      ,{
         url: 'https://www.lifecell.ua/',
         alt: 'https://www.lifecell.ua/',
         image: 'assets/images/ads/lifecell.png',
