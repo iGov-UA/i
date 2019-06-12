@@ -2,7 +2,6 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
-var uuid = require('node-uuid');
 
 var config = environmentConfig.activiti;
 var request = require('request');
@@ -261,24 +260,9 @@ module.exports.setAuthForURL = function (req, res) {
       res.statusCode = 400;
       res.send({"code":"SYSTEM_ERR","message":"Неможливо авторизуватися та/чи перейти по посиланню"});
     } else {
-      var aHeaderCookie = response.headers['set-cookie'];
-      var sess = aHeaderCookie[0].split('express:sess=')[1].split(';')[0];
-      var sig = aHeaderCookie[1].split('express:sess.sig=')[1].split(';')[0];
-
-      var sUid = uuid.v1({
-        msecs: new Date().getTime()
-      });
-
-      if (!global.mSession) {
-        global.mSession = {};
-      }
-      global.mSession[sUid] = {
-        'express:sess': sess,
-        'express:sess.sig': sig
-      }
-
+      var sUid = body.sID_Session;
       var sID_Session = sUrl.indexOf('?') > -1 ? '&sID_Session='+sUid : '?sID_Session='+sUid;
-      res.status(307).redirect(sUrl + sID_Session);
+      res.redirect(sUrl + sID_Session);
     }
   };
 
