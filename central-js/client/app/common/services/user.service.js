@@ -1,6 +1,7 @@
 angular.module('app').factory('UserService', function ($http, $q, $rootScope, AdminService, ErrorsFactory) {
   var bankIDLogin;
   var bankIDAccount;
+  var oSubjectNew;
 
   return {
     isLoggedIn: function () {
@@ -96,6 +97,79 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
           return  $q.reject(oResponse.data);
         }));
+    },
+
+    getCustomer: function() {
+      try {
+        return bankIDAccount ? convertCustomerObj(bankIDAccount.customer) : null;
+      } catch (error) {
+        return null;
+      }
     }
   };
+
+  function convertCustomerObj(oCustomer) {
+    var place = oCustomer.addresses.filter(function(addr) {
+      return addr.type === 'factual';
+    })[0];
+
+    var oResCustomer = {  
+      "sSubjectFullName": oCustomer.lastName +' '+ oCustomer.firstName +' '+ oCustomer.middleName,
+      "sID_SubjectHuman":oCustomer.inn,
+      "sKey_SubjectHumanGenderType":"",
+      "sSubjectHumanLastName": oCustomer.lastName,
+      "sSubjectHumanFirstName": oCustomer.firstName,
+      "sSubjectHumanMiddleName": oCustomer.middleName,
+      "sSubjectHumanDateBirth": oCustomer.birthDay,
+      "sSubjectHumanDateDeath":"",
+      "aSubjectHumanPhone":[  
+        oCustomer.phone
+      ],
+      "aSubjectHumanEmail":[  
+        oCustomer.email
+      ],
+      "aDocument":[],
+      "oSubjectHumanPlace":{  
+         "sPlaceKoatuu":"",
+         "sPlaceRegion": place.state,
+         "sPlace": place.city,
+         "sPlaceType": null,
+         "sPlaceArea": place.area,
+         "sPlaceCityArea":"",
+         "sPlaceBranchType":"",
+         "sPlaceBranch": place.street,
+         "sKey_PlaceBranchType":null,
+         "sKey_PlaceBuildType":null,
+         "sKey_PlaceBuildPartType":null,
+         "sKey_PlaceBuildPartCellType":null,
+         "sPlaceBuildPartCellType":null,
+         "sPlaceBranchOld":null,
+         "sPlaceBuildType": null,
+         "sPlaceBuildNumber": place.houseNo,
+         "sPlaceBuildLetter":null,
+         "sPlaceBuildPart":null,
+         "sPlaceBuildPartType":null,
+         "sPlaceBuildPartCell":null,
+         "sPlaceInfo":"",
+         "fullAddress":""
+      }
+    };
+
+    angular.forEach(oCustomer.documents, function(oDoc) {
+      var oDocument = {  
+        "sKey_DocumentType":"",
+        "sDocumentType": oDoc.type,
+        "sDocumentSeria": oDoc.series,
+        "sDocumentNumber": oDoc.number,
+        "sDocumentDateStart": oDoc.dateIssue,
+        "sDocumentDateFinish": oDoc.dateExpiration,
+        "sDocumentOrgan": oDoc.issue
+      };
+
+      oResCustomer.aDocument.push(oDocument);
+    });
+
+    oSubjectNew = oResCustomer;
+    return oSubjectNew;
+  }
 });
