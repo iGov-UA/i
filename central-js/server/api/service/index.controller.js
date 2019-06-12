@@ -2,6 +2,7 @@
 var _ = require('lodash');
 var activiti = require('../../components/activiti');
 var environmentConfig = require('../../config/environment');
+var uuid = require('node-uuid');
 
 var config = environmentConfig.activiti;
 var request = require('request');
@@ -239,5 +240,55 @@ module.exports.removeServiceData = function (req, res) {
       'bRecursive': req.query.bRecursive,
       'nID_Subject': req.session.subject.nID
     }
+  }, callback);
+};
+
+module.exports.setAuthForURL = function (req, res) {
+  var sUrl = req.query.sURL;
+  var oUrl = urlapi.parse(sUrl);
+  var sHostName = oUrl.hostname;
+  var sProtocol = oUrl.protocol;
+
+  if (!req.session || !req.session.subject) {
+    res.statusCode = 401;
+    res.send({"code":"SYSTEM_ERR","message":"Auth error!"});
+    return;
+  }
+
+  var oSession = req.session;
+  var callback = function(error, response, body) {
+    if (error) {
+      res.statusCode = 400;
+      res.send({"code":"SYSTEM_ERR","message":"Неможливо авторизуватися та/чи перейти по посиланню"});
+    } else {
+      var aHeaderCookie = response.headers['set-cookie'];
+      var sess = aHeaderCookie[0].split('express:sess=')[1].split(';')[0];
+      var sig = aHeaderCookie[1].split('express:sess.sig=')[1].split(';')[0];
+
+      var sUid = uuid.v1({
+        msecs: new Date().getTime()
+      });
+
+      if (!global.mSession) {
+        global.mSession = {};
+      }
+      global.mSession[sUid] = {
+        'express:sess': sess,
+        'express:sess.sig': sig
+      }
+
+      var sID_Session = sUrl.indexOf('?') > -1 ? '&sID_Session='+sUid : '?sID_Session='+sUid;
+      res.status(307).redirect(sUrl + sID_Session);
+    }
+  };
+
+  var sSyncSubjectUrl = sProtocol + '//' + sHostName + '/auth/bankidSyncSubject';
+  //var sSyncSubjectUrl = 'http://localhost:9000/auth/bankidSyncSubject'; //local testing
+  request.post(sSyncSubjectUrl, {
+    qs: {
+      sInn: oSession.subject.sID
+    },
+    body: oSession,
+    json: true
   }, callback);
 };

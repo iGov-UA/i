@@ -317,4 +317,12 @@ angular.module('app').service('ServiceService', function ($http, $q, $state, Fee
       })
   }
 
+  this.restoreSession = function (sID_Session) {
+    return $http.get('./auth/restoreSession', {
+      params : {
+        sID_Session: sID_Session
+      }
+    })
+  };
+
 });
