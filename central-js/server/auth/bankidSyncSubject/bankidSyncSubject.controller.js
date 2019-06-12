@@ -77,6 +77,8 @@ module.exports.restoreSession = function (req, res) {
       res.cookie('express:sess.sig', oData['express:sess.sig'], {expires: expiresUserInMs()});
 
       res.send('Session restored');
+    } else {
+      res.send('No data for sID: ' + req.query.sID_Session);
     }
   } else {
     res.send('No session data in session map');
