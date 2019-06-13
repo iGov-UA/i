@@ -70,6 +70,9 @@ module.exports.bankidSyncSubject = function (req, res) {
 };
 
 module.exports.restoreSession = function (req, res) {
+  console.log('=========RESTORE========')
+  console.log(req.query.sID_Session)
+  console.log(global.mSession)
   if (global.mSession) {
     var oData = global.mSession[req.query.sID_Session];
     if (oData) {
