@@ -19,11 +19,12 @@ angular.module('app')
 
   var oReqParams = serviceLocationParser.getParams();
   if (!UserService.getCustomer() && oReqParams && oReqParams.sID_Session) {
-    ServiceService.restoreSession(oReqParams.sID_Session).then(function() {
+    location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
+    /* ServiceService.restoreSession(oReqParams.sID_Session).then(function() {
       var reg = new RegExp("((&)*sID_Session=([^&]*))","g");
       var sNewLocaion = location.href.replace(reg, '');
       location = sNewLocaion;
-    });
+    }); */
   }
 
   //TODO should be refactored after refactoring for single controller for app/service/index.html

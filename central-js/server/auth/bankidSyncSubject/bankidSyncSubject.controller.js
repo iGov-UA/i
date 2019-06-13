@@ -2,7 +2,7 @@
 
 var authService = require('../auth.service');
 var uuid = require('node-uuid');
-var request = require('request');
+//var request = require('request');
 
 function expiresUserInMs() {
   return new Date(Date.now() + 1000 * 60 * 60);
@@ -18,7 +18,7 @@ function prepareSession(oSession) {
   return oSession;
 }
 
-module.exports.bankidSyncSubject = function (req, res) {
+/* module.exports.bankidSyncSubject = function (req, res) {
   if (req.query.bIsSelfInvoke) {
     var oSession = prepareSession(req.body);
 
@@ -67,9 +67,26 @@ module.exports.bankidSyncSubject = function (req, res) {
       json: true
     }, callback);
   }
+}; */
+
+module.exports.bankidSyncSubject = function (req, res) {
+  var oSession = prepareSession(req.body);
+  var sUid = uuid.v1({
+    msecs: new Date().getTime()
+  });
+
+  if (!global.mSession) {
+    global.mSession = {};
+  }
+  global.mSession[sUid] = oSession;
+
+  res.send({
+    sID_Session: sUid
+  });
+  res.end();
 };
 
-module.exports.restoreSession = function (req, res) {
+/* module.exports.restoreSession = function (req, res) {
   console.log('=========RESTORE========')
   console.log(req.query.sID_Session)
   console.log(global.mSession)
@@ -85,5 +102,28 @@ module.exports.restoreSession = function (req, res) {
     }
   } else {
     res.end('No session data in session map');
+  }
+}; */
+
+module.exports.restoreSession = function (req, res) {
+  var sBackURL = req.header('Referer') || '/';
+  var reg = new RegExp("((&)*sID_Session=([^&]*))","g");
+  var sNewLocaion = sBackURL.replace(reg, '');
+
+  var sID_Session = req.query.sID_Session;
+  if (global.mSession) {
+    var oData = global.mSession[sID_Session];
+    console.log('========RESTORE==========')
+    console.log(oData)
+    if (oData) {
+      req.session = authService.createSessionObject(oData.type || 'bankid', oData, 
+        oData.access);
+
+      res.redirect(307, sNewLocaion);
+    } else {
+      res.redirect(307, sNewLocaion);
+    }
+  } else {
+    res.redirect(307, sNewLocaion);
   }
 };
