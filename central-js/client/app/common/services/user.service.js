@@ -11,19 +11,12 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       $http.get('./auth/isAuthenticated').success(function (data, status) {
         deferred.resolve(true);
       }).error(function (data, status) {
-        var oReqParams = serviceLocationParser.getParams();
-        console.log(oReqParams);
-
-        if (oReqParams && oReqParams.sID_Session) {
-          location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
-        } else {
-          bankIDLogin = undefined;
-          bankIDAccount = undefined;
-          $rootScope.$broadcast('event.logout.without.session');
-          deferred.reject(true);
-          ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
-          ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
-        }
+        bankIDLogin = undefined;
+        bankIDAccount = undefined;
+        $rootScope.$broadcast('event.logout.without.session');
+        deferred.reject(true);
+        ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
+        ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
       });
 
       return deferred.promise;
@@ -90,15 +83,21 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return bankIDAccount = oResponse.data;
           } else {
+            tryRestoreSession();
+            
             return $q.reject(oResponse.data);
           }
         }, function (err) {
+          tryRestoreSession();
+
           $rootScope.$broadcast('event.logout.without.session');
         }).catch(function (oResponse) {
           /*
            var err = oResponse.data ? oResponse.data.err || {} : {};
            ErrorsFactory.push({type: "danger", text: err.error});
            */
+          tryRestoreSession();
+
           bankIDLogin = undefined;
           bankIDAccount = undefined;
           ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['soResponse: '+JSON.stringify(oResponse)]});
@@ -114,6 +113,17 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       }
     }
   };
+
+  function tryRestoreSession() {
+    var oReqParams = serviceLocationParser.getParams();
+    console.log(oReqParams);
+
+    if (oReqParams && oReqParams.sID_Session) {
+      location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
+      return true;
+    }
+    return false
+  }
 
   function convertCustomerObj(oCustomer) {
     var place = oCustomer.addresses.filter(function(addr) {
