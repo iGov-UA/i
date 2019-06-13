@@ -11,6 +11,8 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       $http.get('./auth/isAuthenticated').success(function (data, status) {
         deferred.resolve(true);
       }).error(function (data, status) {
+        tryRestoreSession();
+
         bankIDLogin = undefined;
         bankIDAccount = undefined;
         $rootScope.$broadcast('event.logout.without.session');
@@ -84,7 +86,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
             return bankIDAccount = oResponse.data;
           } else {
             tryRestoreSession();
-            
+
             return $q.reject(oResponse.data);
           }
         }, function (err) {
