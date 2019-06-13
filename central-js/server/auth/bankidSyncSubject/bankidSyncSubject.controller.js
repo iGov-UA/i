@@ -119,11 +119,11 @@ module.exports.restoreSession = function (req, res) {
       req.session = authService.createSessionObject(oData.type || 'bankid', oData, 
         oData.access);
 
-      res.redirect(307, sNewLocaion);
+      res.redirect(sNewLocaion);
     } else {
-      res.redirect(307, sNewLocaion);
+      res.redirect(sNewLocaion);
     }
   } else {
-    res.redirect(307, sNewLocaion);
+    res.redirect(sNewLocaion);
   }
 };
