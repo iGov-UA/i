@@ -138,6 +138,8 @@ module.exports.index = function (req, res) {
             jsessionID = response.headers['set-cookie'][0].split('JSESSIONID=')[1];
           }
           oSession.jsessionCookie = jsessionID;
+          console.log('=========oSession========')
+          console.log(oSession)
           finishRequest(req, res, null, oSession, userService);
         }
       });
