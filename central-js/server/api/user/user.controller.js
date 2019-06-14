@@ -123,10 +123,13 @@ module.exports.index = function (req, res) {
   var userService = authProviderRegistry.getUserService(type);
   var userKey = userService.getUserKeyFromSession(req.session);
 
-  userService.syncWithSubject(userKey, function (err, result) {
-    if (userService.mergeFromSession) {
-      userService.mergeFromSession(result, req.session);
-    }
-    finishRequest(req, res, err, result, userService);
-  });
+  if (!userKey) {
+    finishRequest(req, res, null, req.session, userService);
+  } else 
+    userService.syncWithSubject(userKey, function (err, result) {
+      if (userService.mergeFromSession) {
+        userService.mergeFromSession(result, req.session);
+      }
+      finishRequest(req, res, err, result, userService);
+    });
 };

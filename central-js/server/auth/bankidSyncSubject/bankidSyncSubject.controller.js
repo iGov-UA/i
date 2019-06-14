@@ -15,6 +15,7 @@ function prepareSession(oSession) {
     lastName: oSession.account.lastName
   };
   delete oSession.usercacheid;
+  oSession.access = {};
 
   return oSession;
 }
