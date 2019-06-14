@@ -119,6 +119,7 @@ module.exports.restoreSession = function (req, res) {
     if (oData) {
       req.session = authService.createSessionObject(oData.type || 'bankid', oData, 
         oData.access);
+      delete req.session.prepare;
 
       res.redirect(sNewLocaion);
     } else {

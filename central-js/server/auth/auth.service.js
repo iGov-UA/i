@@ -16,6 +16,8 @@ function isAuthenticationInProgress(type) {
 }
 
 function isAuthenticated() {
+  console.log('=====session======')
+  console.log(req.session)
   return compose().use(function (req, res, next) {
     if (req.session && !req.session.prepare && req.session.access && req.session.subject) {
       next();
