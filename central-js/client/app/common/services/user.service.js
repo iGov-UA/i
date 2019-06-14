@@ -9,6 +9,12 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       var deferred = $q.defer();
 
       $http.get('./auth/isAuthenticated').success(function (data, status) {
+        if (location.href.indexOf('sID_Session=') > -1) {
+          var reg = new RegExp("((&)*sID_Session=([^&]*))","g");
+          var sNewLocaion = sBackURL.replace(reg, '');
+          location = sNewLocaion;
+        }
+
         deferred.resolve(true);
       }).error(function (data, status) {
         tryRestoreSession();
@@ -83,6 +89,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
         }).then(function (oResponse) {
           AdminService.processAccountResponse(oResponse);
           if(ErrorsFactory.bSuccessResponse(oResponse.data)){
+            $rootScope.bankIDAccount = oResponse.data;
             return bankIDAccount = oResponse.data;
           } else {
             return $q.reject(oResponse.data);

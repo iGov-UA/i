@@ -4,11 +4,14 @@ var authService = require('../auth.service');
 var uuid = require('node-uuid');
 
 function prepareSession(oSession) {
-  oSession.customer = {
-    firstName: oSession.account.firstName,
-    middleName: oSession.account.middleName,
-    lastName: oSession.account.lastName
-  };
+  if (!oSession.customer) {
+    oSession.customer = {
+      firstName: oSession.account.firstName,
+      middleName: oSession.account.middleName,
+      lastName: oSession.account.lastName
+    };
+  }
+  
   delete oSession.usercacheid;
   oSession.access = {};
 

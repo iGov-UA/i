@@ -1,4 +1,4 @@
-angular.module('app').directive('a', function() {
+angular.module('app').directive('a', ['$rootScope', '$http', function($rootScope, $http) {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -11,10 +11,17 @@ angular.module('app').directive('a', function() {
 			if (sCurrHost !== sLinkHost && sLinkHref.indexOf('igov') > -1) {
                 element.href = '/api/service/setAuthForURL?sURL=' + sLinkHref;
                 
-                element.addEventListener('click', function() {
-					location = element.href;
+                element.addEventListener('click', function(event) {
+					event.preventDefault();
+
+					$http.post('/api/service/setAuthForURL?sURL=' + sLinkHref, $rootScope.bankIDAccount.customer)
+					.then(function(oData) {
+						if (oData.data && !oData.data.code) {
+							location = oData.data;
+						}
+					});
 				});
 			}
 		}
 	};
-}); 
+}]); 

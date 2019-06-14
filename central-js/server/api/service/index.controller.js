@@ -255,6 +255,9 @@ module.exports.setAuthForURL = function (req, res) {
   }
 
   var oSession = req.session;
+  if (req.body) {
+    oSession.customer = req.body;
+  }
   var callback = function(error, response, body) {
     if (error) {
       res.statusCode = 400;
@@ -262,7 +265,7 @@ module.exports.setAuthForURL = function (req, res) {
     } else {
       var sUid = body.sID_Session;
       var sID_Session = sUrl.indexOf('?') > -1 ? '&sID_Session='+sUid : '?sID_Session='+sUid;
-      res.redirect(sUrl + sID_Session);
+      res.end(sUrl + sID_Session);
     }
   };
 
