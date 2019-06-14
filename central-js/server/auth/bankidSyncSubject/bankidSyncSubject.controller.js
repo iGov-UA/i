@@ -14,6 +14,7 @@ function prepareSession(oSession) {
     middleName: oSession.account.middleName,
     lastName: oSession.account.lastName
   };
+  delete oSession.usercacheid;
 
   return oSession;
 }

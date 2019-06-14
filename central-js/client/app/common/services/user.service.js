@@ -85,20 +85,15 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
           if(ErrorsFactory.bSuccessResponse(oResponse.data)){
             return bankIDAccount = oResponse.data;
           } else {
-            tryRestoreSession();
-
             return $q.reject(oResponse.data);
           }
         }, function (err) {
-          tryRestoreSession();
-
           $rootScope.$broadcast('event.logout.without.session');
         }).catch(function (oResponse) {
           /*
            var err = oResponse.data ? oResponse.data.err || {} : {};
            ErrorsFactory.push({type: "danger", text: err.error});
            */
-          tryRestoreSession();
 
           bankIDLogin = undefined;
           bankIDAccount = undefined;
