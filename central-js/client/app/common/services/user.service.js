@@ -11,7 +11,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       $http.get('./auth/isAuthenticated').success(function (data, status) {
         if (location.href.indexOf('sID_Session=') > -1) {
           var reg = new RegExp("((&)*sID_Session=([^&]*))","g");
-          var sNewLocaion = sBackURL.replace(reg, '');
+          var sNewLocaion = location.href.replace(reg, '');
           location = sNewLocaion;
         }
 
