@@ -155,6 +155,11 @@ module.exports.index = function (req, res) {
       if (userService.mergeFromSession) {
         userService.mergeFromSession(result, req.session);
       }
+
+      if (req.session) {
+        req.session.customer = result;
+      }
+      
       finishRequest(req, res, err, result, userService);
     });
 };
