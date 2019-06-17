@@ -1,6 +1,5 @@
 'use strict';
 
-var authService = require('../auth.service');
 var uuid = require('node-uuid');
 
 function prepareSession(oSession) {
@@ -46,9 +45,7 @@ module.exports.restoreSession = function (req, res) {
     console.log('========RESTORE==========')
     console.log(oData)
     if (oData) {
-      req.session = authService.createSessionObject(oData.type || 'bankid', oData, 
-        oData.access);
-      delete req.session.prepare;
+      req.session = oData
 
       res.redirect(sNewLocaion);
     } else {
