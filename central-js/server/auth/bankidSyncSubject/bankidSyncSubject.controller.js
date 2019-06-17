@@ -3,7 +3,7 @@
 var uuid = require('node-uuid');
 
 function prepareSession(oSession) {
-  if (!oSession.customer) {
+  if (!oSession.customer || Object.keys(oSession.customer).length < 1) {
     oSession.customer = {
       firstName: oSession.account.firstName,
       middleName: oSession.account.middleName,
