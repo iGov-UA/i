@@ -40,6 +40,8 @@ var finishRequest = function (req, res, err, result, userService) {
     req.session.subject = result.subject;
     req.session.bAdmin = result.admin;
 
+    console.log('========result========s');
+    console.log(result);
     var customer = userService.convertToCanonical(result.customer);
     customer.sUsedAuthType = req.session.type;
     var admin = result.admin;
