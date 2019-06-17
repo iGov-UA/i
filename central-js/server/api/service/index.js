@@ -13,6 +13,6 @@ router.get('/getServiceHistoryReport', controller.getServiceHistoryReport);
 router.post('/', controller.setService);
 router.post('/getPatternFilled', controller.getPatternFilled);
 router.delete('/', controller.removeServiceData);
-router.post('/setAuthForURL', controller.setAuthForURL);
+router.get('/setAuthForURL', controller.setAuthForURL);
 
 module.exports = router;

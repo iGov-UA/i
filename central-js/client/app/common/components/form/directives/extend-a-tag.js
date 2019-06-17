@@ -12,14 +12,7 @@ angular.module('app').directive('a', ['$rootScope', '$http', function($rootScope
                 element.href = '/api/service/setAuthForURL?sURL=' + sLinkHref;
                 
                 element.addEventListener('click', function(event) {
-					event.preventDefault();
-
-					$http.post('/api/service/setAuthForURL?sURL=' + sLinkHref, $rootScope.bankIDAccount.customer)
-					.then(function(oData) {
-						if (oData.data && !oData.data.code) {
-							location = oData.data;
-						}
-					});
+					location = element.href;
 				});
 			}
 		}

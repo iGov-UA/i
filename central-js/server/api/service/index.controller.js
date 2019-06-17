@@ -249,8 +249,7 @@ module.exports.setAuthForURL = function (req, res) {
   var sProtocol = oUrl.protocol;
 
   if (!req.session || !req.session.subject) {
-    res.statusCode = 401;
-    res.send({"code":"SYSTEM_ERR","message":"Auth error!"});
+    res.redirect(sUrl);
     return;
   }
 
@@ -265,7 +264,7 @@ module.exports.setAuthForURL = function (req, res) {
     } else {
       var sUid = body.sID_Session;
       var sID_Session = sUrl.indexOf('?') > -1 ? '&sID_Session='+sUid : '?sID_Session='+sUid;
-      res.end(sUrl + sID_Session);
+      res.redirect(sUrl + sID_Session);
     }
   };
 
