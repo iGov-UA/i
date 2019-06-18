@@ -155,11 +155,6 @@ module.exports.index = function (req, res) {
       if (userService.mergeFromSession) {
         userService.mergeFromSession(result, req.session);
       }
-
-      if (!global.mExtraUserData) {
-        global.mExtraUserData = {};
-      }
-      global.mExtraUserData[req.session.subject.sID] = result.customer;
       
       finishRequest(req, res, err, result, userService);
     });
