@@ -127,7 +127,7 @@ module.exports.index = function (req, res) {
   var userService = authProviderRegistry.getUserService(type);
   var userKey = userService.getUserKeyFromSession(req.session);
 
-  if (!userKey && req.session && req.session.subject) {
+  if (!userKey) {
     var oSession = req.session;
     var nID_Server_Region = config.server.nServerRegion;
     activiti.getServerRegionHost(nID_Server_Region, function (sHost) {
@@ -155,6 +155,11 @@ module.exports.index = function (req, res) {
       if (userService.mergeFromSession) {
         userService.mergeFromSession(result, req.session);
       }
+
+      if (!global.mExtraUserData) {
+        global.mExtraUserData = {};
+      }
+      global.mExtraUserData[req.session.subject.sID] = result.customer;
       
       finishRequest(req, res, err, result, userService);
     });

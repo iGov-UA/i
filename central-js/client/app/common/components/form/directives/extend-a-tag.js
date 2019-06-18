@@ -1,4 +1,4 @@
-angular.module('app').directive('a', ['$rootScope', '$http', function($rootScope, $http) {
+angular.module('app').directive('a', [function() {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -12,6 +12,7 @@ angular.module('app').directive('a', ['$rootScope', '$http', function($rootScope
                 element.href = '/api/service/setAuthForURL?sURL=' + sLinkHref;
                 
                 element.addEventListener('click', function(event) {
+					event.preventDefault();
 					location = element.href;
 				});
 			}

@@ -254,8 +254,8 @@ module.exports.setAuthForURL = function (req, res) {
   }
 
   var oSession = req.session;
-  if (req.body) {
-    oSession.customer = req.body;
+  if (global.mExtraUserData && global.mExtraUserData[oSession.subject.sID]) {
+    oSession.customer = global.mExtraUserData[oSession.subject.sID];
   }
   var callback = function(error, response, body) {
     if (error) {
