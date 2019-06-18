@@ -9,7 +9,7 @@ angular.module('app').directive('a', [function() {
 			var sLinkHost = element.hostname;
 
 			if (sCurrHost !== sLinkHost && sLinkHref.indexOf('igov') > -1) {
-                element.href = '/api/service/setAuthForURL?sURL=' + sLinkHref;
+                element.href = '/api/service/setAuthForURL?sURL=' + encodeURIComponent(sLinkHref);
                 
                 element.addEventListener('click', function(event) {
 					event.preventDefault();
