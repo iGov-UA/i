@@ -42,7 +42,8 @@ angular.module('app', [
   'journal',
   'order',
   'about',
-  'feedback'
+  'feedback',
+  'linkdir'
 ]).config(function ($urlRouterProvider, $locationProvider, datepickerConfig, datepickerPopupConfig) {
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);

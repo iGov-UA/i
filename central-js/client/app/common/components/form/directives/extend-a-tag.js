@@ -1,4 +1,4 @@
-angular.module('app').directive('a', [function() {
+angular.module('linkdir', []).directive('a', [function() {
 	'use strict';
 	return {
 		restrict: 'E',
