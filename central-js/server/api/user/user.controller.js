@@ -56,6 +56,12 @@ var finishRequest = function (req, res, err, result, userService) {
     }
     removeEmptyFields(customer);
     res.cookie('JSESSIONID', result.jsessionCookie, {expires: expiresUserInMs()});
+
+    console.log('======== Req-Session ========');
+    console.log(req.session);
+    console.log('======== Res-Headers ========');
+    console.log(res._headers);
+
     res.send({
       customer: customer,
       admin: admin
