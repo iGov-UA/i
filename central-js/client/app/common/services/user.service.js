@@ -1,4 +1,4 @@
-angular.module('app').factory('UserService', function ($http, $q, $rootScope, AdminService, ErrorsFactory) {
+angular.module('app').factory('UserService', function ($http, $q, $rootScope, AdminService, ErrorsFactory, serviceLocationParser) {
   var bankIDLogin;
   var bankIDAccount;
 
@@ -10,6 +10,8 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       $http.get('./auth/isAuthenticated').success(function (data, status) {
         deferred.resolve(true);
       }).error(function (data, status) {
+        tryRestoreSession();
+
         bankIDLogin = undefined;
         bankIDAccount = undefined;
         $rootScope.$broadcast('event.logout.without.session');
@@ -98,4 +100,14 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
         }));
     }
   };
+
+  function tryRestoreSession() {
+    var oReqParams = serviceLocationParser.getParams();
+
+    if (oReqParams && oReqParams.sID_Session) {
+      location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
+      return true;
+    }
+    return false
+  }
 });

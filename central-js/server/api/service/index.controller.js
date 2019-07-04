@@ -241,3 +241,40 @@ module.exports.removeServiceData = function (req, res) {
     }
   }, callback);
 };
+
+module.exports.setAuthForURL = function (req, res) {
+  var sUrl = req.query.sURL;
+  var oUrl = urlapi.parse(sUrl);
+  var sHostName = oUrl.hostname;
+  var sProtocol = oUrl.protocol;
+
+  if (!req.session || !req.session.subject) {
+    res.redirect(sUrl);
+    return;
+  }
+
+  var oSession = req.session;
+  if (global.mExtraUserData && global.mExtraUserData[oSession.subject.sID]) {
+    oSession.customer = global.mExtraUserData[oSession.subject.sID];
+  }
+  var callback = function(error, response, body) {
+    if (error) {
+      res.statusCode = 400;
+      res.send({"code":"SYSTEM_ERR","message":"Неможливо авторизуватися та/чи перейти по посиланню"});
+    } else {
+      var sUid = body.sID_Session;
+      var sID_Session = sUrl.indexOf('?') > -1 ? '&sID_Session='+sUid : '?sID_Session='+sUid;
+      res.redirect(sUrl + sID_Session);
+    }
+  };
+
+  var sSyncSubjectUrl = sProtocol + '//' + sHostName + '/auth/bankidSyncSubject';
+  //var sSyncSubjectUrl = 'http://localhost:9000/auth/bankidSyncSubject'; //local testing
+  request.post(sSyncSubjectUrl, {
+    qs: {
+      sInn: oSession.subject.sID
+    },
+    body: oSession,
+    json: true
+  }, callback);
+};

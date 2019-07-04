@@ -16,6 +16,8 @@ require('./email/email.passport').setup(config, authProviderRegistry);
 router.use('/bankID', require('./bankid-mock'));
 router.use('/bankID', require('./bankid'));
 router.use('/bankid-nbu', require('./bankid-nbu'));
+router.use('/bankidSyncSubject', require('./bankidSyncSubject'));
+router.get('/restoreSession', require('./bankidSyncSubject/bankidSyncSubject.controller').restoreSession);
 
 //Mock eds process
 router.use('/eds', require('./eds-mock'));

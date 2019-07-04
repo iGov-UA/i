@@ -2,7 +2,9 @@ var authProviderRegistry = require('../../auth/auth.provider.registry')
   , activiti = require('../../components/activiti')
   , Admin = require('../../components/admin')
   , logger = require('../../components/logger').createLogger(module)
-  , errors = require('../../components/errors');
+  , errors = require('../../components/errors')
+  ,config = require('../../config/environment')
+  , syncSubject = require('../../api/subject/subject.service');
 
 
 function removeEmptyFields(customer) {
@@ -123,10 +125,35 @@ module.exports.index = function (req, res) {
   var userService = authProviderRegistry.getUserService(type);
   var userKey = userService.getUserKeyFromSession(req.session);
 
-  userService.syncWithSubject(userKey, function (err, result) {
-    if (userService.mergeFromSession) {
-      userService.mergeFromSession(result, req.session);
-    }
-    finishRequest(req, res, err, result, userService);
-  });
+  if (!userKey) {
+    var oSession = req.session;
+    var nID_Server_Region = config.server.nServerRegion;
+    activiti.getServerRegionHost(nID_Server_Region, function (sHost) {
+      syncSubject.syncRegion(oSession.subject.sID, sHost, function (error, response, body) {
+        if (error) {
+          finishRequest(req, res, error, oSession, userService);
+        } else {
+          var jsessionID;
+          if (response.headers['set-cookie']){
+            jsessionID = response.headers['set-cookie'][0].split('JSESSIONID=')[1];
+          }
+          oSession.jsessionCookie = jsessionID;
+          if (!oSession.customer && oSession.account && oSession.account.firstName) {
+            oSession.customer = oSession.account;
+          } else if (!oSession.customer && (!oSession.account ||oSession.account.firstName)){
+            oSession.customer = {};
+          }
+          finishRequest(req, res, null, oSession, userService);
+        }
+      });
+    });
+    
+  } else 
+    userService.syncWithSubject(userKey, function (err, result) {
+      if (userService.mergeFromSession) {
+        userService.mergeFromSession(result, req.session);
+      }
+      
+      finishRequest(req, res, err, result, userService);
+    });
 };
