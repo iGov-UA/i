@@ -150,6 +150,8 @@ exports.index = function (req, res) {
 
     query.nStart = (req.query.page || 0) * query.nSize;
 
+    query.sOrderBy = req.query.sOrderBy;
+    
     var options = {
       path: path,
       query: query,
