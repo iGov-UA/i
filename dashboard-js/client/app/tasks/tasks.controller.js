@@ -202,6 +202,8 @@
       switch ($scope.selectedSortOrder.selected) {
         case 'datetime_asc':
           $scope.selectedSortOrder.selected = "datetime_desc";
+          $scope.tasks = [];
+          loadNextTasksPage();
           if ($stateParams.type == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = true;
@@ -209,6 +211,8 @@
           break;
         case 'datetime_desc':
           $scope.selectedSortOrder.selected = "datetime_asc";
+          $scope.tasks = [];
+          loadNextTasksPage()
           if ($stateParams.type == tasks.filterTypes.finished) $scope.predicate = 'startTime';
           else $scope.predicate = 'createTime';
           $scope.reverse = false;
@@ -227,11 +231,19 @@
 
     var tasksPage = 0;
     var lastTasksResult = null;
-
+    var sOrderByMethod = 'taskCreateTime_asc';
     var loadNextTasksPage = function () {
       var defer = $q.defer();
+      if ($scope.selectedSortOrder.selected === "datetime_desc" && sOrderByMethod === 'taskCreateTime_asc' ) {
+          sOrderByMethod = 'taskCreateTime_desc';
+          tasksPage = 0;
+      } else if ($scope.selectedSortOrder.selected === "datetime_asc" && sOrderByMethod === 'taskCreateTime_desc') {
+          sOrderByMethod = 'taskCreateTime_asc';
+          tasksPage = 0;     
+      }
       var data = {
-        page: tasksPage
+        page: tasksPage,
+        sOrderBy: sOrderByMethod
       };
       if ($stateParams.type == 'tickets') {
         data.bEmployeeUnassigned = $scope.ticketsFilter.bEmployeeUnassigned;
