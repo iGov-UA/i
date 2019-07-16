@@ -100,7 +100,7 @@ exports.index = function (req, res) {
   if (req.query.soaFilterField) {
     query.soaFilterField = req.query.soaFilterField;
   }
-  query.nSize = 50;
+  query.nSize = 5; //временно, вернуть 50 после тестов
 
   if (req.query.filterType === 'all') {
     async.waterfall([
@@ -150,6 +150,8 @@ exports.index = function (req, res) {
 
     query.nStart = (req.query.page || 0) * query.nSize;
 
+    query.sOrderBy = req.query.sOrderBy;
+    
     var options = {
       path: path,
       query: query,
