@@ -45,6 +45,7 @@ module.exports.restoreSession = function (req, res) {
     if (oData) {
       req.session = oData
 
+      delete global.mSession[sID_Session];
       res.redirect(sNewLocaion);
     } else {
       res.redirect(sNewLocaion);
