@@ -27,6 +27,7 @@ module.exports.bankidSyncSubject = function (req, res) {
     global.mSession = {};
   }
   global.mSession[sUid] = oSession;
+  console.log('sID_Session created='+sUid);
 
   res.send({
     sID_Session: sUid
@@ -43,11 +44,13 @@ module.exports.restoreSession = function (req, res) {
   if (global.mSession) {
     var oData = global.mSession[sID_Session];
     console.log('========RESTORE==========')
+    console.log('sID_Session='+sID_Session);
     console.log(oData)
     if (oData) {
       req.session = oData
 
       delete global.mSession[sID_Session];
+      console.log('[global.mSession]', global.mSession);
       res.redirect(sNewLocaion);
     } else {
       res.redirect(sNewLocaion);
