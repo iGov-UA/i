@@ -17,14 +17,14 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
 
         deferred.resolve(true);
       }).error(function (data, status) {
-        tryRestoreSession();
-
-        bankIDLogin = undefined;
-        bankIDAccount = undefined;
-        $rootScope.$broadcast('event.logout.without.session');
-        deferred.reject(true);
-        ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
-        ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
+        if (!tryRestoreSession()) {
+          bankIDLogin = undefined;
+          bankIDAccount = undefined;
+          $rootScope.$broadcast('event.logout.without.session');
+          deferred.reject(true);
+          ErrorsFactory.init(oFuncNote,{asParam:['bankIDLogin: '+bankIDLogin, 'bankIDAccount: '+bankIDAccount]});
+          ErrorsFactory.addFail({sBody:'Помилка сервіса!',asParam:['data: '+data,'status: '+status]});
+        }
       });
 
       return deferred.promise;
