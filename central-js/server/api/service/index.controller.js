@@ -267,7 +267,10 @@ module.exports.setAuthForURL = function (req, res) {
       res.redirect(sUrl + sID_Session);
     }
   };
-
+  
+  if(sHostName.indexOf("igov.gov.ua")<0){
+      return;
+  }
   var sSyncSubjectUrl = sProtocol + '//' + sHostName + '/auth/bankidSyncSubject';
   //var sSyncSubjectUrl = 'http://localhost:9000/auth/bankidSyncSubject'; //local testing
   request.post(sSyncSubjectUrl, {
