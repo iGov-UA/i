@@ -1295,6 +1295,9 @@ angular.module('app').controller('ServiceBuiltInBankIDController', ['$sce', '$st
         var fieldPostfix = id.replace('sID_SubjectOrgan_OKPO_', '');
         var keys = {activities:'sID_SubjectActionKVED',ceo_name:'sCEOName',database_date:'sDateActual',full_name:'sFullName',location:'sLocation',short_name:'sShortName'};
         function findAndFillOKPOFields(res) {
+          if (angular.isArray(res.data) && res.data.length) {
+            res.data = res.data[0];
+          }
           angular.forEach(res.data, function (i, key) {
             if (key in keys) {
               for (var prop in $scope.data.formData.params) {
