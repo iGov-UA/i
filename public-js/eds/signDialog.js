@@ -123,7 +123,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
         } else if (/constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification))) {
             $scope.pluginsLink.extension = linksToCryptoplugin.safari.link;
             $scope.pluginsLink.type = 'safari';
-        } else if (!!window.chrome && !!window.chrome.webstore) {
+        } else if (!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) {
             $scope.pluginsLink.extension = linksToCryptoplugin.chrome.link;
             $scope.pluginsLink.type = 'chrome';
         } else {
