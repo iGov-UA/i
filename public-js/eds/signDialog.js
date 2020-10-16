@@ -95,7 +95,7 @@ var SignDialogInstanceCtrl = function ($scope, $modalInstance, signService, md5,
             type: 'opera'
         },
         chrome: {
-            link: 'https://chrome.google.com/webstore/detail/bankid-cryptoplugin/pgfbdgicjmhenccemcijooffohcdanic?utm_source=chrome-app-launcher-info-dialog',
+            link: 'https://chrome.google.com/webstore/detail/crypto-plugin/idfiabaafjemgcecklpgnebaebonghka?hl=uk',
             type: 'chrome'
         },
         mozilla: {
