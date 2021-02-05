@@ -105,7 +105,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
     var oReqParams = serviceLocationParser.getParams();
 
     if (oReqParams && oReqParams.sID_Session) {
-      location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
+      window.location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
       return true;
     }
     return false
