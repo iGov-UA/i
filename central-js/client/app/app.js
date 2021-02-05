@@ -94,6 +94,23 @@ angular.module('app', [
       alert(errorText);
     }
   });
+
+  var onRouteChangeOff = $rootScope.$on('$locationChangeStart', function(event, newUrl) {
+    if (window.location.href.indexOf('sID_Session=') > -1) {
+      event.preventDefault();
+
+      var asHrefMatch = window.location.href.match(/&*sID_Session=([^&]*)/);
+      if (asHrefMatch && asHrefMatch.length > 1) {
+        window.location = '/auth/restoreSession?sID_Session=' + asHrefMatch[1];
+      } else {
+        onRouteChangeOff();
+        window.location = newUrl;
+      }
+    } else {
+      onRouteChangeOff();
+    }
+  });
+
 }).config([
   'datetimepickerProvider',
   function (datetimepickerProvider) {

@@ -9,12 +9,6 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
       var deferred = $q.defer();
 
       $http.get('./auth/isAuthenticated').success(function (data, status) {
-        if (location.href.indexOf('sID_Session=') > -1) {
-          var reg = new RegExp("((&)*sID_Session=([^&]*))","g");
-          var sNewLocaion = location.href.replace(reg, '');
-          location = sNewLocaion;
-        }
-
         deferred.resolve(true);
       }).error(function (data, status) {
         if (!tryRestoreSession()) {
@@ -123,7 +117,7 @@ angular.module('app').factory('UserService', function ($http, $q, $rootScope, Ad
     console.log(oReqParams);
 
     if (oReqParams && oReqParams.sID_Session) {
-      location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
+      window.location = '/auth/restoreSession?sID_Session='+oReqParams.sID_Session;
       return true;
     }
     return false
