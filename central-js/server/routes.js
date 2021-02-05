@@ -61,12 +61,6 @@ module.exports = function (app) {
     var indexHtml = app.get('appPath') + '/index.html';
     app.route('/*')
       .get(function (req, res) {
-        if (req.originalUrl.indexOf('sID_Session=') > -1) {
-          var asHrefMatch = window.location.href.match(/&*sID_Session=([^&]*)/);
-          if (asHrefMatch && asHrefMatch.length > 1) {
-            return res.redirect('/auth/restoreSession?sID_Session='+asHrefMatch[1]);
-          }
-        }
         // req.session.id = uuid.v1();
         res.sendFile(indexHtml);
       });
