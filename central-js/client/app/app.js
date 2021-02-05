@@ -95,7 +95,7 @@ angular.module('app', [
     }
   });
 
-  var onRouteChangeOff = $rootScope.$on('$locationChangeStart', function(event, newUrl) {
+  /* var onRouteChangeOff = $rootScope.$on('$locationChangeStart', function(event, newUrl) {
     if (window.location.href.indexOf('sID_Session=') > -1) {
       event.preventDefault();
 
@@ -109,7 +109,7 @@ angular.module('app', [
     } else {
       onRouteChangeOff();
     }
-  });
+  }); */
 
 }).config([
   'datetimepickerProvider',
