@@ -21,7 +21,7 @@ function isAuthenticated() {
       next();
     } else {
       console.log('[isAuthenticated] AUTH FAILED!, req.session=', req.session);
-      res.status(401);
+      res.status(500);
       res.send({code: 'AUTH FAILED', session: req.session});
     }
   });
