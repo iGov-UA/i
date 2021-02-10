@@ -20,6 +20,7 @@ function isAuthenticated() {
     if (req.session && !req.session.prepare && req.session.access && req.session.subject) {
       next();
     } else {
+      console.log('[isAuthenticated] AUTH FAILED!, req.session=', req.session);
       res.status(401);
       res.end();
     }
