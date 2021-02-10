@@ -22,7 +22,7 @@ function isAuthenticated() {
     } else {
       console.log('[isAuthenticated] AUTH FAILED!, req.session=', req.session);
       res.status(401);
-      res.end({code: 'AUTH FAILED', session: req.session});
+      res.send({code: 'AUTH FAILED', session: req.session});
     }
   });
 }
